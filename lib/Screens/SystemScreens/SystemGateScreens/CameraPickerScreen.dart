@@ -15,14 +15,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/services/camera.service.dart';
+import 'package:qr_users/MLmodule/services/classifier.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
 import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
+import 'package:image/image.dart' as img;
+import 'package:qr_users/MLmodule/services/quant.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 import "package:qr_users/MLmodule/services/UtilsScanner.dart";
 import 'package:qr_users/widgets/roundedAlert.dart';
 // import 'package:tflite/tflite.dart';
@@ -48,7 +51,7 @@ class TakePictureScreenState extends State<CameraPicker>
   File imagePath;
   Face faceDetected;
   Size imageSize;
-
+  Classifier _classifier;
   FaceNetService _faceNetService = FaceNetService();
   final DataBaseService _dataBaseService = DataBaseService();
   double predictedUserName = 0.0;
@@ -56,7 +59,7 @@ class TakePictureScreenState extends State<CameraPicker>
   bool cameraInitializated = false;
   bool isWorking = false;
   Size size;
-
+  Category category;
   Color cameraColor;
   CameraController cameraController;
   FaceDetector faceDetector;
@@ -149,6 +152,7 @@ class TakePictureScreenState extends State<CameraPicker>
     super.initState();
     firstTime = false;
     intialize = false;
+    _classifier = ClassifierQuant();
     // loadModel();
     // print(imagePath);
     initCamera();
@@ -207,6 +211,16 @@ class TakePictureScreenState extends State<CameraPicker>
     );
 
     return result;
+  }
+
+  void _predict() async {
+    img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
+    print(imageInput.data);
+    var pred = _classifier.predict(imageInput);
+    print("pred $pred");
+    setState(() {
+      this.category = pred;
+    });
   }
 
   @override
@@ -309,6 +323,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     numberOfFacesDetected = scannResult.length;
                                     imagePath = File(img.path);
                                   });
+                                  _predict();
                                 }
                               } catch (e) {
                                 print(e);
@@ -322,8 +337,6 @@ class TakePictureScreenState extends State<CameraPicker>
                               if (mounted)
                                 setState(() {
                                   image = File(newPath);
-                                  print("model name : $name ");
-                                  print("confidence : $confiedence");
                                 });
 
                               await testCompressAndGetFile(
@@ -337,21 +350,23 @@ class TakePictureScreenState extends State<CameraPicker>
                                 print(predictedUserName);
                               }
 
-                              if (name == "mobiles") {
+                              if (category.label.substring(2) == "mobiles") {
                                 Fluttertoast.showToast(
                                     msg: "خطأ : برجاء التقاط صورة حقيقية",
                                     backgroundColor: Colors.red,
                                     gravity: ToastGravity.CENTER,
                                     toastLength: Toast.LENGTH_LONG);
                                 Navigator.pop(context);
-                              } else if (predictedUserName >= 1) {
-                                Fluttertoast.showToast(
-                                    msg: "خطا : لم يتم التعرف على الوجة ",
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_LONG);
-                                Navigator.pop(context);
-                              } else if (numberOfFacesDetected == 1) {
+                              }
+                              // else if (predictedUserName >= 1) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "خطا : لم يتم التعرف على الوجة ",
+                              //       backgroundColor: Colors.red,
+                              //       gravity: ToastGravity.CENTER,
+                              //       toastLength: Toast.LENGTH_LONG);
+                              //   Navigator.pop(context);
+                              // }
+                              else if (numberOfFacesDetected == 1) {
                                 if (widget.fromScreen == "register") {
                                   Navigator.pop(context, image);
                                 }

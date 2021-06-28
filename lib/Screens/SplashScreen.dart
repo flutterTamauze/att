@@ -195,15 +195,15 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
-  loadModel() async {
-    var interpreterOptions = InterpreterOptions()..addDelegate(NnApiDelegate());
-    final interpreter = await Interpreter.fromAsset('model_unquant.tflite',
-        options: interpreterOptions);
-    print("Result after loading model  : $interpreter");
-    // var result = await Tflite.loadModel(
-    //     labels: "assets/labels.txt", model: "assets/model_unquant.tflite");
-    // print("Result after loading model  : $result");
-  }
+  // loadModel() async {
+  //   var interpreterOptions = InterpreterOptions()..addDelegate(NnApiDelegate());
+  //   final interpreter = await Interpreter.fromAsset('model_unquant.tflite',
+  //       options: interpreterOptions);
+  //   print("Result after loading model  : $interpreter");
+  //   // var result = await Tflite.loadModel(
+  //   //     labels: "assets/labels.txt", model: "assets/model_unquant.tflite");
+  //   // print("Result after loading model  : $result");
+  // }
 
   loadSecondModel() async {
     // start the services
@@ -216,7 +216,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     // filterList();
-    loadModel();
+    // loadModel();
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,

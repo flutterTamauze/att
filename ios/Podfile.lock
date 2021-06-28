@@ -36,9 +36,6 @@ PODS:
   - Firebase/MLVision (6.34.0):
     - Firebase/CoreOnly
     - FirebaseMLVision (~> 0.21.0)
-  - Firebase/MLVisionFaceModel (6.34.0):
-    - Firebase/CoreOnly
-    - FirebaseMLVisionFaceModel (~> 0.21.0)
   - firebase_analytics (0.0.1):
     - Firebase/Analytics (~> 6.0)
     - Firebase/Core
@@ -91,8 +88,6 @@ PODS:
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
     - GTMSessionFetcher/Core (~> 1.1)
     - Protobuf (~> 3.12)
-  - FirebaseMLVisionFaceModel (0.21.0):
-    - FirebaseMLVision (~> 0.21)
   - Flutter (1.0.0)
   - flutter_image_compress (0.0.1):
     - Flutter
@@ -169,11 +164,11 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
-  - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
+  - GTMSessionFetcher (1.6.1):
+    - GTMSessionFetcher/Full (= 1.6.1)
+  - GTMSessionFetcher/Core (1.6.1)
+  - GTMSessionFetcher/Full (1.6.1):
+    - GTMSessionFetcher/Core (= 1.6.1)
   - image_face (0.0.1):
     - Flutter
   - image_picker (0.0.1):
@@ -245,8 +240,6 @@ DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - ext_storage (from `.symlinks/plugins/ext_storage/ios`)
-  - Firebase/Analytics
-  - Firebase/MLVisionFaceModel
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_ml_vision (from `.symlinks/plugins/firebase_ml_vision/ios`)
@@ -286,7 +279,6 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseMLCommon
     - FirebaseMLVision
-    - FirebaseMLVisionFaceModel
     - FMDB
     - GoogleAPIClientForREST
     - GoogleAppMeasurement
@@ -392,7 +384,6 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
   FirebaseMLCommon: f42d067ca7fed962e09f02ba94a24e06ee50d933
   FirebaseMLVision: fd7cdd33d067c976c16fd521e7e92c26c980c947
-  FirebaseMLVisionFaceModel: a67b2bf9b8407127a0bdb0ba98eb265637d1dc9d
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_image_compress: 082f8daaf6c1b0c9fe798251c750ef0ecd98d7ae
   flutter_jailbreak_detection: f6c01e4bc73641c6b69c5112e50301240601abb4
@@ -410,7 +401,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
   GoogleToolboxForMac: 471e0c05d39506e50e6398f46fa9a12ae0efeff9
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   image_face: eb4d72402534e9ab75953c1fad0329b1ee6df985
   image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
   image_pickers: 4a20d713c9029a75582e28482271e92d72d334fd
@@ -438,6 +429,6 @@ SPEC CHECKSUMS:
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   ZLPhotoBrowser-objc: c7684215bbde0ee990ad7bd1008e13bc3e6f6a32
 
-PODFILE CHECKSUM: 2e3e3a36c320b74522a83acd5632d2f7891e42b0
+PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
 
 COCOAPODS: 1.10.1
