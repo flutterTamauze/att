@@ -1320,7 +1320,7 @@ class UserDataField extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black12, width: 1)),
-      height: 40.h,
+      height: 35.h,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(
@@ -1347,6 +1347,7 @@ class UserDataField extends StatelessWidget {
                   fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true),
                   fontWeight: FontWeight.w500,
                 ),
+                textAlign: TextAlign.right,
               ),
             )),
           ],

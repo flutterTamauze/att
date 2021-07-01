@@ -3,6 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,8 @@ String selectedPermession = "تأخير عن الحضور";
 var sleectedMember;
 var toDate;
 var fromDate;
+String toText;
+String fromText;
 DateTime yesterday;
 TextEditingController _dateController = TextEditingController();
 String dateToString = "";
@@ -47,10 +50,14 @@ List<String> actions = ["مرضى", "عارضة", "رصيد الاجازات", "
 List<String> permessionTitles = ["تأخير عن الحضور", "انصراف مبكر"];
 TimeOfDay toPicked;
 String dateDifference;
+List<DateTime> picked = [];
 
 class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
+    picked = null;
+    dateDifference = null;
+    _dateController.text = "";
     var now = DateTime.now();
     titileController.text = "";
     fromDate = DateTime(now.year, now.month, now.day);
@@ -71,7 +78,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          print(radioVal2);
+        },
         child: Scaffold(
           body: SingleChildScrollView(
             child: Container(
@@ -146,29 +156,24 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         builder: (context) {
                                           return InkWell(
                                               onTap: () async {
-                                                final List<DateTime> picked =
-                                                    await DateRagePicker
-                                                        .showDatePicker(
-                                                            context: context,
-                                                            initialFirstDate:
-                                                                DateTime(
-                                                                    DateTime.now()
-                                                                        .year,
-                                                                    DateTime.now()
-                                                                        .month,
-                                                                    DateTime.now()
-                                                                        .day),
-                                                            initialLastDate:
-                                                                toDate,
-                                                            firstDate: DateTime(
+                                                picked = await DateRagePicker
+                                                    .showDatePicker(
+                                                        context: context,
+                                                        initialFirstDate:
+                                                            DateTime(
                                                                 DateTime.now()
                                                                     .year,
                                                                 DateTime.now()
                                                                     .month,
                                                                 DateTime.now()
                                                                     .day),
-                                                            lastDate:
-                                                                yesterday);
+                                                        initialLastDate: toDate,
+                                                        firstDate: DateTime(
+                                                            DateTime.now().year,
+                                                            DateTime.now()
+                                                                .month,
+                                                            DateTime.now().day),
+                                                        lastDate: yesterday);
                                                 var newString = "";
                                                 setState(() {
                                                   fromDate = picked.first;
@@ -179,9 +184,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                               .inDays +
                                                           1)
                                                       .toString();
-                                                  String fromText =
+                                                  fromText =
                                                       " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                  String toText =
+                                                  toText =
                                                       " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
                                                   newString =
                                                       "$fromText $toText";
@@ -623,7 +628,25 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     ),
                                   ],
                                 ),
-                          RoundedButton(title: "حفظ الطلب", onPressed: () {})
+                          RoundedButton(
+                              title: "حفظ الطلب",
+                              onPressed: () {
+                                if (radioVal2 == 1) //اجازة
+                                {
+                                  if (picked != null) {
+                                    Fluttertoast.showToast(
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.green,
+                                        msg: "تم حفظ الطلب بنجاح");
+                                    Navigator.pop(context);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        msg: "قم بأدخال مدة الأجازة");
+                                  }
+                                }
+                              })
                         ],
                       ),
                     ),

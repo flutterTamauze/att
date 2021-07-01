@@ -21,7 +21,6 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CompanyProfileScreen extends StatefulWidget {
   @override
@@ -132,7 +131,6 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
 
   @override
   void initState() {
-
     super.initState();
     var comProvider = Provider.of<CompanyData>(context, listen: false).com;
     _emailController.text = comProvider.email;
@@ -508,7 +506,8 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                                                                 listen: false)
                                                                             .com
                                                                             .id),
-                                                                    token,context);
+                                                                    token,
+                                                                    context);
 
                                                             if (msg ==
                                                                 "success") {

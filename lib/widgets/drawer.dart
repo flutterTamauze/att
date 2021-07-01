@@ -108,25 +108,22 @@ class DrawerI extends StatelessWidget {
                 //   endIndent: 50,
                 // ),
                 ///---------------About Com-------------///
-                Provider.of<UserData>(context, listen: true).user.userType != 4
-                    ? MenuItem(
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => NormalUserMenu()));
-                        },
-                        title: "حسابى",
-                        icon: Icons.person)
-                    : Container(),
-                Provider.of<UserData>(context, listen: true).user.userType != 4
-                    ? Divider(
-                        height: 30.h,
-                        thickness: 0.5,
-                        color: Colors.white.withOpacity(0.3),
-                        indent: 50,
-                        endIndent: 50,
-                      )
-                    : Container(),
+                MenuItem(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NormalUserMenu()));
+                    },
+                    title: "حسابى",
+                    icon: Icons.person),
+
+                Divider(
+                  height: 30.h,
+                  thickness: 0.5,
+                  color: Colors.white.withOpacity(0.3),
+                  indent: 50,
+                  endIndent: 50,
+                ),
                 Provider.of<UserData>(context, listen: true).user.userType == 4
                     ? Column(
                         children: [

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +58,9 @@ TimeOfDay intToTimeOfDay(int time) {
 }
 
 String date;
+AudioCache player = AudioCache();
 
+AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
 String selectedDateString;
@@ -64,10 +70,17 @@ final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
 TimeOfDay fromPicked;
 TimeOfDay toPicked;
 
+AnimationController _controller;
+int levelClock = 300;
+
 class _UserFullDataScreenState extends State<UserFullDataScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   void initState() {
     super.initState();
+    if (instance != null) {
+      instance.stop();
+    }
+    levelClock = 300;
     timeOutController.text = "12:00AM";
     date = apiFormatter.format(DateTime.now());
     isSAved = false;
@@ -81,6 +94,18 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
       vsync: this, // the SingleTickerProviderStateMixin
       duration: Duration(milliseconds: 200),
     );
+  }
+
+  void playLoopedMusic() async {
+    player = AudioCache(prefix: "");
+    instance = await player.loop("clock.mp3");
+    // await instance.setVolume(0.5); you can even set the volume
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   AnimationController animateController;
@@ -124,9 +149,6 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                               border: Border.all(
                                   width: 2, color: Color(0xffFF7E00))),
                         ),
-                      ),
-                      SizedBox(
-                        height: 3,
                       ),
                       Container(
                         height: 20,
@@ -226,7 +248,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 20.h,
+                                  height: 3,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 3),
@@ -245,34 +267,10 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 ),
                                 Divider(),
                                 isSAved == false
-                                    ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 3),
-                                        child: InkWell(
-                                          onTap: () => showPermessionDialog(),
-                                          child: Container(
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text("اعطاء أذن لهذا المستخدم"),
-                                                Container(
-                                                  width: 25.w,
-                                                  height: 35.h,
-                                                  child: Icon(
-                                                    FontAwesomeIcons.stopwatch,
-                                                    color: Colors.orange,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
+                                    ? AssignTaskToUser(
+                                        taskName: "اعطاء أذن لهذا المستخدم",
+                                        iconData: FontAwesomeIcons.stopwatch,
+                                        function: () => showPermessionDialog())
                                     : Padding(
                                         padding:
                                             const EdgeInsets.only(right: 3),
@@ -316,65 +314,21 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         ),
                                       ),
                                 Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              OutsideVacation(widget.user),
-                                        )),
-                                    child: Container(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("تسجيل اجازات و مأموريات"),
-                                          Container(
-                                            width: 25.w,
-                                            height: 35.h,
-                                            child: Icon(
-                                              FontAwesomeIcons.calendarCheck,
-                                              color: Colors.orange,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                AssignTaskToUser(
+                                  taskName: "تسجيل اجازات و مأموريات",
+                                  iconData: FontAwesomeIcons.calendarCheck,
+                                  function: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            OutsideVacation(widget.user),
+                                      )),
                                 ),
                                 Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: Container(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("اعادة ضبط المستخدم"),
-                                        Container(
-                                          width: 25.w,
-                                          height: 35.h,
-                                          child: InkWell(
-                                            onTap: () {
-                                              widget.onResetMac();
-                                            },
-                                            child: Icon(
-                                              Icons.repeat,
-                                              color: Colors.orange,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                AssignTaskToUser(
+                                  function: () => widget.onResetMac(),
+                                  iconData: Icons.repeat,
+                                  taskName: "اعادة ضبط المستخدم",
                                 ),
                                 Divider(),
                                 Padding(
@@ -420,10 +374,10 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                   ),
                                 ),
                                 Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: InkWell(
-                                    onTap: () async {
+                                AssignTaskToUser(
+                                    taskName: "جدولة المناوبات",
+                                    iconData: Icons.table_view,
+                                    function: () async {
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -460,31 +414,125 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                             builder: (context) =>
                                                 ReAllocateUsers(widget.user),
                                           ));
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("جدولة المناوبات"),
-                                          Container(
-                                            width: 25.w,
-                                            height: 35.h,
-                                            child: Icon(
-                                              Icons.table_view,
-                                              color: Colors.orange,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                    }),
                                 Divider(),
+                                AssignTaskToUser(
+                                    taskName: " إرسال اثبات حضور",
+                                    iconData: FontAwesomeIcons.checkCircle,
+                                    function: () {
+                                      return showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) {
+                                          _controller = AnimationController(
+                                              vsync: this,
+                                              duration: Duration(
+                                                  seconds:
+                                                      300) // gameData.levelClock is a user entered number elsewhere in the applciation
+                                              );
+
+                                          _controller.forward();
+
+                                          return Stack(
+                                            children: [
+                                              Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0)), //this right here
+                                                  child: Directionality(
+                                                      textDirection:
+                                                          ui.TextDirection.rtl,
+                                                      child: Container(
+                                                        height: 250,
+                                                        width: double.infinity,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 50.h,
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {},
+                                                                child: Text(
+                                                                  "اثبات حضور",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .orange,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              ),
+                                                              Divider(),
+                                                              Text(
+                                                                  "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+                                                              SizedBox(
+                                                                height: 20.h,
+                                                              ),
+                                                              RoundedButton(
+                                                                  title:
+                                                                      "اثبات",
+                                                                  onPressed:
+                                                                      () {
+                                                                    Fluttertoast.showToast(
+                                                                        msg:
+                                                                            "تم اثبات الحضور بنجاح",
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .green,
+                                                                        gravity:
+                                                                            ToastGravity.CENTER);
+
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }),
+                                                              Spacer(),
+                                                              Countdown(
+                                                                function: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                animation:
+                                                                    StepTween(
+                                                                  begin:
+                                                                      levelClock, // THIS IS A USER ENTERED NUMBER
+                                                                  end: 0,
+                                                                ).animate(
+                                                                        _controller),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ))),
+                                              Positioned(
+                                                  right: 125.w,
+                                                  top: 180.h,
+                                                  child: Container(
+                                                    width: 150.w,
+                                                    height: 150.h,
+                                                    padding: EdgeInsets.all(20),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              60),
+                                                      child: Lottie.network(
+                                                          "https://assets5.lottiefiles.com/packages/lf20_ktrj1k3o.json",
+                                                          fit: BoxFit.fill),
+                                                    ),
+                                                  ))
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }),
                               ],
                             ),
                           ),
@@ -844,5 +892,73 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
             },
           );
         });
+  }
+}
+
+class AssignTaskToUser extends StatelessWidget {
+  final String taskName;
+  final IconData iconData;
+  final Function function;
+  AssignTaskToUser({
+    this.iconData,
+    this.function,
+    this.taskName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 3),
+      child: InkWell(
+        onTap: function,
+        child: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(taskName),
+              Container(
+                width: 25.w,
+                height: 35.h,
+                child: Icon(
+                  iconData,
+                  color: Colors.orange,
+                  size: 25,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Countdown extends AnimatedWidget {
+  Function function;
+  Countdown({Key key, this.animation, this.function})
+      : super(key: key, listenable: animation);
+  Animation<int> animation;
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation.value);
+
+    String timerText =
+        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    print('animation.value  ${animation.value} ');
+    print('inMinutes ${clockTimer.inMinutes.toString()}');
+    print('inSeconds ${clockTimer.inSeconds.toString()}');
+    print(
+        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+    if (clockTimer.inSeconds.remainder(60) == 0) {
+      print("finshed");
+      // function();
+    }
+    return Text(
+      "$timerText",
+      style: TextStyle(fontSize: 60, color: Colors.orange),
+    );
   }
 }

@@ -51,7 +51,7 @@ abstract class Classifier {
       _inputShape = interpreter.getInputTensor(0).shape;
       _outputShape = interpreter.getOutputTensor(0).shape;
       _outputType = interpreter.getOutputTensor(0).type;
-      print(_outputType);
+
       _outputBuffer = TensorBuffer.createFixedSize(_outputShape, _outputType);
       _probabilityProcessor =
           TensorProcessorBuilder().add(postProcessNormalizeOp).build();
@@ -95,7 +95,8 @@ abstract class Classifier {
     print('Time to load image: $pre ms');
 
     final runs = DateTime.now().millisecondsSinceEpoch;
-    print(_inputImage.dataType);
+
+
     interpreter.run(_inputImage.buffer, _outputBuffer.getBuffer());
     final run = DateTime.now().millisecondsSinceEpoch - runs;
 

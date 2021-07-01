@@ -1,35 +1,29 @@
 import 'dart:io';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:image_face/image_face.dart';
+import 'package:image/image.dart' as imglib;
+import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
-import 'package:qr_users/MLmodule/services/camera.service.dart';
 import 'package:qr_users/MLmodule/services/classifier.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
-import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
 import 'package:image/image.dart' as img;
 import 'package:qr_users/MLmodule/services/quant.dart';
-
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 import "package:qr_users/MLmodule/services/UtilsScanner.dart";
-import 'package:qr_users/widgets/roundedAlert.dart';
-// import 'package:tflite/tflite.dart';
 import 'package:qr_users/MLmodule/services/FaceDetectorPainter.dart';
+
+const shift = (0xFF << 24);
 
 class CameraPicker extends StatefulWidget {
   final CameraDescription camera;
@@ -46,8 +40,6 @@ class CameraPicker extends StatefulWidget {
 
 class TakePictureScreenState extends State<CameraPicker>
     with WidgetsBindingObserver {
-  // service injection
-
   File imagePath;
   Face faceDetected;
   Size imageSize;
@@ -55,7 +47,6 @@ class TakePictureScreenState extends State<CameraPicker>
   FaceNetService _faceNetService = FaceNetService();
   final DataBaseService _dataBaseService = DataBaseService();
   double predictedUserName = 0.0;
-
   bool cameraInitializated = false;
   bool isWorking = false;
   Size size;
@@ -63,38 +54,34 @@ class TakePictureScreenState extends State<CameraPicker>
   Color cameraColor;
   CameraController cameraController;
   FaceDetector faceDetector;
-  List _result;
   String confiedence = "";
   String name = "";
-  String numbers = "";
   CameraImage currentCameraImage;
-  bool intialize = false;
+
   int numberOfFacesDetected = -1;
-  var firstTime = false;
+
   CameraLensDirection cameraLensDirection = CameraLensDirection.front;
   initCamera() async {
     try {
       cameraController = CameraController(widget.camera, ResolutionPreset.low);
 
       faceDetector = FirebaseVision.instance.faceDetector(FaceDetectorOptions(
-          enableClassification: false,
+          enableClassification: true,
           minFaceSize: 0.1,
           enableTracking: true,
+          enableContours: true,
+          enableLandmarks: true,
           mode: FaceDetectorMode.accurate));
 
       cameraController.initialize().then((value) {
         if (!mounted) {
           return;
         }
-
         Future.delayed(Duration(milliseconds: 200));
 
         cameraController.startImageStream((imageFromStream) {
           if (!isWorking) {
             isWorking = true;
-
-            //implementar FaceDetection
-
             performDetectionOnStreamFrame(imageFromStream);
           }
         });
@@ -109,6 +96,7 @@ class TakePictureScreenState extends State<CameraPicker>
     List predictedData = _faceNetService.predictedData;
     String user = Provider.of<UserData>(context, listen: false).user.id;
     String password = "*";
+
     print(
         "Output from signup : user : $user , predictedData = ${predictedData.length}");
     // / creates a new user in the 'database'
@@ -120,6 +108,7 @@ class TakePictureScreenState extends State<CameraPicker>
     this._faceNetService.setPredictedData(null);
   }
 
+  imglib.Image finalImage;
   List<Face> scannResult = [];
   performDetectionOnStreamFrame(CameraImage imageFromStream) {
     try {
@@ -133,11 +122,6 @@ class TakePictureScreenState extends State<CameraPicker>
             scannResult = result;
           });
           currentCameraImage = imageFromStream;
-          // if (widget.fromScreen == "register") {
-          //   if (_saving) {
-
-          //   }
-          // }
         }
       }).whenComplete(() {
         isWorking = false;
@@ -150,16 +134,8 @@ class TakePictureScreenState extends State<CameraPicker>
   @override
   void initState() {
     super.initState();
-    firstTime = false;
-    intialize = false;
     _classifier = ClassifierQuant();
-    // loadModel();
-    // print(imagePath);
     initCamera();
-
-    //
-
-    // _initializeControllerFuture = _cameraService.cameraController.initialize();
   }
 
   Widget buildResult() {
@@ -180,27 +156,6 @@ class TakePictureScreenState extends State<CameraPicker>
       painter: customPainter,
     );
   }
-
-  // applyModelOnImage(File file) async {
-  //   try {
-  //     var res = await Tflite.runModelOnImage(
-  //       path: file.path,
-  //       numResults: 2,
-  //       threshold: 0.5,
-  //       imageMean: 127.5,
-  //       imageStd: 127.5,
-  //     );
-
-  //     _result = res;
-  //     String str = _result[0]["label"];
-  //     name = str.substring(2);
-  //     confiedence = _result != null
-  //         ? (_result[0]["confidence"] * 100.0).toString().substring(0, 2) + "%"
-  //         : "";
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   File image;
   Future<File> testCompressAndGetFile({File file, String targetPath}) async {
@@ -229,9 +184,62 @@ class TakePictureScreenState extends State<CameraPicker>
     // _cameraService.cameraController.dispose();
 
     cameraController?.dispose();
-    print("******11");
-
     super.dispose();
+  }
+
+  imglib.Image _convertYUV420(CameraImage image) {
+    var img = imglib.Image(image.width, image.height); // Create Image buffer
+
+    Plane plane = image.planes[0];
+    const int shift = (0xFF << 24);
+
+    // Fill image buffer with plane[0] from YUV420_888
+    for (int x = 0; x < image.width; x++) {
+      for (int planeOffset = 0;
+          planeOffset < image.height * image.width;
+          planeOffset += image.width) {
+        final pixelColor = plane.bytes[planeOffset + x];
+        // color: 0x FF  FF  FF  FF
+        //           A   B   G   R
+        // Calculate pixel color
+        var newVal =
+            shift | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
+
+        img.data[planeOffset + x] = newVal;
+      }
+    }
+
+    return img;
+  }
+
+  imglib.Image _convertBGRA8888(CameraImage image) {
+    print("kosm al ios");
+    return imglib.Image.fromBytes(
+      image.width,
+      image.height,
+      image.planes[0].bytes,
+      format: imglib.Format.bgra,
+    );
+  }
+
+  Future<imglib.Image> convertImagetoPng(CameraImage image) async {
+    try {
+      imglib.Image img;
+      if (image.format.group == ImageFormatGroup.yuv420) {
+        img = _convertYUV420(image);
+      } else if (image.format.group == ImageFormatGroup.bgra8888) {
+        img = _convertBGRA8888(image);
+      }
+
+      imglib.PngEncoder pngEncoder = new imglib.PngEncoder();
+
+      // Convert to png
+      List<int> png = pngEncoder.encodeImage(img);
+      return imglib.decodeImage(png);
+    } catch (e) {
+      print(">>>>>>>>>>>> ERROR:" + e.toString());
+    }
+    return null;
   }
 
   @override
@@ -296,21 +304,20 @@ class TakePictureScreenState extends State<CameraPicker>
                                 (await getTemporaryDirectory()).path,
                                 '${DateTime.now()}.jpg',
                               );
-                              // await _controller.takePicture(path);
-
                               try {
                                 await _faceNetService.setCurrentPrediction(
-                                    currentCameraImage, scannResult[0]);
+                                    await convertImagetoPng(currentCameraImage),
+                                    scannResult[0]);
                               } catch (e) {
                                 print(e);
                               }
-
                               await Future.delayed(Duration(milliseconds: 500));
                               await cameraController.stopImageStream();
                               await Future.delayed(Duration(milliseconds: 200));
                               await cameraController.takePicture(path);
 
                               File img = File(path);
+
                               if (widget.fromScreen == "register") {
                                 await signUp(context);
                               }
@@ -323,6 +330,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     numberOfFacesDetected = scannResult.length;
                                     imagePath = File(img.path);
                                   });
+
                                   _predict();
                                 }
                               } catch (e) {
@@ -357,28 +365,28 @@ class TakePictureScreenState extends State<CameraPicker>
                                     gravity: ToastGravity.CENTER,
                                     toastLength: Toast.LENGTH_LONG);
                                 Navigator.pop(context);
-                              }
-                              // else if (predictedUserName >= 1) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "خطا : لم يتم التعرف على الوجة ",
-                              //       backgroundColor: Colors.red,
-                              //       gravity: ToastGravity.CENTER,
-                              //       toastLength: Toast.LENGTH_LONG);
-                              //   Navigator.pop(context);
-                              // }
-                              else if (numberOfFacesDetected == 1) {
+                              } else if (predictedUserName >= 1) {
+                                Fluttertoast.showToast(
+                                    msg: "خطا : لم يتم التعرف على الوجة ",
+                                    backgroundColor: Colors.red,
+                                    gravity: ToastGravity.CENTER,
+                                    toastLength: Toast.LENGTH_LONG);
+                                Navigator.pop(context);
+                              } else if (numberOfFacesDetected == 1) {
                                 if (widget.fromScreen == "register") {
                                   Navigator.pop(context, image);
+                                } else {
+                                  Future.delayed(const Duration(seconds: 3),
+                                      () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SystemScanPage(
+                                            path: newPath,
+                                          ),
+                                        ));
+                                  });
                                 }
-                                Future.delayed(const Duration(seconds: 1), () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SystemScanPage(
-                                          path: newPath,
-                                        ),
-                                      ));
-                                });
                               } else if (numberOfFacesDetected > 1) {
                                 Fluttertoast.showToast(
                                     msg: "خطا : تم التعرف علي اكثر من وجة ",
@@ -423,13 +431,39 @@ class TakePictureScreenState extends State<CameraPicker>
                 children: stackWidgetChildren,
               )
             : Stack(children: [
-                Image(
-                  image: FileImage(imagePath),
-                  fit: BoxFit.fill,
-                  height: double.infinity,
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      HeaderBeforeLogin(),
+                      Center(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 300.w,
+                              height: 300.h,
+                              alignment: Alignment.center,
+                              child: Center(
+                                child: Lottie.asset(
+                                    "resources/PersonScanning.json"),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "... برجاء انتظار انتهاء عملية المسح ",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w700),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-
-                HeaderBeforeLogin(),
 
                 Positioned(
                   left: 4.0,

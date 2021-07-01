@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import 'package:qr_users/Screens/SplashScreen.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
-
+import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
@@ -29,6 +28,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   cameras = await availableCameras();
+
   runApp(MyApp());
 }
 
@@ -74,6 +74,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => OrderDataProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => NotificationDataService(),
+        )
       ],
       child: ScreenUtilInit(
         designSize: Size(392.72, 807.27),

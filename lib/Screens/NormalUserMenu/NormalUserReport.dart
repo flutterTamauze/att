@@ -296,70 +296,70 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                         SizedBox(
                                           height: 10.h,
                                         ),
-                                        Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    3 ||
-                                                Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    4
-                                            ? Container(
-                                                width: 330.w,
-                                                child: SiteDropdown(
-                                                  edit: true,
-                                                  list: Provider.of<SiteData>(
-                                                          context)
-                                                      .sitesList,
-                                                  colour: Colors.white,
-                                                  icon: Icons.location_on,
-                                                  borderColor: Colors.black,
-                                                  hint: "الموقع",
-                                                  hintColor: Colors.black,
-                                                  onChange: (value) {
-                                                    // print()
+                                        // Provider.of<UserData>(context,
+                                        //                     listen: false)
+                                        //                 .user
+                                        //                 .userType ==
+                                        //             3 ||
+                                        //         Provider.of<UserData>(context,
+                                        //                     listen: false)
+                                        //                 .user
+                                        //                 .userType ==
+                                        //             4
+                                        //     ? Container(
+                                        //         width: 330.w,
+                                        //         child: SiteDropdown(
+                                        //           edit: true,
+                                        //           list: Provider.of<SiteData>(
+                                        //                   context)
+                                        //               .sitesList,
+                                        //           colour: Colors.white,
+                                        //           icon: Icons.location_on,
+                                        //           borderColor: Colors.black,
+                                        //           hint: "الموقع",
+                                        //           hintColor: Colors.black,
+                                        //           onChange: (value) {
+                                        //             // print()
 
-                                                    siteIdIndex =
-                                                        getSiteId(value);
-                                                    if (siteId !=
-                                                        Provider.of<SiteData>(
-                                                                context,
-                                                                listen: false)
-                                                            .sitesList[
-                                                                siteIdIndex]
-                                                            .id) {
-                                                      _nameController.text = "";
-                                                      siteId =
-                                                          Provider.of<SiteData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .sitesList[
-                                                                  siteIdIndex]
-                                                              .id;
+                                        //             siteIdIndex =
+                                        //                 getSiteId(value);
+                                        //             if (siteId !=
+                                        //                 Provider.of<SiteData>(
+                                        //                         context,
+                                        //                         listen: false)
+                                        //                     .sitesList[
+                                        //                         siteIdIndex]
+                                        //                     .id) {
+                                        //               _nameController.text = "";
+                                        //               siteId =
+                                        //                   Provider.of<SiteData>(
+                                        //                           context,
+                                        //                           listen: false)
+                                        //                       .sitesList[
+                                        //                           siteIdIndex]
+                                        //                       .id;
 
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .getAllSiteMembers(
-                                                              siteId,
-                                                              userDataProvider
-                                                                  .user
-                                                                  .userToken,
-                                                              context);
-                                                      setState(() {});
-                                                    }
-                                                    print(value);
-                                                  },
-                                                  selectedvalue: Provider.of<
-                                                          SiteData>(context)
-                                                      .sitesList[siteIdIndex]
-                                                      .name,
-                                                  textColor: Colors.orange,
-                                                ),
-                                              )
-                                            : Container(),
+                                        //               Provider.of<MemberData>(
+                                        //                       context,
+                                        //                       listen: false)
+                                        //                   .getAllSiteMembers(
+                                        //                       siteId,
+                                        //                       userDataProvider
+                                        //                           .user
+                                        //                           .userToken,
+                                        //                       context);
+                                        //               setState(() {});
+                                        //             }
+                                        //             print(value);
+                                        //           },
+                                        //           selectedvalue: Provider.of<
+                                        //                   SiteData>(context)
+                                        //               .sitesList[siteIdIndex]
+                                        //               .name,
+                                        //           textColor: Colors.orange,
+                                        //         ),
+                                        //       )
+                                        //     : Container(),
                                         SizedBox(
                                           height: 10.h,
                                         ),

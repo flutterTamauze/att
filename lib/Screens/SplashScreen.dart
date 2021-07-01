@@ -10,11 +10,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
-import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
-
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
@@ -23,8 +21,6 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart' as p;
-import 'package:tflite_flutter/tflite_flutter.dart';
-// import 'package:tflite/tflite.dart';
 import '../Screens/intro.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   bool isLoading = false;
   DataBaseService _dataBaseService = DataBaseService();
-  // FaceNetService _faceNetService = FaceNetService();
+  FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
   Future checkSharedUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -207,7 +203,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   loadSecondModel() async {
     // start the services
-    // await _faceNetService.loadModel();
+    await _faceNetService.loadModel();
     await _dataBaseService.loadDB();
     // _mlKitService.initialize();
   }

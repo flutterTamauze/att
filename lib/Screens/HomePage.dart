@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:device_info/device_info.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 
 import 'package:qr_users/services/user_data.dart';
@@ -52,6 +53,14 @@ Future<bool> isConnectedToInternet(String url) async {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // test();
+    Provider.of<NotificationDataService>(context, listen: false)
+        .firebaseMessagingConfig(context);
+    super.initState();
+  }
+
   DateTime currentBackPressTime;
   @override
   Widget build(BuildContext context) {
@@ -62,31 +71,8 @@ class _HomePageState extends State<HomePage> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () async {
-            print(await detectJailBreak());
-            await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best)
-                .then((value) {
-              print(value.latitude);
-              print(value.longitude);
-              print(value.speed);
-              print(value.speedAccuracy);
-            });
-
-            print(await Geolocator.isLocationServiceEnabled());
-
-            // ignore: cancel_subscriptions
-            // try {
-            //   StreamSubscription<Position> positionStream =
-            //       Geolocator.getPositionStream().listen((Position position) {
-            //     print(position == null
-            //         ? 'Unknown'
-            //         : position.latitude.toString() +
-            //             ', ' +
-            //             position.longitude.toString());
-            //   });
-            // } catch (e) {
-            //   print(e);
-            // }
+            String udid = await FlutterUdid.udid;
+            print(udid);
           },
           child: Scaffold(
             backgroundColor: Colors.white,

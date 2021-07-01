@@ -558,8 +558,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   DateTime now = DateTime.now();
                                   TimeOfDay t = fromPicked;
                                   TimeOfDay tt = toPicked;
-                                  final noww = new DateTime.now();
-
                                   DateTime dateFrom = DateTime(now.year,
                                       now.month, now.day, t.hour, t.minute);
 

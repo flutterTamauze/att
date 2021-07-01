@@ -198,7 +198,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 bottom: 120.h,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    result = await Navigator.push(
+                                    File result = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => CameraPicker(
@@ -206,6 +206,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                             fromScreen: "register",
                                           ),
                                         ));
+
                                     await cameraPick(result);
                                   },
                                   child: Container(

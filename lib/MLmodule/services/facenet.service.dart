@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:camera/camera.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tflite;
 import 'package:image/image.dart' as imglib;
+import 'package:tflite_flutter/tflite_flutter.dart';
 // import 'package:tflite_flutter/tflite_flutter.dart';
 
 class FaceNetService {
@@ -30,39 +32,60 @@ class FaceNetService {
 
   Future loadModel() async {
     try {
-      final gpuDelegateV2 = tflite.GpuDelegateV2(
-          options: tflite.GpuDelegateOptionsV2(
-              false,
-              tflite.TfLiteGpuInferenceUsage.fastSingleAnswer,
-              tflite.TfLiteGpuInferencePriority.minLatency,
-              tflite.TfLiteGpuInferencePriority.auto,
-              tflite.TfLiteGpuInferencePriority.auto));
+      if (Platform.isAndroid) {
+        final gpuDelegateV2 = tflite.GpuDelegateV2(
+            options: tflite.GpuDelegateOptionsV2(
+                false,
+                tflite.TfLiteGpuInferenceUsage.fastSingleAnswer,
+                tflite.TfLiteGpuInferencePriority.minLatency,
+                tflite.TfLiteGpuInferencePriority.auto,
+                tflite.TfLiteGpuInferencePriority.auto));
 
-      var interpreterOptions = tflite.InterpreterOptions()
-        ..addDelegate(gpuDelegateV2);
-      this._interpreter = await tflite.Interpreter.fromAsset(
-          'mobilefacenet.tflite',
-          options: interpreterOptions);
-      print('model loaded successfully wlahi');
+        var interpreterOptions = tflite.InterpreterOptions()
+          ..addDelegate(gpuDelegateV2);
+        this._interpreter = await tflite.Interpreter.fromAsset(
+            'mobilefacenet.tflite',
+            options: interpreterOptions);
+        print('model loaded successfully wlahi');
+      } else if (Platform.isIOS) {
+        final gpuDelegate = GpuDelegate(
+          options: GpuDelegateOptions(true, TFLGpuDelegateWaitType.active),
+        );
+        var interpreterOptions = tflite.InterpreterOptions()
+          ..addDelegate(gpuDelegate);
+        this._interpreter = await tflite.Interpreter.fromAsset(
+                'mobilefacenet.tflite',
+                options: interpreterOptions)
+            .catchError((e) {
+          print(e);
+        });
+        print('model loaded successfully wlahi');
+      }
     } catch (e) {
       print('Failed to load model.');
       print(e);
     }
   }
 
-  setCurrentPrediction(CameraImage cameraImage, Face face) {
-    /// crops the face from the image and transforms it to an array of data
-    List input = _preProcess(cameraImage, face);
+  setCurrentPrediction(imglib.Image cameraImage, Face face) {
+    try {
+      /// crops the face from the image and transforms it to an array of data
+      List input = _preProcess(cameraImage, face);
 
-    /// then reshapes input and ouput to model format 🧑‍🔧
-    input = input.reshape([1, 112, 112, 3]);
-    List output = List.generate(1, (index) => List.filled(192, 0));
+      /// then reshapes input and ouput to model format 🧑‍🔧
+      input = input.reshape([1, 112, 112, 3]);
+      List output = List.generate(1, (index) => List.filled(192, 0));
 
-    /// runs and transforms the data 🤖
-    this._interpreter.run(input, output);
-    output = output.reshape([192]);
+      print("putput $output");
 
-    this._predictedData = List.from(output);
+      /// runs and transforms the data 🤖
+      this._interpreter.run(input, output);
+      output = output.reshape([192]);
+
+      this._predictedData = List.from(output);
+    } catch (e) {
+      print(e);
+    }
   }
 
   /// takes the predicted data previously saved and do inference
@@ -77,7 +100,7 @@ class FaceNetService {
   /// to detect and transforms it to model input.
   /// [cameraImage]: current image
   /// [face]: face detected
-  List _preProcess(CameraImage image, Face faceDetected) {
+  List _preProcess(imglib.Image image, Face faceDetected) {
     // crops the face 💇
     imglib.Image croppedImage = _cropFace(image, faceDetected);
     imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
@@ -90,8 +113,8 @@ class FaceNetService {
   /// crops the face from the image 💇
   /// [cameraImage]: current image
   /// [face]: face detected
-  _cropFace(CameraImage image, Face faceDetected) {
-    imglib.Image convertedImage = _convertCameraImage(image);
+  _cropFace(imglib.Image image, Face faceDetected) {
+    imglib.Image convertedImage = image;
     double x = faceDetected.boundingBox.left - 10.0;
     double y = faceDetected.boundingBox.top - 10.0;
     double w = faceDetected.boundingBox.width + 10.0;
@@ -177,7 +200,6 @@ class FaceNetService {
       }
     }
     print("current dist :$currDist");
-    print(predRes);
 
     return currDist;
   }
