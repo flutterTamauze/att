@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "687006599972",
+    "project_id": "fir-mlkit-5b481",
+    "storage_bucket": "fir-mlkit-5b481.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687006599972:android:3a645ba4e0602f76c541b1",
+        "android_client_info": {
+          "package_name": "com.example.qr_users"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687006599972-1695pr0ubtqj5bmusescgfdod8c4d241.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6kS5wWYsULOgk_efEpVSPxmi1bp5m3ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687006599972-1695pr0ubtqj5bmusescgfdod8c4d241.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "687006599972-olsrt4rf783igbhv6sjimea2sqhvmhqf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "TamauzeChialngo-gmail.com.qr-users"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687006599972:android:ae7c69212fc1d6bdc541b1",
+        "android_client_info": {
+          "package_name": "com.tds.chilango"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687006599972-1695pr0ubtqj5bmusescgfdod8c4d241.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6kS5wWYsULOgk_efEpVSPxmi1bp5m3ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687006599972-1695pr0ubtqj5bmusescgfdod8c4d241.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "687006599972-olsrt4rf783igbhv6sjimea2sqhvmhqf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "TamauzeChialngo-gmail.com.qr-users"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
@@ -52,10 +54,24 @@ Future<bool> isConnectedToInternet(String url) async {
   return false;
 }
 
+final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+void notificationPermessions() async {
+  NotificationSettings settings = await firebaseMessaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+}
+
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // test();
+    notificationPermessions();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     super.initState();
@@ -73,6 +89,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () async {
             String udid = await FlutterUdid.udid;
             print(udid);
+            print(await firebaseMessaging.getToken());
           },
           child: Scaffold(
             backgroundColor: Colors.white,

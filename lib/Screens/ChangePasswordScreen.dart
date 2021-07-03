@@ -14,10 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/MLmodule/db/database.dart';
-import 'package:qr_users/MLmodule/services/camera.service.dart';
-import 'package:qr_users/MLmodule/services/facenet.service.dart';
-import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
+
 import 'package:qr_users/Screens/HomePage.dart';
 
 import 'package:qr_users/Screens/intro.dart';

@@ -18,7 +18,7 @@
 
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".Application"
         android:label="Chilango v3"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"
@@ -75,6 +75,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />    
 
 
 </application>
