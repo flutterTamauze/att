@@ -1,7 +1,7 @@
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/ReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dart';
@@ -48,6 +48,8 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
   @override
   void initState() {
     current = getIndex;
+    Provider.of<NotificationDataService>(context, listen: false)
+        .firebaseMessagingConfig(context);
     super.initState();
   }
 
@@ -55,15 +57,16 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
   void dispose() {
     _controller.dispose();
 
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {var userData=Provider.of<UserData>(context);
+  Widget build(BuildContext context) {
+    var userData = Provider.of<UserData>(context);
     final userDataProvider = Provider.of<UserData>(context, listen: false);
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    return connectionStatus == ConnectivityStatus.Offline && userData.cachedUserData.isNotEmpty
+    return connectionStatus == ConnectivityStatus.Offline &&
+            userData.cachedUserData.isNotEmpty
         ? ErrorScreen2(
             child: Container(),
           )

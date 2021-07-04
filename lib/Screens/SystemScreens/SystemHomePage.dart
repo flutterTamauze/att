@@ -11,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
 import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
@@ -134,6 +135,9 @@ class _SystemHomePageState extends State<SystemHomePage> {
   }
 
   void initState() {
+    notificationPermessions();
+    Provider.of<NotificationDataService>(context, listen: false)
+        .firebaseMessagingConfig(context);
     super.initState();
     _startUp();
     firstget();

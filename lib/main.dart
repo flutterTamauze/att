@@ -18,7 +18,7 @@ import 'package:qr_users/services/connectivity_service.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'enums/connectivity_status.dart';
 import 'services/OrdersResponseData/OrdersReponse.dart';
 
@@ -36,8 +36,19 @@ void main() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("going to save this data ${message.data["category"]}");
+  final prefs = await SharedPreferences.getInstance();
+  print(prefs.getString("notifiCategory"));
+  if (prefs.getString('notifCategory') == "" ||
+      prefs.getString('notifCategory') == null) {
+    print("setting please wait ..");
+    prefs
+        .setString("notifCategory", message.data["category"])
+        .whenComplete(() => print("set successfully"));
+  }
   print("Handling a background message: ${message.notification.body}");
   print("Handling a background message: ${message.notification.title}");
+  print(message.data);
 }
 
 class MyApp extends StatelessWidget {

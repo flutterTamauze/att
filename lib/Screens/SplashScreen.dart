@@ -91,21 +91,6 @@ class _SplashScreenState extends State<SplashScreen>
     setState(() {
       animationController.reverse();
       Timer(new Duration(milliseconds: 2000), () async {
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // String comImageFilePath = await _fileFromImageUrl(
-        //     userData.cacheValCompanyIcon, "CompanyLogo");
-        // String userImage =
-        //     await _fileFromImageUrl(userData.user.userImage, "userImage");
-
-        //     List<String> userd = [
-        //         userData.user.name,
-        //         userData.user.userJob,
-        //         userImage,
-        //         c["companyData"]["nameAr"],
-        //         comImageFilePath
-        //       ];
-        //       prefs.setStringList("allUserData", userd);
-//        checkSharedUserData();
         if (userName != "") {
           if (Provider.of<UserData>(context, listen: false).changedPassword ==
               false) {
@@ -121,26 +106,6 @@ class _SplashScreenState extends State<SplashScreen>
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return NavScreenTwo(0);
-                // return ShowCaseWidget(
-                //   onStart: (index, key) {
-                //     log('onStart: $index, $key');
-                //   },
-                //   onComplete: (index, key) {
-                //     log('onComplete: $index, $key');
-                //   },
-                //   builder: Builder(builder: (context) => NavScreen(0)),
-                //   autoPlay: false,
-                //   onFinish: () {
-                //     Provider.of<PermissionHan>(context, listen: false)
-                //         .showHome = false;
-                //     Navigator.pushReplacement(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => NavScreenTwo(0)));
-                //   },
-                //   autoPlayDelay: Duration(seconds: 3),
-                //   autoPlayLockEnable: false,
-                // );
               }));
 
               getUserData();

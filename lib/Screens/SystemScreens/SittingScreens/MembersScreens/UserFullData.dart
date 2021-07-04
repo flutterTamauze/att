@@ -493,19 +493,19 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                                         context);
                                                                   }),
                                                               Spacer(),
-                                                              Countdown(
-                                                                function: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                animation:
-                                                                    StepTween(
-                                                                  begin:
-                                                                      levelClock, // THIS IS A USER ENTERED NUMBER
-                                                                  end: 0,
-                                                                ).animate(
-                                                                        _controller),
-                                                              ),
+                                                              // Countdown(
+                                                              //   function: () {
+                                                              //     Navigator.pop(
+                                                              //         context);
+                                                              //   },
+                                                              //   animation:
+                                                              //       StepTween(
+                                                              //     begin:
+                                                              //         levelClock, // THIS IS A USER ENTERED NUMBER
+                                                              //     end: 0,
+                                                              //   ).animate(
+                                                              //           _controller),
+                                                              // ),
                                                             ],
                                                           ),
                                                         ),
@@ -930,35 +930,6 @@ class AssignTaskToUser extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Countdown extends AnimatedWidget {
-  Function function;
-  Countdown({Key key, this.animation, this.function})
-      : super(key: key, listenable: animation);
-  Animation<int> animation;
-
-  @override
-  build(BuildContext context) {
-    Duration clockTimer = Duration(seconds: animation.value);
-
-    String timerText =
-        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
-
-    print('animation.value  ${animation.value} ');
-    print('inMinutes ${clockTimer.inMinutes.toString()}');
-    print('inSeconds ${clockTimer.inSeconds.toString()}');
-    print(
-        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
-    if (clockTimer.inSeconds.remainder(60) == 0) {
-      print("finshed");
-      // function();
-    }
-    return Text(
-      "$timerText",
-      style: TextStyle(fontSize: 60, color: Colors.orange),
     );
   }
 }

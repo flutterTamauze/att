@@ -13,8 +13,10 @@ class PrData {
 class PermissionHan with ChangeNotifier {
   bool showHome = true;
   bool showQr = true;
+  bool showNotification = false;
   bool showReport = true;
   bool showSettings = true;
+  bool currentDialogOnstream = true;
   List<PrData> permissionsList = [
     PrData(
         icon: Icons.location_on,
@@ -28,6 +30,14 @@ class PermissionHan with ChangeNotifier {
         interfaceName: "تصريح الكاميرا",
         permission: Permission.camera)
   ];
+  setNotificationbool(bool data) {
+    showNotification = data;
+    notifyListeners();
+  }
+
+  setDialogonStreambool(bool data) {
+    currentDialogOnstream = data;
+  }
 
   Future filterList() async {
     permissionsList.forEach((element) async {

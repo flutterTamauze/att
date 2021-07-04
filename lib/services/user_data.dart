@@ -9,6 +9,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_mac/get_mac.dart';
 import 'package:http/http.dart' as http;
@@ -283,7 +284,7 @@ class UserData with ChangeNotifier {
 
     try {
       if (Platform.isAndroid) {
-        identifier = await GetMac.macAddress; //UUID for Android
+        identifier = await FlutterUdid.udid; //UUID for Android
       } else if (Platform.isIOS) {
         final storage = new FlutterSecureStorage();
         identifier = await storage.read(key: "deviceMac"); //UUID for iOS
@@ -301,7 +302,7 @@ class UserData with ChangeNotifier {
     if (await isConnectedToInternet("www.google.com")) {
       int locationService = await getCurrentLocation();
       if (locationService == 0) {
-        String imei = await getDeviceUUID();
+        String imei = await FlutterUdid.udid;
         print("imei is : $imei");
         final uri = '$baseURL/api/AttendLogin';
         print(
