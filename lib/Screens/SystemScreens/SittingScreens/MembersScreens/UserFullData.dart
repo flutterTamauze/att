@@ -12,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/MainCompanySettings.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/ReallocateUsers.dart';
@@ -81,6 +82,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
       instance.stop();
     }
     levelClock = 300;
+
     timeOutController.text = "12:00AM";
     date = apiFormatter.format(DateTime.now());
     isSAved = false;
@@ -420,119 +422,17 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     taskName: " إرسال اثبات حضور",
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () {
-                                      return showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (context) {
-                                          _controller = AnimationController(
-                                              vsync: this,
-                                              duration: Duration(
-                                                  seconds:
-                                                      300) // gameData.levelClock is a user entered number elsewhere in the applciation
-                                              );
-
-                                          _controller.forward();
-
-                                          return Stack(
-                                            children: [
-                                              Dialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0)), //this right here
-                                                  child: Directionality(
-                                                      textDirection:
-                                                          ui.TextDirection.rtl,
-                                                      child: Container(
-                                                        height: 250,
-                                                        width: double.infinity,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                height: 50.h,
-                                                              ),
-                                                              InkWell(
-                                                                onTap: () {},
-                                                                child: Text(
-                                                                  "اثبات حضور",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                      fontSize:
-                                                                          17,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                              ),
-                                                              Divider(),
-                                                              Text(
-                                                                  "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
-                                                              SizedBox(
-                                                                height: 20.h,
-                                                              ),
-                                                              RoundedButton(
-                                                                  title:
-                                                                      "اثبات",
-                                                                  onPressed:
-                                                                      () {
-                                                                    Fluttertoast.showToast(
-                                                                        msg:
-                                                                            "تم اثبات الحضور بنجاح",
-                                                                        backgroundColor:
-                                                                            Colors
-                                                                                .green,
-                                                                        gravity:
-                                                                            ToastGravity.CENTER);
-
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }),
-                                                              Spacer(),
-                                                              // Countdown(
-                                                              //   function: () {
-                                                              //     Navigator.pop(
-                                                              //         context);
-                                                              //   },
-                                                              //   animation:
-                                                              //       StepTween(
-                                                              //     begin:
-                                                              //         levelClock, // THIS IS A USER ENTERED NUMBER
-                                                              //     end: 0,
-                                                              //   ).animate(
-                                                              //           _controller),
-                                                              // ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ))),
-                                              Positioned(
-                                                  right: 125.w,
-                                                  top: 180.h,
-                                                  child: Container(
-                                                    width: 150.w,
-                                                    height: 150.h,
-                                                    padding: EdgeInsets.all(20),
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              60),
-                                                      child: Lottie.network(
-                                                          "https://assets5.lottiefiles.com/packages/lf20_ktrj1k3o.json",
-                                                          fit: BoxFit.fill),
-                                                    ),
-                                                  ))
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }),
+                                      sendFcmMessage(
+                                              title: "اثبات حضور",
+                                              category: "attend",
+                                              message: "برجاء اثبات حضورك الأن")
+                                          .whenComplete(() =>
+                                              Fluttertoast.showToast(
+                                                  msg: "تم الإرسال بنجاح",
+                                                  backgroundColor: Colors.green,
+                                                  gravity:
+                                                      ToastGravity.CENTER));
+                                    })
                               ],
                             ),
                           ),

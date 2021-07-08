@@ -37,6 +37,7 @@ class UserVacationRequest extends StatefulWidget {
 TextEditingController titileController = TextEditingController();
 String selectedAction = "عارضة";
 String selectedPermession = "تأخير عن الحضور";
+TextEditingController timeOutController = TextEditingController();
 var sleectedMember;
 var toDate;
 var fromDate;
@@ -56,6 +57,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
     picked = null;
+    timeOutController.text = "";
+    toPicked = (intToTimeOfDay(0));
+    selectedDateString = null;
     dateDifference = null;
     _dateController.text = "";
     var now = DateTime.now();
@@ -64,7 +68,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     toDate = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
     yesterday = DateTime(now.year, DateTime.december, 30);
-    toPicked = (intToTimeOfDay(0));
+
     super.initState();
   }
 
@@ -644,6 +648,20 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         gravity: ToastGravity.CENTER,
                                         backgroundColor: Colors.red,
                                         msg: "قم بأدخال مدة الأجازة");
+                                  }
+                                } else {
+                                  if (selectedDateString != null &&
+                                      timeOutController.text != "") {
+                                    Fluttertoast.showToast(
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.green,
+                                        msg: "تم حفظ الطلب بنجاح");
+                                    Navigator.pop(context);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        msg: "قم بأدخال البيانات المطلوبة");
                                   }
                                 }
                               })

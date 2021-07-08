@@ -354,8 +354,8 @@ class TakePictureScreenState extends State<CameraPicker>
                               // _cameraService.cameraController.dispose();
                               print("=====Compressed==========");
                               if (widget.fromScreen != "register") {
-                                predictedUserName = _faceNetService.predict();
-                                print(predictedUserName);
+                                // predictedUserName = _faceNetService.predict();
+                                // print(predictedUserName);
                               }
 
                               if (category.label.substring(2) == "mobiles") {
@@ -365,14 +365,16 @@ class TakePictureScreenState extends State<CameraPicker>
                                     gravity: ToastGravity.CENTER,
                                     toastLength: Toast.LENGTH_LONG);
                                 Navigator.pop(context);
-                              } else if (predictedUserName >= 1) {
-                                Fluttertoast.showToast(
-                                    msg: "خطا : لم يتم التعرف على الوجة ",
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_LONG);
-                                Navigator.pop(context);
-                              } else if (numberOfFacesDetected == 1) {
+                              }
+                              // else if (predictedUserName >= 1) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "خطا : لم يتم التعرف على الوجة ",
+                              //       backgroundColor: Colors.red,
+                              //       gravity: ToastGravity.CENTER,
+                              //       toastLength: Toast.LENGTH_LONG);
+                              //   Navigator.pop(context);
+                              // }
+                              else if (numberOfFacesDetected == 1) {
                                 if (widget.fromScreen == "register") {
                                   Navigator.pop(context, image);
                                 } else {

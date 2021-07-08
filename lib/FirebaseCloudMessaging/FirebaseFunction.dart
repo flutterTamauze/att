@@ -5,17 +5,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 final String serverToken =
-    'AAAAqlkCp6U:APA91bFsNmqiPSq_iLMFw0IvtFWR0oRE0NSjyH5sIVFKU9Ev_o9gBpbg4rMREfRBLMH1nbL5TidqVucBbgrHu8qheRu2TvSBFRPNaNb-lwKKLGRU1vTW_p4VQqoE5IPNRgUakYIfHMwC';
+    'AAAAn_TIyyQ:APA91bFfj4S4VEA7ZU3zegTqeNwEODrGePKF7Wh-OsOeJCSb326VxWZ0OER7gV3irug0BJB4IXr_MNgkNtwpjeU58vVmQNByntX_hQDxD8bzFDC94txSITHBzXt22cTkRaq5B4VsrRmX';
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 Future<bool> sendFcmMessage(
     {String title, String message, String category}) async {
   try {
-    String toParams = "/topics/" + 'nekaba';
-    // await firebaseMessaging.subscribeToTopic("nekaba");
+    String toParams = "/topics/" + 'attendChilango';
+
     // print(await firebaseMessaging.getToken());
     // firebaseMessaging.unsubscribeFromTopic("nekaba");
-    print(toParams);
+    // print(toParams);
     var url = 'https://fcm.googleapis.com/fcm/send';
     var header = {
       "Content-Type": "application/json",
@@ -24,20 +24,21 @@ Future<bool> sendFcmMessage(
     var request = {
       "notification": {
         "title": title,
+        "body": message,
         "text": message,
-        "image": "https://cdn.countryflags.com/thumbs/egypt/flag-400.png",
-        "sound": "default",
-        "color": "#000000",
+        // "image": "default",
+        "android_channel_id": "ChilangoNotifications",
+        "sound": "your_sweet_sound.wav",
+        "color": "#f4a802",
       },
       "data": {
         'click_action': 'FLUTTER_NOTIFICATION_CLICK',
         "title": "$title",
         "body": "$message",
         "category": "$category",
-        "status": "done",
       },
       "priority": "high",
-      "to": await firebaseMessaging.getToken(),
+      "to": toParams
     };
 //    "to": "$toParams",
     var client = new http.Client();

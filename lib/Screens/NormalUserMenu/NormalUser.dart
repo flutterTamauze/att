@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserNotifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
@@ -61,6 +62,17 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 builder: (context) => UserOrdersView(),
               ),
             );
+          }),
+      ReportTile(
+          title: "الأشعارات",
+          subTitle: "تغير نغمة الأشعارات",
+          icon: FontAwesomeIcons.bell,
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserNotifications(),
+                ));
           }),
     ];
     SystemChrome.setEnabledSystemUIOverlays([]);

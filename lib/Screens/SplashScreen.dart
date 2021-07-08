@@ -170,6 +170,7 @@ class _SplashScreenState extends State<SplashScreen>
     // start the services
     await _faceNetService.loadModel();
     await _dataBaseService.loadDB();
+    await firebaseMessaging.subscribeToTopic("attendChilango");
     // _mlKitService.initialize();
   }
 
@@ -178,6 +179,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     // filterList();
     // loadModel();
+
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,

@@ -23,6 +23,12 @@ import 'enums/connectivity_status.dart';
 import 'services/OrdersResponseData/OrdersReponse.dart';
 
 List<CameraDescription> cameras;
+const MethodChannel _channel = MethodChannel('tdsChilango.com/channel_test');
+Map<String, String> channelMap = {
+  "id": "ChilangoNotifications",
+  "name": "tdsChilango.com/channel_test",
+  "description": "notifications",
+};
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -31,7 +37,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   cameras = await availableCameras();
-
+  await _channel.invokeMethod('createNotificationChannel', channelMap);
   runApp(MyApp());
 }
 
