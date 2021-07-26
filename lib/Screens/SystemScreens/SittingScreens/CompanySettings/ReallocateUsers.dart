@@ -86,6 +86,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                 children: [
                   Header(
                     nav: false,
+                    goHome: false,
                   ),
                   Expanded(
                     child: FutureBuilder(

@@ -119,7 +119,10 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
       endDrawer: NotificationItem(),
       body: Column(
         children: [
-          Header(nav: false),
+          Header(
+            nav: false,
+            goHome: false,
+          ),
           Expanded(
             child: Directionality(
               textDirection: ui.TextDirection.rtl,
@@ -425,6 +428,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () {
                                       sendFcmMessage(
+                                              topicName: "attendChilango",
                                               title: "اثبات حضور",
                                               category: "attend",
                                               message: "برجاء اثبات حضورك الأن")

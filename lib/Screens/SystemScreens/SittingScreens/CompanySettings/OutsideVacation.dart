@@ -87,6 +87,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                 children: [
                   Header(
                     nav: false,
+                    goHome: false,
                   ),
                   Expanded(
                     child: Container(

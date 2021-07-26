@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserNotifications.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
@@ -80,6 +81,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
+          endDrawer: NotificationItem(),
           body: Stack(
             children: [
               Padding(
@@ -90,6 +92,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                     ///Title
                     Header(
                       nav: false,
+                      goHome: false,
                     ),
                     DirectoriesHeader(
                         Padding(

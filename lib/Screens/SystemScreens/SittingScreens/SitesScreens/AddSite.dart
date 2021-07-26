@@ -74,6 +74,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                   children: [
                     Header(
                       nav: false,
+                      goHome: false,
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -216,7 +217,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                   long: widget.site.long,
                                                   lat: widget.site.lat),
                                               com.id,
-                                              userToken,context);
+                                              userToken,
+                                              context);
                                       Navigator.pop(context);
                                       if (msg == "Success") {
                                         Fluttertoast.showToast(
@@ -355,7 +357,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                                         .lat),
                                                                 com.id,
                                                                 userToken,
-                                                                widget.id,context);
+                                                                widget.id,
+                                                                context);
 
                                                         if (msg == "Success") {
                                                           Fluttertoast.showToast(

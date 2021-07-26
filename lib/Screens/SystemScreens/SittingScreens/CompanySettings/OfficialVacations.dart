@@ -83,6 +83,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
           child: Column(children: [
             Header(
               nav: false,
+              goHome: false,
             ),
             Directionality(
               textDirection: ui.TextDirection.rtl,

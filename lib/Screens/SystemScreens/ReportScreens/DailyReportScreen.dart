@@ -127,6 +127,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                     children: [
                       Header(
                         nav: false,
+                        goHome: false,
                       ),
                       Directionality(
                         textDirection: ui.TextDirection.rtl,

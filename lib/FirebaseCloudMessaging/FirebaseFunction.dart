@@ -10,9 +10,9 @@ final String serverToken =
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 Future<bool> sendFcmMessage(
-    {String title, String message, String category}) async {
+    {String title, String message, String category, String topicName}) async {
   try {
-    String toParams = "/topics/" + 'attendChilango';
+    String toParams = "/topics/" + topicName;
 
     // print(await firebaseMessaging.getToken());
     // firebaseMessaging.unsubscribeFromTopic("nekaba");
@@ -42,7 +42,7 @@ Future<bool> sendFcmMessage(
           "category": "$category",
         },
         "priority": "high",
-        "to": toParams
+        "to": topicName == "" ? await firebaseMessaging.getToken() : toParams
       };
     } else {
       request = {
@@ -62,7 +62,7 @@ Future<bool> sendFcmMessage(
           "category": "$category",
         },
         "priority": "high",
-        "to": toParams
+        "to": topicName == "" ? await firebaseMessaging.getToken() : toParams
       };
     }
 

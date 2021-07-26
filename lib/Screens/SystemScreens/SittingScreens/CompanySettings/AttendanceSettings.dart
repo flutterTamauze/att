@@ -10,6 +10,7 @@ class AttendanceSettings extends StatelessWidget {
           children: [
             Header(
               nav: false,
+              goHome: false,
             ),
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/ProfileScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -30,11 +31,13 @@ class MyClipper extends CustomClipper<Path> {
   }
 }
 
+// ignore: must_be_immutable
 class Header extends StatelessWidget {
   final String text;
   final onTab;
+  bool goHome = false;
   final bool nav;
-  Header({this.onTab, this.text, this.nav});
+  Header({this.onTab, this.text, this.nav, this.goHome});
   @override
   Widget build(BuildContext context) {
     User _userData = Provider.of<UserData>(context, listen: true).user;
@@ -120,7 +123,6 @@ class Header extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("open");
                           Scaffold.of(context).openEndDrawer();
                         },
                         child: CircleAvatar(
@@ -276,7 +278,13 @@ class Header extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 nav == false
-                    ? Navigator.pop(context)
+                    ? goHome == false
+                        ? Navigator.pop(context)
+                        : Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => NavScreenTwo(0),
+                            ),
+                            (Route<dynamic> route) => false)
                     : Scaffold.of(context).openDrawer();
               },
               child: Padding(

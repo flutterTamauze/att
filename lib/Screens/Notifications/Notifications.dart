@@ -17,6 +17,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'dart:ui' as ui;
 
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/widgets/UserProfileImageWidget.dart';
 //  enum CategoriesNavigation {
 //   HealthCare,
@@ -28,6 +29,7 @@ DatabaseHelper db = new DatabaseHelper();
 class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var pagenum = 0;
     return GestureDetector(
       onTap: () async {
         FocusScope.of(context).unfocus();
@@ -83,25 +85,18 @@ class NotificationItem extends StatelessWidget {
                           onTap: () async {
                             await db.readMessage(1, notifiyProv.id);
                             value.readMessage(index);
-                            //   switch (notifiyProv.category) {
-                            //     case "المستشفيات":
-                            //       {
-                            //     //     BlocProvider.of<NavigationBloc>(context).add(
-                            //     //         NavigationEvents.HealthCareClickedEvent);
+                            switch (notifiyProv.category) {
+                              case "vacation":
+                                {
+                                  Navigator.pop(context);
 
-                            //     //     break;
-                            //     //   }
-                            //     // case "الحج و العمرة":
-                            //     //   {
-                            //     //     BlocProvider.of<NavigationBloc>(context).add(
-                            //     //         NavigationEvents.HegAndOmraClickedEvent);
-                            //     //     break;
-                            //     //   }
-                            //     // default:
-                            //     //   BlocProvider.of<NavigationBloc>(context)
-                            //     //       .add(NavigationEvents.HomePageClickedEvent);
-                            //   }
-                            // },
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserOrdersView(),
+                                      ));
+                                }
+                            }
                           },
                           child: NotificationsData(
                             notificationTitle: notifiyProv.title,

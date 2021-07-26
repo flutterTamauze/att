@@ -17,6 +17,8 @@ import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Notifications/Notifications.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -38,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return Scaffold(
+      endDrawer: NotificationItem(),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Stack(

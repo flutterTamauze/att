@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
@@ -132,6 +133,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
             },
             child: Scaffold(
+              endDrawer: NotificationItem(),
               backgroundColor: Colors.white,
               body: Container(
                 child: Stack(
@@ -141,6 +143,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
                       children: [
                         Header(
                           nav: false,
+                          goHome: false,
                         ),
                         Directionality(
                           textDirection: ui.TextDirection.rtl,

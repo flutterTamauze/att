@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -7,17 +9,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
+
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
-import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
-import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/VacationData.dart';
-import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/services/OrdersResponseData/OrdersReponse.dart';
+
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
@@ -34,8 +34,8 @@ class UserVacationRequest extends StatefulWidget {
   _UserVacationRequestState createState() => _UserVacationRequestState();
 }
 
-TextEditingController titileController = TextEditingController();
-String selectedAction = "عارضة";
+TextEditingController commentController = TextEditingController();
+String selectedReason = "عارضة";
 String selectedPermession = "تأخير عن الحضور";
 TextEditingController timeOutController = TextEditingController();
 var sleectedMember;
@@ -47,7 +47,7 @@ DateTime yesterday;
 TextEditingController _dateController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
-List<String> actions = ["مرضى", "عارضة", "رصيد الاجازات", "حالة وفاة"];
+List<String> actions = ["اعتيادى", "عارضة", "ثاناوية"];
 List<String> permessionTitles = ["تأخير عن الحضور", "انصراف مبكر"];
 TimeOfDay toPicked;
 String dateDifference;
@@ -63,7 +63,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     dateDifference = null;
     _dateController.text = "";
     var now = DateTime.now();
-    titileController.text = "";
+    commentController.text = "";
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
@@ -87,6 +87,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
           print(radioVal2);
         },
         child: Scaffold(
+          endDrawer: NotificationItem(),
           body: SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -95,6 +96,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                 children: [
                   Header(
                     nav: false,
+                    goHome: false,
                   ),
                   Expanded(
                     child: Container(
@@ -307,10 +309,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 }).toList(),
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    selectedAction = value;
+                                                    selectedReason = value;
                                                   });
                                                 },
-                                                value: selectedAction,
+                                                value: selectedReason,
                                               )),
                                             ),
                                           ),
@@ -638,18 +640,70 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                 if (radioVal2 == 1) //اجازة
                                 {
                                   if (picked != null) {
-                                    Fluttertoast.showToast(
-                                        gravity: ToastGravity.CENTER,
-                                        backgroundColor: Colors.green,
-                                        msg: "تم حفظ الطلب بنجاح");
-                                    Navigator.pop(context);
+                                    Random random = new Random();
+                                    int randomNum = random.nextInt(1000);
+                                    final DateTime now = DateTime.now();
+                                    final DateFormat format =
+                                        DateFormat('dd-M-yyyy'); //4-2-2021
+                                    final String formatted = format.format(now);
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        print(formatted
+                                            .toString()
+                                            .replaceAll("-", "/"));
+
+                                        Provider.of<OrderDataProvider>(context,
+                                                listen: false)
+                                            .ordersList
+                                            .add(OrderData(
+                                                comments:
+                                                    commentController.text,
+                                                vacationDaysCount:
+                                                    picked.length == 1
+                                                        ? [picked[0]]
+                                                        : [
+                                                            picked[0],
+                                                            picked[1]
+                                                          ],
+                                                vacationReason: selectedReason,
+                                                orderNumber:
+                                                    randomNum.toString(),
+                                                date:
+                                                    "${formatted.toString().replaceAll("-", "/")}",
+                                                status: 0));
+                                        sendFcmMessage(
+                                          topicName: "",
+                                          title: "تم طلب الأجازة بنجاح",
+                                          category: "vacation",
+                                          message:
+                                              "برجاء المتابعة , رقم الطلب : $randomNum",
+                                        );
+                                        return StackedNotificaitonAlert(
+                                          repeatAnimation: false,
+                                          notificationTitle:
+                                              "تم تقديم طلب الأجازة بنجاح ",
+                                          notificationContent:
+                                              "برجاء المتابعة , رقم الطلب : $randomNum",
+                                          roundedButtonTitle: "متابعة",
+                                          lottieAsset: "resources/success.json",
+                                          showToast: false,
+                                        );
+                                      },
+                                    );
+                                    // Fluttertoast.showToast(
+                                    //     gravity: ToastGravity.CENTER,
+                                    //     backgroundColor: Colors.green,
+                                    //     msg: "تم حفظ الطلب بنجاح");
+                                    // Navigator.pop(context);
                                   } else {
                                     Fluttertoast.showToast(
                                         gravity: ToastGravity.CENTER,
                                         backgroundColor: Colors.red,
                                         msg: "قم بأدخال مدة الأجازة");
                                   }
-                                } else {
+                                } else //اذن
+                                {
                                   if (selectedDateString != null &&
                                       timeOutController.text != "") {
                                     Fluttertoast.showToast(
@@ -689,7 +743,7 @@ class DetialsTextField extends StatelessWidget {
       child: Directionality(
         textDirection: ui.TextDirection.rtl,
         child: TextField(
-          controller: titileController,
+          controller: commentController,
           cursorColor: Colors.orange,
           maxLines: null,
           decoration: InputDecoration(

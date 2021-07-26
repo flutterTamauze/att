@@ -40,6 +40,7 @@ class _ScanPageState extends State<ScanPage> {
           Positioned(
               child: Header(
             nav: false,
+            goHome: false,
           ))
         ],
       ),
