@@ -121,7 +121,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
         children: [
           Header(
             nav: false,
-            goHome: false,
+            goUserMenu: false,
+            goUserHomeFromMenu: false,
           ),
           Expanded(
             child: Directionality(

@@ -1,18 +1,16 @@
-import 'package:animate_do/animate_do.dart';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/OrdersResponseData/OrdersReponse.dart';
-
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/MyOrdersWidget.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'NormalUser.dart';
 
 class UserOrdersView extends StatefulWidget {
   final String orderNumber;
@@ -38,7 +36,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
       onWillPop: () {
         return Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => NavScreenTwo(0),
+              builder: (context) => NormalUserMenu(),
             ),
             (Route<dynamic> route) => false);
       },
@@ -50,7 +48,8 @@ class _UserOrdersViewState extends State<UserOrdersView> {
             children: [
               Header(
                 nav: false,
-                goHome: true,
+                goUserMenu: true,
+                goUserHomeFromMenu: false,
               ),
               Directionality(
                 textDirection: TextDirection.rtl,

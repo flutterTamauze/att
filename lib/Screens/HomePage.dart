@@ -6,11 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:device_info/device_info.dart';
+
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:flutter_udid/flutter_udid.dart';
+
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
@@ -18,8 +17,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/MainCompanySettings.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+
 import 'package:qr_users/services/permissions_data.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/services/user_data.dart';
@@ -339,7 +337,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: GestureDetector(
           onTap: () async {
             // await createNewChannel();
-
+            print(Provider.of<UserData>(context, listen: false).user.userToken);
             print(await firebaseMessaging.getToken());
           },
           child: Scaffold(

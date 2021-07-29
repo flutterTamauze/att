@@ -155,7 +155,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Header(nav: false),
+                    Header(
+                      nav: false,
+                      goUserHomeFromMenu: false,
+                      goUserMenu: false,
+                    ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(

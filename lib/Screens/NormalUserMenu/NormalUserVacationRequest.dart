@@ -47,7 +47,7 @@ DateTime yesterday;
 TextEditingController _dateController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
-List<String> actions = ["اعتيادى", "عارضة", "ثاناوية"];
+List<String> actions = ["اعتيادى", "عارضة", "سنوية"];
 List<String> permessionTitles = ["تأخير عن الحضور", "انصراف مبكر"];
 TimeOfDay toPicked;
 String dateDifference;
@@ -95,8 +95,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
               child: Column(
                 children: [
                   Header(
+                    goUserHomeFromMenu: false,
                     nav: false,
-                    goHome: false,
+                    goUserMenu: false,
                   ),
                   Expanded(
                     child: Container(

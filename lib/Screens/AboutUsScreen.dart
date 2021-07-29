@@ -10,6 +10,7 @@ import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Notifications/Notifications.dart';
 
 class AboutUsScreen extends StatelessWidget {
   @override
@@ -17,216 +18,221 @@ class AboutUsScreen extends StatelessWidget {
     return Consumer<UserData>(builder: (context, userData, child) {
       return SafeArea(
         child: Scaffold(
+            endDrawer: NotificationItem(),
             body: Stack(
-          children: [
-            Column(
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Stack(
+                Column(
+                  children: [
+                    Expanded(
+                      child: Column(
                         children: [
-                          ClipPath(
-                            clipper: MyClipper(),
-                            child: Container(
-                              height:
-                                  (MediaQuery.of(context).size.height) / 2.75,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
+                          Stack(
+                            children: [
+                              ClipPath(
+                                clipper: MyClipper(),
+                                child: Container(
+                                  height: (MediaQuery.of(context).size.height) /
+                                      2.75,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          ClipPath(
-                            clipper: MyClipper(),
-                            child: Container(
-                              height:
-                                  (MediaQuery.of(context).size.height) / 2.8,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                              ),
-                              child: Center(
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                              ClipPath(
+                                clipper: MyClipper(),
+                                child: Container(
+                                  height: (MediaQuery.of(context).size.height) /
+                                      2.8,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                  ),
+                                  child: Center(
+                                    child: Stack(
                                       children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              width: 2.w,
-                                              color: Color(0xffFF7E00),
-                                            ),
-                                          ),
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.black,
-                                            radius: 60,
-                                            child: Container(
-                                              width: 200.w,
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
                                               decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                // image: DecorationImage(
-                                                //   image: headerImage,
-                                                //   fit: BoxFit.fill,
-                                                // ),
                                                 shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  width: 2.w,
+                                                  color: Color(0xffFF7E00),
+                                                ),
                                               ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(75.0),
-                                                child: Image.asset(
-                                                    "resources/TDSlogo.png"),
+                                              child: CircleAvatar(
+                                                backgroundColor: Colors.black,
+                                                radius: 60,
+                                                child: Container(
+                                                  width: 200.w,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    // image: DecorationImage(
+                                                    //   image: headerImage,
+                                                    //   fit: BoxFit.fill,
+                                                    // ),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            75.0),
+                                                    child: Image.asset(
+                                                        "resources/TDSlogo.png"),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15.h,
-                                        ),
-                                        Container(
-                                          height: 20,
-                                          child: AutoSizeText(
-                                            "TDS",
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                letterSpacing: 2,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: ScreenUtil().setSp(17,
-                                                    allowFontScalingSelf: true),
-                                                color: Colors.orange),
-                                          ),
+                                            SizedBox(
+                                              height: 15.h,
+                                            ),
+                                            Container(
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                "TDS",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    letterSpacing: 2,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: ScreenUtil().setSp(
+                                                        17,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.orange),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            // AutoSizeText('AMH Technology',
+                                            //     textAlign: TextAlign.center,
+                                            //     style: TextStyle(
+                                            //       fontWeight: FontWeight.bold,
+                                            //       color: Colors.orange,
+                                            //       fontSize: 18,
+                                            //     )),
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            MyListTile(
+                                              title: 'المقر الرئيسى',
+                                              icon: Icons.location_on,
+                                              link:
+                                                  'https://www.google.com/maps/place/Raven+%D8%B3%D9%8A%D8%AA%D9%8A+%D8%B3%D9%86%D8%AA%D8%B1+%D9%85%D9%83%D8%B1%D9%85+%D8%B9%D8%A8%D9%8A%D8%AF%E2%80%AD/@30.0683442,31.3425179,17z/data=!3m1!4b1!4m5!3m4!1s0x14583f50339ed26f:0x62296d6fcc1dc44!8m2!3d30.0683286!4d31.3445994',
+                                            ),
+                                            SizedBox(
+                                              height: 10.0.h,
+                                            ),
+                                            InkWell(
+                                              onTap: () {},
+                                              child: MyListTile(
+                                                title: 'رقم التليفون',
+                                                icon: Icons.phone,
+
+                                                // link: 'tel:+0223521011',
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10.0.h,
+                                            ),
+                                            MyListTile(
+                                              title: 'البريد الإلكترونى',
+                                              icon: Icons.email,
+                                              link: 'mailto:info@tamauzeds.com',
+                                            ),
+                                            SizedBox(
+                                              height: 10.0.h,
+                                            ),
+                                            MyListTile(
+                                              title: "الموقع الإلكترونى",
+                                              icon: FontAwesomeIcons.globe,
+                                              link: 'https://tamauzeds.com/',
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20.h,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              CircletTile(
+                                                link:
+                                                    'https://www.facebook.com/TDS-103104271938358',
+                                                icon: Typicons.social_facebook,
+                                              ),
+                                              CircletTile(
+                                                link:
+                                                    'https://twitter.com/TDS39064875',
+                                                icon: Typicons.social_twitter,
+                                              ),
+                                              CircletTile(
+                                                link:
+                                                    'https://www.instagram.com/socialtds24/',
+                                                icon: Typicons.social_instagram,
+                                              ),
+                                              CircletTile(
+                                                link:
+                                                    'https://www.youtube.com/channel/UCjcZRlnLQxzMw9iCAyVIQRA',
+                                                icon: Typicons.social_youtube,
+                                              ),
+                                            ]),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        // AutoSizeText('AMH Technology',
-                                        //     textAlign: TextAlign.center,
-                                        //     style: TextStyle(
-                                        //       fontWeight: FontWeight.bold,
-                                        //       color: Colors.orange,
-                                        //       fontSize: 18,
-                                        //     )),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        MyListTile(
-                                          title: 'المقر الرئيسى',
-                                          icon: Icons.location_on,
-                                          link:
-                                              'https://www.google.com/maps/place/Raven+%D8%B3%D9%8A%D8%AA%D9%8A+%D8%B3%D9%86%D8%AA%D8%B1+%D9%85%D9%83%D8%B1%D9%85+%D8%B9%D8%A8%D9%8A%D8%AF%E2%80%AD/@30.0683442,31.3425179,17z/data=!3m1!4b1!4m5!3m4!1s0x14583f50339ed26f:0x62296d6fcc1dc44!8m2!3d30.0683286!4d31.3445994',
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        InkWell(
-                                          onTap: () {},
-                                          child: MyListTile(
-                                            title: 'رقم التليفون',
-                                            icon: Icons.phone,
-
-                                            // link: 'tel:+0223521011',
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        MyListTile(
-                                          title: 'البريد الإلكترونى',
-                                          icon: Icons.email,
-                                          link: 'mailto:info@tamauzeds.com',
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        MyListTile(
-                                          title: "الموقع الإلكترونى",
-                                          icon: FontAwesomeIcons.globe,
-                                          link: 'https://tamauzeds.com/',
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          CircletTile(
-                                            link:
-                                                'https://www.facebook.com/TDS-103104271938358',
-                                            icon: Typicons.social_facebook,
-                                          ),
-                                          CircletTile(
-                                            link:
-                                                'https://twitter.com/TDS39064875',
-                                            icon: Typicons.social_twitter,
-                                          ),
-                                          CircletTile(
-                                            link:
-                                                'https://www.instagram.com/socialtds24/',
-                                            icon: Typicons.social_instagram,
-                                          ),
-                                          CircletTile(
-                                            link:
-                                                'https://www.youtube.com/channel/UCjcZRlnLQxzMw9iCAyVIQRA',
-                                            icon: Typicons.social_youtube,
-                                          ),
-                                        ]),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  left: 5.0.w,
+                  top: 5.0.h,
+                  child: Container(
+                    width: 50.w,
+                    height: 50.h,
+                    color: Colors.black,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: Color(0xffF89A41),
+                          size: ScreenUtil()
+                              .setSp(40, allowFontScalingSelf: true),
                         ),
-                      ),
-                    ],
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
                   ),
                 ),
               ],
-            ),
-            Positioned(
-              left: 5.0.w,
-              top: 5.0.h,
-              child: Container(
-                width: 50.w,
-                height: 50.h,
-                color: Colors.black,
-                child: IconButton(
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: Color(0xffF89A41),
-                      size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-              ),
-            ),
-          ],
-        )),
+            )),
       );
     });
   }

@@ -16,6 +16,7 @@ import 'package:qr_users/MLmodule/services/classifier.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
 import 'package:image/image.dart' as img;
 import 'package:qr_users/MLmodule/services/quant.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
@@ -42,21 +43,18 @@ class CameraPicker extends StatefulWidget {
 class TakePictureScreenState extends State<CameraPicker>
     with WidgetsBindingObserver {
   File imagePath;
-  Face faceDetected;
   Size imageSize;
   Classifier _classifier;
   FaceNetService _faceNetService = FaceNetService();
   final DataBaseService _dataBaseService = DataBaseService();
   double predictedUserName = 0.0;
-  bool cameraInitializated = false;
+
   bool isWorking = false;
   Size size;
   Category category;
-  Color cameraColor;
   CameraController cameraController;
   FaceDetector faceDetector;
-  String confiedence = "";
-  String name = "";
+
   CameraImage currentCameraImage;
   bool _isDetecting = false;
   int numberOfFacesDetected = -1;
@@ -187,61 +185,6 @@ class TakePictureScreenState extends State<CameraPicker>
     cameraController.dispose().then((value) => faceDetector.close());
 
     super.dispose();
-  }
-
-  imglib.Image _convertYUV420(CameraImage image) {
-    var img = imglib.Image(image.width, image.height); // Create Image buffer
-
-    Plane plane = image.planes[0];
-    const int shift = (0xFF << 24);
-
-    // Fill image buffer with plane[0] from YUV420_888
-    for (int x = 0; x < image.width; x++) {
-      for (int planeOffset = 0;
-          planeOffset < image.height * image.width;
-          planeOffset += image.width) {
-        final pixelColor = plane.bytes[planeOffset + x];
-        // color: 0x FF  FF  FF  FF
-        //           A   B   G   R
-        // Calculate pixel color
-        var newVal =
-            shift | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
-
-        img.data[planeOffset + x] = newVal;
-      }
-    }
-
-    return img;
-  }
-
-  imglib.Image _convertBGRA8888(CameraImage image) {
-    print("kosm al ios");
-    return imglib.Image.fromBytes(
-      image.width,
-      image.height,
-      image.planes[0].bytes,
-      format: imglib.Format.bgra,
-    );
-  }
-
-  Future<imglib.Image> convertImagetoPng(CameraImage image) async {
-    try {
-      imglib.Image img;
-      if (image.format.group == ImageFormatGroup.yuv420) {
-        img = _convertYUV420(image);
-      } else if (image.format.group == ImageFormatGroup.bgra8888) {
-        img = _convertBGRA8888(image);
-      }
-
-      imglib.PngEncoder pngEncoder = new imglib.PngEncoder();
-
-      // Convert to png
-      List<int> png = pngEncoder.encodeImage(img);
-      return imglib.decodeImage(png);
-    } catch (e) {
-      print(">>>>>>>>>>>> ERROR:" + e.toString());
-    }
-    return null;
   }
 
   @override
@@ -429,6 +372,7 @@ class TakePictureScreenState extends State<CameraPicker>
     ));
     return GestureDetector(
       child: Scaffold(
+        endDrawer: NotificationItem(),
         body: image == null
             ? Stack(
                 children: stackWidgetChildren,

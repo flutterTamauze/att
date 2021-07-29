@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -113,6 +114,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
+          endDrawer: NotificationItem(),
           backgroundColor: Colors.white,
           body: Container(
             child: GestureDetector(
@@ -126,8 +128,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Header(
+                        goUserHomeFromMenu: false,
                         nav: false,
-                        goHome: false,
+                        goUserMenu: false,
                       ),
                       Directionality(
                         textDirection: ui.TextDirection.rtl,
@@ -1210,6 +1213,7 @@ class DataTableVacationHeader extends StatelessWidget {
                 children: [
                   DataTableHeaderTitles("من"),
                   DataTableHeaderTitles("إلى"),
+                  DataTableHeaderTitles("عدد الأيام"),
                   Expanded(
                     flex: 0,
                     child: Container(

@@ -71,7 +71,11 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
         children: [
           Column(
             children: [
-              Header(nav: false),
+              Header(
+                nav: false,
+                goUserHomeFromMenu: false,
+                goUserMenu: false,
+              ),
               Expanded(
                 child: Stack(
                   children: <Widget>[

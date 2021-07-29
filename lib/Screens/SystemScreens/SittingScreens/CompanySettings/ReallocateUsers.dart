@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
@@ -78,6 +79,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          endDrawer: NotificationItem(),
           body: SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -86,7 +88,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                 children: [
                   Header(
                     nav: false,
-                    goHome: false,
+                    goUserMenu: false,
+                    goUserHomeFromMenu: false,
                   ),
                   Expanded(
                     child: FutureBuilder(

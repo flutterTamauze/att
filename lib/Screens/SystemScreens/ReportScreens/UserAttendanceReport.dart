@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData.dart';
@@ -147,6 +149,7 @@ class _UserAttendanceReportScreenState
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
             },
             child: Scaffold(
+              endDrawer: NotificationItem(),
               backgroundColor: Colors.white,
               body: Container(
                 child: Stack(
@@ -156,7 +159,8 @@ class _UserAttendanceReportScreenState
                       children: [
                         Header(
                           nav: false,
-                          goHome: false,
+                          goUserMenu: false,
+                          goUserHomeFromMenu: false,
                         ),
                         Directionality(
                           textDirection: ui.TextDirection.rtl,
@@ -857,7 +861,7 @@ class DataTablePermessionRow extends StatelessWidget {
                       child: Center(
                         child: Container(
                           alignment: Alignment.center,
-                          height: 20,
+                          height: 20.h,
                           child: AutoSizeText(
                             permessions.date,
                             maxLines: 1,
@@ -878,7 +882,7 @@ class DataTablePermessionRow extends StatelessWidget {
                       child: Center(
                         child: Container(
                           alignment: Alignment.center,
-                          height: 20,
+                          height: 20.h,
                           child: AutoSizeText(
                             permessions.duration,
                             maxLines: 1,
@@ -901,85 +905,153 @@ class DataTablePermessionRow extends StatelessWidget {
   }
 }
 
-class DataTableVacationRow extends StatelessWidget {
-  final Vacation _vacation;
+List<Vacation> listAfterFilter(
+    List<Vacation> vacationList, DateTime filterFrom, DateTime fliterTo) {
+  List<Vacation> output = [];
+  vacationList.forEach((element) {
+    if (isDateBetweenTheRange(element, filterFrom, fliterTo)) {
+      output.add(element);
+    }
+  });
+  return output;
+}
 
-  DataTableVacationRow(this._vacation);
+bool isDateBetweenTheRange(
+    Vacation vacation, DateTime filterFromDate, DateTime filterToDate) {
+  return ((filterFromDate.isBefore(vacation.fromDate) ||
+          (vacation.fromDate.year == filterFromDate.year &&
+              vacation.fromDate.day == filterFromDate.day &&
+              vacation.fromDate.month == filterFromDate.month)) &&
+      (filterToDate.isAfter(vacation.toDate) ||
+          (vacation.toDate.year == filterToDate.year &&
+              vacation.toDate.day == filterToDate.day &&
+              vacation.toDate.month == filterToDate.month)));
+}
+
+class DataTableVacationRow extends StatelessWidget {
+  final Vacation vacation;
+  final DateTime filterToDate, filterFromDate;
+  DataTableVacationRow({this.vacation, this.filterFromDate, this.filterToDate});
+  // String kCalcDateDifferance(String strtDate, String endDate) {
+
+  //   DateTime endingDate = DateTime.parse(endDate);
+
+  //   final differancee = endingDate.difference(startDate).inDays;
+  //   return differancee.toString();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            Container(
-              width: 160.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      _vacation.vacationName,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: ScreenUtil()
-                              .setSp(14, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
+    return isDateBetweenTheRange(vacation, filterFromDate, filterToDate)
+        ? Container(
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.h, right: 5.w),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                        height: 50.h,
-                        child: Center(
-                          child: Container(
-                            height: 20,
-                            child: AutoSizeText(
-                              _vacation.fromDate,
-                              maxLines: 1,
-                              style: TextStyle(
+                  Container(
+                    width: 160.w,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 20,
+                          child: AutoSizeText(
+                            vacation.vacationName,
+                            maxLines: 1,
+                            style: TextStyle(
                                 fontSize: ScreenUtil()
                                     .setSp(14, allowFontScalingSelf: true),
+                                color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                              height: 50.h,
+                              child: Center(
+                                child: Container(
+                                  height: 20,
+                                  child: AutoSizeText(
+                                    vacation.fromDate
+                                        .toString()
+                                        .substring(0, 11),
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(14,
+                                          allowFontScalingSelf: true),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 50.h,
+                            child: Center(
+                              child: Container(
+                                height: 20,
+                                child: AutoSizeText(
+                                  vacation.toDate.toString().substring(0, 11),
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        )),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 50.h,
-                      child: Center(
-                        child: Container(
-                          height: 20,
-                          child: AutoSizeText(
-                            _vacation.toDate,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(14, allowFontScalingSelf: true),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () {
+                              // DateTime startDate = DateTime.parse(_vacation.fromDate);
+                              // print(DateFormat("yyyy-MM-dd").format(startDate));
+                              // print(startDate);
+                            },
+                            child: Container(
+                              height: 50.h,
+                              child: Center(
+                                child: Container(
+                                  height: 20,
+                                  child: AutoSizeText(
+                                    (vacation.toDate
+                                                    .difference(
+                                                        vacation.fromDate)
+                                                    .inDays +
+                                                1)
+                                            .toString() +
+                                        "يوم",
+                                    // kCalcDateDifferance(
+                                    //     _vacation.toDate, _vacation.fromDate),
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(14,
+                                          allowFontScalingSelf: true),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            ),
+          )
+        : Container();
   }
 }
 

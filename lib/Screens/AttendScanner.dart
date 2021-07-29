@@ -11,6 +11,8 @@ import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
 
+import 'Notifications/Notifications.dart';
+
 const frontCamera = 'FRONT CAMERA';
 
 class ScanPage extends StatefulWidget {
@@ -32,6 +34,7 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: NotificationItem(),
       body: Stack(
         children: [
           Column(
@@ -40,7 +43,8 @@ class _ScanPageState extends State<ScanPage> {
           Positioned(
               child: Header(
             nav: false,
-            goHome: false,
+            goUserMenu: false,
+            goUserHomeFromMenu: false,
           ))
         ],
       ),

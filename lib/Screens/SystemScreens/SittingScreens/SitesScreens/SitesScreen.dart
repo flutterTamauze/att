@@ -91,7 +91,11 @@ class _SitesScreenState extends State<SitesScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Header(nav: false),
+                          Header(
+                            nav: false,
+                            goUserHomeFromMenu: false,
+                            goUserMenu: false,
+                          ),
                           Directionality(
                             textDirection: ui.TextDirection.rtl,
                             child: SmallDirectoriesHeader(

@@ -496,7 +496,11 @@ class _UsersScreenState extends State<UsersScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Header(nav: false),
+                        Header(
+                          nav: false,
+                          goUserHomeFromMenu: false,
+                          goUserMenu: false,
+                        ),
 
                         ///Title
                         ///

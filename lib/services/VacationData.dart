@@ -1,44 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:qr_users/services/user_data.dart';
 
 class VacationData with ChangeNotifier {
   List<Vacation> vactionList = [
     Vacation(
-        fromDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 4)),
+        toDate: DateTime.now().subtract(Duration(days: 2)),
         vacationName: "عيد الفطر المبارك"),
     Vacation(
-        fromDate: DateFormat('yMMMd')
-            .format(DateTime(DateTime.now().year, DateTime.january, 1))
-            .toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 4)),
+        toDate: DateTime.now().subtract(Duration(days: 2)),
         vacationName: "عيد العمال"),
     Vacation(
-        fromDate: DateFormat('yMMMd')
-            .format(DateTime(DateTime.now().year, DateTime.december, 1))
-            .toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 3)),
+        toDate: DateTime.now().subtract(Duration(days: 1)),
         vacationName: "عيد تحرير سيناء")
   ];
   List<Vacation> copyVacationList = [
     Vacation(
-        fromDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 4)),
+        toDate: DateTime.now().subtract(Duration(days: 2)),
         vacationName: "عيد الفطر المبارك"),
     Vacation(
-        fromDate: DateFormat('yMMMd')
-            .format(DateTime(DateTime.now().year, DateTime.january, 1))
-            .toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 4)),
+        toDate: DateTime.now().subtract(Duration(days: 2)),
         vacationName: "عيد العمال"),
     Vacation(
-        fromDate: DateFormat('yMMMd')
-            .format(DateTime(DateTime.now().year, DateTime.december, 1))
-            .toString(),
-        toDate: DateFormat('yMMMd').format(DateTime.now()).toString(),
+        fromDate: DateTime.now().subtract(Duration(days: 3)),
+        toDate: DateTime.now().subtract(Duration(days: 1)),
         vacationName: "عيد تحرير سيناء")
   ];
+  removeVacation(Vacation vacation) {
+    vactionList.remove(vacation);
+    notifyListeners();
+  }
+
+  updateVacation(int vacationIndex, Vacation vacation) {
+    vactionList.removeAt(vacationIndex);
+    vactionList.insert(vacationIndex, vacation);
+    notifyListeners();
+    print("updated successfully");
+  }
+
   setCopy(int index) {
     copyVacationList.clear();
     copyVacationList.add(vactionList[index]);
@@ -47,8 +49,8 @@ class VacationData with ChangeNotifier {
 
 class Vacation {
   String vacationName;
-  String fromDate;
-  String toDate;
+  DateTime fromDate;
+  DateTime toDate;
   Vacation({this.fromDate, this.toDate, this.vacationName});
 }
 

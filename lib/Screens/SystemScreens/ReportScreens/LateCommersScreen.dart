@@ -136,7 +136,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Header(nav: false),
+                      Header(
+                        nav: false,
+                        goUserMenu: false,
+                        goUserHomeFromMenu: false,
+                      ),
                       Directionality(
                         textDirection: ui.TextDirection.rtl,
                         child: Row(

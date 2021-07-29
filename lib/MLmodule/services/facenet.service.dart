@@ -183,9 +183,6 @@ class FaceNetService {
     /// search the closest result 👓
     print(data.length);
     for (String label in data.keys) {
-      print(label);
-      print(data[label]);
-      print(predictedData.length);
       currDist = _euclideanDistance(data[label], predictedData);
       print("ecluedian result : $currDist");
       if (currDist <= threshold && currDist < minDist) {

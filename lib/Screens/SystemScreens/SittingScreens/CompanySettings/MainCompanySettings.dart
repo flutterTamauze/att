@@ -89,7 +89,11 @@ class _CompanySettingsState extends State<CompanySettings> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Header(nav: false),
+          Header(
+            nav: false,
+            goUserHomeFromMenu: false,
+            goUserMenu: false,
+          ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
             child: Padding(
@@ -450,7 +454,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                               child: Lottie.asset("resources/shifts.json",
                                   repeat: false),
                             ),
-                            "ايام الاجازات للشركة",
+                            "ايام العطلات للشركة",
                           ),
                           SizedBox(
                             height: 3.h,

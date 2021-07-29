@@ -9,8 +9,9 @@ class AttendanceSettings extends StatelessWidget {
         child: Column(
           children: [
             Header(
+              goUserHomeFromMenu: false,
               nav: false,
-              goHome: false,
+              goUserMenu: false,
             ),
           ],
         ),

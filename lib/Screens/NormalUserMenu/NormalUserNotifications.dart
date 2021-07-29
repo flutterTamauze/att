@@ -36,7 +36,8 @@ class _UserNotificationsState extends State<UserNotifications> {
           children: [
             Header(
               nav: false,
-              goHome: false,
+              goUserHomeFromMenu: false,
+              goUserMenu: false,
             ),
             Directionality(
               textDirection: TextDirection.rtl,

@@ -24,7 +24,7 @@ class RoundedAlert extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)), //this right here
         child: Container(
-          height: getkDeviceHeightFactor(context, 170),
+          height: getkDeviceHeightFactor(context, 160),
           width: getkDeviceWidthFactor(context, 330),
           child: Padding(
             padding: const EdgeInsets.all(12.0),

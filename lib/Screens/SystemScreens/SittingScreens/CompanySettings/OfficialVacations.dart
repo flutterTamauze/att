@@ -1,4 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
@@ -7,11 +10,15 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
+import '../CompanySettings/OfficialVacations.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 
@@ -28,6 +35,8 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'AddVacationScreen.dart';
+
 class OfficialVacation extends StatefulWidget {
   @override
   _OfficialVacationState createState() => _OfficialVacationState();
@@ -38,7 +47,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
   TextEditingController _nameController = TextEditingController();
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Vacation>> key = new GlobalKey();
-
+  final SlidableController slidableController = SlidableController();
   DateTime toDate;
   DateTime fromDate;
 
@@ -50,10 +59,20 @@ class _OfficialVacationState extends State<OfficialVacation> {
   String selectedId = "";
   Site siteData;
   DateTime yesterday;
+  calculateTotalVacation() {
+    int sum = 0;
+    var vactionProv = Provider.of<VacationData>(context, listen: true);
+    for (int i = 0; i < vactionProv.vactionList.length; i++) {
+      sum += vactionProv.vactionList[i].toDate
+              .difference(vactionProv.vactionList[i].fromDate)
+              .inDays +
+          1;
+    }
+    return sum;
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     var now = DateTime.now();
@@ -75,15 +94,53 @@ class _OfficialVacationState extends State<OfficialVacation> {
 
   @override
   Widget build(BuildContext context) {
-    var vactionProv = Provider.of<VacationData>(context);
+    var vactionProv = Provider.of<VacationData>(context, listen: true);
+    List<DateTime> pickedRange = [fromDate, toDate];
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+
+        // vacation.fromDate.isAfter(filterFromDate) &&
+        //     vacation.toDate.isBefore(filterToDate)
+      },
       child: Scaffold(
+        endDrawer: NotificationItem(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        floatingActionButton: Provider.of<UserData>(context).user.userType == 4
+            ? Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 4,
+                      color: Colors.white,
+                    ),
+                    shape: BoxShape.circle),
+                child: FloatingActionButton(
+                  elevation: 3,
+                  tooltip: "اضافة عطلة",
+                  backgroundColor: Colors.orange[600],
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddVacationScreen(
+                            edit: false,
+                          ),
+                        )).then((value) => setState(() {}));
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                  ),
+                ),
+              )
+            : Container(),
         body: Container(
           child: Column(children: [
             Header(
               nav: false,
-              goHome: false,
+              goUserMenu: false,
+              goUserHomeFromMenu: false,
             ),
             Directionality(
               textDirection: ui.TextDirection.rtl,
@@ -103,17 +160,20 @@ class _OfficialVacationState extends State<OfficialVacation> {
                 builder: (context) {
                   return InkWell(
                       onTap: () async {
-                        final List<DateTime> picked =
-                            await DateRagePicker.showDatePicker(
-                                context: context,
-                                initialFirstDate: fromDate,
-                                initialLastDate: toDate,
-                                firstDate: new DateTime(2021),
-                                lastDate: toDate);
+                        pickedRange = await DateRagePicker.showDatePicker(
+                            context: context,
+                            initialFirstDate: fromDate,
+                            initialLastDate: toDate,
+                            firstDate: new DateTime(2021),
+                            lastDate: DateTime.now());
                         var newString = "";
                         setState(() {
-                          fromDate = picked.first;
-                          toDate = picked.last;
+                          fromDate = pickedRange.first;
+                          toDate = pickedRange.last;
+                          // print(picked.first.isAtSameMomentAs(
+                          //     DateTime.now()));
+                          // print(picked.first);
+                          // print(DateTime.now().subtract(Duration(days: 21)));
                           // selectedDuration = kCalcDateDifferance(
                           //     fromDate.toString(), toDate.toString());
                           // selectedDuration += 1;
@@ -274,16 +334,176 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                 ? vactionProv.vactionList.length
                                 : vactionProv.copyVacationList.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return DataTableVacationRow(
-                                  _nameController.text == ""
-                                      ? vactionProv.vactionList[index]
-                                      : vactionProv.copyVacationList[index]);
+                              return Column(
+                                children: [
+                                  Slidable(
+                                    actionExtentRatio: 0.10,
+                                    closeOnScroll: true,
+                                    controller: slidableController,
+                                    actionPane: SlidableDrawerActionPane(),
+                                    secondaryActions: [
+                                      ZoomIn(
+                                          child: InkWell(
+                                        child: Container(
+                                          padding: EdgeInsets.all(7),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.green,
+                                          ),
+                                          child: Icon(
+                                            Icons.edit,
+                                            size: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddVacationScreen(
+                                                  edit: true,
+                                                  vacationListID: index,
+                                                ),
+                                              ));
+                                        },
+                                      )),
+                                      ZoomIn(
+                                          child: InkWell(
+                                        child: Container(
+                                          padding: EdgeInsets.all(7),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.red,
+                                          ),
+                                          child: Icon(
+                                            Icons.delete,
+                                            size: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          return showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return RoundedAlert(
+                                                  onPressed: () {
+                                                    vactionProv.removeVacation(
+                                                        vactionProv.vactionList[
+                                                            index]);
+
+                                                    Fluttertoast.showToast(
+                                                            msg:
+                                                                "تم حذف العطلة بنجاح",
+                                                            backgroundColor:
+                                                                Colors.green)
+                                                        .then((value) =>
+                                                            Navigator.pop(
+                                                                context));
+                                                  },
+                                                  content:
+                                                      "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
+                                                  onCancel: () {},
+                                                  title: "حذف العطلة",
+                                                );
+                                              });
+                                        },
+                                      )),
+                                    ],
+                                    child: DataTableVacationRow(
+                                      vacation: _nameController.text == ""
+                                          ? vactionProv.vactionList[index]
+                                          : vactionProv.copyVacationList[index],
+                                      filterFromDate: pickedRange.first,
+                                      filterToDate: pickedRange.last,
+                                    ),
+                                  ),
+                                  isDateBetweenTheRange(
+                                          vactionProv.vactionList[index],
+                                          pickedRange.first,
+                                          pickedRange.last)
+                                      ? Divider(
+                                          thickness: 1,
+                                        )
+                                      : Container()
+                                ],
+                              );
                             }),
                       )),
+                      VacationTableEnd(pickedRange)
                     ],
                   )),
             ))
           ]),
+        ),
+      ),
+    );
+  }
+}
+
+class VacationTableEnd extends StatelessWidget {
+  final List<DateTime> range;
+  VacationTableEnd(this.range);
+  @override
+  Widget build(BuildContext context) {
+    calculateTotalVacation() {
+      int sum = 0;
+      List<Vacation> vactionProv = listAfterFilter(
+          Provider.of<VacationData>(context, listen: true).vactionList,
+          range.first,
+          range.last);
+
+      for (int i = 0; i < vactionProv.length; i++) {
+        sum +=
+            vactionProv[i].toDate.difference(vactionProv[i].fromDate).inDays +
+                1;
+      }
+      return sum;
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.orange,
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+          )),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          height: 50.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 20,
+                    child: AutoSizeText(
+                      'مجموع ايام العطلات الرسمية  :',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil()
+                              .setSp(16, allowFontScalingSelf: true),
+                          color: Colors.black),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 4.w,
+                  ),
+                  Text(
+                    calculateTotalVacation().toString() + " يوم ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize:
+                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                        color: Colors.black),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

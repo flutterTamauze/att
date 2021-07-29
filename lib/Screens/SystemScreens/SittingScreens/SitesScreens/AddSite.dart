@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SitesScreen.dart';
 import 'package:qr_users/constants.dart';
@@ -60,6 +61,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+        endDrawer: NotificationItem(),
         backgroundColor: Colors.white,
         body: Container(
           child: GestureDetector(
@@ -74,7 +76,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                   children: [
                     Header(
                       nav: false,
-                      goHome: false,
+                      goUserMenu: false,
+                      goUserHomeFromMenu: false,
                     ),
                     Expanded(
                       child: SingleChildScrollView(

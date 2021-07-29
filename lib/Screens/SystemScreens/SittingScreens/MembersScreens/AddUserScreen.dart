@@ -148,7 +148,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Header(nav: false),
+                      Header(
+                        nav: false,
+                        goUserHomeFromMenu: false,
+                        goUserMenu: false,
+                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Column(

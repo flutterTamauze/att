@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/ProfileScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
@@ -35,9 +36,15 @@ class MyClipper extends CustomClipper<Path> {
 class Header extends StatelessWidget {
   final String text;
   final onTab;
-  bool goHome = false;
+  bool goUserMenu = false;
+  bool goUserHomeFromMenu = false;
   final bool nav;
-  Header({this.onTab, this.text, this.nav, this.goHome});
+  Header(
+      {this.onTab,
+      this.text,
+      this.nav,
+      this.goUserMenu,
+      this.goUserHomeFromMenu});
   @override
   Widget build(BuildContext context) {
     User _userData = Provider.of<UserData>(context, listen: true).user;
@@ -278,13 +285,19 @@ class Header extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 nav == false
-                    ? goHome == false
-                        ? Navigator.pop(context)
-                        : Navigator.of(context).pushAndRemoveUntil(
+                    ? goUserHomeFromMenu
+                        ? Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => NavScreenTwo(0),
                             ),
                             (Route<dynamic> route) => false)
+                        : goUserMenu == false
+                            ? Navigator.pop(context)
+                            : Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => NormalUserMenu(),
+                                ),
+                                (Route<dynamic> route) => false)
                     : Scaffold.of(context).openDrawer();
               },
               child: Padding(

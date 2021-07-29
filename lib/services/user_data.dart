@@ -269,7 +269,8 @@ class UserData with ChangeNotifier {
         request.fields['Longitude'] = _currentPosition.longitude.toString();
         request.fields['Latitude'] = _currentPosition.latitude.toString();
         request.fields['userLogintype'] = "1";
-
+        print("card code :$cardCode");
+        print("**************");
         await request.send().then((response) async {
           response.stream.transform(utf8.decoder).listen((value) {
             print(value);
@@ -494,13 +495,13 @@ class UserData with ChangeNotifier {
 
   //clears all data in cache.
   logout() async {
+    await db.clearNotifications();
     loggedIn = false;
     manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     changedWidget = Image.asset("resources/personicon.png");
     prefs.setStringList('userData', []);
-    await db.clearNotifications();
 
     notifyListeners();
   }

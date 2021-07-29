@@ -92,7 +92,8 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                     ///Title
                     Header(
                       nav: false,
-                      goHome: false,
+                      goUserMenu: false,
+                      goUserHomeFromMenu: true,
                     ),
                     DirectoriesHeader(
                         Padding(

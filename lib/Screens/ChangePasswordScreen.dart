@@ -30,6 +30,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:async';
 
+import 'Notifications/Notifications.dart';
 import 'SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -151,6 +152,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserData>(builder: (context, userData, child) {
       return Scaffold(
+        endDrawer: NotificationItem(),
         body: Stack(
           children: [
             GestureDetector(

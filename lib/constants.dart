@@ -23,7 +23,13 @@ double getkDeviceHeightFactor(BuildContext context, double widgetHeight) {
   return (MediaQuery.of(context).size.height / 807) * widgetHeight;
 }
 
+int kCalcDateDifferance(String strtDate, String endDate) {
+  DateTime startDate = DateTime.parse(strtDate);
+  DateTime endingDate = DateTime.parse(endDate);
 
+  final differancee = endingDate.difference(startDate).inDays;
+  return differancee;
+}
 
 ThemeData clockTheme = ThemeData.dark().copyWith(
   primaryColor: Colors.black,

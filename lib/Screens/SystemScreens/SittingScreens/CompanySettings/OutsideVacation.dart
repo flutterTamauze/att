@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -79,6 +80,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          endDrawer: NotificationItem(),
           body: SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -87,7 +89,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                 children: [
                   Header(
                     nav: false,
-                    goHome: false,
+                    goUserMenu: false,
+                    goUserHomeFromMenu: false,
                   ),
                   Expanded(
                     child: Container(

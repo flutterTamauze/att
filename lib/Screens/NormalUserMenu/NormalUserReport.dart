@@ -142,8 +142,9 @@ class _NormalUserReportState extends State<NormalUserReport> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Header(
+                          goUserHomeFromMenu: false,
                           nav: false,
-                          goHome: false,
+                          goUserMenu: false,
                         ),
                         Directionality(
                           textDirection: ui.TextDirection.rtl,
@@ -709,7 +710,7 @@ class DataTableVacationRow extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              _vacation.fromDate,
+                              _vacation.fromDate.toString().substring(0, 11),
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: ScreenUtil()
@@ -727,7 +728,7 @@ class DataTableVacationRow extends StatelessWidget {
                         child: Container(
                           height: 20,
                           child: AutoSizeText(
-                            _vacation.toDate,
+                            _vacation.toString().substring(0, 11),
                             maxLines: 1,
                             style: TextStyle(
                               fontSize: ScreenUtil()
