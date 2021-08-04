@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
@@ -26,9 +26,6 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
-
-import '../constants.dart';
 
 var cron1;
 var cron2;
@@ -337,55 +334,60 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: GestureDetector(
           onTap: () async {
             // await createNewChannel();
-            print(Provider.of<UserData>(context, listen: false).user.userToken);
+            print(Provider.of<UserData>(context, listen: false)
+                .user
+                .isAllowedToAttend);
+            print(Provider.of<UserData>(context, listen: false).user.id);
             print(await firebaseMessaging.getToken());
           },
-          child: Scaffold(
-            endDrawer: NotificationItem(),
-            backgroundColor: Colors.white,
-            drawer: userDataProvider.user.userType == 0 ? DrawerI() : null,
-            body: Container(
-                padding: EdgeInsets.only(bottom: 15.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    userDataProvider.user.userType == 0
-                        ? Header(
-                            nav: true,
-                          )
-                        : Container(),
-                    Expanded(
-                      child: Center(
-                        child: Lottie.asset("resources/qrlottie.json",
-                            repeat: true),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Provider.of<PermissionHan>(context, listen: true)
-                                    .showNotification ==
-                                true
-                            ? Container()
-                            : Container(
-                                child: RoundedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ScanPage(),
-                                      ),
-                                    );
-                                  },
-                                  title: "سجل الأن",
-                                ),
-                              ),
-                        SizedBox(
-                          height: 15.h,
+          child: GestureDetector(
+            child: Scaffold(
+              endDrawer: NotificationItem(),
+              backgroundColor: Colors.white,
+              drawer: userDataProvider.user.userType == 0 ? DrawerI() : null,
+              body: Container(
+                  padding: EdgeInsets.only(bottom: 15.h),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      userDataProvider.user.userType == 0
+                          ? Header(
+                              nav: true,
+                            )
+                          : Container(),
+                      Expanded(
+                        child: Center(
+                          child: Lottie.asset("resources/qrlottie.json",
+                              repeat: true),
                         ),
-                      ],
-                    ),
-                  ],
-                )),
+                      ),
+                      Column(
+                        children: [
+                          Provider.of<PermissionHan>(context, listen: true)
+                                      .showNotification ==
+                                  true
+                              ? Container()
+                              : Container(
+                                  child: RoundedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ScanPage(),
+                                        ),
+                                      );
+                                    },
+                                    title: "سجل الأن",
+                                  ),
+                                ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
+            ),
           ),
         ));
   }

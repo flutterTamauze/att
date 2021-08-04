@@ -36,6 +36,7 @@ class UserData with ChangeNotifier {
   bool isLoading = false;
   User user = User(
     userSiteId: 0,
+    isAllowedToAttend: false,
     userToken: "",
     userID: "",
     name: "",
@@ -120,6 +121,7 @@ class UserData with ChangeNotifier {
             user.userType = decodedRes["userData"]["userType"];
             user.userSiteId = decodedRes["companyData"]["siteId"] as int;
             user.userShiftId = decodedRes["userData"]["shiftId"];
+            user.isAllowedToAttend = decodedRes["userData"]["isAllowtoAttend"];
             user.userImage = "$baseURL/${decodedRes["userData"]["userImage"]}";
             changedPassword = decodedRes["userData"]["changedPassword"] as bool;
             siteName = decodedRes["companyData"]["siteName"];
@@ -582,6 +584,7 @@ class User {
   String userToken;
   String userID;
   String name;
+  bool isAllowedToAttend;
   int userSiteId;
   int userType;
   int userShiftId;
@@ -596,6 +599,7 @@ class User {
     this.userToken,
     this.id,
     this.userImage,
+    this.isAllowedToAttend,
     this.userShiftId,
     this.userSiteId,
     this.userID,

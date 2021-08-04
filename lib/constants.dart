@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+
 import 'dart:ui' as ui;
 
-import 'package:qr_users/widgets/roundedButton.dart';
-
-final baseURL = "https://attendanceback.tamauze.com";
+final baseURL = "https://Chilangoback.tamauzeds.com";
 // final baseURL = "http://192.168.1.38:45456";
 final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 

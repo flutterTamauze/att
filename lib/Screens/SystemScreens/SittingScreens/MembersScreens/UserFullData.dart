@@ -26,6 +26,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -51,8 +52,8 @@ class UserFullDataScreen extends StatefulWidget {
 }
 
 bool isSAved = false;
-bool checkBoxVal = false;
-
+bool allowToAttendBox = false;
+bool noShowInReport = false;
 TimeOfDay intToTimeOfDay(int time) {
   int hours = (time ~/ 100);
   int min = time - (hours * 100);
@@ -93,10 +94,13 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     selectedDate = DateTime(now.year, now.month, now.day);
     fromPicked = (intToTimeOfDay(0));
     toPicked = (intToTimeOfDay(0));
-    animateController = AnimationController(
+    animateControllerOne = AnimationController(
       vsync: this, // the SingleTickerProviderStateMixin
       duration: Duration(milliseconds: 200),
     );
+    animateControllerTwo = AnimationController(
+        vsync: this, // the SingleTickerProviderStateMixin
+        duration: Duration(milliseconds: 200));
   }
 
   void playLoopedMusic() async {
@@ -111,10 +115,12 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     super.dispose();
   }
 
-  AnimationController animateController;
+  AnimationController animateControllerOne;
+  AnimationController animateControllerTwo;
   @override
   Widget build(BuildContext context) {
     var userType = Provider.of<UserData>(context, listen: false).user.userType;
+
     return Scaffold(
       endDrawer: NotificationItem(),
       body: Column(
@@ -228,7 +234,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                       flex: 1,
                                       child: UserDataField(
                                           icon: FontAwesomeIcons.moneyBill,
-                                          text: "7000 جنية مصرى"),
+                                          text:
+                                              "${widget.user.salary} جنية مصرى"),
                                     ),
                                   ],
                                 ),
@@ -268,7 +275,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         "تاريخ التعيين",
                                       ),
                                       Text(DateFormat('yMMMd')
-                                          .format(DateTime.now())
+                                          .format(widget.user.hiredDate)
                                           .toString())
                                     ],
                                   ),
@@ -358,21 +365,88 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                             duration:
                                                 Duration(milliseconds: 800),
                                             controller: (controller) =>
-                                                animateController = controller,
+                                                animateControllerOne =
+                                                    controller,
                                             manualTrigger: true,
                                             child: Checkbox(
                                               checkColor: Colors.white,
                                               activeColor: Colors.orange,
-                                              value: checkBoxVal,
+                                              value:
+                                                  widget.user.isAllowedToAttend,
                                               onChanged: (value) {
                                                 if (value == true) {
-                                                  animateController.repeat();
+                                                  animateControllerOne.repeat();
                                                 }
                                                 setState(() {
-                                                  print(
-                                                      animateController.value);
-                                                  checkBoxVal = value;
+                                                  allowToAttendBox = value;
                                                 });
+                                                widget.user.isAllowedToAttend =
+                                                    value;
+                                                Provider.of<MemberData>(context,
+                                                        listen: false)
+                                                    .allowMemberAttendByCard(
+                                                        widget.user.id,
+                                                        value,
+                                                        Provider.of<UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userToken);
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Divider(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 3),
+                                  child: Container(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "عدم الظهور في التقرير",
+                                        ),
+                                        Container(
+                                          width: 20.w,
+                                          height: 20.h,
+                                          child: Pulse(
+                                            duration:
+                                                Duration(milliseconds: 800),
+                                            controller: (controller) =>
+                                                animateControllerTwo =
+                                                    controller,
+                                            manualTrigger: true,
+                                            child: Checkbox(
+                                              checkColor: Colors.white,
+                                              activeColor: Colors.orange,
+                                              value:
+                                                  widget.user.excludeFromReport,
+                                              onChanged: (value) {
+                                                if (value == true) {
+                                                  animateControllerTwo.repeat();
+                                                }
+                                                setState(() {
+                                                  noShowInReport = value;
+                                                });
+                                                widget.user.excludeFromReport =
+                                                    value;
+                                               Provider.of<MemberData>(context,
+                                                        listen: false)
+                                                    .exludeUserFromReport(
+                                                        widget.user.id,
+                                                        value,
+                                                        Provider.of<UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userToken);    
                                               },
                                             ),
                                           ),
@@ -391,37 +465,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           builder: (BuildContext context) {
                                             return RoundedLoadingIndicator();
                                           });
-                                      var userProvider = Provider.of<UserData>(
-                                          context,
-                                          listen: false);
-                                      var comProvider =
-                                          Provider.of<CompanyData>(context,
-                                              listen: false);
-                                      await Provider.of<DaysOffData>(context,
-                                              listen: false)
-                                          .getDaysOff(
-                                              comProvider.com.id,
-                                              userProvider.user.userToken,
-                                              context);
-                                      for (int i = 0; i < 7; i++) {
-                                        await Provider.of<DaysOffData>(context,
-                                                listen: false)
-                                            .setSiteAndShift(
-                                                i,
-                                                getShiftName(),
-                                                Provider.of<SiteData>(context,
-                                                        listen: false)
-                                                    .sitesList[widget.siteIndex]
-                                                    .name);
-                                      }
-                                      Navigator.pop(context);
-
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ReAllocateUsers(widget.user),
-                                          ));
+                                      shiftScheduling();
                                     }),
                                 Divider(),
                                 AssignTaskToUser(
@@ -439,7 +483,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                   backgroundColor: Colors.green,
                                                   gravity:
                                                       ToastGravity.CENTER));
-                                    })
+                                    }),
                               ],
                             ),
                           ),
@@ -800,43 +844,26 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
           );
         });
   }
-}
 
-class AssignTaskToUser extends StatelessWidget {
-  final String taskName;
-  final IconData iconData;
-  final Function function;
-  AssignTaskToUser({
-    this.iconData,
-    this.function,
-    this.taskName,
-  });
+  shiftScheduling() async {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    await Provider.of<DaysOffData>(context, listen: false)
+        .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
+    for (int i = 0; i < 7; i++) {
+      await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
+          i,
+          getShiftName(),
+          Provider.of<SiteData>(context, listen: false)
+              .sitesList[widget.siteIndex]
+              .name);
+    }
+    Navigator.pop(context);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 3),
-      child: InkWell(
-        onTap: function,
-        child: Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(taskName),
-              Container(
-                width: 25.w,
-                height: 35.h,
-                child: Icon(
-                  iconData,
-                  color: Colors.orange,
-                  size: 25,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReAllocateUsers(widget.user),
+        ));
   }
 }

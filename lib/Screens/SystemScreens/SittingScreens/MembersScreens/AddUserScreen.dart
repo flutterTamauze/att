@@ -118,6 +118,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _salaryController = TextEditingController();
 
   int shiftId = 0;
   int userType = 0;
@@ -509,6 +510,30 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       SizedBox(
                                         height: 10.0,
                                       ),
+                                      TextFormField(
+                                        enabled: edit,
+                                        onFieldSubmitted: (_) {},
+                                        textInputAction: TextInputAction.next,
+                                        textAlign: TextAlign.right,
+                                        validator: (text) {
+                                          if (text.length == 0) {
+                                            return 'مطلوب';
+                                          }
+                                          return null;
+                                        },
+                                        controller: _salaryController,
+                                        keyboardType: TextInputType.number,
+                                        decoration:
+                                            kTextFieldDecorationWhite.copyWith(
+                                                hintText: 'المرتب',
+                                                suffixIcon: Icon(
+                                                  Icons.money,
+                                                  color: Colors.orange,
+                                                )),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
                                       IgnorePointer(
                                         ignoring: widget.member.userType != 4
                                             ? !edit
@@ -682,14 +707,16 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                         .trim(),
                                                     email: _emailController.text
                                                         .trim(),
-                                                    phoneNumber: number
-                                                            .dialCode +
-                                                        _phoneController.text
-                                                            .replaceAll(
-                                                          new RegExp(
-                                                              r"\s+\b|\b\s"),
-                                                          "",
-                                                        ),
+                                                    salary: double.parse(
+                                                        _salaryController.text),
+                                                    phoneNumber:
+                                                        number.dialCode +
+                                                            _phoneController.text
+                                                                .replaceAll(
+                                                              new RegExp(
+                                                                  r"\s+\b|\b\s"),
+                                                              "",
+                                                            ),
                                                     name: _nameController.text
                                                         .trim()),
                                                 token,
@@ -824,7 +851,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           false)
                                                               .user
                                                               .userToken;
-                                                          var msg = await Provider.of<MemberData>(
+                                                          var msg = await Provider.of<
+                                                                      MemberData>(
                                                                   context,
                                                                   listen: false)
                                                               .editMember(
@@ -840,19 +868,17 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           .shiftId,
                                                                       phoneNumber: editNumber
                                                                               .dialCode +
-                                                                          _phoneController.text
+                                                                          _phoneController
+                                                                              .text
                                                                               .replaceAll(
                                                                             new RegExp(r"\s+\b|\b\s"),
                                                                             "",
                                                                           ),
-                                                                      jobTitle:
-                                                                          _titleController
-                                                                              .text,
-                                                                      email: _emailController
-                                                                          .text
-                                                                          .trim(),
-                                                                      name: _nameController
-                                                                          .text),
+                                                                      salary: double.parse(
+                                                                          _salaryController.text),
+                                                                      jobTitle: _titleController.text,
+                                                                      email: _emailController.text.trim(),
+                                                                      name: _nameController.text),
                                                                   widget.id,
                                                                   token,
                                                                   context);

@@ -11,6 +11,10 @@ import 'package:qr_users/services/user_data.dart';
 
 class Member {
   String name;
+  double salary;
+  DateTime hiredDate;
+  bool isAllowedToAttend = false;
+  bool excludeFromReport = false;
   int userType;
   String jobTitle;
   String userImageURL;
@@ -19,19 +23,22 @@ class Member {
   String email;
   String phoneNumber;
   String id;
-  String countryLanguage;
 
-  Member(
-      {this.name,
-      this.userImageURL,
-      this.userType,
-      this.jobTitle,
-      this.email,
-      this.normalizedName,
-      this.id,
-      this.shiftId,
-      this.phoneNumber,
-      this.countryLanguage});
+  Member({
+    this.name,
+    this.userImageURL,
+    this.userType,
+    this.salary,
+    this.hiredDate,
+    this.isAllowedToAttend,
+    this.excludeFromReport,
+    this.jobTitle,
+    this.email,
+    this.normalizedName,
+    this.id,
+    this.shiftId,
+    this.phoneNumber,
+  });
 
   factory Member.fromJson(dynamic json) {
     return Member(
@@ -39,8 +46,12 @@ class Member {
         userImageURL: json['userImage'],
         email: json['email'],
         id: json['id'],
+        isAllowedToAttend: json["isAllowtoAttend"],
+        excludeFromReport: json["excludeFromReport"],
         shiftId: json['shiftId'],
         phoneNumber: json['phoneNumber'],
+        salary: json["salary"],
+        hiredDate: DateTime.tryParse(json["createdOn"]),
         userType: json['userType'],
         normalizedName: json["userName"],
         jobTitle: json['userJob']);
@@ -129,6 +140,8 @@ class MemberData with ChangeNotifier {
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
+          print("creaaaaaaaaaaated oN");
+          print(decodedRes["data"][0]["createdOn"]);
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
             memberNewList = memberObjJson
@@ -156,6 +169,36 @@ class MemberData with ChangeNotifier {
     }
   }
 
+  allowMemberAttendByCard(
+      String userID, bool allowValue, String userToken) async {
+    try {
+      var response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
+          body: json.encode({"userId": userID, "value": allowValue}),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.body);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  exludeUserFromReport(String userID, bool allowValue, String userToken) async {
+    try {
+      var response = await http.put(
+          Uri.parse("$baseURL/api/Users/excludeFromReport"),
+          body: json.encode({"userId": userID, "value": allowValue}),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.body);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   getAllSiteMembers(int siteId, String userToken, BuildContext context) {
     futureListener = getAllSiteMembersApi(siteId, userToken, context);
     return futureListener;
@@ -168,7 +211,7 @@ class MemberData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       try {
         final response = await http.get(
-            Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
+            Uri.parse("$baseURL/api/-/GetAllEmployeeInSite?siteId=$siteId"),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
@@ -296,6 +339,7 @@ class MemberData with ChangeNotifier {
               {
                 "Name": member.name,
                 "PhoneNo": member.phoneNumber,
+                "Salary": member.salary,
                 "Email": member.email,
                 "JobTitle": member.jobTitle,
                 "UserType": member.userType,
@@ -343,7 +387,7 @@ class MemberData with ChangeNotifier {
   editMember(
       Member member, int id, String userToken, BuildContext context) async {
     print(
-        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}");
+        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, salary ${member.salary}");
 
     if (await isConnectedToInternet()) {
       try {
@@ -355,6 +399,7 @@ class MemberData with ChangeNotifier {
                 "Name": member.name,
                 "PhoneNo": member.phoneNumber,
                 "Email": member.email,
+                "Salary": member.salary,
                 "JobTitle": member.jobTitle,
                 "UserType": member.userType,
                 "ShiftId": member.shiftId,
@@ -373,7 +418,7 @@ class MemberData with ChangeNotifier {
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
-
+          print(member.salary);
           if (decodedRes["message"] == "Success : User Updated Successfully ") {
             membersList[id] = member;
             print(

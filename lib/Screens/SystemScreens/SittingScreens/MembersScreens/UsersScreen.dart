@@ -476,16 +476,7 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
-            print(Provider.of<SiteData>(context, listen: false)
-                .dropDownShiftIndex);
-            print(widget.selectedValue);
-            print(widget.selectedIndex);
-            print(Provider.of<SiteData>(context, listen: false).currentShiftID);
-            print("____");
-            for (int i = 0; i < memberData.membersList.length; i++) {
-              print(memberData.membersList[i].name);
-              print(memberData.membersList[i].shiftId);
-            }
+            print(memberData.membersList[0].isAllowedToAttend);
           },
           child: Scaffold(
               endDrawer: NotificationItem(),
