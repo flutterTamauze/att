@@ -16,6 +16,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/report_data.dart';
@@ -605,7 +606,9 @@ class DataTablePermessionRow extends StatelessWidget {
                             alignment: Alignment.center,
                             height: 30.h,
                             child: AutoSizeText(
-                              permessions.permessionType,
+                              permessions.permessionType == 1
+                                  ? "تأخير عن الحضور"
+                                  : "انصراف مبكر",
                               maxLines: 2,
                               style: TextStyle(
                                 fontSize: ScreenUtil()
@@ -625,7 +628,7 @@ class DataTablePermessionRow extends StatelessWidget {
                           alignment: Alignment.center,
                           height: 20,
                           child: AutoSizeText(
-                            permessions.date,
+                            permessions.date.toString(),
                             maxLines: 1,
                             style: TextStyle(
                               fontSize: ScreenUtil()

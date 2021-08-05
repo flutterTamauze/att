@@ -54,13 +54,13 @@ class DatabaseHelper {
               conflictAlgorithm: ConflictAlgorithm.replace)
           .then((value) async {
         print("Notification $value");
-        await Provider.of<NotificationDataService>(context, listen: false)
-            .addNotification(
-                notificationMessage.title,
-                notificationMessage.message,
-                DateTime.now().toString().substring(0, 10),
-                notificationMessage.category,
-                value);
+        // await Provider.of<NotificationDataService>(context, listen: false)
+        //     .addNotification(
+        //         notificationMessage.title,
+        //         notificationMessage.message,
+        //         DateTime.now().toString().substring(0, 10),
+        //         notificationMessage.category,
+        //         value);
       }).catchError((e) {
         print(e);
       });

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:qr_users/constants.dart';
 
 class VacationData with ChangeNotifier {
   List<Vacation> vactionList = [
@@ -52,38 +56,4 @@ class Vacation {
   DateTime fromDate;
   DateTime toDate;
   Vacation({this.fromDate, this.toDate, this.vacationName});
-}
-
-class UserPermessions {
-  String user;
-  // User user;
-  String permessionType;
-  String date;
-  String duration;
-  UserPermessions({this.date, this.duration, this.permessionType, this.user});
-}
-
-class UserPermessionsData with ChangeNotifier {
-  List<UserPermessions> permessionsList = [
-    UserPermessions(
-        user: "احمد محمود عبد الحميد",
-        date: "6-6-2021",
-        duration: "12AM",
-        permessionType: "انصراف مبكر"),
-    UserPermessions(
-        user: "احمد رضوان  ",
-        date: "6-6-2021",
-        duration: "8AM",
-        permessionType: "انصراف مبكر"),
-    UserPermessions(
-        user: "خالد كمال عبد المجيد",
-        date: "6-9-2021",
-        duration: "8AM",
-        permessionType: "تأخير عن الحضور"),
-    UserPermessions(
-        user: "على صلاح",
-        date: "6-6-2021",
-        duration: "3PM",
-        permessionType: "انصراف مبكر")
-  ];
 }

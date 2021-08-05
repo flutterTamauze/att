@@ -13,6 +13,7 @@ import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/api.dart';

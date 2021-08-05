@@ -96,7 +96,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                           children: [
                             widget.vacationDaysCount.length == 1
                                 ? Text(
-                                    " مدة الأجازة : يوم ${widget.vacationDaysCount}",
+                                    " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -117,16 +117,18 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Divider(),
+                            widget.comments == "" ? Container() : Divider(),
                             widget.comments != null
-                                ? Text(
-                                    "تفاصيل الطلب : ${widget.comments}",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  )
+                                ? widget.comments == ""
+                                    ? Container()
+                                    : Text(
+                                        "تفاصيل الطلب : ${widget.comments}",
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
                                 : Container(),
                             widget.comments != null ? Divider() : Container(),
                             widget.status != 0

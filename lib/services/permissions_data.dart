@@ -38,7 +38,7 @@ class PermissionHan with ChangeNotifier {
   setDialogonStreambool(bool data) {
     currentDialogOnstream = data;
   }
-
+    
   Future filterList() async {
     permissionsList.forEach((element) async {
       if (await element.permission.status == PermissionStatus.granted) {

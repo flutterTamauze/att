@@ -5,33 +5,49 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/OrdersResponseData/OrdersReponse.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/MyOrdersWidget.dart';
+import 'package:qr_users/widgets/UserRequests/MyOrdersWidget.dart';
+import 'package:qr_users/widgets/UserRequests/MyPermessionsWidget.dart';
+import 'package:qr_users/widgets/UserRequests/UserOrdersListView.dart';
+import 'package:qr_users/widgets/UserRequests/UserPermessionsListView.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'NormalUser.dart';
 
 class UserOrdersView extends StatefulWidget {
-  final String orderNumber;
-  UserOrdersView({@required this.orderNumber});
   @override
   _UserOrdersViewState createState() => _UserOrdersViewState();
 }
 
 String selectedOrder = "الأجازات";
 List<String> ordersList = ["الأذونات", "الأجازات"];
-
+Future userPermessions;
 var isExpanded = false;
 TextEditingController orderNumberController = TextEditingController();
 List<OrderData> filteredOrderData = [];
+List<UserPermessions> filteredPermessions = [];
 
 class _UserOrdersViewState extends State<UserOrdersView> {
+  @override
+  void initState() {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    userPermessions = Provider.of<UserPermessionsData>(context, listen: false)
+        .getSingleUserPermession(
+            Provider.of<UserData>(context, listen: false).user.id,
+            userProvider.user.userToken);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<OrderData> provList =
         Provider.of<OrderDataProvider>(context, listen: true).ordersList;
-
+    var permessionsList = Provider.of<UserPermessionsData>(
+      context,
+    ).singleUserPermessions;
     return WillPopScope(
       onWillPop: () {
         return Navigator.of(context).pushAndRemoveUntil(
@@ -41,7 +57,10 @@ class _UserOrdersViewState extends State<UserOrdersView> {
             (Route<dynamic> route) => false);
       },
       child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          print(permessionsList.length);
+        },
         child: Scaffold(
           endDrawer: NotificationItem(),
           body: Column(
@@ -134,12 +153,21 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       print(value);
 
                       setState(() {
-                        List<OrderData> x = provList
-                            .where((element) =>
-                                element.orderNumber ==
-                                orderNumberController.text)
-                            .toList();
-                        filteredOrderData = x;
+                        if (selectedOrder == "الأجازات") {
+                          List<OrderData> order = provList
+                              .where((element) =>
+                                  element.orderNumber ==
+                                  orderNumberController.text)
+                              .toList();
+                          filteredOrderData = order;
+                        } else {
+                          List<UserPermessions> permessions = permessionsList
+                              .where((element) =>
+                                  element.permessionId.toString() ==
+                                  orderNumberController.text)
+                              .toList();
+                          filteredPermessions = permessions;
+                        }
                       });
                     },
                     controller: orderNumberController,
@@ -155,38 +183,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
               ),
               selectedOrder == "الأجازات"
                   ? orderNumberController.text == ""
-                      ? Expanded(
-                          child: Align(
-                          alignment: Alignment.topCenter,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            reverse: true,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  ExpandedOrderTile(
-                                    index: index,
-                                    adminComment: provList[index].adminComment,
-                                    comments: provList[index].comments,
-                                    date: provList[index].date,
-                                    iconData: provList[index].status == 1
-                                        ? Icons.check
-                                        : FontAwesomeIcons.times,
-                                    response: provList[index].statusResponse,
-                                    status: provList[index].status,
-                                    orderNum: provList[index].orderNumber,
-                                    vacationDaysCount:
-                                        provList[index].vacationDaysCount,
-                                    vacationReason:
-                                        provList[index].vacationReason,
-                                  ),
-                                  Divider()
-                                ],
-                              );
-                            },
-                            itemCount: provList.length,
-                          ),
-                        ))
+                      ? UserOrdersListView(provList: provList)
                       : filteredOrderData == null || filteredOrderData.isEmpty
                           ? Center(
                               child: Text("لا يوجد طلب بهذا الرقم"),
@@ -205,7 +202,31 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               status: filteredOrderData[0].status,
                               orderNum: filteredOrderData[0].orderNumber,
                             )
-                  : Container()
+                  : //اذن
+                  FutureBuilder(
+                      future: userPermessions,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.orange,
+                            ),
+                          );
+                        } else {
+                          return orderNumberController.text == ""
+                              ? UserPermessionListView(
+                                  permessionsList: permessionsList)
+                              : filteredPermessions == null ||
+                                      filteredPermessions.isEmpty
+                                  ? Center(
+                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                    )
+                                  : UserPermessionListView(
+                                      permessionsList: filteredPermessions,
+                                    );
+                        }
+                      })
             ],
           ),
         ),

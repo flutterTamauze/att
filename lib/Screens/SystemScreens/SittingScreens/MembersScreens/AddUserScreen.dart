@@ -104,6 +104,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
       _emailController.text = widget.member.email;
       _phoneController.text = widget.member.phoneNumber;
       _titleController.text = widget.member.jobTitle;
+      _salaryController.text = widget.member.salary.toString();
       userType = widget.member.userType;
       setState(() {});
     } else {

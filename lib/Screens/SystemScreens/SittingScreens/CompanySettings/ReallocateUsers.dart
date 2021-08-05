@@ -14,6 +14,7 @@ import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';

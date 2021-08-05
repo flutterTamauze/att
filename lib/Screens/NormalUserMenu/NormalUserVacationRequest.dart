@@ -15,6 +15,9 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/OrdersResponseData/OrdersReponse.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/VacationData.dart';
+import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
@@ -81,6 +84,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   var selectedVal = "كل المواقع";
   @override
   Widget build(BuildContext context) {
+    var userdata = Provider.of<UserData>(context, listen: false).user;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -528,7 +532,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   child: Row(
                                                     children: [
                                                       Text(
-                                                        radioVal1 == 1
+                                                        selectedPermession ==
+                                                                "تأخير عن الحضور"
                                                             ? "اذن حتى الساعة"
                                                             : "اذن من الساعة",
                                                         style: TextStyle(
@@ -583,7 +588,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                               setState(() {
                                                                 timeOutController
                                                                         .text =
-                                                                    "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                    "${toPicked.format(context).replaceAll(" ", " ")}";
                                                               });
                                                             }
                                                           },
@@ -635,91 +640,129 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     ),
                                   ],
                                 ),
-                          RoundedButton(
-                              title: "حفظ الطلب",
-                              onPressed: () {
-                                if (radioVal2 == 1) //اجازة
-                                {
-                                  if (picked != null) {
-                                    Random random = new Random();
-                                    int randomNum = random.nextInt(1000);
-                                    final DateTime now = DateTime.now();
-                                    final DateFormat format =
-                                        DateFormat('dd-M-yyyy'); //4-2-2021
-                                    final String formatted = format.format(now);
-                                    return showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        print(formatted
-                                            .toString()
-                                            .replaceAll("-", "/"));
+                          Provider.of<UserPermessionsData>(context).isLoading
+                              ? CircularProgressIndicator(color: Colors.orange)
+                              : RoundedButton(
+                                  title: "حفظ الطلب",
+                                  onPressed: () async {
+                                    if (radioVal2 == 1) //اجازة
+                                    {
+                                      if (picked != null) {
+                                        Random random = new Random();
+                                        int randomNum = random.nextInt(1000);
+                                        final DateTime now = DateTime.now();
+                                        final DateFormat format =
+                                            DateFormat('dd-M-yyyy'); //4-2-2021
+                                        final String formatted =
+                                            format.format(now);
+                                        return showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            print(formatted
+                                                .toString()
+                                                .replaceAll("-", "/"));
 
-                                        Provider.of<OrderDataProvider>(context,
-                                                listen: false)
-                                            .ordersList
-                                            .add(OrderData(
-                                                comments:
-                                                    commentController.text,
-                                                vacationDaysCount:
-                                                    picked.length == 1
-                                                        ? [picked[0]]
-                                                        : [
-                                                            picked[0],
-                                                            picked[1]
-                                                          ],
-                                                vacationReason: selectedReason,
-                                                orderNumber:
-                                                    randomNum.toString(),
-                                                date:
-                                                    "${formatted.toString().replaceAll("-", "/")}",
-                                                status: 0));
-                                        sendFcmMessage(
-                                          topicName: "",
-                                          title: "تم طلب الأجازة بنجاح",
-                                          category: "vacation",
-                                          message:
-                                              "برجاء المتابعة , رقم الطلب : $randomNum",
+                                            Provider.of<OrderDataProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .ordersList
+                                                .add(OrderData(
+                                                    comments:
+                                                        commentController.text,
+                                                    vacationDaysCount:
+                                                        picked.length == 1
+                                                            ? [picked[0]]
+                                                            : [
+                                                                picked[0],
+                                                                picked[1]
+                                                              ],
+                                                    vacationReason:
+                                                        selectedReason,
+                                                    orderNumber:
+                                                        randomNum.toString(),
+                                                    date:
+                                                        "${formatted.toString().replaceAll("-", "/")}",
+                                                    status: 0));
+                                            sendFcmMessage(
+                                              topicName: "",
+                                              title: "تم طلب الأجازة بنجاح",
+                                              category: "vacation",
+                                              message:
+                                                  "برجاء المتابعة , رقم الطلب : $randomNum",
+                                            );
+                                            return StackedNotificaitonAlert(
+                                              repeatAnimation: false,
+                                              notificationTitle:
+                                                  "تم تقديم طلب الأجازة بنجاح ",
+                                              notificationContent:
+                                                  "برجاء المتابعة , رقم الطلب : $randomNum",
+                                              roundedButtonTitle: "متابعة",
+                                              lottieAsset:
+                                                  "resources/success.json",
+                                              showToast: false,
+                                            );
+                                          },
                                         );
-                                        return StackedNotificaitonAlert(
-                                          repeatAnimation: false,
-                                          notificationTitle:
-                                              "تم تقديم طلب الأجازة بنجاح ",
-                                          notificationContent:
-                                              "برجاء المتابعة , رقم الطلب : $randomNum",
-                                          roundedButtonTitle: "متابعة",
-                                          lottieAsset: "resources/success.json",
-                                          showToast: false,
-                                        );
-                                      },
-                                    );
-                                    // Fluttertoast.showToast(
-                                    //     gravity: ToastGravity.CENTER,
-                                    //     backgroundColor: Colors.green,
-                                    //     msg: "تم حفظ الطلب بنجاح");
-                                    // Navigator.pop(context);
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        gravity: ToastGravity.CENTER,
-                                        backgroundColor: Colors.red,
-                                        msg: "قم بأدخال مدة الأجازة");
-                                  }
-                                } else //اذن
-                                {
-                                  if (selectedDateString != null &&
-                                      timeOutController.text != "") {
-                                    Fluttertoast.showToast(
-                                        gravity: ToastGravity.CENTER,
-                                        backgroundColor: Colors.green,
-                                        msg: "تم حفظ الطلب بنجاح");
-                                    Navigator.pop(context);
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        gravity: ToastGravity.CENTER,
-                                        backgroundColor: Colors.red,
-                                        msg: "قم بأدخال البيانات المطلوبة");
-                                  }
-                                }
-                              })
+                                        // Fluttertoast.showToast(
+                                        //     gravity: ToastGravity.CENTER,
+                                        //     backgroundColor: Colors.green,
+                                        //     msg: "تم حفظ الطلب بنجاح");
+                                        // Navigator.pop(context);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.red,
+                                            msg: "قم بأدخال مدة الأجازة");
+                                      }
+                                    } else //اذن
+                                    {
+                                      if (selectedDateString != null &&
+                                          timeOutController.text != "") {
+                                        print(selectedDate);
+                                        print(timeOutController.text);
+                                        String msg = await Provider
+                                                .of<
+                                                        UserPermessionsData>(
+                                                    context,
+                                                    listen: false)
+                                            .addUserPermession(
+                                                UserPermessions(
+                                                    date: selectedDate,
+                                                    duration: toPicked
+                                                        .format(context)
+                                                        .replaceAll(" ", " "),
+                                                    permessionType:
+                                                        selectedPermession ==
+                                                                "تأخير عن الحضور"
+                                                            ? 1
+                                                            : 2,
+                                                    user: userdata.name),
+                                                Provider.of<UserData>(context,
+                                                        listen: false)
+                                                    .user
+                                                    .userToken,
+                                                userdata.id);
+                                        if (msg == "success") {
+                                          Fluttertoast.showToast(
+                                              gravity: ToastGravity.CENTER,
+                                              backgroundColor: Colors.green,
+                                              msg: "تم حفظ الطلب بنجاح");
+
+                                          Navigator.pop(context);
+                                        } else if (msg == "failed") {
+                                          Fluttertoast.showToast(
+                                              gravity: ToastGravity.CENTER,
+                                              backgroundColor: Colors.red,
+                                              msg: "لقد تم تقديم طلب من قبل");
+                                        }
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.red,
+                                            msg: "قم بأدخال البيانات المطلوبة");
+                                      }
+                                    }
+                                  })
                         ],
                       ),
                     ),

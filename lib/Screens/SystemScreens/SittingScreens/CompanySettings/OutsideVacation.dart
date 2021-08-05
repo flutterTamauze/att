@@ -12,6 +12,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -49,11 +50,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.didChangeDependencies();
   }
 
+  Future getAllPermessions;
   @override
   void initState() {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvider = Provider.of<CompanyData>(context, listen: false);
     // TODO: implement initState
     var now = DateTime.now();
-
+    getAllPermessions = Provider.of<UserPermessionsData>(context, listen: false)
+        .getAllPermessions(comProvider.com.id, userProvider.user.userToken);
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
@@ -551,22 +556,56 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                           Directionality(
                                             textDirection: ui.TextDirection.rtl,
                                             child: Expanded(
-                                                child: ListView.builder(
-                                                    itemCount:
-                                                        permessionProv.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return Column(
-                                                        children: [
-                                                          DataTablePermessionRow(
-                                                              permessionProv[
-                                                                  index]),
-                                                          Divider(
-                                                            thickness: 1,
-                                                          )
-                                                        ],
-                                                      );
+                                                child: FutureBuilder(
+                                                    future: getAllPermessions,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color:
+                                                                Colors.orange,
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        if (permessionProv
+                                                            .isEmpty) {
+                                                          return Center(
+                                                            child: Text(
+                                                              "لا يوجد اذونات",
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          );
+                                                        }
+                                                        return ListView.builder(
+                                                            itemCount:
+                                                                permessionProv
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return Column(
+                                                                children: [
+                                                                  DataTablePermessionRow(
+                                                                      permessionProv[
+                                                                          index]),
+                                                                  Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                  )
+                                                                ],
+                                                              );
+                                                            });
+                                                      }
                                                     })),
                                           ),
                                         ],
