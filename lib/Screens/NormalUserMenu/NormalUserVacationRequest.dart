@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -658,10 +659,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         return showDialog(
                                           context: context,
                                           builder: (context) {
-                                            print(formatted
-                                                .toString()
-                                                .replaceAll("-", "/"));
-
                                             Provider.of<OrderDataProvider>(
                                                     context,
                                                     listen: false)
@@ -683,13 +680,20 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     date:
                                                         "${formatted.toString().replaceAll("-", "/")}",
                                                     status: 0));
+
                                             sendFcmMessage(
                                               topicName: "",
                                               title: "تم طلب الأجازة بنجاح",
                                               category: "vacation",
                                               message:
                                                   "برجاء المتابعة , رقم الطلب : $randomNum",
-                                            );
+                                            ).whenComplete(() => Provider.of<
+                                                        NotificationDataService>(
+                                                    context,
+                                                    listen: false)
+                                                .initializeNotification(
+                                                    context));
+
                                             return StackedNotificaitonAlert(
                                               repeatAnimation: false,
                                               notificationTitle:
@@ -703,11 +707,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                             );
                                           },
                                         );
-                                        // Fluttertoast.showToast(
-                                        //     gravity: ToastGravity.CENTER,
-                                        //     backgroundColor: Colors.green,
-                                        //     msg: "تم حفظ الطلب بنجاح");
-                                        // Navigator.pop(context);
                                       } else {
                                         Fluttertoast.showToast(
                                             gravity: ToastGravity.CENTER,
@@ -720,11 +719,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                           timeOutController.text != "") {
                                         print(selectedDate);
                                         print(timeOutController.text);
-                                        String msg = await Provider
-                                                .of<
-                                                        UserPermessionsData>(
-                                                    context,
-                                                    listen: false)
+                                        String msg = await Provider.of<
+                                                    UserPermessionsData>(
+                                                context,
+                                                listen: false)
                                             .addUserPermession(
                                                 UserPermessions(
                                                     date: selectedDate,
@@ -736,6 +734,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 "تأخير عن الحضور"
                                                             ? 1
                                                             : 2,
+                                                    permessionDescription:
+                                                        commentController.text,
                                                     user: userdata.name),
                                                 Provider.of<UserData>(context,
                                                         listen: false)

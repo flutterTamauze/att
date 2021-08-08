@@ -5,23 +5,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ExpandedPermessionsTile extends StatefulWidget {
-  final String response, orderNum, adminComment, duration;
+  final String desc, orderNum, adminComment, duration;
   final IconData iconData;
-  final String comments, vacationReason;
+  final String vacationReason;
   final int status;
 
   final int permessionType;
   final String date;
 
   ExpandedPermessionsTile({
-    this.comments,
     this.orderNum,
     this.permessionType,
     this.vacationReason,
     this.duration,
     this.iconData,
     this.adminComment,
-    this.response,
+    this.desc,
     this.status,
     this.date,
     Key key,
@@ -55,12 +54,12 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                             widget.date,
                           ),
                           FaIcon(
-                            widget.status == 0
+                            widget.status == 3
                                 ? FontAwesomeIcons.hourglass
                                 : widget.status == 1
                                     ? FontAwesomeIcons.check
                                     : FontAwesomeIcons.times,
-                            color: widget.status == 0
+                            color: widget.status == 3
                                 ? Colors.orange
                                 : widget.status == 1
                                     ? Colors.green
@@ -71,11 +70,11 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                       ),
                       Container(
                         width: 3,
-                        color: widget.status == -1
-                            ? Colors.red
-                            : widget.status == 0
-                                ? Colors.orange
-                                : Colors.green,
+                        color: widget.status == 3
+                            ? Colors.orange
+                            : widget.status == 1
+                                ? Colors.green
+                                : Colors.red,
                       ),
                     ],
                   ),
@@ -101,12 +100,12 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            widget.comments == "" ? Container() : Divider(),
-                            widget.comments != null
-                                ? widget.comments == ""
+                            widget.desc == "" ? Container() : Divider(),
+                            widget.desc != null
+                                ? widget.desc == ""
                                     ? Container()
                                     : Text(
-                                        "تفاصيل الطلب : ${widget.comments}",
+                                        "تفاصيل الطلب : ${widget.desc}",
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
                                           fontSize: 14,
@@ -114,34 +113,37 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                         ),
                                       )
                                 : Container(),
+                            widget.desc == "" ? Container() : Divider(),
                             Text(
                                 "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
                             Divider(),
                             Text(widget.permessionType == 1
                                 ? "اذن حتى الساعة : ${widget.duration}"
                                 : "اذن من الساعة : ${widget.duration}"),
-                            Divider(),
-                            widget.comments != null ? Divider() : Container(),
-                            widget.status != 0
+                            widget.desc != null ? Divider() : Container(),
+                            widget.status != 3
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                          widget.response,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color:
-                                                widget.iconData == Icons.check
-                                                    ? Colors.green[700]
-                                                    : Colors.red,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      widget.status == -1
+                                      widget.desc != ""
+                                          ? Container(
+                                              padding:
+                                                  EdgeInsets.only(bottom: 5),
+                                              child: Text(
+                                                widget.desc,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: widget.iconData ==
+                                                          Icons.check
+                                                      ? Colors.green[700]
+                                                      : Colors.red,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
+                                      widget.status == 2
                                           ? Container(
                                               padding:
                                                   EdgeInsets.only(bottom: 10.h),

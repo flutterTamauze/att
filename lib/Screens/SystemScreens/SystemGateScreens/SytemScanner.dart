@@ -139,6 +139,13 @@ class _SystemScanPageState extends State<SystemScanPage> {
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
           textColor: Colors.black);
+    } else if (msg.contains("Sorry : Today is an official vaation!")) {
+      Fluttertoast.showToast(
+          msg: "خطأ فى التسجيل: عطلة رسمية",
+          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.red,
+          textColor: Colors.black);
     } else if (msg == "off") {
       Fluttertoast.showToast(
           msg: "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",

@@ -154,6 +154,13 @@ class _ScanPageState extends State<ScanPage> {
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.red,
           textColor: Colors.black);
+    } else if (msg.contains("Sorry : Today is an official vaation!")) {
+      Fluttertoast.showToast(
+          msg: "خطأ فى التسجيل: عطلة رسمية",
+          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.red,
+          textColor: Colors.black);
     } else {
       Fluttertoast.showToast(
           msg: "خطأ فى التسجيل",

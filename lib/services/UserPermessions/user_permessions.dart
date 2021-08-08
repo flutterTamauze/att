@@ -6,15 +6,20 @@ import 'package:qr_users/constants.dart';
 
 class UserPermessions {
   String user;
-  // User user;
+  String permessionDescription, adminResponse;
+  int permessionStatus; //1=>accept , //2 refused , //3 waiting..
   int permessionId;
+
   int permessionType;
   DateTime date;
   String duration;
-  
+
   UserPermessions(
       {this.date,
+      this.adminResponse,
       this.duration,
+      this.permessionStatus,
+      this.permessionDescription,
       this.permessionType,
       this.user,
       this.permessionId});
@@ -25,6 +30,9 @@ class UserPermessions {
         duration: json["time"],
         permessionType: json["type"],
         permessionId: json["id"],
+        permessionDescription: json["desc"] ?? "",
+        permessionStatus: json["status"],
+        adminResponse: json["adminResponse"],
         user: json["userId"]);
   }
 }
@@ -67,6 +75,7 @@ class UserPermessionsData with ChangeNotifier {
         'Authorization': "Bearer $userToken"
       },
     );
+    print(response.body);
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       var permessionsObj = jsonDecode(response.body)['data'] as List;
@@ -97,8 +106,11 @@ class UserPermessionsData with ChangeNotifier {
             "type": userPermessions.permessionType,
             "date": (userPermessions.date.toIso8601String()),
             "time": userPermessions.duration,
-            "userId": userId
+            "userId": userId,
+            "Desc": userPermessions.permessionDescription,
+            "Status": 3
           }));
+      print(response.body);
       isLoading = false;
       print(json.decode(response.body)["message"]);
 

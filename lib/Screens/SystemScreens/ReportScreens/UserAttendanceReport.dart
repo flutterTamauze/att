@@ -148,6 +148,12 @@ class _UserAttendanceReportScreenState
               _nameController.text == ""
                   ? FocusScope.of(context).unfocus()
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+              print(
+                Provider.of<MemberData>(context, listen: false)
+                    .dropDownMembersList
+                    .length,
+              );
             },
             child: Scaffold(
               endDrawer: NotificationItem(),
@@ -545,7 +551,7 @@ class _UserAttendanceReportScreenState
                                                                       .circle,
                                                                   image: DecorationImage(
                                                                       image: NetworkImage(
-                                                                          "https://attendanceback.tamauze.com/${item.userImageURL}"))),
+                                                                          "$baseURL/${item.userImageURL}"))),
                                                             ),
                                                             SizedBox(
                                                               width: 10.w,

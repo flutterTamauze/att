@@ -170,13 +170,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                         setState(() {
                           fromDate = pickedRange.first;
                           toDate = pickedRange.last;
-                          // print(picked.first.isAtSameMomentAs(
-                          //     DateTime.now()));
-                          // print(picked.first);
-                          // print(DateTime.now().subtract(Duration(days: 21)));
-                          // selectedDuration = kCalcDateDifferance(
-                          //     fromDate.toString(), toDate.toString());
-                          // selectedDuration += 1;
+
                           String fromText =
                               " من ${DateFormat('yMMMd').format(fromDate).toString()}";
                           String toText =

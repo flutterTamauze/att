@@ -24,11 +24,12 @@ class UserPermessionListView extends StatelessWidget {
           return Column(
             children: [
               ExpandedPermessionsTile(
+                desc: permessionsList[index].permessionDescription,
                 date: permessionsList[index].date.toString().substring(0, 11),
                 permessionType: permessionsList[index].permessionType,
                 orderNum: permessionsList[index].permessionId.toString(),
-                adminComment: "",
-                status: 0,
+                adminComment: permessionsList[index].permessionDescription,
+                status: permessionsList[index].permessionStatus,
                 duration: permessionsList[index].duration,
               ),
               Divider()

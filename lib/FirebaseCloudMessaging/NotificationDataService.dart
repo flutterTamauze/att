@@ -10,11 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 
-import 'package:qr_users/widgets/roundedButton.dart';
-import 'package:flutter_screenutil/screen_util.dart';
-import 'dart:ui' as ui;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'NotificationMessage.dart';
 
 class NotificationDataService with ChangeNotifier {
@@ -60,8 +55,10 @@ class NotificationDataService with ChangeNotifier {
 
   initializeNotification(BuildContext context) async {
     if (await db.checkNotificationStatus()) {
+      print("getting all notifications");
       Provider.of<NotificationDataService>(context, listen: false)
           .notification = await db.getAllNotifications();
+      notifyListeners();
     }
   }
 
