@@ -1185,45 +1185,48 @@ class DataTableVacationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 50.h,
         decoration: BoxDecoration(
             color: Colors.orange,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15),
               topRight: Radius.circular(15),
             )),
-        child: Row(
-          children: [
-            Container(
-                width: 160.w,
-                child: Container(
-                  padding: EdgeInsets.only(right: 10.w),
-                  height: 20,
-                  child: AutoSizeText(
-                    ' أسم العطلة',
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.black),
-                  ),
-                )),
-            Expanded(
-              child: Row(
-                children: [
-                  DataTableHeaderTitles("من"),
-                  DataTableHeaderTitles("إلى"),
-                  DataTableHeaderTitles("عدد الأيام"),
-                  Expanded(
-                    flex: 0,
-                    child: Container(
-                      height: 50.h,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  child: Container(
+                padding: EdgeInsets.only(right: 10.w),
+                height: 20,
+                child: AutoSizeText(
+                  ' أسم العطلة',
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize:
+                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      color: Colors.black),
+                ),
+              )),
+              Container(
+                  child: Container(
+                padding: EdgeInsets.only(right: 10.w),
+                height: 20,
+                child: AutoSizeText(
+                  'التاريخ',
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize:
+                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      color: Colors.black),
+                ),
+              )),
+            ],
+          ),
         ));
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/VacationData.dart';
+import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -25,10 +28,12 @@ class AddVacationScreen extends StatefulWidget {
 }
 
 class _AddVacationScreenState extends State<AddVacationScreen> {
-  TextEditingController _dateController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   AutoCompleteTextField searchTextField;
+  String selectedDateString;
 
+  String date;
+  DateTime selectedDate;
   DateTime toDate;
   DateTime fromDate;
 
@@ -46,24 +51,19 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
     super.initState();
     vacationProv = Provider.of<VacationData>(context, listen: false);
     var now = DateTime.now();
+    if (widget.edit) {
+      selectedDate = Provider.of<VacationData>(context, listen: false)
+          .copyVacationList[widget.vacationListID]
+          .vacationDate;
+      selectedDateString = Provider.of<VacationData>(context, listen: false)
+          .copyVacationList[widget.vacationListID]
+          .vacationDate
+          .toString();
+    }
 
-    toDate = widget.edit
-        ? vacationProv.vactionList[widget.vacationListID].toDate
-        : DateTime(now.year, now.month, now.day);
-    fromDate = widget.edit
-        ? vacationProv.vactionList[widget.vacationListID].fromDate
-        : DateTime.now().subtract(Duration(days: 1));
-
+    Provider.of<VacationData>(context, listen: false).isLoading = false;
     yesterday = DateTime(now.year, now.month, now.day - 1);
 
-    dateFromString = apiFormatter.format(fromDate);
-    dateToString = apiFormatter.format(toDate);
-
-    String fromText = " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-    String toText = " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-    print(toDate.toString());
-    print(fromDate.toString());
-    _dateController.text = "$fromText $toText";
     if (widget.edit) {
       _nameController.text =
           vacationProv.vactionList[widget.vacationListID].vacationName;
@@ -74,7 +74,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
+    var userProvider = Provider.of<UserData>(context);
+    var companyProvider = Provider.of<CompanyData>(context, listen: false);
     return Scaffold(
       endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
@@ -117,74 +118,69 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                 SizedBox(
                                   height: 10.0.h,
                                 ),
-                                Theme(
-                                  data: clockTheme1,
-                                  child: Builder(
-                                    builder: (context) {
-                                      return InkWell(
-                                          onTap: () async {
-                                            final List<DateTime> picked =
-                                                await DateRagePicker
-                                                    .showDatePicker(
-                                                        context: context,
-                                                        initialFirstDate:
-                                                            fromDate,
-                                                        initialLastDate: toDate,
-                                                        firstDate:
-                                                            new DateTime(2021),
-                                                        lastDate: toDate);
-                                            var newString = "";
-                                            setState(() {
-                                              fromDate = picked.first;
-                                              toDate = picked.last;
-                                              // selectedDuration = kCalcDateDifferance(
-                                              //     fromDate.toString(), toDate.toString());
-                                              // selectedDuration += 1;
-                                              String fromText =
-                                                  " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                              String toText =
-                                                  " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                              newString = "$fromText $toText";
-                                            });
-                                            if (_dateController.text !=
-                                                newString) {
-                                              _dateController.text = newString;
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: Directionality(
+                                    textDirection: ui.TextDirection.rtl,
+                                    child: Container(
+                                      child: Theme(
+                                        data: clockTheme,
+                                        child: DateTimePicker(
+                                          initialValue: selectedDateString,
 
-                                              dateFromString =
-                                                  apiFormatter.format(fromDate);
-                                              dateToString =
-                                                  apiFormatter.format(toDate);
+                                          onChanged: (value) {
+                                            print(date);
+                                            print(value);
+                                            if (value != date) {
+                                              date = value;
+                                              selectedDateString = date;
+
+                                              setState(() {
+                                                selectedDate = DateTime.parse(
+                                                    selectedDateString);
+                                              });
+                                              print(selectedDate);
                                             }
+
+                                            print(value);
                                           },
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: Container(
-                                              width: 330.w,
-                                              child: IgnorePointer(
-                                                child: TextFormField(
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  controller: _dateController,
-                                                  decoration:
-                                                      kTextFieldDecorationFromTO
-                                                          .copyWith(
-                                                              hintText:
-                                                                  'المدة من / إلى',
-                                                              prefixIcon: Icon(
-                                                                Icons
-                                                                    .calendar_today_rounded,
-                                                                color: Colors
-                                                                    .orange,
-                                                              )),
-                                                ),
-                                              ),
-                                            ),
-                                          ));
-                                    },
+                                          type: DateTimePickerType.date,
+                                          firstDate: DateTime(
+                                            DateTime.now().year,
+                                            DateTime.january,
+                                          ),
+                                          lastDate: DateTime(
+                                            DateTime.now().year,
+                                            DateTime.december,
+                                          ),
+                                          //controller: _endTimeController,
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(14,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400),
+
+                                          decoration:
+                                              kTextFieldDecorationTime.copyWith(
+                                                  hintStyle: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                  hintText: 'اليوم',
+                                                  prefixIcon: Icon(
+                                                    Icons.access_time,
+                                                    color: Colors.orange,
+                                                  )),
+                                          validator: (val) {
+                                            if (val.length == 0) {
+                                              return 'مطلوب';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
@@ -217,42 +213,79 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(15),
-                            child: RoundedButton(
-                                title: widget.edit ? "تعديل" : "أضافة",
-                                onPressed: () async {
-                                  var vactionProv = Provider.of<VacationData>(
-                                      context,
-                                      listen: false);
+                            child: Provider.of<VacationData>(context).isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.orange,
+                                    ),
+                                  )
+                                : RoundedButton(
+                                    title: widget.edit ? "تعديل" : "أضافة",
+                                    onPressed: () async {
+                                      var vactionProv =
+                                          Provider.of<VacationData>(context,
+                                              listen: false);
 
-                                  if (widget.edit) {
-                                    vactionProv.updateVacation(
-                                        widget.vacationListID,
-                                        Vacation(
-                                            vacationName: _nameController.text,
-                                            fromDate: fromDate,
-                                            toDate: toDate));
-                                    Navigator.pop(context);
-                                    Fluttertoast.showToast(
-                                        msg: "تم تعديل العطلة بنجاح",
-                                        backgroundColor: Colors.green);
-                                  } else {
-                                    if (_nameController.text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "برجاء إدخال اسم العطلة",
-                                          backgroundColor: Colors.red);
-                                    } else {
-                                      vactionProv.vactionList.add(Vacation(
-                                          vacationName: _nameController.text,
-                                          fromDate: fromDate,
-                                          toDate: toDate));
-                                      Fluttertoast.showToast(
-                                          msg: "تم اضافة العطلة بنجاح",
-                                          backgroundColor: Colors.green);
+                                      if (widget.edit) {
+                                        String msg =
+                                            await vactionProv.updateVacation(
+                                                widget.vacationListID,
+                                                Vacation(
+                                                    vacationId: Provider.of<
+                                                                VacationData>(
+                                                            context,
+                                                            listen: false)
+                                                        .vactionList[widget
+                                                            .vacationListID]
+                                                        .vacationId,
+                                                    vacationName:
+                                                        _nameController.text,
+                                                    vacationDate: selectedDate),
+                                                Provider.of<UserData>(context,
+                                                        listen: false)
+                                                    .user
+                                                    .userToken);
+                                        Navigator.pop(context);
+                                        if (msg == "Success") {
+                                          Fluttertoast.showToast(
+                                              msg: "تم تعديل العطلة بنجاح",
+                                              backgroundColor: Colors.green);
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "خطأ فى تعديل العطلة",
+                                              backgroundColor: Colors.red);
+                                        }
+                                      } else {
+                                        if (_nameController.text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg: "برجاء إدخال اسم العطلة",
+                                              backgroundColor: Colors.red);
+                                        } else {
+                                          String msg =
+                                              await vactionProv.addVacation(
+                                                  Vacation(
+                                                    vacationDate: selectedDate,
+                                                    vacationName:
+                                                        _nameController.text,
+                                                  ),
+                                                  userProvider.user.userToken,
+                                                  companyProvider.com.id);
+                                          if (msg == "Success") {
+                                            Fluttertoast.showToast(
+                                                msg: "تم اضافة العطلة بنجاح",
+                                                backgroundColor: Colors.green);
 
-                                      Navigator.pop(context);
-                                    }
-                                  }
-                                }),
+                                            Navigator.pop(context);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "خطأ فى اضافة العطلة",
+                                                backgroundColor: Colors.red);
+
+                                            Navigator.pop(context);
+                                          }
+                                        }
+                                      }
+                                    }),
                           ),
                         ],
                       ),

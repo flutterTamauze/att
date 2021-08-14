@@ -9,10 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:image_cropper/image_cropper.dart';
-// import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
-import 'package:path_provider/path_provider.dart';
+
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/Screens/HomePage.dart';
@@ -25,7 +22,7 @@ import 'package:qr_users/widgets/headers.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_pickers/image_pickers.dart';
-import 'dart:ui' as ui;
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:async';

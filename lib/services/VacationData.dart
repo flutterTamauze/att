@@ -5,55 +5,127 @@ import 'package:http/http.dart' as http;
 import 'package:qr_users/constants.dart';
 
 class VacationData with ChangeNotifier {
-  List<Vacation> vactionList = [
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 4)),
-        toDate: DateTime.now().subtract(Duration(days: 2)),
-        vacationName: "عيد الفطر المبارك"),
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 4)),
-        toDate: DateTime.now().subtract(Duration(days: 2)),
-        vacationName: "عيد العمال"),
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 3)),
-        toDate: DateTime.now().subtract(Duration(days: 1)),
-        vacationName: "عيد تحرير سيناء")
-  ];
-  List<Vacation> copyVacationList = [
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 4)),
-        toDate: DateTime.now().subtract(Duration(days: 2)),
-        vacationName: "عيد الفطر المبارك"),
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 4)),
-        toDate: DateTime.now().subtract(Duration(days: 2)),
-        vacationName: "عيد العمال"),
-    Vacation(
-        fromDate: DateTime.now().subtract(Duration(days: 3)),
-        toDate: DateTime.now().subtract(Duration(days: 1)),
-        vacationName: "عيد تحرير سيناء")
-  ];
+  List<Vacation> vactionList = [];
+  var isLoading = false;
+  List<Vacation> copyVacationList = [];
   removeVacation(Vacation vacation) {
     vactionList.remove(vacation);
     notifyListeners();
   }
 
-  updateVacation(int vacationIndex, Vacation vacation) {
-    vactionList.removeAt(vacationIndex);
-    vactionList.insert(vacationIndex, vacation);
+  Future<String> deleteVacationById(
+      String token, int id, int vacationIndex) async {
+    isLoading = true;
     notifyListeners();
-    print("updated successfully");
+    var response = await http.delete(
+      Uri.parse("$baseURL/api/OfficialVacations/Del_OfficialVacationbyId/$id"),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    );
+    isLoading = false;
+    print(response.body);
+    vactionList.removeAt(vacationIndex);
+    notifyListeners();
+    return jsonDecode(response.body)["message"];
   }
 
-  setCopy(int index) {
-    copyVacationList.clear();
+  Future<String> addVacation(
+      Vacation vacation, String token, int companyId) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.post(
+        Uri.parse("$baseURL/api/OfficialVacations/Add"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+        body: json.encode({
+          "companyId": companyId,
+          "name": vacation.vacationName,
+          "date": vacation.vacationDate.toIso8601String()
+        }));
+    isLoading = false;
+    print(response.body);
+
+    vactionList.add(vacation);
+    notifyListeners();
+    return jsonDecode(response.body)["message"];
+  }
+
+  Future<String> updateVacation(
+      int vacationIndex, Vacation vacation, String token) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.put(
+        Uri.parse("$baseURL/api/OfficialVacations/Edit/${vacation.vacationId}"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+        body: json.encode({
+          "id": vacation.vacationId,
+          "name": vacation.vacationName,
+          "date": vacation.vacationDate.toIso8601String()
+        }));
+    isLoading = false;
+    print(response.body);
+    vactionList.removeAt(vacationIndex);
+
+    vactionList.insert(vacationIndex, vacation);
+    notifyListeners();
+    return jsonDecode(response.body)["message"];
+  }
+
+  setCopy() {
+    copyVacationList = [];
+
+    copyVacationList = vactionList;
+
+    notifyListeners();
+  }
+
+  setCopyByIndex(int index) {
+    print(vactionList.length);
+    copyVacationList = [];
+
     copyVacationList.add(vactionList[index]);
+
+    notifyListeners();
+  }
+
+  getOfficialVacations(int companyId, String token) async {
+    var response = await http.get(
+        Uri.parse(
+            "$baseURL/api/OfficialVacations/GetAllVacationsByCompanyId/$companyId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        });
+    var decodedRes = json.decode(response.body);
+    print(decodedRes);
+
+    if (jsonDecode(response.body)["message"] == "Success") {
+      var vacObjJson = jsonDecode(response.body)['data'] as List;
+      vactionList = vacObjJson.map((json) => Vacation.fromJson(json)).toList();
+      copyVacationList = vactionList;
+
+      notifyListeners();
+    }
   }
 }
 
 class Vacation {
   String vacationName;
-  DateTime fromDate;
-  DateTime toDate;
-  Vacation({this.fromDate, this.toDate, this.vacationName});
+  int vacationId;
+  DateTime vacationDate;
+
+  Vacation({this.vacationName, this.vacationDate, this.vacationId});
+
+  factory Vacation.fromJson(dynamic json) {
+    return Vacation(
+        vacationId: json["id"],
+        vacationDate: DateTime.tryParse(json["date"]),
+        vacationName: json["name"]);
+  }
 }

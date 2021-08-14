@@ -927,38 +927,33 @@ List<Vacation> listAfterFilter(
 
 bool isDateBetweenTheRange(
     Vacation vacation, DateTime filterFromDate, DateTime filterToDate) {
-  return ((filterFromDate.isBefore(vacation.fromDate) ||
-          (vacation.fromDate.year == filterFromDate.year &&
-              vacation.fromDate.day == filterFromDate.day &&
-              vacation.fromDate.month == filterFromDate.month)) &&
-      (filterToDate.isAfter(vacation.toDate) ||
-          (vacation.toDate.year == filterToDate.year &&
-              vacation.toDate.day == filterToDate.day &&
-              vacation.toDate.month == filterToDate.month)));
+  return ((filterFromDate.isBefore(vacation.vacationDate) ||
+          (vacation.vacationDate.year == filterFromDate.year &&
+              vacation.vacationDate.day == filterFromDate.day &&
+              vacation.vacationDate.month == filterFromDate.month)) &&
+      (filterToDate.isAfter(vacation.vacationDate) ||
+          (vacation.vacationDate.year == filterToDate.year &&
+              vacation.vacationDate.day == filterToDate.day &&
+              vacation.vacationDate.month == filterToDate.month)));
 }
 
 class DataTableVacationRow extends StatelessWidget {
   final Vacation vacation;
   final DateTime filterToDate, filterFromDate;
   DataTableVacationRow({this.vacation, this.filterFromDate, this.filterToDate});
-  // String kCalcDateDifferance(String strtDate, String endDate) {
-
-  //   DateTime endingDate = DateTime.parse(endDate);
-
-  //   final differancee = endingDate.difference(startDate).inDays;
-  //   return differancee.toString();
-  // }
 
   @override
   Widget build(BuildContext context) {
     return isDateBetweenTheRange(vacation, filterFromDate, filterToDate)
         ? Container(
             child: Padding(
-              padding: EdgeInsets.only(top: 5.h, right: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     width: 160.w,
+                    height: 40.h,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -972,90 +967,23 @@ class DataTableVacationRow extends StatelessWidget {
                                 fontSize: ScreenUtil()
                                     .setSp(14, allowFontScalingSelf: true),
                                 color: Colors.black),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                              height: 50.h,
-                              child: Center(
-                                child: Container(
-                                  height: 20,
-                                  child: AutoSizeText(
-                                    vacation.fromDate
-                                        .toString()
-                                        .substring(0, 11),
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                  ),
-                                ),
-                              )),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            height: 50.h,
-                            child: Center(
-                              child: Container(
-                                height: 20,
-                                child: AutoSizeText(
-                                  vacation.toDate.toString().substring(0, 11),
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              // DateTime startDate = DateTime.parse(_vacation.fromDate);
-                              // print(DateFormat("yyyy-MM-dd").format(startDate));
-                              // print(startDate);
-                            },
-                            child: Container(
-                              height: 50.h,
-                              child: Center(
-                                child: Container(
-                                  height: 20,
-                                  child: AutoSizeText(
-                                    (vacation.toDate
-                                                    .difference(
-                                                        vacation.fromDate)
-                                                    .inDays +
-                                                1)
-                                            .toString() +
-                                        "يوم",
-                                    // kCalcDateDifferance(
-                                    //     _vacation.toDate, _vacation.fromDate),
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                  Container(
+                    height: 20,
+                    child: AutoSizeText(
+                      vacation.vacationDate.toString().substring(0, 11),
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: ScreenUtil()
+                              .setSp(14, allowFontScalingSelf: true),
+                          color: Colors.black),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -14,6 +14,7 @@ import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'dart:ui' as ui;
@@ -61,28 +62,30 @@ List<String> leaveNumbers = [
 // List<Face> _faces = [];
 
 class _CompanySettingsState extends State<CompanySettings> {
+  var userProvider, comProvider;
   @override
   void initState() {
-    // TODO: implement initState
     var now = DateTime.now();
-    // FlutterMobileVision.start().then((previewSizes) => setState(() {
-    //       _previewFace = previewSizes[_cameraFace].first;
-    //     }));
+    userProvider = Provider.of<UserData>(context, listen: false);
+    comProvider = Provider.of<CompanyData>(context, listen: false);
     fromDate = DateTime(now.year, now.month, now.day - 1);
     toDate = DateTime(now.year, now.month, now.day - 1);
     yesterday = DateTime(now.year, now.month, now.day - 1);
     super.initState();
   }
 
+  Future getDaysOff() async {
+    await Provider.of<DaysOffData>(context, listen: false)
+        .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
+  }
+
+  Future getOfficialVacations() async {
+    await Provider.of<VacationData>(context, listen: false)
+        .getOfficialVacations(comProvider.com.id, userProvider.user.userToken);
+  }
+
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-    Future getDaysOff() async {
-      await Provider.of<DaysOffData>(context, listen: false)
-          .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
-    }
-
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       endDrawer: NotificationItem(),
@@ -123,7 +126,13 @@ class _CompanySettingsState extends State<CompanySettings> {
               subTitle: "ادارة العطلات الرسمية",
               icon: Icons.calendar_today_rounded,
               onTap: () async {
-                print("going t vacation");
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return RoundedLoadingIndicator();
+                    });
+                await getOfficialVacations();
+                Navigator.pop(context);
                 Navigator.push(
                     context,
                     MaterialPageRoute(

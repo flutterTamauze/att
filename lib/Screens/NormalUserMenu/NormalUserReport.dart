@@ -713,7 +713,9 @@ class DataTableVacationRow extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              _vacation.fromDate.toString().substring(0, 11),
+                              _vacation.vacationDate
+                                  .toString()
+                                  .substring(0, 11),
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: ScreenUtil()
