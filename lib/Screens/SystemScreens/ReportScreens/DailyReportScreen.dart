@@ -1131,6 +1131,56 @@ class DataTableEnd extends StatelessWidget {
   }
 }
 
+class DataTableholidayHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Container(
+          decoration: BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              )),
+          child: Row(
+            children: [
+              Container(
+                  width: 160.w,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 10.w),
+                    height: 20,
+                    child: AutoSizeText(
+                      ' أسم المستخدم',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil()
+                              .setSp(16, allowFontScalingSelf: true),
+                          color: Colors.black),
+                    ),
+                  )),
+              Expanded(
+                child: Row(
+                  children: [
+                    DataTableHeaderTitles("نوع الأجازة"),
+                    DataTableHeaderTitles("من"),
+                    DataTableHeaderTitles("الى"),
+                    Expanded(
+                      flex: 0,
+                      child: Container(
+                        height: 50.h,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )),
+    );
+  }
+}
+
 class DataTablePermessionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

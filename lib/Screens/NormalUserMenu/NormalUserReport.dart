@@ -78,7 +78,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
 
     getMembersData();
     Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
-        new UserAttendanceReport([], 0, 0, "0", -1);
+        new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0);
     selectedId = Provider.of<UserData>(context, listen: false).user.id;
     Provider.of<ReportsData>(context, listen: false).getUserReportUnits(
         Provider.of<UserData>(context, listen: false).user.userToken,

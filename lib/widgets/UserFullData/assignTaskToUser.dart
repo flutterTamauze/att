@@ -23,7 +23,10 @@ class AssignTaskToUser extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(taskName),
+              Text(
+                taskName,
+                style: TextStyle(height: 1.5.h),
+              ),
               Container(
                 width: 25.w,
                 height: 35.h,

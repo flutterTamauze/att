@@ -3,8 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/services/OrdersResponseData/OrdersReponse.dart';
+
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -25,9 +25,10 @@ class UserOrdersView extends StatefulWidget {
 String selectedOrder = "الأجازات";
 List<String> ordersList = ["الأذونات", "الأجازات"];
 Future userPermessions;
+Future userHolidays;
 var isExpanded = false;
 TextEditingController orderNumberController = TextEditingController();
-List<OrderData> filteredOrderData = [];
+List<UserHolidays> filteredOrderData = [];
 List<UserPermessions> filteredPermessions = [];
 
 class _UserOrdersViewState extends State<UserOrdersView> {
@@ -36,18 +37,21 @@ class _UserOrdersViewState extends State<UserOrdersView> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     userPermessions = Provider.of<UserPermessionsData>(context, listen: false)
         .getSingleUserPermession(
-            Provider.of<UserData>(context, listen: false).user.id,
-            userProvider.user.userToken);
+            userProvider.user.id, userProvider.user.userToken);
+    userHolidays = Provider.of<UserHolidaysData>(context, listen: false)
+        .getSingleUserHoliday(
+            userProvider.user.id, userProvider.user.userToken);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<OrderData> provList =
-        Provider.of<OrderDataProvider>(context, listen: true).ordersList;
+    List<UserHolidays> provList =
+        Provider.of<UserHolidaysData>(context, listen: true).singleUserHoliday;
     var permessionsList = Provider.of<UserPermessionsData>(
       context,
     ).singleUserPermessions;
+
     return WillPopScope(
       onWillPop: () {
         return Navigator.of(context).pushAndRemoveUntil(
@@ -154,9 +158,9 @@ class _UserOrdersViewState extends State<UserOrdersView> {
 
                       setState(() {
                         if (selectedOrder == "الأجازات") {
-                          List<OrderData> order = provList
+                          List<UserHolidays> order = provList
                               .where((element) =>
-                                  element.orderNumber ==
+                                  element.holidayNumber.toString() ==
                                   orderNumberController.text)
                               .toList();
                           filteredOrderData = order;
@@ -182,26 +186,51 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                 ),
               ),
               selectedOrder == "الأجازات"
-                  ? orderNumberController.text == ""
-                      ? UserOrdersListView(provList: provList)
-                      : filteredOrderData == null || filteredOrderData.isEmpty
-                          ? Center(
-                              child: Text("لا يوجد طلب بهذا الرقم"),
-                            )
-                          : ExpandedOrderTile(
-                              comments: filteredOrderData[0].comments,
-                              date: filteredOrderData[0].date,
-                              vacationDaysCount:
-                                  filteredOrderData[0].vacationDaysCount,
-                              vacationReason:
-                                  filteredOrderData[0].vacationReason,
-                              iconData: filteredOrderData[0].status == 1
-                                  ? Icons.check
-                                  : FontAwesomeIcons.times,
-                              response: filteredOrderData[0].statusResponse,
-                              status: filteredOrderData[0].status,
-                              orderNum: filteredOrderData[0].orderNumber,
-                            )
+                  ? FutureBuilder(
+                      future: userHolidays,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.orange,
+                            ),
+                          );
+                        } else {
+                          return orderNumberController.text == ""
+                              ? UserOrdersListView(provList: provList)
+                              : filteredOrderData == null ||
+                                      filteredOrderData.isEmpty
+                                  ? Center(
+                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                    )
+                                  : ExpandedOrderTile(
+                                      comments: filteredOrderData[0]
+                                          .holidayDescription,
+                                      date: filteredOrderData[0]
+                                          .fromDate
+                                          .toString()
+                                          .substring(0, 11),
+                                      vacationDaysCount: [
+                                        filteredOrderData[0].fromDate,
+                                        filteredOrderData[0].toDate
+                                      ],
+                                      holidayType:
+                                          filteredOrderData[0].holidayType,
+                                      iconData:
+                                          filteredOrderData[0].holidayStatus ==
+                                                  1
+                                              ? Icons.check
+                                              : FontAwesomeIcons.times,
+                                      response:
+                                          filteredOrderData[0].adminResponse,
+                                      status:
+                                          filteredOrderData[0].holidayStatus,
+                                      orderNum: filteredOrderData[0]
+                                          .holidayNumber
+                                          .toString());
+                        }
+                      })
                   : //اذن
                   FutureBuilder(
                       future: userPermessions,

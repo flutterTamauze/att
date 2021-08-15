@@ -17,6 +17,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
@@ -89,7 +90,7 @@ class _UserAttendanceReportScreenState
     } else {
       getMembersData();
       Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
-          new UserAttendanceReport([], 0, 0, "0", -1);
+          new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0);
     }
   }
 
@@ -655,6 +656,9 @@ class _UserAttendanceReportScreenState
                                                                                 absentsDays: reportsData.userAttendanceReport.totalAbsentDay.toString(),
                                                                                 lateDays: reportsData.userAttendanceReport.totalLateDay.toString(),
                                                                                 lateDuration: reportsData.userAttendanceReport.totalLateDuration,
+                                                                                totalDeduction: reportsData.userAttendanceReport.totalDeduction,
+                                                                                totalLateDeduction: reportsData.userAttendanceReport.totalLateDeduction,
+                                                                                totalDedutionAbsent: reportsData.userAttendanceReport.totalDeductionAbsent,
                                                                               )
                                                                             ],
                                                                           )),
@@ -802,6 +806,118 @@ class _UserAttendanceReportScreenState
             MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
             (Route<dynamic> route) => false);
     return Future.value(false);
+  }
+}
+
+class DataTableHolidayRow extends StatelessWidget {
+  final UserHolidays _holidays;
+
+  DataTableHolidayRow(this._holidays);
+
+  @override
+  Widget build(BuildContext context) {
+    return _holidays.holidayType == 4
+        ? Container()
+        : Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 160.w,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 20.h,
+                          child: AutoSizeText(
+                            _holidays.userName,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(14, allowFontScalingSelf: true),
+                                fontWeight: FontWeight.w300,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                              height: 30.h,
+                              child: Center(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 30.h,
+                                  child: AutoSizeText(
+                                    _holidays.holidayType == 1
+                                        ? "عارضة"
+                                        : _holidays.holidayType == 2
+                                            ? "مرضى"
+                                            : "رصيد اجازات",
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(14,
+                                          allowFontScalingSelf: true),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 15.w),
+                          height: 35.h,
+                          child: Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 20.h,
+                              child: AutoSizeText(
+                                _holidays.fromDate.toString().substring(0, 11),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil()
+                                      .setSp(14, allowFontScalingSelf: true),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => print(
+                            _holidays.toDate.toString().substring(0, 11),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.only(right: 20.w),
+                            height: 30.h,
+                            child: Center(
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 20.h,
+                                child: AutoSizeText(
+                                  _holidays.toDate.toString().substring(0, 11),
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(13, allowFontScalingSelf: true),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
   }
 }
 
@@ -1169,7 +1285,14 @@ class DataTableEnd extends StatelessWidget {
   final absentsDays;
   final lateDays;
   final lateDuration;
-  DataTableEnd({this.absentsDays, this.lateDays, this.lateDuration});
+  final totalDeduction, totalDedutionAbsent, totalLateDeduction;
+  DataTableEnd(
+      {this.absentsDays,
+      this.lateDays,
+      this.lateDuration,
+      this.totalDeduction,
+      this.totalDedutionAbsent,
+      this.totalLateDeduction});
 
   @override
   Widget build(BuildContext context) {
@@ -1181,102 +1304,206 @@ class DataTableEnd extends StatelessWidget {
             bottomLeft: Radius.circular(15),
           )),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
         child: Container(
-          height: 50.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          height: 60.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'ايام الغياب:',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20.h,
+                        child: AutoSizeText(
+                          'ايام الغياب:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          absentsDays,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 4.w,
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          'ايام التأخير:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          lateDays,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      absentsDays,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          'مدة التأخير:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          lateDuration,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              Divider(),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'ايام التأخير:',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          ' خصم التأخير:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          totalLateDeduction.toStringAsFixed(1),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 4.w,
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          '  خصم الغياب:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          totalDedutionAbsent.toStringAsFixed(1),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      lateDays,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'مدة التأخير:',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4.w,
-                  ),
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      lateDuration,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          ' إجمالى الخصومات:',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          totalDeduction.toStringAsFixed(1),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

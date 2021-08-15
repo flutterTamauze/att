@@ -126,23 +126,6 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      widget.desc != ""
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 5),
-                                              child: Text(
-                                                widget.desc,
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: widget.iconData ==
-                                                          Icons.check
-                                                      ? Colors.green[700]
-                                                      : Colors.red,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            )
-                                          : Container(),
                                       widget.status == 2
                                           ? Container(
                                               padding:

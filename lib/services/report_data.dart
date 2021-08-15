@@ -111,14 +111,22 @@ class DailyReport {
 
 class UserAttendanceReport {
   List<UserAttendanceReportUnit> userAttendListUnits;
-
+  double totalLateDeduction, totalDeduction, totalDeductionAbsent;
   int totalAbsentDay;
   int totalLateDay;
   String totalLateDuration;
   int isDayOff;
 
-  UserAttendanceReport(this.userAttendListUnits, this.totalAbsentDay,
-      this.totalLateDay, this.totalLateDuration, this.isDayOff);
+  UserAttendanceReport(
+    this.userAttendListUnits,
+    this.totalAbsentDay,
+    this.totalLateDay,
+    this.totalLateDuration,
+    this.isDayOff,
+    this.totalLateDeduction,
+    this.totalDeductionAbsent,
+    this.totalDeduction,
+  );
 }
 
 class LateAbsenceReport {
@@ -253,7 +261,7 @@ class ReportsData with ChangeNotifier {
   DailyReport dailyReport = DailyReport([], 0, 0, false);
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
-      UserAttendanceReport([], 0, 0, "", -1);
+      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0);
 
   LateAbsenceReport lateAbsenceReport = LateAbsenceReport([], "0%", "0%", true);
 
@@ -383,7 +391,12 @@ class ReportsData with ChangeNotifier {
                 decodedRes['data']['totalAbsentDay'] as int;
             userAttendanceReport.totalLateDay =
                 decodedRes['data']['totalLateDay'] as int;
-
+            userAttendanceReport.totalLateDeduction =
+                decodedRes["data"]["totalLateDeduction"] + 0.0 as double;
+            userAttendanceReport.totalDeduction =
+                decodedRes["data"]["totalDeduction"] + 0.0 as double;
+            userAttendanceReport.totalDeductionAbsent =
+                decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
             var reportObjJson =
                 jsonDecode(response.body)['data']['userDayAttends'] as List;
 

@@ -28,7 +28,7 @@ class UserPermessionListView extends StatelessWidget {
                 date: permessionsList[index].date.toString().substring(0, 11),
                 permessionType: permessionsList[index].permessionType,
                 orderNum: permessionsList[index].permessionId.toString(),
-                adminComment: permessionsList[index].permessionDescription,
+                adminComment: permessionsList[index].adminResponse,
                 status: permessionsList[index].permessionStatus,
                 duration: permessionsList[index].duration,
               ),

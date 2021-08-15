@@ -13,6 +13,8 @@ import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
@@ -25,7 +27,6 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseCloudMessaging/NotificationMessage.dart';
 import 'enums/connectivity_status.dart';
-import 'services/OrdersResponseData/OrdersReponse.dart';
 
 DatabaseHelper db = DatabaseHelper();
 List<CameraDescription> cameras;
@@ -110,10 +111,13 @@ class MyApp extends StatelessWidget {
           create: (context) => UserPermessionsData(),
         ),
         ChangeNotifierProvider(
-          create: (context) => OrderDataProvider(),
+          create: (context) => NotificationDataService(),
         ),
         ChangeNotifierProvider(
-          create: (context) => NotificationDataService(),
+          create: (context) => UserHolidaysData(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MissionsData(),
         )
       ],
       child: ScreenUtilInit(

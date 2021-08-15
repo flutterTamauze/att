@@ -85,7 +85,7 @@ class StackedNotificaitonAlert extends StatelessWidget {
                 ))),
         Positioned(
             right: 125.w,
-            top: 225.h,
+            top: 210.h,
             child: Container(
               width: 150.w,
               height: 150.h,

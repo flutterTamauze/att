@@ -284,7 +284,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 ),
                                 Divider(),
                                 AssignTaskToUser(
-                                  taskName: "تسجيل اجازات و مأموريات",
+                                  taskName:
+                                      "تسجيل  مأموريات \n عرض اذونات و اجازات",
                                   iconData: FontAwesomeIcons.calendarCheck,
                                   function: () => Navigator.push(
                                       context,

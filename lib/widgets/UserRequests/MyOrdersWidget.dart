@@ -7,7 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ExpandedOrderTile extends StatefulWidget {
   final String response, orderNum, adminComment;
   final IconData iconData;
-  final String comments, vacationReason;
+  final String comments;
+  int holidayType;
   final int status;
   final int index;
   final List<DateTime> vacationDaysCount;
@@ -16,7 +17,7 @@ class ExpandedOrderTile extends StatefulWidget {
     this.comments,
     this.orderNum,
     this.vacationDaysCount,
-    this.vacationReason,
+    this.holidayType,
     this.iconData,
     this.adminComment,
     this.response,
@@ -51,16 +52,15 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            widget.date,
-                            style: TextStyle(letterSpacing: 1),
+                            widget.date.substring(0, 11),
                           ),
                           FaIcon(
-                            widget.status == 0
+                            widget.status == 3
                                 ? FontAwesomeIcons.hourglass
                                 : widget.status == 1
                                     ? FontAwesomeIcons.check
                                     : FontAwesomeIcons.times,
-                            color: widget.status == 0
+                            color: widget.status == 3
                                 ? Colors.orange
                                 : widget.status == 1
                                     ? Colors.green
@@ -71,9 +71,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                       ),
                       Container(
                         width: 3,
-                        color: widget.status == -1
+                        color: widget.status == 2
                             ? Colors.red
-                            : widget.status == 0
+                            : widget.status == 3
                                 ? Colors.orange
                                 : Colors.green,
                       ),
@@ -94,7 +94,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            widget.vacationDaysCount.length == 1
+                            widget.vacationDaysCount[1]
+                                    .isBefore(widget.vacationDaysCount[0])
                                 ? Text(
                                     " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                     style: TextStyle(
@@ -111,7 +112,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                   ),
                             Divider(),
                             Text(
-                              "نوع الأجازة : ${widget.vacationReason} ",
+                              "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 2 ? "مرضية" : "رصيد اجازات"} ",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -131,26 +132,29 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                       )
                                 : Container(),
                             widget.comments != null ? Divider() : Container(),
-                            widget.status != 0
+                            widget.status != 3
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                          widget.response,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color:
-                                                widget.iconData == Icons.check
-                                                    ? Colors.green[700]
-                                                    : Colors.red,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      widget.status == -1
+                                      widget.response != null
+                                          ? Container(
+                                              padding:
+                                                  EdgeInsets.only(bottom: 5),
+                                              child: Text(
+                                                widget.response,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: widget.iconData ==
+                                                          Icons.check
+                                                      ? Colors.green[700]
+                                                      : Colors.red,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
+                                      widget.status == 2
                                           ? Container(
                                               padding:
                                                   EdgeInsets.only(bottom: 10.h),
