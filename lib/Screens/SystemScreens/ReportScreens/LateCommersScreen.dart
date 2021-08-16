@@ -621,7 +621,7 @@ class DataTableRow extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 160.w,
+                width: 100.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -702,6 +702,24 @@ class DataTableRow extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: ScreenUtil()
                                       .setSp(16, allowFontScalingSelf: true),
+                                  color: Colors.black),
+                            ),
+                          ))),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                          height: 50.h,
+                          child: Center(
+                              child: Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              userAttendanceReportUnit.totalDeduction
+                                  .toStringAsFixed(1),
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: ScreenUtil()
+                                      .setSp(14, allowFontScalingSelf: true),
                                   color: Colors.black),
                             ),
                           ))),
@@ -816,7 +834,7 @@ class DataTableHeader extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                  width: 160.w,
+                  width: 100.w,
                   height: 50.h,
                   child: Center(
                       child: Container(
@@ -827,7 +845,7 @@ class DataTableHeader extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
+                              .setSp(14, allowFontScalingSelf: true),
                           color: Colors.black),
                     ),
                   ))),
@@ -846,7 +864,7 @@ class DataTableHeader extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
+                                  .setSp(14, allowFontScalingSelf: true),
                               color: Colors.black),
                         ),
                       ))),
@@ -864,7 +882,7 @@ class DataTableHeader extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
+                                  .setSp(14, allowFontScalingSelf: true),
                               color: Colors.black),
                         ),
                       ))),
@@ -882,7 +900,24 @@ class DataTableHeader extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
+                                  .setSp(14, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ))),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                          child: Center(
+                              child: Container(
+                        child: AutoSizeText(
+                          'مجموع الخصومات',
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
                               color: Colors.black),
                         ),
                       ))),

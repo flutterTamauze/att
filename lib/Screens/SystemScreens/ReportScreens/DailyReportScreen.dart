@@ -431,52 +431,118 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                           child: Directionality(
                                               textDirection:
                                                   ui.TextDirection.rtl,
-                                              child: !reportsData
-                                                      .dailyReport.isHoliday
-                                                  ? reportsData
-                                                              .dailyReport
-                                                              .attendListUnits
-                                                              .length !=
-                                                          0
-                                                      ? Column(
+                                              child: snapshot.data ==
+                                                      "officialHoliday"
+                                                  ? Container(
+                                                      child: Center(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
                                                           children: [
-                                                            DataTableHeader(),
-                                                            Expanded(
-                                                                child:
-                                                                    Container(
-                                                              child: ListView
-                                                                  .builder(
-                                                                      itemCount: reportsData
-                                                                          .dailyReport
-                                                                          .attendListUnits
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (BuildContext context,
-                                                                              int index) {
-                                                                        return DataTableRow(
-                                                                            reportsData.dailyReport.attendListUnits[index],
-                                                                            siteId);
-                                                                      }),
-                                                            )),
-                                                            !isToday(
-                                                                    selectedDate)
-                                                                ? DataTableEnd(
-                                                                    totalAbsents: reportsData
-                                                                        .dailyReport
-                                                                        .totalAbsent
-                                                                        .toString(),
-                                                                    totalAttend: reportsData
-                                                                        .dailyReport
-                                                                        .totalAttend
-                                                                        .toString())
-                                                                : Container()
+                                                            Container(
+                                                              height: 20,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "لا يوجد تسجيلات: عطلة رسمية",
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10.h,
+                                                            ),
+                                                            Container(
+                                                              height: 20,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                reportsData
+                                                                    .dailyReport
+                                                                    .officialHoliday,
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            )
                                                           ],
-                                                        )
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : !reportsData
+                                                          .dailyReport.isHoliday
+                                                      ? reportsData
+                                                                  .dailyReport
+                                                                  .attendListUnits
+                                                                  .length !=
+                                                              0
+                                                          ? Column(
+                                                              children: [
+                                                                DataTableHeader(),
+                                                                Expanded(
+                                                                    child:
+                                                                        Container(
+                                                                  child: ListView
+                                                                      .builder(
+                                                                          itemCount: reportsData
+                                                                              .dailyReport
+                                                                              .attendListUnits
+                                                                              .length,
+                                                                          itemBuilder:
+                                                                              (BuildContext context, int index) {
+                                                                            return DataTableRow(reportsData.dailyReport.attendListUnits[index],
+                                                                                siteId);
+                                                                          }),
+                                                                )),
+                                                                !isToday(
+                                                                        selectedDate)
+                                                                    ? DataTableEnd(
+                                                                        totalAbsents: reportsData
+                                                                            .dailyReport
+                                                                            .totalAbsent
+                                                                            .toString(),
+                                                                        totalAttend: reportsData
+                                                                            .dailyReport
+                                                                            .totalAttend
+                                                                            .toString())
+                                                                    : Container()
+                                                              ],
+                                                            )
+                                                          : Center(
+                                                              child: Container(
+                                                                height: 20,
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  "لا يوجد تسجيلات بهذا الموقع",
+                                                                  maxLines: 1,
+                                                                  style: TextStyle(
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          16,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700),
+                                                                ),
+                                                              ),
+                                                            )
                                                       : Center(
                                                           child: Container(
                                                             height: 20,
                                                             child: AutoSizeText(
-                                                              "لا يوجد تسجيلات بهذا الموقع",
+                                                              "لا يوجد تسجيلات: يوم اجازة",
                                                               maxLines: 1,
                                                               style: TextStyle(
                                                                   fontSize: ScreenUtil().setSp(
@@ -488,24 +554,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                           .w700),
                                                             ),
                                                           ),
-                                                        )
-                                                  : Center(
-                                                      child: Container(
-                                                        height: 20,
-                                                        child: AutoSizeText(
-                                                          "لا يوجد تسجيلات: يوم اجازة",
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        ),
-                                                      ),
-                                                    )),
+                                                        )),
                                         ),
                                       ),
                                     ],
@@ -646,173 +695,189 @@ class _DataTableRowState extends State<DataTableRow> {
                 });
               },
               //USERNAME IN LISTVIEW//
-              child: Container(
-                width: 160.w,
-                child: Container(
-                  height: 30.h,
-                  child: AutoSizeText(
-                    widget.attendUnit.userName,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.black),
-                  ),
-                ),
-              ),
+              child: widget.attendUnit.timeOut == null
+                  ? Container()
+                  : Container(
+                      width: 160.w,
+                      child: Container(
+                        height: 30.h,
+                        child: AutoSizeText(
+                          widget.attendUnit.userName,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: ScreenUtil()
+                                  .setSp(16, allowFontScalingSelf: true),
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
             ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                        height: 50.h,
-                        child: Center(
-                            child: widget.attendUnit.lateTime == "-"
-                                ? Container(
-                                    height: 20,
-                                    child: AutoSizeText(
-                                      "-",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true),
-                                          color: Colors.black),
-                                    ),
+            widget.attendUnit.timeOut == null
+                ? Container()
+                : Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                              height: 50.h,
+                              child: Center(
+                                  child: widget.attendUnit.lateTime == "-"
+                                      ? Container(
+                                          height: 20,
+                                          child: AutoSizeText(
+                                            "-",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.black),
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 20,
+                                          child: AutoSizeText(
+                                            widget.attendUnit.lateTime,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.red),
+                                          ),
+                                        ))),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                              height: 50.h,
+                              child: Center(
+                                  child: widget.attendUnit.timeIn == "-"
+                                      ? Container(
+                                          height: 20,
+                                          child: AutoSizeText(
+                                            "غياب",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.red),
+                                          ),
+                                        )
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              widget.attendUnit.timeInIcon ==
+                                                      "am"
+                                                  ? Icons.wb_sunny
+                                                  : Icons.nightlight_round,
+                                              size: ScreenUtil().setSp(12,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            Container(
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                widget.attendUnit.timeIn,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        14,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        ))),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                              height: 50.h,
+                              child: Center(
+                                  child: widget.attendUnit.timeOut == "-"
+                                      ? widget.attendUnit.timeIn == "-"
+                                          ? Container(
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                "",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        16,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.red),
+                                              ),
+                                            )
+                                          : Container(
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                "-",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        16,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.black),
+                                              ),
+                                            )
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              widget.attendUnit.timeOutIcon ==
+                                                      "am"
+                                                  ? Icons.wb_sunny
+                                                  : Icons.nightlight_round,
+                                              size: ScreenUtil().setSp(12,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            Container(
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                widget.attendUnit.timeOut ?? "",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        14,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        ))),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () {
+                              if (widget.attendUnit.attendType == 1) {
+                                showAttendByCameraDetails();
+                              } else {
+                                print("mob");
+                              }
+                            },
+                            child: widget.attendUnit.timeOut != "-" ||
+                                    widget.attendUnit.timeIn != "-"
+                                ? Icon(
+                                    widget.attendUnit.attendType == 0
+                                        ? Icons.phone_android
+                                        : Icons.image,
+                                    color: Colors.orange,
+                                    size: ScreenUtil()
+                                        .setSp(28, allowFontScalingSelf: true),
                                   )
-                                : Container(
-                                    height: 20,
-                                    child: AutoSizeText(
-                                      widget.attendUnit.lateTime,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14,
-                                              allowFontScalingSelf: true),
-                                          color: Colors.red),
-                                    ),
-                                  ))),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                        height: 50.h,
-                        child: Center(
-                            child: widget.attendUnit.timeIn == "-"
-                                ? Container(
-                                    height: 20,
-                                    child: AutoSizeText(
-                                      "غياب",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14,
-                                              allowFontScalingSelf: true),
-                                          color: Colors.red),
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        widget.attendUnit.timeInIcon == "am"
-                                            ? Icons.wb_sunny
-                                            : Icons.nightlight_round,
-                                        size: ScreenUtil().setSp(12,
-                                            allowFontScalingSelf: true),
-                                      ),
-                                      Container(
-                                        height: 20,
-                                        child: AutoSizeText(
-                                          widget.attendUnit.timeIn,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(14,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ],
-                                  ))),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                        height: 50.h,
-                        child: Center(
-                            child: widget.attendUnit.timeOut == "-"
-                                ? widget.attendUnit.timeIn == "-"
-                                    ? Container(
-                                        height: 20,
-                                        child: AutoSizeText(
-                                          "",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.red),
-                                        ),
-                                      )
-                                    : Container(
-                                        height: 20,
-                                        child: AutoSizeText(
-                                          "-",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.black),
-                                        ),
-                                      )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        widget.attendUnit.timeOutIcon == "am"
-                                            ? Icons.wb_sunny
-                                            : Icons.nightlight_round,
-                                        size: ScreenUtil().setSp(12,
-                                            allowFontScalingSelf: true),
-                                      ),
-                                      Container(
-                                        height: 20,
-                                        child: AutoSizeText(
-                                          widget.attendUnit.timeOut,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(14,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ],
-                                  ))),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        if (widget.attendUnit.attendType == 1) {
-                          showAttendByCameraDetails();
-                        } else {
-                          print("mob");
-                        }
-                      },
-                      child: widget.attendUnit.timeOut != "-" ||
-                              widget.attendUnit.timeIn != "-"
-                          ? Icon(
-                              widget.attendUnit.attendType == 0
-                                  ? Icons.phone_android
-                                  : Icons.image,
-                              color: Colors.orange,
-                              size: ScreenUtil()
-                                  .setSp(28, allowFontScalingSelf: true),
-                            )
-                          : Container(),
+                                : Container(),
+                          ),
+                        )
+                      ],
                     ),
                   )
-                ],
-              ),
-            )
           ],
         ),
       ),

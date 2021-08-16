@@ -51,30 +51,35 @@ class DailyReportUnit {
     }
 
     String amPmChanger(String time) {
-      if (time != "-") {
-        int intTime = int.parse(time.replaceAll(":", ""));
-        int hours = (intTime ~/ 100);
-        int min = intTime - (hours * 100);
+      try {
+        if (time != "-") {
+          print("test $time");
+          int intTime = int.parse(time.replaceAll(":", ""));
+          int hours = (intTime ~/ 100);
+          int min = intTime - (hours * 100);
 
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours != 0 ? hours : 12; //
+          var ampm = hours >= 12 ? 'pm' : 'am';
+          hours = hours % 12;
+          hours = hours != 0 ? hours : 12; //
 
-        String hoursStr = hours < 10
-            ? '0$hours'
-            : hours.toString(); // the hour '0' should be '12'
-        String minStr = min < 10 ? '0$min' : min.toString();
+          String hoursStr = hours < 10
+              ? '0$hours'
+              : hours.toString(); // the hour '0' should be '12'
+          String minStr = min < 10 ? '0$min' : min.toString();
 
-        var strTime = '$hoursStr:$minStr';
+          var strTime = '$hoursStr:$minStr';
 
-        return strTime;
-      } else {
-        return time;
+          return strTime;
+        } else {
+          return time;
+        }
+      } catch (e) {
+        print(e);
       }
     }
 
     String amOrPm(String time) {
-      if (time != "-") {
+      if (time != "-" && time.toString().contains(":")) {
         int intTime = int.parse(time.replaceAll(":", ""));
         int hours = (intTime ~/ 100);
 
@@ -102,11 +107,12 @@ class DailyReportUnit {
 class DailyReport {
   List<DailyReportUnit> attendListUnits;
   bool isHoliday;
+  String officialHoliday;
   int totalAttend;
   int totalAbsent;
 
-  DailyReport(
-      this.attendListUnits, this.totalAttend, this.totalAbsent, this.isHoliday);
+  DailyReport(this.attendListUnits, this.totalAttend, this.totalAbsent,
+      this.isHoliday, this.officialHoliday);
 }
 
 class UserAttendanceReport {
@@ -145,10 +151,11 @@ class LateAbsenceReportUnit {
   String totalLateDays;
   String totalAbsence;
   String totalLate;
-
+  double totalDeduction;
   LateAbsenceReportUnit(
       {this.userName,
       this.totalLateDays,
+      this.totalDeduction,
       this.totalAbsence,
       this.totalLate,
       this.userId});
@@ -172,6 +179,7 @@ class LateAbsenceReportUnit {
 
     return LateAbsenceReportUnit(
         userName: json['name'],
+        totalDeduction: json["totalDeduction"] + 0.0 as double,
         totalLateDays: json['lateDays'].toString(),
         totalAbsence: json['absentDays'].toString(),
         totalLate: getTimeToString(json['lateTime'] as int),
@@ -197,7 +205,7 @@ class UserAttendanceReportUnit {
 
   factory UserAttendanceReportUnit.fromJson(dynamic json) {
     String amPmChanger(String time) {
-      if (time != "-") {
+      if (time != "-" && time.toString().contains(":") && time != null) {
         int intTime = int.parse(time.replaceAll(":", ""));
         int hours = (intTime ~/ 100);
         int min = intTime - (hours * 100);
@@ -220,7 +228,7 @@ class UserAttendanceReportUnit {
     }
 
     String amOrPm(String time) {
-      if (time != "-") {
+      if (time != "-" && time.toString().contains(":")) {
         int intTime = int.parse(time.replaceAll(":", ""));
         int hours = (intTime ~/ 100);
 
@@ -258,7 +266,7 @@ class UserAttendanceReportUnit {
 
 class ReportsData with ChangeNotifier {
   Future futureListener;
-  DailyReport dailyReport = DailyReport([], 0, 0, false);
+  DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
       UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0);
@@ -289,52 +297,57 @@ class ReportsData with ChangeNotifier {
       String userToken, int siteId, String date, BuildContext context) async {
     List<DailyReportUnit> newReportList;
     if (await isConnectedToInternet()) {
-      try {
-        final response = await http.get(
-            Uri.parse(
-                "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+      final response = await http.get(
+          Uri.parse(
+              "http://192.168.0.119:8010/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getDailyReportUnitsApi(userToken, siteId, date, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
-          if (decodedRes["message"] == "Success") {
-            dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
-            dailyReport.totalAttend = decodedRes['data']['totalAttend'] as int;
-            dailyReport.totalAbsent = decodedRes['data']['totalAbsent'] as int;
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getDailyReportUnitsApi(userToken, siteId, date, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
+        if (decodedRes["message"] == "Success") {
+          dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
+          dailyReport.totalAttend = decodedRes['data']['totalAttend'] as int;
+          dailyReport.totalAbsent = decodedRes['data']['totalAbsent'] as int;
 
-            var reportObjJson =
-                jsonDecode(response.body)['data']['users'] as List;
+          var reportObjJson =
+              jsonDecode(response.body)['data']['users'] as List;
 
-            newReportList = reportObjJson
-                .map((reportJson) => DailyReportUnit.fromJson(reportJson))
-                .toList();
+          newReportList = reportObjJson
+              .map((reportJson) => DailyReportUnit.fromJson(reportJson))
+              .toList();
 
-            dailyReport.attendListUnits = [...newReportList];
-            notifyListeners();
-            print("message ${dailyReport.isHoliday}");
-            return "Success";
-          } else if (decodedRes["message"] == "Success : Holiday Day") {
-            dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
-            dailyReport.attendListUnits.clear();
-            notifyListeners();
-            print("message ${dailyReport.isHoliday}");
-            return "holiday";
-          } else {
-            return "wrong";
-          }
+          dailyReport.attendListUnits = [...newReportList];
+          notifyListeners();
+          print("message ${dailyReport.isHoliday}");
+          return "Success";
+        } else if (decodedRes["message"] == "Success : Holiday Day") {
+          dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
+
+          dailyReport.attendListUnits.clear();
+          notifyListeners();
+          print("message ${dailyReport.isHoliday}");
+          return "holiday";
+        } else if (decodedRes["message"] == "Success : Official Vacation Day") {
+          dailyReport.officialHoliday =
+              decodedRes["data"]["officialVactionName"];
+          dailyReport.attendListUnits.clear();
+          notifyListeners();
+
+          return "officialHoliday";
+        } else {
+          return "wrong";
         }
-      } catch (e) {
-        print(e);
       }
+
       return "failed";
     } else {
       return 'noInternet';
@@ -365,67 +378,64 @@ class ReportsData with ChangeNotifier {
     print("UseriD $userId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<UserAttendanceReportUnit> newReportList;
     if (await isConnectedToInternet()) {
-      try {
-        final response = await http.get(
-            Uri.parse(
-                "$baseURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+      final response = await http.get(
+          Uri.parse(
+              "$baseURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getUserReportUnitsApi(
-              userToken, userId, dateFrom, dateTo, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getUserReportUnitsApi(
+            userToken, userId, dateFrom, dateTo, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            userAttendanceReport.totalLateDuration =
-                getTimeToString(decodedRes['data']['totalLateDuration'] as int);
-            userAttendanceReport.totalAbsentDay =
-                decodedRes['data']['totalAbsentDay'] as int;
-            userAttendanceReport.totalLateDay =
-                decodedRes['data']['totalLateDay'] as int;
-            userAttendanceReport.totalLateDeduction =
-                decodedRes["data"]["totalLateDeduction"] + 0.0 as double;
-            userAttendanceReport.totalDeduction =
-                decodedRes["data"]["totalDeduction"] + 0.0 as double;
-            userAttendanceReport.totalDeductionAbsent =
-                decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
-            var reportObjJson =
-                jsonDecode(response.body)['data']['userDayAttends'] as List;
+        if (decodedRes["message"] == "Success") {
+          userAttendanceReport.totalLateDuration =
+              getTimeToString(decodedRes['data']['totalLateDuration'] as int);
+          userAttendanceReport.totalAbsentDay =
+              decodedRes['data']['totalAbsentDay'] as int;
+          userAttendanceReport.totalLateDay =
+              decodedRes['data']['totalLateDay'] as int;
+          userAttendanceReport.totalLateDeduction =
+              decodedRes["data"]["totalLateDeduction"] + 0.0 as double;
+          userAttendanceReport.totalDeduction =
+              decodedRes["data"]["totalDeduction"] + 0.0 as double;
+          userAttendanceReport.totalDeductionAbsent =
+              decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
+          var reportObjJson =
+              jsonDecode(response.body)['data']['userDayAttends'] as List;
 
-            if (reportObjJson.isNotEmpty) {
-              print("reportObjJson: $reportObjJson");
-              userAttendanceReport.isDayOff = 0;
-              newReportList = reportObjJson
-                  .map((reportJson) =>
-                      UserAttendanceReportUnit.fromJson(reportJson))
-                  .toList();
+          if (reportObjJson.isNotEmpty) {
+            print("reportObjJson: $reportObjJson");
+            userAttendanceReport.isDayOff = 0;
+            newReportList = reportObjJson
+                .map((reportJson) =>
+                    UserAttendanceReportUnit.fromJson(reportJson))
+                .toList();
 
-              userAttendanceReport.userAttendListUnits = newReportList;
-              notifyListeners();
-              return "Success";
-            } else {
-              userAttendanceReport.userAttendListUnits = [];
-              userAttendanceReport.isDayOff = 1;
-              notifyListeners();
-              print("dayOff");
-              return "dayOff";
-            }
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
+            userAttendanceReport.userAttendListUnits = newReportList;
+            notifyListeners();
+            return "Success";
+          } else {
+            userAttendanceReport.userAttendListUnits = [];
+            userAttendanceReport.isDayOff = 1;
+            notifyListeners();
+            print("dayOff");
+            return "dayOff";
           }
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
-      } catch (e) {
-        print(e);
       }
+
       return "failed";
     } else {
       return 'noInternet';
@@ -447,7 +457,7 @@ class ReportsData with ChangeNotifier {
       try {
         final response = await http.get(
             Uri.parse(
-                "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
+                "http://192.168.0.119:8010/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
@@ -479,7 +489,8 @@ class ReportsData with ChangeNotifier {
             newReportList = reportObjJson
                 .map((reportJson) => LateAbsenceReportUnit.fromJson(reportJson))
                 .toList();
-
+            print(
+                "dedddddddddddductoon ${newReportList[0].totalDeduction.toStringAsFixed(1)}");
             lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
             notifyListeners();
 

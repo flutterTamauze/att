@@ -73,7 +73,7 @@ class _UserAttendanceReportScreenState
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
 
-    yesterday = DateTime(now.year, now.month, now.day - 1);
+    yesterday = DateTime(now.year, now.month, now.day);
 
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
@@ -1138,9 +1138,10 @@ class DataTableRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    alignment: Alignment.center,
                     height: 20,
                     child: AutoSizeText(
-                      userAttendanceReportUnit.date,
+                      userAttendanceReportUnit.date ?? "",
                       maxLines: 1,
                       style: TextStyle(
                           fontSize: ScreenUtil()
@@ -1204,17 +1205,30 @@ class DataTableRow extends StatelessWidget {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    userAttendanceReportUnit.timeInIsPm == "am"
-                                        ? Icons.wb_sunny
-                                        : Icons.nightlight_round,
-                                    size: ScreenUtil()
-                                        .setSp(12, allowFontScalingSelf: true),
-                                  ),
+                                  userAttendanceReportUnit.timeIn.contains(":")
+                                      ? Icon(
+                                          userAttendanceReportUnit.timeInIsPm ==
+                                                  "am"
+                                              ? Icons.wb_sunny
+                                              : Icons.nightlight_round,
+                                          size: ScreenUtil().setSp(12,
+                                              allowFontScalingSelf: true),
+                                        )
+                                      : Container(),
                                   Container(
                                     height: 20,
                                     child: AutoSizeText(
-                                      userAttendanceReportUnit.timeIn,
+                                      userAttendanceReportUnit.timeIn == "1"
+                                          ? "عارضة"
+                                          : userAttendanceReportUnit.timeIn ==
+                                                  "2"
+                                              ? "مرضى"
+                                              : userAttendanceReportUnit
+                                                          .timeIn ==
+                                                      "3"
+                                                  ? "رصيد اجازات"
+                                                  : userAttendanceReportUnit
+                                                      .timeIn,
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(14,
@@ -1259,17 +1273,23 @@ class DataTableRow extends StatelessWidget {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    userAttendanceReportUnit.timeOutIsPm == "am"
-                                        ? Icons.wb_sunny
-                                        : Icons.nightlight_round,
-                                    size: ScreenUtil()
-                                        .setSp(12, allowFontScalingSelf: true),
-                                  ),
+                                  userAttendanceReportUnit.timeIn.contains(":")
+                                      ? Icon(
+                                          userAttendanceReportUnit
+                                                      .timeOutIsPm ==
+                                                  "am"
+                                              ? Icons.wb_sunny
+                                              : Icons.nightlight_round,
+                                          size: ScreenUtil().setSp(12,
+                                              allowFontScalingSelf: true),
+                                        )
+                                      : Container(
+                                          child: Text("-"),
+                                        ),
                                   Container(
                                     height: 20,
                                     child: AutoSizeText(
-                                      userAttendanceReportUnit.timeOut,
+                                      userAttendanceReportUnit.timeOut ?? "",
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(14,
