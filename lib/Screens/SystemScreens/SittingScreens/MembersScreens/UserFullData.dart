@@ -3,37 +3,39 @@ import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/MainCompanySettings.dart';
+
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/ReallocateUsers.dart';
 
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/VacationData.dart';
+
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/DirectoriesHeader.dart';
+
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
-import 'package:qr_users/widgets/roundedButton.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'UsersScreen.dart';
 
 class UserFullDataScreen extends StatefulWidget {
@@ -64,7 +66,7 @@ TimeOfDay intToTimeOfDay(int time) {
 
 String date;
 AudioCache player = AudioCache();
-
+AttendProof attendObj = AttendProof();
 AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
@@ -428,16 +430,27 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () {
                                       sendFcmMessage(
-                                              topicName: "attendChilango",
+                                              topicName: "",
                                               title: "اثبات حضور",
                                               category: "attend",
                                               message: "برجاء اثبات حضورك الأن")
-                                          .whenComplete(() =>
-                                              Fluttertoast.showToast(
-                                                  msg: "تم الإرسال بنجاح",
-                                                  backgroundColor: Colors.green,
-                                                  gravity:
-                                                      ToastGravity.CENTER));
+                                          .whenComplete(() async {
+                                        await attendObj.sendAttendProof(
+                                            Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userToken,
+                                            widget.user.id);
+                                        await Provider.of<
+                                                    NotificationDataService>(
+                                                context,
+                                                listen: false)
+                                            .initializeNotification(context);
+                                        Fluttertoast.showToast(
+                                            msg: "تم الإرسال بنجاح",
+                                            backgroundColor: Colors.green,
+                                            gravity: ToastGravity.CENTER);
+                                      });
                                     }),
                               ],
                             ),

@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
+import 'package:qr_users/services/AttendProof/attend_proof.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
 // ignore: must_be_immutable
@@ -25,8 +29,11 @@ class StackedNotificaitonAlert extends StatelessWidget {
       this.notificationToast,
       this.roundedButtonTitle});
 
+  AttendProof attendObj = AttendProof();
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<UserData>(context, listen: false).user;
+
     return Stack(
       children: [
         Dialog(
@@ -45,7 +52,7 @@ class StackedNotificaitonAlert extends StatelessWidget {
                           height: 50.h,
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () async {},
                           child: Text(
                             notificationTitle,
                             style: TextStyle(
@@ -61,8 +68,15 @@ class StackedNotificaitonAlert extends StatelessWidget {
                         ),
                         RoundedButton(
                             title: roundedButtonTitle,
-                            onPressed: () {
+                            onPressed: () async {
                               if (showToast) {
+                                Position currentPosition =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.best);
+                                print(currentPosition.latitude +
+                                    currentPosition.longitude);
+                                await attendObj.acceptAttendProof(
+                                    user.userToken, user.id, currentPosition);
                                 Fluttertoast.showToast(
                                     msg: notificationToast,
                                     backgroundColor: Colors.green,

@@ -853,7 +853,7 @@ class DataTableHolidayRow extends StatelessWidget {
                               height: 30.h,
                               child: Center(
                                 child: Container(
-                                  alignment: Alignment.center,
+                                  alignment: Alignment.centerRight,
                                   height: 30.h,
                                   child: AutoSizeText(
                                     _holidays.holidayType == 1
@@ -870,47 +870,58 @@ class DataTableHolidayRow extends StatelessWidget {
                                 ),
                               )),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(right: 15.w),
-                          height: 35.h,
-                          child: Center(
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 20.h,
-                              child: AutoSizeText(
-                                _holidays.fromDate.toString().substring(0, 11),
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(14, allowFontScalingSelf: true),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => print(
-                            _holidays.toDate.toString().substring(0, 11),
-                          ),
+                        Expanded(
                           child: Container(
-                            padding: EdgeInsets.only(right: 20.w),
-                            height: 30.h,
+                            padding: EdgeInsets.only(right: 15.w),
+                            height: 35.h,
                             child: Center(
                               child: Container(
                                 alignment: Alignment.center,
                                 height: 20.h,
                                 child: AutoSizeText(
-                                  _holidays.toDate.toString().substring(0, 11),
+                                  _holidays.fromDate
+                                      .toString()
+                                      .substring(0, 11),
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontSize: ScreenUtil()
-                                        .setSp(13, allowFontScalingSelf: true),
+                                        .setSp(14, allowFontScalingSelf: true),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+                        _holidays.fromDate.isBefore(_holidays.toDate)
+                            ? Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 20.w),
+                                  height: 30.h,
+                                  child: Center(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 20.h,
+                                      child: AutoSizeText(
+                                        _holidays.toDate
+                                            .toString()
+                                            .substring(0, 11),
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 20.w),
+                                  alignment: Alignment.center,
+                                  child: Text("---"),
+                                ),
+                              ),
                       ],
                     ),
                   )
