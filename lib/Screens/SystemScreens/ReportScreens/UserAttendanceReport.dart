@@ -33,10 +33,10 @@ import '../../../services/report_data.dart';
 import 'package:intl/intl.dart';
 
 class UserAttendanceReportScreen extends StatefulWidget {
-  final String name;
+  final String name, id;
   final int siteId;
   // getUserReportUnits
-  UserAttendanceReportScreen({this.name, this.siteId});
+  UserAttendanceReportScreen({this.name, this.siteId, this.id});
 
   @override
   _UserAttendanceReportScreenState createState() =>
@@ -69,7 +69,7 @@ class _UserAttendanceReportScreenState
     super.initState();
 
     var now = DateTime.now();
-
+    selectedId = widget.id;
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
 
@@ -145,16 +145,11 @@ class _UserAttendanceReportScreenState
           onWillPop: onWillPop,
           child: GestureDetector(
             onTap: () {
+              print(widget.id);
               print(_nameController.text);
               _nameController.text == ""
                   ? FocusScope.of(context).unfocus()
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
-
-              print(
-                Provider.of<MemberData>(context, listen: false)
-                    .dropDownMembersList
-                    .length,
-              );
             },
             child: Scaffold(
               endDrawer: NotificationItem(),

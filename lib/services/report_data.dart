@@ -299,7 +299,7 @@ class ReportsData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
-              "http://192.168.0.119:8010/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
+              "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
@@ -457,7 +457,7 @@ class ReportsData with ChangeNotifier {
       try {
         final response = await http.get(
             Uri.parse(
-                "http://192.168.0.119:8010/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
+                "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"

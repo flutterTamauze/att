@@ -40,6 +40,27 @@ class UserHolidaysData with ChangeNotifier {
   bool isLoading = false;
   List<UserHolidays> holidaysList = [];
   List<UserHolidays> singleUserHoliday = [];
+  List<UserHolidays> copyHolidaysList = [];
+  List<String> userNames = [];
+  getAllUserNamesInHolidays() {
+    userNames = [];
+    holidaysList.forEach((element) {
+      userNames.add(element.userName);
+    });
+    // notifyListeners();
+  }
+
+  setCopyByIndex(List<int> index) {
+    print(holidaysList.length);
+    copyHolidaysList = [];
+    print(index);
+    for (int i = 0; i < index.length; i++) {
+      copyHolidaysList.add(holidaysList[index[i]]);
+    }
+
+    notifyListeners();
+  }
+
   Future<List<UserHolidays>> getSingleUserHoliday(
       String userId, String userToken) async {
     try {
@@ -68,7 +89,7 @@ class UserHolidaysData with ChangeNotifier {
   Future<List<UserHolidays>> getAllHolidays(
       String userToken, int companyId) async {
     isLoading = true;
-    notifyListeners();
+    // notifyListeners();
     var response = await http.get(
       Uri.parse("$baseURL/api/Holiday/GetAllHolidaysbyComId/$companyId"),
       headers: {
@@ -83,6 +104,7 @@ class UserHolidaysData with ChangeNotifier {
       holidaysList =
           holidayObj.map((json) => UserHolidays.fromJson(json)).toList();
       isLoading = false;
+      getAllUserNamesInHolidays();
       notifyListeners();
     }
 

@@ -1,11 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
+import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
@@ -130,27 +134,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
     }
   }
 
-  Future getAllPermessions;
-  Future getAllHolidays;
+  TextEditingController _nameController = TextEditingController();
+
   @override
   void initState() {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-
     var now = DateTime.now();
-    if (Provider.of<UserPermessionsData>(context, listen: false)
-        .permessionsList
-        .isEmpty) {
-      getAllPermessions = Provider.of<UserPermessionsData>(context,
-              listen: false)
-          .getAllPermessions(comProvider.com.id, userProvider.user.userToken);
-    }
-    if (Provider.of<UserHolidaysData>(context, listen: false)
-        .holidaysList
-        .isEmpty) {
-      getAllHolidays = Provider.of<UserHolidaysData>(context, listen: false)
-          .getAllHolidays(userProvider.user.userToken, comProvider.com.id);
-    }
 
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
@@ -170,17 +158,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
   var selectedVal = "كل المواقع";
   @override
   Widget build(BuildContext context) {
-    var permessionProv =
-        Provider.of<UserPermessionsData>(context, listen: false)
-            .permessionsList;
-    var holidayProv =
-        Provider.of<UserHolidaysData>(context, listen: false).holidaysList;
     var prov = Provider.of<SiteData>(context, listen: false);
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     return GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
-          print(picked);
+          _nameController.text == ""
+              ? FocusScope.of(context).unfocus()
+              : SystemChannels.textInput.invokeMethod('TextInput.hide');
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
@@ -296,73 +280,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                             ),
                           ),
                           radioVal2 == 1
-                              ? Expanded(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        child: VacationCardHeader(
-                                          header: "كل الأجازات",
-                                        ),
-                                      ),
-                                      Container(
-                                          child: DataTableholidayHeader()),
-                                      Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Expanded(
-                                            child: FutureBuilder(
-                                                future: getAllHolidays,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: Colors.orange,
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    if (holidayProv.isEmpty) {
-                                                      return Center(
-                                                        child: Text(
-                                                          "لا يوجد اجازات",
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      );
-                                                    }
-                                                    return ListView.builder(
-                                                        itemCount:
-                                                            holidayProv.length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Column(
-                                                            children: [
-                                                              DataTableHolidayRow(
-                                                                  holidayProv[
-                                                                      index]),
-                                                              holidayProv[index]
-                                                                          .holidayType ==
-                                                                      4
-                                                                  ? Container()
-                                                                  : Divider(
-                                                                      thickness:
-                                                                          1,
-                                                                    )
-                                                            ],
-                                                          );
-                                                        });
-                                                  }
-                                                })),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                              ? DisplayHolidays(_nameController)
                               : radioVal2 == 2
                                   ? Column(
                                       children: [
@@ -565,75 +483,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                               )
                                       ],
                                     )
-                                  : Expanded(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            child: VacationCardHeader(
-                                              header: "كل الأذونات",
-                                            ),
-                                          ),
-                                          Container(
-                                              child:
-                                                  DataTablePermessionHeader()),
-                                          Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: Expanded(
-                                                child: FutureBuilder(
-                                                    future: getAllPermessions,
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot
-                                                              .connectionState ==
-                                                          ConnectionState
-                                                              .waiting) {
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            color:
-                                                                Colors.orange,
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        if (permessionProv
-                                                            .isEmpty) {
-                                                          return Center(
-                                                            child: Text(
-                                                              "لا يوجد اذونات",
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          );
-                                                        }
-                                                        return ListView.builder(
-                                                            itemCount:
-                                                                permessionProv
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              return Column(
-                                                                children: [
-                                                                  DataTablePermessionRow(
-                                                                      permessionProv[
-                                                                          index]),
-                                                                  Divider(
-                                                                    thickness:
-                                                                        1,
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
-                                                      }
-                                                    })),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                  : DisplayPermessions(_nameController)
                         ],
                       ),
                     ),

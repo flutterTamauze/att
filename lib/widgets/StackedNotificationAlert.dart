@@ -70,13 +70,18 @@ class StackedNotificaitonAlert extends StatelessWidget {
                             title: roundedButtonTitle,
                             onPressed: () async {
                               if (showToast) {
+                                int attendId =
+                                    await attendObj.getAttendProofID(user.id);
+                                print(attendId);
                                 Position currentPosition =
                                     await Geolocator.getCurrentPosition(
                                         desiredAccuracy: LocationAccuracy.best);
-                                print(currentPosition.latitude +
-                                    currentPosition.longitude);
+                                print(currentPosition.latitude);
+                                print(currentPosition.longitude);
                                 await attendObj.acceptAttendProof(
-                                    user.userToken, user.id, currentPosition);
+                                    user.userToken,
+                                    attendId.toString(),
+                                    currentPosition);
                                 Fluttertoast.showToast(
                                     msg: notificationToast,
                                     backgroundColor: Colors.green,
@@ -99,7 +104,7 @@ class StackedNotificaitonAlert extends StatelessWidget {
                 ))),
         Positioned(
             right: 125.w,
-            top: 210.h,
+            top: 215.h,
             child: Container(
               width: 150.w,
               height: 150.h,

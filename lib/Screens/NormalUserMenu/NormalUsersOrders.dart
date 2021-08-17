@@ -16,6 +16,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'NormalUser.dart';
+import 'NormalUserVacationRequest.dart';
 
 class UserOrdersView extends StatefulWidget {
   @override
@@ -66,6 +67,25 @@ class _UserOrdersViewState extends State<UserOrdersView> {
           print(permessionsList.length);
         },
         child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          floatingActionButton: FloatingActionButton(
+            elevation: 4,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserVacationRequest(
+                        selectedOrder == "الأجازات" ? 1 : 3),
+                  ));
+            },
+            tooltip: selectedOrder == "الأجازات" ? "طلب اجازة" : "طلب إذن",
+            backgroundColor: Colors.orange[600],
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+              size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+            ),
+          ),
           endDrawer: NotificationItem(),
           body: Column(
             children: [

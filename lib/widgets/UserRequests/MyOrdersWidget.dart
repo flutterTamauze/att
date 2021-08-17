@@ -155,18 +155,21 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                             )
                                           : Container(),
                                       widget.status == 2
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10.h),
-                                              child: Text(
-                                                "سبب الرفض : ${widget.adminComment}",
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            )
+                                          ? widget.adminComment != null
+                                              ? Container(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 10.h),
+                                                  child: Text(
+                                                    "سبب الرفض : ${widget.adminComment}",
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
                                           : Container(),
                                     ],
                                   )

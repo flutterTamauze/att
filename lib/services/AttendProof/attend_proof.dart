@@ -18,7 +18,18 @@ class AttendProof {
     print(response.body);
   }
 
-  acceptAttendProof(String userToken, String userId, Position latLng) async {
+  Future<int> getAttendProofID(String userId) async {
+    var response = await http.get(
+        Uri.parse("$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"));
+    print(response.body);
+    var decodedResponse = jsonDecode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      return decodedResponse["data"];
+    }
+    return -1;
+  }
+
+  acceptAttendProof(String userToken, String attendId, Position latLng) async {
     var response = await http.put(
       Uri.parse("$baseURL/api/AttendProof/Approve"),
       headers: {
@@ -26,7 +37,7 @@ class AttendProof {
         'Authorization': "Bearer $userToken"
       },
       body: json.encode({
-        "userId": userId,
+        "id": attendId,
         "longitude": latLng.longitude,
         "latitude": latLng.latitude
       }),

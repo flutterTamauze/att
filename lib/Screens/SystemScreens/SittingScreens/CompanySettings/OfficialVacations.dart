@@ -51,7 +51,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
   final SlidableController slidableController = SlidableController();
   DateTime toDate;
   DateTime fromDate;
-  bool isVacationselected = false;
+  // bool isVacationselected = false;
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
 
   String dateToString = "";
@@ -277,9 +277,9 @@ class _OfficialVacationState extends State<OfficialVacation> {
                           setState(() {
                             searchTextField.textField.controller.text =
                                 item.vacationName;
-                            print("aaa");
+
                             vactionProv.setCopyByIndex(index);
-                            isVacationselected = true;
+                            // isVacationselected = true;
                           });
                         }
                       },

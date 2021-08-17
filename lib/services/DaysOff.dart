@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/constants.dart';
@@ -12,12 +13,15 @@ class Day {
   bool isDayOff = false;
   bool isActivated = false;
   String sitename;
+  TimeOfDay fromDate;
+  TimeOfDay toDate;
   String shiftname;
 }
 
 class DaysOffData with ChangeNotifier {
   List<Day> weak = [Day(), Day(), Day(), Day(), Day(), Day(), Day()];
   List<Day> reallocateUsers = [];
+  List<Day> advancedShift = [];
   toggleDayOff(int i) {
     weak[i].isDayOff = false;
     notifyListeners();
@@ -31,6 +35,12 @@ class DaysOffData with ChangeNotifier {
   setSiteAndShift(int index, String sitename, String shiftname) {
     reallocateUsers[index].sitename = sitename;
     reallocateUsers[index].shiftname = shiftname;
+    notifyListeners();
+  }
+
+  setFromAndTo(int index, var from, var to) {
+    advancedShift[index].fromDate = from;
+    advancedShift[index].toDate = to;
     notifyListeners();
   }
 
@@ -93,6 +103,7 @@ class DaysOffData with ChangeNotifier {
             weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
             weak[6].dayName = "الجمعة";
             reallocateUsers = [...weak];
+            advancedShift = [...weak];
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==

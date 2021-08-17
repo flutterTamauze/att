@@ -18,14 +18,14 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/VacationData.dart';
+
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +34,8 @@ import 'dart:ui' as ui;
 import '../../constants.dart';
 
 class UserVacationRequest extends StatefulWidget {
-  UserVacationRequest();
+  int radioVal;
+  UserVacationRequest(this.radioVal);
   @override
   _UserVacationRequestState createState() => _UserVacationRequestState();
 }
@@ -77,7 +78,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     super.initState();
   }
 
-  var radioVal2 = 1;
   @override
   void dispose() {
     super.dispose();
@@ -91,7 +91,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
-          print(radioVal2);
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
@@ -132,29 +131,29 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 RadioButtonWidg(
-                                  radioVal2: radioVal2,
+                                  radioVal2: widget.radioVal,
                                   radioVal: 3,
                                   title: "أذن",
                                   onchannge: (value) {
                                     setState(() {
-                                      radioVal2 = value;
+                                      widget.radioVal = value;
                                     });
                                   },
                                 ),
                                 RadioButtonWidg(
-                                  radioVal2: radioVal2,
+                                  radioVal2: widget.radioVal,
                                   radioVal: 1,
                                   title: "اجازة",
                                   onchannge: (value) {
                                     setState(() {
-                                      radioVal2 = value;
+                                      widget.radioVal = value;
                                     });
                                   },
                                 ),
                               ],
                             ),
                           ),
-                          radioVal2 == 1
+                          widget.radioVal == 1
                               ? Column(
                                   children: [
                                     VacationCardHeader(
@@ -650,7 +649,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                               : RoundedButton(
                                   title: "حفظ الطلب",
                                   onPressed: () async {
-                                    if (radioVal2 == 1) //اجازة
+                                    if (widget.radioVal == 1) //اجازة
                                     {
                                       if (picked != null) {
                                         final DateTime now = DateTime.now();

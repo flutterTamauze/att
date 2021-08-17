@@ -33,14 +33,24 @@ class UserPermessions {
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
-        user: json["userId"]);
+        user: json["userName"]);
   }
 }
 
 class UserPermessionsData with ChangeNotifier {
   bool isLoading = false;
   List<UserPermessions> permessionsList = [];
+  List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
+  List<String> userNames = [];
+  getAllUserNamesInPermessions() {
+    userNames = [];
+    permessionsList.forEach((element) {
+      userNames.add(element.user);
+    });
+    // notifyListeners();
+  }
+
   Future<List<UserPermessions>> getSingleUserPermession(
       String userId, String userToken) async {
     try {
@@ -67,6 +77,17 @@ class UserPermessionsData with ChangeNotifier {
     }
   }
 
+  setCopyByIndex(List<int> index) {
+    print(permessionsList.length);
+    copyPermessionsList = [];
+    print(index);
+    for (int i = 0; i < index.length; i++) {
+      copyPermessionsList.add(permessionsList[index[i]]);
+    }
+
+    notifyListeners();
+  }
+
   getAllPermessions(int companyId, String userToken) async {
     var response = await http.get(
       Uri.parse("$baseURL/api/Permissions/GetAllPermissionbyComId/$companyId"),
@@ -81,7 +102,7 @@ class UserPermessionsData with ChangeNotifier {
       var permessionsObj = jsonDecode(response.body)['data'] as List;
       permessionsList =
           permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
-
+      getAllUserNamesInPermessions();
       notifyListeners();
     }
 
