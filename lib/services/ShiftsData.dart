@@ -177,15 +177,32 @@ class ShiftsData with ChangeNotifier {
 
   addShift(Shift shift, String userToken, BuildContext context) async {
     print(shift.siteID);
+    print(shift.shiftStartTime);
+    print(shift.shiftEndTime);
+    print(shift.fridayShiftenTime);
+    print(shift.fridayShiftstTime);
     if (await isConnectedToInternet()) {
       try {
-        final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
+        final response = await http.post(
+            Uri.parse("http://192.168.0.119:8010/api/Shifts"),
             body: json.encode(
               {
                 "shiftEntime": shift.shiftEndTime.toString(),
                 "shiftName": shift.shiftName,
                 "shiftSttime": shift.shiftStartTime.toString(),
-                "siteId": shift.siteID
+                "siteId": shift.siteID,
+                "FridayShiftSttime": shift.fridayShiftstTime.toString(),
+                "FridayShiftEntime": shift.fridayShiftenTime.toString(),
+                "MonShiftSttime": shift.monShiftstTime.toString(),
+                "MondayShiftEntime": shift.mondayShiftenTime.toString(),
+                "SunShiftSttime": shift.sunShiftstTime.toString(),
+                "SunShiftEntime": shift.sunShiftenTime.toString(),
+                "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
+                "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
+                "TuesdayShiftSttime": shift.thursdayShiftstTime.toString(),
+                "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
+                "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
+                "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
               },
             ),
             headers: {
@@ -208,11 +225,24 @@ class ShiftsData with ChangeNotifier {
 
           if (decodedRes["message"] == "Success") {
             Shift newShift = Shift(
-                shiftId: decodedRes['data']['id'] as int,
-                shiftName: decodedRes['data']['shiftName'],
-                shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
-                shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
-                siteID: decodedRes['data']['siteId'] as int);
+              shiftId: decodedRes['data']['id'] as int,
+              shiftName: decodedRes['data']['shiftName'],
+              shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
+              shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
+              siteID: decodedRes['data']['siteId'] as int,
+              fridayShiftenTime: decodedRes['data']["FridayShiftSttime"],
+              fridayShiftstTime: decodedRes['data']["FridayShiftEntime"],
+              monShiftstTime: decodedRes['data']["MonShiftSttime"],
+              mondayShiftenTime: decodedRes['data']["MondayShiftEntime"],
+              sunShiftenTime: decodedRes['data']["SunShiftSttime"],
+              sunShiftstTime: decodedRes['data']["SunShiftEntime"],
+              thursdayShiftenTime: decodedRes['data']["SunShiftSttime"],
+              thursdayShiftstTime: decodedRes['data']["SunShiftEntime"],
+              tuesdayShiftenTime: decodedRes['data']["TuesdayShiftSttime"],
+              tuesdayShiftstTime: decodedRes['data']["TuesdayShiftEntime"],
+              wednesDayShiftenTime: decodedRes['data']["WednesdayShiftSttime"],
+              wednesDayShiftstTime: decodedRes['data']["WednesdayShiftEntime"],
+            );
 
             shiftsList.add(newShift);
             notifyListeners();

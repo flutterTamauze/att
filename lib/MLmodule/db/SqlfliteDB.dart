@@ -109,7 +109,9 @@ class DatabaseHelper {
 
   clearNotifications() async {
     try {
-      await _database.delete(_notificationTableName);
+      await _database
+          .delete(_notificationTableName)
+          .then((value) => print("deleted"));
     } catch (e) {
       print(e);
     }

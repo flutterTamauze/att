@@ -430,7 +430,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () {
                                       sendFcmMessage(
-                                              topicName: "",
+                                              topicName: "attendChilango",
                                               title: "اثبات حضور",
                                               category: "attend",
                                               message: "برجاء اثبات حضورك الأن")

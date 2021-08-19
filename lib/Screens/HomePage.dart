@@ -21,6 +21,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -95,13 +96,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     // test();
-
+    Provider.of<NotificationDataService>(context, listen: false)
+        .firebaseMessagingConfig(context);
     checkBackgroundNotification();
     checkForegroundNotification();
     checkForNotificationData();
     notificationPermessions();
-    Provider.of<NotificationDataService>(context, listen: false)
-        .firebaseMessagingConfig(context);
 
     WidgetsBinding.instance.addObserver(this);
 
@@ -113,15 +113,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
 
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) async {
-    if (state == AppLifecycleState.resumed) {
-      print("App resumed !");
-
-      // checkForNotificationData();
-    }
   }
 
   saveNotificationToCache(RemoteMessage event) async {
@@ -139,12 +130,83 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   checkBackgroundNotification() async {
     await FirebaseMessaging.instance.getInitialMessage().then((value) {
-      if (value != null) {
-        print(value.notification.body);
-        print(value.notification.title);
-        saveNotificationToCache(value);
-        player.play("notification.mp3");
-      }
+      print(value.notification.body);
+      print(value.notification.title);
+
+      saveNotificationToCache(value);
+
+      return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          Future.delayed(Duration(minutes: 1), () {
+            Navigator.of(context).pop();
+          });
+          return Stack(
+            children: [
+              Dialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10.0)), //this right here
+                  child: Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: Container(
+                        height: 200.h,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 50.h,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: Text(
+                                  "اثبات حضور",
+                                  style: TextStyle(
+                                      color: Colors.orange,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Divider(),
+                              Text("برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              RoundedButton(
+                                  title: "اثبات",
+                                  onPressed: () {
+                                    Fluttertoast.showToast(
+                                        msg: "تم اثبات الحضور بنجاح",
+                                        backgroundColor: Colors.green,
+                                        gravity: ToastGravity.CENTER);
+
+                                    Navigator.pop(context);
+                                  }),
+                            ],
+                          ),
+                        ),
+                      ))),
+              Positioned(
+                  right: 125.w,
+                  top: 200.h,
+                  child: Container(
+                    width: 150.w,
+                    height: 150.h,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(60),
+                      child: Lottie.asset("resources/notificationalarm.json",
+                          fit: BoxFit.fill),
+                    ),
+                  ))
+            ],
+          );
+        },
+      );
     });
   }
 
@@ -239,11 +301,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       sound: true,
     );
     if (prefs.getString("notifCategory") == 'attend') {
-      showDialog(
+      return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          Future.delayed(Duration(minutes: 5), () {
+          Future.delayed(Duration(minutes: 1), () {
             Navigator.of(context).pop();
           });
           return Stack(
@@ -281,17 +343,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               ),
                               RoundedButton(
                                   title: "اثبات",
-                                  onPressed: () async {
+                                  onPressed: () {
                                     Fluttertoast.showToast(
                                         msg: "تم اثبات الحضور بنجاح",
                                         backgroundColor: Colors.green,
                                         gravity: ToastGravity.CENTER);
-                                    Provider.of<PermissionHan>(context,
-                                            listen: false)
-                                        .setNotificationbool(false);
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setString("notifCategory", "");
 
                                     Navigator.pop(context);
                                   }),

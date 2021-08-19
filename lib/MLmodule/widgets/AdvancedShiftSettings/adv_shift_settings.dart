@@ -41,7 +41,6 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
   @override
   void initState() {
     super.initState();
-
     getDaysOff();
   }
 
@@ -50,8 +49,9 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
     super.dispose();
   }
 
-  TextEditingController _timeInController = TextEditingController();
-  TextEditingController _timeOutController = TextEditingController();
+  TimeOfDay from;
+  TimeOfDay to;
+
   Future getDaysOff() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
@@ -61,11 +61,10 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedVal = "كل المواقع";
-    var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-    var prov = Provider.of<SiteData>(context, listen: false);
-
+    Provider.of<DaysOffData>(context, listen: false).fillAdvancedShiftTime(
+        widget.from.format(context).replaceAll(" ", ""),
+        widget.to.format(context).replaceAll(" ", ""));
     return Expanded(
       child: FutureBuilder(
           future: Provider.of<DaysOffData>(context).future,
@@ -89,6 +88,7 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
 
             return Container(
                 child: ListView.builder(
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
@@ -99,13 +99,40 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                             ? Card(
                                 elevation: 2,
                                 child: Container(
-                                  width: 200.w,
                                   padding: EdgeInsets.all(10),
-                                  child: Text("يوم عطلة",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
-                                      textAlign: TextAlign.center),
+                                  width: 200.w,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(daysofflist.advancedShift[index]
+                                                      .toDate ==
+                                                  null
+                                              ? "${widget.to.format(context).replaceAll(" ", "")}"
+                                              : "${daysofflist.advancedShift[index].toDate.format(context).replaceAll(" ", "")}"),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("الى")
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(daysofflist.advancedShift[index]
+                                                      .fromDate ==
+                                                  null
+                                              ? "${widget.from.format(context).replaceAll(" ", "")}"
+                                              : "${daysofflist.advancedShift[index].fromDate.format(context).replaceAll(" ", "")}"),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text("من")
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               )
                             : Stack(
@@ -119,16 +146,34 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(daysofflist.advancedShift[index]
-                                                      .toDate ==
-                                                  null
-                                              ? "${widget.to.format(context).replaceAll(" ", "")}"
-                                              : "${daysofflist.advancedShift[index].toDate.format(context).replaceAll(" ", "")}"),
-                                          Text(daysofflist.advancedShift[index]
-                                                      .fromDate ==
-                                                  null
-                                              ? "${widget.from.format(context).replaceAll(" ", "")}"
-                                              : "${daysofflist.advancedShift[index].fromDate.format(context).replaceAll(" ", "")}")
+                                          Row(
+                                            children: [
+                                              Text(daysofflist
+                                                          .advancedShift[index]
+                                                          .toDate ==
+                                                      null
+                                                  ? "${widget.to.format(context).replaceAll(" ", "")}"
+                                                  : "${daysofflist.advancedShift[index].toDate.format(context).replaceAll(" ", "")}"),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text("الى")
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(daysofflist
+                                                          .advancedShift[index]
+                                                          .fromDate ==
+                                                      null
+                                                  ? "${widget.from.format(context).replaceAll(" ", "")}"
+                                                  : "${daysofflist.advancedShift[index].fromDate.format(context).replaceAll(" ", "")}"),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text("من")
+                                            ],
+                                          )
                                         ],
                                       ),
                                     ),
@@ -140,7 +185,7 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                         context: context,
                                         builder: (context) {
                                           return Dialog(child: StatefulBuilder(
-                                            builder: (context, setState) {
+                                            builder: (context, setstate) {
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 10),
@@ -181,10 +226,10 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                             () async {
                                                                           if (widget
                                                                               .edit) {
-                                                                            var from =
+                                                                            to =
                                                                                 await showTimePicker(
                                                                               context: context,
-                                                                              initialTime: widget.from,
+                                                                              initialTime: widget.to,
                                                                               builder: (BuildContext context, Widget child) {
                                                                                 return MediaQuery(
                                                                                   data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
@@ -197,16 +242,16 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                                 MaterialLocalizations.of(context);
                                                                             String
                                                                                 formattedTime =
-                                                                                localizations.formatTimeOfDay(from, alwaysUse24HourFormat: false);
+                                                                                localizations.formatTimeOfDay(to, alwaysUse24HourFormat: false);
 
-                                                                            if (from !=
+                                                                            if (to !=
                                                                                 null) {
-                                                                              widget.from = from;
-                                                                              setState(() {
+                                                                              print(to);
+                                                                              setstate(() {
                                                                                 if (Platform.isIOS) {
-                                                                                  _timeOutController.text = formattedTime;
+                                                                                  daysofflist.advancedShift[index].timeOutController.text = formattedTime;
                                                                                 } else {
-                                                                                  _timeOutController.text = "${widget.from.format(context).replaceAll(" ", "")}";
+                                                                                  daysofflist.advancedShift[index].timeOutController.text = to == null ? "${daysofflist.advancedShift[index].toDate.format(context).replaceAll(" ", "")}" : "${to.format(context).replaceAll(" ", "")}";
                                                                                 }
                                                                               });
                                                                             }
@@ -225,7 +270,7 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                                 enabled: widget.edit,
                                                                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                                                                                 textInputAction: TextInputAction.next,
-                                                                                controller: _timeOutController,
+                                                                                controller: daysofflist.advancedShift[index].timeOutController,
                                                                                 decoration: kTextFieldDecorationFromTO.copyWith(
                                                                                     hintText: 'الى',
                                                                                     prefixIcon: Icon(
@@ -257,7 +302,7 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                             () async {
                                                                           if (widget
                                                                               .edit) {
-                                                                            var from =
+                                                                            from =
                                                                                 await showTimePicker(
                                                                               context: context,
                                                                               initialTime: widget.from,
@@ -277,12 +322,11 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
 
                                                                             if (from !=
                                                                                 null) {
-                                                                              widget.from = from;
-                                                                              setState(() {
+                                                                              setstate(() {
                                                                                 if (Platform.isIOS) {
-                                                                                  _timeInController.text = formattedTime;
+                                                                                  daysofflist.advancedShift[index].timeInController.text = formattedTime;
                                                                                 } else {
-                                                                                  _timeInController.text = "${widget.from.format(context).replaceAll(" ", "")}";
+                                                                                  daysofflist.advancedShift[index].timeInController.text = from == null ? "${daysofflist.advancedShift[index].fromDate.format(context).replaceAll(" ", "")}" : "${from.format(context).replaceAll(" ", "")}";
                                                                                 }
                                                                               });
                                                                             }
@@ -298,11 +342,10 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                             child:
                                                                                 IgnorePointer(
                                                                               child: TextFormField(
-                                                                                // enabled:
-                                                                                //     edit,
+                                                                                enabled: widget.edit,
                                                                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                                                                                 textInputAction: TextInputAction.next,
-                                                                                controller: _timeInController,
+                                                                                controller: daysofflist.advancedShift[index].timeInController,
                                                                                 decoration: kTextFieldDecorationFromTO.copyWith(
                                                                                     hintText: 'من',
                                                                                     prefixIcon: Icon(
@@ -335,9 +378,10 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                     listen:
                                                                         false)
                                                                 .setFromAndTo(
-                                                                    index,
-                                                                    widget.from,
-                                                                    widget.to);
+                                                              index,
+                                                              from,
+                                                              to,
+                                                            );
 
                                                             Navigator.pop(
                                                                 context);

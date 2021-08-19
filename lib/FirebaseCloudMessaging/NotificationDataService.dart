@@ -54,10 +54,22 @@ class NotificationDataService with ChangeNotifier {
   }
 
   initializeNotification(BuildContext context) async {
+    Provider.of<NotificationDataService>(context, listen: false)
+        .notification
+        .clear();
     if (await db.checkNotificationStatus()) {
       print("getting all notifications");
-      Provider.of<NotificationDataService>(context, listen: false)
-          .notification = await db.getAllNotifications();
+      List<NotificationMessage> dbMessages = await db.getAllNotifications();
+      for (int i = 0; i < dbMessages.length; i++) {
+        if (!Provider.of<NotificationDataService>(context, listen: false)
+            .notification
+            .contains(dbMessages[i])) {
+          Provider.of<NotificationDataService>(context, listen: false)
+              .notification
+              .add(dbMessages[i]);
+        }
+      }
+
       notifyListeners();
     }
   }
@@ -77,20 +89,17 @@ class NotificationDataService with ChangeNotifier {
     notifyListeners();
   }
 
-  int counter = 0;
   bool finshed = false;
   firebaseMessagingConfig(BuildContext context) async {
-    FirebaseMessaging.onMessage.listen(
-      (event) async {
-        counter++;
-        print(event.notification.body);
-        print(event.notification.title);
+    FirebaseMessaging.onMessage.listen((event) async {
+      print(event.notification.body);
+      print(event.notification.title);
 
-        if (counter == 1) {
-          if (event.data["category"] == "attend") {
-            showAttendanceCheckDialog(context);
-          }
-          await db.insertNotification(
+      if (event.data["category"] == "attend") {
+        showAttendanceCheckDialog(context);
+      }
+      await db
+          .insertNotification(
               NotificationMessage(
                 category: event.data["category"],
                 dateTime: DateTime.now().toString().substring(0, 10),
@@ -98,12 +107,10 @@ class NotificationDataService with ChangeNotifier {
                 messageSeen: 0,
                 title: event.notification.title,
               ),
-              context);
-          player.play("notification.mp3");
-        }
-        counter = 0;
-      },
-    );
+              context)
+          .whenComplete(() async => await initializeNotification(context));
+      player.play("notification.mp3");
+    });
   }
 
   showAttendanceCheckDialog(BuildContext context) {
@@ -119,7 +126,7 @@ class NotificationDataService with ChangeNotifier {
           notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
           roundedButtonTitle: "اثبات",
           lottieAsset: "resources/notificationalarm.json",
-          notificationToast: "تم اثبات الحضور بنجاح",
+          notificationToast: "تم استقبال اثبات الحضور",
           showToast: true,
           repeatAnimation: true,
         );

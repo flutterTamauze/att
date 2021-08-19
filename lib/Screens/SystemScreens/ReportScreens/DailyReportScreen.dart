@@ -305,9 +305,13 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                 type:
                                                                     DateTimePickerType
                                                                         .date,
-                                                                firstDate:
-                                                                    DateTime(
-                                                                        2021),
+                                                                firstDate: Provider.of<
+                                                                            CompanyData>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .com
+                                                                    .createdOn,
                                                                 lastDate:
                                                                     DateTime
                                                                         .now(),
@@ -671,6 +675,13 @@ class _DataTableRowState extends State<DataTableRow> {
                       return RoundedLoadingIndicator();
                     });
                 getMembersData();
+                DateTime companyDate =
+                    Provider.of<CompanyData>(context, listen: false)
+                        .com
+                        .createdOn;
+                if (fromDate.isBefore(companyDate)) {
+                  fromDate = companyDate;
+                }
                 await Provider.of<ReportsData>(context, listen: false)
                     .getUserReportUnits(
                         userProvider.userToken,
@@ -686,6 +697,8 @@ class _DataTableRowState extends State<DataTableRow> {
                       new MaterialPageRoute(
                         builder: (context) => UserAttendanceReportScreen(
                           name: widget.attendUnit.userName,
+
+                          userToDate: DateTime.now(),
                           id: widget.attendUnit.userId,
                           siteId: widget.siteId,
                           // siteIndex:

@@ -13,7 +13,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
 // ignore: must_be_immutable
-class StackedNotificaitonAlert extends StatelessWidget {
+class StackedNotificaitonAlert extends StatefulWidget {
   final String notificationTitle,
       notificationContent,
       notificationToast,
@@ -29,7 +29,14 @@ class StackedNotificaitonAlert extends StatelessWidget {
       this.notificationToast,
       this.roundedButtonTitle});
 
+  @override
+  _StackedNotificaitonAlertState createState() =>
+      _StackedNotificaitonAlertState();
+}
+
+class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
   AttendProof attendObj = AttendProof();
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<UserData>(context, listen: false).user;
@@ -54,7 +61,7 @@ class StackedNotificaitonAlert extends StatelessWidget {
                         InkWell(
                           onTap: () async {},
                           child: Text(
-                            notificationTitle,
+                            widget.notificationTitle,
                             style: TextStyle(
                                 color: Colors.orange,
                                 fontSize: 17,
@@ -62,42 +69,60 @@ class StackedNotificaitonAlert extends StatelessWidget {
                           ),
                         ),
                         Divider(),
-                        Text(notificationContent),
+                        Text(widget.notificationContent),
                         SizedBox(
                           height: 20.h,
                         ),
-                        RoundedButton(
-                            title: roundedButtonTitle,
-                            onPressed: () async {
-                              if (showToast) {
-                                int attendId =
-                                    await attendObj.getAttendProofID(user.id);
-                                print(attendId);
-                                Position currentPosition =
-                                    await Geolocator.getCurrentPosition(
-                                        desiredAccuracy: LocationAccuracy.best);
-                                print(currentPosition.latitude);
-                                print(currentPosition.longitude);
-                                await attendObj.acceptAttendProof(
-                                    user.userToken,
-                                    attendId.toString(),
-                                    currentPosition);
-                                Fluttertoast.showToast(
-                                    msg: notificationToast,
-                                    backgroundColor: Colors.green,
-                                    gravity: ToastGravity.CENTER);
+                        isloading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.orange,
+                                ),
+                              )
+                            : RoundedButton(
+                                title: widget.roundedButtonTitle,
+                                onPressed: () async {
+                                  if (widget.showToast) {
+                                    setState(() {
+                                      isloading = true;
+                                    });
+                                    int attendId = await attendObj
+                                        .getAttendProofID(user.id);
+                                    print(attendId);
+                                    Position currentPosition =
+                                        await Geolocator.getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.best);
+                                    print(currentPosition.latitude);
+                                    print(currentPosition.longitude);
+                                    await attendObj.acceptAttendProof(
+                                        user.userToken,
+                                        attendId.toString(),
+                                        currentPosition);
+                                    setState(() {
+                                      isloading = false;
+                                    });
+                                    Fluttertoast.showToast(
+                                        msg: widget.notificationToast,
+                                        backgroundColor: Colors.green,
+                                        gravity: ToastGravity.CENTER);
 
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              } else {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => UserOrdersView(),
-                                    ));
-                              }
-                            }),
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => UserOrdersView(
+                                              selectedOrder: widget
+                                                      .notificationTitle
+                                                      .contains("الأذن")
+                                                  ? "الأذونات"
+                                                  : "الأجازات"),
+                                        ));
+                                  }
+                                }),
                       ],
                     ),
                   ),
@@ -112,8 +137,8 @@ class StackedNotificaitonAlert extends StatelessWidget {
               decoration: BoxDecoration(shape: BoxShape.circle),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(60),
-                child: Lottie.asset(lottieAsset,
-                    fit: BoxFit.fill, repeat: repeatAnimation),
+                child: Lottie.asset(widget.lottieAsset,
+                    fit: BoxFit.fill, repeat: widget.repeatAnimation),
               ),
             ))
       ],

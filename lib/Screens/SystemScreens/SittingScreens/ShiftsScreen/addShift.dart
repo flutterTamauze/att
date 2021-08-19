@@ -12,6 +12,7 @@ import 'package:qr_users/MLmodule/widgets/AdvancedShiftSettings/adv_shift_settin
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -57,9 +58,20 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   TimeOfDay from24String;
   TimeOfDay to24String;
 
-  String startString;
+  String startString; //sat
   String endString;
-
+  String _sunFrom,
+      _sunTo,
+      _monFrom,
+      _monTo,
+      _tuesFrom,
+      _tuesTo,
+      _wedFrom,
+      _wedTo,
+      _thuFrom,
+      _thuTo,
+      _friFrom,
+      _friTo;
   int siteId = 0;
 
   String amPmChanger(int intTime) {
@@ -144,549 +156,656 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       child: Scaffold(
         endDrawer: NotificationItem(),
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: GestureDetector(
-              onTap: () {
-                print(_timeInController.text);
-                print(_timeOutController.text);
-              },
-              behavior: HitTestBehavior.opaque,
-              onPanDown: (_) {
-                FocusScope.of(context).unfocus();
-              },
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Header(
-                        nav: false,
-                        goUserHomeFromMenu: false,
-                        goUserMenu: false,
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: SmallDirectoriesHeader(
-                                    Lottie.asset("resources/shiftLottie.json",
-                                        repeat: false),
-                                    (!widget.isEdit)
-                                        ? "إضافة منوابة"
-                                        : "تعديل المنوابة"),
-                              ),
-                              // DirectoriesHeader(
-                              //     ClipRRect(
-                              //       borderRadius: BorderRadius.circular(60.0),
-                              //       child: Lottie.asset("resources/shifts.json",
-                              //           repeat: false),
-                              //     ),
-                              //     (!widget.isEdit)
-                              //         ? "إضافة منوابة"
-                              //         : "تعديل المنوابة"),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 30.0.w),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        IgnorePointer(
-                                          ignoring: !edit,
-                                          child: SiteDropdown(
-                                            edit: edit,
-                                            list: Provider.of<SiteData>(context)
-                                                .sitesList,
-                                            colour: Colors.white,
-                                            icon: Icons.location_on,
-                                            borderColor: Colors.black,
-                                            hint: "الموقع",
-                                            hintColor: Colors.black,
-                                            onChange: (vlaue) {
-                                              // print()
-                                              siteId = getSiteId(vlaue);
-                                              print(vlaue);
-                                            },
-                                            selectedvalue:
-                                                Provider.of<SiteData>(context)
-                                                    .sitesList[siteId]
-                                                    .name,
-                                            textColor: Colors.orange,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        TextFormField(
-                                          enabled: edit,
-                                          onFieldSubmitted: (_) {},
-                                          textInputAction: TextInputAction.next,
-                                          textAlign: TextAlign.right,
-                                          validator: (text) {
-                                            if (text.length == 0) {
-                                              return 'مطلوب';
-                                            }
-                                            return null;
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: GestureDetector(
+            onTap: () {
+              print(startString);
+              print(_timeInController.text);
+              print(_timeOutController.text);
+            },
+            behavior: HitTestBehavior.opaque,
+            onPanDown: (_) {
+              FocusScope.of(context).unfocus();
+            },
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Header(
+                      nav: false,
+                      goUserHomeFromMenu: false,
+                      goUserMenu: false,
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: SmallDirectoriesHeader(
+                                  Lottie.asset("resources/shiftLottie.json",
+                                      repeat: false),
+                                  (!widget.isEdit)
+                                      ? "إضافة مناوبة"
+                                      : "تعديل المناوبة"),
+                            ),
+                            // DirectoriesHeader(
+                            //     ClipRRect(
+                            //       borderRadius: BorderRadius.circular(60.0),
+                            //       child: Lottie.asset("resources/shifts.json",
+                            //           repeat: false),
+                            //     ),
+                            //     (!widget.isEdit)
+                            //         ? "إضافة منوابة"
+                            //         : "تعديل المنوابة"),
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 30.0.w),
+                              child: Form(
+                                key: _formKey,
+                                child: Container(
+                                  height: checkedBox
+                                      ? MediaQuery.of(context).size.height
+                                      : 300.h,
+                                  width: checkedBox
+                                      ? MediaQuery.of(context).size.width
+                                      : 400.w,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      IgnorePointer(
+                                        ignoring: !edit,
+                                        child: SiteDropdown(
+                                          edit: edit,
+                                          list: Provider.of<SiteData>(context)
+                                              .sitesList,
+                                          colour: Colors.white,
+                                          icon: Icons.location_on,
+                                          borderColor: Colors.black,
+                                          hint: "الموقع",
+                                          hintColor: Colors.black,
+                                          onChange: (vlaue) {
+                                            // print()
+                                            siteId = getSiteId(vlaue);
+                                            print(vlaue);
                                           },
-                                          controller: _title,
-                                          decoration: kTextFieldDecorationWhite
-                                              .copyWith(
-                                                  hintText: 'اسم المناوبة',
-                                                  suffixIcon: Icon(
-                                                    Icons.title,
-                                                    color: Colors.orange,
-                                                  )),
+                                          selectedvalue:
+                                              Provider.of<SiteData>(context)
+                                                  .sitesList[siteId]
+                                                  .name,
+                                          textColor: Colors.orange,
                                         ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Directionality(
-                                          textDirection: ui.TextDirection.rtl,
-                                          child: Container(
-                                            width: double.infinity,
-                                            height: 50.h,
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                      child: Theme(
-                                                    data: clockTheme,
-                                                    child: Builder(
-                                                      builder: (context) {
-                                                        return InkWell(
-                                                            onTap: () async {
-                                                              if (edit) {
-                                                                var from =
-                                                                    await showTimePicker(
-                                                                  context:
-                                                                      context,
-                                                                  initialTime:
-                                                                      fromPicked,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child) {
-                                                                    return MediaQuery(
-                                                                      data: MediaQuery.of(
-                                                                              context)
-                                                                          .copyWith(
-                                                                              alwaysUse24HourFormat: false),
-                                                                      child:
-                                                                          child,
-                                                                    );
-                                                                  },
-                                                                );
-                                                                MaterialLocalizations
-                                                                    localizations =
-                                                                    MaterialLocalizations.of(
-                                                                        context);
-                                                                String
-                                                                    formattedTime =
-                                                                    localizations
-                                                                        .formatTimeOfDay(
-                                                                            from,
-                                                                            alwaysUse24HourFormat:
-                                                                                false);
-
-                                                                if (from !=
-                                                                    null) {
-                                                                  fromPicked =
-                                                                      from;
-                                                                  setState(() {
-                                                                    if (Platform
-                                                                        .isIOS) {
-                                                                      _timeInController
-                                                                              .text =
-                                                                          formattedTime;
-                                                                    } else {
-                                                                      _timeInController
-                                                                              .text =
-                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                    }
-                                                                  });
-                                                                }
-                                                              }
-                                                            },
-                                                            child:
-                                                                Directionality(
-                                                              textDirection: ui
-                                                                  .TextDirection
-                                                                  .rtl,
-                                                              child: Container(
-                                                                child:
-                                                                    IgnorePointer(
-                                                                  child:
-                                                                      TextFormField(
-                                                                    enabled:
-                                                                        edit,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    controller:
-                                                                        _timeInController,
-                                                                    decoration: kTextFieldDecorationFromTO
-                                                                        .copyWith(
-                                                                            hintText:
-                                                                                'من',
-                                                                            prefixIcon:
-                                                                                Icon(
-                                                                              Icons.alarm,
-                                                                              color: Colors.orange,
-                                                                            )),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ));
-                                                      },
-                                                    ),
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  width: 5.w,
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                      child: Theme(
-                                                    data: clockTheme,
-                                                    child: Builder(
-                                                      builder: (context) {
-                                                        return InkWell(
-                                                            onTap: () async {
-                                                              if (edit) {
-                                                                var to =
-                                                                    await showTimePicker(
-                                                                  context:
-                                                                      context,
-                                                                  initialTime:
-                                                                      toPicked,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child) {
-                                                                    return MediaQuery(
-                                                                      data: MediaQuery.of(
-                                                                              context)
-                                                                          .copyWith(
-                                                                              alwaysUse24HourFormat: false),
-                                                                      child:
-                                                                          child,
-                                                                    );
-                                                                  },
-                                                                );
-                                                                MaterialLocalizations
-                                                                    localizations =
-                                                                    MaterialLocalizations.of(
-                                                                        context);
-                                                                String
-                                                                    formattedTime2 =
-                                                                    localizations.formatTimeOfDay(
-                                                                        to,
-                                                                        alwaysUse24HourFormat:
-                                                                            false);
-                                                                if (to !=
-                                                                    null) {
-                                                                  toPicked = to;
-                                                                  setState(() {
-                                                                    if (Platform
-                                                                        .isIOS) {
-                                                                      _timeOutController
-                                                                              .text =
-                                                                          formattedTime2;
-                                                                    } else {
-                                                                      _timeOutController
-                                                                              .text =
-                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                    }
-                                                                  });
-                                                                }
-                                                              }
-                                                            },
-                                                            child:
-                                                                Directionality(
-                                                              textDirection: ui
-                                                                  .TextDirection
-                                                                  .rtl,
-                                                              child: Container(
-                                                                child:
-                                                                    IgnorePointer(
-                                                                  child:
-                                                                      TextFormField(
-                                                                    enabled:
-                                                                        edit,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    controller:
-                                                                        _timeOutController,
-                                                                    decoration: kTextFieldDecorationFromTO
-                                                                        .copyWith(
-                                                                            hintText:
-                                                                                'الى',
-                                                                            prefixIcon:
-                                                                                Icon(
-                                                                              Icons.alarm,
-                                                                              color: Colors.orange,
-                                                                            )),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ));
-                                                      },
-                                                    ),
-                                                  )),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      TextFormField(
+                                        enabled: edit,
+                                        onFieldSubmitted: (_) {},
+                                        textInputAction: TextInputAction.next,
+                                        textAlign: TextAlign.right,
+                                        validator: (text) {
+                                          if (text.length == 0) {
+                                            return 'مطلوب';
+                                          }
+                                          return null;
+                                        },
+                                        controller: _title,
+                                        decoration:
+                                            kTextFieldDecorationWhite.copyWith(
+                                                hintText: 'اسم المناوبة',
+                                                suffixIcon: Icon(
+                                                  Icons.title,
+                                                  color: Colors.orange,
+                                                )),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 50.h,
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
                                             children: [
-                                              Checkbox(
-                                                  activeColor:
-                                                      Colors.orange[700],
-                                                  value: checkedBox,
-                                                  onChanged: ((_timeInController
-                                                                  .text ==
-                                                              "") ||
-                                                          (_timeOutController
-                                                                  .text ==
-                                                              ""))
-                                                      ? null
-                                                      : (value) {
-                                                          setState(() {
-                                                            checkedBox = value;
-                                                          });
-                                                        }),
-                                              Text("اعدادات متقدمة")
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                    child: Theme(
+                                                  data: clockTheme,
+                                                  child: Builder(
+                                                    builder: (context) {
+                                                      return InkWell(
+                                                          onTap: () async {
+                                                            if (edit) {
+                                                              var from =
+                                                                  await showTimePicker(
+                                                                context:
+                                                                    context,
+                                                                initialTime:
+                                                                    fromPicked,
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child) {
+                                                                  return MediaQuery(
+                                                                    data: MediaQuery.of(
+                                                                            context)
+                                                                        .copyWith(
+                                                                            alwaysUse24HourFormat:
+                                                                                false),
+                                                                    child:
+                                                                        child,
+                                                                  );
+                                                                },
+                                                              );
+                                                              MaterialLocalizations
+                                                                  localizations =
+                                                                  MaterialLocalizations
+                                                                      .of(context);
+                                                              String
+                                                                  formattedTime =
+                                                                  localizations
+                                                                      .formatTimeOfDay(
+                                                                          from,
+                                                                          alwaysUse24HourFormat:
+                                                                              false);
+
+                                                              if (from !=
+                                                                  null) {
+                                                                fromPicked =
+                                                                    from;
+                                                                setState(() {
+                                                                  if (Platform
+                                                                      .isIOS) {
+                                                                    _timeInController
+                                                                            .text =
+                                                                        formattedTime;
+                                                                  } else {
+                                                                    _timeInController
+                                                                            .text =
+                                                                        "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  }
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Directionality(
+                                                            textDirection: ui
+                                                                .TextDirection
+                                                                .rtl,
+                                                            child: Container(
+                                                              child:
+                                                                  IgnorePointer(
+                                                                child:
+                                                                    TextFormField(
+                                                                  enabled: edit,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  controller:
+                                                                      _timeInController,
+                                                                  decoration: kTextFieldDecorationFromTO
+                                                                      .copyWith(
+                                                                          hintText:
+                                                                              'من',
+                                                                          prefixIcon:
+                                                                              Icon(
+                                                                            Icons.alarm,
+                                                                            color:
+                                                                                Colors.orange,
+                                                                          )),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ));
+                                                    },
+                                                  ),
+                                                )),
+                                              ),
+                                              SizedBox(
+                                                width: 5.w,
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                    child: Theme(
+                                                  data: clockTheme,
+                                                  child: Builder(
+                                                    builder: (context) {
+                                                      return InkWell(
+                                                          onTap: () async {
+                                                            if (edit) {
+                                                              var to =
+                                                                  await showTimePicker(
+                                                                context:
+                                                                    context,
+                                                                initialTime:
+                                                                    toPicked,
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child) {
+                                                                  return MediaQuery(
+                                                                    data: MediaQuery.of(
+                                                                            context)
+                                                                        .copyWith(
+                                                                            alwaysUse24HourFormat:
+                                                                                false),
+                                                                    child:
+                                                                        child,
+                                                                  );
+                                                                },
+                                                              );
+                                                              MaterialLocalizations
+                                                                  localizations =
+                                                                  MaterialLocalizations
+                                                                      .of(context);
+                                                              String
+                                                                  formattedTime2 =
+                                                                  localizations
+                                                                      .formatTimeOfDay(
+                                                                          to,
+                                                                          alwaysUse24HourFormat:
+                                                                              false);
+                                                              if (to != null) {
+                                                                toPicked = to;
+                                                                setState(() {
+                                                                  if (Platform
+                                                                      .isIOS) {
+                                                                    _timeOutController
+                                                                            .text =
+                                                                        formattedTime2;
+                                                                  } else {
+                                                                    _timeOutController
+                                                                            .text =
+                                                                        "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  }
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Directionality(
+                                                            textDirection: ui
+                                                                .TextDirection
+                                                                .rtl,
+                                                            child: Container(
+                                                              child:
+                                                                  IgnorePointer(
+                                                                child:
+                                                                    TextFormField(
+                                                                  enabled: edit,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  controller:
+                                                                      _timeOutController,
+                                                                  decoration: kTextFieldDecorationFromTO
+                                                                      .copyWith(
+                                                                          hintText:
+                                                                              'الى',
+                                                                          prefixIcon:
+                                                                              Icon(
+                                                                            Icons.alarm,
+                                                                            color:
+                                                                                Colors.orange,
+                                                                          )),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ));
+                                                    },
+                                                  ),
+                                                )),
+                                              ),
                                             ],
                                           ),
                                         ),
-                                        checkedBox
-                                            ? AdvancedShiftSettings(
-                                                from: fromPicked,
-                                                to: toPicked,
-                                                edit: edit,
-                                              )
-                                            : Container()
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Checkbox(
+                                                activeColor: Colors.orange[700],
+                                                value: checkedBox,
+                                                onChanged: ((_timeInController
+                                                                .text ==
+                                                            "") ||
+                                                        (_timeOutController
+                                                                .text ==
+                                                            ""))
+                                                    ? null
+                                                    : (value) {
+                                                        setState(() {
+                                                          checkedBox = value;
+                                                        });
+                                                      }),
+                                            Text("اعدادات متقدمة")
+                                          ],
+                                        ),
+                                      ),
+                                      checkedBox
+                                          ? AdvancedShiftSettings(
+                                              from: fromPicked,
+                                              to: toPicked,
+                                              edit: edit,
+                                            )
+                                          : Container()
+                                    ],
                                   ),
                                 ),
                               ),
+                            ),
 
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: RoundedButton(
-                                  onPressed: () async {
-                                    print("d$fromPicked");
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  var dayssOff = Provider.of<DaysOffData>(
+                                          context,
+                                          listen: false)
+                                      .advancedShift;
+                                  DateTime now = DateTime.now();
+                                  TimeOfDay t = fromPicked;
+                                  TimeOfDay tt = toPicked;
 
-                                    // var startInt = int.parse(
-                                    //     "${fromPicked.hour}${fromPicked.minute}");
-                                    // var endInt = int.parse(
-                                    //     "${fromPicked.hour}${fromPicked.minute}");
+                                  DateTime dateFrom = DateTime(now.year,
+                                      now.month, now.day, t.hour, t.minute);
 
-                                    // var startInt = int.parse(fromPicked
-                                    //     .format(context)
-                                    //     .split(" ")[0]
-                                    //     .replaceAll(":", ""));
-                                    //
-                                    // var endInt = int.parse(toPicked
-                                    //     .format(context)
-                                    //     .split(" ")[0]
-                                    //     .replaceAll(":", ""));
-                                    DateTime now = DateTime.now();
-                                    TimeOfDay t = fromPicked;
-                                    TimeOfDay tt = toPicked;
-                                    DateTime dateFrom = DateTime(now.year,
-                                        now.month, now.day, t.hour, t.minute);
+                                  DateTime dateTo = DateTime(now.year,
+                                      now.month, now.day, tt.hour, tt.minute);
+                                  DateTime sunFrom =
+                                      dayssOff[1].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[1].fromDate.hour,
+                                              dayssOff[1].fromDate.minute);
+                                  DateTime sunTo = dayssOff[1].fromDate == null
+                                      ? dateTo
+                                      : DateTime(
+                                          now.year,
+                                          now.month,
+                                          now.day,
+                                          dayssOff[1].toDate.hour,
+                                          dayssOff[1].toDate.minute);
+                                  DateTime monFrom =
+                                      dayssOff[2].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[2].fromDate.hour,
+                                              dayssOff[2].fromDate.minute);
+                                  DateTime monTo = dayssOff[2].fromDate == null
+                                      ? dateTo
+                                      : DateTime(
+                                          now.year,
+                                          now.month,
+                                          now.day,
+                                          dayssOff[2].toDate.hour,
+                                          dayssOff[2].toDate.minute);
+                                  DateTime tuesFrom =
+                                      dayssOff[3].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[3].fromDate.hour,
+                                              dayssOff[3].fromDate.minute);
+                                  DateTime tuesTo = dayssOff[3].fromDate == null
+                                      ? dateTo
+                                      : DateTime(
+                                          now.year,
+                                          now.month,
+                                          now.day,
+                                          dayssOff[3].toDate.hour,
+                                          dayssOff[3].toDate.minute);
 
-                                    DateTime dateTo = DateTime(now.year,
-                                        now.month, now.day, tt.hour, tt.minute);
+                                  DateTime wedFrom =
+                                      dayssOff[4].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[4].fromDate.hour,
+                                              dayssOff[4].fromDate.minute);
+                                  DateTime wedTo = dayssOff[4].fromDate == null
+                                      ? dateTo
+                                      : DateTime(
+                                          now.year,
+                                          now.month,
+                                          now.day,
+                                          dayssOff[4].toDate.hour,
+                                          dayssOff[4].toDate.minute);
+                                  DateTime thursFrom =
+                                      dayssOff[5].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[5].fromDate.hour,
+                                              dayssOff[5].fromDate.minute);
+                                  DateTime thursTo =
+                                      dayssOff[5].fromDate == null
+                                          ? dateTo
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[5].toDate.hour,
+                                              dayssOff[5].toDate.minute);
+                                  DateTime fridayFrom =
+                                      dayssOff[6].fromDate == null
+                                          ? dateFrom
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[6].fromDate.hour,
+                                              dayssOff[6].fromDate.minute);
+                                  DateTime fridayTo =
+                                      dayssOff[6].fromDate == null
+                                          ? dateTo
+                                          : DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              dayssOff[6].toDate.hour,
+                                              dayssOff[6].toDate.minute);
 
-                                    var startInt = int.parse(DateFormat("HH:mm")
-                                        .format(dateFrom)
-                                        .replaceAll(":", ""));
-                                    startString =
-                                        DateFormat("HH:mm").format(dateFrom);
+                                  var startInt = int.parse(DateFormat("HH:mm")
+                                      .format(dateFrom)
+                                      .replaceAll(":", ""));
+                                  startString =
+                                      DateFormat("HH:mm").format(dateFrom);
 
-                                    endString =
-                                        DateFormat("HH:mm").format(dateTo);
+                                  endString =
+                                      DateFormat("HH:mm").format(dateTo);
+                                  _sunFrom =
+                                      DateFormat("HH:mm").format(sunFrom);
+                                  _sunTo = DateFormat("HH:mm").format(sunTo);
+                                  _monFrom =
+                                      DateFormat("HH:mm").format(monFrom);
+                                  _monTo = DateFormat("HH:mm").format(monTo);
+                                  _thuFrom =
+                                      DateFormat("HH:mm").format(thursFrom);
+                                  _thuTo = DateFormat("HH:mm").format(thursTo);
+                                  _wedFrom =
+                                      DateFormat("HH:mm").format(wedFrom);
+                                  _wedTo = DateFormat("HH:mm").format(wedTo);
+                                  _friFrom =
+                                      DateFormat("HH:mm").format(fridayFrom);
+                                  _friTo = DateFormat("HH:mm").format(fridayTo);
+                                  _tuesFrom =
+                                      DateFormat("HH:mm").format(tuesFrom);
+                                  _tuesTo = DateFormat("HH:mm").format(tuesTo);
+                                  var endInt = int.parse(DateFormat("HH:mm")
+                                      .format(dateTo)
+                                      .replaceAll(":", ""));
 
-                                    var endInt = int.parse(DateFormat("HH:mm")
-                                        .format(dateTo)
-                                        .replaceAll(":", ""));
+                                  var startStart =
+                                      ((startInt - kBeforeStartShift) + 2400) %
+                                          2400;
+                                  var startEnd =
+                                      (startInt + kAfterStartShift) % 2400;
+                                  var endStart = endInt;
+                                  var endEnd = (endInt + kAfterEndShift) % 2400;
 
-                                    var startStart =
-                                        ((startInt - kBeforeStartShift) +
-                                                2400) %
-                                            2400;
-                                    var startEnd =
-                                        (startInt + kAfterStartShift) % 2400;
-                                    var endStart = endInt;
-                                    var endEnd =
-                                        (endInt + kAfterEndShift) % 2400;
-
-                                    print(
-                                        "$startStart   $startEnd    $endStart   $endEnd");
-                                    if (!widget.isEdit) {
-                                      if (_formKey.currentState.validate()) {
-                                        if (startInt > endInt) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return RoundedAlert(
-                                                onPressed: () async {
-                                                  addShiftFun(
-                                                      startStart,
-                                                      startEnd,
-                                                      endStart,
-                                                      endEnd);
-                                                },
-                                                title: "اضافة مناوبة",
-                                                content:
-                                                    " برجاء العلم ان مواعيد المناوية من $startString \n إلي $endString",
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          addShiftFun(startStart, startEnd,
-                                              endStart, endEnd);
-                                        }
-                                      }
-                                    } else {
-                                      if (edit) {
-                                        if (_formKey.currentState.validate()) {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            builder: (context) => Container(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                ),
-                                                height: 200.h,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    RoundedButton(
-                                                      onPressed: () async {
-                                                        if (startInt > endInt) {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return RoundedAlert(
-                                                                onPressed:
-                                                                    () async {
-                                                                  await editShiftFun(
-                                                                      startStart,
-                                                                      startEnd,
-                                                                      endStart,
-                                                                      endEnd);
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                title:
-                                                                    "تعديل مناوبة",
-                                                                content:
-                                                                    " برجاء العلم ان مواعيد المناوبة من $startString \n إلي $endString",
-                                                              );
-                                                            },
-                                                          );
-                                                        } else {
-                                                          editShiftFun(
-                                                              startStart,
-                                                              startEnd,
-                                                              endStart,
-                                                              endEnd);
-                                                        }
-                                                      },
-                                                      title: "حفظ ؟",
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }
+                                  print(
+                                      "$startStart   $startEnd    $endStart   $endEnd");
+                                  if (!widget.isEdit) {
+                                    if (_formKey.currentState.validate()) {
+                                      if (startInt > endInt) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return RoundedAlert(
+                                              onPressed: () async {
+                                                addShiftFun(startStart,
+                                                    startEnd, endStart, endEnd);
+                                              },
+                                              title: "اضافة مناوبة",
+                                              content:
+                                                  " برجاء العلم ان مواعيد المناوية من $startString \n إلي $endString",
+                                            );
+                                          },
+                                        );
                                       } else {
-                                        setState(() {
-                                          edit = true;
-                                        });
+                                        addShiftFun(startStart, startEnd,
+                                            endStart, endEnd);
                                       }
                                     }
-                                  },
-                                  title: (!widget.isEdit)
-                                      ? "إضافة"
-                                      : edit
-                                          ? "حفظ"
-                                          : "تعديل",
-                                ),
+                                  } else {
+                                    if (edit) {
+                                      if (_formKey.currentState.validate()) {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (context) => Container(
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                              ),
+                                              height: 200.h,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  RoundedButton(
+                                                    onPressed: () async {
+                                                      if (startInt > endInt) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return RoundedAlert(
+                                                              onPressed:
+                                                                  () async {
+                                                                await editShiftFun(
+                                                                    startStart,
+                                                                    startEnd,
+                                                                    endStart,
+                                                                    endEnd);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              title:
+                                                                  "تعديل مناوبة",
+                                                              content:
+                                                                  " برجاء العلم ان مواعيد المناوبة من $startString \n إلي $endString",
+                                                            );
+                                                          },
+                                                        );
+                                                      } else {
+                                                        editShiftFun(
+                                                            startStart,
+                                                            startEnd,
+                                                            endStart,
+                                                            endEnd);
+                                                      }
+                                                    },
+                                                    title: "حفظ ؟",
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      setState(() {
+                                        edit = true;
+                                      });
+                                    }
+                                  }
+                                },
+                                title: (!widget.isEdit)
+                                    ? "إضافة"
+                                    : edit
+                                        ? "حفظ"
+                                        : "تعديل",
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    left: 5.0.w,
-                    top: 5.0.h,
-                    child: Container(
-                      width: 50.w,
-                      height: 50.h,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ShiftsScreen(widget.siteId, -1)),
-                              (Route<dynamic> route) => false);
-                        },
                       ),
+                    )
+                  ],
+                ),
+                Positioned(
+                  left: 5.0.w,
+                  top: 5.0.h,
+                  child: Container(
+                    width: 50.w,
+                    height: 50.h,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ShiftsScreen(widget.siteId, -1)),
+                            (Route<dynamic> route) => false);
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -780,14 +899,15 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   }
 
   addShiftFun(int sS, int sE, int eS, int eE) async {
+    var dayssOff =
+        Provider.of<DaysOffData>(context, listen: false).advancedShift;
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return RoundedLoadingIndicator();
         });
 
-    print(
-        "${_title.text} + $siteId , ${int.parse(startString.replaceAll(":", ""))} + ${int.parse(endString.replaceAll(":", ""))}");
     var user = Provider.of<UserData>(context, listen: false).user;
 
     var msg = await Provider.of<ShiftsData>(context, listen: false).addShift(
@@ -796,6 +916,18 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             siteID: Provider.of<SiteData>(context, listen: false)
                 .sitesList[siteId]
                 .id,
+            fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
+            fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
+            monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
+            mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
+            sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
+            sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
+            thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
+            thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
+            tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
+            tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
+            wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
+            wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
             shiftStartTime: int.parse(startString.replaceAll(":", "")),
             shiftEndTime: int.parse(endString.replaceAll(":", ""))),
         user.userToken,

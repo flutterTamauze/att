@@ -62,9 +62,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
   @override
   Widget build(BuildContext context) {
-    var permessionProv =
-        Provider.of<UserPermessionsData>(context, listen: false)
-            .permessionsList;
     var selectedVal = "كل المواقع";
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
@@ -72,11 +69,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
     return GestureDetector(
         onTap: () {
-          for (int i = 0; i < daysofflist.reallocateUsers.length; i++) {
-            print(daysofflist.reallocateUsers[i].shiftname);
-
-            print(daysofflist.reallocateUsers[i].sitename);
-          }
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(

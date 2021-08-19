@@ -199,8 +199,11 @@ class _NotificationsDataState extends State<NotificationsData>
                                                     BorderRadius.circular(10)),
                                             backgroundColor: Colors.white,
                                             content: Container(
-                                              height: 140.h,
+                                              height: 90.h,
                                               child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -234,27 +237,6 @@ class _NotificationsDataState extends State<NotificationsData>
                                                               widget.indeex);
                                                     },
                                                     title: "قراءه هذا الأشعار",
-                                                  ),
-                                                  SizedBox(
-                                                    height: 15.h,
-                                                  ),
-                                                  NotificationPressedOptions(
-                                                    iconData: FontAwesomeIcons
-                                                        .userTimes,
-                                                    ontapFun: () async {
-                                                      _firebaseMessaging
-                                                          .unsubscribeFromTopic(
-                                                              "nekaba")
-                                                          .then((value) =>
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم غلق الأشعارات المتعلقة ب${widget.notificationObj.category}",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green));
-                                                    },
-                                                    title:
-                                                        " اغلاق الأشعارات الخاصة ب${widget.notificationObj.category}",
                                                   ),
                                                 ],
                                               ),

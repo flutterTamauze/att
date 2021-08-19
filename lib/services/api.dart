@@ -164,8 +164,6 @@ class ShiftApi with ChangeNotifier {
             print(decodedRes);
 
             if (jsonDecode(response.body)["message"] == "Success") {
-              print("dd");
-
               var shiftObjJson = jsonDecode(response.body)['data'] as List;
               shiftsList = shiftObjJson
                   .map((shiftJson) => Shift.fromJson(shiftJson))

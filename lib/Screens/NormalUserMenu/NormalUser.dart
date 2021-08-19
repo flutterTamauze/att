@@ -60,7 +60,9 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           onTap: () {
             Navigator.of(context).push(
               new MaterialPageRoute(
-                builder: (context) => UserOrdersView(),
+                builder: (context) => UserOrdersView(
+                  selectedOrder: "الأجازات",
+                ),
               ),
             );
           }),

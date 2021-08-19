@@ -137,23 +137,6 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      widget.response != null
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 5),
-                                              child: Text(
-                                                widget.response,
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: widget.iconData ==
-                                                          Icons.check
-                                                      ? Colors.green[700]
-                                                      : Colors.red,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            )
-                                          : Container(),
                                       widget.status == 2
                                           ? widget.adminComment != null
                                               ? Container(
@@ -164,8 +147,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                     textAlign: TextAlign.right,
                                                     style: TextStyle(
                                                       fontSize: 14,
+                                                      color: Colors.red,
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 )

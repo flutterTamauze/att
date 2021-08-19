@@ -224,21 +224,23 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             builder: (context) {
                                               return InkWell(
                                                   onTap: () async {
-                                                    final List<
-                                                            DateTime> picked =
-                                                        await DateRagePicker
-                                                            .showDatePicker(
-                                                                context:
-                                                                    context,
-                                                                initialFirstDate:
-                                                                    fromDate,
-                                                                initialLastDate:
-                                                                    toDate,
-                                                                firstDate:
-                                                                    new DateTime(
-                                                                        2021),
-                                                                lastDate:
-                                                                    yesterday);
+                                                    final List<DateTime>
+                                                        picked =
+                                                        await DateRagePicker.showDatePicker(
+                                                            context: context,
+                                                            initialFirstDate:
+                                                                fromDate,
+                                                            initialLastDate:
+                                                                toDate,
+                                                            firstDate: Provider
+                                                                    .of<CompanyData>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                .com
+                                                                .createdOn,
+                                                            lastDate:
+                                                                yesterday);
                                                     var newString = "";
                                                     setState(() {
                                                       fromDate = picked.first;
@@ -449,7 +451,9 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                                 int index) {
                                                                           return DataTableRow(
                                                                               reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index],
-                                                                              siteIdIndex);
+                                                                              siteIdIndex,
+                                                                              fromDate,
+                                                                              toDate);
                                                                         }),
                                                               )),
                                                               Directionality(
@@ -575,17 +579,16 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
 class DataTableRow extends StatelessWidget {
   final LateAbsenceReportUnit userAttendanceReportUnit;
   final siteId;
+  final DateTime fromDate, toDate;
 
-  DataTableRow(this.userAttendanceReportUnit, this.siteId);
+  DataTableRow(
+      this.userAttendanceReportUnit, this.siteId, this.fromDate, this.toDate);
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
         var now = DateTime.now();
-
-        var toDate = DateTime(now.year, now.month, now.day - 1);
-        var fromDate = DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
 
         var userProvider = Provider.of<UserData>(context, listen: false).user;
 
@@ -609,6 +612,9 @@ class DataTableRow extends StatelessWidget {
             new MaterialPageRoute(
               builder: (context) => UserAttendanceReportScreen(
                 name: userAttendanceReportUnit.userName,
+                userFromDate: fromDate,
+                id: userAttendanceReportUnit.userId,
+                userToDate: toDate,
                 siteId: siteId,
               ),
             ),
@@ -627,14 +633,17 @@ class DataTableRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 20,
+                      alignment: Alignment.centerRight,
+                      height: 40.h,
+                      width: 144.w,
                       child: AutoSizeText(
                         userAttendanceReportUnit.userName,
-                        maxLines: 1,
+                        maxLines: 2,
                         style: TextStyle(
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                            color: Colors.black),
+                          fontSize: ScreenUtil()
+                              .setSp(13, allowFontScalingSelf: true),
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],
@@ -644,7 +653,6 @@ class DataTableRow extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 1,
                       child: Container(
                           height: 50.h,
                           child: Center(
@@ -673,7 +681,6 @@ class DataTableRow extends StatelessWidget {
                                     ))),
                     ),
                     Expanded(
-                      flex: 1,
                       child: Container(
                           height: 50.h,
                           child: Center(
@@ -690,7 +697,6 @@ class DataTableRow extends StatelessWidget {
                           ))),
                     ),
                     Expanded(
-                      flex: 1,
                       child: Container(
                           height: 50.h,
                           child: Center(
@@ -707,7 +713,6 @@ class DataTableRow extends StatelessWidget {
                           ))),
                     ),
                     Expanded(
-                      flex: 1,
                       child: Container(
                           height: 50.h,
                           child: Center(

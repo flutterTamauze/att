@@ -16,6 +16,8 @@ class Day {
   TimeOfDay fromDate;
   TimeOfDay toDate;
   String shiftname;
+  TextEditingController timeInController = TextEditingController();
+  TextEditingController timeOutController = TextEditingController();
 }
 
 class DaysOffData with ChangeNotifier {
@@ -38,10 +40,22 @@ class DaysOffData with ChangeNotifier {
     notifyListeners();
   }
 
-  setFromAndTo(int index, var from, var to) {
+  setFromAndTo(
+    int index,
+    var from,
+    var to,
+  ) {
     advancedShift[index].fromDate = from;
     advancedShift[index].toDate = to;
+
     notifyListeners();
+  }
+
+  fillAdvancedShiftTime(timeIn, timeOut) {
+    for (int i = 0; i < advancedShift.length; i++) {
+      advancedShift[i].timeInController.text = timeIn;
+      advancedShift[i].timeOutController.text = timeOut;
+    }
   }
 
   InheritDefault inheritDefault = InheritDefault();
@@ -104,6 +118,10 @@ class DaysOffData with ChangeNotifier {
             weak[6].dayName = "الجمعة";
             reallocateUsers = [...weak];
             advancedShift = [...weak];
+            for (int i = 0; i < advancedShift.length; i++) {
+              advancedShift[i].fromDate = null;
+              advancedShift[i].toDate = null;
+            }
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==

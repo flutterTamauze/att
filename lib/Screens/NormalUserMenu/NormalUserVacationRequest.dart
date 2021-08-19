@@ -753,12 +753,35 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     .userToken,
                                                 userdata.id);
                                         if (msg == "success") {
-                                          Fluttertoast.showToast(
-                                              gravity: ToastGravity.CENTER,
-                                              backgroundColor: Colors.green,
-                                              msg: "تم حفظ الطلب بنجاح");
+                                          return showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              sendFcmMessage(
+                                                topicName: "attendChilango",
+                                                title: "تم طلب اذن بنجاح",
+                                                category: "vacation",
+                                                message:
+                                                    "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                              ).whenComplete(() => Provider.of<
+                                                          NotificationDataService>(
+                                                      context,
+                                                      listen: false)
+                                                  .initializeNotification(
+                                                      context));
 
-                                          Navigator.pop(context);
+                                              return StackedNotificaitonAlert(
+                                                repeatAnimation: false,
+                                                notificationTitle:
+                                                    "تم تقديم طلب الأذن بنجاح ",
+                                                notificationContent:
+                                                    "برجاء متابعة الطلب ",
+                                                roundedButtonTitle: "متابعة",
+                                                lottieAsset:
+                                                    "resources/success.json",
+                                                showToast: false,
+                                              );
+                                            },
+                                          );
                                         } else if (msg == "failed") {
                                           Fluttertoast.showToast(
                                               gravity: ToastGravity.CENTER,

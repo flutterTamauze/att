@@ -24,10 +24,11 @@ class Company {
   String email;
   int companyUsers;
   int companySites;
-
+  DateTime createdOn;
   String adminPhoneNumber;
 
   Company({
+    this.createdOn,
     this.nameAr,
     this.nameEn,
     this.id,
@@ -93,7 +94,8 @@ class CompanyData extends ChangeNotifier {
             com.email = decodedRes["data"]["companyEmail"] ?? "";
             com.companyUsers = decodedRes["data"]["companyUsers"];
             com.companySites = decodedRes["data"]["companySites"];
-            print("zzzzzzzzzzz ${com.logo}");
+            com.createdOn = DateTime.tryParse(decodedRes["data"]["createdOn"]);
+            print("company created on ${com.createdOn}");
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==
@@ -372,7 +374,7 @@ class CompanyData extends ChangeNotifier {
 
   Future<String> uploadImage(File _image, String token) async {
     String data = "";
-    print("uploading image..${com.id}...");
+    print("uploading image....");
 
     var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
     var length = await _image.length();
@@ -380,8 +382,7 @@ class CompanyData extends ChangeNotifier {
     var uri = Uri.parse("$baseURL/api/Company/${com.id}");
 
     var request = new http.MultipartRequest("PUT", uri);
-    Map<String, String> headers = {'Authorization': "Bearer $token"};
-    request.headers.addAll(headers);
+    request.headers.addAll({'Authorization': "Bearer $token"});
     var multipartFile = new http.MultipartFile('logo', stream, length,
         filename: basename(_image.path));
     request.files.add(multipartFile);

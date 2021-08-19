@@ -28,7 +28,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseCloudMessaging/NotificationMessage.dart';
 import 'enums/connectivity_status.dart';
 
-DatabaseHelper db = DatabaseHelper();
 List<CameraDescription> cameras;
 const MethodChannel _channel = MethodChannel('tdsChilango.com/channel_test');
 Map<String, String> channelMap = {

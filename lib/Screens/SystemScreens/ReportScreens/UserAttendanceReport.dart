@@ -35,8 +35,10 @@ import 'package:intl/intl.dart';
 class UserAttendanceReportScreen extends StatefulWidget {
   final String name, id;
   final int siteId;
+  final DateTime userFromDate, userToDate;
   // getUserReportUnits
-  UserAttendanceReportScreen({this.name, this.siteId, this.id});
+  UserAttendanceReportScreen(
+      {this.name, this.siteId, this.id, this.userFromDate, this.userToDate});
 
   @override
   _UserAttendanceReportScreenState createState() =>
@@ -65,13 +67,22 @@ class _UserAttendanceReportScreenState
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+    DateTime companyDate =
+        Provider.of<CompanyData>(context, listen: false).com.createdOn;
 
+    super.initState();
+    print("id $widget.id");
     var now = DateTime.now();
     selectedId = widget.id;
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
+    if (fromDate.isBefore(companyDate)) {
+      fromDate = companyDate;
+    }
+    if (widget.userFromDate != null && widget.userToDate != null) {
+      fromDate = widget.userFromDate;
+      toDate = widget.userToDate;
+    }
 
     yesterday = DateTime(now.year, now.month, now.day);
 
@@ -264,9 +275,13 @@ class _UserAttendanceReportScreenState
                                                                     fromDate,
                                                                 initialLastDate:
                                                                     toDate,
-                                                                firstDate:
-                                                                    new DateTime(
-                                                                        2021),
+                                                                firstDate: Provider.of<
+                                                                            CompanyData>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .com
+                                                                    .createdOn,
                                                                 lastDate:
                                                                     yesterday);
                                                         var newString = "";
@@ -1200,7 +1215,9 @@ class DataTableRow extends StatelessWidget {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  userAttendanceReportUnit.timeIn.contains(":")
+                                  userAttendanceReportUnit.timeIn
+                                          .toString()
+                                          .contains(":")
                                       ? Icon(
                                           userAttendanceReportUnit.timeInIsPm ==
                                                   "am"
@@ -1209,7 +1226,9 @@ class DataTableRow extends StatelessWidget {
                                           size: ScreenUtil().setSp(12,
                                               allowFontScalingSelf: true),
                                         )
-                                      : Container(),
+                                      : Container(
+                                          child: Text(""),
+                                        ),
                                   Container(
                                     height: 20,
                                     child: AutoSizeText(
@@ -1223,7 +1242,11 @@ class DataTableRow extends StatelessWidget {
                                                       "3"
                                                   ? "رصيد اجازات"
                                                   : userAttendanceReportUnit
-                                                      .timeIn,
+                                                              .timeIn ==
+                                                          "4"
+                                                      ? "مأمورية خارجية"
+                                                      : userAttendanceReportUnit
+                                                          .timeIn,
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(14,
@@ -1330,109 +1353,116 @@ class DataTableEnd extends StatelessWidget {
             bottomLeft: Radius.circular(15),
           )),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+        padding: EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
         child: Container(
-          height: 60.h,
+          height: 65.h,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 20.h,
-                        child: AutoSizeText(
-                          'ايام الغياب:',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 20.h,
+                            child: AutoSizeText(
+                              'ايام الغياب:',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil()
+                                      .setSp(13, allowFontScalingSelf: true),
+                                  color: Colors.black),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              absentsDays,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil()
+                                      .setSp(13, allowFontScalingSelf: true),
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          child: AutoSizeText(
+                            'ايام التأخير:',
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil()
+                                    .setSp(13, allowFontScalingSelf: true),
+                                color: Colors.black),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 4.w,
-                      ),
-                      Container(
-                        height: 20,
-                        child: AutoSizeText(
-                          absentsDays,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+                        SizedBox(
+                          width: 4.w,
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 20,
-                        child: AutoSizeText(
-                          'ايام التأخير:',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+                        Container(
+                          height: 20,
+                          child: AutoSizeText(
+                            lateDays,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil()
+                                    .setSp(13, allowFontScalingSelf: true),
+                                color: Colors.black),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 4.w,
-                      ),
-                      Container(
-                        height: 20,
-                        child: AutoSizeText(
-                          lateDays,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          child: AutoSizeText(
+                            'مدة التأخير:',
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil()
+                                    .setSp(13, allowFontScalingSelf: true),
+                                color: Colors.black),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 20,
-                        child: AutoSizeText(
-                          'مدة التأخير:',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+                        SizedBox(
+                          width: 4.w,
                         ),
-                      ),
-                      SizedBox(
-                        width: 4.w,
-                      ),
-                      Container(
-                        height: 20,
-                        child: AutoSizeText(
-                          lateDuration,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(13, allowFontScalingSelf: true),
-                              color: Colors.black),
+                        Container(
+                          height: 20,
+                          child: AutoSizeText(
+                            lateDuration,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil()
+                                    .setSp(13, allowFontScalingSelf: true),
+                                color: Colors.black),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
               Divider(),
               Row(
@@ -1443,7 +1473,7 @@ class DataTableEnd extends StatelessWidget {
                       Container(
                         height: 20,
                         child: AutoSizeText(
-                          ' خصم التأخير:',
+                          'خصم الغياب:',
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -1474,7 +1504,7 @@ class DataTableEnd extends StatelessWidget {
                       Container(
                         height: 20,
                         child: AutoSizeText(
-                          '  خصم الغياب:',
+                          ' خصم التأخير:',
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,

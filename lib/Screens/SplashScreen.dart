@@ -172,7 +172,7 @@ class _SplashScreenState extends State<SplashScreen>
     await _faceNetService.loadModel();
     await _dataBaseService.loadDB();
     await firebaseMessaging.subscribeToTopic("attendChilango");
-    await firebaseMessaging.subscribeToTopic("testing");
+    // await firebaseMessaging.subscribeToTopic("testing");
     // _mlKitService.initialize();
   }
 

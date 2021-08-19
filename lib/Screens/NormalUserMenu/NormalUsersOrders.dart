@@ -18,12 +18,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'NormalUser.dart';
 import 'NormalUserVacationRequest.dart';
 
+// ignore: must_be_immutable
 class UserOrdersView extends StatefulWidget {
+  String selectedOrder;
+  UserOrdersView({@required this.selectedOrder});
   @override
   _UserOrdersViewState createState() => _UserOrdersViewState();
 }
 
-String selectedOrder = "الأجازات";
 List<String> ordersList = ["الأذونات", "الأجازات"];
 Future userPermessions;
 Future userHolidays;
@@ -75,10 +77,11 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UserVacationRequest(
-                        selectedOrder == "الأجازات" ? 1 : 3),
+                        widget.selectedOrder == "الأجازات" ? 1 : 3),
                   ));
             },
-            tooltip: selectedOrder == "الأجازات" ? "طلب اجازة" : "طلب إذن",
+            tooltip:
+                widget.selectedOrder == "الأجازات" ? "طلب اجازة" : "طلب إذن",
             backgroundColor: Colors.orange[600],
             child: Icon(
               Icons.add,
@@ -146,10 +149,10 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedOrder = value;
+                                    widget.selectedOrder = value;
                                   });
                                 },
-                                value: selectedOrder,
+                                value: widget.selectedOrder,
                               )),
                             ),
                           ),
@@ -177,7 +180,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       print(value);
 
                       setState(() {
-                        if (selectedOrder == "الأجازات") {
+                        if (widget.selectedOrder == "الأجازات") {
                           List<UserHolidays> order = provList
                               .where((element) =>
                                   element.holidayNumber.toString() ==
@@ -205,7 +208,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   ),
                 ),
               ),
-              selectedOrder == "الأجازات"
+              widget.selectedOrder == "الأجازات"
                   ? FutureBuilder(
                       future: userHolidays,
                       builder: (context, snapshot) {

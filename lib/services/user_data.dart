@@ -109,6 +109,7 @@ class UserData with ChangeNotifier {
 
           var decodedRes = json.decode(response.body);
           print(response.body);
+
           print("token is :${decodedRes["token"]}");
           if (decodedRes["message"] == "Success : ") {
             user.userToken = decodedRes["token"];
@@ -119,6 +120,8 @@ class UserData with ChangeNotifier {
             user.email = decodedRes["userData"]["email"];
             user.phoneNum = decodedRes["userData"]["phoneNumber"];
             user.userType = decodedRes["userData"]["userType"];
+            user.createdOn =
+                DateTime.tryParse(decodedRes["userData"]["createdOn"]);
             user.userSiteId = decodedRes["companyData"]["siteId"] as int;
             user.userShiftId = decodedRes["userData"]["shiftId"];
             user.isAllowedToAttend = decodedRes["userData"]["isAllowtoAttend"];
@@ -594,6 +597,7 @@ class User {
   String password;
   String userImage;
   String id;
+  DateTime createdOn;
 
   User({
     this.userToken,
@@ -604,6 +608,7 @@ class User {
     this.userSiteId,
     this.userID,
     this.name,
+    this.createdOn,
     this.userJob,
     this.email,
     this.userType,
