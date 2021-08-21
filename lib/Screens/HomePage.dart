@@ -6,7 +6,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -65,6 +65,11 @@ Future<bool> isConnectedToInternet(String url) async {
 AudioCache player = AudioCache();
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 void notificationPermessions() async {
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
   NotificationSettings settings = await firebaseMessaging.requestPermission(
     alert: true,
     announcement: false,
@@ -96,11 +101,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     // test();
+    // initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
-    checkBackgroundNotification();
+    // checkBackgroundNotification();
     checkForegroundNotification();
-    checkForNotificationData();
+
     notificationPermessions();
 
     WidgetsBinding.instance.addObserver(this);
@@ -128,86 +134,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     player.play("notification.mp3");
   }
 
-  checkBackgroundNotification() async {
-    await FirebaseMessaging.instance.getInitialMessage().then((value) {
-      print(value.notification.body);
-      print(value.notification.title);
-
-      saveNotificationToCache(value);
-
-      return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          Future.delayed(Duration(minutes: 1), () {
-            Navigator.of(context).pop();
-          });
-          return Stack(
-            children: [
-              Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0)), //this right here
-                  child: Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Container(
-                        height: 200.h,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 50.h,
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Text(
-                                  "اثبات حضور",
-                                  style: TextStyle(
-                                      color: Colors.orange,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              Divider(),
-                              Text("برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              RoundedButton(
-                                  title: "اثبات",
-                                  onPressed: () {
-                                    Fluttertoast.showToast(
-                                        msg: "تم اثبات الحضور بنجاح",
-                                        backgroundColor: Colors.green,
-                                        gravity: ToastGravity.CENTER);
-
-                                    Navigator.pop(context);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ))),
-              Positioned(
-                  right: 125.w,
-                  top: 200.h,
-                  child: Container(
-                    width: 150.w,
-                    height: 150.h,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: Lottie.asset("resources/notificationalarm.json",
-                          fit: BoxFit.fill),
-                    ),
-                  ))
-            ],
-          );
-        },
-      );
+  String _token = '';
+  void _onTokenEvent(String event) {
+    // Requested tokens can be obtained here
+    setState(() {
+      _token = event;
     });
+    print("TokenEvent: " + _token);
+  }
+
+  void _onTokenError(Object error) {
+    PlatformException e = error;
+    print("TokenErrorEvent: " + e.message);
+  }
+
+  Future<void> initPlatformState() async {
+    if (!mounted) return;
+    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
   }
 
   checkForegroundNotification() {
@@ -292,160 +235,86 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     });
   }
 
-  checkForNotificationData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true, // Required to display a heads up notification
-      badge: true,
-      sound: true,
-    );
-    if (prefs.getString("notifCategory") == 'attend') {
-      return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          Future.delayed(Duration(minutes: 1), () {
-            Navigator.of(context).pop();
-          });
-          return Stack(
-            children: [
-              Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0)), //this right here
-                  child: Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Container(
-                        height: 200.h,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 50.h,
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Text(
-                                  "اثبات حضور",
-                                  style: TextStyle(
-                                      color: Colors.orange,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              Divider(),
-                              Text("برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              RoundedButton(
-                                  title: "اثبات",
-                                  onPressed: () {
-                                    Fluttertoast.showToast(
-                                        msg: "تم اثبات الحضور بنجاح",
-                                        backgroundColor: Colors.green,
-                                        gravity: ToastGravity.CENTER);
-
-                                    Navigator.pop(context);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ))),
-              Positioned(
-                  right: 125.w,
-                  top: 200.h,
-                  child: Container(
-                    width: 150.w,
-                    height: 150.h,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: Lottie.asset("resources/notificationalarm.json",
-                          fit: BoxFit.fill),
-                    ),
-                  ))
-            ],
-          );
-        },
-      );
-
-      // startTimer();
-    }
-  }
-
   int levelClock = 300;
   DateTime currentBackPressTime;
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);
-
-    return WillPopScope(
-        onWillPop: onWillPop,
-        child: GestureDetector(
-          onTap: () async {
-            // await createNewChannel();
-            print(Provider.of<UserData>(context, listen: false)
-                .user
-                .isAllowedToAttend);
-            print(Provider.of<UserData>(context, listen: false).user.id);
-            print(await firebaseMessaging.getToken());
-          },
-          child: GestureDetector(
-            child: Scaffold(
-              endDrawer: NotificationItem(),
-              backgroundColor: Colors.white,
-              drawer: userDataProvider.user.userType == 0 ? DrawerI() : null,
-              body: Container(
-                  padding: EdgeInsets.only(bottom: 15.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      userDataProvider.user.userType == 0
-                          ? Header(
-                              nav: true,
-                            )
-                          : Container(),
-                      Expanded(
-                        child: Center(
-                          child: Lottie.asset("resources/qrlottie.json",
-                              repeat: true),
-                        ),
-                      ),
-                      Column(
+    print(Provider.of<PermissionHan>(context, listen: false)
+        .attendProovTriggered);
+    return Provider.of<PermissionHan>(context, listen: true)
+            .attendProovTriggered
+        ? StackedNotificaitonAlert(
+            popWidget: false,
+            notificationTitle: "اثبات حضور",
+            notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
+            roundedButtonTitle: "اثبات",
+            lottieAsset: "resources/notificationalarm.json",
+            notificationToast: "تم استقبال اثبات الحضور",
+            showToast: true,
+            repeatAnimation: true,
+          )
+        : WillPopScope(
+            onWillPop: onWillPop,
+            child: GestureDetector(
+              onTap: () async {
+                String result = await hawawi.Push.getId();
+                print(await hawawi.Push.isAutoInitEnabled());
+                print(result);
+                // await hawawi.Push.getToken(result);
+              },
+              child: GestureDetector(
+                child: Scaffold(
+                  endDrawer: NotificationItem(),
+                  backgroundColor: Colors.white,
+                  drawer:
+                      userDataProvider.user.userType == 0 ? DrawerI() : null,
+                  body: Container(
+                      padding: EdgeInsets.only(bottom: 15.h),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Provider.of<PermissionHan>(context, listen: true)
-                                      .showNotification ==
-                                  true
-                              ? Container()
-                              : Container(
-                                  child: RoundedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ScanPage(),
-                                        ),
-                                      );
-                                    },
-                                    title: "سجل الأن",
-                                  ),
-                                ),
-                          SizedBox(
-                            height: 15.h,
+                          userDataProvider.user.userType == 0
+                              ? Header(
+                                  nav: true,
+                                )
+                              : Container(),
+                          Expanded(
+                            child: Center(
+                              child: Lottie.asset("resources/qrlottie.json",
+                                  repeat: true),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Provider.of<PermissionHan>(context, listen: true)
+                                          .showNotification ==
+                                      true
+                                  ? Container()
+                                  : Container(
+                                      child: RoundedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ScanPage(),
+                                            ),
+                                          );
+                                        },
+                                        title: "سجل الأن",
+                                      ),
+                                    ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
-                  )),
-            ),
-          ),
-        ));
+                      )),
+                ),
+              ),
+            ));
   }
 
   Future<bool> onWillPop() {

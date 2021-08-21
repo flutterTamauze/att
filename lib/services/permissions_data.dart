@@ -13,6 +13,7 @@ class PrData {
 class PermissionHan with ChangeNotifier {
   bool showHome = true;
   bool showQr = true;
+  bool attendProovTriggered = false;
   bool showNotification = false;
   bool showReport = true;
   bool showSettings = true;
@@ -38,7 +39,16 @@ class PermissionHan with ChangeNotifier {
   setDialogonStreambool(bool data) {
     currentDialogOnstream = data;
   }
-    
+
+  triggerAttendProof() {
+    attendProovTriggered = true;
+  }
+
+  setAttendProoftoDefault() {
+    attendProovTriggered = false;
+    notifyListeners();
+  }
+
   Future filterList() async {
     permissionsList.forEach((element) async {
       if (await element.permission.status == PermissionStatus.granted) {

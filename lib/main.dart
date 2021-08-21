@@ -52,11 +52,10 @@ void main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   try {
-    print("Handling a background message: ${message.notification.body}");
-    print("Handling a background message: ${message.notification.title}");
-    print(message.data);
+    print("Handling a background message: ${message.notification}");
     print("going to save this data ${message.data["category"]}");
     final prefs = await SharedPreferences.getInstance();
+    print("current shared pref status :");
     print(prefs.getString("notifiCategory"));
     if (prefs.getString('notifCategory') == "" ||
         prefs.getString('notifCategory') == null) {

@@ -457,6 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  huawei_push:
+    dependency: "direct main"
+    description:
+      name: huawei_push
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.1+301"
   image:
     dependency: transitive
     description:

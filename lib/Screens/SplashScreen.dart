@@ -17,6 +17,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,6 +47,13 @@ class _SplashScreenState extends State<SplashScreen>
       var value = await login(userName: userData[0], password: userData[1]);
       print("VALUE OF USER $value");
       reverse(userData[0], value);
+    }
+  }
+
+  checkAttendProovStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("notifCategory") == 'attend') {
+      Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
     }
   }
 
@@ -193,6 +201,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     new Timer(new Duration(milliseconds: 3000), () async {
       await checkSharedUserData();
+      await checkAttendProovStatus();
     });
   }
 

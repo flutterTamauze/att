@@ -9,11 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class StackedNotificaitonAlert extends StatefulWidget {
+  bool popWidget = true;
   final String notificationTitle,
       notificationContent,
       notificationToast,
@@ -25,6 +28,7 @@ class StackedNotificaitonAlert extends StatefulWidget {
       this.notificationTitle,
       this.lottieAsset,
       @required this.showToast,
+      this.popWidget,
       @required this.repeatAnimation,
       this.notificationToast,
       this.roundedButtonTitle});
@@ -82,6 +86,8 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                             : RoundedButton(
                                 title: widget.roundedButtonTitle,
                                 onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
                                   if (widget.showToast) {
                                     setState(() {
                                       isloading = true;
@@ -93,8 +99,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                         await Geolocator.getCurrentPosition(
                                             desiredAccuracy:
                                                 LocationAccuracy.best);
-                                    print(currentPosition.latitude);
-                                    print(currentPosition.longitude);
+
                                     await attendObj.acceptAttendProof(
                                         user.userToken,
                                         attendId.toString(),
@@ -102,13 +107,19 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     setState(() {
                                       isloading = false;
                                     });
+                                    prefs.setString("notifCategory", "");
                                     Fluttertoast.showToast(
                                         msg: widget.notificationToast,
                                         backgroundColor: Colors.green,
                                         gravity: ToastGravity.CENTER);
+                                    Provider.of<PermissionHan>(context,
+                                            listen: false)
+                                        .setAttendProoftoDefault();
 
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
+                                    if (widget.popWidget) {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    }
                                   } else {
                                     Navigator.pop(context);
                                     Navigator.push(
@@ -129,7 +140,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                 ))),
         Positioned(
             right: 125.w,
-            top: 215.h,
+            top: widget.popWidget ? 170.h : 130.h,
             child: Container(
               width: 150.w,
               height: 150.h,

@@ -128,6 +128,7 @@ class NotificationDataService with ChangeNotifier {
           lottieAsset: "resources/notificationalarm.json",
           notificationToast: "تم استقبال اثبات الحضور",
           showToast: true,
+          popWidget: true,
           repeatAnimation: true,
         );
       },
