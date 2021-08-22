@@ -10,7 +10,11 @@ final String serverToken =
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 Future<bool> sendFcmMessage(
-    {String title, String message, String category, String topicName}) async {
+    {String title,
+    String message,
+    String category,
+    String topicName,
+    String userToken}) async {
   try {
     String toParams = "/topics/" + topicName;
 
@@ -62,7 +66,7 @@ Future<bool> sendFcmMessage(
           "category": "$category",
         },
         "priority": "high",
-        "to": topicName == "" ? await firebaseMessaging.getToken() : toParams
+        "to": topicName == "" ? userToken : toParams
       };
     }
 

@@ -11,6 +11,7 @@ import 'package:qr_users/services/user_data.dart';
 
 class Member {
   String name;
+  String fcmToken;
   double salary;
   DateTime hiredDate;
   bool isAllowedToAttend = false;
@@ -28,6 +29,7 @@ class Member {
     this.name,
     this.userImageURL,
     this.userType,
+    this.fcmToken,
     this.salary,
     this.hiredDate,
     this.isAllowedToAttend,
@@ -49,6 +51,7 @@ class Member {
         isAllowedToAttend: json["isAllowtoAttend"],
         excludeFromReport: json["excludeFromReport"],
         shiftId: json['shiftId'],
+        fcmToken: json["fcmToken"],
         phoneNumber: json['phoneNumber'],
         salary: json["salary"],
         hiredDate: DateTime.tryParse(json["createdOn"]),

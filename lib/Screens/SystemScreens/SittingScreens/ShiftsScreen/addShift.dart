@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/AdvancedShiftSettings/adv_shift_settings.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -57,7 +58,18 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   bool checkedBox = false;
   TimeOfDay from24String;
   TimeOfDay to24String;
-
+  DateTime sunFrom,
+      sunTo,
+      monFrom,
+      monTo,
+      tuesFrom,
+      tuesTo,
+      wedFrom,
+      wedTo,
+      thuFrom,
+      thuTo,
+      friFrom,
+      friTo;
   String startString; //sat
   String endString;
   String _sunFrom,
@@ -513,7 +525,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           ? AdvancedShiftSettings(
                                               from: fromPicked,
                                               to: toPicked,
+                                              isEdit: widget.isEdit,
                                               edit: edit,
+                                              shift: widget.shift,
                                             )
                                           : Container()
                                     ],
@@ -539,111 +553,118 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
                                   DateTime dateTo = DateTime(now.year,
                                       now.month, now.day, tt.hour, tt.minute);
-                                  DateTime sunFrom =
-                                      dayssOff[1].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[1].fromDate.hour,
-                                              dayssOff[1].fromDate.minute);
-                                  DateTime sunTo = dayssOff[1].fromDate == null
-                                      ? dateTo
-                                      : DateTime(
-                                          now.year,
-                                          now.month,
-                                          now.day,
-                                          dayssOff[1].toDate.hour,
-                                          dayssOff[1].toDate.minute);
-                                  DateTime monFrom =
-                                      dayssOff[2].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[2].fromDate.hour,
-                                              dayssOff[2].fromDate.minute);
-                                  DateTime monTo = dayssOff[2].fromDate == null
-                                      ? dateTo
-                                      : DateTime(
-                                          now.year,
-                                          now.month,
-                                          now.day,
-                                          dayssOff[2].toDate.hour,
-                                          dayssOff[2].toDate.minute);
-                                  DateTime tuesFrom =
-                                      dayssOff[3].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[3].fromDate.hour,
-                                              dayssOff[3].fromDate.minute);
-                                  DateTime tuesTo = dayssOff[3].fromDate == null
-                                      ? dateTo
-                                      : DateTime(
-                                          now.year,
-                                          now.month,
-                                          now.day,
-                                          dayssOff[3].toDate.hour,
-                                          dayssOff[3].toDate.minute);
+                                  if (checkedBox) {
+                                    sunFrom = dayssOff[1].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[1].fromDate.hour,
+                                            dayssOff[1].fromDate.minute);
+                                    sunTo = dayssOff[1].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[1].toDate.hour,
+                                            dayssOff[1].toDate.minute);
+                                    monFrom = dayssOff[2].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[2].fromDate.hour,
+                                            dayssOff[2].fromDate.minute);
+                                    monTo = dayssOff[2].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[2].toDate.hour,
+                                            dayssOff[2].toDate.minute);
+                                    tuesFrom = dayssOff[3].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[3].fromDate.hour,
+                                            dayssOff[3].fromDate.minute);
+                                    tuesTo = dayssOff[3].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[3].toDate.hour,
+                                            dayssOff[3].toDate.minute);
 
-                                  DateTime wedFrom =
-                                      dayssOff[4].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[4].fromDate.hour,
-                                              dayssOff[4].fromDate.minute);
-                                  DateTime wedTo = dayssOff[4].fromDate == null
-                                      ? dateTo
-                                      : DateTime(
-                                          now.year,
-                                          now.month,
-                                          now.day,
-                                          dayssOff[4].toDate.hour,
-                                          dayssOff[4].toDate.minute);
-                                  DateTime thursFrom =
-                                      dayssOff[5].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[5].fromDate.hour,
-                                              dayssOff[5].fromDate.minute);
-                                  DateTime thursTo =
-                                      dayssOff[5].fromDate == null
-                                          ? dateTo
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[5].toDate.hour,
-                                              dayssOff[5].toDate.minute);
-                                  DateTime fridayFrom =
-                                      dayssOff[6].fromDate == null
-                                          ? dateFrom
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[6].fromDate.hour,
-                                              dayssOff[6].fromDate.minute);
-                                  DateTime fridayTo =
-                                      dayssOff[6].fromDate == null
-                                          ? dateTo
-                                          : DateTime(
-                                              now.year,
-                                              now.month,
-                                              now.day,
-                                              dayssOff[6].toDate.hour,
-                                              dayssOff[6].toDate.minute);
+                                    wedFrom = dayssOff[4].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[4].fromDate.hour,
+                                            dayssOff[4].fromDate.minute);
+                                    wedTo = dayssOff[4].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[4].toDate.hour,
+                                            dayssOff[4].toDate.minute);
+                                    thuFrom = dayssOff[5].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[5].fromDate.hour,
+                                            dayssOff[5].fromDate.minute);
+                                    thuTo = dayssOff[5].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[5].toDate.hour,
+                                            dayssOff[5].toDate.minute);
+                                    friFrom = dayssOff[6].fromDate == null
+                                        ? dateFrom
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[6].fromDate.hour,
+                                            dayssOff[6].fromDate.minute);
+                                    friTo = dayssOff[6].fromDate == null
+                                        ? dateTo
+                                        : DateTime(
+                                            now.year,
+                                            now.month,
+                                            now.day,
+                                            dayssOff[6].toDate.hour,
+                                            dayssOff[6].toDate.minute);
+                                  } else {
+                                    sunFrom = dateFrom;
+                                    monFrom = dateFrom;
+                                    tuesFrom = dateFrom;
+                                    thuFrom = dateFrom;
+                                    wedFrom = dateFrom;
+                                    friFrom = dateFrom;
+                                    sunTo = dateTo;
+                                    monTo = dateTo;
+                                    tuesTo = dateTo;
+                                    thuTo = dateTo;
+                                    wedTo = dateTo;
+                                    friTo = dateTo;
+                                  }
 
                                   var startInt = int.parse(DateFormat("HH:mm")
                                       .format(dateFrom)
@@ -653,6 +674,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
                                   endString =
                                       DateFormat("HH:mm").format(dateTo);
+
                                   _sunFrom =
                                       DateFormat("HH:mm").format(sunFrom);
                                   _sunTo = DateFormat("HH:mm").format(sunTo);
@@ -660,14 +682,14 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                       DateFormat("HH:mm").format(monFrom);
                                   _monTo = DateFormat("HH:mm").format(monTo);
                                   _thuFrom =
-                                      DateFormat("HH:mm").format(thursFrom);
-                                  _thuTo = DateFormat("HH:mm").format(thursTo);
+                                      DateFormat("HH:mm").format(thuFrom);
+                                  _thuTo = DateFormat("HH:mm").format(thuTo);
                                   _wedFrom =
                                       DateFormat("HH:mm").format(wedFrom);
                                   _wedTo = DateFormat("HH:mm").format(wedTo);
                                   _friFrom =
-                                      DateFormat("HH:mm").format(fridayFrom);
-                                  _friTo = DateFormat("HH:mm").format(fridayTo);
+                                      DateFormat("HH:mm").format(friFrom);
+                                  _friTo = DateFormat("HH:mm").format(friTo);
                                   _tuesFrom =
                                       DateFormat("HH:mm").format(tuesFrom);
                                   _tuesTo = DateFormat("HH:mm").format(tuesTo);
@@ -830,13 +852,26 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
     var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
         Shift(
-            shiftName: _title.text,
-            shiftId: widget.shift.shiftId,
-            siteID: Provider.of<SiteData>(context, listen: false)
-                .sitesList[siteId]
-                .id,
-            shiftStartTime: int.parse(startString.replaceAll(":", "")),
-            shiftEndTime: int.parse(endString.replaceAll(":", ""))),
+          fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
+          fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
+          monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
+          mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
+          sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
+          sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
+          thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
+          thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
+          tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
+          tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
+          wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
+          wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
+          shiftStartTime: int.parse(startString.replaceAll(":", "")),
+          shiftEndTime: int.parse(endString.replaceAll(":", "")),
+          shiftName: _title.text,
+          shiftId: widget.shift.shiftId,
+          siteID: Provider.of<SiteData>(context, listen: false)
+              .sitesList[siteId]
+              .id,
+        ),
         widget.id,
         user.userToken,
         context);

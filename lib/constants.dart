@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 final baseURL = "https://Chilangoback.tamauzeds.com";
+final localURL = "http://192.168.0.119:8010";
 // final baseURL = "http://192.168.1.38:45456";
 final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 

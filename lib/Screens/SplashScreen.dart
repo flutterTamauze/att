@@ -46,6 +46,11 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       var value = await login(userName: userData[0], password: userData[1]);
       print("VALUE OF USER $value");
+      if (value == 4) {
+        //subscribe admin channel
+        await firebaseMessaging.subscribeToTopic("attendChilango");
+      }
+
       reverse(userData[0], value);
     }
   }
@@ -179,7 +184,7 @@ class _SplashScreenState extends State<SplashScreen>
     // start the services
     await _faceNetService.loadModel();
     await _dataBaseService.loadDB();
-    await firebaseMessaging.subscribeToTopic("attendChilango");
+
     // await firebaseMessaging.subscribeToTopic("testing");
     // _mlKitService.initialize();
   }

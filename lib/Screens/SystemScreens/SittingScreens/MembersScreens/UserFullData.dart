@@ -430,7 +430,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () {
                                       sendFcmMessage(
-                                              topicName: "attendChilango",
+                                              topicName: "",
+                                              userToken: widget.user.fcmToken,
                                               title: "اثبات حضور",
                                               category: "attend",
                                               message: "برجاء اثبات حضورك الأن")
@@ -441,15 +442,11 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                 .user
                                                 .userToken,
                                             widget.user.id);
-                                        await Provider.of<
-                                                    NotificationDataService>(
-                                                context,
-                                                listen: false)
-                                            .initializeNotification(context);
-                                        Fluttertoast.showToast(
-                                            msg: "تم الإرسال بنجاح",
-                                            backgroundColor: Colors.green,
-                                            gravity: ToastGravity.CENTER);
+                                        // await Provider.of<
+                                        //             NotificationDataService>(
+                                        //         context,
+                                        //         listen: false)
+                                        //     .initializeNotification(context);
                                       });
                                     }),
                               ],

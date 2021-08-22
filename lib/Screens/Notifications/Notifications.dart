@@ -93,7 +93,22 @@ class NotificationItem extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => UserOrdersView(),
+                                        builder: (context) => UserOrdersView(
+                                          selectedOrder: "الأجازات",
+                                        ),
+                                      ));
+                                }
+                                return;
+                              case "permession":
+                                {
+                                  Navigator.pop(context);
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserOrdersView(
+                                          selectedOrder: "الأذونات",
+                                        ),
                                       ));
                                 }
                             }
@@ -265,7 +280,6 @@ class _NotificationsDataState extends State<NotificationsData>
                         ),
                         Container(
                           width: 245.w,
-                          padding: EdgeInsets.only(top: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [

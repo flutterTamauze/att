@@ -129,46 +129,43 @@ class ShiftsData with ChangeNotifier {
       int companyId, String userToken, BuildContext context) async {
     List<Shift> shiftsNewList;
     if (await isConnectedToInternet()) {
-      try {
-        final response = await http.get(
-            Uri.parse(
-                "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+      final response = await http.get(
+          Uri.parse(
+              "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getAllCompanyShiftsApi(
+          companyId,
+          userToken,
+          context,
+        );
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getAllCompanyShiftsApi(
-            companyId,
-            userToken,
-            context,
-          );
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
+        if (decodedRes["message"] == "Success") {
+          var shiftObjJson = jsonDecode(response.body)['data'] as List;
+          shiftsNewList = shiftObjJson
+              .map((shiftJson) => Shift.fromJson(shiftJson))
+              .toList();
 
-          if (decodedRes["message"] == "Success") {
-            var shiftObjJson = jsonDecode(response.body)['data'] as List;
-            shiftsNewList = shiftObjJson
-                .map((shiftJson) => Shift.fromJson(shiftJson))
-                .toList();
+          shiftsList = shiftsNewList;
+          notifyListeners();
 
-            shiftsList = shiftsNewList;
-            notifyListeners();
-
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
-      } catch (e) {
-        print(e);
       }
+
       return "failed";
     } else {
       return 'noInternet';
@@ -176,15 +173,9 @@ class ShiftsData with ChangeNotifier {
   }
 
   addShift(Shift shift, String userToken, BuildContext context) async {
-    print(shift.siteID);
-    print(shift.shiftStartTime);
-    print(shift.shiftEndTime);
-    print(shift.fridayShiftenTime);
-    print(shift.fridayShiftstTime);
     if (await isConnectedToInternet()) {
       try {
-        final response = await http.post(
-            Uri.parse("http://192.168.0.119:8010/api/Shifts"),
+        final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
             body: json.encode(
               {
                 "shiftEntime": shift.shiftEndTime.toString(),
@@ -281,8 +272,9 @@ class ShiftsData with ChangeNotifier {
 
     if (await isConnectedToInternet()) {
       try {
+        print("shift start = ${shift.sunShiftstTime.toString()}");
         final response = await http.put(
-            Uri.parse("$baseURL/api/Shifts/${shift.shiftId}"),
+            Uri.parse("$localURL/api/Shifts/${shift.shiftId}"),
             body: json.encode(
               {
                 "id": shift.shiftId,
@@ -290,13 +282,25 @@ class ShiftsData with ChangeNotifier {
                 "shiftName": shift.shiftName,
                 "shiftSttime": shift.shiftStartTime.toString(),
                 "siteId": shift.siteID,
+                "FridayShiftSttime": shift.fridayShiftstTime.toString(),
+                "FridayShiftEntime": shift.fridayShiftenTime.toString(),
+                "MonShiftSttime": shift.monShiftstTime.toString(),
+                "MondayShiftEntime": shift.mondayShiftenTime.toString(),
+                "SunShiftSttime": shift.sunShiftstTime.toString(),
+                "SunShiftEntime": shift.sunShiftenTime.toString(),
+                "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
+                "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
+                "TuesdayShiftSttime": shift.thursdayShiftstTime.toString(),
+                "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
+                "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
+                "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
               },
             ),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $usertoken"
             });
-
+        print(response.body);
         if (response.statusCode == 401) {
           await inherit.login(context);
           usertoken =

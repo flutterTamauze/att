@@ -685,20 +685,16 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               context: context,
                                               builder: (context) {
                                                 sendFcmMessage(
-                                                  topicName: "",
+                                                  topicName: "attendChilango",
                                                   title: "تم طلب الأجازة بنجاح",
                                                   category: "vacation",
                                                   message:
-                                                      "برجاء متابعة الطلب ",
-                                                ).whenComplete(() => Provider
-                                                        .of<NotificationDataService>(
-                                                            context,
-                                                            listen: false)
-                                                    .initializeNotification(
-                                                        context));
+                                                      "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                );
 
                                                 return StackedNotificaitonAlert(
                                                   repeatAnimation: false,
+                                                  popWidget: true,
                                                   notificationTitle:
                                                       "تم تقديم طلب الأجازة بنجاح ",
                                                   notificationContent:
@@ -759,18 +755,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               sendFcmMessage(
                                                 topicName: "attendChilango",
                                                 title: "تم طلب اذن بنجاح",
-                                                category: "vacation",
+                                                category: "permession",
                                                 message:
                                                     "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                              ).whenComplete(() => Provider.of<
-                                                          NotificationDataService>(
-                                                      context,
-                                                      listen: false)
-                                                  .initializeNotification(
-                                                      context));
+                                              );
 
                                               return StackedNotificaitonAlert(
                                                 repeatAnimation: false,
+                                                popWidget: true,
                                                 notificationTitle:
                                                     "تم تقديم طلب الأذن بنجاح ",
                                                 notificationContent:

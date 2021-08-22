@@ -90,26 +90,29 @@ class NotificationDataService with ChangeNotifier {
   }
 
   bool finshed = false;
+  int counter = 0;
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
+      counter++;
       print(event.notification.body);
       print(event.notification.title);
+      if (counter == 1) {
+        if (event.data["category"] == "attend") {
+          showAttendanceCheckDialog(context);
+        }
+        await db.insertNotification(
+            NotificationMessage(
+              category: event.data["category"],
+              dateTime: DateTime.now().toString().substring(0, 10),
+              message: event.notification.body,
+              messageSeen: 0,
+              title: event.notification.title,
+            ),
+            context);
 
-      if (event.data["category"] == "attend") {
-        showAttendanceCheckDialog(context);
+        player.play("notification.mp3");
       }
-      await db
-          .insertNotification(
-              NotificationMessage(
-                category: event.data["category"],
-                dateTime: DateTime.now().toString().substring(0, 10),
-                message: event.notification.body,
-                messageSeen: 0,
-                title: event.notification.title,
-              ),
-              context)
-          .whenComplete(() async => await initializeNotification(context));
-      player.play("notification.mp3");
+      counter = 0;
     });
   }
 

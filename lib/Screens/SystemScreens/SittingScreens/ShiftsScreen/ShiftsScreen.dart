@@ -366,7 +366,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                       )
                                                     : Center(
                                                         child: Container(
-                                                          height: 20,
+                                                          height: 50,
                                                           child: AutoSizeText(
                                                             "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
                                                             maxLines: 1,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +84,7 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
+    FirebaseMessaging fcm = FirebaseMessaging.instance;
     var connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -95,7 +97,11 @@ class UserData with ChangeNotifier {
           final response = await http.post(
               Uri.parse("$baseURL/api/Authenticate/login"),
               body: json.encode(
-                {"Username": username, "Password": password},
+                {
+                  "Username": username,
+                  "Password": password,
+                  "FCMToken": await fcm.getToken() ?? "null"
+                },
               ),
               headers: {
                 'Content-type': 'application/json',
@@ -120,6 +126,7 @@ class UserData with ChangeNotifier {
             user.email = decodedRes["userData"]["email"];
             user.phoneNum = decodedRes["userData"]["phoneNumber"];
             user.userType = decodedRes["userData"]["userType"];
+            user.fcmToken = decodedRes["userData"]["fcmToken"];
             user.createdOn =
                 DateTime.tryParse(decodedRes["userData"]["createdOn"]);
             user.userSiteId = decodedRes["companyData"]["siteId"] as int;
@@ -584,7 +591,7 @@ class UserData with ChangeNotifier {
 }
 
 class User {
-  String userToken;
+  String userToken, fcmToken;
   String userID;
   String name;
   bool isAllowedToAttend;
@@ -601,6 +608,7 @@ class User {
 
   User({
     this.userToken,
+    this.fcmToken,
     this.id,
     this.userImage,
     this.isAllowedToAttend,
