@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +50,36 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _title = TextEditingController();
-
-  TextEditingController _timeInController = TextEditingController();
+  bool intializeFromControllers = true;
+  bool intializeToControllers = true;
+  TextEditingController _timeInController = TextEditingController(); //sat
   TextEditingController _timeOutController = TextEditingController();
-
   TimeOfDay fromPicked;
   TimeOfDay toPicked;
+  TextEditingController sunTimeInController = TextEditingController(); //sun
+  TextEditingController sunTimeOutController = TextEditingController();
+  TimeOfDay sunFromT;
+  TimeOfDay sunToT;
+  TextEditingController monTimeInController = TextEditingController();
+  TextEditingController monTimeOutController = TextEditingController();
+  TimeOfDay monFromT;
+  TimeOfDay monToT;
+  TextEditingController tuesTimeInController = TextEditingController();
+  TextEditingController tuesTimeOutController = TextEditingController();
+  TimeOfDay tuesFromT;
+  TimeOfDay tuesToT;
+  TextEditingController wedTimeInController = TextEditingController();
+  TextEditingController wedTimeOutController = TextEditingController();
+  TimeOfDay wedFromT;
+  TimeOfDay wedToT;
+  TextEditingController thuTimeInController = TextEditingController();
+  TextEditingController thuTimeOutController = TextEditingController();
+  TimeOfDay thuFromT;
+  TimeOfDay thuToT;
+  TextEditingController friTimeInController = TextEditingController();
+  TextEditingController friTimeOutController = TextEditingController();
+  TimeOfDay friFromT;
+  TimeOfDay friToT;
   bool checkedBox = false;
   TimeOfDay from24String;
   TimeOfDay to24String;
@@ -111,6 +136,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   }
 
   fillTextField() {
+    intializeToControllers = true;
+    intializeFromControllers = true;
     if (widget.isEdit) {
       edit = true;
       siteId = getSiteListIndex(widget.shift.siteID);
@@ -120,7 +147,35 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
       fromPicked = (intToTimeOfDay(widget.shift.shiftStartTime));
       toPicked = (intToTimeOfDay(widget.shift.shiftEndTime));
+      sunFromT = (intToTimeOfDay(widget.shift.sunShiftstTime));
+      sunToT = (intToTimeOfDay(widget.shift.sunShiftenTime));
+      monFromT = (intToTimeOfDay(widget.shift.monShiftstTime));
+      monToT = (intToTimeOfDay(widget.shift.mondayShiftenTime));
+      tuesFromT = (intToTimeOfDay(widget.shift.thursdayShiftstTime));
+      tuesToT = (intToTimeOfDay(widget.shift.tuesdayShiftenTime));
+      wedFromT = (intToTimeOfDay(widget.shift.wednesDayShiftstTime));
+      wedToT = (intToTimeOfDay(widget.shift.wednesDayShiftenTime));
+      thuFromT = (intToTimeOfDay(widget.shift.thursdayShiftstTime));
+      thuToT = (intToTimeOfDay(widget.shift.thursdayShiftenTime));
+      friFromT = (intToTimeOfDay(widget.shift.fridayShiftstTime));
+      friToT = (intToTimeOfDay(widget.shift.fridayShiftenTime));
 
+      _timeInController.text = amPmChanger(widget.shift.shiftStartTime);
+      _timeOutController.text = amPmChanger(widget.shift.shiftEndTime);
+      sunTimeInController.text = amPmChanger(widget.shift.sunShiftstTime);
+      sunTimeOutController.text = amPmChanger(widget.shift.sunShiftenTime);
+      monTimeInController.text = amPmChanger(widget.shift.monShiftstTime);
+      monTimeOutController.text = amPmChanger(widget.shift.mondayShiftenTime);
+      tuesTimeInController.text = amPmChanger(widget.shift.tuesdayShiftstTime);
+      tuesTimeOutController.text = amPmChanger(widget.shift.tuesdayShiftenTime);
+      wedTimeInController.text = amPmChanger(widget.shift.wednesDayShiftstTime);
+
+      wedTimeOutController.text =
+          amPmChanger(widget.shift.wednesDayShiftenTime);
+      thuTimeInController.text = amPmChanger(widget.shift.thursdayShiftstTime);
+      thuTimeOutController.text = amPmChanger(widget.shift.thursdayShiftenTime);
+      friTimeInController.text = amPmChanger(widget.shift.fridayShiftstTime);
+      thuTimeOutController.text = amPmChanger(widget.shift.thursdayShiftenTime);
       _title.text = widget.shift.shiftName.toString();
     } else {
       _timeInController.text = "";
@@ -173,9 +228,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           height: MediaQuery.of(context).size.height,
           child: GestureDetector(
             onTap: () {
-              print(startString);
-              print(_timeInController.text);
-              print(_timeOutController.text);
+              print(sunTimeInController.text);
             },
             behavior: HitTestBehavior.opaque,
             onPanDown: (_) {
@@ -204,15 +257,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                       ? "إضافة مناوبة"
                                       : "تعديل المناوبة"),
                             ),
-                            // DirectoriesHeader(
-                            //     ClipRRect(
-                            //       borderRadius: BorderRadius.circular(60.0),
-                            //       child: Lottie.asset("resources/shifts.json",
-                            //           repeat: false),
-                            //     ),
-                            //     (!widget.isEdit)
-                            //         ? "إضافة منوابة"
-                            //         : "تعديل المنوابة"),
                             SizedBox(
                               height: 30.h,
                             ),
@@ -221,12 +265,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                               child: Form(
                                 key: _formKey,
                                 child: Container(
-                                  height: checkedBox
-                                      ? MediaQuery.of(context).size.height
-                                      : 300.h,
-                                  width: checkedBox
-                                      ? MediaQuery.of(context).size.width
-                                      : 400.w,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
@@ -333,6 +371,42 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                   null) {
                                                                 fromPicked =
                                                                     from;
+                                                                if (!widget
+                                                                        .isEdit &&
+                                                                    intializeFromControllers !=
+                                                                        false) {
+                                                                  sunFromT =
+                                                                      fromPicked;
+                                                                  sunTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  monFromT =
+                                                                      fromPicked;
+                                                                  monTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  tuesFromT =
+                                                                      fromPicked;
+                                                                  tuesTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  wedFromT =
+                                                                      fromPicked;
+                                                                  wedTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  thuFromT =
+                                                                      fromPicked;
+                                                                  thuTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                  friFromT =
+                                                                      fromPicked;
+                                                                  friTimeInController
+                                                                          .text =
+                                                                      "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                }
+
                                                                 setState(() {
                                                                   if (Platform
                                                                       .isIOS) {
@@ -344,6 +418,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                             .text =
                                                                         "${fromPicked.format(context).replaceAll(" ", "")}";
                                                                   }
+                                                                  intializeFromControllers =
+                                                                      false;
                                                                 });
                                                               }
                                                             }
@@ -434,6 +510,41 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                               false);
                                                               if (to != null) {
                                                                 toPicked = to;
+                                                                if (!widget
+                                                                        .isEdit &&
+                                                                    intializeToControllers !=
+                                                                        false) {
+                                                                  sunToT =
+                                                                      toPicked;
+                                                                  sunTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  monToT =
+                                                                      toPicked;
+                                                                  monTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  tuesToT =
+                                                                      toPicked;
+                                                                  tuesTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  wedToT =
+                                                                      toPicked;
+                                                                  wedTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  thuToT =
+                                                                      toPicked;
+                                                                  thuTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                  friToT =
+                                                                      toPicked;
+                                                                  friTimeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                }
                                                                 setState(() {
                                                                   if (Platform
                                                                       .isIOS) {
@@ -445,6 +556,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                             .text =
                                                                         "${toPicked.format(context).replaceAll(" ", "")}";
                                                                   }
+                                                                  intializeToControllers =
+                                                                      false;
                                                                 });
                                                               }
                                                             }
@@ -522,12 +635,79 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         ),
                                       ),
                                       checkedBox
-                                          ? AdvancedShiftSettings(
-                                              from: fromPicked,
-                                              to: toPicked,
-                                              isEdit: widget.isEdit,
-                                              edit: edit,
-                                              shift: widget.shift,
+                                          ? Column(
+                                              children: [
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "السبت",
+                                                  fromPickedWeek: fromPicked,
+                                                  timeInController:
+                                                      _timeInController,
+                                                  timeOutController:
+                                                      _timeOutController,
+                                                  toPickedWeek: toPicked,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الأحد",
+                                                  fromPickedWeek: sunFromT,
+                                                  timeInController:
+                                                      sunTimeInController,
+                                                  timeOutController:
+                                                      sunTimeOutController,
+                                                  toPickedWeek: sunToT,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الأتنين",
+                                                  fromPickedWeek: monFromT,
+                                                  timeInController:
+                                                      monTimeInController,
+                                                  timeOutController:
+                                                      monTimeOutController,
+                                                  toPickedWeek: monToT,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الثلاثاء",
+                                                  fromPickedWeek: tuesFromT,
+                                                  timeInController:
+                                                      tuesTimeInController,
+                                                  timeOutController:
+                                                      tuesTimeOutController,
+                                                  toPickedWeek: tuesToT,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الأربعاء",
+                                                  fromPickedWeek: wedFromT,
+                                                  timeInController:
+                                                      wedTimeInController,
+                                                  timeOutController:
+                                                      wedTimeOutController,
+                                                  toPickedWeek: wedToT,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الخميس",
+                                                  fromPickedWeek: thuFromT,
+                                                  timeInController:
+                                                      thuTimeInController,
+                                                  timeOutController:
+                                                      thuTimeOutController,
+                                                  toPickedWeek: thuToT,
+                                                ),
+                                                AdvancedShiftPicker(
+                                                  edit: edit,
+                                                  weekDay: "الجمعة",
+                                                  fromPickedWeek: friFromT,
+                                                  timeInController:
+                                                      friTimeInController,
+                                                  timeOutController:
+                                                      friTimeOutController,
+                                                  toPickedWeek: friToT,
+                                                ),
+                                              ],
                                             )
                                           : Container()
                                     ],
@@ -535,136 +715,57 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                 ),
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.all(15),
                               child: RoundedButton(
                                 onPressed: () async {
-                                  var dayssOff = Provider.of<DaysOffData>(
-                                          context,
-                                          listen: false)
-                                      .advancedShift;
                                   DateTime now = DateTime.now();
                                   TimeOfDay t = fromPicked;
                                   TimeOfDay tt = toPicked;
+                                  TimeOfDay sunT = monFromT;
+                                  TimeOfDay sunTT = monToT;
+                                  TimeOfDay monT = monFromT;
+                                  TimeOfDay monTT = monToT;
+                                  TimeOfDay tuesT = monFromT;
+                                  TimeOfDay tuesTT = monToT;
+                                  TimeOfDay wedT = monFromT;
+                                  TimeOfDay wedTT = monToT;
+                                  TimeOfDay thurT = monFromT;
+                                  TimeOfDay thurTT = monToT;
+                                  TimeOfDay friT = monFromT;
+                                  TimeOfDay friTT = monToT;
 
                                   DateTime dateFrom = DateTime(now.year,
                                       now.month, now.day, t.hour, t.minute);
 
                                   DateTime dateTo = DateTime(now.year,
                                       now.month, now.day, tt.hour, tt.minute);
-                                  if (checkedBox) {
-                                    sunFrom = dayssOff[1].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[1].fromDate.hour,
-                                            dayssOff[1].fromDate.minute);
-                                    sunTo = dayssOff[1].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[1].toDate.hour,
-                                            dayssOff[1].toDate.minute);
-                                    monFrom = dayssOff[2].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[2].fromDate.hour,
-                                            dayssOff[2].fromDate.minute);
-                                    monTo = dayssOff[2].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[2].toDate.hour,
-                                            dayssOff[2].toDate.minute);
-                                    tuesFrom = dayssOff[3].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[3].fromDate.hour,
-                                            dayssOff[3].fromDate.minute);
-                                    tuesTo = dayssOff[3].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[3].toDate.hour,
-                                            dayssOff[3].toDate.minute);
-
-                                    wedFrom = dayssOff[4].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[4].fromDate.hour,
-                                            dayssOff[4].fromDate.minute);
-                                    wedTo = dayssOff[4].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[4].toDate.hour,
-                                            dayssOff[4].toDate.minute);
-                                    thuFrom = dayssOff[5].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[5].fromDate.hour,
-                                            dayssOff[5].fromDate.minute);
-                                    thuTo = dayssOff[5].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[5].toDate.hour,
-                                            dayssOff[5].toDate.minute);
-                                    friFrom = dayssOff[6].fromDate == null
-                                        ? dateFrom
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[6].fromDate.hour,
-                                            dayssOff[6].fromDate.minute);
-                                    friTo = dayssOff[6].fromDate == null
-                                        ? dateTo
-                                        : DateTime(
-                                            now.year,
-                                            now.month,
-                                            now.day,
-                                            dayssOff[6].toDate.hour,
-                                            dayssOff[6].toDate.minute);
-                                  } else {
-                                    sunFrom = dateFrom;
-                                    monFrom = dateFrom;
-                                    tuesFrom = dateFrom;
-                                    thuFrom = dateFrom;
-                                    wedFrom = dateFrom;
-                                    friFrom = dateFrom;
-                                    sunTo = dateTo;
-                                    monTo = dateTo;
-                                    tuesTo = dateTo;
-                                    thuTo = dateTo;
-                                    wedTo = dateTo;
-                                    friTo = dateTo;
-                                  }
+                                  sunFrom = DateTime(now.year, now.month,
+                                      now.day, sunT.hour, sunT.minute);
+                                  monFrom = DateTime(now.year, now.month,
+                                      now.day, monT.hour, monT.minute);
+                                  tuesFrom = DateTime(now.year, now.month,
+                                      now.day, tuesT.hour, tuesT.minute);
+                                  wedFrom = DateTime(now.year, now.month,
+                                      now.day, wedT.hour, wedT.minute);
+                                  friFrom = DateTime(now.year, now.month,
+                                      now.day, friT.hour, friT.minute);
+                                  thuFrom = DateTime(now.year, now.month,
+                                      now.day, thurT.hour, thurT.minute);
+                                  friFrom = DateTime(now.year, now.month,
+                                      now.day, friT.hour, friT.minute);
+                                  sunTo = DateTime(now.year, now.month, now.day,
+                                      sunTT.hour, sunTT.minute);
+                                  monTo = DateTime(now.year, now.month, now.day,
+                                      monTT.hour, monTT.minute);
+                                  tuesTo = DateTime(now.year, now.month,
+                                      now.day, tuesT.hour, tuesT.minute);
+                                  wedTo = DateTime(now.year, now.month, now.day,
+                                      wedTT.hour, wedTT.minute);
+                                  thuTo = DateTime(now.year, now.month, now.day,
+                                      thurTT.hour, thurTT.minute);
+                                  friTo = DateTime(now.year, now.month, now.day,
+                                      friTT.hour, friTT.minute);
 
                                   var startInt = int.parse(DateFormat("HH:mm")
                                       .format(dateFrom)
@@ -1149,6 +1250,201 @@ class CircularIconButton extends StatelessWidget {
             size: ScreenUtil().setSp(25, allowFontScalingSelf: true),
             color: Colors.white,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AdvancedShiftPicker extends StatefulWidget {
+  String weekDay;
+  bool edit;
+  TextEditingController timeInController, timeOutController;
+  TimeOfDay fromPickedWeek, toPickedWeek;
+  AdvancedShiftPicker(
+      {this.edit,
+      this.fromPickedWeek,
+      this.timeInController,
+      this.timeOutController,
+      this.toPickedWeek,
+      this.weekDay});
+  @override
+  _AdvancedShiftPickerState createState() => _AdvancedShiftPickerState();
+}
+
+class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
+  @override
+  Widget build(BuildContext context) {
+    return FadeInUp(
+      child: Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.weekDay,
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                        child: Theme(
+                      data: clockTheme,
+                      child: Builder(
+                        builder: (context) {
+                          return InkWell(
+                              onTap: () async {
+                                if (widget.edit) {
+                                  var from = await showTimePicker(
+                                    context: context,
+                                    initialTime: widget.fromPickedWeek,
+                                    builder:
+                                        (BuildContext context, Widget child) {
+                                      return MediaQuery(
+                                        data: MediaQuery.of(context).copyWith(
+                                            alwaysUse24HourFormat: false),
+                                        child: child,
+                                      );
+                                    },
+                                  );
+                                  MaterialLocalizations localizations =
+                                      MaterialLocalizations.of(context);
+                                  String formattedTime =
+                                      localizations.formatTimeOfDay(from,
+                                          alwaysUse24HourFormat: false);
+
+                                  if (from != null) {
+                                    widget.fromPickedWeek = from;
+                                    setState(() {
+                                      if (Platform.isIOS) {
+                                        widget.timeInController.text =
+                                            formattedTime;
+                                      } else {
+                                        widget.timeInController.text =
+                                            "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
+                                      }
+                                    });
+                                  }
+                                }
+                              },
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Container(
+                                  child: IgnorePointer(
+                                    child: TextFormField(
+                                      enabled: widget.edit,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                      textInputAction: TextInputAction.next,
+                                      controller: widget.timeInController,
+                                      decoration:
+                                          kTextFieldDecorationFromTO.copyWith(
+                                              hintText: 'من',
+                                              prefixIcon: Icon(
+                                                Icons.alarm,
+                                                color: Colors.orange,
+                                              )),
+                                    ),
+                                  ),
+                                ),
+                              ));
+                        },
+                      ),
+                    )),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                        child: Theme(
+                      data: clockTheme,
+                      child: Builder(
+                        builder: (context) {
+                          return InkWell(
+                              onTap: () async {
+                                if (widget.edit) {
+                                  var to = await showTimePicker(
+                                    context: context,
+                                    initialTime: widget.toPickedWeek,
+                                    builder:
+                                        (BuildContext context, Widget child) {
+                                      return MediaQuery(
+                                        data: MediaQuery.of(context).copyWith(
+                                            alwaysUse24HourFormat: false),
+                                        child: child,
+                                      );
+                                    },
+                                  );
+                                  MaterialLocalizations localizations =
+                                      MaterialLocalizations.of(context);
+                                  String formattedTime2 =
+                                      localizations.formatTimeOfDay(to,
+                                          alwaysUse24HourFormat: false);
+                                  if (to != null) {
+                                    widget.toPickedWeek = to;
+                                    setState(() {
+                                      if (Platform.isIOS) {
+                                        widget.timeOutController.text =
+                                            formattedTime2;
+                                      } else {
+                                        widget.timeOutController.text =
+                                            "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
+                                      }
+                                    });
+                                  }
+                                }
+                              },
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Container(
+                                  child: IgnorePointer(
+                                    child: TextFormField(
+                                      enabled: widget.edit,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                      textInputAction: TextInputAction.next,
+                                      controller: widget.timeOutController,
+                                      decoration:
+                                          kTextFieldDecorationFromTO.copyWith(
+                                              hintText: 'الى',
+                                              prefixIcon: Icon(
+                                                Icons.alarm,
+                                                color: Colors.orange,
+                                              )),
+                                    ),
+                                  ),
+                                ),
+                              ));
+                        },
+                      ),
+                    )),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 2,
+            ),
+            Divider(
+              thickness: 1,
+            ),
+            SizedBox(
+              height: 2,
+            ),
+          ],
         ),
       ),
     );

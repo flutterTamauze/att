@@ -52,7 +52,6 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
 
-    print(widget.shift == null);
     await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
         comProvider.com.id,
         userProvider.user.userToken,
@@ -188,7 +187,9 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                             context,
                                                                         initialTime: widget.isEdit
                                                                             ? daysofflist.advancedShift[index].toDate
-                                                                            : widget.to,
+                                                                            : daysofflist.advancedShift[index].toDate == null
+                                                                                ? widget.to
+                                                                                : daysofflist.advancedShift[index].toDate,
                                                                         builder: (BuildContext
                                                                                 context,
                                                                             Widget
@@ -220,9 +221,8 @@ class _AdvancedShiftSettingsState extends State<AdvancedShiftSettings> {
                                                                             daysofflist.advancedShift[index].timeOutController.text =
                                                                                 formattedTime;
                                                                           } else {
-                                                                            daysofflist.advancedShift[index].timeOutController.text = to == null
-                                                                                ? "${daysofflist.advancedShift[index].toDate.format(context).replaceAll(" ", "")}"
-                                                                                : "${to.format(context).replaceAll(" ", "")}";
+                                                                            daysofflist.advancedShift[index].timeOutController.text =
+                                                                                "${to.format(context).replaceAll(" ", "")}";
                                                                           }
                                                                         });
                                                                       }
