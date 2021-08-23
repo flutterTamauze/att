@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
@@ -21,16 +22,17 @@ class NotificationDataService with ChangeNotifier {
   //   notification = notifyList;
   // }
   DatabaseHelper db = new DatabaseHelper();
-  addNotification(
-      String title, String msg, String dateTime, String category, int id) {
+  addNotification(String title, String msg, String dateTime, String category,
+      String notifiTime, int id) {
     notification.add(NotificationMessage(
         dateTime: dateTime,
         message: msg,
+        timeOfMessage: notifiTime,
         title: title,
         category: category,
         messageSeen: 0,
         id: id));
-
+    print("adding temp not. . .");
     notifyListeners();
   }
 
@@ -100,15 +102,25 @@ class NotificationDataService with ChangeNotifier {
         if (event.data["category"] == "attend") {
           showAttendanceCheckDialog(context);
         }
-        await db.insertNotification(
-            NotificationMessage(
-              category: event.data["category"],
-              dateTime: DateTime.now().toString().substring(0, 10),
-              message: event.notification.body,
-              messageSeen: 0,
-              title: event.notification.title,
-            ),
-            context);
+
+        await db
+            .insertNotification(
+                NotificationMessage(
+                    category: event.data["category"],
+                    dateTime: DateTime.now().toString().substring(0, 10),
+                    message: event.notification.body,
+                    messageSeen: 0,
+                    title: event.notification.title,
+                    timeOfMessage:
+                        DateFormat('kk:mm:a').format(DateTime.now())),
+                context)
+            .then((value) async => await addNotification(
+                event.notification.title,
+                event.notification.body,
+                DateTime.now().toString().substring(0, 10),
+                event.data["category"],
+                DateFormat('kk:mm:a').format(DateTime.now()),
+                value));
 
         player.play("notification.mp3");
       }

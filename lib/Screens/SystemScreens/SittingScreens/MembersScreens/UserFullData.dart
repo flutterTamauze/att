@@ -115,7 +115,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 

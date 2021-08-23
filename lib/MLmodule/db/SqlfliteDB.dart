@@ -16,6 +16,7 @@ class DatabaseHelper {
   static final _notificationColTitle = "title";
   static final _notificationColMsgSeen = "seen";
   static final _notificationColMsg = "message";
+  static final _notificationColMessageTime = "timeMessage";
   static final _notificationColDate = "date";
   static final _notificationColId = "id";
   static final _notificationColCategory = "category";
@@ -33,7 +34,7 @@ class DatabaseHelper {
   //Creating tables inside the database
   _onCreate(Database db, int newVersion) async {
     await db.execute('''
-        CREATE TABLE $_notificationTableName($_notificationColId INTEGER PRIMARY KEY ,$_notificationColTitle TEXT NOT NULL,$_notificationColMsg TEXT NOT NULL ,$_notificationColDate TEXT NOT NULL  ,$_notificationColCategory TEXT ,$_notificationColMsgSeen INTEGER NOT NULL)
+        CREATE TABLE $_notificationTableName($_notificationColId INTEGER PRIMARY KEY ,$_notificationColTitle TEXT NOT NULL,$_notificationColMsg TEXT NOT NULL ,$_notificationColDate TEXT NOT NULL  ,$_notificationColCategory TEXT ,$_notificationColMsgSeen INTEGER NOT NULL,$_notificationColMessageTime)
         ''');
   }
 
@@ -46,27 +47,16 @@ class DatabaseHelper {
   } ////////////////////////////RATES////////////
 
   //////////////////////notifications//////
-  Future<void> insertNotification(
+  Future<int> insertNotification(
       NotificationMessage notificationMessage, BuildContext context) async {
-    try {
-      await _database
-          .insert(_notificationTableName, notificationMessage.toMap(),
-              conflictAlgorithm: ConflictAlgorithm.replace)
-          .then((value) async {
-        print("Notification $value");
-        // await Provider.of<NotificationDataService>(context, listen: false)
-        //     .addNotification(
-        //         notificationMessage.title,
-        //         notificationMessage.message,
-        //         DateTime.now().toString().substring(0, 10),
-        //         notificationMessage.category,
-        //         value);
-      }).catchError((e) {
-        print(e);
-      });
-    } catch (e) {
+    int id = await _database
+        .insert(_notificationTableName, notificationMessage.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace)
+        .catchError((e) {
       print(e);
-    }
+    });
+    print("Notification $id");
+    return id;
   }
 
   Future<void> insertOfflineNotification(
@@ -98,6 +88,7 @@ class DatabaseHelper {
             category: notifis[index]["category"],
             dateTime: notifis[index]["date"],
             message: notifis[index]["message"],
+            timeOfMessage: notifis[index]["timeMessage"],
             messageSeen: notifis[index]["seen"],
             title: notifis[index]["title"]);
       });

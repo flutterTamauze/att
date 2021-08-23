@@ -720,7 +720,7 @@ class _DataTableRowState extends State<DataTableRow> {
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
+                                  .setSp(14, allowFontScalingSelf: true),
                               color: Colors.black),
                         ),
                       ),
@@ -781,22 +781,29 @@ class _DataTableRowState extends State<DataTableRow> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Icon(
-                                              widget.attendUnit.timeInIcon ==
-                                                      "am"
-                                                  ? Icons.wb_sunny
-                                                  : Icons.nightlight_round,
-                                              size: ScreenUtil().setSp(12,
-                                                  allowFontScalingSelf: true),
-                                            ),
+                                            !widget.attendUnit.timeIn
+                                                    .contains(":")
+                                                ? Container()
+                                                : Icon(
+                                                    widget.attendUnit
+                                                                .timeInIcon ==
+                                                            "am"
+                                                        ? Icons.wb_sunny
+                                                        : Icons
+                                                            .nightlight_round,
+                                                    size: ScreenUtil().setSp(11,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                  ),
                                             Container(
-                                              height: 20,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2),
                                               child: AutoSizeText(
                                                 widget.attendUnit.timeIn,
-                                                maxLines: 1,
                                                 style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: ScreenUtil().setSp(
-                                                        14,
+                                                        11,
                                                         allowFontScalingSelf:
                                                             true),
                                                     color: Colors.black),
@@ -866,29 +873,34 @@ class _DataTableRowState extends State<DataTableRow> {
                                           ],
                                         ))),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              if (widget.attendUnit.attendType == 1) {
-                                showAttendByCameraDetails();
-                              } else {
-                                print("mob");
-                              }
-                            },
-                            child: widget.attendUnit.timeOut != "-" ||
-                                    widget.attendUnit.timeIn != "-"
-                                ? Icon(
-                                    widget.attendUnit.attendType == 0
-                                        ? Icons.phone_android
-                                        : Icons.image,
-                                    color: Colors.orange,
-                                    size: ScreenUtil()
-                                        .setSp(28, allowFontScalingSelf: true),
-                                  )
-                                : Container(),
-                          ),
-                        )
+                        !widget.attendUnit.timeIn.contains(":")
+                            ? Padding(
+                                padding: EdgeInsets.only(left: 10.w),
+                                child: Container(),
+                              )
+                            : Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    if (widget.attendUnit.attendType == 1) {
+                                      showAttendByCameraDetails();
+                                    } else {
+                                      print("mob");
+                                    }
+                                  },
+                                  child: widget.attendUnit.timeOut != "-" ||
+                                          widget.attendUnit.timeIn != "-"
+                                      ? Icon(
+                                          widget.attendUnit.attendType == 0
+                                              ? Icons.phone_android
+                                              : Icons.image,
+                                          color: Colors.orange,
+                                          size: ScreenUtil().setSp(28,
+                                              allowFontScalingSelf: true),
+                                        )
+                                      : Container(),
+                                ),
+                              )
                       ],
                     ),
                   )

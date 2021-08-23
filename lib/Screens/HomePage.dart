@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 // import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -262,6 +263,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 // String result = await hawawi.Push.getId();
                 // print(await hawawi.Push.isAutoInitEnabled());
                 // print(result);
+
+                var now = new DateTime.now();
+                // var formatter = new DateFormat('dd-MM-yyyy');
+                // String formattedTime = DateFormat('kk:mm:a').format(now);
+
+                // print(formattedTime);
+
                 // await hawawi.Push.getToken(result);
               },
               child: GestureDetector(

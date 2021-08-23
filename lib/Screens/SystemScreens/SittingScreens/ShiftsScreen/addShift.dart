@@ -175,6 +175,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       thuTimeInController.text = amPmChanger(widget.shift.thursdayShiftstTime);
       thuTimeOutController.text = amPmChanger(widget.shift.thursdayShiftenTime);
       friTimeInController.text = amPmChanger(widget.shift.fridayShiftstTime);
+      friTimeOutController.text = amPmChanger(widget.shift.fridayShiftenTime);
       thuTimeOutController.text = amPmChanger(widget.shift.thursdayShiftenTime);
       _title.text = widget.shift.shiftName.toString();
     } else {
@@ -228,7 +229,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           height: MediaQuery.of(context).size.height,
           child: GestureDetector(
             onTap: () {
-              print(sunTimeInController.text);
+              print(monFromT);
+              print(monToT);
             },
             behavior: HitTestBehavior.opaque,
             onPanDown: (_) {
@@ -656,6 +658,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       sunTimeOutController,
                                                   toPickedWeek: sunToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    sunFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    sunToT = v;
+                                                  },
                                                 ),
                                                 AdvancedShiftPicker(
                                                   edit: edit,
@@ -666,6 +675,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       monTimeOutController,
                                                   toPickedWeek: monToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    monFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    monToT = v;
+                                                  },
                                                 ),
                                                 AdvancedShiftPicker(
                                                   edit: edit,
@@ -676,6 +692,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       tuesTimeOutController,
                                                   toPickedWeek: tuesToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    tuesFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    tuesToT = v;
+                                                  },
                                                 ),
                                                 AdvancedShiftPicker(
                                                   edit: edit,
@@ -686,6 +709,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       wedTimeOutController,
                                                   toPickedWeek: wedToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    wedFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    wedToT = v;
+                                                  },
                                                 ),
                                                 AdvancedShiftPicker(
                                                   edit: edit,
@@ -696,6 +726,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       thuTimeOutController,
                                                   toPickedWeek: thuToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    thuFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    thuToT = v;
+                                                  },
                                                 ),
                                                 AdvancedShiftPicker(
                                                   edit: edit,
@@ -706,6 +743,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   timeOutController:
                                                       friTimeOutController,
                                                   toPickedWeek: friToT,
+                                                  callBackfunFrom:
+                                                      (TimeOfDay v) {
+                                                    friFromT = v;
+                                                  },
+                                                  callBackfunTo: (TimeOfDay v) {
+                                                    friToT = v;
+                                                  },
                                                 ),
                                               ],
                                             )
@@ -722,18 +766,18 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   DateTime now = DateTime.now();
                                   TimeOfDay t = fromPicked;
                                   TimeOfDay tt = toPicked;
-                                  TimeOfDay sunT = monFromT;
-                                  TimeOfDay sunTT = monToT;
+                                  TimeOfDay sunT = sunFromT;
+                                  TimeOfDay sunTT = sunToT;
                                   TimeOfDay monT = monFromT;
                                   TimeOfDay monTT = monToT;
-                                  TimeOfDay tuesT = monFromT;
-                                  TimeOfDay tuesTT = monToT;
-                                  TimeOfDay wedT = monFromT;
-                                  TimeOfDay wedTT = monToT;
-                                  TimeOfDay thurT = monFromT;
-                                  TimeOfDay thurTT = monToT;
-                                  TimeOfDay friT = monFromT;
-                                  TimeOfDay friTT = monToT;
+                                  TimeOfDay tuesT = tuesFromT;
+                                  TimeOfDay tuesTT = tuesToT;
+                                  TimeOfDay wedT = wedFromT;
+                                  TimeOfDay wedTT = wedToT;
+                                  TimeOfDay thurT = thuFromT;
+                                  TimeOfDay thurTT = thuToT;
+                                  TimeOfDay friT = friFromT;
+                                  TimeOfDay friTT = friToT;
 
                                   DateTime dateFrom = DateTime(now.year,
                                       now.month, now.day, t.hour, t.minute);
@@ -759,7 +803,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   monTo = DateTime(now.year, now.month, now.day,
                                       monTT.hour, monTT.minute);
                                   tuesTo = DateTime(now.year, now.month,
-                                      now.day, tuesT.hour, tuesT.minute);
+                                      now.day, tuesTT.hour, tuesTT.minute);
                                   wedTo = DateTime(now.year, now.month, now.day,
                                       wedTT.hour, wedTT.minute);
                                   thuTo = DateTime(now.year, now.month, now.day,
@@ -806,8 +850,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   var endStart = endInt;
                                   var endEnd = (endInt + kAfterEndShift) % 2400;
 
-                                  print(
-                                      "$startStart   $startEnd    $endStart   $endEnd");
                                   if (!widget.isEdit) {
                                     if (_formKey.currentState.validate()) {
                                       if (startInt > endInt) {
@@ -949,7 +991,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         });
     var user = Provider.of<UserData>(context, listen: false).user;
     print(Provider.of<SiteData>(context, listen: false).sitesList[siteId].id);
-    print("aaaaaaaaa :${widget.shift.shiftId}");
 
     var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
         Shift(
@@ -1046,6 +1087,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
     var user = Provider.of<UserData>(context, listen: false).user;
 
+    print(_monFrom);
     var msg = await Provider.of<ShiftsData>(context, listen: false).addShift(
         Shift(
             shiftName: _title.text,
@@ -1068,6 +1110,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             shiftEndTime: int.parse(endString.replaceAll(":", ""))),
         user.userToken,
         context);
+
     Navigator.pop(context);
 
     if (msg == "Success") {
@@ -1259,13 +1302,16 @@ class CircularIconButton extends StatelessWidget {
 class AdvancedShiftPicker extends StatefulWidget {
   String weekDay;
   bool edit;
+  Function callBackfunFrom, callBackfunTo;
   TextEditingController timeInController, timeOutController;
   TimeOfDay fromPickedWeek, toPickedWeek;
   AdvancedShiftPicker(
       {this.edit,
       this.fromPickedWeek,
+      this.callBackfunFrom,
       this.timeInController,
       this.timeOutController,
+      this.callBackfunTo,
       this.toPickedWeek,
       this.weekDay});
   @override
@@ -1322,6 +1368,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
 
                                   if (from != null) {
                                     widget.fromPickedWeek = from;
+                                    widget.callBackfunFrom(from);
                                     setState(() {
                                       if (Platform.isIOS) {
                                         widget.timeInController.text =
@@ -1393,6 +1440,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                           alwaysUse24HourFormat: false);
                                   if (to != null) {
                                     widget.toPickedWeek = to;
+                                    widget.callBackfunTo(to);
                                     setState(() {
                                       if (Platform.isIOS) {
                                         widget.timeOutController.text =

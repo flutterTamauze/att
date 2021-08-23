@@ -216,24 +216,32 @@ class ShiftsData with ChangeNotifier {
 
           if (decodedRes["message"] == "Success") {
             Shift newShift = Shift(
-              shiftId: decodedRes['data']['id'] as int,
-              shiftName: decodedRes['data']['shiftName'],
-              shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
-              shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
-              siteID: decodedRes['data']['siteId'] as int,
-              fridayShiftenTime: decodedRes['data']["FridayShiftSttime"],
-              fridayShiftstTime: decodedRes['data']["FridayShiftEntime"],
-              monShiftstTime: decodedRes['data']["MonShiftSttime"],
-              mondayShiftenTime: decodedRes['data']["MondayShiftEntime"],
-              sunShiftenTime: decodedRes['data']["SunShiftSttime"],
-              sunShiftstTime: decodedRes['data']["SunShiftEntime"],
-              thursdayShiftenTime: decodedRes['data']["SunShiftSttime"],
-              thursdayShiftstTime: decodedRes['data']["SunShiftEntime"],
-              tuesdayShiftenTime: decodedRes['data']["TuesdayShiftSttime"],
-              tuesdayShiftstTime: decodedRes['data']["TuesdayShiftEntime"],
-              wednesDayShiftenTime: decodedRes['data']["WednesdayShiftSttime"],
-              wednesDayShiftstTime: decodedRes['data']["WednesdayShiftEntime"],
-            );
+                fridayShiftenTime:
+                    int.parse(decodedRes['data']["fridayShiftEntime"]),
+                fridayShiftstTime:
+                    int.parse(decodedRes['data']["fridayShiftSttime"]),
+                monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
+                mondayShiftenTime:
+                    int.parse(decodedRes['data']["mondayShiftEntime"]),
+                sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
+                sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
+                thursdayShiftenTime:
+                    int.parse(decodedRes['data']["thursdayShiftEntime"]),
+                thursdayShiftstTime:
+                    int.parse(decodedRes['data']["thursdayShiftSttime"]),
+                tuesdayShiftenTime:
+                    int.parse(decodedRes['data']["tuesdayShiftEntime"]),
+                tuesdayShiftstTime:
+                    int.parse(decodedRes['data']["tuesdayShiftSttime"]),
+                wednesDayShiftenTime:
+                    int.parse(decodedRes['data']["wednesdayShiftEntime"]),
+                wednesDayShiftstTime:
+                    int.parse(decodedRes['data']["wednesdayShiftSttime"]),
+                shiftId: decodedRes['data']['id'],
+                shiftName: decodedRes['data']['shiftName'],
+                shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
+                shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
+                siteID: decodedRes['data']['siteId'] as int);
 
             shiftsList.add(newShift);
             notifyListeners();
@@ -269,79 +277,97 @@ class ShiftsData with ChangeNotifier {
     print("Shift ID : ${shift.shiftId}");
     print("Site ID : ${shift.siteID}");
     print("index : $id");
-
+    print(shift.fridayShiftenTime);
     if (await isConnectedToInternet()) {
-      try {
-        print("shift start = ${shift.sunShiftstTime.toString()}");
-        final response = await http.put(
-            Uri.parse("$localURL/api/Shifts/${shift.shiftId}"),
-            body: json.encode(
-              {
-                "id": shift.shiftId,
-                "shiftEntime": shift.shiftEndTime.toString(),
-                "shiftName": shift.shiftName,
-                "shiftSttime": shift.shiftStartTime.toString(),
-                "siteId": shift.siteID,
-                "FridayShiftSttime": shift.fridayShiftstTime.toString(),
-                "FridayShiftEntime": shift.fridayShiftenTime.toString(),
-                "MonShiftSttime": shift.monShiftstTime.toString(),
-                "MondayShiftEntime": shift.mondayShiftenTime.toString(),
-                "SunShiftSttime": shift.sunShiftstTime.toString(),
-                "SunShiftEntime": shift.sunShiftenTime.toString(),
-                "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
-                "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
-                "TuesdayShiftSttime": shift.thursdayShiftstTime.toString(),
-                "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
-                "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
-                "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $usertoken"
-            });
+      print("shift start = ${shift.sunShiftstTime.toString()}");
+      final response = await http.put(
+          Uri.parse("$baseURL/api/Shifts/${shift.shiftId}"),
+          body: json.encode(
+            {
+              "id": shift.shiftId,
+              "shiftEntime": shift.shiftEndTime.toString(),
+              "shiftName": shift.shiftName,
+              "shiftSttime": shift.shiftStartTime.toString(),
+              "siteId": shift.siteID,
+              "FridayShiftSttime": shift.fridayShiftstTime.toString(),
+              "FridayShiftEntime": shift.fridayShiftenTime.toString(),
+              "MonShiftSttime": shift.monShiftstTime.toString(),
+              "MondayShiftEntime": shift.mondayShiftenTime.toString(),
+              "SunShiftSttime": shift.sunShiftstTime.toString(),
+              "SunShiftEntime": shift.sunShiftenTime.toString(),
+              "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
+              "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
+              "TuesdayShiftSttime": shift.thursdayShiftstTime.toString(),
+              "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
+              "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
+              "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
+            },
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $usertoken"
+          });
+      print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        usertoken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await editShift(
+          shift,
+          id,
+          usertoken,
+          context,
+        );
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
         print(response.body);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          usertoken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await editShift(
-            shift,
-            id,
-            usertoken,
-            context,
-          );
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            Shift newShift = Shift(
-                shiftId: decodedRes['data']['id'],
-                shiftName: decodedRes['data']['shiftName'],
-                shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
-                shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
-                siteID: decodedRes['data']['siteId'] as int);
-            var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
+        if (decodedRes["message"] == "Success") {
+          Shift newShift = Shift(
+              fridayShiftenTime:
+                  int.parse(decodedRes['data']["fridayShiftEntime"]),
+              fridayShiftstTime:
+                  int.parse(decodedRes['data']["fridayShiftSttime"]),
+              monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
+              mondayShiftenTime:
+                  int.parse(decodedRes['data']["mondayShiftEntime"]),
+              sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
+              sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
+              thursdayShiftenTime:
+                  int.parse(decodedRes['data']["thursdayShiftEntime"]),
+              thursdayShiftstTime:
+                  int.parse(decodedRes['data']["thursdayShiftSttime"]),
+              tuesdayShiftenTime:
+                  int.parse(decodedRes['data']["tuesdayShiftEntime"]),
+              tuesdayShiftstTime:
+                  int.parse(decodedRes['data']["tuesdayShiftSttime"]),
+              wednesDayShiftenTime:
+                  int.parse(decodedRes['data']["wednesdayShiftEntime"]),
+              wednesDayShiftstTime:
+                  int.parse(decodedRes['data']["wednesdayShiftSttime"]),
+              shiftId: decodedRes['data']['id'],
+              shiftName: decodedRes['data']['shiftName'],
+              shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
+              shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
+              siteID: decodedRes['data']['siteId'] as int);
+          var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
 
-            shiftsList[shiftsListIndex] = newShift;
-            shiftsBySite[id] = newShift;
-            notifyListeners();
+          shiftsList[shiftsListIndex] = newShift;
+          shiftsBySite[id] = newShift;
+          notifyListeners();
 
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : Shift Name already exists") {
-            return "exists";
-          } else if (decodedRes["message"] == "Fail : Time constants error") {
-            print("s");
-            return decodedRes["data"];
-          } else {
-            return "failed";
-          }
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Fail : Shift Name already exists") {
+          return "exists";
+        } else if (decodedRes["message"] == "Fail : Time constants error") {
+          print("s");
+          return decodedRes["data"];
+        } else {
+          return "failed";
         }
-      } catch (e) {
-        print(e);
       }
+
       return "failed";
     } else {
       return 'noInternet';

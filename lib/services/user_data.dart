@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/constants.dart';
@@ -84,11 +85,11 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
-    FirebaseMessaging fcm = FirebaseMessaging.instance;
     var connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult != ConnectivityResult.none) {
       try {
+        var token = await firebaseMessaging.getToken();
         var stability = await isConnectedToInternet("www.google.com");
         if (stability) {
           if (await isConnectedToInternet("www.tamauzeds.com") == false) {
@@ -100,7 +101,7 @@ class UserData with ChangeNotifier {
                 {
                   "Username": username,
                   "Password": password,
-                  "FCMToken": await fcm.getToken() ?? "null"
+                  "FCMToken": token ?? "null"
                 },
               ),
               headers: {

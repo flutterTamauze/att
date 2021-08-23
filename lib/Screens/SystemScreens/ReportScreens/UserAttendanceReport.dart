@@ -143,6 +143,7 @@ class _UserAttendanceReportScreenState
     return -1;
   }
 
+  String msg = "";
   int siteId = 0;
   int siteIdIndex = 0;
   final focusNode = FocusNode();
@@ -196,6 +197,7 @@ class _UserAttendanceReportScreenState
                                           case ConnectionState.waiting:
                                             return Container();
                                           case ConnectionState.done:
+                                            msg = snapshot.data;
                                             return reportsData
                                                             .userAttendanceReport
                                                             .isDayOff ==
@@ -222,6 +224,7 @@ class _UserAttendanceReportScreenState
                                                             .name,
                                                   )
                                                 : Container();
+
                                           default:
                                             return Container();
                                         }
@@ -1232,21 +1235,26 @@ class DataTableRow extends StatelessWidget {
                                   Container(
                                     height: 20,
                                     child: AutoSizeText(
-                                      userAttendanceReportUnit.timeIn == "1"
-                                          ? "عارضة"
+                                      userAttendanceReportUnit.timeIn == "*"
+                                          ? "غير مقيد"
                                           : userAttendanceReportUnit.timeIn ==
-                                                  "2"
-                                              ? "مرضى"
+                                                  "1"
+                                              ? "عارضة"
                                               : userAttendanceReportUnit
                                                           .timeIn ==
-                                                      "3"
-                                                  ? "رصيد اجازات"
+                                                      "2"
+                                                  ? "مرضى"
                                                   : userAttendanceReportUnit
                                                               .timeIn ==
-                                                          "4"
-                                                      ? "مأمورية خارجية"
+                                                          "3"
+                                                      ? "رصيد اجازات"
                                                       : userAttendanceReportUnit
-                                                          .timeIn,
+                                                                  .timeIn ==
+                                                              "4"
+                                                          ? "مأمورية خارجية"
+                                                          : userAttendanceReportUnit
+                                                                  .timeIn ??
+                                                              "-",
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(14,
@@ -1291,7 +1299,9 @@ class DataTableRow extends StatelessWidget {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  userAttendanceReportUnit.timeIn.contains(":")
+                                  userAttendanceReportUnit.timeIn
+                                          .toString()
+                                          .contains(":")
                                       ? Icon(
                                           userAttendanceReportUnit
                                                       .timeOutIsPm ==

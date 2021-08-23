@@ -51,9 +51,22 @@ class DailyReportUnit {
     }
 
     String amPmChanger(String time) {
-      try {
-        if (time != "-") {
-          print("test $time");
+      switch (time) {
+        case "*":
+          return "غير مقيد بعد";
+          break;
+        case "1":
+          return "عارضة";
+          break;
+        case "2":
+          return "رصيد اجازات";
+        case "3":
+          return "مرضى";
+        case "4":
+          return "مأمورية خارجية";
+        case "-":
+          return "-";
+        default:
           int intTime = int.parse(time.replaceAll(":", ""));
           int hours = (intTime ~/ 100);
           int min = intTime - (hours * 100);
@@ -70,11 +83,6 @@ class DailyReportUnit {
           var strTime = '$hoursStr:$minStr';
 
           return strTime;
-        } else {
-          return time;
-        }
-      } catch (e) {
-        print(e);
       }
     }
 
@@ -373,8 +381,8 @@ class ReportsData with ChangeNotifier {
     return "${formatter.format(h)}:${formatter.format(m)}";
   }
 
-  getUserReportUnitsApi(String userToken, String userId, String dateFrom,
-      String dateTo, BuildContext context) async {
+  Future<String> getUserReportUnitsApi(String userToken, String userId,
+      String dateFrom, String dateTo, BuildContext context) async {
     print("UseriD $userId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<UserAttendanceReportUnit> newReportList;
     if (await isConnectedToInternet()) {
@@ -430,6 +438,9 @@ class ReportsData with ChangeNotifier {
             print("dayOff");
             return "dayOff";
           }
+        } else if (decodedRes["message"] ==
+            "Success: User Created after this period.") {
+          return "user created after period";
         } else if (decodedRes["message"] ==
             "Failed : user name and password not match ") {
           return "wrong";

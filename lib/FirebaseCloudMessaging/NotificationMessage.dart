@@ -3,11 +3,13 @@ class NotificationMessage {
   String message;
   String dateTime;
   String category;
+  String timeOfMessage;
   int id;
   int messageSeen = 0;
   NotificationMessage(
       {this.dateTime,
       this.message,
+      this.timeOfMessage,
       this.title,
       this.messageSeen,
       this.id,
@@ -19,7 +21,7 @@ class NotificationMessage {
     this.dateTime = map["date"];
     this.message = map["message"];
     this.messageSeen = map["seen"];
-
+    this.timeOfMessage = map["timeMessage"];
     this.id = map["id"];
   }
   Map<String, dynamic> toMap() {
@@ -27,6 +29,7 @@ class NotificationMessage {
       "title": this.title,
       "category": this.category,
       "date": this.dateTime,
+      "timeMessage": this.timeOfMessage,
       "message": this.message,
       "seen": this.messageSeen,
     };
