@@ -19,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
@@ -160,8 +161,24 @@ class UserData with ChangeNotifier {
               print(userData[2]);
               print(userData[4]);
               loggedIn = true;
+              final List<String> notifyList =
+                  prefs.getStringList('bgNotifyList');
+              print("notifi status :$notifyList ");
+              if (notifyList != null && notifyList.length != 0) {
+                await db.insertNotification(
+                    NotificationMessage(
+                        category: notifyList[0],
+                        dateTime: notifyList[1],
+                        message: notifyList[2],
+                        messageSeen: 0,
+                        timeOfMessage: notifyList[4],
+                        title: notifyList[3]),
+                    context);
+              }
               await initializeNotification(context);
+
               notifyListeners();
+              prefs.setStringList(('bgNotifyList'), []);
               return user.userType;
             }
           } else if (decodedRes["message"] ==
@@ -376,7 +393,7 @@ class UserData with ChangeNotifier {
   Future<String> uploadImage(File _image, String id) async {
     String data = "";
     print("uploading image..$id...");
-
+    print(_image.path);
     var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
     var length = await _image.length();
 
@@ -385,7 +402,7 @@ class UserData with ChangeNotifier {
     var request = new http.MultipartRequest("PUT", uri);
     Map<String, String> headers = {'Authorization': "Bearer ${user.userToken}"};
     request.headers.addAll(headers);
-    var multipartFile = new http.MultipartFile('image', stream, length,
+    var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(_image.path));
     request.files.add(multipartFile);
 

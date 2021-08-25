@@ -3,21 +3,22 @@ import 'dart:ui' as ui;
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/MLmodule/widgets/AdvancedShiftSettings/adv_shift_settings.dart';
+
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
+
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
@@ -218,6 +219,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvider = Provider.of<CompanyData>(context, listen: false);
 
     return WillPopScope(
       onWillPop: onWillPop,
@@ -637,122 +640,161 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         ),
                                       ),
                                       checkedBox
-                                          ? Column(
-                                              children: [
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "السبت",
-                                                  fromPickedWeek: fromPicked,
-                                                  timeInController:
-                                                      _timeInController,
-                                                  timeOutController:
-                                                      _timeOutController,
-                                                  toPickedWeek: toPicked,
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الأحد",
-                                                  fromPickedWeek: sunFromT,
-                                                  timeInController:
-                                                      sunTimeInController,
-                                                  timeOutController:
-                                                      sunTimeOutController,
-                                                  toPickedWeek: sunToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    sunFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    sunToT = v;
-                                                  },
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الأتنين",
-                                                  fromPickedWeek: monFromT,
-                                                  timeInController:
-                                                      monTimeInController,
-                                                  timeOutController:
-                                                      monTimeOutController,
-                                                  toPickedWeek: monToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    monFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    monToT = v;
-                                                  },
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الثلاثاء",
-                                                  fromPickedWeek: tuesFromT,
-                                                  timeInController:
-                                                      tuesTimeInController,
-                                                  timeOutController:
-                                                      tuesTimeOutController,
-                                                  toPickedWeek: tuesToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    tuesFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    tuesToT = v;
-                                                  },
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الأربعاء",
-                                                  fromPickedWeek: wedFromT,
-                                                  timeInController:
-                                                      wedTimeInController,
-                                                  timeOutController:
-                                                      wedTimeOutController,
-                                                  toPickedWeek: wedToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    wedFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    wedToT = v;
-                                                  },
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الخميس",
-                                                  fromPickedWeek: thuFromT,
-                                                  timeInController:
-                                                      thuTimeInController,
-                                                  timeOutController:
-                                                      thuTimeOutController,
-                                                  toPickedWeek: thuToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    thuFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    thuToT = v;
-                                                  },
-                                                ),
-                                                AdvancedShiftPicker(
-                                                  edit: edit,
-                                                  weekDay: "الجمعة",
-                                                  fromPickedWeek: friFromT,
-                                                  timeInController:
-                                                      friTimeInController,
-                                                  timeOutController:
-                                                      friTimeOutController,
-                                                  toPickedWeek: friToT,
-                                                  callBackfunFrom:
-                                                      (TimeOfDay v) {
-                                                    friFromT = v;
-                                                  },
-                                                  callBackfunTo: (TimeOfDay v) {
-                                                    friToT = v;
-                                                  },
-                                                ),
-                                              ],
-                                            )
+                                          ? FutureBuilder(
+                                              future: Provider.of<DaysOffData>(
+                                                      context,
+                                                      listen: false)
+                                                  .getDaysOff(
+                                                      comProvider.com.id,
+                                                      userProvider
+                                                          .user.userToken,
+                                                      context),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            color:
+                                                                Colors.orange),
+                                                  );
+                                                }
+                                                var daysOff =
+                                                    Provider.of<DaysOffData>(
+                                                            context,
+                                                            listen: false)
+                                                        .weak;
+                                                return Column(
+                                                  children: [
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[0].isDayOff,
+                                                      weekDay: "السبت",
+                                                      fromPickedWeek:
+                                                          fromPicked,
+                                                      timeInController:
+                                                          _timeInController,
+                                                      timeOutController:
+                                                          _timeOutController,
+                                                      toPickedWeek: toPicked,
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[1].isDayOff,
+                                                      weekDay: "الأحد",
+                                                      fromPickedWeek: sunFromT,
+                                                      timeInController:
+                                                          sunTimeInController,
+                                                      timeOutController:
+                                                          sunTimeOutController,
+                                                      toPickedWeek: sunToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        sunFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        sunToT = v;
+                                                      },
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[2].isDayOff,
+                                                      weekDay: "الأتنين",
+                                                      fromPickedWeek: monFromT,
+                                                      timeInController:
+                                                          monTimeInController,
+                                                      timeOutController:
+                                                          monTimeOutController,
+                                                      toPickedWeek: monToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        monFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        monToT = v;
+                                                      },
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[3].isDayOff,
+                                                      weekDay: "الثلاثاء",
+                                                      fromPickedWeek: tuesFromT,
+                                                      timeInController:
+                                                          tuesTimeInController,
+                                                      timeOutController:
+                                                          tuesTimeOutController,
+                                                      toPickedWeek: tuesToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        tuesFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        tuesToT = v;
+                                                      },
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[4].isDayOff,
+                                                      weekDay: "الأربعاء",
+                                                      fromPickedWeek: wedFromT,
+                                                      timeInController:
+                                                          wedTimeInController,
+                                                      timeOutController:
+                                                          wedTimeOutController,
+                                                      toPickedWeek: wedToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        wedFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        wedToT = v;
+                                                      },
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[5].isDayOff,
+                                                      weekDay: "الخميس",
+                                                      fromPickedWeek: thuFromT,
+                                                      timeInController:
+                                                          thuTimeInController,
+                                                      timeOutController:
+                                                          thuTimeOutController,
+                                                      toPickedWeek: thuToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        thuFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        thuToT = v;
+                                                      },
+                                                    ),
+                                                    AdvancedShiftPicker(
+                                                      enableText:
+                                                          daysOff[6].isDayOff,
+                                                      weekDay: "الجمعة",
+                                                      fromPickedWeek: friFromT,
+                                                      timeInController:
+                                                          friTimeInController,
+                                                      timeOutController:
+                                                          friTimeOutController,
+                                                      toPickedWeek: friToT,
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        friFromT = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        friToT = v;
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              })
                                           : Container()
                                     ],
                                   ),
@@ -842,13 +884,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                       .format(dateTo)
                                       .replaceAll(":", ""));
 
-                                  var startStart =
-                                      ((startInt - kBeforeStartShift) + 2400) %
-                                          2400;
-                                  var startEnd =
-                                      (startInt + kAfterStartShift) % 2400;
-                                  var endStart = endInt;
-                                  var endEnd = (endInt + kAfterEndShift) % 2400;
+                                  // var startStart =
+                                  //     ((startInt - kBeforeStartShift) + 2400) %
+                                  //         2400;
+                                  // var startEnd =
+                                  //     (startInt + kAfterStartShift) % 2400;
+                                  // var endStart = endInt;
+                                  // var endEnd = (endInt + kAfterEndShift) % 2400;
 
                                   if (!widget.isEdit) {
                                     if (_formKey.currentState.validate()) {
@@ -858,8 +900,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           builder: (BuildContext context) {
                                             return RoundedAlert(
                                               onPressed: () async {
-                                                addShiftFun(startStart,
-                                                    startEnd, endStart, endEnd);
+                                                addShiftFun();
                                               },
                                               title: "اضافة مناوبة",
                                               content:
@@ -868,8 +909,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           },
                                         );
                                       } else {
-                                        addShiftFun(startStart, startEnd,
-                                            endStart, endEnd);
+                                        addShiftFun();
                                       }
                                     }
                                   } else {
@@ -902,11 +942,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                             return RoundedAlert(
                                                               onPressed:
                                                                   () async {
-                                                                await editShiftFun(
-                                                                    startStart,
-                                                                    startEnd,
-                                                                    endStart,
-                                                                    endEnd);
+                                                                await editShiftFun();
                                                                 Navigator.pop(
                                                                     context);
                                                               },
@@ -918,11 +954,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                           },
                                                         );
                                                       } else {
-                                                        editShiftFun(
-                                                            startStart,
-                                                            startEnd,
-                                                            endStart,
-                                                            endEnd);
+                                                        editShiftFun();
                                                       }
                                                     },
                                                     title: "حفظ ؟",
@@ -983,7 +1015,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  editShiftFun(int sS, int sE, int eS, int eE) async {
+  editShiftFun() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -1023,8 +1055,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         edit = false;
       });
       Fluttertoast.showToast(
-              msg:
-                  "تم تعديل المناوبة بنجاح\n مواعيد الحضور من ${amPmChanger(sS)} إلي ${amPmChanger(sE)} \n مواعيد الانصراف من ${amPmChanger(eS)} إلى ${amPmChanger(eE)}",
+              msg: "تم تعديل المناوبة بنجاح",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
@@ -1075,10 +1106,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     Navigator.pop(context);
   }
 
-  addShiftFun(int sS, int sE, int eS, int eE) async {
-    var dayssOff =
-        Provider.of<DaysOffData>(context, listen: false).advancedShift;
-
+  addShiftFun() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -1115,8 +1143,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
     if (msg == "Success") {
       Fluttertoast.showToast(
-          msg:
-              "تمت إضافة المناوبة بنجاح\n مواعيد الحضور من ${getTimeToString(sS)} إلي ${getTimeToString(sE)} \n مواعيد الانصراف من ${getTimeToString(eS)} إلى ${getTimeToString(eE)}",
+          msg: "تمت إضافة المناوبة بنجاح",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -1301,16 +1328,17 @@ class CircularIconButton extends StatelessWidget {
 
 class AdvancedShiftPicker extends StatefulWidget {
   String weekDay;
-  bool edit;
+
+  bool enableText;
   Function callBackfunFrom, callBackfunTo;
   TextEditingController timeInController, timeOutController;
   TimeOfDay fromPickedWeek, toPickedWeek;
   AdvancedShiftPicker(
-      {this.edit,
-      this.fromPickedWeek,
+      {this.fromPickedWeek,
       this.callBackfunFrom,
       this.timeInController,
       this.timeOutController,
+      this.enableText,
       this.callBackfunTo,
       this.toPickedWeek,
       this.weekDay});
@@ -1347,7 +1375,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                         builder: (context) {
                           return InkWell(
                               onTap: () async {
-                                if (widget.edit) {
+                                if (!widget.enableText) {
                                   var from = await showTimePicker(
                                     context: context,
                                     initialTime: widget.fromPickedWeek,
@@ -1386,7 +1414,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                 child: Container(
                                   child: IgnorePointer(
                                     child: TextFormField(
-                                      enabled: widget.edit,
+                                      enabled: !widget.enableText,
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -1420,7 +1448,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                         builder: (context) {
                           return InkWell(
                               onTap: () async {
-                                if (widget.edit) {
+                                if (!widget.enableText) {
                                   var to = await showTimePicker(
                                     context: context,
                                     initialTime: widget.toPickedWeek,
@@ -1458,7 +1486,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                 child: Container(
                                   child: IgnorePointer(
                                     child: TextFormField(
-                                      enabled: widget.edit,
+                                      enabled: !widget.enableText,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14,

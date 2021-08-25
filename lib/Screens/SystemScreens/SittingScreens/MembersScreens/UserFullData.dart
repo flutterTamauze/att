@@ -428,25 +428,62 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 AssignTaskToUser(
                                     taskName: " إرسال اثبات حضور",
                                     iconData: FontAwesomeIcons.checkCircle,
-                                    function: () {
-                                      sendFcmMessage(
-                                              topicName: "",
-                                              userToken: widget.user.fcmToken,
-                                              title: "اثبات حضور",
-                                              category: "attend",
-                                              message: "برجاء اثبات حضورك الأن")
-                                          .whenComplete(() async {
-                                        await attendObj.sendAttendProof(
-                                            Provider.of<UserData>(context,
-                                                    listen: false)
-                                                .user
-                                                .userToken,
-                                            widget.user.id);
-                                        // await Provider.of<
-                                        //             NotificationDataService>(
-                                        //         context,
-                                        //         listen: false)
-                                        //     .initializeNotification(context);
+                                    function: () async {
+                                      await attendObj
+                                          .sendAttendProof(
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken,
+                                              widget.user.id,
+                                              widget.user.fcmToken)
+                                          .then((value) {
+                                        print("VAlue $value");
+                                        if (value == "fail present") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "خطأ فى الأرسال : الموظف لم يحضر اليوم",
+                                              backgroundColor: Colors.red,
+                                              gravity: ToastGravity.CENTER);
+                                        } else if (value ==
+                                            "Failed : Shift Time Out!") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
+                                              backgroundColor: Colors.red,
+                                              gravity: ToastGravity.CENTER);
+                                        } else if (value == "null") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "خطأ فى الأرسال \n لم يتم تسجيل حضور هذا المستخدم من قبل ",
+                                              backgroundColor: Colors.red,
+                                              gravity: ToastGravity.CENTER);
+                                        } else {
+                                          sendFcmMessage(
+                                                  topicName: "",
+                                                  userToken:
+                                                      widget.user.fcmToken,
+                                                  title: "اثبات حضور",
+                                                  category: "attend",
+                                                  message:
+                                                      "برجاء اثبات حضورك الأن")
+                                              .then((value) {
+                                            if (value) {
+                                              Fluttertoast.showToast(
+                                                  msg: "تم الأرسال بنجاح",
+                                                  backgroundColor: Colors.green,
+                                                  gravity: ToastGravity.CENTER);
+                                            } else {
+                                              if (value) {
+                                                Fluttertoast.showToast(
+                                                    msg: "خطأ فى الأرسال ",
+                                                    backgroundColor: Colors.red,
+                                                    gravity:
+                                                        ToastGravity.CENTER);
+                                              }
+                                            }
+                                          });
+                                        }
                                       });
                                     }),
                               ],

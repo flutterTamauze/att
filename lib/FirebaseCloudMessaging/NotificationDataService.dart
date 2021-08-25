@@ -98,6 +98,7 @@ class NotificationDataService with ChangeNotifier {
       counter++;
       print(event.notification.body);
       print(event.notification.title);
+      print(counter);
       if (counter == 1) {
         if (event.data["category"] == "attend") {
           showAttendanceCheckDialog(context);
@@ -124,7 +125,6 @@ class NotificationDataService with ChangeNotifier {
 
         player.play("notification.mp3");
       }
-      counter = 0;
     });
   }
 

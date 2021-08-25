@@ -235,7 +235,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                       fontWeight: FontWeight.w400),
                                 ),
                                 Text(
-                                  widget.notifiTime,
+                                  widget.notifiTime ?? "",
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: ScreenUtil().setSp(12,

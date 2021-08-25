@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
@@ -76,6 +77,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
             msg: "تمت اضافة المأمورية بنجاح",
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
+        await sendFcmMessage(
+          category: "externalMission",
+          message: "تم تسجيل مأمورية خارجية لك",
+          userToken: widget.member.fcmToken,
+          topicName: "",
+          title: "تم تكليفك بمأمورية",
+        );
       } else if (msg ==
           "Failed : Another Holiday not approved for this user!") {
         Fluttertoast.showToast(
@@ -119,6 +127,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
             msg: "تمت اضافة المأمورية بنجاح",
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
+        print(widget.member.fcmToken);
+        sendFcmMessage(
+          category: "internalMission",
+          message: "تم تسجيل مأمورية داخلية لك ",
+          userToken: widget.member.fcmToken,
+          topicName: "",
+          title: "تم تكليفك بمأمورية",
+        );
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         Fluttertoast.showToast(

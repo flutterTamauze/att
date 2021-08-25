@@ -42,6 +42,16 @@ class Shift {
       @required this.wednesDayShiftenTime,
       @required this.wednesDayShiftstTime});
 
+  factory Shift.fromJsonQR(dynamic json) {
+    return Shift(
+        shiftName: json['shiftName'],
+        shiftStartTime: int.parse(json['shiftSttime']),
+        shiftEndTime: int.parse(json['shiftEntime']),
+        shiftQrCode: json['shiftQrcode'],
+        shiftId: json['id'] as int,
+        shiftType: json['type'] as bool,
+        siteID: json['siteId'] as int);
+  }
   factory Shift.fromJson(dynamic json) {
     return Shift(
         fridayShiftenTime: int.parse(json["fridayShiftEntime"]),

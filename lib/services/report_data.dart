@@ -200,6 +200,7 @@ class UserAttendanceReportUnit {
   String timeIn;
   String timeOut;
   String late;
+  int status;
   String timeInIsPm;
   String timeOutIsPm;
 
@@ -207,6 +208,7 @@ class UserAttendanceReportUnit {
       {this.date,
       this.timeIn,
       this.timeOut,
+      this.status,
       this.late,
       this.timeInIsPm,
       this.timeOutIsPm});
@@ -267,6 +269,7 @@ class UserAttendanceReportUnit {
         timeIn: amPmChanger(json['timeIn']),
         timeOut: amPmChanger(json['timeOut']),
         timeInIsPm: amOrPm(json['timeIn']),
+        status: json["status"],
         timeOutIsPm: amOrPm(json['timeOut']),
         date: json['date']);
   }
@@ -388,7 +391,7 @@ class ReportsData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
-              "$baseURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"),
+              "$localURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"

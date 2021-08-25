@@ -659,11 +659,17 @@ class _UserAttendanceReportScreenState
                                                                               DataTableHeader(),
                                                                               Expanded(
                                                                                   child: Container(
-                                                                                child: ListView.builder(
-                                                                                    itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
-                                                                                    itemBuilder: (BuildContext context, int index) {
-                                                                                      return DataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
-                                                                                    }),
+                                                                                child: snapshot.data == "user created after period"
+                                                                                    ? Container(
+                                                                                        child: Center(
+                                                                                          child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                        ),
+                                                                                      )
+                                                                                    : ListView.builder(
+                                                                                        itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
+                                                                                        itemBuilder: (BuildContext context, int index) {
+                                                                                          return DataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
+                                                                                        }),
                                                                               )),
                                                                               DataTableEnd(
                                                                                 absentsDays: reportsData.userAttendanceReport.totalAbsentDay.toString(),
@@ -1302,28 +1308,35 @@ class DataTableRow extends StatelessWidget {
                                   userAttendanceReportUnit.timeIn
                                           .toString()
                                           .contains(":")
-                                      ? Icon(
-                                          userAttendanceReportUnit
-                                                      .timeOutIsPm ==
-                                                  "am"
-                                              ? Icons.wb_sunny
-                                              : Icons.nightlight_round,
-                                          size: ScreenUtil().setSp(12,
-                                              allowFontScalingSelf: true),
-                                        )
-                                      : Container(
-                                          child: Text("-"),
-                                        ),
+                                      ? userAttendanceReportUnit.status == 3
+                                          ? Container()
+                                          : Icon(
+                                              userAttendanceReportUnit
+                                                          .timeOutIsPm ==
+                                                      "am"
+                                                  ? Icons.wb_sunny
+                                                  : Icons.nightlight_round,
+                                              size: ScreenUtil().setSp(12,
+                                                  allowFontScalingSelf: true),
+                                            )
+                                      : Container(),
                                   Container(
-                                    height: 20,
+                                    height: userAttendanceReportUnit.status == 3
+                                        ? 30.h
+                                        : 20.h,
+                                    width: 60.w,
                                     child: AutoSizeText(
-                                      userAttendanceReportUnit.timeOut ?? "",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14,
-                                              allowFontScalingSelf: true),
-                                          color: Colors.black),
-                                    ),
+                                        userAttendanceReportUnit.status == 3
+                                            ? "لم يتم اثبات الحضور"
+                                            : userAttendanceReportUnit
+                                                    .timeOut ??
+                                                "",
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black),
+                                        textAlign: TextAlign.center),
                                   ),
                                 ],
                               ),

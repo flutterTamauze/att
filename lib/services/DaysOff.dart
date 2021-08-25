@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -26,7 +26,7 @@ class Day {
 class DaysOffData with ChangeNotifier {
   List<Day> weak = [Day(), Day(), Day(), Day(), Day(), Day(), Day()];
   List<Day> reallocateUsers = [];
-  List<Day> advancedShift = [];
+
   toggleDayOff(int i) {
     weak[i].isDayOff = false;
     notifyListeners();
@@ -41,24 +41,6 @@ class DaysOffData with ChangeNotifier {
     reallocateUsers[index].sitename = sitename;
     reallocateUsers[index].shiftname = shiftname;
     notifyListeners();
-  }
-
-  setFromAndTo(
-    int index,
-    var from,
-    var to,
-  ) {
-    advancedShift[index].fromDate = from;
-    advancedShift[index].toDate = to;
-
-    notifyListeners();
-  }
-
-  fillAdvancedShiftTime(timeIn, timeOut) {
-    for (int i = 0; i < advancedShift.length; i++) {
-      advancedShift[i].timeInController.text = timeIn;
-      advancedShift[i].timeOutController.text = timeOut;
-    }
   }
 
   String amPmChanger(int intTime) {
@@ -77,32 +59,6 @@ class DaysOffData with ChangeNotifier {
     var strTime = '$hoursStr:$minStr$ampm';
 
     return strTime;
-  }
-
-  fillAdvancedShiftWithRealData(Shift shift, BuildContext context) {
-    advancedShift[0].timeOutController.text = amPmChanger(shift.shiftEndTime);
-    advancedShift[0].timeInController.text = amPmChanger(shift.shiftStartTime);
-    advancedShift[1].timeOutController.text = amPmChanger(shift.sunShiftenTime);
-    advancedShift[1].timeInController.text = amPmChanger(shift.sunShiftstTime);
-    advancedShift[2].timeOutController.text =
-        amPmChanger(shift.mondayShiftenTime);
-    advancedShift[2].timeInController.text = amPmChanger(shift.monShiftstTime);
-    advancedShift[3].timeOutController.text =
-        amPmChanger(shift.tuesdayShiftenTime);
-    advancedShift[3].timeInController.text =
-        amPmChanger(shift.tuesdayShiftstTime);
-    advancedShift[4].timeOutController.text =
-        amPmChanger(shift.wednesDayShiftenTime);
-    advancedShift[4].timeInController.text =
-        amPmChanger(shift.wednesDayShiftstTime);
-    advancedShift[5].timeOutController.text =
-        amPmChanger(shift.thursdayShiftenTime);
-    advancedShift[5].timeInController.text =
-        amPmChanger(shift.thursdayShiftstTime);
-    advancedShift[6].timeOutController.text =
-        amPmChanger(shift.fridayShiftenTime);
-    advancedShift[6].timeInController.text =
-        amPmChanger(shift.fridayShiftstTime);
   }
 
   InheritDefault inheritDefault = InheritDefault();
@@ -130,7 +86,6 @@ class DaysOffData with ChangeNotifier {
     print("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId");
     if (await isConnectedToInternet()) {
       try {
-        advancedShift.clear();
         reallocateUsers.clear();
         final response = await http.get(
             Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
@@ -168,43 +123,6 @@ class DaysOffData with ChangeNotifier {
             weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
             weak[6].dayName = "الجمعة";
             reallocateUsers = [...weak];
-            advancedShift = [...weak];
-            print(shift == null);
-            if (shift == null) {
-              print("shift is null");
-              for (int i = 0; i < advancedShift.length; i++) {
-                advancedShift[i].fromDate = null;
-                advancedShift[i].toDate = null;
-              }
-            } else {
-              advancedShift[0].fromDate =
-                  (intToTimeOfDay(shift.shiftStartTime));
-              advancedShift[0].toDate = (intToTimeOfDay(shift.shiftEndTime));
-              advancedShift[1].fromDate =
-                  (intToTimeOfDay(shift.sunShiftstTime));
-              advancedShift[1].toDate = (intToTimeOfDay(shift.sunShiftenTime));
-              advancedShift[2].fromDate =
-                  (intToTimeOfDay(shift.monShiftstTime));
-              advancedShift[2].toDate =
-                  (intToTimeOfDay(shift.mondayShiftenTime));
-              advancedShift[3].fromDate =
-                  (intToTimeOfDay(shift.tuesdayShiftstTime));
-              advancedShift[3].toDate =
-                  (intToTimeOfDay(shift.thursdayShiftenTime));
-              advancedShift[4].fromDate =
-                  (intToTimeOfDay(shift.wednesDayShiftstTime));
-              advancedShift[4].toDate =
-                  (intToTimeOfDay(shift.wednesDayShiftenTime));
-              advancedShift[5].fromDate =
-                  (intToTimeOfDay(shift.thursdayShiftstTime));
-              advancedShift[5].toDate =
-                  (intToTimeOfDay(shift.thursdayShiftenTime));
-              advancedShift[6].toDate =
-                  (intToTimeOfDay(shift.fridayShiftstTime));
-              advancedShift[6].toDate =
-                  (intToTimeOfDay(shift.fridayShiftenTime));
-              fillAdvancedShiftWithRealData(shift, context);
-            }
 
             notifyListeners();
             return "Success";

@@ -46,7 +46,7 @@ Future<bool> sendFcmMessage(
           "category": "$category",
         },
         "priority": "high",
-        "to": topicName == "" ? await firebaseMessaging.getToken() : toParams
+        "to": topicName == "" ? userToken : toParams
       };
     } else {
       request = {

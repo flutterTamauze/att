@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/SplashScreen.dart';
@@ -16,6 +17,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:sqflite/sqflite.dart';
 import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/api.dart';
@@ -57,13 +59,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     final prefs = await SharedPreferences.getInstance();
     print("current shared pref status :");
     print(prefs.getString("notifiCategory"));
+    prefs.setStringList("bgNotifyList", []);
+
     if (prefs.getString('notifCategory') == "" ||
         prefs.getString('notifCategory') == null) {
       print("setting please wait ..");
-      prefs
-          .setString("notifCategory", message.data["category"])
-          .whenComplete(() => print("set successfully"));
+      prefs.setString("notifCategory", message.data["category"]);
     }
+    await prefs.setStringList("bgNotifyList", [
+      message.data["category"],
+      DateTime.now().toString().substring(0, 11),
+      message.data["body"],
+      message.data["title"],
+      DateFormat('kk:mm:a').format(DateTime.now())
+    ]).whenComplete(() => print("background notification is set !!!"));
   } catch (e) {
     print(e);
   }

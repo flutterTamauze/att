@@ -1,12 +1,13 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../../constants.dart';
 
 class AttendProof {
-  sendAttendProof(String userToken, String userId) async {
+  Future<String> sendAttendProof(
+      String userToken, String userId, String fcmToken) async {
     var response = await http.post(
         Uri.parse("$baseURL/api/AttendProof/AddAttendProof"),
         headers: {
@@ -16,6 +17,17 @@ class AttendProof {
         body: json.encode(
             {"userId": userId, "startTime": DateTime.now().toIso8601String()}));
     print(response.body);
+    var decodedResponse = jsonDecode(response.body);
+    if (fcmToken == null) {
+      return "null";
+    }
+    if (decodedResponse["message"] == "Failed : User was not present today!") {
+      return "fail present";
+    } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
+      return "fail shift";
+    }
+
+    return "success";
   }
 
   Future<int> getAttendProofID(String userId) async {
@@ -26,6 +38,7 @@ class AttendProof {
     if (decodedResponse["message"] == "Success") {
       return decodedResponse["data"];
     }
+
     return -1;
   }
 

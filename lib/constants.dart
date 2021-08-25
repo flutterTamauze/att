@@ -9,8 +9,8 @@ final localURL = "http://192.168.0.119:8010";
 final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 
 int kBeforeStartShift = 100;
-int kAfterStartShift = 200;
-int kAfterEndShift = 600;
+// int kAfterStartShift = 200;
+// int kAfterEndShift = 600;
 
 double getkDeviceWidthFactor(BuildContext context, double widgetWidth) {
   return (MediaQuery.of(context).size.width / 392) * widgetWidth;

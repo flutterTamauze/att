@@ -9,11 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
-import 'package:qr_users/constants.dart';
+
+import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
-import 'package:qr_users/services/Sites_data.dart';
+
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -25,11 +24,8 @@ import 'package:qr_users/widgets/roundedButton.dart';
 import '../SettingsScreen.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
-import 'AttendanceSettings.dart';
 import 'OfficialVacations.dart';
-import 'OutsideVacation.dart';
 
 class CompanySettings extends StatefulWidget {
   @override
@@ -44,25 +40,13 @@ var selectedLeave = leaveNumbers.first;
 DateTime yesterday;
 TextEditingController controller = TextEditingController();
 final _formKey = GlobalKey<FormState>();
-List<String> attendNumbers = ["ساعة", "ساعتين", "٣ ساعات"];
-List<String> leaveNumbers = [
-  "ساعة",
-  "ساعتين",
-  "٣ ساعات",
-  "٤ ساعات",
-  "٥ ساعات",
-  "٦ ساعات"
-];
-// int _cameraFace = FlutterMobileVision.CAMERA_FRONT;
-// bool _autoFocusFace = true;
-// bool _torchFace = false;
-// bool _multipleFace = true;
-// bool _showTextFace = true;
-// Size _previewFace;
-// List<Face> _faces = [];
+List<String> attendNumbers = ["1", "2", "3"];
+List<String> leaveNumbers = ["1", "2", "3", "4", "5", "6"];
+CompanySettingsService companySettings = CompanySettingsService();
 
 class _CompanySettingsState extends State<CompanySettings> {
-  var userProvider, comProvider;
+  UserData userProvider;
+  CompanyData comProvider;
   @override
   void initState() {
     var now = DateTime.now();
@@ -139,59 +123,38 @@ class _CompanySettingsState extends State<CompanySettings> {
                       builder: (context) => OfficialVacation(),
                     ));
               }),
-          // ServiceTile(
-          //     title: "اعدادات الخصومات",
-          //     subTitle: "ادارة الخصومات",
-          //     icon: Icons.money_off_csred_outlined,
-          //     onTap: () async {}),
-
           ServiceTile(
               title: "اعدادات الحضور و الأنصراف",
               subTitle: "ادارة الحضور و الأنصراف",
               icon: FontAwesomeIcons.usersCog,
-              onTap: () {
-                showAttendanceSettings();
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return RoundedLoadingIndicator();
+                    });
+                await companySettings.getCompanySettingsTime(
+                    comProvider.com.id, userProvider.user.userToken);
+
+                Navigator.pop(context);
+                controller.text = companySettings.lateAllowance.toString();
+                showAttendanceSettings(
+                    companySettings.attendClearance.toString(),
+                    companySettings.lateAllowance.toString(),
+                    companySettings.leaveClearance.toString(),
+                    companySettings.settingsID,
+                    comProvider.com.id);
               }),
-
-          // ServiceTile(
-          //     title: "test only",
-          //     subTitle: "testonly",
-          //     icon: FontAwesomeIcons.usersCog,
-          //     onTap: () async {
-          //       print("d");
-
-          //       // try {
-          //       //   await FlutterMobileVision.face(
-          //       //     autoFocus: _autoFocusFace,
-          //       //     multiple: _multipleFace,
-          //       //     flash: _torchFace,
-          //       //     showText: _showTextFace,
-          //       //     preview: _previewFace,
-          //       //     camera: _cameraFace,
-          //       //     fps: 15.0,
-          //       //   );
-          //       // } catch (e) {
-          //       //   print(e);
-          //       // }
-          //     }),
-          // // ServiceTile(
-          // //     title: "تسجيل إذن",
-          // //     subTitle: "ادارة الأذونات",
-          // //     icon: FontAwesomeIcons.calendarCheck,
-          // //     onTap: () async {
-          // //       Navigator.push(
-          // //           context,
-          // //           MaterialPageRoute(
-          // //             builder: (context) => SchedulePermession(),
-          // //           ));
-          // //     }),
         ],
       ),
     );
   }
 
-  showAttendanceSettings() async {
+  showAttendanceSettings(String attendClearance, String lateAlowance,
+      String leaveClearance, int settingsID, int companyId) async {
+    bool isLoading = false;
     return showDialog(
+
         // barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
@@ -241,7 +204,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                         alignment: Alignment.center,
                                         height: 50.h,
                                         child: Text(
-                                          "سماحية التأخير",
+                                          "سماحية التأخير (دقيقة)",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w500,
@@ -255,9 +218,6 @@ class _CompanySettingsState extends State<CompanySettings> {
                                         height: 40.h,
                                         child: TextFormField(
                                           keyboardType: TextInputType.number,
-                                          onEditingComplete: () {
-                                            print("finsh");
-                                          },
                                           textAlignVertical:
                                               TextAlignVertical.bottom,
                                           textAlign: TextAlign.center,
@@ -341,22 +301,39 @@ class _CompanySettingsState extends State<CompanySettings> {
                                               child: Align(
                                                 alignment:
                                                     Alignment.centerRight,
-                                                child: Text(
-                                                  x,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      color: Colors.orange,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "ساعات",
+                                                      textAlign:
+                                                          TextAlign.right,
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      x,
+                                                      textAlign:
+                                                          TextAlign.right,
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
                                                 ),
                                               ));
                                         }).toList(),
                                         onChanged: (value) {
                                           sets(() {
-                                            selectedNo = value;
+                                            attendClearance = value;
                                           });
                                         },
-                                        value: selectedNo,
+                                        value: attendClearance.toString(),
                                       )),
                                     ),
                                   ),
@@ -394,22 +371,39 @@ class _CompanySettingsState extends State<CompanySettings> {
                                               child: Align(
                                                 alignment:
                                                     Alignment.centerRight,
-                                                child: Text(
-                                                  x,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      color: Colors.orange,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                child: Row(
+                                                  children: [
+                                                    Text("ساعات",
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      x,
+                                                      textAlign:
+                                                          TextAlign.right,
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
                                                 ),
                                               ));
                                         }).toList(),
                                         onChanged: (value) {
                                           sets(() {
-                                            selectedLeave = value;
+                                            leaveClearance = value;
                                           });
                                         },
-                                        value: selectedLeave,
+                                        value: leaveClearance.toString(),
                                       )),
                                     ),
                                   ),
@@ -418,18 +412,51 @@ class _CompanySettingsState extends State<CompanySettings> {
                             ),
                             Spacer(),
                             Center(
-                                child: RoundedButton(
-                                    title: "حفظ",
-                                    onPressed: () {
-                                      if (!_formKey.currentState.validate()) {
-                                        return;
-                                      } else {
-                                        Navigator.pop(context);
-                                        Fluttertoast.showToast(
-                                            msg: "تم الحفظ بنجاح",
-                                            backgroundColor: Colors.green);
-                                      }
-                                    }))
+                                child: isLoading
+                                    ? CircularProgressIndicator(
+                                        color: Colors.orange,
+                                      )
+                                    : RoundedButton(
+                                        title: "حفظ",
+                                        onPressed: () async {
+                                          if (!_formKey.currentState
+                                              .validate()) {
+                                            return;
+                                          } else {
+                                            sets(() {
+                                              isLoading = true;
+                                            });
+                                            await companySettings
+                                                .updateCompanySettingsTime(
+                                                    settingsID,
+                                                    companyId,
+                                                    int.parse(controller.text),
+                                                    int.parse(attendClearance),
+                                                    int.parse(leaveClearance),
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken)
+                                                .then((value) {
+                                              if (value) {
+                                                Fluttertoast.showToast(
+                                                    msg: "تم الحفظ بنجاح",
+                                                    backgroundColor:
+                                                        Colors.green);
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg: "خطأ فى التعديل",
+                                                    backgroundColor:
+                                                        Colors.red);
+                                              }
+                                            });
+                                            sets(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(context);
+                                          }
+                                        }))
                           ],
                         ),
                       ),

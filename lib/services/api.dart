@@ -142,6 +142,7 @@ class ShiftApi with ChangeNotifier {
         List<Shift> shiftsList;
         int isMoc = await getCurrentLocation();
         print("IS MOC RESULT : $isMoc");
+        print(id);
         if (isMoc == 0) {
           print(currentPosition.latitude);
           print(currentPosition.longitude);
@@ -166,7 +167,7 @@ class ShiftApi with ChangeNotifier {
             if (jsonDecode(response.body)["message"] == "Success") {
               var shiftObjJson = jsonDecode(response.body)['data'] as List;
               shiftsList = shiftObjJson
-                  .map((shiftJson) => Shift.fromJson(shiftJson))
+                  .map((shiftJson) => Shift.fromJsonQR(shiftJson))
                   .toList();
 
               shiftsListProvider = shiftsList;

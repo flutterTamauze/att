@@ -192,6 +192,13 @@ class _SystemScanPageState extends State<SystemScanPage> {
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
           textColor: Colors.black);
+    } else if (msg == "Success : User was not proof") {
+      Fluttertoast.showToast(
+          msg: "خطأ فى التسجيل:لم يتم اثبات حضور المستخدم",
+          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.red,
+          textColor: Colors.black);
     } else {
       await Fluttertoast.showToast(
           msg: "خطأ فى التسجيل: برجاء إعادة المحاولة",

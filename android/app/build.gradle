@@ -48,29 +48,39 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
     }
-
+   
     buildTypes {
-        release {
-            // aaptOptions {
-            //     ignoreAssetsPattern '!mlkit_pose:!mlkit_label_default_model:'
-            // }
-    //         packagingOptions {
-    //     exclude 'lib/**/libtranslate_jni.so'
-    //     exclude 'lib/**/libdigitalink.so'
-    //     exclude 'lib/**/libxeno_native.so'
-    //     exclude 'lib/**/libmlkitcommonpipeline.so'
-    //     exclude 'lib/**/libbarhopper_v2.so'
-    //     exclude 'lib/**/libclassifier_jni.so'
-    //     exclude 'lib/**/liblanguage_id_jni.so' 
-    // }
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
-    }
-    
+		release {
+			// TODO: Add your own signing config for the release build.
+			// Signing with the debug keys for now, so `flutter run --release` works.
+			signingConfig signingConfigs.debug
+			aaptOptions {
+				ignoreAssetsPattern 'mlkit_pose'
+				ignoreAssetsPattern '!mlkit_pose:!mlkit_label_default_model:'
+				ignoreAssetsPattern '!mlkit_pose:'
+			}
+		}
+		debug {
+			aaptOptions {
+				ignoreAssetsPattern 'mlkit_pose'
+				ignoreAssetsPattern '!mlkit_pose:!mlkit_label_default_model:'
+				ignoreAssetsPattern '!mlkit_pose:'
+			}
+		}
+	}
+	packagingOptions {
+		exclude 'lib/**/libtranslate_jni.so'
+		exclude 'lib/**/libdigitalink.so'
+		exclude 'lib/**/libxeno_native.so'
+		exclude 'lib/**/libmlkitcommonpipeline.so'
+		exclude 'lib/**/libbarhopper_v2.so'
+		exclude 'lib/**/libclassifier_jni.so'
+		exclude 'lib/**/libpredictor_jni.so'
+		exclude 'lib/**/libtextclassifier3_jni_tclib.so'
+		exclude 'lib/**/liblanguage_id_jni.so'
+	}
 }
-  
+
 flutter {
     source '../..'
 }
@@ -81,5 +91,8 @@ dependencies {
     // api 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:<7.0.3>'
+    implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    implementation 'com.huawei.hms:hianalytics:5.3.0.300'
 } 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.huawei.agconnect'

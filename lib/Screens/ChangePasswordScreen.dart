@@ -83,7 +83,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
         } else {
           Fluttertoast.showToast(
-              msg: "خطأ في التعديل",
+              msg: "خطأ في حفظ الصورة",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,

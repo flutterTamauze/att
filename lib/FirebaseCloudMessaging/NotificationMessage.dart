@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class NotificationMessage {
   String title;
   String message;
@@ -34,4 +36,22 @@ class NotificationMessage {
       "seen": this.messageSeen,
     };
   }
+
+  static Map<String, dynamic> toMsgMap(NotificationMessage msgs) => {
+        "title": msgs.title,
+        "category": msgs.category,
+        "date": msgs.dateTime,
+        "timeMessage": msgs.timeOfMessage,
+        "message": msgs.message,
+        "seen": msgs.messageSeen,
+      };
+
+  static String encode(List<NotificationMessage> msgs) => json.encode(
+        msgs.map<Map<String, dynamic>>((music) => toMsgMap(music)).toList(),
+      );
+
+  static List<NotificationMessage> decode(String msgs) =>
+      (json.decode(msgs) as List<dynamic>)
+          .map<NotificationMessage>((item) => NotificationMessage.fromMap(item))
+          .toList();
 }
