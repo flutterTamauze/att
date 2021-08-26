@@ -16,9 +16,10 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
-import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
+
+import '../../../constants.dart';
 
 class DisplayHolidays extends StatefulWidget {
   TextEditingController _nameController;
@@ -165,7 +166,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(
-                            color: Colors.orange,
+                            backgroundColor: Colors.orange,
                           ),
                         );
                       } else {

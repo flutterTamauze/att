@@ -397,7 +397,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                         ? Center(
                                                             child:
                                                                 CircularProgressIndicator(
-                                                              color:
+                                                              backgroundColor:
                                                                   Colors.orange,
                                                             ),
                                                           )

@@ -35,7 +35,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.5.0"
   audioplayers:
     dependency: "direct main"
     description:
@@ -457,13 +457,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  huawei_push:
-    dependency: "direct main"
-    description:
-      name: huawei_push
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.1.1+301"
   image:
     dependency: transitive
     description:
@@ -790,7 +783,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.0"
   sqflite:
     dependency: "direct main"
     description:
@@ -874,7 +867,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.19"
   tflite_flutter:
     dependency: "direct main"
     description:

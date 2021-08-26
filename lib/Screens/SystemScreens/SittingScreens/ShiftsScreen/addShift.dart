@@ -655,7 +655,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   return Center(
                                                     child:
                                                         CircularProgressIndicator(
-                                                            color:
+                                                            backgroundColor:
                                                                 Colors.orange),
                                                   );
                                                 }

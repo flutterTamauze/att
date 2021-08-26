@@ -645,7 +645,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                           Provider.of<UserPermessionsData>(context).isLoading ||
                                   Provider.of<UserHolidaysData>(context)
                                       .isLoading
-                              ? CircularProgressIndicator(color: Colors.orange)
+                              ? CircularProgressIndicator(
+                                  backgroundColor: Colors.orange)
                               : RoundedButton(
                                   title: "حفظ الطلب",
                                   onPressed: () async {

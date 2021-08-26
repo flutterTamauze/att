@@ -216,7 +216,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                             ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(
-                              color: Colors.orange,
+                              backgroundColor: Colors.orange,
                             ),
                           );
                         } else {
@@ -262,7 +262,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                             ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(
-                              color: Colors.orange,
+                              backgroundColor: Colors.orange,
                             ),
                           );
                         } else {

@@ -16,13 +16,8 @@ PODS:
     - AFNetworking/NSURLSession
   - audioplayers (0.0.1):
     - Flutter
-  - background_fetch (1.0.1):
-    - Flutter
   - camera (0.0.1):
     - Flutter
-  - CocoaLumberjack (3.7.2):
-    - CocoaLumberjack/Core (= 3.7.2)
-  - CocoaLumberjack/Core (3.7.2)
   - connectivity (0.0.1):
     - Flutter
     - Reachability
@@ -31,33 +26,33 @@ PODS:
   - DTTJailbreakDetection (0.4.0)
   - ext_storage (0.0.1):
     - Flutter
-  - Firebase/CoreOnly (8.0.0):
-    - FirebaseCore (= 8.0.0)
-  - Firebase/Messaging (8.0.0):
+  - Firebase/CoreOnly (8.5.0):
+    - FirebaseCore (= 8.5.0)
+  - Firebase/Messaging (8.5.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.0.0)
-  - firebase_core (1.3.0):
-    - Firebase/CoreOnly (= 8.0.0)
+    - FirebaseMessaging (~> 8.5.0)
+  - firebase_core (1.5.0):
+    - Firebase/CoreOnly (= 8.5.0)
     - Flutter
-  - firebase_messaging (10.0.3):
-    - Firebase/Messaging (= 8.0.0)
+  - firebase_messaging (10.0.5):
+    - Firebase/Messaging (= 8.5.0)
     - firebase_core
     - Flutter
-  - FirebaseCore (8.0.0):
+  - FirebaseCore (8.5.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.3.0):
+  - FirebaseCoreDiagnostics (8.6.0):
     - GoogleDataTransport (~> 9.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
     - nanopb (~> 2.30908.0)
-  - FirebaseInstallations (8.3.0):
+  - FirebaseInstallations (8.6.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/UserDefaults (~> 7.4)
-    - PromisesObjC (~> 1.2)
-  - FirebaseMessaging (8.0.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - FirebaseMessaging (8.5.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -65,9 +60,6 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.4)
     - GoogleUtilities/UserDefaults (~> 7.4)
   - Flutter (1.0.0)
-  - flutter_background_geolocation (4.0.2):
-    - CocoaLumberjack (~> 3.7.2)
-    - Flutter
   - flutter_image_compress (0.0.1):
     - Flutter
     - Mantle
@@ -156,10 +148,6 @@ PODS:
   - GoogleUtilitiesComponents (1.0.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.6.1)
-  - image_face (0.0.1):
-    - Flutter
-  - image_picker (0.0.1):
-    - Flutter
   - image_pickers (0.0.1):
     - AFNetworking
     - Flutter
@@ -238,7 +226,7 @@ PODS:
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
-  - PromisesObjC (1.2.12)
+  - PromisesObjC (2.0.0)
   - Protobuf (3.17.0)
   - qr_code_scanner (0.0.2):
     - Flutter
@@ -270,7 +258,6 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
-  - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -278,7 +265,6 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
-  - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
@@ -289,8 +275,6 @@ DEPENDENCIES:
   - get_mac (from `.symlinks/plugins/get_mac/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_ml_vision (from `.symlinks/plugins/google_ml_vision/ios`)
-  - image_face (from `.symlinks/plugins/image_face/ios`)
-  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - image_pickers (from `.symlinks/plugins/image_pickers/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
@@ -308,7 +292,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AFNetworking
-    - CocoaLumberjack
     - DTTJailbreakDetection
     - Firebase
     - FirebaseCore
@@ -350,8 +333,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
-  background_fetch:
-    :path: ".symlinks/plugins/background_fetch/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   connectivity:
@@ -366,8 +347,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
-  flutter_background_geolocation:
-    :path: ".symlinks/plugins/flutter_background_geolocation/ios"
   flutter_image_compress:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_jailbreak_detection:
@@ -388,10 +367,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   google_ml_vision:
     :path: ".symlinks/plugins/google_ml_vision/ios"
-  image_face:
-    :path: ".symlinks/plugins/image_face/ios"
-  image_picker:
-    :path: ".symlinks/plugins/image_picker/ios"
   image_pickers:
     :path: ".symlinks/plugins/image_pickers/ios"
   libphonenumber:
@@ -422,22 +397,19 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
-  background_fetch: 2edffc19a5a465c47f073efa35db57f7910738fa
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
-  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   ext_storage: 4eaf3a84d5594106e2ebcc2502248cfde53c8fa1
-  Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
-  firebase_core: cda81ae37eda6df2bc2d16027fda527987c4bd33
-  firebase_messaging: 861664166bbdd527cb40396d4a381f0a1c39f61d
-  FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
-  FirebaseCoreDiagnostics: 7e873baabcfaa9512f538554ae4fa0817aaafbdb
-  FirebaseInstallations: b69db7680870dbac17bba7a51fc0b5c4b365baa7
-  FirebaseMessaging: 1a33b4af3c8042ed6ddacb6c031894af2064bfab
+  Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
+  firebase_core: 82d486a6231b636aea229bd471bceca82cbe00a6
+  firebase_messaging: 0c5342aa6d92d09429ef67c81a1345189fcb76c9
+  FirebaseCore: 1c1ca72483b59b17050f5b4cec4fb748425a3901
+  FirebaseCoreDiagnostics: 3721920bde3a9a6d5aa093c1d25e9d3e47f694af
+  FirebaseInstallations: 0ede6ffcd215b8f93c19d9b06c1c54e2d4107e98
+  FirebaseMessaging: 0705ec705c21705efc51c071fba924c8e25c63e7
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_background_geolocation: 5c5754282837dabecb09539e5bb5274a964f67c8
   flutter_image_compress: 082f8daaf6c1b0c9fe798251c750ef0ecd98d7ae
   flutter_jailbreak_detection: f6c01e4bc73641c6b69c5112e50301240601abb4
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
@@ -456,8 +428,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
   GoogleUtilitiesComponents: a69c0b3b369ba443e988141e75ef49d9010b1c80
   GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
-  image_face: eb4d72402534e9ab75953c1fad0329b1ee6df985
-  image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
   image_pickers: 4a20d713c9029a75582e28482271e92d72d334fd
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
@@ -479,7 +449,7 @@ SPEC CHECKSUMS:
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   qr_code_scanner: 16107718bdad7d708cdf6a5eacdca24b56cdf471
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -497,4 +467,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bef6ffb0e2c65be4888ce447a5aa2097995c1d0c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.0.rc.1
