@@ -119,6 +119,8 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     if (widget.popWidget) {
                                       Navigator.pop(context);
                                       Navigator.pop(context);
+                                    } else {
+                                      Navigator.pop(context);
                                     }
                                   } else {
                                     Navigator.pop(context);
@@ -140,7 +142,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                 ))),
         Positioned(
             right: 125.w,
-            top: widget.popWidget ? 170.h : 130.h,
+            top: widget.popWidget ? 170.h : 180.h,
             child: Container(
               width: 150.w,
               height: 150.h,

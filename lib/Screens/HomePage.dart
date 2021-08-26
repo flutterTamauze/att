@@ -6,7 +6,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     // test();
-    initPlatformState();
+    // initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     // checkBackgroundNotification();
@@ -149,10 +149,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print("TokenErrorEvent: " + e.message);
   }
 
-  Future<void> initPlatformState() async {
-    if (!mounted) return;
-    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-  }
+  // Future<void> initPlatformState() async {
+  //   if (!mounted) return;
+  //   hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  // }
 
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
@@ -260,12 +260,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                String result = await hawawi.Push.getAAID();
-                print(await hawawi.Push.isAutoInitEnabled());
+                // String result = await hawawi.Push.getAAID();
+                // print(await hawawi.Push.isAutoInitEnabled());
 
-                await hawawi.Push.getToken(result);
-                await hawawi.Push.sendRemoteMessage(hawawi.RemoteMessageBuilder(
-                    to: result, data: {"aaa": "aaa"}));
+                // await hawawi.Push.getToken(result);
+                // await hawawi.Push.sendRemoteMessage(hawawi.RemoteMessageBuilder(
+                //     to: result, data: {"aaa": "aaa"}));
               },
               child: GestureDetector(
                 child: Scaffold(

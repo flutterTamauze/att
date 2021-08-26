@@ -642,152 +642,171 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     ),
                                   ],
                                 ),
+                          Expanded(child: Container()),
                           Provider.of<UserPermessionsData>(context).isLoading ||
                                   Provider.of<UserHolidaysData>(context)
                                       .isLoading
                               ? CircularProgressIndicator(color: Colors.orange)
-                              : RoundedButton(
-                                  title: "حفظ الطلب",
-                                  onPressed: () async {
-                                    if (widget.radioVal == 1) //اجازة
-                                    {
-                                      if (picked != null) {
-                                        final DateTime now = DateTime.now();
-                                        final DateFormat format =
-                                            DateFormat('dd-M-yyyy'); //4-2-2021
-                                        final String formatted =
-                                            format.format(now);
-                                        Provider.of<UserHolidaysData>(context,
-                                                listen: false)
-                                            .addHoliday(
-                                                UserHolidays(
-                                                    holidayDescription:
-                                                        commentController.text,
-                                                    fromDate: picked[0],
-                                                    toDate: picked.length == 2
-                                                        ? picked[1]
-                                                        : DateTime.now(),
-                                                    holidayType:
-                                                        selectedReason ==
-                                                                "عارضة"
-                                                            ? 1
-                                                            : selectedReason ==
-                                                                    "مرضية"
-                                                                ? 2
-                                                                : 3,
-                                                    holidayStatus: 3),
-                                                userdata.userToken,
-                                                userdata.id)
-                                            .then((value) {
-                                          if (value ==
-                                              "Success : Holiday Created!") {
-                                            return showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                sendFcmMessage(
-                                                  topicName: "attendChilango",
-                                                  title: "تم طلب الأجازة بنجاح",
-                                                  category: "vacation",
-                                                  message:
-                                                      "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                );
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: RoundedButton(
+                                      title: "حفظ الطلب",
+                                      onPressed: () async {
+                                        if (widget.radioVal == 1) //اجازة
+                                        {
+                                          if (picked != null) {
+                                            final DateTime now = DateTime.now();
+                                            final DateFormat format =
+                                                DateFormat(
+                                                    'dd-M-yyyy'); //4-2-2021
+                                            final String formatted =
+                                                format.format(now);
+                                            Provider.of<UserHolidaysData>(
+                                                    context,
+                                                    listen: false)
+                                                .addHoliday(
+                                                    UserHolidays(
+                                                        holidayDescription:
+                                                            commentController
+                                                                .text,
+                                                        fromDate: picked[0],
+                                                        toDate: picked.length ==
+                                                                2
+                                                            ? picked[1]
+                                                            : DateTime.now(),
+                                                        holidayType:
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? 1
+                                                                : selectedReason ==
+                                                                        "مرضية"
+                                                                    ? 2
+                                                                    : 3,
+                                                        holidayStatus: 3),
+                                                    userdata.userToken,
+                                                    userdata.id)
+                                                .then((value) {
+                                              if (value ==
+                                                  "Success : Holiday Created!") {
+                                                return showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    sendFcmMessage(
+                                                      topicName:
+                                                          "attendChilango",
+                                                      title:
+                                                          "تم طلب الأجازة بنجاح",
+                                                      category: "vacation",
+                                                      message:
+                                                          "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                    );
 
-                                                return StackedNotificaitonAlert(
-                                                  repeatAnimation: false,
-                                                  popWidget: true,
-                                                  notificationTitle:
-                                                      "تم تقديم طلب الأجازة بنجاح ",
-                                                  notificationContent:
-                                                      "برجاء متابعة الطلب ",
-                                                  roundedButtonTitle: "متابعة",
-                                                  lottieAsset:
-                                                      "resources/success.json",
-                                                  showToast: false,
+                                                    return StackedNotificaitonAlert(
+                                                      repeatAnimation: false,
+                                                      popWidget: true,
+                                                      notificationTitle:
+                                                          "تم تقديم طلب الأجازة بنجاح ",
+                                                      notificationContent:
+                                                          "برجاء متابعة الطلب ",
+                                                      roundedButtonTitle:
+                                                          "متابعة",
+                                                      lottieAsset:
+                                                          "resources/success.json",
+                                                      showToast: false,
+                                                    );
+                                                  },
                                                 );
-                                              },
-                                            );
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "لقد تم تقديم طلب من قبل",
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    backgroundColor:
+                                                        Colors.red);
+                                              }
+                                            });
                                           } else {
                                             Fluttertoast.showToast(
-                                                msg: "لقد تم تقديم طلب من قبل",
                                                 gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.red);
+                                                backgroundColor: Colors.red,
+                                                msg: "قم بأدخال مدة الأجازة");
                                           }
-                                        });
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            gravity: ToastGravity.CENTER,
-                                            backgroundColor: Colors.red,
-                                            msg: "قم بأدخال مدة الأجازة");
-                                      }
-                                    } else //اذن
-                                    {
-                                      if (selectedDateString != null &&
-                                          timeOutController.text != "") {
-                                        print(selectedDate);
-                                        print(timeOutController.text);
-                                        String msg = await Provider.of<
-                                                    UserPermessionsData>(
-                                                context,
-                                                listen: false)
-                                            .addUserPermession(
-                                                UserPermessions(
-                                                    date: selectedDate,
-                                                    duration: toPicked
-                                                        .format(context)
-                                                        .replaceAll(" ", " "),
-                                                    permessionType:
-                                                        selectedPermession ==
-                                                                "تأخير عن الحضور"
-                                                            ? 1
-                                                            : 2,
-                                                    permessionDescription:
-                                                        commentController.text,
-                                                    user: userdata.name),
-                                                Provider.of<UserData>(context,
-                                                        listen: false)
-                                                    .user
-                                                    .userToken,
-                                                userdata.id);
-                                        if (msg == "success") {
-                                          return showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              sendFcmMessage(
-                                                topicName: "attendChilango",
-                                                title: "تم طلب اذن بنجاح",
-                                                category: "permession",
-                                                message:
-                                                    "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                              );
+                                        } else //اذن
+                                        {
+                                          if (selectedDateString != null &&
+                                              timeOutController.text != "") {
+                                            print(selectedDate);
+                                            print(timeOutController.text);
+                                            String msg = await Provider.of<UserPermessionsData>(
+                                                    context,
+                                                    listen: false)
+                                                .addUserPermession(
+                                                    UserPermessions(
+                                                        date: selectedDate,
+                                                        duration: toPicked
+                                                            .format(context)
+                                                            .replaceAll(
+                                                                " ", " "),
+                                                        permessionType:
+                                                            selectedPermession ==
+                                                                    "تأخير عن الحضور"
+                                                                ? 1
+                                                                : 2,
+                                                        permessionDescription:
+                                                            commentController
+                                                                .text,
+                                                        user: userdata.name),
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken,
+                                                    userdata.id);
+                                            if (msg == "success") {
+                                              return showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  sendFcmMessage(
+                                                    topicName: "attendChilango",
+                                                    title: "تم طلب اذن بنجاح",
+                                                    category: "permession",
+                                                    message:
+                                                        "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                  );
 
-                                              return StackedNotificaitonAlert(
-                                                repeatAnimation: false,
-                                                popWidget: true,
-                                                notificationTitle:
-                                                    "تم تقديم طلب الأذن بنجاح ",
-                                                notificationContent:
-                                                    "برجاء متابعة الطلب ",
-                                                roundedButtonTitle: "متابعة",
-                                                lottieAsset:
-                                                    "resources/success.json",
-                                                showToast: false,
+                                                  return StackedNotificaitonAlert(
+                                                    repeatAnimation: false,
+                                                    popWidget: true,
+                                                    notificationTitle:
+                                                        "تم تقديم طلب الأذن بنجاح ",
+                                                    notificationContent:
+                                                        "برجاء متابعة الطلب ",
+                                                    roundedButtonTitle:
+                                                        "متابعة",
+                                                    lottieAsset:
+                                                        "resources/success.json",
+                                                    showToast: false,
+                                                  );
+                                                },
                                               );
-                                            },
-                                          );
-                                        } else if (msg == "failed") {
-                                          Fluttertoast.showToast(
-                                              gravity: ToastGravity.CENTER,
-                                              backgroundColor: Colors.red,
-                                              msg: "لقد تم تقديم طلب من قبل");
+                                            } else if (msg == "failed") {
+                                              Fluttertoast.showToast(
+                                                  gravity: ToastGravity.CENTER,
+                                                  backgroundColor: Colors.red,
+                                                  msg:
+                                                      "لقد تم تقديم طلب من قبل");
+                                            }
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                gravity: ToastGravity.CENTER,
+                                                backgroundColor: Colors.red,
+                                                msg:
+                                                    "قم بأدخال البيانات المطلوبة");
+                                          }
                                         }
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            gravity: ToastGravity.CENTER,
-                                            backgroundColor: Colors.red,
-                                            msg: "قم بأدخال البيانات المطلوبة");
-                                      }
-                                    }
-                                  })
+                                      }),
+                                )
                         ],
                       ),
                     ),

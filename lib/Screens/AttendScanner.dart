@@ -164,7 +164,7 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.red,
             textColor: Colors.black);
         break;
-      case "Sorry : Today is an official vaation!":
+      case "Sorry : Today is an official vacation!":
         Fluttertoast.showToast(
             msg: "خطأ فى التسجيل: عطلة رسمية",
             gravity: ToastGravity.CENTER,
