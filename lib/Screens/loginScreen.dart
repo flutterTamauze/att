@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       endDrawer: NotificationItem(),
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
