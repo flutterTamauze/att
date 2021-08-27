@@ -101,7 +101,7 @@ class _UserAttendanceReportScreenState
     } else {
       getMembersData();
       Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
-          new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0);
+          new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0, 0);
     }
   }
 
@@ -659,18 +659,17 @@ class _UserAttendanceReportScreenState
                                                                               DataTableHeader(),
                                                                               Expanded(
                                                                                   child: Container(
-                                                                                child: snapshot.data == "user created after period"
-                                                                                    ? Container(
-                                                                                        child: Center(
-                                                                                          child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                                        ),
-                                                                                      )
-                                                                                    : ListView.builder(
-                                                                                        itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
-                                                                                        itemBuilder: (BuildContext context, int index) {
-                                                                                          return DataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
-                                                                                        }),
-                                                                              )),
+                                                                                      child: snapshot.data == "user created after period"
+                                                                                          ? Container(
+                                                                                              child: Center(
+                                                                                                child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                              ),
+                                                                                            )
+                                                                                          : ListView.builder(
+                                                                                              itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
+                                                                                              itemBuilder: (BuildContext context, int index) {
+                                                                                                return DataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
+                                                                                              }))),
                                                                               DataTableEnd(
                                                                                 absentsDays: reportsData.userAttendanceReport.totalAbsentDay.toString(),
                                                                                 lateDays: reportsData.userAttendanceReport.totalLateDay.toString(),

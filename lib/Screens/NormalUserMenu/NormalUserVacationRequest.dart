@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -87,7 +84,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   Widget build(BuildContext context) {
     var userdata = Provider.of<UserData>(context, listen: false).user;
-    var userHoliday = Provider.of<UserHolidaysData>(context);
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -581,11 +577,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 );
                                                               },
                                                             );
-                                                            print(toPicked
-                                                                .format(context)
-                                                                .replaceAll(
-                                                                    " ", ""));
+
                                                             if (to != null) {
+                                                              print(
+                                                                  "${to.format(context).replaceAll("", "")}");
                                                               toPicked = to;
                                                               setState(() {
                                                                 timeOutController
