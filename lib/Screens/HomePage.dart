@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
+import 'package:device_info/device_info.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +19,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/services/user_data.dart';
@@ -99,10 +100,37 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
+  void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
+    // Called when a data message is received
+    print("message recieved ");
+    String data = remoteMessage.data;
+    NotificationDataService dataService = NotificationDataService();
+    dataService.showAttendanceCheckDialog(context);
+    print(data);
+  }
+
+  void sendRemoteMsg() async {
+    hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
+        to: _token,
+        data: {"Data": "test"},
+        messageType: "my_type",
+        ttl: 120,
+        messageId: "122",
+        collapseKey: '-1',
+        sendMode: 1,
+        receiptMode: 1);
+    String result = await hawawi.Push.sendRemoteMessage(remoteMsg);
+    print(result);
+  }
+
+  void _onMessageReceiveError(Object error) {
+    // Called when an error occurs while receiving the data message
+  }
   @override
   void initState() {
     // test();
-    // initPlatformState();
+
+    initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     // checkBackgroundNotification();
@@ -149,10 +177,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print("TokenErrorEvent: " + e.message);
   }
 
-  // Future<void> initPlatformState() async {
-  //   if (!mounted) return;
-  //   hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-  // }
+  Future<void> initPlatformState() async {
+    var code = await hawawi.Push.getAAID();
+    await hawawi.Push.getToken(code);
+    if (!mounted) return;
+    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+    if (!mounted) return;
+    hawawi.Push.onMessageReceivedStream
+        .listen(_onMessageReceived, onError: _onMessageReceiveError);
+  }
 
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
@@ -260,12 +293,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                // String result = await hawawi.Push.getAAID();
-                // print(await hawawi.Push.isAutoInitEnabled());
-
-                // await hawawi.Push.getToken(result);
-                // await hawawi.Push.sendRemoteMessage(hawawi.RemoteMessageBuilder(
-                //     to: result, data: {"aaa": "aaa"}));
+                sendRemoteMsg();
               },
               child: GestureDetector(
                 child: Scaffold(

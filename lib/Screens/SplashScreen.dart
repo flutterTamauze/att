@@ -47,10 +47,10 @@ class _SplashScreenState extends State<SplashScreen>
       var value = await login(userName: userData[0], password: userData[1]);
 
       print("VALUE OF USER $value");
-      if (value == 4) {
-        //subscribe admin channel
-        await firebaseMessaging.subscribeToTopic("attendChilango");
-      }
+      // if (value == 4) {
+      //   //subscribe admin channel
+      //   await firebaseMessaging.subscribeToTopic("attendChilango");
+      // }
 
       reverse(userData[0], value);
     }

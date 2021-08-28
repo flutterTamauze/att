@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_mac/get_mac.dart';
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -87,10 +89,25 @@ class UserData with ChangeNotifier {
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    GooglePlayServicesAvailability availability = await GoogleApiAvailability
+        .instance
+        .checkGooglePlayServicesAvailability();
+
+    String deviceBrand = androidInfo.brand;
 
     if (connectivityResult != ConnectivityResult.none) {
       try {
-        var token = await firebaseMessaging.getToken();
+        var token;
+        if (availability != GooglePlayServicesAvailability.success ||
+            deviceBrand.contains('Mate 30') ||
+            deviceBrand.contains("MATE 30")) {
+          token = "null";
+        } else {
+          token = await firebaseMessaging.getToken();
+        }
+        print("token fcm :$token");
         var stability = await isConnectedToInternet("www.google.com");
         if (stability) {
           if (await isConnectedToInternet("www.tamauzeds.com") == false) {
@@ -99,11 +116,7 @@ class UserData with ChangeNotifier {
           final response = await http.post(
               Uri.parse("$baseURL/api/Authenticate/login"),
               body: json.encode(
-                {
-                  "Username": username,
-                  "Password": password,
-                  "FCMToken": token ?? "null"
-                },
+                {"Username": username, "Password": password, "FCMToken": token},
               ),
               headers: {
                 'Content-type': 'application/json',
