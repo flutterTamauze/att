@@ -439,8 +439,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                               widget.user.fcmToken)
                                           .then((value) {
                                         print("VAlue $value");
-                                        if (value ==
-                                            "Failed : Shift Time Out!") {
+                                        if (value == "fail shift") {
                                           Fluttertoast.showToast(
                                               msg:
                                                   "خطأ فى الأرسال : لم تبدأ المناوبة بعد",

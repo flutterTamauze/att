@@ -337,7 +337,7 @@ class MemberData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       try {
         final response = await http.post(
-            Uri.parse("$baseURL/api/Authenticate/register"),
+            Uri.parse("$localURL/api/Authenticate/register"),
             body: json.encode(
               {
                 "Name": member.name,
