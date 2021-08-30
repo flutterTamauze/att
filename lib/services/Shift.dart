@@ -22,25 +22,25 @@ class Shift {
   int shiftId;
 
   Shift(
-      {@required this.shiftName,
-      @required this.shiftStartTime,
-      @required this.shiftEndTime,
+      {this.shiftName,
+      this.shiftStartTime,
+      this.shiftEndTime,
       this.shiftQrCode,
       this.shiftType,
       @required this.shiftId,
       @required this.siteID,
-      @required this.fridayShiftenTime,
-      @required this.fridayShiftstTime,
-      @required this.monShiftstTime,
-      @required this.mondayShiftenTime,
-      @required this.sunShiftenTime,
-      @required this.sunShiftstTime,
-      @required this.thursdayShiftenTime,
-      @required this.thursdayShiftstTime,
-      @required this.tuesdayShiftenTime,
-      @required this.tuesdayShiftstTime,
-      @required this.wednesDayShiftenTime,
-      @required this.wednesDayShiftstTime});
+      this.fridayShiftenTime,
+      this.fridayShiftstTime,
+      this.monShiftstTime,
+      this.mondayShiftenTime,
+      this.sunShiftenTime,
+      this.sunShiftstTime,
+      this.thursdayShiftenTime,
+      this.thursdayShiftstTime,
+      this.tuesdayShiftenTime,
+      this.tuesdayShiftstTime,
+      this.wednesDayShiftenTime,
+      this.wednesDayShiftstTime});
 
   factory Shift.fromJsonQR(dynamic json) {
     return Shift(

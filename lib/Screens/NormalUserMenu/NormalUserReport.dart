@@ -4,14 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData.dart';
@@ -21,9 +19,7 @@ import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets//XlsxExportButton.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,7 +54,6 @@ class _NormalUserReportState extends State<NormalUserReport> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     var now = DateTime.now();
@@ -78,7 +73,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
 
     getMembersData();
     Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
-        new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0);
+        new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0, 0);
     selectedId = Provider.of<UserData>(context, listen: false).user.id;
     Provider.of<ReportsData>(context, listen: false).getUserReportUnits(
         Provider.of<UserData>(context, listen: false).user.userToken,
@@ -121,7 +116,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    final userDataProvider = Provider.of<UserData>(context, listen: false);
+
     return Consumer<ReportsData>(
       builder: (context, reportsData, child) {
         return WillPopScope(

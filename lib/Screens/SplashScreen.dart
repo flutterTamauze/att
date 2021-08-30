@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/services/facenet.service.dart';
@@ -48,10 +47,10 @@ class _SplashScreenState extends State<SplashScreen>
       var value = await login(userName: userData[0], password: userData[1]);
 
       print("VALUE OF USER $value");
-      if (value == 4) {
-        //subscribe admin channel
-        await firebaseMessaging.subscribeToTopic("attendChilango");
-      }
+      // if (value == 4) {
+      //   //subscribe admin channel
+      //   await firebaseMessaging.subscribeToTopic("attendChilango");
+      // }
 
       reverse(userData[0], value);
     }

@@ -448,7 +448,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               height: 20,
                                                               child:
                                                                   AutoSizeText(
-                                                                "لا يوجد تسجيلات: عطلة رسمية",
+                                                                "لا يوجد تسجيلات : عطلة رسمية",
                                                                 maxLines: 1,
                                                                 style: TextStyle(
                                                                     fontSize: ScreenUtil().setSp(
@@ -465,21 +465,23 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                             ),
                                                             Container(
                                                               height: 20,
-                                                              child:
-                                                                  AutoSizeText(
-                                                                reportsData
-                                                                    .dailyReport
-                                                                    .officialHoliday,
-                                                                maxLines: 1,
-                                                                style: TextStyle(
+                                                              child: AutoSizeText(
+                                                                  reportsData
+                                                                      .dailyReport
+                                                                      .officialHoliday,
+                                                                  maxLines: 1,
+                                                                  style:
+                                                                      TextStyle(
                                                                     fontSize: ScreenUtil().setSp(
-                                                                        16,
+                                                                        17,
                                                                         allowFontScalingSelf:
                                                                             true),
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .w700),
-                                                              ),
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .orange,
+                                                                  )),
                                                             )
                                                           ],
                                                         ),

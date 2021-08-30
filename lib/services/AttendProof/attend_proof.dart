@@ -17,14 +17,20 @@ class AttendProof {
         body: json.encode(
             {"userId": userId, "startTime": DateTime.now().toIso8601String()}));
     print(response.body);
+    print("status code : ${response.statusCode}");
     var decodedResponse = jsonDecode(response.body);
-    if (fcmToken == null) {
-      return "null";
-    }
-    if (decodedResponse["message"] == "Failed : User was not present today!") {
-      return "fail present";
-    } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
-      return "fail shift";
+    if (response.statusCode == 200) {
+      if (fcmToken == null) {
+        return "null";
+      }
+      if (decodedResponse["message"] ==
+          "Failed : User was not present today!") {
+        return "fail present";
+      } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
+        return "fail shift";
+      }
+    } else {
+      return "fail";
     }
 
     return "success";

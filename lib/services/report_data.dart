@@ -130,17 +130,18 @@ class UserAttendanceReport {
   int totalLateDay;
   String totalLateDuration;
   int isDayOff;
+  int totalOfficialVacation;
 
   UserAttendanceReport(
-    this.userAttendListUnits,
-    this.totalAbsentDay,
-    this.totalLateDay,
-    this.totalLateDuration,
-    this.isDayOff,
-    this.totalLateDeduction,
-    this.totalDeductionAbsent,
-    this.totalDeduction,
-  );
+      this.userAttendListUnits,
+      this.totalAbsentDay,
+      this.totalLateDay,
+      this.totalLateDuration,
+      this.isDayOff,
+      this.totalLateDeduction,
+      this.totalDeductionAbsent,
+      this.totalDeduction,
+      this.totalOfficialVacation);
 }
 
 class LateAbsenceReport {
@@ -280,7 +281,7 @@ class ReportsData with ChangeNotifier {
   DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
-      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0);
+      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0, 0);
 
   LateAbsenceReport lateAbsenceReport = LateAbsenceReport([], "0%", "0%", true);
 
@@ -408,6 +409,8 @@ class ReportsData with ChangeNotifier {
         print(response.body);
 
         if (decodedRes["message"] == "Success") {
+          userAttendanceReport.totalOfficialVacation =
+              decodedRes["data"]["totalOffcialVacation"];
           userAttendanceReport.totalLateDuration =
               getTimeToString(decodedRes['data']['totalLateDuration'] as int);
           userAttendanceReport.totalAbsentDay =
@@ -438,7 +441,7 @@ class ReportsData with ChangeNotifier {
             userAttendanceReport.userAttendListUnits = [];
             userAttendanceReport.isDayOff = 1;
             notifyListeners();
-            print("dayOff");
+
             return "dayOff";
           }
         } else if (decodedRes["message"] ==
