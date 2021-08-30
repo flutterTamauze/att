@@ -556,18 +556,32 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     }
   }
 
+  int getShiftid(String shiftName) {
+    print("shiftName getShiftId $shiftName");
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (shiftName == list[i].shiftName) {
+        return list[i].shiftId;
+      }
+    }
+    return -1;
+  }
+
   shiftScheduling() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
+    String shiftName = getShiftName();
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
     for (int i = 0; i < 7; i++) {
       await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
           i,
-          getShiftName(),
           Provider.of<SiteData>(context, listen: false)
               .sitesList[widget.siteIndex]
-              .name);
+              .name,
+          shiftName,
+          getShiftid(shiftName));
     }
     Navigator.pop(context);
 

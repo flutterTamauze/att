@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
-
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:qr_users/services/Sites_data.dart';
 
 import 'package:qr_users/services/company.dart';
@@ -23,6 +26,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedButton.dart';
+
+import '../../../../constants.dart';
 
 class ReAllocateUsers extends StatefulWidget {
   final Member member;
@@ -39,8 +44,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
   @override
   void initState() {
+    _picked = null;
+    _yesterday = DateTime(DateTime.now().year, DateTime.december, 30);
+    _dateController.text = "";
+    var now = DateTime.now();
+    _fromDate = DateTime(now.year, now.month, now.day);
+    _toDate = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
     getDaysOff();
-
+    Provider.of<ShiftsData>(context, listen: false).isLoading = false;
     super.initState();
   }
 
@@ -49,11 +61,30 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     super.dispose();
   }
 
+  var _yesterday;
+  var _picked;
+  var _toDate;
+  UserData userProvider;
+  var _fromDate;
+  String _toText, _fromText;
+  final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
+  TextEditingController _dateController = TextEditingController();
   Future getDaysOff() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
+  }
+
+  int getShiftid(String shiftName) {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (shiftName == list[i].shiftName) {
+        return list[i].shiftId;
+      }
+    }
+    return -1;
   }
 
   @override
@@ -62,9 +93,11 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var prov = Provider.of<SiteData>(context, listen: false);
-
+    ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
+          print(daysofflist.reallocateUsers[1].shiftID.toString());
+
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -123,6 +156,83 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                 header:
                                     "جدولة المناوبات للمستخدم : ${widget.member.name} ",
                               ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                  child: Theme(
+                                data: clockTheme1,
+                                child: Builder(
+                                  builder: (context) {
+                                    return InkWell(
+                                        onTap: () async {
+                                          _picked = await DateRagePicker
+                                              .showDatePicker(
+                                                  context: context,
+                                                  initialFirstDate: DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day),
+                                                  initialLastDate: _toDate,
+                                                  firstDate: DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day),
+                                                  lastDate: _yesterday);
+                                          var newString = "";
+                                          setState(() {
+                                            _fromDate = _picked.first;
+                                            _toDate = _picked.last;
+
+                                            _fromText =
+                                                " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
+                                            _toText =
+                                                " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
+                                            newString = "$_fromText $_toText";
+                                          });
+
+                                          if (_dateController.text !=
+                                              newString) {
+                                            _dateController.text = newString;
+
+                                            dateFromString =
+                                                apiFormatter.format(_fromDate);
+                                            dateToString =
+                                                apiFormatter.format(_toDate);
+                                          }
+                                        },
+                                        child: Directionality(
+                                          textDirection: ui.TextDirection.rtl,
+                                          child: Container(
+                                            // width: 330,
+                                            width: 365.w,
+                                            child: IgnorePointer(
+                                              child: TextFormField(
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                controller: _dateController,
+                                                decoration:
+                                                    kTextFieldDecorationFromTO
+                                                        .copyWith(
+                                                            hintText:
+                                                                'المدة من / إلى',
+                                                            prefixIcon: Icon(
+                                                              Icons
+                                                                  .calendar_today_rounded,
+                                                              color:
+                                                                  Colors.orange,
+                                                            )),
+                                              ),
+                                            ),
+                                          ),
+                                        ));
+                                  },
+                                ),
+                              )),
                               Expanded(
                                   child: ListView.builder(
                                 itemBuilder: (context, index) {
@@ -139,7 +249,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                     .isDayOff
                                                 ? Card(
                                                     child: Container(
-                                                      width: 200.w,
+                                                      width: 250.w,
                                                       padding:
                                                           EdgeInsets.all(10),
                                                       child: Text("يوم عطلة",
@@ -159,7 +269,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                           padding:
                                                               EdgeInsets.all(
                                                                   10),
-                                                          width: 200.w,
+                                                          width: 250.w,
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -168,11 +278,11 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                               Text(daysofflist
                                                                   .reallocateUsers[
                                                                       index]
-                                                                  .sitename),
+                                                                  .shiftname),
                                                               Text(daysofflist
                                                                   .reallocateUsers[
                                                                       index]
-                                                                  .shiftname)
+                                                                  .sitename),
                                                             ],
                                                           ),
                                                         ),
@@ -235,7 +345,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                             (value) => DropdownMenuItem(
                                                                                                                 child: Container(
                                                                                                                     alignment: Alignment.topRight,
-                                                                                                                    height: 20.h,
+                                                                                                                    height: 40.h,
                                                                                                                     child: AutoSizeText(
                                                                                                                       value.shiftName,
                                                                                                                       style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
@@ -247,9 +357,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                         int holder;
                                                                                                         if (selectedVal != "كل المواقع") {
                                                                                                           List<String> x = [];
-                                                                                                          // prov.fillCurrentShiftID(value
-                                                                                                          //     .shiftsBySite[0]
-                                                                                                          //     .shiftId);
+
                                                                                                           value.shiftsBySite.forEach((element) {
                                                                                                             x.add(element.shiftName);
                                                                                                           });
@@ -261,10 +369,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                           });
 
                                                                                                           print("dropdown site index ${holder}");
-
-                                                                                                          // prov.fillCurrentShiftID(value
-                                                                                                          //     .shiftsBySite[holder]
-                                                                                                          //     .shiftId);
                                                                                                         }
                                                                                                       },
                                                                                                       hint: Text("كل المناوبات"),
@@ -314,7 +418,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                       .map((value) => DropdownMenuItem(
                                                                                                             child: Container(
                                                                                                               alignment: Alignment.topRight,
-                                                                                                              height: 20,
+                                                                                                              height: 40.h,
                                                                                                               child: AutoSizeText(
                                                                                                                 value.name,
                                                                                                                 style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
@@ -326,20 +430,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                   onChanged: (v) async {
                                                                                                     print(v);
                                                                                                     prov.setDropDownShift(0);
-                                                                                                    // prov.setDropDownShift(
-                                                                                                    //     0);
-                                                                                                    // dropdownFun(v);
-                                                                                                    // if (v !=
-                                                                                                    //     "كل المواقع") {
-                                                                                                    //   prov.setDropDownIndex(prov
-                                                                                                    //           .dropDownSitesStrings
-                                                                                                    //           .indexOf(
-                                                                                                    //               v)
-                                                                                                    //       1);
-                                                                                                    // } else {
-                                                                                                    //   prov.setDropDownIndex(
-                                                                                                    //       0);
-                                                                                                    // }
+
                                                                                                     if (v != "كل المواقع") {
                                                                                                       prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
                                                                                                     } else {
@@ -388,10 +479,10 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                           child: RoundedButton(
                                                                               title: "حفظ",
                                                                               onPressed: () async {
-                                                                                await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(index, selectedVal, Provider.of<ShiftsData>(context, listen: false).shiftsBySite[prov.dropDownShiftIndex].shiftName);
+                                                                                String shiftName = Provider.of<ShiftsData>(context, listen: false).shiftsBySite[prov.dropDownShiftIndex].shiftName;
+                                                                                await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(index, selectedVal, shiftName, getShiftid(shiftName));
                                                                                 prov.setDropDownIndex(0);
                                                                                 prov.setSiteValue("كل المواقع");
-
                                                                                 Navigator.pop(context);
                                                                               }),
                                                                         )
@@ -443,6 +534,45 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                           );
                         }),
                   ),
+                  shiftProv.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                          backgroundColor: Colors.orange,
+                        ))
+                      : RoundedButton(
+                          onPressed: () async {
+                            if (_fromText == null || _toText == null) {
+                              Fluttertoast.showToast(
+                                  msg: "برجاء ادخال المدة",
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.red);
+                            } else {
+                              String msg = await Provider.of<ShiftsData>(
+                                      context,
+                                      listen: false)
+                                  .addShiftSchedule(daysofflist.reallocateUsers,
+                                      userProvider, _fromDate, _toDate);
+                              if (msg == "Success") {
+                                Fluttertoast.showToast(
+                                    msg: "تمت اضافة الجدولة بنجاح",
+                                    gravity: ToastGravity.CENTER,
+                                    backgroundColor: Colors.green);
+                                Navigator.pop(context);
+                              } else if (msg == "exists") {
+                                Fluttertoast.showToast(
+                                    msg: "تم طلب جدولة لهذا المستخدم مسبقا",
+                                    gravity: ToastGravity.CENTER,
+                                    backgroundColor: Colors.red);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "حدث خطأ ما",
+                                    gravity: ToastGravity.CENTER,
+                                    backgroundColor: Colors.red);
+                              }
+                            }
+                          },
+                          title: "حفظ",
+                        )
                 ],
               ),
             ),

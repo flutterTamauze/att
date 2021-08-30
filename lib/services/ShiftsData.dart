@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -15,7 +16,7 @@ class ShiftsData with ChangeNotifier {
   List<Shift> shiftsList = [];
   List<Shift> shiftsBySite = [];
   Future futureListener;
-
+  bool isLoading = false;
   InheritDefault inherit = InheritDefault();
 
   findMatchingShifts(int siteId, bool addallshiftsBool) {
@@ -47,6 +48,47 @@ class ShiftsData with ChangeNotifier {
     }
 
     return shiftsBySite.length;
+  }
+
+  Future<String> addShiftSchedule(
+      List<Day> shiftIds, UserData user, DateTime from, DateTime to) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.post(
+        Uri.parse(
+          "$localURL/api/ShiftSchedule/Add",
+        ),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer ${user.user.userToken}"
+        },
+        body: json.encode({
+          "fromDate": from.toIso8601String(),
+          "toDate": to.toIso8601String(),
+          "saturdayShift": shiftIds[0].shiftID,
+          "sunShift": shiftIds[1].shiftID,
+          "mondayShift": shiftIds[2].shiftID,
+          "tuesdayShift": shiftIds[3].shiftID,
+          "wednesdayShift": shiftIds[4].shiftID,
+          "thursdayShift": shiftIds[5].shiftID,
+          "fridayShift": shiftIds[6].shiftID,
+          "userId": user.user.id,
+          "originalShift": user.user.userShiftId
+        }));
+    isLoading = false;
+    print(response.body);
+    notifyListeners();
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["statusCode"] == 200) {
+      if (decodedResponse["message"] == "Success") {
+        return "Success";
+      } else if (decodedResponse["message"] ==
+          "Fail: Schedle Shift exist for this user!") {
+        return "exists";
+      }
+    }
+    notifyListeners();
+    return "error";
   }
 
   deleteFromAllShiftsList(int shiftId) {
