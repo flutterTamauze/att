@@ -41,10 +41,11 @@ class AddShiftScreen extends StatefulWidget {
 
 class _AddShiftScreenState extends State<AddShiftScreen> {
   bool edit = true;
-
+  bool loadDaysOff = false;
   @override
   void initState() {
     super.initState();
+    loadDaysOff = false;
     fillTextField();
   }
 
@@ -641,14 +642,16 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                       ),
                                       checkedBox
                                           ? FutureBuilder(
-                                              future: Provider.of<DaysOffData>(
-                                                      context,
-                                                      listen: false)
-                                                  .getDaysOff(
-                                                      comProvider.com.id,
-                                                      userProvider
-                                                          .user.userToken,
-                                                      context),
+                                              future: !loadDaysOff
+                                                  ? Provider.of<DaysOffData>(
+                                                          context,
+                                                          listen: false)
+                                                      .getDaysOff(
+                                                          comProvider.com.id,
+                                                          userProvider
+                                                              .user.userToken,
+                                                          context)
+                                                  : null,
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
@@ -659,6 +662,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                 Colors.orange),
                                                   );
                                                 }
+                                                loadDaysOff = true;
                                                 var daysOff =
                                                     Provider.of<DaysOffData>(
                                                             context,
@@ -1114,82 +1118,103 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         });
 
     var user = Provider.of<UserData>(context, listen: false).user;
+    int mondayCheck = (monToT.hour - monFromT.hour).abs(),
+        sundayCheck = (sunToT.hour - sunFromT.hour).abs(),
+        tuesCheck = (tuesToT.hour - tuesFromT.hour).abs(),
+        wednCheck = (wedToT.hour - wedFromT.hour).abs(),
+        thursCheck = (thuToT.hour - thuFromT.hour).abs(),
+        friCheck = (friToT.hour - friFromT.hour).abs();
 
     print(_monFrom);
-    var msg = await Provider.of<ShiftsData>(context, listen: false).addShift(
-        Shift(
-            shiftName: _title.text,
-            siteID: Provider.of<SiteData>(context, listen: false)
-                .sitesList[siteId]
-                .id,
-            fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
-            fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
-            monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
-            mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
-            sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
-            sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
-            thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
-            thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
-            tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
-            tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
-            wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
-            wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
-            shiftStartTime: int.parse(startString.replaceAll(":", "")),
-            shiftEndTime: int.parse(endString.replaceAll(":", ""))),
-        user.userToken,
-        context);
-
-    Navigator.pop(context);
-
-    if (msg == "Success") {
+    var msg;
+    if (mondayCheck < 2 ||
+        sundayCheck < 2 ||
+        tuesCheck < 2 ||
+        thursCheck < 2 ||
+        wednCheck < 2 ||
+        friCheck < 2) {
       Fluttertoast.showToast(
-          msg: "تمت إضافة المناوبة بنجاح",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => ShiftsScreen(siteId, -1)),
-          (Route<dynamic> route) => false);
-    } else if (msg == "exists") {
-      Fluttertoast.showToast(
-          msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
+          msg:
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ساعتين ",
           backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-    } else if (msg == "failed") {
-      Fluttertoast.showToast(
-          msg: "خطأ في اضافة المناوبة",
-          toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-    } else if (msg == "noInternet") {
-      Fluttertoast.showToast(
-          msg: "خطأ في اضافة المناوبة:لايوجد اتصال بالانترنت",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+          toastLength: Toast.LENGTH_LONG);
+      Navigator.pop(context);
     } else {
-      Fluttertoast.showToast(
-          msg: msg,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      msg = await Provider.of<ShiftsData>(context, listen: false).addShift(
+          Shift(
+              shiftName: _title.text,
+              siteID: Provider.of<SiteData>(context, listen: false)
+                  .sitesList[siteId]
+                  .id,
+              fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
+              fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
+              monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
+              mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
+              sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
+              sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
+              thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
+              thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
+              tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
+              tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
+              wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
+              wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
+              shiftStartTime: int.parse(startString.replaceAll(":", "")),
+              shiftEndTime: int.parse(endString.replaceAll(":", ""))),
+          user.userToken,
+          context);
+      Navigator.pop(context);
+
+      if (msg == "Success") {
+        Fluttertoast.showToast(
+            msg: "تمت إضافة المناوبة بنجاح",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => ShiftsScreen(siteId, -1)),
+            (Route<dynamic> route) => false);
+      } else if (msg == "exists") {
+        Fluttertoast.showToast(
+            msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else if (msg == "failed") {
+        Fluttertoast.showToast(
+            msg: "خطأ في اضافة المناوبة",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else if (msg == "noInternet") {
+        Fluttertoast.showToast(
+            msg: "خطأ في اضافة المناوبة:لايوجد اتصال بالانترنت",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else {
+        Fluttertoast.showToast(
+            msg: msg,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      }
     }
   }
 

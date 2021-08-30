@@ -439,13 +439,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                               widget.user.fcmToken)
                                           .then((value) {
                                         print("VAlue $value");
-                                        if (value == "fail present") {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ فى الأرسال : الموظف لم يحضر اليوم",
-                                              backgroundColor: Colors.red,
-                                              gravity: ToastGravity.CENTER);
-                                        } else if (value ==
+                                        if (value ==
                                             "Failed : Shift Time Out!") {
                                           Fluttertoast.showToast(
                                               msg:

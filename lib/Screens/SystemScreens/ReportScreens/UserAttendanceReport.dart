@@ -1232,7 +1232,7 @@ class DataTableRow extends StatelessWidget {
                                                   "am"
                                               ? Icons.wb_sunny
                                               : Icons.nightlight_round,
-                                          size: ScreenUtil().setSp(12,
+                                          size: ScreenUtil().setSp(10,
                                               allowFontScalingSelf: true),
                                         )
                                       : Container(
@@ -1263,7 +1263,7 @@ class DataTableRow extends StatelessWidget {
                                                               "-",
                                       maxLines: 1,
                                       style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14,
+                                          fontSize: ScreenUtil().setSp(12,
                                               allowFontScalingSelf: true),
                                           color: Colors.black),
                                     ),
@@ -1316,7 +1316,7 @@ class DataTableRow extends StatelessWidget {
                                                       "am"
                                                   ? Icons.wb_sunny
                                                   : Icons.nightlight_round,
-                                              size: ScreenUtil().setSp(12,
+                                              size: ScreenUtil().setSp(10,
                                                   allowFontScalingSelf: true),
                                             )
                                       : Container(),
@@ -1333,7 +1333,7 @@ class DataTableRow extends StatelessWidget {
                                                 "",
                                         maxLines: 2,
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(14,
+                                            fontSize: ScreenUtil().setSp(12,
                                                 allowFontScalingSelf: true),
                                             color: Colors.black),
                                         textAlign: TextAlign.center),

@@ -139,7 +139,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
           textColor: Colors.black);
-    } else if (msg.contains("Sorry : Today is an official vaation!")) {
+    } else if (msg.contains("Sorry : Today is an official vacation!")) {
       Fluttertoast.showToast(
           msg: "خطأ فى التسجيل: عطلة رسمية",
           gravity: ToastGravity.CENTER,
