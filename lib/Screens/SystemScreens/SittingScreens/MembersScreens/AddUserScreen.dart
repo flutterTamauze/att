@@ -17,7 +17,6 @@ import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
@@ -1217,7 +1216,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   Future<bool> onWillPop() async {
     print("back");
-
+    Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
+    Provider.of<SiteData>(context, listen: false).setDropDownIndex(0);
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => UsersScreen(-1, false)),
         (Route<dynamic> route) => false);

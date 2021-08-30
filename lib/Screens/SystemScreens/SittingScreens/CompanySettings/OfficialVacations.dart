@@ -16,11 +16,12 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/services/company.dart';
+import 'package:qr_users/widgets/OfficialVacations/DataTableVacationHeader.dart';
+
+import 'package:qr_users/widgets/OfficialVacations/DataTableVacationRow.dart';
 
 import 'package:qr_users/widgets/roundedAlert.dart';
 
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 
 import 'package:qr_users/constants.dart';
@@ -240,7 +241,6 @@ class _OfficialVacationState extends State<OfficialVacation> {
                     textDirection: ui.TextDirection.rtl,
                     child: searchTextField = AutoCompleteTextField<Vacation>(
                       key: key,
-                      textSubmitted: (data) => print(data),
                       clearOnSubmit: false,
                       controller: _nameController,
                       suggestions: vactionProv.vactionList

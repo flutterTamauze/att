@@ -2,8 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -87,7 +84,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   Widget build(BuildContext context) {
     var userdata = Provider.of<UserData>(context, listen: false).user;
-    var userHoliday = Provider.of<UserHolidaysData>(context);
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -326,7 +322,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         ),
                                       ),
                                     ),
-                                    DetialsTextField(),
+                                    DetialsTextField(commentController),
                                     SizedBox(
                                       height: 50.h,
                                     ),
@@ -581,11 +577,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 );
                                                               },
                                                             );
-                                                            print(toPicked
-                                                                .format(context)
-                                                                .replaceAll(
-                                                                    " ", ""));
+
                                                             if (to != null) {
+                                                              print(
+                                                                  "${to.format(context).replaceAll("", "")}");
                                                               toPicked = to;
                                                               setState(() {
                                                                 timeOutController
@@ -635,7 +630,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 )),
                                               ),
                                             ),
-                                            DetialsTextField()
+                                            DetialsTextField(commentController)
                                           ],
                                         ),
                                       ),
@@ -819,45 +814,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   }
 }
 
-class DetialsTextField extends StatelessWidget {
-  const DetialsTextField({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: TextField(
-          controller: commentController,
-          cursorColor: Colors.orange,
-          maxLines: null,
-          decoration: InputDecoration(
-            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange),
-            ),
-            disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 4)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            hintText: "قم بأدخال التفاصيل هنا",
-          ),
-          textAlign: TextAlign.right,
-        ),
-      ),
-    );
-  }
-}
-
 class RadioButtonWidg extends StatelessWidget {
   final Function onchannge;
   final int radioVal;
@@ -866,9 +822,8 @@ class RadioButtonWidg extends StatelessWidget {
     this.onchannge,
     this.radioVal,
     this.title,
-    Key key,
     @required this.radioVal2,
-  }) : super(key: key);
+  });
 
   final int radioVal2;
 
@@ -882,7 +837,6 @@ class RadioButtonWidg extends StatelessWidget {
           value: radioVal,
           groupValue: radioVal2,
           onChanged: (value) {
-            print(value);
             onchannge(value);
           },
         ),

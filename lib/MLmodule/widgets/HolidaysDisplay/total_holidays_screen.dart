@@ -5,23 +5,22 @@ import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
-import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
+import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
 class DisplayHolidays extends StatefulWidget {
-  TextEditingController _nameController;
+  final TextEditingController _nameController;
   DisplayHolidays(this._nameController);
   @override
   _DisplayHolidaysState createState() => _DisplayHolidaysState();

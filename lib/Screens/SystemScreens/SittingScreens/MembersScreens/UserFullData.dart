@@ -439,43 +439,62 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                               widget.user.fcmToken)
                                           .then((value) {
                                         print("VAlue $value");
-                                        if (value == "fail shift") {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
-                                              backgroundColor: Colors.red,
-                                              gravity: ToastGravity.CENTER);
-                                        } else if (value == "null") {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ فى الأرسال \n لم يتم تسجيل حضور هذا المستخدم من قبل ",
-                                              backgroundColor: Colors.red,
-                                              gravity: ToastGravity.CENTER);
-                                        } else {
-                                          sendFcmMessage(
-                                                  topicName: "",
-                                                  userToken:
-                                                      widget.user.fcmToken,
-                                                  title: "اثبات حضور",
-                                                  category: "attend",
-                                                  message:
-                                                      "برجاء اثبات حضورك الأن")
-                                              .then((value) {
-                                            if (value) {
-                                              Fluttertoast.showToast(
-                                                  msg: "تم الأرسال بنجاح",
-                                                  backgroundColor: Colors.green,
-                                                  gravity: ToastGravity.CENTER);
-                                            } else {
+                                        switch (value) {
+                                          case "Failed : Shift Time Out!":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "null":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "fail present":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "لم يتم تسجيل حضور هذا المتسخدم",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "fail":
+                                            Fluttertoast.showToast(
+                                                msg: "حدث خطأ ما !",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          default:
+                                            sendFcmMessage(
+                                                    topicName: "",
+                                                    userToken:
+                                                        widget.user.fcmToken,
+                                                    title: "اثبات حضور",
+                                                    category: "attend",
+                                                    message:
+                                                        "برجاء اثبات حضورك الأن")
+                                                .then((value) {
                                               if (value) {
                                                 Fluttertoast.showToast(
-                                                    msg: "خطأ فى الأرسال ",
-                                                    backgroundColor: Colors.red,
+                                                    msg: "تم الأرسال بنجاح",
+                                                    backgroundColor:
+                                                        Colors.green,
                                                     gravity:
                                                         ToastGravity.CENTER);
+                                              } else {
+                                                if (value) {
+                                                  Fluttertoast.showToast(
+                                                      msg: "خطأ فى الأرسال ",
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      gravity:
+                                                          ToastGravity.CENTER);
+                                                }
                                               }
-                                            }
-                                          });
+                                            });
                                         }
                                       });
                                     }),

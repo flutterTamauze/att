@@ -130,17 +130,18 @@ class UserAttendanceReport {
   int totalLateDay;
   String totalLateDuration;
   int isDayOff;
+  int totalOfficialVacation;
 
   UserAttendanceReport(
-    this.userAttendListUnits,
-    this.totalAbsentDay,
-    this.totalLateDay,
-    this.totalLateDuration,
-    this.isDayOff,
-    this.totalLateDeduction,
-    this.totalDeductionAbsent,
-    this.totalDeduction,
-  );
+      this.userAttendListUnits,
+      this.totalAbsentDay,
+      this.totalLateDay,
+      this.totalLateDuration,
+      this.isDayOff,
+      this.totalLateDeduction,
+      this.totalDeductionAbsent,
+      this.totalDeduction,
+      this.totalOfficialVacation);
 }
 
 class LateAbsenceReport {
@@ -159,14 +160,16 @@ class LateAbsenceReportUnit {
   String totalLateDays;
   String totalAbsence;
   String totalLate;
+
   double totalDeduction;
-  LateAbsenceReportUnit(
-      {this.userName,
-      this.totalLateDays,
-      this.totalDeduction,
-      this.totalAbsence,
-      this.totalLate,
-      this.userId});
+  LateAbsenceReportUnit({
+    this.userName,
+    this.totalLateDays,
+    this.totalDeduction,
+    this.totalAbsence,
+    this.totalLate,
+    this.userId,
+  });
 
   factory LateAbsenceReportUnit.fromJson(dynamic json) {
     String getTimeToString(int time) {
@@ -201,6 +204,7 @@ class UserAttendanceReportUnit {
   String timeOut;
   String late;
   int status;
+  int totalOfficialVacation;
   String timeInIsPm;
   String timeOutIsPm;
 
@@ -211,7 +215,8 @@ class UserAttendanceReportUnit {
       this.status,
       this.late,
       this.timeInIsPm,
-      this.timeOutIsPm});
+      this.timeOutIsPm,
+      this.totalOfficialVacation});
 
   factory UserAttendanceReportUnit.fromJson(dynamic json) {
     String amPmChanger(String time) {
@@ -280,7 +285,7 @@ class ReportsData with ChangeNotifier {
   DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
-      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0);
+      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0, 0);
 
   LateAbsenceReport lateAbsenceReport = LateAbsenceReport([], "0%", "0%", true);
 
@@ -408,6 +413,8 @@ class ReportsData with ChangeNotifier {
         print(response.body);
 
         if (decodedRes["message"] == "Success") {
+          userAttendanceReport.totalOfficialVacation =
+              decodedRes["data"]["totalOffcialVacation"];
           userAttendanceReport.totalLateDuration =
               getTimeToString(decodedRes['data']['totalLateDuration'] as int);
           userAttendanceReport.totalAbsentDay =
@@ -422,6 +429,8 @@ class ReportsData with ChangeNotifier {
               decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
           var reportObjJson =
               jsonDecode(response.body)['data']['userDayAttends'] as List;
+          userAttendanceReport.totalOfficialVacation =
+              decodedRes["data"]["totalOffcialVacation"] as int;
 
           if (reportObjJson.isNotEmpty) {
             print("reportObjJson: $reportObjJson");
@@ -438,7 +447,7 @@ class ReportsData with ChangeNotifier {
             userAttendanceReport.userAttendListUnits = [];
             userAttendanceReport.isDayOff = 1;
             notifyListeners();
-            print("dayOff");
+
             return "dayOff";
           }
         } else if (decodedRes["message"] ==

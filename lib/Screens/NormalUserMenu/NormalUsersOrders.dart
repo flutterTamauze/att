@@ -9,7 +9,6 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/UserRequests/MyOrdersWidget.dart';
-import 'package:qr_users/widgets/UserRequests/MyPermessionsWidget.dart';
 import 'package:qr_users/widgets/UserRequests/UserOrdersListView.dart';
 import 'package:qr_users/widgets/UserRequests/UserPermessionsListView.dart';
 import 'package:qr_users/widgets/headers.dart';

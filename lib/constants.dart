@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'dart:ui' as ui;
 
 final baseURL = "https://Chilangoback.tamauzeds.com";
@@ -26,6 +25,43 @@ int kCalcDateDifferance(String strtDate, String endDate) {
 
   final differancee = endingDate.difference(startDate).inDays;
   return differancee;
+}
+
+class DetialsTextField extends StatelessWidget {
+  final TextEditingController commentController;
+  DetialsTextField(this.commentController);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: TextField(
+          controller: commentController,
+          cursorColor: Colors.orange,
+          maxLines: null,
+          decoration: InputDecoration(
+            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Colors.orange),
+            ),
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 4)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey, width: 0)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey, width: 0)),
+            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            hintText: "قم بأدخال التفاصيل هنا",
+          ),
+          textAlign: TextAlign.right,
+        ),
+      ),
+    );
+  }
 }
 
 ThemeData clockTheme = ThemeData.dark().copyWith(

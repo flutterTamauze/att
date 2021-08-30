@@ -4,15 +4,13 @@ import 'package:flutter/rendering.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import "../services/user_data.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'HomePage.dart';
-import 'package:lottie/lottie.dart';
 import 'loginScreen.dart';
 import 'package:provider/provider.dart';
 
 class PageIntro extends StatefulWidget {
-  int userType;
-  PageIntro({@required this.userType});
+  final int userType;
+  PageIntro({this.userType});
 
   @override
   _PageIntroState createState() => _PageIntroState();

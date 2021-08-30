@@ -143,8 +143,7 @@ class MemberData with ChangeNotifier {
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
-          print("creaaaaaaaaaaated oN");
-          print(decodedRes["data"][0]["createdOn"]);
+
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
             memberNewList = memberObjJson
@@ -337,7 +336,7 @@ class MemberData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       try {
         final response = await http.post(
-            Uri.parse("$localURL/api/Authenticate/register"),
+            Uri.parse("$baseURL/api/Authenticate/register"),
             body: json.encode(
               {
                 "Name": member.name,
