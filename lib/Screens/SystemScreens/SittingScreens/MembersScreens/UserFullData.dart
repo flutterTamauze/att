@@ -30,11 +30,13 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
+import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:qr_users/widgets/roundedButton.dart';
 import 'dart:convert';
 import 'UsersScreen.dart';
 
@@ -422,6 +424,18 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           builder: (BuildContext context) {
                                             return RoundedLoadingIndicator();
                                           });
+                                      var userProvider = Provider.of<UserData>(
+                                          context,
+                                          listen: false);
+                                      var comProvider =
+                                          Provider.of<CompanyData>(context,
+                                              listen: false);
+                                      await Provider.of<DaysOffData>(context,
+                                              listen: false)
+                                          .getDaysOff(
+                                              comProvider.com.id,
+                                              userProvider.user.userToken,
+                                              context);
                                       shiftScheduling();
                                     }),
                                 Divider(),
@@ -556,18 +570,32 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     }
   }
 
+  int getShiftid(String shiftName) {
+    print("shiftName getShiftId $shiftName");
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (shiftName == list[i].shiftName) {
+        return list[i].shiftId;
+      }
+    }
+    return -1;
+  }
+
   shiftScheduling() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
+    String shiftName = getShiftName();
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
     for (int i = 0; i < 7; i++) {
       await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
           i,
-          getShiftName(),
           Provider.of<SiteData>(context, listen: false)
               .sitesList[widget.siteIndex]
-              .name);
+              .name,
+          shiftName,
+          getShiftid(shiftName));
     }
     Navigator.pop(context);
 

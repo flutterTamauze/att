@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'dart:ui' as ui;
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 final baseURL = "https://Chilangoback.tamauzeds.com";
 final localURL = "http://192.168.0.119:8010";
@@ -10,6 +13,40 @@ final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;
 // int kAfterEndShift = 600;
+successfullDelete() {
+  Fluttertoast.showToast(
+    msg: "تم الحذف بنجاح",
+    gravity: ToastGravity.CENTER,
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.green,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
+}
+
+successfulSaved() {
+  Fluttertoast.showToast(
+      msg: "تم الحفظ بنجاح",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+}
+
+unSuccessfullDelete() {
+  Fluttertoast.showToast(
+    msg: "خطأ في الحذف",
+    gravity: ToastGravity.CENTER,
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
+    textColor: Colors.black,
+    fontSize: 16.0,
+  );
+}
 
 double getkDeviceWidthFactor(BuildContext context, double widgetWidth) {
   return (MediaQuery.of(context).size.width / 392) * widgetWidth;

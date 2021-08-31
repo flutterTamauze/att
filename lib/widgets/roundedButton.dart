@@ -41,3 +41,35 @@ class RoundedButton extends StatelessWidget {
     );
   }
 }
+
+class RounderButton extends StatelessWidget {
+  @override
+  final text;
+  final onTap;
+
+  RounderButton(this.text, this.onTap);
+
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.orange),
+        padding: EdgeInsets.all(5),
+        child: Center(
+          child: Container(
+            height: 20,
+            child: AutoSizeText(
+              text,
+              maxLines: 1,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: ScreenUtil().setSp(14, allowFontScalingSelf: true)),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
