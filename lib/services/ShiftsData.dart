@@ -50,8 +50,8 @@ class ShiftsData with ChangeNotifier {
     return shiftsBySite.length;
   }
 
-  Future<String> addShiftSchedule(
-      List<Day> shiftIds, UserData user, DateTime from, DateTime to) async {
+  Future<String> addShiftSchedule(List<Day> shiftIds, String usertoken,
+      String userId, int usershiftId, DateTime from, DateTime to) async {
     isLoading = true;
     notifyListeners();
     var response = await http.post(
@@ -60,7 +60,7 @@ class ShiftsData with ChangeNotifier {
         ),
         headers: {
           'Content-type': 'application/json',
-          'Authorization': "Bearer ${user.user.userToken}"
+          'Authorization': "Bearer $usertoken"
         },
         body: json.encode({
           "fromDate": from.toIso8601String(),
@@ -72,8 +72,8 @@ class ShiftsData with ChangeNotifier {
           "wednesdayShift": shiftIds[4].shiftID,
           "thursdayShift": shiftIds[5].shiftID,
           "fridayShift": shiftIds[6].shiftID,
-          "userId": user.user.id,
-          "originalShift": user.user.userShiftId
+          "userId": userId,
+          "originalShift": usershiftId
         }));
     isLoading = false;
     print(response.body);

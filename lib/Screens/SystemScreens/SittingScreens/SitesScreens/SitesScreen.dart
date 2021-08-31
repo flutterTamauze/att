@@ -14,6 +14,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/AddSi
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 
 import 'package:qr_users/services/Sites_data.dart';
@@ -27,6 +28,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:ui' as ui;
+
+import 'package:qr_users/widgets/roundedButton.dart';
 
 class SitesScreen extends StatefulWidget {
   @override
@@ -182,27 +185,7 @@ class _SitesScreenState extends State<SitesScreen> {
                                                                   "Success") {
                                                                 Navigator.pop(
                                                                     context);
-                                                                Fluttertoast.showToast(
-                                                                    msg:
-                                                                        "تم الحذف بنجاح",
-                                                                    toastLength:
-                                                                        Toast
-                                                                            .LENGTH_SHORT,
-                                                                    gravity: ToastGravity
-                                                                        .CENTER,
-                                                                    timeInSecForIosWeb:
-                                                                        1,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .green,
-                                                                    textColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    fontSize:
-                                                                        ScreenUtil().setSp(
-                                                                            16,
-                                                                            allowFontScalingSelf:
-                                                                                true));
+                                                                successfullDelete();
                                                               } else if (msg ==
                                                                   "hasData") {
                                                                 Fluttertoast.showToast(

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
+import 'package:qr_users/constants.dart';
 
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/DaysOff.dart';
@@ -440,10 +441,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                         .userToken)
                                                 .then((value) {
                                               if (value) {
-                                                Fluttertoast.showToast(
-                                                    msg: "تم الحفظ بنجاح",
-                                                    backgroundColor:
-                                                        Colors.green);
+                                                successfulSaved();
                                               } else {
                                                 Fluttertoast.showToast(
                                                     msg: "خطأ فى التعديل",

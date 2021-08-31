@@ -523,28 +523,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                                                 print(
                                                                     'Edit Done ');
                                                               });
-                                                              Fluttertoast
-                                                                  .showToast(
-                                                                      msg:
-                                                                          "تم الحفظ بنجاح",
-                                                                      toastLength:
-                                                                          Toast
-                                                                              .LENGTH_SHORT,
-                                                                      // // gravity:
-                                                                      // //     ToastGravity
-                                                                      //         .CENTER,
-                                                                      timeInSecForIosWeb:
-                                                                          1,
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .green,
-                                                                      textColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      fontSize: ScreenUtil().setSp(
-                                                                          16,
-                                                                          allowFontScalingSelf:
-                                                                              true));
+                                                              successfulSaved();
                                                               Navigator.pop(
                                                                   context);
                                                             } else {

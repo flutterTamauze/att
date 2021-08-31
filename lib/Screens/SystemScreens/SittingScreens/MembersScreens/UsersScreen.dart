@@ -22,10 +22,12 @@ import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
+import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
+import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'UserFullData.dart';
@@ -673,25 +675,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                           var token = Provider.of<UserData>(context, listen: false).user.userToken;
                                                                                           if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
                                                                                             Navigator.pop(context);
-                                                                                            Fluttertoast.showToast(
-                                                                                              msg: "تم الحذف بنجاح",
-                                                                                              gravity: ToastGravity.CENTER,
-                                                                                              toastLength: Toast.LENGTH_SHORT,
-                                                                                              timeInSecForIosWeb: 1,
-                                                                                              backgroundColor: Colors.green,
-                                                                                              textColor: Colors.white,
-                                                                                              fontSize: 16.0,
-                                                                                            );
+                                                                                            successfullDelete();
                                                                                           } else {
-                                                                                            Fluttertoast.showToast(
-                                                                                              msg: "خطأ في الحذف",
-                                                                                              gravity: ToastGravity.CENTER,
-                                                                                              toastLength: Toast.LENGTH_SHORT,
-                                                                                              timeInSecForIosWeb: 1,
-                                                                                              backgroundColor: Colors.red,
-                                                                                              textColor: Colors.black,
-                                                                                              fontSize: 16.0,
-                                                                                            );
+                                                                                            unSuccessfullDelete();
                                                                                           }
                                                                                           Navigator.pop(context);
                                                                                           Navigator.pop(context);
@@ -953,22 +939,6 @@ class _MemberTileState extends State<MemberTile> {
       }
     }
     return -1;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    // shiftId = getShiftListIndex(widget.user.shiftId);
-    // siteIndex = getSiteListIndex(shiftId);
-    // Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-    //     Provider.of<SiteData>(context, listen: false)
-    //         .sitesList[Provider.of<SiteData>(context, listen: false)
-    //             .dropDownSitesIndex]
-    //         .id,
-    //     true,
-    //     true);
   }
 
   int shiftId;
@@ -1277,112 +1247,5 @@ class _MemberTileState extends State<MemberTile> {
                 )),
           );
         });
-  }
-}
-
-class CircularIconButton extends StatelessWidget {
-  final IconData icon;
-  final onTap;
-
-  CircularIconButton({this.icon, this.onTap});
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: CircleAvatar(
-          backgroundColor: Colors.orange,
-          radius: 20,
-          child: Icon(
-            icon,
-            size: 20,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class UserDataField extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  UserDataField({this.icon, this.text});
-
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black12, width: 1)),
-      height: 35.h,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 3.h),
-              child: Icon(
-                icon,
-                color: Colors.orange,
-                size: 19,
-              ),
-            ),
-            SizedBox(
-              width: 15.w,
-            ),
-            Expanded(
-                child: Container(
-              height: 20.h,
-              child: AutoSizeText(
-                text ?? "",
-                maxLines: 1,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true),
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.right,
-              ),
-            )),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RounderButton extends StatelessWidget {
-  @override
-  final text;
-  final onTap;
-
-  RounderButton(this.text, this.onTap);
-
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.orange),
-        padding: EdgeInsets.all(5),
-        child: Center(
-          child: Container(
-            height: 20,
-            child: AutoSizeText(
-              text,
-              maxLines: 1,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(14, allowFontScalingSelf: true)),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
