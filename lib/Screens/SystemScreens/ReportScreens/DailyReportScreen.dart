@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
@@ -17,6 +16,8 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/DailyReport/dailyReportTableHeader.dart';
+import 'package:qr_users/widgets/DailyReport/dataTableEnd.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/XlsxExportButton.dart';
@@ -514,7 +515,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                 )),
                                                                 !isToday(
                                                                         selectedDate)
-                                                                    ? DataTableEnd(
+                                                                    ? DailyReportTableEnd(
                                                                         totalAbsents: reportsData
                                                                             .dailyReport
                                                                             .totalAbsent
@@ -935,7 +936,7 @@ class _DataTableRowState extends State<DataTableRow> {
                               height: 50.h,
                               child: Center(
                                 child: Container(
-                                  height: 20,
+                                  height: 20.h,
                                   child: AutoSizeText(
                                     "تسجيل ببطاقة التعريف الشخصية",
                                     maxLines: 1,
@@ -1134,317 +1135,5 @@ class _DataTableRowState extends State<DataTableRow> {
                 ),
               ));
         });
-  }
-}
-
-class DataTableEnd extends StatelessWidget {
-  final totalAttend;
-  final totalAbsents;
-  DataTableEnd({this.totalAbsents, this.totalAttend});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-          )),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-          height: 50.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'مجموع الحضور:',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(width: 4.w),
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      totalAttend,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'مجموع الغياب:',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(width: 4.w),
-                  Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      totalAbsents,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DataTableholidayHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              )),
-          child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10.w),
-                    height: 20,
-                    child: AutoSizeText(
-                      ' أسم المستخدم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  )),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("نوع الأجازة"),
-                    DataTableHeaderTitles("من"),
-                    DataTableHeaderTitles("الى"),
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
-    );
-  }
-}
-
-class DataTablePermessionHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              )),
-          child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10.w),
-                    height: 20,
-                    child: AutoSizeText(
-                      ' أسم المستخدم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  )),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("نوع الأذن"),
-                    DataTableHeaderTitles("التاريخ"),
-                    DataTableHeaderTitles("الوقت"),
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
-    );
-  }
-}
-
-class DataTableVacationHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 50.h,
-        decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            )),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                  child: Container(
-                padding: EdgeInsets.only(right: 10.w),
-                height: 20,
-                child: AutoSizeText(
-                  ' أسم العطلة',
-                  maxLines: 1,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.black),
-                ),
-              )),
-              Container(
-                  child: Container(
-                padding: EdgeInsets.only(right: 10.w),
-                height: 20,
-                child: AutoSizeText(
-                  'التاريخ',
-                  maxLines: 1,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.black),
-                ),
-              )),
-            ],
-          ),
-        ));
-  }
-}
-
-class DataTableHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            )),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Center(
-                      child: Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'الاسم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ))),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("التأخير"),
-                    DataTableHeaderTitles("حضور"),
-                    DataTableHeaderTitles("انصراف"),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
-  }
-}
-
-class DataTableHeaderTitles extends StatelessWidget {
-  final String title;
-  DataTableHeaderTitles(this.title);
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Container(
-          height: 50.h,
-          child: Center(
-              child: Container(
-            height: 20,
-            child: AutoSizeText(
-              title,
-              maxLines: 1,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                  color: Colors.black),
-            ),
-          ))),
-    );
   }
 }

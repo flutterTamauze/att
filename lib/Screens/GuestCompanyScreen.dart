@@ -41,7 +41,6 @@ class _GuestCompanyScreenState extends State<GuestCompanyScreen> {
   TextEditingController _nameArController = TextEditingController();
   TextEditingController _nameEnController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
 
   var changedWidget = Image.asset("resources/company.png");
 

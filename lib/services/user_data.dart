@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -13,22 +12,18 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get_mac/get_mac.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/enums/connectivity_status.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
-import 'ShiftsData.dart';
 
 class UserData with ChangeNotifier {
   var changedWidget = Image.asset("resources/personicon.png");
@@ -105,9 +100,7 @@ class UserData with ChangeNotifier {
     if (connectivityResult != ConnectivityResult.none) {
       try {
         var token;
-        if (availability != GooglePlayServicesAvailability.success ||
-            deviceBrand.contains('Mate 30') ||
-            deviceBrand.contains("MATE 30")) {
+        if (availability != GooglePlayServicesAvailability.success) {
           token = "null";
         } else {
           token = await firebaseMessaging.getToken();

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,12 +54,6 @@ class _PermissionScreenState extends State<PermissionScreen> {
                             await requestPermission(
                                 permissionHan.permissionsList[index].permission,
                                 index);
-                            // if (await permissionHan.permissionsList[index]
-                            //         .permission.status ==
-                            //     PermissionStatus.granted) {
-                            //   permissionHan.filterList();
-                            // }
-                            //await filterList();
                           },
                         );
                       }),

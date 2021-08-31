@@ -322,7 +322,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         ),
                                       ),
                                     ),
-                                    DetialsTextField(),
+                                    DetialsTextField(commentController),
                                     SizedBox(
                                       height: 50.h,
                                     ),
@@ -630,7 +630,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 )),
                                               ),
                                             ),
-                                            DetialsTextField()
+                                            DetialsTextField(commentController)
                                           ],
                                         ),
                                       ),
@@ -815,45 +815,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   }
 }
 
-class DetialsTextField extends StatelessWidget {
-  const DetialsTextField({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: TextField(
-          controller: commentController,
-          cursorColor: Colors.orange,
-          maxLines: null,
-          decoration: InputDecoration(
-            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange),
-            ),
-            disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 4)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            hintText: "قم بأدخال التفاصيل هنا",
-          ),
-          textAlign: TextAlign.right,
-        ),
-      ),
-    );
-  }
-}
-
 class RadioButtonWidg extends StatelessWidget {
   final Function onchannge;
   final int radioVal;
@@ -862,9 +823,8 @@ class RadioButtonWidg extends StatelessWidget {
     this.onchannge,
     this.radioVal,
     this.title,
-    Key key,
     @required this.radioVal2,
-  }) : super(key: key);
+  });
 
   final int radioVal2;
 
@@ -878,7 +838,6 @@ class RadioButtonWidg extends StatelessWidget {
           value: radioVal,
           groupValue: radioVal2,
           onChanged: (value) {
-            print(value);
             onchannge(value);
           },
         ),

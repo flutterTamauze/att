@@ -12,15 +12,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
-import 'package:qr_users/MLmodule/db/database.dart';
-import 'package:qr_users/MLmodule/services/facenet.service.dart';
-import 'package:qr_users/MLmodule/services/ml_kit_service.dart';
+
 import 'package:qr_users/Screens/HomePage.dart';
-import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/main.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';

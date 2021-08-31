@@ -4,6 +4,7 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -47,10 +48,16 @@ class _SplashScreenState extends State<SplashScreen>
       var value = await login(userName: userData[0], password: userData[1]);
 
       print("VALUE OF USER $value");
-      // if (value == 4) {
-      //   //subscribe admin channel
-      //   await firebaseMessaging.subscribeToTopic("attendChilango");
-      // }
+
+      GooglePlayServicesAvailability availability = await GoogleApiAvailability
+          .instance
+          .checkGooglePlayServicesAvailability();
+      if (availability == GooglePlayServicesAvailability.success) {
+        if (value == 4) {
+          //subscribe admin channel
+          await firebaseMessaging.subscribeToTopic("attendChilango");
+        }
+      }
 
       reverse(userData[0], value);
     }

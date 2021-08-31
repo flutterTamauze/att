@@ -160,14 +160,16 @@ class LateAbsenceReportUnit {
   String totalLateDays;
   String totalAbsence;
   String totalLate;
+
   double totalDeduction;
-  LateAbsenceReportUnit(
-      {this.userName,
-      this.totalLateDays,
-      this.totalDeduction,
-      this.totalAbsence,
-      this.totalLate,
-      this.userId});
+  LateAbsenceReportUnit({
+    this.userName,
+    this.totalLateDays,
+    this.totalDeduction,
+    this.totalAbsence,
+    this.totalLate,
+    this.userId,
+  });
 
   factory LateAbsenceReportUnit.fromJson(dynamic json) {
     String getTimeToString(int time) {
@@ -202,6 +204,7 @@ class UserAttendanceReportUnit {
   String timeOut;
   String late;
   int status;
+  int totalOfficialVacation;
   String timeInIsPm;
   String timeOutIsPm;
 
@@ -212,7 +215,8 @@ class UserAttendanceReportUnit {
       this.status,
       this.late,
       this.timeInIsPm,
-      this.timeOutIsPm});
+      this.timeOutIsPm,
+      this.totalOfficialVacation});
 
   factory UserAttendanceReportUnit.fromJson(dynamic json) {
     String amPmChanger(String time) {
@@ -425,6 +429,8 @@ class ReportsData with ChangeNotifier {
               decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
           var reportObjJson =
               jsonDecode(response.body)['data']['userDayAttends'] as List;
+          userAttendanceReport.totalOfficialVacation =
+              decodedRes["data"]["totalOffcialVacation"] as int;
 
           if (reportObjJson.isNotEmpty) {
             print("reportObjJson: $reportObjJson");
