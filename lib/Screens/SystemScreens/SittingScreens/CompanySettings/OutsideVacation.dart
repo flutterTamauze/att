@@ -83,7 +83,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
           userToken: widget.member.fcmToken,
           topicName: "",
           title: "تم تكليفك بمأمورية",
-        );
+        ).then((value) => Navigator.pop(context));
       } else if (msg ==
           "Failed : Another Holiday not approved for this user!") {
         Fluttertoast.showToast(
@@ -134,7 +134,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
           userToken: widget.member.fcmToken,
           topicName: "",
           title: "تم تكليفك بمأمورية",
-        );
+        ).then((value) => Navigator.pop(context));
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         Fluttertoast.showToast(

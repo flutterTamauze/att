@@ -113,6 +113,7 @@ class NotificationDataService with ChangeNotifier {
                     timeOfMessage:
                         DateFormat('kk:mm:a').format(DateTime.now())),
                 context)
+            .then((value) => counter = 0)
             .then((value) async => await addNotification(
                 event.notification.title,
                 event.notification.body,

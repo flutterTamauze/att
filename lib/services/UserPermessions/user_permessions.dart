@@ -113,6 +113,7 @@ class UserPermessionsData with ChangeNotifier {
   Future<String> addUserPermession(
       UserPermessions userPermessions, String userToken, String userId) async {
     isLoading = false;
+    print(userPermessions.permessionDescription);
     try {
       //1 تأخخير عن الحضور
       isLoading = true;
@@ -141,6 +142,10 @@ class UserPermessionsData with ChangeNotifier {
         // permessionsList.add(userPermessions);
         notifyListeners();
         return "success";
+      } else if (json.decode(response.body)["message"] ==
+          "Failed : Another permission not approved for this user!") {
+        notifyListeners();
+        return "already exist";
       }
       notifyListeners();
       return "failed";

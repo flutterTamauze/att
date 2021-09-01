@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/Shift.dart';
@@ -11,14 +12,17 @@ import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'Shift.dart';
+import 'ShiftSchedule/ShiftScheduleModel.dart';
 
 class ShiftsData with ChangeNotifier {
   List<Shift> shiftsList = [];
   List<Shift> shiftsBySite = [];
+  DateTime scheduleFromTime;
+  DateTime scheduleTotime;
   Future futureListener;
   bool isLoading = false;
   InheritDefault inherit = InheritDefault();
-
+  List<ShiftSheduleModel> shiftScheduleList = [];
   findMatchingShifts(int siteId, bool addallshiftsBool) {
     print("findMatchingShifts : $siteId");
     shiftsBySite =
@@ -50,13 +54,61 @@ class ShiftsData with ChangeNotifier {
     return shiftsBySite.length;
   }
 
+  Future<String> deleteShiftScheduleById(
+      int shiftId, String userToken, int currentIndex) async {
+    print(currentIndex);
+    print(shiftScheduleList[currentIndex].id);
+    isLoading = true;
+    notifyListeners();
+    var response = await http.delete(
+        Uri.parse("$baseURL/api/ShiftSchedule/Del_ScheduleShiftsbyId/$shiftId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    shiftScheduleList.removeAt(currentIndex);
+    isLoading = false;
+    notifyListeners();
+    print(response.body);
+    var decodedResponse = json.decode(response.body);
+    return decodedResponse["message"];
+  }
+
+  Future<bool> isShiftScheduleByIdEmpty(
+      String usertoken, String userId, BuildContext context) async {
+    var response = await http.get(
+        Uri.parse("$baseURL/api/ShiftSchedule/GetScheduleByUserId/$userId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $usertoken"
+        });
+    print(response.body);
+    var decodedResponse = json.decode(response.body);
+
+    var scheduleJson = decodedResponse['data'] as List;
+    shiftScheduleList = scheduleJson
+        .map((shiftJson) => ShiftSheduleModel.fromJson(shiftJson))
+        .toList();
+    if (shiftScheduleList.isNotEmpty) {
+      print("not empty");
+
+      notifyListeners();
+      return false;
+    } else {
+      scheduleFromTime = null;
+      scheduleTotime = null;
+    }
+    notifyListeners();
+    return true;
+  }
+
   Future<String> addShiftSchedule(List<Day> shiftIds, String usertoken,
       String userId, int usershiftId, DateTime from, DateTime to) async {
     isLoading = true;
     notifyListeners();
     var response = await http.post(
         Uri.parse(
-          "$localURL/api/ShiftSchedule/Add",
+          "$baseURL/api/ShiftSchedule/Add",
         ),
         headers: {
           'Content-type': 'application/json',

@@ -27,7 +27,7 @@ import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedButton.dart';
 
-import '../../../../constants.dart';
+import '../../../../../constants.dart';
 
 class ReAllocateUsers extends StatefulWidget {
   final Member member;
@@ -54,6 +54,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     Provider.of<ShiftsData>(context, listen: false).isLoading = false;
+
     super.initState();
   }
 
@@ -84,15 +85,23 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedVal = "كل المواقع";
+    var prov = Provider.of<SiteData>(context, listen: false);
+    var selectedVal = prov.dropDownSitesList[1].name;
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-    var prov = Provider.of<SiteData>(context, listen: false);
+
     ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
-          print(daysofflist.reallocateUsers[1].shiftID.toString());
-
+          print(Provider.of<ShiftsData>(context, listen: false)
+              .shiftsBySite[0]
+              .shiftName);
+          print(Provider.of<ShiftsData>(context, listen: false)
+              .shiftsList[1]
+              .shiftName);
+          print(Provider.of<ShiftsData>(context, listen: false)
+              .shiftsList[prov.dropDownShiftIndex]
+              .shiftName);
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -303,49 +312,46 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                       textDirection: ui.TextDirection.rtl,
                                                                                       child: Consumer<ShiftsData>(
                                                                                         builder: (context, value, child) {
-                                                                                          return IgnorePointer(
-                                                                                            ignoring: prov.siteValue == "كل المواقع" ? true : false,
-                                                                                            child: DropdownButton(
-                                                                                                isExpanded: true,
-                                                                                                underline: SizedBox(),
-                                                                                                elevation: 5,
-                                                                                                items: value.shiftsBySite
-                                                                                                    .map(
-                                                                                                      (value) => DropdownMenuItem(
-                                                                                                          child: Container(
-                                                                                                              alignment: Alignment.topRight,
-                                                                                                              height: 40.h,
-                                                                                                              child: AutoSizeText(
-                                                                                                                value.shiftName,
-                                                                                                                style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
-                                                                                                              )),
-                                                                                                          value: value.shiftName),
-                                                                                                    )
-                                                                                                    .toList(),
-                                                                                                onChanged: (v) async {
-                                                                                                  int holder;
-                                                                                                  if (selectedVal != "كل المواقع") {
-                                                                                                    List<String> x = [];
+                                                                                          return DropdownButton(
+                                                                                              isExpanded: true,
+                                                                                              underline: SizedBox(),
+                                                                                              elevation: 5,
+                                                                                              items: value.shiftsBySite
+                                                                                                  .map(
+                                                                                                    (value) => DropdownMenuItem(
+                                                                                                        child: Container(
+                                                                                                            alignment: Alignment.topRight,
+                                                                                                            height: 40.h,
+                                                                                                            child: AutoSizeText(
+                                                                                                              value.shiftName,
+                                                                                                              style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
+                                                                                                            )),
+                                                                                                        value: value.shiftName),
+                                                                                                  )
+                                                                                                  .where((element) => element.value != "لا يوجد مناوبات بهذا الموقع")
+                                                                                                  .toList(),
+                                                                                              onChanged: (v) async {
+                                                                                                int holder;
+                                                                                                if (selectedVal != "كل المواقع") {
+                                                                                                  List<String> x = [];
 
-                                                                                                    value.shiftsBySite.forEach((element) {
-                                                                                                      x.add(element.shiftName);
-                                                                                                    });
+                                                                                                  value.shiftsBySite.forEach((element) {
+                                                                                                    x.add(element.shiftName);
+                                                                                                  });
 
-                                                                                                    print("on changed $v");
-                                                                                                    holder = x.indexOf(v);
-                                                                                                    setState(() {
-                                                                                                      prov.setDropDownShift(holder);
-                                                                                                    });
+                                                                                                  print("on changed $v");
+                                                                                                  holder = x.indexOf(v);
+                                                                                                  setState(() {
+                                                                                                    prov.setDropDownShift(holder);
+                                                                                                  });
 
-                                                                                                    print("dropdown site index ${holder}");
-                                                                                                  }
-                                                                                                },
-                                                                                                hint: Text("كل المناوبات"),
-                                                                                                value: prov.siteValue == "كل المواقع" ? null : value.shiftsBySite[prov.dropDownShiftIndex].shiftName
+                                                                                                  print("dropdown site index ${holder}");
+                                                                                                }
+                                                                                              },
+                                                                                              value: value.shiftsBySite[prov.dropDownShiftIndex].shiftName
 
-                                                                                                // value
-                                                                                                ),
-                                                                                          );
+                                                                                              // value
+                                                                                              );
                                                                                         },
                                                                                       ),
                                                                                     ),
@@ -400,16 +406,14 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                       ),
                                                                                                       value: value.name,
                                                                                                     ))
+                                                                                                .where((element) => element.value != "كل المواقع")
                                                                                                 .toList(),
                                                                                             onChanged: (v) async {
                                                                                               print(v);
                                                                                               prov.setDropDownShift(0);
 
-                                                                                              if (v != "كل المواقع") {
-                                                                                                prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
-                                                                                              } else {
-                                                                                                prov.setDropDownIndex(0);
-                                                                                              }
+                                                                                              prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
+
                                                                                               await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
 
                                                                                               prov.fillCurrentShiftID(list[prov.dropDownSitesIndex + 1].id);
@@ -467,8 +471,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                               getShiftid(shiftName));
                                                                           prov.setDropDownIndex(
                                                                               0);
-                                                                          prov.setSiteValue(
-                                                                              "كل المواقع");
+
                                                                           Navigator.pop(
                                                                               context);
                                                                         }),
@@ -528,9 +531,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                   gravity: ToastGravity.CENTER,
                                   backgroundColor: Colors.red);
                             } else {
-                              print(userProvider.user.userToken);
-                              print(userProvider.user.id);
-                              print(userProvider.user.userShiftId);
                               String msg = await Provider.of<ShiftsData>(
                                       context,
                                       listen: false)
@@ -553,10 +553,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                     gravity: ToastGravity.CENTER,
                                     backgroundColor: Colors.red);
                               } else {
-                                Fluttertoast.showToast(
-                                    msg: "حدث خطأ ما",
-                                    gravity: ToastGravity.CENTER,
-                                    backgroundColor: Colors.red);
+                                errorToast();
                               }
                             }
                           },

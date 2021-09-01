@@ -17,7 +17,8 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/ReallocateUsers.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ShiftSchedule.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
@@ -419,24 +420,20 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     taskName: "جدولة المناوبات",
                                     iconData: Icons.table_view,
                                     function: () async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedLoadingIndicator();
-                                          });
-                                      var userProvider = Provider.of<UserData>(
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (BuildContext context) {
+                                      //       return RoundedLoadingIndicator();
+                                      //     });
+                                      Navigator.push(
                                           context,
-                                          listen: false);
-                                      var comProvider =
-                                          Provider.of<CompanyData>(context,
-                                              listen: false);
-                                      await Provider.of<DaysOffData>(context,
-                                              listen: false)
-                                          .getDaysOff(
-                                              comProvider.com.id,
-                                              userProvider.user.userToken,
-                                              context);
-                                      shiftScheduling();
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShiftScheduleScreen(
+                                              member: widget.user,
+                                              siteIndex: widget.siteIndex,
+                                            ),
+                                          ));
                                     }),
                                 Divider(),
                                 AssignTaskToUser(
@@ -476,10 +473,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                 gravity: ToastGravity.CENTER);
                                             break;
                                           case "fail":
-                                            Fluttertoast.showToast(
-                                                msg: "حدث خطأ ما !",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
+                                            errorToast();
                                             break;
                                           default:
                                             sendFcmMessage(
@@ -560,49 +554,13 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     }
     return "";
   }
+}
 
-  String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
-    if (phoneNum[0] == "+") {
-      return " ${phoneNum.substring(1, len)}+";
-    } else {
-      return "$phoneNum+";
-    }
-  }
-
-  int getShiftid(String shiftName) {
-    print("shiftName getShiftId $shiftName");
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftName == list[i].shiftName) {
-        return list[i].shiftId;
-      }
-    }
-    return -1;
-  }
-
-  shiftScheduling() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-    String shiftName = getShiftName();
-    await Provider.of<DaysOffData>(context, listen: false)
-        .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
-    for (int i = 0; i < 7; i++) {
-      await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
-          i,
-          Provider.of<SiteData>(context, listen: false)
-              .sitesList[widget.siteIndex]
-              .name,
-          shiftName,
-          getShiftid(shiftName));
-    }
-    Navigator.pop(context);
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ReAllocateUsers(widget.user),
-        ));
+String plusSignPhone(String phoneNum) {
+  int len = phoneNum.length;
+  if (phoneNum[0] == "+") {
+    return " ${phoneNum.substring(1, len)}+";
+  } else {
+    return "$phoneNum+";
   }
 }

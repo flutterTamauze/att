@@ -289,7 +289,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                sendRemoteMsg();
+                // sendRemoteMsg();
               },
               child: GestureDetector(
                 child: Scaffold(

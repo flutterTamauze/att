@@ -80,6 +80,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     super.dispose();
   }
 
+  String formattedTime;
   var selectedVal = "كل المواقع";
   @override
   Widget build(BuildContext context) {
@@ -579,8 +580,23 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             );
 
                                                             if (to != null) {
-                                                              print(
-                                                                  "${to.format(context).replaceAll("", "")}");
+                                                              final now =
+                                                                  new DateTime
+                                                                      .now();
+                                                              final dt =
+                                                                  DateTime(
+                                                                      now.year,
+                                                                      now.month,
+                                                                      now.day,
+                                                                      to.hour,
+                                                                      to.minute);
+
+                                                              formattedTime =
+                                                                  DateFormat
+                                                                          .Hm()
+                                                                      .format(
+                                                                          dt);
+
                                                               toPicked = to;
                                                               setState(() {
                                                                 timeOutController
@@ -733,16 +749,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               timeOutController.text != "") {
                                             print(selectedDate);
                                             print(timeOutController.text);
-                                            String msg = await Provider.of<UserPermessionsData>(
+                                            String msg = await Provider.of<
+                                                        UserPermessionsData>(
                                                     context,
                                                     listen: false)
                                                 .addUserPermession(
                                                     UserPermessions(
                                                         date: selectedDate,
-                                                        duration: toPicked
-                                                            .format(context)
-                                                            .replaceAll(
-                                                                " ", " "),
+                                                        duration: formattedTime,
                                                         permessionType:
                                                             selectedPermession ==
                                                                     "تأخير عن الحضور"
@@ -750,7 +764,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 : 2,
                                                         permessionDescription:
                                                             commentController
-                                                                .text,
+                                                                        .text ==
+                                                                    ""
+                                                                ? "لا يوجد تعليق"
+                                                                : commentController
+                                                                    .text,
                                                         user: userdata.name),
                                                     Provider.of<UserData>(
                                                             context,
@@ -785,12 +803,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   );
                                                 },
                                               );
-                                            } else if (msg == "failed") {
+                                            } else if (msg == 'already exist') {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
                                                   msg:
                                                       "لقد تم تقديم طلب من قبل");
+                                            } else if (msg == "failed") {
+                                              errorToast();
                                             }
                                           } else {
                                             Fluttertoast.showToast(
