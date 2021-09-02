@@ -471,7 +471,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                               getShiftid(shiftName));
                                                                           prov.setDropDownIndex(
                                                                               0);
-
+                                                                          await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+                                                                              Provider.of<SiteData>(context, listen: false).sitesList[Provider.of<SiteData>(context, listen: false).dropDownSitesIndex].id,
+                                                                              false);
                                                                           Navigator.pop(
                                                                               context);
                                                                         }),

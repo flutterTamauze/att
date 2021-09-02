@@ -359,7 +359,8 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
+    if (mounted)
+      Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
     getData();
     super.didChangeDependencies();
   }

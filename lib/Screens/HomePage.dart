@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/services/user_data.dart';
@@ -60,7 +61,7 @@ Future<bool> isConnectedToInternet(String url) async {
   return false;
 }
 
-AudioCache player = AudioCache();
+// AudioCache player = AudioCache();
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 void notificationPermessions() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           title: event.notification.title,
         ),
         context);
-    player.play("notification.mp3");
+    // player.play("notification.mp3");
   }
 
   String _token = '';
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print(event.notification.body);
       print(event.notification.title);
       saveNotificationToCache(event);
-      player.play("notification.mp3");
+      // player.play("notification.mp3");
       return showDialog(
         context: context,
         barrierDismissible: false,

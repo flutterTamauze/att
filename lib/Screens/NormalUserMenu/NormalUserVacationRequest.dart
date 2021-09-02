@@ -91,632 +91,735 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
-          body: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Header(
-                    goUserHomeFromMenu: false,
-                    nav: false,
-                    goUserMenu: false,
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SmallDirectoriesHeader(
-                                  Lottie.asset("resources/calender.json",
-                                      repeat: false),
-                                  "طلب اجازة / اذن",
-                                ),
-                              ],
+          body: ListView(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    Header(
+                      goUserHomeFromMenu: false,
+                      nav: false,
+                      goUserMenu: false,
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SmallDirectoriesHeader(
+                                    Lottie.asset("resources/calender.json",
+                                        repeat: false),
+                                    "طلب اجازة / اذن",
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          VacationCardHeader(
-                            header: "نوع الطلب",
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioVal,
-                                  radioVal: 3,
-                                  title: "أذن",
-                                  onchannge: (value) {
-                                    setState(() {
-                                      widget.radioVal = value;
-                                    });
-                                  },
-                                ),
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioVal,
-                                  radioVal: 1,
-                                  title: "اجازة",
-                                  onchannge: (value) {
-                                    setState(() {
-                                      widget.radioVal = value;
-                                    });
-                                  },
-                                ),
-                              ],
+                            VacationCardHeader(
+                              header: "نوع الطلب",
                             ),
-                          ),
-                          widget.radioVal == 1
-                              ? Column(
-                                  children: [
-                                    VacationCardHeader(
-                                      header: "مدة الأجازة",
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                        child: Theme(
-                                      data: clockTheme1,
-                                      child: Builder(
-                                        builder: (context) {
-                                          return InkWell(
-                                              onTap: () async {
-                                                picked = await DateRagePicker
-                                                    .showDatePicker(
-                                                        context: context,
-                                                        initialFirstDate:
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year,
-                                                                DateTime.now()
-                                                                    .month,
-                                                                DateTime.now()
-                                                                    .day),
-                                                        initialLastDate: toDate,
-                                                        firstDate: DateTime(
-                                                            DateTime.now().year,
-                                                            DateTime.now()
-                                                                .month,
-                                                            DateTime.now().day),
-                                                        lastDate: yesterday);
-                                                var newString = "";
-                                                setState(() {
-                                                  fromDate = picked.first;
-                                                  toDate = picked.last;
-                                                  dateDifference = (toDate
-                                                              .difference(
-                                                                  fromDate)
-                                                              .inDays +
-                                                          1)
-                                                      .toString();
-                                                  fromText =
-                                                      " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                  toText =
-                                                      " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                                  newString =
-                                                      "$fromText $toText";
-                                                });
+                            Padding(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  RadioButtonWidg(
+                                    radioVal2: widget.radioVal,
+                                    radioVal: 3,
+                                    title: "أذن",
+                                    onchannge: (value) {
+                                      setState(() {
+                                        widget.radioVal = value;
+                                      });
+                                    },
+                                  ),
+                                  RadioButtonWidg(
+                                    radioVal2: widget.radioVal,
+                                    radioVal: 1,
+                                    title: "اجازة",
+                                    onchannge: (value) {
+                                      setState(() {
+                                        widget.radioVal = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            widget.radioVal == 1
+                                ? Column(
+                                    children: [
+                                      VacationCardHeader(
+                                        header: "مدة الأجازة",
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                          child: Theme(
+                                        data: clockTheme1,
+                                        child: Builder(
+                                          builder: (context) {
+                                            return InkWell(
+                                                onTap: () async {
+                                                  picked = await DateRagePicker
+                                                      .showDatePicker(
+                                                          context: context,
+                                                          initialFirstDate:
+                                                              DateTime(
+                                                                  DateTime.now()
+                                                                      .year,
+                                                                  DateTime.now()
+                                                                      .month,
+                                                                  DateTime.now()
+                                                                      .day),
+                                                          initialLastDate:
+                                                              toDate,
+                                                          firstDate: DateTime(
+                                                              DateTime.now()
+                                                                  .year,
+                                                              DateTime.now()
+                                                                  .month,
+                                                              DateTime.now()
+                                                                  .day),
+                                                          lastDate: yesterday);
+                                                  var newString = "";
+                                                  setState(() {
+                                                    fromDate = picked.first;
+                                                    toDate = picked.last;
+                                                    dateDifference = (toDate
+                                                                .difference(
+                                                                    fromDate)
+                                                                .inDays +
+                                                            1)
+                                                        .toString();
+                                                    fromText =
+                                                        " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                    toText =
+                                                        " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                    newString =
+                                                        "$fromText $toText";
+                                                  });
 
-                                                if (_dateController.text !=
-                                                    newString) {
-                                                  _dateController.text =
-                                                      newString;
+                                                  if (_dateController.text !=
+                                                      newString) {
+                                                    _dateController.text =
+                                                        newString;
 
-                                                  dateFromString = apiFormatter
-                                                      .format(fromDate);
-                                                  dateToString = apiFormatter
-                                                      .format(toDate);
-                                                }
-                                              },
-                                              child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  // width: 330,
-                                                  width: 365.w,
-                                                  child: IgnorePointer(
-                                                    child: TextFormField(
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                      textInputAction:
-                                                          TextInputAction.next,
-                                                      controller:
-                                                          _dateController,
-                                                      decoration:
-                                                          kTextFieldDecorationFromTO
-                                                              .copyWith(
-                                                                  hintText:
-                                                                      'المدة من / إلى',
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .calendar_today_rounded,
-                                                                    color: Colors
-                                                                        .orange,
-                                                                  )),
+                                                    dateFromString =
+                                                        apiFormatter
+                                                            .format(fromDate);
+                                                    dateToString = apiFormatter
+                                                        .format(toDate);
+                                                  }
+                                                },
+                                                child: Directionality(
+                                                  textDirection:
+                                                      ui.TextDirection.rtl,
+                                                  child: Container(
+                                                    // width: 330,
+                                                    width: 365.w,
+                                                    child: IgnorePointer(
+                                                      child: TextFormField(
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        controller:
+                                                            _dateController,
+                                                        decoration:
+                                                            kTextFieldDecorationFromTO
+                                                                .copyWith(
+                                                                    hintText:
+                                                                        'المدة من / إلى',
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .calendar_today_rounded,
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    )),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ));
-                                        },
+                                                ));
+                                          },
+                                        ),
+                                      )),
+                                      SizedBox(
+                                        height: 3,
                                       ),
-                                    )),
-                                    SizedBox(
-                                      height: 3,
-                                    ),
-                                    dateDifference != null
-                                        ? Container(
-                                            padding: EdgeInsets.all(5),
+                                      dateDifference != null
+                                          ? Container(
+                                              padding: EdgeInsets.all(5),
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                "تم اختيار $dateDifference يوم ",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              ))
+                                          : Container(),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      VacationCardHeader(
+                                        header: "نوع الأجازة",
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 5.w),
+                                        child: Directionality(
+                                          textDirection: ui.TextDirection.rtl,
+                                          child: Align(
                                             alignment: Alignment.centerRight,
-                                            child: Text(
-                                              "تم اختيار $dateDifference يوم ",
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w300),
-                                            ))
-                                        : Container(),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    VacationCardHeader(
-                                      header: "نوع الأجازة",
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.w),
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              alignment: Alignment.topRight,
+                                            child: Padding(
                                               padding:
-                                                  EdgeInsets.only(right: 10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(width: 1)),
-                                              width: 150.w,
-                                              height: 40.h,
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                elevation: 2,
-                                                isExpanded: true,
-                                                items: actions.map((String x) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: x,
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Text(
-                                                          x,
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.orange,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedReason = value;
-                                                  });
-                                                },
-                                                value: selectedReason,
-                                              )),
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                alignment: Alignment.topRight,
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    border:
+                                                        Border.all(width: 1)),
+                                                width: 150.w,
+                                                height: 40.h,
+                                                child:
+                                                    DropdownButtonHideUnderline(
+                                                        child: DropdownButton(
+                                                  elevation: 2,
+                                                  isExpanded: true,
+                                                  items:
+                                                      actions.map((String x) {
+                                                    return DropdownMenuItem<
+                                                            String>(
+                                                        value: x,
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(
+                                                            x,
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .orange,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ));
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedReason = value;
+                                                    });
+                                                  },
+                                                  value: selectedReason,
+                                                )),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    DetialsTextField(commentController),
-                                    SizedBox(
-                                      height: 50.h,
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    Directionality(
-                                      textDirection: ui.TextDirection.rtl,
-                                      child: Card(
-                                        elevation: 5,
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
+                                      DetialsTextField(commentController),
+                                      SizedBox(
+                                        height: 50.h,
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Card(
+                                          elevation: 5,
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Row(
+                                              children: [
+                                                AutoSizeText(
+                                                  "نوع الأذن",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11),
+                                                  maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Directionality(
+                                          textDirection: ui.TextDirection.rtl,
+                                          child: Column(
                                             children: [
-                                              AutoSizeText(
-                                                "نوع الأذن",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 11),
-                                                maxLines: 2,
+                                              Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      padding: EdgeInsets.only(
+                                                          right: 10),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          border: Border.all(
+                                                              width: 1)),
+                                                      width: 200.w,
+                                                      height: 40.h,
+                                                      child:
+                                                          DropdownButtonHideUnderline(
+                                                              child:
+                                                                  DropdownButton(
+                                                        elevation: 2,
+                                                        isExpanded: true,
+                                                        items: permessionTitles
+                                                            .map((String x) {
+                                                          return DropdownMenuItem<
+                                                                  String>(
+                                                              value: x,
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                child: Text(
+                                                                  x,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .right,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .orange,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              ));
+                                                        }).toList(),
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            selectedPermession =
+                                                                value;
+                                                          });
+                                                        },
+                                                        value:
+                                                            selectedPermession,
+                                                      )),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
+                                              Divider(),
+                                              Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: Card(
+                                                  elevation: 5,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "تاريخ الأذن",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(5),
+                                                child: Directionality(
+                                                  textDirection:
+                                                      ui.TextDirection.rtl,
+                                                  child: Container(
+                                                    child: Theme(
+                                                      data: clockTheme,
+                                                      child: DateTimePicker(
+                                                        initialValue:
+                                                            selectedDateString,
+
+                                                        onChanged: (value) {
+                                                          print(date);
+                                                          print(value);
+                                                          if (value != date) {
+                                                            date = value;
+                                                            selectedDateString =
+                                                                date;
+
+                                                            setState(() {
+                                                              selectedDate =
+                                                                  DateTime.parse(
+                                                                      selectedDateString);
+                                                            });
+                                                            print(selectedDate);
+                                                          }
+
+                                                          print(value);
+                                                        },
+                                                        type: DateTimePickerType
+                                                            .date,
+                                                        firstDate:
+                                                            DateTime.now(),
+                                                        lastDate: DateTime(
+                                                            DateTime.now().year,
+                                                            DateTime.december,
+                                                            31),
+                                                        //controller: _endTimeController,
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(14,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+
+                                                        decoration:
+                                                            kTextFieldDecorationTime
+                                                                .copyWith(
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                    hintText:
+                                                                        'اليوم',
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .access_time,
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    )),
+                                                        validator: (val) {
+                                                          if (val.length == 0) {
+                                                            return 'مطلوب';
+                                                          }
+                                                          return null;
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: Card(
+                                                  elevation: 5,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          selectedPermession ==
+                                                                  "تأخير عن الحضور"
+                                                              ? "اذن حتى الساعة"
+                                                              : "اذن من الساعة",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: 50.h,
+                                                  child: Container(
+                                                      child: Theme(
+                                                    data: clockTheme,
+                                                    child: Builder(
+                                                      builder: (context) {
+                                                        return InkWell(
+                                                            onTap: () async {
+                                                              var to =
+                                                                  await showTimePicker(
+                                                                context:
+                                                                    context,
+                                                                initialTime:
+                                                                    toPicked,
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child) {
+                                                                  return MediaQuery(
+                                                                    data: MediaQuery.of(
+                                                                            context)
+                                                                        .copyWith(
+                                                                      alwaysUse24HourFormat:
+                                                                          false,
+                                                                    ),
+                                                                    child:
+                                                                        child,
+                                                                  );
+                                                                },
+                                                              );
+
+                                                              if (to != null) {
+                                                                final now =
+                                                                    new DateTime
+                                                                        .now();
+                                                                final dt = DateTime(
+                                                                    now.year,
+                                                                    now.month,
+                                                                    now.day,
+                                                                    to.hour,
+                                                                    to.minute);
+
+                                                                formattedTime =
+                                                                    DateFormat
+                                                                            .Hm()
+                                                                        .format(
+                                                                            dt);
+
+                                                                toPicked = to;
+                                                                setState(() {
+                                                                  timeOutController
+                                                                          .text =
+                                                                      "${toPicked.format(context).replaceAll(" ", " ")}";
+                                                                });
+                                                              }
+                                                            },
+                                                            child:
+                                                                Directionality(
+                                                              textDirection: ui
+                                                                  .TextDirection
+                                                                  .rtl,
+                                                              child: Container(
+                                                                child:
+                                                                    IgnorePointer(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    enabled:
+                                                                        false,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w400),
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    controller:
+                                                                        timeOutController,
+                                                                    decoration: kTextFieldDecorationFromTO
+                                                                        .copyWith(
+                                                                            hintText:
+                                                                                'الوقت',
+                                                                            prefixIcon:
+                                                                                Icon(
+                                                                              Icons.alarm,
+                                                                              color: Colors.orange,
+                                                                            )),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ));
+                                                      },
+                                                    ),
+                                                  )),
+                                                ),
+                                              ),
+                                              DetialsTextField(
+                                                  commentController)
                                             ],
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Column(
-                                          children: [
-                                            Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    padding: EdgeInsets.only(
-                                                        right: 10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                            width: 1)),
-                                                    width: 200.w,
-                                                    height: 40.h,
-                                                    child:
-                                                        DropdownButtonHideUnderline(
-                                                            child:
-                                                                DropdownButton(
-                                                      elevation: 2,
-                                                      isExpanded: true,
-                                                      items: permessionTitles
-                                                          .map((String x) {
-                                                        return DropdownMenuItem<
-                                                                String>(
-                                                            value: x,
-                                                            child: Align(
-                                                              alignment: Alignment
-                                                                  .centerRight,
-                                                              child: Text(
-                                                                x,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .orange,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ));
-                                                      }).toList(),
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          selectedPermession =
-                                                              value;
-                                                        });
-                                                      },
-                                                      value: selectedPermession,
-                                                    )),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Divider(),
-                                            Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Card(
-                                                elevation: 5,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "تاريخ الأذن",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 13),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(5),
-                                              child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  child: Theme(
-                                                    data: clockTheme,
-                                                    child: DateTimePicker(
-                                                      initialValue:
-                                                          selectedDateString,
-
-                                                      onChanged: (value) {
-                                                        print(date);
-                                                        print(value);
-                                                        if (value != date) {
-                                                          date = value;
-                                                          selectedDateString =
-                                                              date;
-
-                                                          setState(() {
-                                                            selectedDate =
-                                                                DateTime.parse(
-                                                                    selectedDateString);
-                                                          });
-                                                          print(selectedDate);
-                                                        }
-
-                                                        print(value);
-                                                      },
-                                                      type: DateTimePickerType
-                                                          .date,
-                                                      firstDate: DateTime.now(),
-                                                      lastDate: DateTime(
-                                                          DateTime.now().year,
-                                                          DateTime.december,
-                                                          31),
-                                                      //controller: _endTimeController,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(14,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-
-                                                      decoration:
-                                                          kTextFieldDecorationTime
-                                                              .copyWith(
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                  hintText:
-                                                                      'اليوم',
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .access_time,
-                                                                    color: Colors
-                                                                        .orange,
-                                                                  )),
-                                                      validator: (val) {
-                                                        if (val.length == 0) {
-                                                          return 'مطلوب';
-                                                        }
-                                                        return null;
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Card(
-                                                elevation: 5,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        selectedPermession ==
-                                                                "تأخير عن الحضور"
-                                                            ? "اذن حتى الساعة"
-                                                            : "اذن من الساعة",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 13),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 50.h,
-                                                child: Container(
-                                                    child: Theme(
-                                                  data: clockTheme,
-                                                  child: Builder(
+                                    ],
+                                  ),
+                            Provider.of<UserPermessionsData>(context)
+                                        .isLoading ||
+                                    Provider.of<UserHolidaysData>(context)
+                                        .isLoading
+                                ? CircularProgressIndicator(
+                                    color: Colors.orange)
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: RoundedButton(
+                                        title: "حفظ الطلب",
+                                        onPressed: () async {
+                                          if (widget.radioVal == 1) //اجازة
+                                          {
+                                            if (picked != null) {
+                                              final DateTime now =
+                                                  DateTime.now();
+                                              final DateFormat format =
+                                                  DateFormat(
+                                                      'dd-M-yyyy'); //4-2-2021
+                                              final String formatted =
+                                                  format.format(now);
+                                              Provider.of<UserHolidaysData>(
+                                                      context,
+                                                      listen: false)
+                                                  .addHoliday(
+                                                      UserHolidays(
+                                                          holidayDescription:
+                                                              commentController
+                                                                  .text,
+                                                          fromDate: picked[0],
+                                                          toDate: picked
+                                                                      .length ==
+                                                                  2
+                                                              ? picked[1]
+                                                              : DateTime.now(),
+                                                          holidayType:
+                                                              selectedReason ==
+                                                                      "عارضة"
+                                                                  ? 1
+                                                                  : selectedReason ==
+                                                                          "مرضية"
+                                                                      ? 2
+                                                                      : 3,
+                                                          holidayStatus: 3),
+                                                      userdata.userToken,
+                                                      userdata.id)
+                                                  .then((value) {
+                                                if (value ==
+                                                    "Success : Holiday Created!") {
+                                                  return showDialog(
+                                                    context: context,
                                                     builder: (context) {
-                                                      return InkWell(
-                                                          onTap: () async {
-                                                            var to =
-                                                                await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  toPicked,
-                                                              builder: (BuildContext
-                                                                      context,
-                                                                  Widget
-                                                                      child) {
-                                                                return MediaQuery(
-                                                                  data: MediaQuery.of(
-                                                                          context)
-                                                                      .copyWith(
-                                                                    alwaysUse24HourFormat:
-                                                                        false,
-                                                                  ),
-                                                                  child: child,
-                                                                );
-                                                              },
-                                                            );
+                                                      sendFcmMessage(
+                                                        topicName:
+                                                            "attendChilango",
+                                                        title:
+                                                            "تم طلب الأجازة بنجاح",
+                                                        category: "vacation",
+                                                        message:
+                                                            "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                      );
 
-                                                            if (to != null) {
-                                                              final now =
-                                                                  new DateTime
-                                                                      .now();
-                                                              final dt =
-                                                                  DateTime(
-                                                                      now.year,
-                                                                      now.month,
-                                                                      now.day,
-                                                                      to.hour,
-                                                                      to.minute);
-
-                                                              formattedTime =
-                                                                  DateFormat
-                                                                          .Hm()
-                                                                      .format(
-                                                                          dt);
-
-                                                              toPicked = to;
-                                                              setState(() {
-                                                                timeOutController
-                                                                        .text =
-                                                                    "${toPicked.format(context).replaceAll(" ", " ")}";
-                                                              });
-                                                            }
-                                                          },
-                                                          child: Directionality(
-                                                            textDirection: ui
-                                                                .TextDirection
-                                                                .rtl,
-                                                            child: Container(
-                                                              child:
-                                                                  IgnorePointer(
-                                                                child:
-                                                                    TextFormField(
-                                                                  enabled:
-                                                                      false,
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  controller:
-                                                                      timeOutController,
-                                                                  decoration: kTextFieldDecorationFromTO
-                                                                      .copyWith(
-                                                                          hintText:
-                                                                              'الوقت',
-                                                                          prefixIcon:
-                                                                              Icon(
-                                                                            Icons.alarm,
-                                                                            color:
-                                                                                Colors.orange,
-                                                                          )),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ));
+                                                      return StackedNotificaitonAlert(
+                                                        repeatAnimation: false,
+                                                        popWidget: true,
+                                                        notificationTitle:
+                                                            "تم تقديم طلب الأجازة بنجاح ",
+                                                        notificationContent:
+                                                            "برجاء متابعة الطلب ",
+                                                        roundedButtonTitle:
+                                                            "متابعة",
+                                                        lottieAsset:
+                                                            "resources/success.json",
+                                                        showToast: false,
+                                                      );
                                                     },
-                                                  ),
-                                                )),
-                                              ),
-                                            ),
-                                            DetialsTextField(commentController)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                          Expanded(child: Container()),
-                          Provider.of<UserPermessionsData>(context).isLoading ||
-                                  Provider.of<UserHolidaysData>(context)
-                                      .isLoading
-                              ? CircularProgressIndicator(color: Colors.orange)
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: RoundedButton(
-                                      title: "حفظ الطلب",
-                                      onPressed: () async {
-                                        if (widget.radioVal == 1) //اجازة
-                                        {
-                                          if (picked != null) {
-                                            final DateTime now = DateTime.now();
-                                            final DateFormat format =
-                                                DateFormat(
-                                                    'dd-M-yyyy'); //4-2-2021
-                                            final String formatted =
-                                                format.format(now);
-                                            Provider.of<UserHolidaysData>(
-                                                    context,
-                                                    listen: false)
-                                                .addHoliday(
-                                                    UserHolidays(
-                                                        holidayDescription:
-                                                            commentController
-                                                                .text,
-                                                        fromDate: picked[0],
-                                                        toDate: picked.length ==
-                                                                2
-                                                            ? picked[1]
-                                                            : DateTime.now(),
-                                                        holidayType:
-                                                            selectedReason ==
-                                                                    "عارضة"
-                                                                ? 1
-                                                                : selectedReason ==
-                                                                        "مرضية"
-                                                                    ? 2
-                                                                    : 3,
-                                                        holidayStatus: 3),
-                                                    userdata.userToken,
-                                                    userdata.id)
-                                                .then((value) {
-                                              if (value ==
-                                                  "Success : Holiday Created!") {
+                                                  );
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لقد تم تقديم طلب من قبل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red);
+                                                }
+                                              });
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  gravity: ToastGravity.CENTER,
+                                                  backgroundColor: Colors.red,
+                                                  msg: "قم بأدخال مدة الأجازة");
+                                            }
+                                          } else //اذن
+                                          {
+                                            if (selectedDateString != null &&
+                                                timeOutController.text != "") {
+                                              print(selectedDate);
+                                              print(timeOutController.text);
+                                              String msg = await Provider.of<
+                                                          UserPermessionsData>(
+                                                      context,
+                                                      listen: false)
+                                                  .addUserPermession(
+                                                      UserPermessions(
+                                                          date: selectedDate,
+                                                          duration:
+                                                              formattedTime,
+                                                          permessionType:
+                                                              selectedPermession ==
+                                                                      "تأخير عن الحضور"
+                                                                  ? 1
+                                                                  : 2,
+                                                          permessionDescription:
+                                                              commentController
+                                                                          .text ==
+                                                                      ""
+                                                                  ? "لا يوجد تعليق"
+                                                                  : commentController
+                                                                      .text,
+                                                          user: userdata.name),
+                                                      Provider.of<UserData>(
+                                                              context,
+                                                              listen: false)
+                                                          .user
+                                                          .userToken,
+                                                      userdata.id);
+                                              if (msg == "success") {
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     sendFcmMessage(
                                                       topicName:
                                                           "attendChilango",
-                                                      title:
-                                                          "تم طلب الأجازة بنجاح",
-                                                      category: "vacation",
+                                                      title: "تم طلب اذن بنجاح",
+                                                      category: "permession",
                                                       message:
-                                                          "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                          "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                     );
 
                                                     return StackedNotificaitonAlert(
                                                       repeatAnimation: false,
                                                       popWidget: true,
                                                       notificationTitle:
-                                                          "تم تقديم طلب الأجازة بنجاح ",
+                                                          "تم تقديم طلب الأذن بنجاح ",
                                                       notificationContent:
                                                           "برجاء متابعة الطلب ",
                                                       roundedButtonTitle:
@@ -727,108 +830,35 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     );
                                                   },
                                                 );
-                                              } else {
+                                              } else if (msg ==
+                                                  'already exist') {
                                                 Fluttertoast.showToast(
-                                                    msg:
-                                                        "لقد تم تقديم طلب من قبل",
                                                     gravity:
                                                         ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                    backgroundColor: Colors.red,
+                                                    msg:
+                                                        "لقد تم تقديم طلب من قبل");
+                                              } else if (msg == "failed") {
+                                                errorToast();
                                               }
-                                            });
-                                          } else {
-                                            Fluttertoast.showToast(
-                                                gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.red,
-                                                msg: "قم بأدخال مدة الأجازة");
-                                          }
-                                        } else //اذن
-                                        {
-                                          if (selectedDateString != null &&
-                                              timeOutController.text != "") {
-                                            print(selectedDate);
-                                            print(timeOutController.text);
-                                            String msg = await Provider.of<
-                                                        UserPermessionsData>(
-                                                    context,
-                                                    listen: false)
-                                                .addUserPermession(
-                                                    UserPermessions(
-                                                        date: selectedDate,
-                                                        duration: formattedTime,
-                                                        permessionType:
-                                                            selectedPermession ==
-                                                                    "تأخير عن الحضور"
-                                                                ? 1
-                                                                : 2,
-                                                        permessionDescription:
-                                                            commentController
-                                                                        .text ==
-                                                                    ""
-                                                                ? "لا يوجد تعليق"
-                                                                : commentController
-                                                                    .text,
-                                                        user: userdata.name),
-                                                    Provider.of<UserData>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .userToken,
-                                                    userdata.id);
-                                            if (msg == "success") {
-                                              return showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  sendFcmMessage(
-                                                    topicName: "attendChilango",
-                                                    title: "تم طلب اذن بنجاح",
-                                                    category: "permession",
-                                                    message:
-                                                        "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                  );
-
-                                                  return StackedNotificaitonAlert(
-                                                    repeatAnimation: false,
-                                                    popWidget: true,
-                                                    notificationTitle:
-                                                        "تم تقديم طلب الأذن بنجاح ",
-                                                    notificationContent:
-                                                        "برجاء متابعة الطلب ",
-                                                    roundedButtonTitle:
-                                                        "متابعة",
-                                                    lottieAsset:
-                                                        "resources/success.json",
-                                                    showToast: false,
-                                                  );
-                                                },
-                                              );
-                                            } else if (msg == 'already exist') {
+                                            } else {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
                                                   msg:
-                                                      "لقد تم تقديم طلب من قبل");
-                                            } else if (msg == "failed") {
-                                              errorToast();
+                                                      "قم بأدخال البيانات المطلوبة");
                                             }
-                                          } else {
-                                            Fluttertoast.showToast(
-                                                gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.red,
-                                                msg:
-                                                    "قم بأدخال البيانات المطلوبة");
                                           }
-                                        }
-                                      }),
-                                )
-                        ],
+                                        }),
+                                  )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ));
   }

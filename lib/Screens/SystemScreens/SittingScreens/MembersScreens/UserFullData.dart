@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:flutter/material.dart';
@@ -68,9 +68,9 @@ TimeOfDay intToTimeOfDay(int time) {
 }
 
 String date;
-AudioCache player = AudioCache();
+// AudioCache player = AudioCache();
 AttendProof attendObj = AttendProof();
-AudioPlayer instance;
+// AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
 String selectedDateString;
@@ -87,9 +87,9 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     with TickerProviderStateMixin {
   void initState() {
     super.initState();
-    if (instance != null) {
-      instance.stop();
-    }
+    // if (instance != null) {
+    //   instance.stop();
+    // }
     levelClock = 300;
 
     timeOutController.text = "12:00AM";
@@ -111,8 +111,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
   }
 
   void playLoopedMusic() async {
-    player = AudioCache(prefix: "");
-    instance = await player.loop("clock.mp3");
+    // player = AudioCache(prefix: "");
+    // instance = await player.loop("clock.mp3");
     // await instance.setVolume(0.5); you can even set the volume
   }
 

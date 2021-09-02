@@ -122,6 +122,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   int shiftId = 0;
   int userType = 0;
+  String userRole = "";
   List<Shift> shiftsList;
   intlPhone.PhoneNumber editNumber;
 
@@ -550,9 +551,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           borderColor: Colors.black,
                                           hint: "مديرين",
                                           hintColor: Colors.black,
-                                          onChange: (value) {
+                                          onChange: (String value) {
                                             userType = getRoleId(value);
-                                            print(value);
+                                            userRole = value;
                                           },
                                           selectedvalue:
                                               Provider.of<MemberData>(context,
@@ -720,7 +721,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                     name: _nameController.text
                                                         .trim()),
                                                 token,
-                                                context);
+                                                context,
+                                                getRoleName(userRole));
                                         Navigator.pop(context);
                                         if (msg == "Success") {
                                           Fluttertoast.showToast(
@@ -1222,6 +1224,32 @@ class _AddUserScreenState extends State<AddUserScreen> {
         MaterialPageRoute(builder: (context) => UsersScreen(-1, false)),
         (Route<dynamic> route) => false);
     return Future.value(false);
+  }
+}
+
+String getRoleName(String role) {
+  switch (role) {
+    case "مستخدم":
+      return "User";
+      break;
+    case "مسئول تسجيل":
+      return "Attend_Admin";
+      break;
+    case "مدير موقع":
+      return "Site_Admin";
+      break;
+    case "موارد بشرية":
+      return "HR";
+      break;
+    case "ادمن":
+      return "Admin";
+      break;
+    case "TDS ادمن":
+      return "TDS_Admin";
+      break;
+
+    default:
+      return "";
   }
 }
 

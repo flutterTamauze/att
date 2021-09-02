@@ -69,7 +69,9 @@ class UserPermessionsData with ChangeNotifier {
             .map((json) => UserPermessions.fromJson(json))
             .toList();
 
+        singleUserPermessions = singleUserPermessions.reversed.toList();
         notifyListeners();
+
         return singleUserPermessions;
       }
     } catch (e) {

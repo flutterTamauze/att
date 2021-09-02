@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +27,7 @@ class SystemScanPage extends StatefulWidget {
 
 class _SystemScanPageState extends State<SystemScanPage> {
   var qrText = '';
-  AudioCache player = AudioCache();
+  // AudioCache player = AudioCache();
 
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -116,7 +116,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
         });
     print(qrText);
     print(widget.path);
-    player.play("cap.wav");
+    // player.play("cap.wav");
 
     //  WidgetsFlutterBinding.ensureInitialized();
 

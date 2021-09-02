@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -68,6 +69,7 @@ class MemberData with ChangeNotifier {
     "مدير موقع",
     "موارد بشرية",
     "ادمن",
+    "TDS ادمن"
   ];
   InheritDefault inherit = InheritDefault();
   List<Member> membersList = [];
@@ -81,6 +83,21 @@ class MemberData with ChangeNotifier {
     membersListScreenDropDownSearch = [...membersList];
     notifyListeners();
   }
+
+  // List<AppRoles> rolesList = [];
+  // getAppRoles(String userToken) async {
+  //   var response = await http.get(
+  //     Uri.parse("$baseURL/api/Authenticate/GetRoles"),
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //       'Authorization': "Bearer $userToken"
+  //     },
+  //   );
+  //   print(response.body);
+  //   var roles = jsonDecode(response.body) as List;
+  //   rolesList = roles.map((siteJson) => AppRoles.fromJson(siteJson)).toList();
+  //   notifyListeners();
+  // }
 
   searchUsersList(String filter) {
     List<Member> tmpList = [];
@@ -332,7 +349,8 @@ class MemberData with ChangeNotifier {
     }
   }
 
-  addMember(Member member, String userToken, BuildContext context) async {
+  addMember(Member member, String userToken, BuildContext context,
+      String roleName) async {
     if (await isConnectedToInternet()) {
       try {
         final response = await http.post(
@@ -346,6 +364,7 @@ class MemberData with ChangeNotifier {
                 "JobTitle": member.jobTitle,
                 "UserType": member.userType,
                 "ShiftId": member.shiftId,
+                "roleName": roleName
               },
             ),
             headers: {
@@ -357,7 +376,7 @@ class MemberData with ChangeNotifier {
           await inherit.login(context);
           userToken =
               Provider.of<UserData>(context, listen: false).user.userToken;
-          await addMember(member, userToken, context);
+          await addMember(member, userToken, context, roleName);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);

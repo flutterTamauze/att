@@ -120,7 +120,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                 .shiftsBySite[prov.dropDownShiftIndex]
                 .shiftId,
             userId: widget.member.id),
-        Provider.of<UserData>(context, listen: false).user.id,
+        Provider.of<UserData>(context, listen: false).user.userToken,
       );
       if (msg == "Success : InternalMission Created!") {
         Fluttertoast.showToast(

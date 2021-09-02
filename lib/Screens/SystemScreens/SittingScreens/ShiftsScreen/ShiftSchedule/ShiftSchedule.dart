@@ -89,7 +89,11 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Header(nav: false),
+            Header(
+              nav: false,
+              goUserHomeFromMenu: false,
+              goUserMenu: false,
+            ),
             Directionality(
               textDirection: ui.TextDirection.rtl,
               child: SmallDirectoriesHeader(

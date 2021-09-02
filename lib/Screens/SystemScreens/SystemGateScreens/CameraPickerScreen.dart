@@ -29,9 +29,11 @@ const shift = (0xFF << 24);
 
 class CameraPicker extends StatefulWidget {
   final CameraDescription camera;
-  final String fromScreen;
+  final String fromScreen, shiftQrcode, qrText;
   const CameraPicker({
     this.fromScreen,
+    this.shiftQrcode,
+    this.qrText,
     Key key,
     @required this.camera,
   }) : super(key: key);

@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => MissionsData(),
-        )
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(392.72, 807.27),
