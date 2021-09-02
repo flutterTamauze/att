@@ -26,6 +26,8 @@ import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedAlert.dart';
 
+import 'SystemGateScreens/SytemScanner.dart';
+
 class SystemHomePage extends StatefulWidget {
   @override
   _SystemHomePageState createState() => _SystemHomePageState();
@@ -516,10 +518,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            CameraPicker(
-                                                          camera:
-                                                              cameraDescription,
-                                                        ),
+                                                            SystemScanPage(),
                                                       )),
                                                   child: Container(
                                                     padding: EdgeInsets.all(10),
