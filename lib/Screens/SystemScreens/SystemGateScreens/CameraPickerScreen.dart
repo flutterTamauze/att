@@ -350,6 +350,14 @@ class TakePictureScreenState extends State<CameraPicker>
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Sorry : You have an holiday today!") {
+                                      Fluttertoast.showToast(
+                                          msg: "خطأ فى التسجيل: اجازة شخصية",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
                                     } else if (msg == "off") {
                                       Fluttertoast.showToast(
                                           msg:
@@ -414,8 +422,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                           textColor: Colors.black);
                                     } else {
                                       await Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: برجاء إعادة المحاولة",
+                                          msg: "خطأ فى التسجيل",
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.black);

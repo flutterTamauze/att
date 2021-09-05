@@ -124,28 +124,30 @@ class _CompanySettingsState extends State<CompanySettings> {
                       builder: (context) => OfficialVacation(),
                     ));
               }),
-          ServiceTile(
-              title: "اعدادات الحضور و الأنصراف",
-              subTitle: "ادارة الحضور و الأنصراف",
-              icon: FontAwesomeIcons.usersCog,
-              onTap: () async {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return RoundedLoadingIndicator();
-                    });
-                await companySettings.getCompanySettingsTime(
-                    comProvider.com.id, userProvider.user.userToken);
+          userProvider.user.userType == 4
+              ? ServiceTile(
+                  title: "اعدادات الحضور و الأنصراف",
+                  subTitle: "ادارة الحضور و الأنصراف",
+                  icon: FontAwesomeIcons.usersCog,
+                  onTap: () async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return RoundedLoadingIndicator();
+                        });
+                    await companySettings.getCompanySettingsTime(
+                        comProvider.com.id, userProvider.user.userToken);
 
-                Navigator.pop(context);
-                controller.text = companySettings.lateAllowance.toString();
-                showAttendanceSettings(
-                    companySettings.attendClearance.toString(),
-                    companySettings.lateAllowance.toString(),
-                    companySettings.leaveClearance.toString(),
-                    companySettings.settingsID,
-                    comProvider.com.id);
-              }),
+                    Navigator.pop(context);
+                    controller.text = companySettings.lateAllowance.toString();
+                    showAttendanceSettings(
+                        companySettings.attendClearance.toString(),
+                        companySettings.lateAllowance.toString(),
+                        companySettings.leaveClearance.toString(),
+                        companySettings.settingsID,
+                        comProvider.com.id);
+                  })
+              : Container(),
         ],
       ),
     );
@@ -558,46 +560,52 @@ class _CompanySettingsState extends State<CompanySettings> {
                           ),
                           Container(
                             width: 100.w,
-                            child: RounderButton("حفظ", () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RoundedLoadingIndicator();
-                                  });
+                            child: userProvider.user.userType == 4
+                                ? RounderButton("حفظ", () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return RoundedLoadingIndicator();
+                                        });
 
-                              var userProvider =
-                                  Provider.of<UserData>(context, listen: false);
-                              var comProvider = Provider.of<CompanyData>(
-                                  context,
-                                  listen: false);
-                              var msg = await Provider.of<DaysOffData>(context,
-                                      listen: false)
-                                  .editDaysOffApi(comProvider.com.id,
-                                      userProvider.user.userToken, context);
-                              if (msg == "Success") {
-                                Fluttertoast.showToast(
-                                    msg: "تم التعديل بنجاح",
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.green,
-                                    textColor: Colors.white,
-                                    fontSize: ScreenUtil()
-                                        .setSp(16, allowFontScalingSelf: true));
-                                Navigator.pop(context);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "خطا في التعديل",
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.black,
-                                    fontSize: ScreenUtil()
-                                        .setSp(16, allowFontScalingSelf: true));
-                              }
-                              Navigator.pop(context);
-                            }),
+                                    var userProvider = Provider.of<UserData>(
+                                        context,
+                                        listen: false);
+                                    var comProvider = Provider.of<CompanyData>(
+                                        context,
+                                        listen: false);
+                                    var msg = await Provider.of<DaysOffData>(
+                                            context,
+                                            listen: false)
+                                        .editDaysOffApi(
+                                            comProvider.com.id,
+                                            userProvider.user.userToken,
+                                            context);
+                                    if (msg == "Success") {
+                                      Fluttertoast.showToast(
+                                          msg: "تم التعديل بنجاح",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.green,
+                                          textColor: Colors.white,
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true));
+                                      Navigator.pop(context);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "خطا في التعديل",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black,
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true));
+                                    }
+                                    Navigator.pop(context);
+                                  })
+                                : Container(),
                           )
                         ],
                       ),

@@ -360,29 +360,34 @@ class _SitesScreenState extends State<SitesScreen> {
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.startFloat,
-              floatingActionButton: FloatingActionButton(
-                elevation: 3,
-                tooltip: "اضافة موقع",
-                backgroundColor: Colors.orange[600],
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddLocationMapScreen(
-                            Site(
-                              lat: 0.0,
-                              long: 0.0,
-                              name: "",
-                            ),
-                            0)),
-                  );
-                },
-                child: Icon(
-                  Icons.add_location_alt,
-                  color: Colors.black,
-                  size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                ),
-              )));
+              floatingActionButton:
+                  Provider.of<UserData>(context, listen: false).user.userType ==
+                          4
+                      ? FloatingActionButton(
+                          elevation: 3,
+                          tooltip: "اضافة موقع",
+                          backgroundColor: Colors.orange[600],
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddLocationMapScreen(
+                                      Site(
+                                        lat: 0.0,
+                                        long: 0.0,
+                                        name: "",
+                                      ),
+                                      0)),
+                            );
+                          },
+                          child: Icon(
+                            Icons.add_location_alt,
+                            color: Colors.black,
+                            size: ScreenUtil()
+                                .setSp(30, allowFontScalingSelf: true),
+                          ),
+                        )
+                      : Container()));
     });
   }
 

@@ -39,7 +39,7 @@ class AttendProof {
   Future<int> getAttendProofID(String userId) async {
     var response = await http.get(
         Uri.parse("$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"));
-    print(response.body);
+    print(response.statusCode);
     var decodedResponse = jsonDecode(response.body);
     if (decodedResponse["message"] == "Success") {
       return decodedResponse["data"];

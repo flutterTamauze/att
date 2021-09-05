@@ -128,6 +128,7 @@ class CompanyData extends ChangeNotifier {
     //await checkPermissions();
     if (Platform.isAndroid) {
       bool enabled = await Geolocator.isLocationServiceEnabled();
+      print("company");
       print("enable locaiton : $enabled");
       var pos = await TrustLocation.getLatLong;
       print("--------------${pos[0]}------------");
@@ -152,6 +153,7 @@ class CompanyData extends ChangeNotifier {
       }
     } else if (Platform.isIOS) {
       bool enabled = await Geolocator.isLocationServiceEnabled();
+      print("company");
       print("enable locaiton : $enabled");
       var pos = await TrustLocation.getLatLong;
       print("--------------${pos[0]}------------");

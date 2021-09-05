@@ -240,6 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   chechPermissions() async {
+    print("CHECKING PERMESSION");
     if (_loginFormKey.currentState.validate()) {
       if (await Permission.location.isGranted &&
           await Permission.camera.isGranted) {

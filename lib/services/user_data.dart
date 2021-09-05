@@ -88,13 +88,17 @@ class UserData with ChangeNotifier {
     GooglePlayServicesAvailability availability = await GoogleApiAvailability
         .instance
         .checkGooglePlayServicesAvailability();
-
+    print("i am in login now ");
+    var token;
     if (connectivityResult != ConnectivityResult.none) {
       try {
-        var token;
-        if (availability != GooglePlayServicesAvailability.success) {
+        bool isError = false;
+        String isnull = await firebaseMessaging.getToken().catchError((e) {
           token = "null";
-        } else {
+          isError = true;
+        });
+
+        if (isError == false) {
           token = await firebaseMessaging.getToken();
         }
         print("token fcm :$token");
@@ -351,7 +355,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         String imei = await FlutterUdid.udid;
         print("imei is : $imei");
-        final uri = '$baseURL/api/AttendLogin';
+        final uri = '$localURL/api/AttendLogin';
         print(
             "Request:- URL:$uri Qrcode:$qrCode UserID:${user.id} long:${_currentPosition.longitude.toString()} lat:${_currentPosition.latitude.toString()} UserMacAdd: $imei token:${user.userToken} ");
         final headers = {
@@ -506,6 +510,7 @@ class UserData with ChangeNotifier {
             });
 
         var decodedRes = json.decode(response.body);
+        print(response.statusCode);
         print(response.body);
         print(decodedRes["message"]);
 
@@ -563,6 +568,7 @@ class UserData with ChangeNotifier {
     //await checkPermissions();
 
     bool enabled = await Geolocator.isLocationServiceEnabled();
+    print("userdata");
     print("enable locaiton : $enabled");
     var pos = await TrustLocation.getLatLong.catchError(((e) {
       print(e);

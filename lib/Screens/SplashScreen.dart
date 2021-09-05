@@ -51,12 +51,14 @@ class _SplashScreenState extends State<SplashScreen>
 
       print("VALUE OF USER $value");
 
-      GooglePlayServicesAvailability availability = await GoogleApiAvailability
-          .instance
-          .checkGooglePlayServicesAvailability();
-      if (availability == GooglePlayServicesAvailability.success) {
-        if (value == 4) {
-          //subscribe admin channel
+      if (value == 4) {
+        //subscribe admin channel
+        bool isError = false;
+        await firebaseMessaging.getToken().catchError((e) {
+          print(e);
+          isError = true;
+        });
+        if (isError == false) {
           await firebaseMessaging.subscribeToTopic("attendChilango");
         }
       }
