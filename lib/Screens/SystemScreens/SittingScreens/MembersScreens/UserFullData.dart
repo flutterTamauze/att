@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +17,8 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/ReallocateUsers.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ShiftSchedule.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
@@ -67,9 +68,9 @@ TimeOfDay intToTimeOfDay(int time) {
 }
 
 String date;
-AudioCache player = AudioCache();
+// AudioCache player = AudioCache();
 AttendProof attendObj = AttendProof();
-AudioPlayer instance;
+// AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
 String selectedDateString;
@@ -86,9 +87,9 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     with TickerProviderStateMixin {
   void initState() {
     super.initState();
-    if (instance != null) {
-      instance.stop();
-    }
+    // if (instance != null) {
+    //   instance.stop();
+    // }
     levelClock = 300;
 
     timeOutController.text = "12:00AM";
@@ -110,8 +111,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
   }
 
   void playLoopedMusic() async {
-    player = AudioCache(prefix: "");
-    instance = await player.loop("clock.mp3");
+    // player = AudioCache(prefix: "");
+    // instance = await player.loop("clock.mp3");
     // await instance.setVolume(0.5); you can even set the volume
   }
 
@@ -419,24 +420,20 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     taskName: "جدولة المناوبات",
                                     iconData: Icons.table_view,
                                     function: () async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedLoadingIndicator();
-                                          });
-                                      var userProvider = Provider.of<UserData>(
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (BuildContext context) {
+                                      //       return RoundedLoadingIndicator();
+                                      //     });
+                                      Navigator.push(
                                           context,
-                                          listen: false);
-                                      var comProvider =
-                                          Provider.of<CompanyData>(context,
-                                              listen: false);
-                                      await Provider.of<DaysOffData>(context,
-                                              listen: false)
-                                          .getDaysOff(
-                                              comProvider.com.id,
-                                              userProvider.user.userToken,
-                                              context);
-                                      shiftScheduling();
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShiftScheduleScreen(
+                                              member: widget.user,
+                                              siteIndex: widget.siteIndex,
+                                            ),
+                                          ));
                                     }),
                                 Divider(),
                                 AssignTaskToUser(
@@ -476,10 +473,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                 gravity: ToastGravity.CENTER);
                                             break;
                                           case "fail":
-                                            Fluttertoast.showToast(
-                                                msg: "حدث خطأ ما !",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
+                                            errorToast();
                                             break;
                                           default:
                                             sendFcmMessage(
@@ -560,49 +554,13 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     }
     return "";
   }
+}
 
-  String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
-    if (phoneNum[0] == "+") {
-      return " ${phoneNum.substring(1, len)}+";
-    } else {
-      return "$phoneNum+";
-    }
-  }
-
-  int getShiftid(String shiftName) {
-    print("shiftName getShiftId $shiftName");
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftName == list[i].shiftName) {
-        return list[i].shiftId;
-      }
-    }
-    return -1;
-  }
-
-  shiftScheduling() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-    String shiftName = getShiftName();
-    await Provider.of<DaysOffData>(context, listen: false)
-        .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
-    for (int i = 0; i < 7; i++) {
-      await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
-          i,
-          Provider.of<SiteData>(context, listen: false)
-              .sitesList[widget.siteIndex]
-              .name,
-          shiftName,
-          getShiftid(shiftName));
-    }
-    Navigator.pop(context);
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ReAllocateUsers(widget.user),
-        ));
+String plusSignPhone(String phoneNum) {
+  int len = phoneNum.length;
+  if (phoneNum[0] == "+") {
+    return " ${phoneNum.substring(1, len)}+";
+  } else {
+    return "$phoneNum+";
   }
 }

@@ -153,7 +153,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       sunToT = (intToTimeOfDay(widget.shift.sunShiftenTime));
       monFromT = (intToTimeOfDay(widget.shift.monShiftstTime));
       monToT = (intToTimeOfDay(widget.shift.mondayShiftenTime));
-      tuesFromT = (intToTimeOfDay(widget.shift.thursdayShiftstTime));
+      tuesFromT = (intToTimeOfDay(widget.shift.tuesdayShiftstTime));
       tuesToT = (intToTimeOfDay(widget.shift.tuesdayShiftenTime));
       wedFromT = (intToTimeOfDay(widget.shift.wednesDayShiftstTime));
       wedToT = (intToTimeOfDay(widget.shift.wednesDayShiftenTime));

@@ -17,6 +17,8 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
+import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
+import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -49,14 +51,9 @@ class _SplashScreenState extends State<SplashScreen>
 
       print("VALUE OF USER $value");
 
-      GooglePlayServicesAvailability availability = await GoogleApiAvailability
-          .instance
-          .checkGooglePlayServicesAvailability();
-      if (availability == GooglePlayServicesAvailability.success) {
-        if (value == 4) {
-          //subscribe admin channel
-          await firebaseMessaging.subscribeToTopic("attendChilango");
-        }
+      if (value == 4) {
+        //subscribe admin channel
+        await firebaseMessaging.subscribeToTopic("attendChilango");
       }
 
       reverse(userData[0], value);
@@ -110,6 +107,9 @@ class _SplashScreenState extends State<SplashScreen>
   reverse(String userName, value) {
     //Reverse animation Function
     var userData = Provider.of<UserData>(context, listen: false);
+    //Get roles dropdown.
+    // Provider.of<MemberData>(context, listen: false)
+    //     .getAppRoles(userData.user.userToken);
     setState(() {
       animationController.reverse();
       Timer(new Duration(milliseconds: 2000), () async {

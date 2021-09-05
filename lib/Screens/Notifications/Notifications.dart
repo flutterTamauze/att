@@ -84,6 +84,7 @@ class NotificationItem extends StatelessWidget {
                         margin: EdgeInsets.symmetric(vertical: 3),
                         child: InkWell(
                           onTap: () async {
+                            print("d");
                             await db.readMessage(1, notifiyProv.id);
                             value.readMessage(index);
                             switch (notifiyProv.category) {
@@ -192,7 +193,7 @@ class _NotificationsDataState extends State<NotificationsData>
           child: Row(
             children: [
               Expanded(
-                child: InkWell(
+                child: GestureDetector(
                   onLongPress: () => showDialog(
                     context: context,
                     builder: (context) {

@@ -25,6 +25,13 @@ successfullDelete() {
   );
 }
 
+errorToast() {
+  Fluttertoast.showToast(
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.red,
+      msg: "حدث خطأ ما");
+}
+
 successfulSaved() {
   Fluttertoast.showToast(
       msg: "تم الحفظ بنجاح",

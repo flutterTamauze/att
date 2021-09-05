@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:cron/cron.dart';
@@ -26,6 +26,8 @@ import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedAlert.dart';
 
+import 'SystemGateScreens/SytemScanner.dart';
+
 class SystemHomePage extends StatefulWidget {
   @override
   _SystemHomePageState createState() => _SystemHomePageState();
@@ -35,7 +37,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
   CameraDescription cameraDescription;
   DateTime currentBackPressTime;
   Future futureShift;
-  AudioCache player = AudioCache();
+  // AudioCache player = AudioCache();
 
   String amPmChanger(int intTime) {
     int hours = (intTime ~/ 100);
@@ -103,7 +105,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
   shecdularFetching2(int endTime) async {
     var end = endTime % 2400;
     print("crrent shift end Time = $end");
-    player.play("clock.mp3");
+    // player.play("clock.mp3");
     int hours = (end ~/ 100);
     int min = end - (hours * 100);
     cron1.close();
@@ -111,7 +113,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
     Provider.of<ShiftApi>(context, listen: false).changeFlag(true);
     cron2 = new Cron();
     cron2.schedule(new Schedule.parse('$min $hours * * *'), () async {
-      player.play("clock.mp3");
+      // player.play("clock.mp3");
       print("cron2: end working");
       shecdularFetching();
       Provider.of<ShiftApi>(context, listen: false).changeFlag(false);
@@ -516,10 +518,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            CameraPicker(
-                                                          camera:
-                                                              cameraDescription,
-                                                        ),
+                                                            SystemScanPage(),
                                                       )),
                                                   child: Container(
                                                     padding: EdgeInsets.all(10),

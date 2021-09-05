@@ -42,7 +42,7 @@ dependencies:
   fluttertoast: ^7.1.6
   camera:
   cron: ^0.2.4
-  audioplayers: ^0.18.0
+  # audioplayers: 
   permission_handler: ^6.0.0
   trust_location: ^2.0.11
   shared_preferences: ^2.0.0

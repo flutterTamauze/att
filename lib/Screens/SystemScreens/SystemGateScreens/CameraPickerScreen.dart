@@ -25,13 +25,17 @@ import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 import "package:qr_users/MLmodule/services/UtilsScanner.dart";
 import 'package:qr_users/MLmodule/services/FaceDetectorPainter.dart';
 
+import 'NavScreenPartTwo.dart';
+
 const shift = (0xFF << 24);
 
 class CameraPicker extends StatefulWidget {
   final CameraDescription camera;
-  final String fromScreen;
+  final String fromScreen, shiftQrcode, qrText;
   const CameraPicker({
     this.fromScreen,
+    this.shiftQrcode,
+    this.qrText,
     Key key,
     @required this.camera,
   }) : super(key: key);
@@ -323,14 +327,104 @@ class TakePictureScreenState extends State<CameraPicker>
                                   Navigator.pop(context, image);
                                 } else {
                                   Future.delayed(const Duration(seconds: 3),
-                                      () {
-                                    Navigator.push(
-                                        context,
+                                      () async {
+                                    var msg = await Provider.of<UserData>(
+                                            context,
+                                            listen: false)
+                                        .attendByCard(
+                                            qrCode: widget.shiftQrcode,
+                                            cardCode: widget.qrText,
+                                            image: img);
+                                    print(msg);
+                                    if (msg ==
+                                        "Success : successfully registered") {
+                                      Fluttertoast.showToast(
+                                          msg: "تم التسجيل بنجاح",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.white);
+                                    } else if (msg == "noInternet") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg == "off") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg == "mock") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
+                                      await Fluttertoast.showToast(
+                                          msg: "خطأ فى التسجيل: كود غير صحيح",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Fail : Using another attend method") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Failed : You are not allowed to sign by card! ") {
+                                      Fluttertoast.showToast(
+                                          msg: "ليس مصرح لك التسجيل بالبطاقة",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Failed : Mac address not match") {
+                                      //Error while saving Data : Object reference not set to an instance of an object.
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Failed : Location not found") {
+                                      await Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Failed : User Id not valid") {
+                                      await Fluttertoast.showToast(
+                                          msg: "خطأ فى التسجيل: كود غير صحيح",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else {
+                                      await Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: برجاء إعادة المحاولة",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    }
+                                    Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
-                                          builder: (context) => SystemScanPage(
-                                            path: newPath,
-                                          ),
-                                        ));
+                                            builder: (context) =>
+                                                NavScreenTwo(1)),
+                                        (Route<dynamic> route) => false);
                                   });
                                 }
                               } else if (numberOfFacesDetected > 1) {

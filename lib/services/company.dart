@@ -324,7 +324,8 @@ class CompanyData extends ChangeNotifier {
                   shiftId: defaultShiftID,
                   userType: 4),
               guestToken,
-              context)
+              context,
+              "Admin")
           .then((value) async {
         return value;
       });

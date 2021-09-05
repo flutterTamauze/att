@@ -1,36 +1,44 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/api.dart';
-import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/RoundedAlert.dart';
+
+import 'CameraPickerScreen.dart';
 
 const frontCamera = 'FRONT CAMERA';
 
 class SystemScanPage extends StatefulWidget {
-  final path;
-  const SystemScanPage({
-    Key key,
-    this.path,
-  }) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _SystemScanPageState();
 }
 
 class _SystemScanPageState extends State<SystemScanPage> {
   var qrText = '';
-  AudioCache player = AudioCache();
+  // AudioCache player = AudioCache();
+  CameraDescription cameraDescription;
+  _startUp() async {
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+      (CameraDescription camera) =>
+          camera.lensDirection == CameraLensDirection.front,
+    );
+  }
 
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  @override
+  void initState() {
+    _startUp();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
               child: IconButton(
                 icon: Icon(
                   Icons.chevron_left,
-                  color: Color(0xffF89A41),
+                  color: Colors.white,
                   size: 40,
                 ),
                 onPressed: () {
@@ -95,6 +103,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
     );
   }
 
+  var shiftQrCode;
   void _onQRViewCreated(QRViewController controller) async {
     this.controller = controller;
     bool isScanned = false;
@@ -103,111 +112,44 @@ class _SystemScanPageState extends State<SystemScanPage> {
       qrText = scanData;
       if (!isScanned) {
         isScanned = true;
+        shiftQrCode = await Provider.of<ShiftApi>(context, listen: false)
+            .currentShift
+            .shiftQrCode;
+        print("qrcode : $shiftQrCode");
         secondPageRoute();
       }
     });
   }
 
   secondPageRoute() async {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return RoundedLoadingIndicator();
-        });
-    print(qrText);
-    print(widget.path);
-    player.play("cap.wav");
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return RoundedLoadingIndicator();
+    //     });
+    print("Qr text $qrText");
 
+    // player.play("cap.wav");
+    controller?.pauseCamera();
     //  WidgetsFlutterBinding.ensureInitialized();
 
-    var shiftQrCode =
-        Provider.of<ShiftApi>(context, listen: false).currentShift.shiftQrCode;
-    var msg = await Provider.of<UserData>(context, listen: false).attendByCard(
-        qrCode: shiftQrCode, cardCode: qrText, image: File(widget.path));
-    print(msg);
-
-    if (msg == "Success : successfully registered") {
-      Fluttertoast.showToast(
-          msg: "تم التسجيل بنجاح",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.black,
-          textColor: Colors.orange);
-    } else if (msg == "noInternet") {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg.contains("Sorry : Today is an official vacation!")) {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: عطلة رسمية",
-          gravity: ToastGravity.CENTER,
-          toastLength: Toast.LENGTH_LONG,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "off") {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "mock") {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg ==
-        "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
-      await Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: كود غير صحيح",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "Fail : Using another attend method") {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "Failed : Mac address not match") {
-      //Error while saving Data : Object reference not set to an instance of an object.
-      Fluttertoast.showToast(
-          msg:
-              "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
-          gravity: ToastGravity.CENTER,
-          toastLength: Toast.LENGTH_LONG,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "Failed : Location not found") {
-      await Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "Failed : User Id not valid") {
-      await Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: كود غير صحيح",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else if (msg == "Success : User was not proof") {
-      Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل:لم يتم اثبات حضور المستخدم",
-          gravity: ToastGravity.CENTER,
-          toastLength: Toast.LENGTH_LONG,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
-    } else {
-      await Fluttertoast.showToast(
-          msg: "خطأ فى التسجيل: برجاء إعادة المحاولة",
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black);
+    // var msg = await Provider.of<UserData>(context, listen: false).attendByCard(
+    //     qrCode: shiftQrCode, cardCode: qrText, image: File(widget.path));
+    // print(msg);
+    if (shiftQrCode != null && qrText != null) {
+      print(shiftQrCode);
+      print(qrText);
+      print(cameraDescription);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CameraPicker(
+              camera: cameraDescription,
+              qrText: qrText,
+              shiftQrcode: shiftQrCode,
+            ),
+          ));
     }
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(1)),
-        (Route<dynamic> route) => false);
   }
 
   @override

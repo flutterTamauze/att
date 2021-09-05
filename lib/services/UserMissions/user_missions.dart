@@ -47,6 +47,11 @@ class MissionsData with ChangeNotifier {
           "userId": userMissions.userId,
           "desc": userMissions.description
         }));
+    print(userMissions.fromDate.toIso8601String());
+    print(userMissions.shiftId);
+    print(userMissions.toDate.toIso8601String());
+    print(userMissions.userId);
+    print(userMissions.description);
     isLoading = false;
     notifyListeners();
     print(response.body);

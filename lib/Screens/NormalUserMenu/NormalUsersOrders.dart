@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -220,7 +221,9 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? UserOrdersListView(provList: provList)
+                              ? Expanded(
+                                  child: UserOrdersListView(provList: provList),
+                                )
                               : filteredOrderData == null ||
                                       filteredOrderData.isEmpty
                                   ? Center(
@@ -266,8 +269,11 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? UserPermessionListView(
-                                  permessionsList: permessionsList)
+                              ? Expanded(
+                                  child: UserPermessionListView(
+                                      isFilter: false,
+                                      permessionsList: permessionsList),
+                                )
                               : filteredPermessions == null ||
                                       filteredPermessions.isEmpty
                                   ? Center(
@@ -275,6 +281,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                     )
                                   : UserPermessionListView(
                                       permessionsList: filteredPermessions,
+                                      isFilter: true,
                                     );
                         }
                       })
