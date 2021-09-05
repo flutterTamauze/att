@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     // test();
 
-    initPlatformState();
+    // initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     // checkBackgroundNotification();

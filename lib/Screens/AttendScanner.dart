@@ -114,6 +114,14 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.red,
             textColor: Colors.black);
         break;
+      case "Sorry : You have an holiday today!":
+        Fluttertoast.showToast(
+            msg: "خطأ فى التسجيل: اجازة شخصية",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.red,
+            textColor: Colors.black);
+        break;
       case "Failed : Mac address not match":
         Fluttertoast.showToast(
             msg:

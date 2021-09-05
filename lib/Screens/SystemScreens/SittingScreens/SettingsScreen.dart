@@ -137,11 +137,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               var bool = await userDataProvider
                                   .isConnectedToInternet("www.google.com");
                               if (bool) {
-                                // showDialog(
-                                //     context: context,
-                                //     builder: (BuildContext context) {
-                                //       return RoundedLoadingIndicator();
-                                //     });
                                 Provider.of<SiteData>(context, listen: false)
                                     .setSiteValue("كل المواقع");
                                 Provider.of<SiteData>(context, listen: false)

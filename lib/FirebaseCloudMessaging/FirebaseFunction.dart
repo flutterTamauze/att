@@ -36,8 +36,8 @@ Future<bool> sendFcmMessage(
           // "image": "default",
           "content_available": true,
           "mutable_content": true,
-          "android_channel_id": "ChilangoNotifications",
-          "sound": "your_sweet_sound.wav",
+          // "android_channel_id": "ChilangoNotifications",
+          // "sound": "your_sweet_sound.wav",
         },
         "data": {
           'click_action': 'FLUTTER_NOTIFICATION_CLICK',

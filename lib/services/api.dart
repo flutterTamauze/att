@@ -47,6 +47,7 @@ class ShiftApi with ChangeNotifier {
       if (await Permission.location.isGranted) {
         bool enabled = false;
         enabled = await Geolocator.isLocationServiceEnabled();
+        print("api");
         print("enable locaiton : $enabled");
         if (Platform.isIOS) {
           try {

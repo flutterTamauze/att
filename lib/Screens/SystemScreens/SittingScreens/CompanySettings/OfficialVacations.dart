@@ -335,139 +335,152 @@ class _OfficialVacationState extends State<OfficialVacation> {
                           DataTableVacationHeader(),
                           Expanded(
                               child: Container(
-                            child: ListView.builder(
-                                itemCount: _nameController.text == ""
-                                    ? vactionProv.vactionList.length
-                                    : vactionProv.copyVacationList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Column(
-                                    children: [
-                                      Slidable(
-                                        actionExtentRatio: 0.10,
-                                        closeOnScroll: true,
-                                        controller: slidableController,
-                                        actionPane: SlidableDrawerActionPane(),
-                                        secondaryActions: [
-                                          ZoomIn(
-                                              child: InkWell(
-                                            child: Container(
-                                              padding: EdgeInsets.all(7),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.green,
-                                              ),
-                                              child: Icon(
-                                                Icons.edit,
-                                                size: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AddVacationScreen(
-                                                      edit: true,
-                                                      vacationListID: index,
-                                                    ),
-                                                  ));
-                                            },
-                                          )),
-                                          ZoomIn(
-                                              child: InkWell(
-                                            child: Container(
-                                              padding: EdgeInsets.all(7),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.red,
-                                              ),
-                                              child: Icon(
-                                                Icons.delete,
-                                                size: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return vactionProv.isLoading
-                                                        ? Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              backgroundColor:
-                                                                  Colors.orange,
-                                                            ),
-                                                          )
-                                                        : RoundedAlert(
-                                                            onPressed:
-                                                                () async {
-                                                              String msg = await vactionProv.deleteVacationById(
-                                                                  Provider.of<UserData>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .user
-                                                                      .userToken,
-                                                                  vactionProv
-                                                                      .vactionList[
-                                                                          index]
-                                                                      .vacationId,
-                                                                  index);
-                                                              if (msg ==
-                                                                  "Success") {
-                                                                Fluttertoast.showToast(
-                                                                        msg:
-                                                                            "تم حذف العطلة بنجاح",
-                                                                        backgroundColor:
-                                                                            Colors
+                            child: vactionProv.vactionList.length == 0
+                                ? Center(
+                                    child: Text(
+                                      "لا يوجد عطلات رسمية",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: _nameController.text == ""
+                                        ? vactionProv.vactionList.length
+                                        : vactionProv.copyVacationList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          Slidable(
+                                            actionExtentRatio: 0.10,
+                                            closeOnScroll: true,
+                                            controller: slidableController,
+                                            actionPane:
+                                                SlidableDrawerActionPane(),
+                                            secondaryActions: [
+                                              ZoomIn(
+                                                  child: InkWell(
+                                                child: Container(
+                                                  padding: EdgeInsets.all(7),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.green,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    size: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddVacationScreen(
+                                                          edit: true,
+                                                          vacationListID: index,
+                                                        ),
+                                                      ));
+                                                },
+                                              )),
+                                              ZoomIn(
+                                                  child: InkWell(
+                                                child: Container(
+                                                  padding: EdgeInsets.all(7),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.red,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    size: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  return showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return vactionProv
+                                                                .isLoading
+                                                            ? Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .orange,
+                                                                ),
+                                                              )
+                                                            : RoundedAlert(
+                                                                onPressed:
+                                                                    () async {
+                                                                  String msg = await vactionProv.deleteVacationById(
+                                                                      Provider.of<UserData>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .user
+                                                                          .userToken,
+                                                                      vactionProv
+                                                                          .vactionList[
+                                                                              index]
+                                                                          .vacationId,
+                                                                      index);
+                                                                  if (msg ==
+                                                                      "Success") {
+                                                                    Fluttertoast.showToast(
+                                                                            msg:
+                                                                                "تم حذف العطلة بنجاح",
+                                                                            backgroundColor: Colors
                                                                                 .green)
-                                                                    .then((value) =>
-                                                                        Navigator.pop(
-                                                                            context));
-                                                              } else {
-                                                                Fluttertoast.showToast(
-                                                                        msg:
-                                                                            "خطأ في حذف العطلة",
-                                                                        backgroundColor:
-                                                                            Colors
+                                                                        .then((value) =>
+                                                                            Navigator.pop(context));
+                                                                  } else {
+                                                                    Fluttertoast.showToast(
+                                                                            msg:
+                                                                                "خطأ في حذف العطلة",
+                                                                            backgroundColor: Colors
                                                                                 .red)
-                                                                    .then((value) =>
-                                                                        Navigator.pop(
-                                                                            context));
-                                                              }
-                                                            },
-                                                            content:
-                                                                "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
-                                                            onCancel: () {},
-                                                            title: "حذف العطلة",
-                                                          );
-                                                  });
-                                            },
-                                          )),
+                                                                        .then((value) =>
+                                                                            Navigator.pop(context));
+                                                                  }
+                                                                },
+                                                                content:
+                                                                    "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
+                                                                onCancel: () {},
+                                                                title:
+                                                                    "حذف العطلة",
+                                                              );
+                                                      });
+                                                },
+                                              )),
+                                            ],
+                                            child: DataTableVacationRow(
+                                              vacation:
+                                                  _nameController.text == ""
+                                                      ? vactionProv
+                                                          .vactionList[index]
+                                                      : vactionProv
+                                                          .copyVacationList
+                                                          .first,
+                                              filterFromDate: pickedRange.first,
+                                              filterToDate: pickedRange.last,
+                                            ),
+                                          ),
+                                          isDateBetweenTheRange(
+                                                  vactionProv
+                                                      .vactionList[index],
+                                                  pickedRange.first,
+                                                  pickedRange.last)
+                                              ? Divider(
+                                                  thickness: 1,
+                                                )
+                                              : Container()
                                         ],
-                                        child: DataTableVacationRow(
-                                          vacation: _nameController.text == ""
-                                              ? vactionProv.vactionList[index]
-                                              : vactionProv
-                                                  .copyVacationList.first,
-                                          filterFromDate: pickedRange.first,
-                                          filterToDate: pickedRange.last,
-                                        ),
-                                      ),
-                                      isDateBetweenTheRange(
-                                              vactionProv.vactionList[index],
-                                              pickedRange.first,
-                                              pickedRange.last)
-                                          ? Divider(
-                                              thickness: 1,
-                                            )
-                                          : Container()
-                                    ],
-                                  );
-                                }),
+                                      );
+                                    }),
                           )),
                         ],
                       )),

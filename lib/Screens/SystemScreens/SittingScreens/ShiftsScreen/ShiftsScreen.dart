@@ -430,25 +430,30 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
-            floatingActionButton: FloatingActionButton(
-              tooltip: "اضافة مناوبة",
-              splashColor: Colors.white,
-              elevation: 5,
-              backgroundColor: Colors.orange[600],
-              child: Icon(
-                Icons.alarm_add_sharp,
-                color: Colors.black,
-                size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          AddShiftScreen(Shift(), 0, false, siteId)),
-                );
-              },
-            )),
+            floatingActionButton: Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userType ==
+                    4
+                ? FloatingActionButton(
+                    tooltip: "اضافة مناوبة",
+                    splashColor: Colors.white,
+                    elevation: 5,
+                    backgroundColor: Colors.orange[600],
+                    child: Icon(
+                      Icons.alarm_add_sharp,
+                      color: Colors.black,
+                      size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                AddShiftScreen(Shift(), 0, false, siteId)),
+                      );
+                    },
+                  )
+                : Container()),
       );
     });
   }

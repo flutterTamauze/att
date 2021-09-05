@@ -12,7 +12,6 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -84,25 +83,18 @@ class UserData with ChangeNotifier {
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    DeviceInfoPlugin deviceInfo;
-    AndroidDeviceInfo androidInfo;
-    GooglePlayServicesAvailability availability;
-    String deviceBrand;
-    if (Platform.isAndroid) {
-      deviceInfo = DeviceInfoPlugin();
-      androidInfo = await deviceInfo.androidInfo;
-      availability = await GoogleApiAvailability.instance
-          .checkGooglePlayServicesAvailability();
 
-      deviceBrand = androidInfo.brand;
-    }
-
+    print("i am in login now ");
+    var token;
     if (connectivityResult != ConnectivityResult.none) {
       try {
-        var token;
-        if (availability != GooglePlayServicesAvailability.success) {
+        bool isError = false;
+        String isnull = await firebaseMessaging.getToken().catchError((e) {
           token = "null";
-        } else {
+          isError = true;
+        });
+
+        if (isError == false) {
           token = await firebaseMessaging.getToken();
         }
         print("token fcm :$token");
@@ -514,6 +506,7 @@ class UserData with ChangeNotifier {
             });
 
         var decodedRes = json.decode(response.body);
+        print(response.statusCode);
         print(response.body);
         print(decodedRes["message"]);
 
@@ -571,6 +564,7 @@ class UserData with ChangeNotifier {
     //await checkPermissions();
 
     bool enabled = await Geolocator.isLocationServiceEnabled();
+    print("userdata");
     print("enable locaiton : $enabled");
     var pos = await TrustLocation.getLatLong.catchError(((e) {
       print(e);

@@ -1244,9 +1244,6 @@ String getRoleName(String role) {
     case "ادمن":
       return "Admin";
       break;
-    case "TDS ادمن":
-      return "TDS_Admin";
-      break;
 
     default:
       return "";

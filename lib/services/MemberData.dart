@@ -69,7 +69,6 @@ class MemberData with ChangeNotifier {
     "مدير موقع",
     "موارد بشرية",
     "ادمن",
-    "TDS ادمن"
   ];
   InheritDefault inherit = InheritDefault();
   List<Member> membersList = [];

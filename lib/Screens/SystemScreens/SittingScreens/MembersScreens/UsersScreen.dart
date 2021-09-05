@@ -810,22 +810,26 @@ class _UsersScreenState extends State<UsersScreen> {
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.startFloat,
-              floatingActionButton: FloatingActionButton(
-                tooltip: "اضافة مستخدم",
-                child: Icon(
-                  Icons.person_add,
-                  color: Colors.black,
-                  size: 30,
-                ),
-                backgroundColor: Colors.orange[600],
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              AddUserScreen(Member(), 0, false, "", "")));
-                },
-              )),
+              floatingActionButton:
+                  Provider.of<UserData>(context, listen: false).user.userType ==
+                          4
+                      ? FloatingActionButton(
+                          tooltip: "اضافة مستخدم",
+                          child: Icon(
+                            Icons.person_add,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          backgroundColor: Colors.orange[600],
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddUserScreen(
+                                        Member(), 0, false, "", "")));
+                          },
+                        )
+                      : Container()),
         ),
       );
     });
