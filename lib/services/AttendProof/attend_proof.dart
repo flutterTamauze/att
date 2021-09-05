@@ -48,7 +48,8 @@ class AttendProof {
     return -1;
   }
 
-  acceptAttendProof(String userToken, String attendId, Position latLng) async {
+  Future<String> acceptAttendProof(
+      String userToken, String attendId, Position latLng) async {
     var response = await http.put(
       Uri.parse("$baseURL/api/AttendProof/Approve"),
       headers: {
@@ -62,5 +63,12 @@ class AttendProof {
       }),
     );
     print(response.body);
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Fail : Proof time out!") {
+      return "timeout";
+    } else if (decodedResponse["message"] == "Fail : Location Failed") {
+      return "wrong location";
+    }
+    return "success";
   }
 }

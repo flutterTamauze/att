@@ -100,18 +100,34 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                             desiredAccuracy:
                                                 LocationAccuracy.best);
 
-                                    await attendObj.acceptAttendProof(
-                                        user.userToken,
-                                        attendId.toString(),
-                                        currentPosition);
+                                    String msg =
+                                        await attendObj.acceptAttendProof(
+                                            user.userToken,
+                                            attendId.toString(),
+                                            currentPosition);
                                     setState(() {
                                       isloading = false;
                                     });
                                     prefs.setString("notifCategory", "");
-                                    Fluttertoast.showToast(
-                                        msg: widget.notificationToast,
-                                        backgroundColor: Colors.green,
-                                        gravity: ToastGravity.CENTER);
+                                    if (msg == "timeout") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم اثبات الحضور انتهى وقت التسجيل",
+                                          backgroundColor: Colors.red,
+                                          gravity: ToastGravity.CENTER);
+                                    } else if (msg == "wrong location") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم اثبات الحضور : خارج موقع العمل",
+                                          backgroundColor: Colors.red,
+                                          gravity: ToastGravity.CENTER);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: widget.notificationToast,
+                                          backgroundColor: Colors.green,
+                                          gravity: ToastGravity.CENTER);
+                                    }
+
                                     Provider.of<PermissionHan>(context,
                                             listen: false)
                                         .setAttendProoftoDefault();
