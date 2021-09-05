@@ -80,7 +80,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                         isloading
                             ? Center(
                                 child: CircularProgressIndicator(
-                                  color: Colors.orange,
+                                  backgroundColor: Colors.orange,
                                 ),
                               )
                             : RoundedButton(

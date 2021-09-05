@@ -107,7 +107,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                   return Expanded(
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: Colors.orange,
+                        backgroundColor: Colors.orange,
                       ),
                     ),
                   );
@@ -417,7 +417,7 @@ class _ShiftScheduleCardState extends State<ShiftScheduleCard> {
                                       .isLoading
                                   ? Center(
                                       child: CircularProgressIndicator(
-                                        color: Colors.orange,
+                                        backgroundColor: Colors.orange,
                                       ),
                                     )
                                   : RoundedAlert(

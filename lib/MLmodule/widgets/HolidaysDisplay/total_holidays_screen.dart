@@ -15,9 +15,10 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 
-import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
+
+import '../../../constants.dart';
 
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
@@ -164,7 +165,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(
-                            color: Colors.orange,
+                            backgroundColor: Colors.orange,
                           ),
                         );
                       } else {

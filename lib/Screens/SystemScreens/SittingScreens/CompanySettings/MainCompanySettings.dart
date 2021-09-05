@@ -417,7 +417,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                             Center(
                                 child: isLoading
                                     ? CircularProgressIndicator(
-                                        color: Colors.orange,
+                                        backgroundColor: Colors.orange,
                                       )
                                     : RoundedButton(
                                         title: "حفظ",

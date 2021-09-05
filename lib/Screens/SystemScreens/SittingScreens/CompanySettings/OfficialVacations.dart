@@ -408,8 +408,9 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                             ? Center(
                                                                 child:
                                                                     CircularProgressIndicator(
-                                                                  color: Colors
-                                                                      .orange,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .orange,
                                                                 ),
                                                               )
                                                             : RoundedAlert(

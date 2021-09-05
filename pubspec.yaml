@@ -85,7 +85,7 @@ dependencies:
   getwidget: ^1.2.4
   flutter_slidable: ^0.6.0
   huawei_push: ^5.1.1+301
-  google_api_availability: ^3.0.1
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

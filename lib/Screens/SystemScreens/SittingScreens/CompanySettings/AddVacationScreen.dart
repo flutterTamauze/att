@@ -214,7 +214,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                             child: Provider.of<VacationData>(context).isLoading
                                 ? Center(
                                     child: CircularProgressIndicator(
-                                      color: Colors.orange,
+                                      backgroundColor: Colors.orange,
                                     ),
                                   )
                                 : RoundedButton(

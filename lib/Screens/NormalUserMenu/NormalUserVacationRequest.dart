@@ -680,7 +680,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     Provider.of<UserHolidaysData>(context)
                                         .isLoading
                                 ? CircularProgressIndicator(
-                                    color: Colors.orange)
+                                    backgroundColor: Colors.orange)
                                 : Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: RoundedButton(

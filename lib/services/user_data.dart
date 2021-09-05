@@ -12,7 +12,6 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -85,9 +84,6 @@ class UserData with ChangeNotifier {
       String username, String password, BuildContext context) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
 
-    GooglePlayServicesAvailability availability = await GoogleApiAvailability
-        .instance
-        .checkGooglePlayServicesAvailability();
     print("i am in login now ");
     var token;
     if (connectivityResult != ConnectivityResult.none) {
@@ -355,7 +351,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         String imei = await FlutterUdid.udid;
         print("imei is : $imei");
-        final uri = '$localURL/api/AttendLogin';
+        final uri = '$baseURL/api/AttendLogin';
         print(
             "Request:- URL:$uri Qrcode:$qrCode UserID:${user.id} long:${_currentPosition.longitude.toString()} lat:${_currentPosition.latitude.toString()} UserMacAdd: $imei token:${user.userToken} ");
         final headers = {
