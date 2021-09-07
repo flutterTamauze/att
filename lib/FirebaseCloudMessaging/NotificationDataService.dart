@@ -1,6 +1,6 @@
 import 'dart:async';
 
-// import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import 'NotificationMessage.dart';
 
 class NotificationDataService with ChangeNotifier {
   bool showNotificationDot = false;
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
 
   List<NotificationMessage> notification = [];
   // setNotificationList(List<NotificationMessage> notifyList) {
@@ -122,7 +122,7 @@ class NotificationDataService with ChangeNotifier {
                 DateFormat('kk:mm:a').format(DateTime.now()),
                 value));
 
-        // player.play("notification.mp3");
+        player.play("notification.mp3");
       }
     });
   }
@@ -132,7 +132,7 @@ class NotificationDataService with ChangeNotifier {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        Future.delayed(Duration(minutes: 1), () {
+        Future.delayed(Duration(minutes: 5), () {
           Navigator.of(context).pop();
         });
         return StackedNotificaitonAlert(
@@ -140,7 +140,7 @@ class NotificationDataService with ChangeNotifier {
           notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
           roundedButtonTitle: "اثبات",
           lottieAsset: "resources/notificationalarm.json",
-          notificationToast: "تم استقبال اثبات الحضور",
+          notificationToast: "تم اثبات الحضور بنجاح",
           showToast: true,
           popWidget: false,
           repeatAnimation: true,

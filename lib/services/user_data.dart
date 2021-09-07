@@ -530,6 +530,7 @@ class UserData with ChangeNotifier {
   //clears all data in cache.
   logout() async {
     await db.clearNotifications();
+
     loggedIn = false;
     manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
@@ -537,17 +538,9 @@ class UserData with ChangeNotifier {
     changedWidget = Image.asset("resources/personicon.png");
     prefs.setStringList('userData', []);
 
-    notifyListeners();
+    // notifyListeners();
   }
 
-  // checkPermissions() async {
-  //   if (await Permission.location.status != PermissionStatus.granted) {
-  //     print("not");
-  //     Permission.location.request();
-  //   } else {
-  //     print("location granted");
-  //   }
-  // }
   static Future<bool> detectJailBreak() async {
     bool jaibreak;
 

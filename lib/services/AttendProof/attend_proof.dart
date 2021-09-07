@@ -36,15 +36,24 @@ class AttendProof {
     return "success";
   }
 
-  Future<int> getAttendProofID(String userId) async {
-    var response = await http.get(
-        Uri.parse("$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"));
-    print(response.statusCode);
-    var decodedResponse = jsonDecode(response.body);
-    if (decodedResponse["message"] == "Success") {
-      return decodedResponse["data"];
-    }
+  Future<int> getAttendProofID(String userId, String userToken) async {
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
+          headers: {'Authorization': "Bearer $userToken"});
+      print(response.statusCode);
 
+      var decodedResponse = jsonDecode(response.body);
+      print(decodedResponse["message"]);
+      if (decodedResponse["message"] == "Success") {
+        return decodedResponse["data"];
+      } else {
+        return -1;
+      }
+    } catch (e) {
+      print(e);
+    }
     return -1;
   }
 

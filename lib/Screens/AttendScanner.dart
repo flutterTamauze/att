@@ -1,4 +1,5 @@
 // import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<ScanPage> {
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
   var qrText = '';
   var ifScanned = false;
   QRViewController controller;
@@ -86,7 +87,7 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   secondPageRoute() async {
-    // player.play("cap.wav");
+    player.play("cap.wav");
 
     showDialog(
         context: context,

@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -16,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class StackedNotificaitonAlert extends StatefulWidget {
-  bool popWidget = true;
+  bool popWidget = false;
   final String notificationTitle,
       notificationContent,
       notificationToast,
@@ -92,8 +91,9 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     setState(() {
                                       isloading = true;
                                     });
-                                    int attendId = await attendObj
-                                        .getAttendProofID(user.id);
+                                    int attendId =
+                                        await attendObj.getAttendProofID(
+                                            user.id, user.userToken);
                                     print(attendId);
                                     Position currentPosition =
                                         await Geolocator.getCurrentPosition(

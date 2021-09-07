@@ -3,6 +3,7 @@ import 'dart:io';
 
 // import 'package:audioplayers/audio_cache.dart';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +62,7 @@ Future<bool> isConnectedToInternet(String url) async {
   return false;
 }
 
-// AudioCache player = AudioCache();
+AudioCache player = AudioCache();
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 void notificationPermessions() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -97,32 +98,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
-    // Called when a data message is received
-    print("message recieved ");
-    String data = remoteMessage.data;
-    NotificationDataService dataService = NotificationDataService();
-    dataService.showAttendanceCheckDialog(context);
-    print(data);
-  }
+  // void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
+  //   // Called when a data message is received
+  //   print("message recieved ");
+  //   String data = remoteMessage.data;
+  //   NotificationDataService dataService = NotificationDataService();
+  //   dataService.showAttendanceCheckDialog(context);
+  //   print(data);
+  // }
 
-  void sendRemoteMsg() async {
-    hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
-        to: _token,
-        data: {"Data": "test"},
-        messageType: "my_type",
-        ttl: 120,
-        messageId: "122",
-        collapseKey: '-1',
-        sendMode: 1,
-        receiptMode: 1);
-    String result = await hawawi.Push.sendRemoteMessage(remoteMsg);
-    print(result);
-  }
+  // void sendRemoteMsg() async {
+  //   hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
+  //       to: _token,
+  //       data: {"Data": "test"},
+  //       messageType: "my_type",
+  //       ttl: 120,
+  //       messageId: "122",
+  //       collapseKey: '-1',
+  //       sendMode: 1,
+  //       receiptMode: 1);
+  //   String result = await hawawi.Push.sendRemoteMessage(remoteMsg);
+  //   print(result);
+  // }
 
-  void _onMessageReceiveError(Object error) {
-    // Called when an error occurs while receiving the data message
-  }
+  // void _onMessageReceiveError(Object error) {
+  //   // Called when an error occurs while receiving the data message
+  // }
   @override
   void initState() {
     // test();
@@ -157,32 +158,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           title: event.notification.title,
         ),
         context);
-    // player.play("notification.mp3");
+    player.play("notification.mp3");
   }
 
-  String _token = '';
-  void _onTokenEvent(String event) {
-    // Requested tokens can be obtained here
-    setState(() {
-      _token = event;
-    });
-    print("TokenEvent: " + _token);
-  }
+  // String _token = '';
+  // void _onTokenEvent(String event) {
+  //   // Requested tokens can be obtained here
+  //   setState(() {
+  //     _token = event;
+  //   });
+  //   print("TokenEvent: " + _token);
+  // }
 
-  void _onTokenError(Object error) {
-    PlatformException e = error;
-    print("TokenErrorEvent: " + e.message);
-  }
+  // void _onTokenError(Object error) {
+  //   PlatformException e = error;
+  //   print("TokenErrorEvent: " + e.message);
+  // }
 
-  Future<void> initPlatformState() async {
-    var code = await hawawi.Push.getAAID();
-    await hawawi.Push.getToken(code);
-    if (!mounted) return;
-    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-    if (!mounted) return;
-    hawawi.Push.onMessageReceivedStream
-        .listen(_onMessageReceived, onError: _onMessageReceiveError);
-  }
+  // Future<void> initPlatformState() async {
+  //   var code = await hawawi.Push.getAAID();
+  //   await hawawi.Push.getToken(code);
+  //   if (!mounted) return;
+  //   hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  //   if (!mounted) return;
+  //   hawawi.Push.onMessageReceivedStream
+  //       .listen(_onMessageReceived, onError: _onMessageReceiveError);
+  // }
 
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
@@ -190,83 +191,82 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print(event.notification.body);
       print(event.notification.title);
       saveNotificationToCache(event);
-      // player.play("notification.mp3");
-      return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          Future.delayed(Duration(minutes: 1), () {
-            Navigator.of(context).pop();
-          });
-          return Stack(
-            children: [
-              Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0)), //this right here
-                  child: Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Container(
-                        height: 200.h,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 50.h,
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Text(
-                                  "اثبات حضور",
-                                  style: TextStyle(
-                                      color: Colors.orange,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              Divider(),
-                              Text("برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              RoundedButton(
-                                  title: "اثبات",
-                                  onPressed: () {
-                                    Fluttertoast.showToast(
-                                        msg: "تم اثبات الحضور بنجاح",
-                                        backgroundColor: Colors.green,
-                                        gravity: ToastGravity.CENTER);
+      player.play("notification.mp3");
+      // return showDialog(
+      //   context: context,
+      //   barrierDismissible: false,
+      //   builder: (context) {
+      //     Future.delayed(Duration(minutes: 5), () {
+      //       Navigator.of(context).pop();
+      //     });
+      //     return Stack(
+      //       children: [
+      //         Dialog(
+      //             shape: RoundedRectangleBorder(
+      //                 borderRadius:
+      //                     BorderRadius.circular(10.0)), //this right here
+      //             child: Directionality(
+      //                 textDirection: ui.TextDirection.rtl,
+      //                 child: Container(
+      //                   height: 200.h,
+      //                   width: double.infinity,
+      //                   child: Padding(
+      //                     padding: const EdgeInsets.all(8.0),
+      //                     child: Column(
+      //                       children: [
+      //                         SizedBox(
+      //                           height: 50.h,
+      //                         ),
+      //                         InkWell(
+      //                           onTap: () {},
+      //                           child: Text(
+      //                             "اثبات حضور",
+      //                             style: TextStyle(
+      //                                 color: Colors.orange,
+      //                                 fontSize: 17,
+      //                                 fontWeight: FontWeight.w500),
+      //                           ),
+      //                         ),
+      //                         Divider(),
+      //                         Text("برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+      //                         SizedBox(
+      //                           height: 20.h,
+      //                         ),
+      //                         RoundedButton(
+      //                             title: "اثبات",
+      //                             onPressed: () {
+      //                               Fluttertoast.showToast(
+      //                                   msg: "تم اثبات الحضور بنجاح",
+      //                                   backgroundColor: Colors.green,
+      //                                   gravity: ToastGravity.CENTER);
 
-                                    Navigator.pop(context);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ))),
-              Positioned(
-                  right: 125.w,
-                  top: 200.h,
-                  child: Container(
-                    width: 150.w,
-                    height: 150.h,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: Lottie.asset("resources/notificationalarm.json",
-                          fit: BoxFit.fill),
-                    ),
-                  ))
-            ],
-          );
-        },
-      );
+      //                               // Navigator.pop(context);
+      //                             }),
+      //                       ],
+      //                     ),
+      //                   ),
+      //                 ))),
+      //         Positioned(
+      //             right: 125.w,
+      //             top: 200.h,
+      //             child: Container(
+      //               width: 150.w,
+      //               height: 150.h,
+      //               padding: EdgeInsets.all(20),
+      //               decoration: BoxDecoration(shape: BoxShape.circle),
+      //               child: ClipRRect(
+      //                 borderRadius: BorderRadius.circular(60),
+      //                 child: Lottie.asset("resources/notificationalarm.json",
+      //                     fit: BoxFit.fill),
+      //               ),
+      //             ))
+      //       ],
+      //     );
+      //   },
+      // );
     });
   }
 
-  int levelClock = 300;
   DateTime currentBackPressTime;
   @override
   Widget build(BuildContext context) {
@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
             roundedButtonTitle: "اثبات",
             lottieAsset: "resources/notificationalarm.json",
-            notificationToast: "تم استقبال اثبات الحضور",
+            notificationToast: "تم اثبات الحضور بنجاح",
             showToast: true,
             repeatAnimation: true,
           )

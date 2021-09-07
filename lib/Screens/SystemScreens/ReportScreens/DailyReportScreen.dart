@@ -694,7 +694,8 @@ class _DataTableRowState extends State<DataTableRow> {
                         context)
                     .then((value) {
                   print("value $value");
-                  if (value == "Success") {
+                  if (value == "Success" ||
+                      value == "user created after period") {
                     Navigator.pop(context);
                     Navigator.of(context).push(
                       new MaterialPageRoute(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class SystemScanPage extends StatefulWidget {
 
 class _SystemScanPageState extends State<SystemScanPage> {
   var qrText = '';
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
   CameraDescription cameraDescription;
   _startUp() async {
     List<CameraDescription> cameras = await availableCameras();
@@ -112,7 +113,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
       qrText = scanData;
       if (!isScanned) {
         isScanned = true;
-        shiftQrCode = await Provider.of<ShiftApi>(context, listen: false)
+        shiftQrCode = Provider.of<ShiftApi>(context, listen: false)
             .currentShift
             .shiftQrCode;
         print("qrcode : $shiftQrCode");
@@ -129,7 +130,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
     //     });
     print("Qr text $qrText");
 
-    // player.play("cap.wav");
+    player.play("cap.wav");
     controller?.pauseCamera();
     //  WidgetsFlutterBinding.ensureInitialized();
 

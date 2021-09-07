@@ -42,7 +42,7 @@ dependencies:
   fluttertoast: ^7.1.6
   camera:
   cron: ^0.2.4
-  # audioplayers: 
+  audioplayers: 
   permission_handler: ^6.0.0
   trust_location: ^2.0.11
   shared_preferences: ^2.0.0
@@ -85,6 +85,7 @@ dependencies:
   getwidget: ^1.2.4
   flutter_slidable: ^0.6.0
   huawei_push: ^5.1.1+301
+  flutter_phoenix: ^1.0.0
  
 dev_dependencies:
   flutter_test:

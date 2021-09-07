@@ -19,6 +19,7 @@ import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +36,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   bool isLoading = false;
-  DatabaseHelper db = DatabaseHelper();
+
   DataBaseService _dataBaseService = DataBaseService();
   FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
@@ -58,7 +59,11 @@ class _SplashScreenState extends State<SplashScreen>
           isError = true;
         });
         if (isError == false) {
-          await firebaseMessaging.subscribeToTopic("attendChilango");
+          print("topic name : ");
+          print(
+              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          await firebaseMessaging.subscribeToTopic(
+              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
         }
       }
 
@@ -206,6 +211,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    DatabaseHelper db = DatabaseHelper();
     // filterList();
     // loadModel();
 

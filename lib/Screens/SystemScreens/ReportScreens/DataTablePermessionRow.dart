@@ -45,6 +45,7 @@ class DataTablePermessionRow extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Container(
+                        width: 30,
                         height: 30.h,
                         child: Center(
                           child: Container(

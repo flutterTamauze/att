@@ -15,6 +15,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/company.dart';
 
 import 'package:qr_users/services/user_data.dart';
 
@@ -472,22 +473,15 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             selectedDateString,
 
                                                         onChanged: (value) {
-                                                          print(date);
-                                                          print(value);
-                                                          if (value != date) {
-                                                            date = value;
+                                                          date = value;
+
+                                                          setState(() {
                                                             selectedDateString =
                                                                 date;
-
-                                                            setState(() {
-                                                              selectedDate =
-                                                                  DateTime.parse(
-                                                                      selectedDateString);
-                                                            });
-                                                            print(selectedDate);
-                                                          }
-
-                                                          print(value);
+                                                            selectedDate =
+                                                                DateTime.parse(
+                                                                    selectedDateString);
+                                                          });
                                                         },
                                                         type: DateTimePickerType
                                                             .date,
@@ -729,10 +723,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     builder: (context) {
                                                       sendFcmMessage(
                                                         topicName:
-                                                            "attendChilango",
-                                                        title:
-                                                            "تم طلب الأجازة بنجاح",
-                                                        category: "vacation",
+                                                            "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                        title: "طلب أجازة",
+                                                        category: "",
                                                         message:
                                                             "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                       );
@@ -808,9 +801,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   builder: (context) {
                                                     sendFcmMessage(
                                                       topicName:
-                                                          "attendChilango",
-                                                      title: "تم طلب اذن بنجاح",
-                                                      category: "permession",
+                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                      title: "طلب اذن",
+                                                      category: "",
                                                       message:
                                                           "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                     );
@@ -842,6 +835,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 errorToast();
                                               }
                                             } else {
+                                              print(selectedDateString);
+                                              print(timeOutController.text);
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,

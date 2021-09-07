@@ -1,7 +1,7 @@
 import 'dart:async';
 
 // import 'package:audioplayers/audio_cache.dart';
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:flutter/material.dart';
@@ -68,9 +68,9 @@ TimeOfDay intToTimeOfDay(int time) {
 }
 
 String date;
-// AudioCache player = AudioCache();
+AudioCache player = AudioCache();
 AttendProof attendObj = AttendProof();
-// AudioPlayer instance;
+AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
 String selectedDateString;
@@ -300,142 +300,161 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                       )),
                                 ),
                                 Divider(),
-                                AssignTaskToUser(
-                                  function: () => widget.onResetMac(),
-                                  iconData: Icons.repeat,
-                                  taskName: "اعادة ضبط المستخدم",
-                                ),
-                                Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: Container(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "السماح للمستخدم بالتسجيل بالبطاقة",
-                                        ),
-                                        Container(
-                                          width: 20.w,
-                                          height: 20.h,
-                                          child: Pulse(
-                                            duration:
-                                                Duration(milliseconds: 800),
-                                            controller: (controller) =>
-                                                animateControllerOne =
-                                                    controller,
-                                            manualTrigger: true,
-                                            child: Checkbox(
-                                              checkColor: Colors.white,
-                                              activeColor: Colors.orange,
-                                              value:
-                                                  widget.user.isAllowedToAttend,
-                                              onChanged: (value) {
-                                                if (value == true) {
-                                                  animateControllerOne.repeat();
-                                                }
-                                                setState(() {
-                                                  allowToAttendBox = value;
-                                                });
-                                                widget.user.isAllowedToAttend =
-                                                    value;
-                                                Provider.of<MemberData>(context,
-                                                        listen: false)
-                                                    .allowMemberAttendByCard(
-                                                        widget.user.id,
-                                                        value,
-                                                        Provider.of<UserData>(
-                                                                context,
-                                                                listen: false)
-                                                            .user
-                                                            .userToken);
-                                              },
-                                            ),
+                                userType == 4
+                                    ? AssignTaskToUser(
+                                        function: () => widget.onResetMac(),
+                                        iconData: Icons.repeat,
+                                        taskName: "اعادة ضبط المستخدم",
+                                      )
+                                    : Container(),
+                                userType == 4 ? Divider() : Container(),
+                                userType == 4
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 3),
+                                        child: Container(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "السماح للمستخدم بالتسجيل بالبطاقة",
+                                              ),
+                                              Container(
+                                                width: 20.w,
+                                                height: 20.h,
+                                                child: Pulse(
+                                                  duration: Duration(
+                                                      milliseconds: 800),
+                                                  controller: (controller) =>
+                                                      animateControllerOne =
+                                                          controller,
+                                                  manualTrigger: true,
+                                                  child: Checkbox(
+                                                    checkColor: Colors.white,
+                                                    activeColor: Colors.orange,
+                                                    value: widget
+                                                        .user.isAllowedToAttend,
+                                                    onChanged: (value) {
+                                                      if (value == true) {
+                                                        animateControllerOne
+                                                            .repeat();
+                                                      }
+                                                      setState(() {
+                                                        allowToAttendBox =
+                                                            value;
+                                                      });
+                                                      widget.user
+                                                              .isAllowedToAttend =
+                                                          value;
+                                                      Provider.of<MemberData>(
+                                                              context,
+                                                              listen: false)
+                                                          .allowMemberAttendByCard(
+                                                              widget.user.id,
+                                                              value,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken);
+                                                    },
+                                                  ),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: Container(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "عدم الظهور في التقرير",
                                         ),
-                                        Container(
-                                          width: 20.w,
-                                          height: 20.h,
-                                          child: Pulse(
-                                            duration:
-                                                Duration(milliseconds: 800),
-                                            controller: (controller) =>
-                                                animateControllerTwo =
-                                                    controller,
-                                            manualTrigger: true,
-                                            child: Checkbox(
-                                              checkColor: Colors.white,
-                                              activeColor: Colors.orange,
-                                              value:
-                                                  widget.user.excludeFromReport,
-                                              onChanged: (value) {
-                                                if (value == true) {
-                                                  animateControllerTwo.repeat();
-                                                }
-                                                setState(() {
-                                                  noShowInReport = value;
-                                                });
-                                                widget.user.excludeFromReport =
-                                                    value;
-                                                Provider.of<MemberData>(context,
-                                                        listen: false)
-                                                    .exludeUserFromReport(
-                                                        widget.user.id,
-                                                        value,
-                                                        Provider.of<UserData>(
-                                                                context,
-                                                                listen: false)
-                                                            .user
-                                                            .userToken);
-                                              },
-                                            ),
+                                      )
+                                    : Container(),
+                                userType == 4 ? Divider() : Container(),
+                                userType == 4
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 3),
+                                        child: Container(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "عدم الظهور في التقرير",
+                                              ),
+                                              Container(
+                                                width: 20.w,
+                                                height: 20.h,
+                                                child: Pulse(
+                                                  duration: Duration(
+                                                      milliseconds: 800),
+                                                  controller: (controller) =>
+                                                      animateControllerTwo =
+                                                          controller,
+                                                  manualTrigger: true,
+                                                  child: Checkbox(
+                                                    checkColor: Colors.white,
+                                                    activeColor: Colors.orange,
+                                                    value: widget
+                                                        .user.excludeFromReport,
+                                                    onChanged: (value) {
+                                                      if (value == true) {
+                                                        animateControllerTwo
+                                                            .repeat();
+                                                      }
+                                                      setState(() {
+                                                        noShowInReport = value;
+                                                      });
+                                                      widget.user
+                                                              .excludeFromReport =
+                                                          value;
+                                                      Provider.of<MemberData>(
+                                                              context,
+                                                              listen: false)
+                                                          .exludeUserFromReport(
+                                                              widget.user.id,
+                                                              value,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken);
+                                                    },
+                                                  ),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Divider(),
-                                AssignTaskToUser(
-                                    taskName: "جدولة المناوبات",
-                                    iconData: Icons.table_view,
-                                    function: () async {
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (BuildContext context) {
-                                      //       return RoundedLoadingIndicator();
-                                      //     });
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShiftScheduleScreen(
-                                              member: widget.user,
-                                              siteIndex: widget.siteIndex,
-                                            ),
-                                          ));
-                                    }),
-                                Divider(),
+                                        ),
+                                      )
+                                    : Container(),
+                                userType == 4 ? Divider() : Container(),
+                                userType == 4
+                                    ? AssignTaskToUser(
+                                        taskName: "جدولة المناوبات",
+                                        iconData: Icons.table_view,
+                                        function: () async {
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (BuildContext context) {
+                                          //       return RoundedLoadingIndicator();
+                                          //     });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShiftScheduleScreen(
+                                                  member: widget.user,
+                                                  siteIndex: widget.siteIndex,
+                                                ),
+                                              ));
+                                        })
+                                    : Container(),
+                                userType == 4 ? Divider() : Container(),
                                 AssignTaskToUser(
                                     taskName: " إرسال اثبات حضور",
                                     iconData: FontAwesomeIcons.checkCircle,
@@ -511,28 +530,30 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child:
-                                    RounderButton("تعديل", widget.onTapEdit)),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            Provider.of<UserData>(context, listen: false)
-                                        .user
-                                        .id ==
-                                    widget.user.id
-                                ? Container()
-                                : Expanded(
-                                    child: RounderButton(
-                                        "حذف", widget.onTapDelete))
-                          ],
-                        ),
-                      )
+                      userType == 4
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: RounderButton(
+                                          "تعديل", widget.onTapEdit)),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  Provider.of<UserData>(context, listen: false)
+                                              .user
+                                              .id ==
+                                          widget.user.id
+                                      ? Container()
+                                      : Expanded(
+                                          child: RounderButton(
+                                              "حذف", widget.onTapDelete))
+                                ],
+                              ),
+                            )
+                          : Container()
                     ],
                   ),
                 ),

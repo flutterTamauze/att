@@ -111,7 +111,8 @@ class _OfficialVacationState extends State<OfficialVacation> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton:
-                Provider.of<UserData>(context).user.userType == 4
+                Provider.of<UserData>(context).user.userType == 4 ||
+                        Provider.of<UserData>(context).user.userType == 3
                     ? Container(
                         decoration: BoxDecoration(
                             border: Border.all(

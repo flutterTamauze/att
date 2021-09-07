@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
@@ -47,18 +48,22 @@ class DrawerI extends StatelessWidget {
                   color: Colors.black,
                   elevation: 1,
                   child: Center(
-                    child: Container(
-                      height: 100.h,
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Color(0xffFF7E00),
-                          ),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage("resources/image.png"),
-                          )),
+                    child: InkWell(
+                      onTap: () =>
+                          launch("https://chilangov3.tamauzeds.com/#/"),
+                      child: Container(
+                        height: 100.h,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Color(0xffFF7E00),
+                            ),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage("resources/image.png"),
+                            )),
+                      ),
                     ),
                   ),
                 ),
@@ -223,10 +228,11 @@ class DrawerI extends StatelessWidget {
                                 Provider.of<ShiftsData>(context, listen: false)
                                     .shiftsBySite = [];
 
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()),
-                                    (Route<dynamic> route) => false);
+                                Phoenix.rebirth(context);
+                                // Navigator.of(context).pushAndRemoveUntil(
+                                //     MaterialPageRoute(
+                                //         builder: (context) => LoginScreen()),
+                                //     (Route<dynamic> route) => false);
                               },
                               title: 'تسجيل خروج',
                               content: "هل تريد تسجيل الخروج ؟");
@@ -235,20 +241,6 @@ class DrawerI extends StatelessWidget {
                   title: "تسجيل خروج",
                   icon: Icons.logout,
                 ),
-                // Divider(
-                //   height: 30,
-                //   thickness: 0.5,
-                //   color: Colors.white.withOpacity(0.3),
-                //   indent: 50,
-                //   endIndent: 50,
-                // ),
-                // MenuItem(
-                //   onTap: () {
-                //     SystemNavigator.pop();
-                //   },
-                //   title: "خروج من التطبيق",
-                //   icon: Icons.exit_to_app,
-                // )
               ],
             ),
             AMHPoweredWidght(),
@@ -360,7 +352,7 @@ class AMHPoweredWidght extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            launch("http://amhtechnology.com/");
+            launch("https://tamauzeds.com/");
           },
           child: Container(
             height: 120.h,

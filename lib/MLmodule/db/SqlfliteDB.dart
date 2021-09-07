@@ -99,9 +99,25 @@ class DatabaseHelper {
 
   clearNotifications() async {
     try {
-      await _database
-          .delete(_notificationTableName)
-          .then((value) => print("deleted"));
+      bool databaseDeleted = false;
+
+      try {
+        Directory documentsDirectory = await getApplicationDocumentsDirectory();
+        String path = join(documentsDirectory.path, _dbName);
+        _database = null;
+        await deleteDatabase(path).whenComplete(() {
+          databaseDeleted = true;
+          print("db deleted");
+        }).catchError((onError) {
+          databaseDeleted = false;
+        });
+      } on DatabaseException catch (error) {
+        print(error);
+      } catch (error) {
+        print(error);
+      }
+
+      return databaseDeleted;
     } catch (e) {
       print(e);
     }

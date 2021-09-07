@@ -233,8 +233,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           height: MediaQuery.of(context).size.height,
           child: GestureDetector(
             onTap: () {
-              print(monFromT);
-              print(monToT);
+              print(tuesFromT);
+              print(tuesFrom);
+              print(_tuesFrom);
             },
             behavior: HitTestBehavior.opaque,
             onPanDown: (_) {
@@ -1027,7 +1028,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         });
     var user = Provider.of<UserData>(context, listen: false).user;
     print(Provider.of<SiteData>(context, listen: false).sitesList[siteId].id);
-
+    print("yom al tlat");
+    print(int.parse(_tuesFrom.replaceAll(":", "")));
     var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
         Shift(
           fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),

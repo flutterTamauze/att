@@ -40,11 +40,6 @@ class DataTablePermessionHeader extends StatelessWidget {
                     DataTableHeaderTitles("نوع الأذن"),
                     DataTableHeaderTitles("التاريخ"),
                     DataTableHeaderTitles("الوقت"),
-                    Expanded(
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
                   ],
                 ),
               )
