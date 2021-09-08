@@ -89,22 +89,22 @@ class TakePictureScreenState extends State<CameraPicker>
     }
   }
 
-  Future signUp(context) async {
-    /// gets predicted data from facenet service (user face detected)
-    List predictedData = _faceNetService.predictedData;
-    String user = Provider.of<UserData>(context, listen: false).user.id;
-    String password = "*";
+  // Future signUp(context) async {
+  //   /// gets predicted data from facenet service (user face detected)
+  //   List predictedData = _faceNetService.predictedData;
+  //   String user = Provider.of<UserData>(context, listen: false).user.id;
+  //   String password = "*";
 
-    print(
-        "Output from signup : user : $user , predictedData = ${predictedData.length}");
-    // / creates a new user in the 'database'
-    await _dataBaseService
-        .saveData(user, password, predictedData)
-        .whenComplete(() => print("SAved to Database successfully"));
+  //   print(
+  //       "Output from signup : user : $user , predictedData = ${predictedData.length}");
+  //   // / creates a new user in the 'database'
+  //   await _dataBaseService
+  //       .saveData(user, password, predictedData)
+  //       .whenComplete(() => print("SAved to Database successfully"));
 
-    // / resets the face stored in the face net sevice
-    this._faceNetService.setPredictedData(null);
-  }
+  //   // / resets the face stored in the face net sevice
+  //   this._faceNetService.setPredictedData(null);
+  // }
 
   imglib.Image finalImage;
   List<Face> scannResult = [];
@@ -266,9 +266,9 @@ class TakePictureScreenState extends State<CameraPicker>
 
                               File img = File(path);
 
-                              if (widget.fromScreen == "register") {
-                                // await signUp(context);
-                              }
+                              // if (widget.fromScreen == "register") {
+                              //   // await signUp(context);
+                              // }
 
                               // await applyModelOnImage(img);
 
@@ -279,7 +279,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     imagePath = File(img.path);
                                   });
 
-                                  // _predict();
+                                  _predict();
                                 }
                               } catch (e) {
                                 print(e);
@@ -343,6 +343,13 @@ class TakePictureScreenState extends State<CameraPicker>
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.black,
                                           textColor: Colors.white);
+                                    } else if (msg ==
+                                        "Sorry : Today is an official vacation!") {
+                                      Fluttertoast.showToast(
+                                          msg: "خطأ فى التسجيل : عطلة رسمية",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
                                     } else if (msg == "noInternet") {
                                       Fluttertoast.showToast(
                                           msg:
