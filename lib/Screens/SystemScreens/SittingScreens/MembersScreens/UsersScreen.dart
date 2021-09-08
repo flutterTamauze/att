@@ -723,7 +723,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                           if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, token, context) == "Success") {
                                                                                             Navigator.pop(context);
                                                                                             Fluttertoast.showToast(
-                                                                                              msg: "تم التعديل بنجاح",
+                                                                                              msg: "تم اعادة الضبط بنجاح",
                                                                                               gravity: ToastGravity.CENTER,
                                                                                               toastLength: Toast.LENGTH_SHORT,
                                                                                               timeInSecForIosWeb: 1,
@@ -733,7 +733,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                             );
                                                                                           } else {
                                                                                             Fluttertoast.showToast(
-                                                                                              msg: "خطأ في التعديل",
+                                                                                              msg: "خطأ في اعادة الضبط",
                                                                                               gravity: ToastGravity.CENTER,
                                                                                               toastLength: Toast.LENGTH_SHORT,
                                                                                               timeInSecForIosWeb: 1,

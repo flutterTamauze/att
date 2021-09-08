@@ -254,8 +254,8 @@ class TakePictureScreenState extends State<CameraPicker>
                                 '${DateTime.now()}.jpg',
                               );
                               try {
-                                await _faceNetService.setCurrentPrediction(
-                                    currentCameraImage, scannResult[0]);
+                                // await _faceNetService.setCurrentPrediction(
+                                //     currentCameraImage, scannResult[0]);
                               } catch (e) {
                                 print(e);
                               }
@@ -267,7 +267,7 @@ class TakePictureScreenState extends State<CameraPicker>
                               File img = File(path);
 
                               if (widget.fromScreen == "register") {
-                                await signUp(context);
+                                // await signUp(context);
                               }
 
                               // await applyModelOnImage(img);
@@ -279,7 +279,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     imagePath = File(img.path);
                                   });
 
-                                  _predict();
+                                  // _predict();
                                 }
                               } catch (e) {
                                 print(e);
@@ -302,8 +302,8 @@ class TakePictureScreenState extends State<CameraPicker>
                               // _cameraService.cameraController.dispose();
                               print("=====Compressed==========");
                               if (widget.fromScreen != "register") {
-                                predictedUserName = _faceNetService.predict();
-                                print(predictedUserName);
+                                // predictedUserName = _faceNetService.predict();
+                                // print(predictedUserName);
                               }
 
                               if (category.label.substring(2) == "mobiles") {
