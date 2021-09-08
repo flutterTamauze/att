@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -291,6 +292,16 @@ class MemberData with ChangeNotifier {
 
         if (decodedRes["message"] == "Success : User Device Reset Success") {
           print("before deleting");
+          if (Platform.isIOS) {
+            final storage = new FlutterSecureStorage();
+
+            await storage
+                .write(key: "deviceMac", value: "")
+                .whenComplete(() => print("keychain is reseted successfully!"))
+                .catchError((e) {
+              print(e);
+            });
+          }
           //Only local//
           // Provider.of<UserData>(context, listen: false).changedWidget =
           //     Image.asset("resources/personicon.png");

@@ -349,7 +349,7 @@ class UserData with ChangeNotifier {
     if (await isConnectedToInternet("www.google.com")) {
       int locationService = await getCurrentLocation();
       if (locationService == 0) {
-        String imei = await FlutterUdid.udid;
+        String imei = await getDeviceUUID();
         print("imei is : $imei");
         final uri = '$baseURL/api/AttendLogin';
         print(
