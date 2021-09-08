@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:device_info/device_info.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image/image.dart' as imglib;
@@ -250,7 +252,10 @@ class TakePictureScreenState extends State<CameraPicker>
                             ),
                             onTap: () async {
                               final path = join(
-                                (await getTemporaryDirectory()).path,
+                                (await getTemporaryDirectory().catchError((e) {
+                                  print("directory error $e");
+                                }))
+                                    .path,
                                 '${DateTime.now()}.jpg',
                               );
                               try {
@@ -279,7 +284,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     imagePath = File(img.path);
                                   });
 
-                                  // _predict();
+                                  _predict();
                                 }
                               } catch (e) {
                                 print(e);
@@ -324,6 +329,14 @@ class TakePictureScreenState extends State<CameraPicker>
                               // }
                               else if (numberOfFacesDetected == 1) {
                                 if (widget.fromScreen == "register") {
+                                  print("i got the image : ${image.path}");
+                                  final storage = new FlutterSecureStorage();
+                                  final DeviceInfoPlugin deviceInfoPlugin =
+                                      new DeviceInfoPlugin();
+                                  var data = await deviceInfoPlugin.iosInfo;
+                                  String chainValue =
+                                      await storage.read(key: "deviceMac");
+                                  print(chainValue);
                                   Navigator.pop(context, image);
                                 } else {
                                   Future.delayed(const Duration(seconds: 3),

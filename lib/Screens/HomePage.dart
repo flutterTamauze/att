@@ -294,9 +294,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               onTap: () async {
                 // sendRemoteMsg();
                 final storage = new FlutterSecureStorage();
-                final DeviceInfoPlugin deviceInfoPlugin =
-                    new DeviceInfoPlugin();
-                var data = await deviceInfoPlugin.iosInfo;
+
                 String chainValue = await storage.read(key: "deviceMac");
                 print(chainValue);
               },
