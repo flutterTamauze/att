@@ -922,7 +922,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                       name: _nameController.text),
                                                                   widget.id,
                                                                   token,
-                                                                  context);
+                                                                  context,
+                                                                  getRoleName(userRole));
 
                                                           if (msg ==
                                                               "Success") {

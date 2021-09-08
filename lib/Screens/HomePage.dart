@@ -4,9 +4,11 @@ import 'dart:io';
 // import 'package:audioplayers/audio_cache.dart';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -291,6 +293,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: GestureDetector(
               onTap: () async {
                 // sendRemoteMsg();
+                final storage = new FlutterSecureStorage();
+                final DeviceInfoPlugin deviceInfoPlugin =
+                    new DeviceInfoPlugin();
+                var data = await deviceInfoPlugin.iosInfo;
+                String chainValue = await storage.read(key: "deviceMac");
+                print(chainValue);
               },
               child: GestureDetector(
                 child: Scaffold(

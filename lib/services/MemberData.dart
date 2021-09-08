@@ -405,10 +405,10 @@ class MemberData with ChangeNotifier {
     }
   }
 
-  editMember(
-      Member member, int id, String userToken, BuildContext context) async {
+  editMember(Member member, int id, String userToken, BuildContext context,
+      String roleName) async {
     print(
-        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, salary ${member.salary}");
+        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, roleName $roleName}");
 
     if (await isConnectedToInternet()) {
       try {
@@ -424,6 +424,7 @@ class MemberData with ChangeNotifier {
                 "JobTitle": member.jobTitle,
                 "UserType": member.userType,
                 "ShiftId": member.shiftId,
+                "roleName": roleName
               },
             ),
             headers: {
@@ -435,7 +436,7 @@ class MemberData with ChangeNotifier {
           await inherit.login(context);
           userToken =
               Provider.of<UserData>(context, listen: false).user.userToken;
-          await editMember(member, id, userToken, context);
+          await editMember(member, id, userToken, context, roleName);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
