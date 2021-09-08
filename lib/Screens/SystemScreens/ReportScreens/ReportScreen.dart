@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/report_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,7 +32,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 builder: (context) => DailyReportScreen(),
               ),
             );
-         
+
             print("الموظفين");
           }),
       ReportTile(

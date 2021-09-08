@@ -432,7 +432,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 print(
                     "saving to the keychain mac : ${data.identifierForVendor}"); //UUID for iOS
                 if (chainValue == "" || chainValue == null) {
-                  print("dddd");
+                  print("chain Value is empty going to write in it");
                   await storage
                       .write(key: "deviceMac", value: data.identifierForVendor)
                       .whenComplete(

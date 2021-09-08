@@ -150,7 +150,9 @@ class RoundedSearchBar extends StatelessWidget {
 
                                               print("on changed $v");
                                               holder = x.indexOf(v);
-
+                                              prov.fillCurrentShiftIndex(
+                                                  holder - 1);
+                                              print("holder $holder");
                                               prov.setDropDownShift(holder);
                                               print(
                                                   "dropdown site index ${holder}");
@@ -326,10 +328,8 @@ class UsersScreen extends StatefulWidget {
   final selectedIndex;
   var comingFromShifts = false;
 
-  UsersScreen(
-    this.selectedIndex,
-    this.comingFromShifts,
-  );
+  String comingShiftName;
+  UsersScreen(this.selectedIndex, this.comingFromShifts, this.comingShiftName);
 
   @override
   _UsersScreenState createState() => _UsersScreenState();
@@ -339,7 +339,7 @@ class UsersScreen extends StatefulWidget {
 class _UsersScreenState extends State<UsersScreen> {
   TextEditingController _nameController = TextEditingController();
   // AutoCompleteTextField searchTextField;
-
+  String currentShiftName;
   void _onRefresh() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvier = Provider.of<CompanyData>(context, listen: false);
@@ -359,8 +359,12 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   void didChangeDependencies() {
-    if (mounted)
-      Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
+    if (widget.comingFromShifts == false) {
+      if (mounted)
+        Provider.of<SiteData>(context, listen: false)
+            .setSiteValue("كل المواقع");
+    }
+
     getData();
     super.didChangeDependencies();
   }
@@ -478,6 +482,7 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
+            print(currentShiftName);
             print(memberData.membersList[0].isAllowedToAttend);
           },
           child: Scaffold(
@@ -572,6 +577,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                   searchFun: (value) {
                                                     print(value);
                                                     searchInList(value);
+                                                    currentShiftName = value;
                                                   },
                                                   textController:
                                                       _nameController,
@@ -697,7 +703,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
                                                                               Navigator.of(context).push(
                                                                                 new MaterialPageRoute(
-                                                                                  builder: (context) => AddUserScreen(memberData.membersListScreenDropDownSearch[index], index, true, phone[0], phone[1]),
+                                                                                  builder: (context) => AddUserScreen(memberData.membersListScreenDropDownSearch[index], index, true, phone[0], phone[1], false, ""),
                                                                                 ),
                                                                               );
                                                                             },
@@ -826,7 +832,13 @@ class _UsersScreenState extends State<UsersScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddUserScreen(
-                                        Member(), 0, false, "", "")));
+                                        Member(),
+                                        0,
+                                        false,
+                                        "",
+                                        "",
+                                        widget.comingFromShifts,
+                                        widget.comingShiftName)));
                           },
                         )
                       : Container()),

@@ -570,7 +570,7 @@ class _LocationTileState extends State<LocationTile> {
                               Navigator.of(context).push(
                                 new MaterialPageRoute(
                                   builder: (context) =>
-                                      UsersScreen(widget.index + 1, false),
+                                      UsersScreen(widget.index + 1, false, ""),
                                 ),
                               );
                             },

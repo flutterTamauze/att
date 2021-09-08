@@ -29,11 +29,14 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart'
 class AddUserScreen extends StatefulWidget {
   final Member member;
   final int id;
+
   final String editableUserPhone;
   final String editiableDial;
   final isEdit;
+  bool comingFromShifts = false;
+  final String shiftNameIncoming;
   AddUserScreen(this.member, this.id, this.isEdit, this.editableUserPhone,
-      this.editiableDial);
+      this.editiableDial, this.comingFromShifts, this.shiftNameIncoming);
 
   @override
   _AddUserScreenState createState() => _AddUserScreenState();
@@ -42,11 +45,21 @@ class AddUserScreen extends StatefulWidget {
 class _AddUserScreenState extends State<AddUserScreen> {
   bool edit = true;
   int siteId;
+
   intlPhone.PhoneNumber number =
       intlPhone.PhoneNumber(dialCode: "+20", isoCode: "EG");
   @override
   void initState() {
     super.initState();
+
+    print(widget.comingFromShifts);
+    if (widget.comingFromShifts) {
+      print("shift incoming =${widget.shiftNameIncoming}");
+      shiftIndex = getShiftid(widget.shiftNameIncoming);
+    } else {
+      shiftIndex =
+          Provider.of<SiteData>(context, listen: false).currentShiftIndex;
+    }
     editNumber = intlPhone.PhoneNumber(
         isoCode: widget.editableUserPhone,
         dialCode: widget.editiableDial,
@@ -65,10 +78,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
             Provider.of<SiteData>(context, listen: false).dropDownSitesIndex;
       }
 
-      print(Provider.of<SiteData>(context, listen: false).dropDownSitesIndex);
-      Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-          Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
-          false);
+      print(
+          "dropdownindex ${Provider.of<SiteData>(context, listen: false).dropDownSitesIndex}");
+      if (!widget.comingFromShifts) {
+        Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+            Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
+            false);
+      }
     }
   }
 
@@ -97,8 +113,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
       await Provider.of<ShiftsData>(context, listen: false)
           .findMatchingShifts(getSiteIdByShiftId(widget.member.shiftId), false);
 
-      shiftId = getShiftListIndex(widget.member.shiftId);
-      siteId = getSiteListIndex(shiftId);
+      shiftIndex = getShiftListIndex(widget.member.shiftId);
+      siteId = getSiteListIndex(shiftIndex);
       _nameController.text = widget.member.name;
       _emailController.text = widget.member.email;
       _phoneController.text = widget.member.phoneNumber;
@@ -107,8 +123,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
       userType = widget.member.userType;
       setState(() {});
     } else {
-      await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-          Provider.of<SiteData>(context, listen: false).sitesList[0].id, false);
+      print(widget.comingFromShifts);
+      // if (!widget.comingFromShifts) {
+      //   Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+      //       Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
+      //       false);
+      // }
     }
   }
 
@@ -120,7 +140,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _salaryController = TextEditingController();
 
-  int shiftId = 0;
+  int shiftIndex = 0;
   int userType = 0;
   String userRole = "";
   List<Shift> shiftsList;
@@ -138,9 +158,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
         body: Center(
           child: Container(
             child: GestureDetector(
-              onTap: () => print(Provider.of<ShiftsData>(context, listen: false)
-                  .shiftsBySite[shiftId]
-                  .shiftId),
+              onTap: () {
+                print(Provider.of<SiteData>(context, listen: false)
+                    .currentShiftIndex);
+                print(shiftIndex);
+                print(Provider.of<ShiftsData>(context, listen: false)
+                    .shiftsBySite[shiftIndex]
+                    .shiftName);
+              },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();
@@ -590,7 +615,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                         .id,
                                                     false);
                                             setState(() {
-                                              shiftId = 0;
+                                              shiftIndex = 0;
                                             });
                                             Provider.of<SiteData>(context,
                                                     listen: false)
@@ -620,7 +645,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           edit: edit,
                                           list: Provider.of<ShiftsData>(context,
                                                   listen: true)
-                                              .shiftsBySite,
+                                              .shiftsBySite
+                                              .where((element) =>
+                                                  element.shiftName !=
+                                                  "كل المناوبات")
+                                              .toList(),
                                           colour: Colors.white,
                                           icon: Icons.location_on,
                                           borderColor: Colors.black,
@@ -637,13 +666,22 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             Provider.of<SiteData>(context,
                                                     listen: false)
                                                 .setDropDownShift(0);
-                                            shiftId = getShiftid(value);
-                                            print("shiftid..... =    $shiftId");
+                                            shiftIndex = getShiftid(value);
+                                            print(
+                                                "shiftid..... =    $shiftIndex");
                                           },
-                                          selectedvalue:
-                                              Provider.of<ShiftsData>(context)
-                                                  .shiftsBySite[shiftId]
-                                                  .shiftName,
+                                          selectedvalue: Provider.of<
+                                                  ShiftsData>(context)
+                                              .shiftsBySite[
+                                                  Provider.of<ShiftsData>(
+                                                                  context)
+                                                              .shiftsBySite[
+                                                                  shiftIndex]
+                                                              .shiftName ==
+                                                          "كل المناوبات"
+                                                      ? shiftIndex + 1
+                                                      : shiftIndex]
+                                              .shiftName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -661,7 +699,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                     if (_formKey.currentState.validate()) {
                                       if (Provider.of<ShiftsData>(context,
                                                   listen: false)
-                                              .shiftsBySite[shiftId]
+                                              .shiftsBySite[shiftIndex]
                                               .shiftStartTime ==
                                           -1) {
                                         Fluttertoast.showToast(
@@ -697,12 +735,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             .addMember(
                                                 Member(
                                                     userType: userType,
-                                                    shiftId: Provider.of<
-                                                                ShiftsData>(
-                                                            context,
-                                                            listen: false)
-                                                        .shiftsBySite[shiftId]
-                                                        .shiftId,
+                                                    shiftId:
+                                                        Provider.of<ShiftsData>(
+                                                                context,
+                                                                listen: false)
+                                                            .shiftsBySite[
+                                                                shiftIndex]
+                                                            .shiftId,
                                                     jobTitle: _titleController
                                                         .text
                                                         .trim(),
@@ -710,14 +749,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                         .trim(),
                                                     salary: double.parse(
                                                         _salaryController.text),
-                                                    phoneNumber:
-                                                        number.dialCode +
-                                                            _phoneController.text
-                                                                .replaceAll(
-                                                              new RegExp(
-                                                                  r"\s+\b|\b\s"),
-                                                              "",
-                                                            ),
+                                                    phoneNumber: number
+                                                            .dialCode +
+                                                        _phoneController.text
+                                                            .replaceAll(
+                                                          new RegExp(
+                                                              r"\s+\b|\b\s"),
+                                                          "",
+                                                        ),
                                                     name: _nameController.text
                                                         .trim()),
                                                 token,
@@ -742,7 +781,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                       builder:
                                                           (context) =>
                                                               UsersScreen(-1,
-                                                                  false)),
+                                                                  false, "")),
                                                   (Route<dynamic> route) =>
                                                       false);
                                         } else if (msg == "exists") {
@@ -801,7 +840,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       if (_formKey.currentState.validate()) {
                                         if (Provider.of<ShiftsData>(context,
                                                     listen: false)
-                                                .shiftsBySite[shiftId]
+                                                .shiftsBySite[shiftIndex]
                                                 .shiftStartTime ==
                                             -1) {
                                           Fluttertoast.showToast(
@@ -866,7 +905,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           userType,
                                                                       shiftId: Provider.of<ShiftsData>(context, listen: false)
                                                                           .shiftsBySite[
-                                                                              shiftId]
+                                                                              shiftIndex]
                                                                           .shiftId,
                                                                       phoneNumber: editNumber
                                                                               .dialCode +
@@ -934,7 +973,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                       new MaterialPageRoute(
                                                                         builder: (context) => UsersScreen(
                                                                             -1,
-                                                                            false),
+                                                                            false,
+                                                                            ""),
                                                                       ),
                                                                     ));
 
@@ -1085,7 +1125,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => UsersScreen(-1, false)),
+                                  builder: (context) =>
+                                      UsersScreen(-1, false, "")),
                               (Route<dynamic> route) => false);
                         },
                       ),
@@ -1221,7 +1262,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
     Provider.of<SiteData>(context, listen: false).setDropDownIndex(0);
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => UsersScreen(-1, false)),
+        MaterialPageRoute(builder: (context) => UsersScreen(-1, false, "")),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

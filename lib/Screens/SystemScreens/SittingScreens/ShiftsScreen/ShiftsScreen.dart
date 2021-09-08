@@ -474,6 +474,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 class ShiftTile extends StatefulWidget {
   final Shift shift;
   var index;
+
   final String siteName;
   final siteIndex;
   final Function onTapEdit;
@@ -494,7 +495,6 @@ class _ShiftTileState extends State<ShiftTile> {
   int siteId;
   @override
   void initState() {
-    // TODO: implement initStat
     super.initState();
   }
 
@@ -568,7 +568,8 @@ class _ShiftTileState extends State<ShiftTile> {
                           ),
                           InkWell(
                             onTap: () async {
-                              siteProv.setDropDownShift(widget.index);
+                              siteProv.setDropDownShift(
+                                  widget.index); //الموقع علي حسب ال اندكس اللي
                               siteProv.setSiteValue(widget.siteName);
                               siteProv.fillCurrentShiftID(
                                   Provider.of<ShiftsData>(context,
@@ -576,17 +577,22 @@ class _ShiftTileState extends State<ShiftTile> {
                                       .shiftsBySite[widget.index]
                                       .shiftId);
                               siteProv.setDropDownShift(widget.index + 1);
-
+                              siteProv.setDropDownIndex(widget.siteIndex);
                               siteProv.fillCurrentShiftID(
                                   Provider.of<ShiftsData>(context,
                                           listen: false)
                                       .shiftsBySite[widget.index]
                                       .shiftId);
-                              print(siteProv.sitesList[widget.siteIndex].name);
+
                               print("finding matching shifts");
                               shiftProv.findMatchingShifts(
                                   siteProv.sitesList[widget.siteIndex].id,
                                   true);
+                              print("siteIndex ${widget.siteIndex}");
+                              print(widget.index);
+                              print(shiftProv
+                                  .shiftsBySite[widget.index + 1].shiftName);
+                              // print(siteProv.sitesList[widget.siteIndex].name);
                               // var index = getSiteName(siteProv.currentSiteName);
 
                               // print(siteProv.sitesList[index].name);
@@ -594,9 +600,10 @@ class _ShiftTileState extends State<ShiftTile> {
                               Navigator.of(context).push(
                                 new MaterialPageRoute(
                                   builder: (context) => UsersScreen(
-                                    widget.siteIndex + 1,
-                                    true,
-                                  ),
+                                      widget.siteIndex + 1,
+                                      true,
+                                      shiftProv.shiftsBySite[widget.index + 1]
+                                          .shiftName),
                                 ),
                               );
                             },

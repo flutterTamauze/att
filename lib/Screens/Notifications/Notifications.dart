@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:ui' as ui;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:getwidget/components/animation/gf_animation.dart';
 import 'package:getwidget/types/gf_animation_type.dart';
-import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
-import 'dart:ui' as ui;
 
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';

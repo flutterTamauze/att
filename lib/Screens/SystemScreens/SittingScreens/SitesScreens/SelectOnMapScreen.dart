@@ -31,7 +31,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
   TextEditingController _long = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fillLatLong();
   }

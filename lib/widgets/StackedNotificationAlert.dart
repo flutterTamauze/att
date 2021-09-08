@@ -135,9 +135,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     if (widget.popWidget) {
                                       Navigator.pop(context);
                                       Navigator.pop(context);
-                                    } else {
-                                      Navigator.pop(context);
-                                    }
+                                    } else {}
                                   } else {
                                     Navigator.pop(context);
                                     Navigator.push(

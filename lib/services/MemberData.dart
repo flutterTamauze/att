@@ -350,6 +350,7 @@ class MemberData with ChangeNotifier {
 
   addMember(Member member, String userToken, BuildContext context,
       String roleName) async {
+    print(roleName);
     if (await isConnectedToInternet()) {
       try {
         final response = await http.post(
@@ -363,7 +364,7 @@ class MemberData with ChangeNotifier {
                 "JobTitle": member.jobTitle,
                 "UserType": member.userType,
                 "ShiftId": member.shiftId,
-                "roleName": roleName
+                "roleName": roleName == "" ? "User" : roleName
               },
             ),
             headers: {

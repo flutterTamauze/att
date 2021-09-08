@@ -13,33 +13,25 @@ import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ShiftSchedule.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
-import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:qr_users/widgets/roundedAlert.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:qr_users/widgets/roundedButton.dart';
-import 'dart:convert';
-import 'UsersScreen.dart';
 
 class UserFullDataScreen extends StatefulWidget {
   @override

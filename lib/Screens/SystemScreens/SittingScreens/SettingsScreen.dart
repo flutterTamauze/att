@@ -176,7 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Navigator.of(context).push(
                                   new MaterialPageRoute(
                                     builder: (context) =>
-                                        UsersScreen(-1, false),
+                                        UsersScreen(-1, false, ""),
                                   ),
                                 );
                               } else {

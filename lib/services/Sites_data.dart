@@ -31,6 +31,7 @@ class SiteData with ChangeNotifier {
   Future futureListener;
   List<String> dropdownIndexes = [];
   int dropIndex = 0;
+  int currentShiftIndex = 0;
   String currentSiteName = "";
   InheritDefault inherit = InheritDefault();
   String siteValue = 'كل المواقع';
@@ -45,6 +46,11 @@ class SiteData with ChangeNotifier {
 
   setDropIndex(int newValue) {
     dropIndex = newValue;
+    notifyListeners();
+  }
+
+  fillCurrentShiftIndex(int index) {
+    currentShiftIndex = index;
     notifyListeners();
   }
 
