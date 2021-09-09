@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>io.flutter.embedded_views_preview</key>
-    <true/>
-    <key>NSCameraUsageDescription</key>
-    <string>This app needs camera access to scan QR codes</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Motion usage description</string>
 	<key> NSContactsUsageDescription </key>
 	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -50,6 +44,8 @@
 	<string>This app needs access to location in the background.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>...</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Motion usage description</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>...</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -66,8 +62,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -78,5 +72,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>
