@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
@@ -11,6 +12,8 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'DisplayPermessionAndVacations.dart';
 
 class ReportsScreen extends StatefulWidget {
   @override
@@ -60,6 +63,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ),
             );
             print("الموظفين");
+          }),
+      ReportTile(
+          title: "الأجازات و الأذونات",
+          subTitle: "تقرير الأجازات والأذونات",
+          icon: FontAwesomeIcons.eye,
+          onTap: () {
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => VacationAndPermessionsReport(),
+              ),
+            );
           }),
     ];
     SystemChrome.setEnabledSystemUIOverlays([]);

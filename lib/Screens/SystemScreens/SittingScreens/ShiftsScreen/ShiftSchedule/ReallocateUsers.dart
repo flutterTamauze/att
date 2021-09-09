@@ -539,8 +539,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                   .addShiftSchedule(
                                       daysofflist.reallocateUsers,
                                       userProvider.user.userToken,
-                                      userProvider.user.id,
-                                      userProvider.user.userShiftId,
+                                      widget.member.id,
+                                      widget.member.shiftId,
                                       _fromDate,
                                       _toDate);
                               if (msg == "Success") {

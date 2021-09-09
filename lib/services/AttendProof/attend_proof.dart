@@ -43,7 +43,7 @@ class AttendProof {
               "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
           headers: {'Authorization': "Bearer $userToken"});
       print(response.statusCode);
-
+      print(response.body);
       var decodedResponse = jsonDecode(response.body);
       print(decodedResponse["message"]);
       if (decodedResponse["message"] == "Success") {
@@ -71,6 +71,7 @@ class AttendProof {
         "latitude": latLng.latitude
       }),
     );
+    print(response.statusCode);
     print(response.body);
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Fail : Proof time out!") {

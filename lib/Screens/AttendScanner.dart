@@ -107,6 +107,15 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.black,
             textColor: Colors.orange);
         break;
+      case "you can't register now during shift!":
+        Fluttertoast.showToast(
+            msg: "لم يحن ميعاد التسجيل بعد",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.black,
+            textColor: Colors.orange);
+        break;
+
       case "Failed : Location not found":
         Fluttertoast.showToast(
             msg: "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
@@ -117,7 +126,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Sorry : You have an holiday today!":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: اجازة شخصية",
+            msg: " لم يتم التسجيل: اجازة شخصية",
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -174,7 +183,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Sorry : Today is an official vacation!":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: عطلة رسمية",
+            msg: "لم يتم التسجيل : عطلة رسمية",
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -182,7 +191,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Success : User was not proof":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل:لم يتم اثبات حضور المستخدم",
+            msg: "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,

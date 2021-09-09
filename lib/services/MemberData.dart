@@ -226,42 +226,41 @@ class MemberData with ChangeNotifier {
   getAllSiteMembersApi(
       int siteId, String userToken, BuildContext context) async {
     print("get all members");
+    print(siteId);
     List<Member> memberNewList;
     if (await isConnectedToInternet()) {
-      try {
-        final response = await http.get(
-            Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+      final response = await http.get(
+          Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getAllSiteMembersApi(siteId, userToken, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
+        if (decodedRes["message"] == "Success") {
+          var memberObjJson = jsonDecode(response.body)['data'] as List;
+          memberNewList = memberObjJson
+              .map((memberJson) => Member.fromJson(memberJson))
+              .toList();
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getAllSiteMembersApi(siteId, userToken, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
-          if (decodedRes["message"] == "Success") {
-            var memberObjJson = jsonDecode(response.body)['data'] as List;
-            memberNewList = memberObjJson
-                .map((memberJson) => Member.fromJson(memberJson))
-                .toList();
+          dropDownMembersList = memberNewList;
+          notifyListeners();
 
-            dropDownMembersList = memberNewList;
-            notifyListeners();
-
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
-      } catch (e) {
-        print(e);
       }
+
       return "failed";
     } else {
       return 'noInternet';

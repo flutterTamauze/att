@@ -76,6 +76,7 @@ class ShiftsData with ChangeNotifier {
 
   Future<bool> isShiftScheduleByIdEmpty(
       String usertoken, String userId, BuildContext context) async {
+    print("user id $userId");
     var response = await http.get(
         Uri.parse("$baseURL/api/ShiftSchedule/GetScheduleByUserId/$userId"),
         headers: {
@@ -104,6 +105,7 @@ class ShiftsData with ChangeNotifier {
 
   Future<String> addShiftSchedule(List<Day> shiftIds, String usertoken,
       String userId, int usershiftId, DateTime from, DateTime to) async {
+    print("adding shift sched for id $usershiftId");
     isLoading = true;
     notifyListeners();
     var response = await http.post(

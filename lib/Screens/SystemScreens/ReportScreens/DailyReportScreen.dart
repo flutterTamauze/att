@@ -46,6 +46,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     selectedDate = DateTime(now.year, now.month, now.day);
   }
 
+  var isLoading = false;
   int siteId = 0;
   Site siteData;
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
@@ -61,9 +62,15 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     var comProvider = Provider.of<CompanyData>(context, listen: false);
 
     if (userProvider.user.userType == 2) {
+      setState(() {
+        isLoading = true;
+      });
       siteID = userProvider.user.userSiteId;
       siteData = await Provider.of<SiteData>(context, listen: false)
           .getSpecificSite(siteID, userProvider.user.userToken, context);
+      setState(() {
+        isLoading = false;
+      });
     } else {
       if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
         await Provider.of<SiteData>(context, listen: false)
@@ -119,6 +126,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
           backgroundColor: Colors.white,
           body: Container(
             child: GestureDetector(
+              onTap: () => print(siteData.name),
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();
@@ -160,22 +168,25 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               .attendListUnits
                                                               .length !=
                                                           0
-                                                  ? XlsxExportButton(
-                                                      reportType: 0,
-                                                      title:
-                                                          "تقرير الحضور اليومى",
-                                                      site: userDataProvider
-                                                                  .user
-                                                                  .userType ==
-                                                              2
-                                                          ? siteData.name
-                                                          : Provider.of<
-                                                                      SiteData>(
-                                                                  context)
-                                                              .sitesList[siteId]
-                                                              .name,
-                                                      day: date,
-                                                    )
+                                                  ? isLoading
+                                                      ? Container()
+                                                      : XlsxExportButton(
+                                                          reportType: 0,
+                                                          title:
+                                                              "تقرير الحضور اليومى",
+                                                          site: userDataProvider
+                                                                      .user
+                                                                      .userType ==
+                                                                  2
+                                                              ? siteData.name
+                                                              : Provider.of<
+                                                                          SiteData>(
+                                                                      context)
+                                                                  .sitesList[
+                                                                      siteId]
+                                                                  .name,
+                                                          day: date,
+                                                        )
                                                   : Container(),
                                             ],
                                           );

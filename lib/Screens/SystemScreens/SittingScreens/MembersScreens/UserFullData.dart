@@ -462,7 +462,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           .then((value) {
                                         print("VAlue $value");
                                         switch (value) {
-                                          case "Failed : Shift Time Out!":
+                                          case "fail shift":
                                             Fluttertoast.showToast(
                                                 msg:
                                                     "خطأ فى الأرسال : لم تبدأ المناوبة بعد",

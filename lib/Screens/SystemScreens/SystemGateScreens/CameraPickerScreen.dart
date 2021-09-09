@@ -357,9 +357,16 @@ class TakePictureScreenState extends State<CameraPicker>
                                           backgroundColor: Colors.black,
                                           textColor: Colors.white);
                                     } else if (msg ==
+                                        "you can't register now during shift!") {
+                                      Fluttertoast.showToast(
+                                          msg: "لم يحن ميعاد التسجيل بعد",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
                                         "Sorry : Today is an official vacation!") {
                                       Fluttertoast.showToast(
-                                          msg: "خطأ فى التسجيل : عطلة رسمية",
+                                          msg: " لم يتم التسجيل : عطلة رسمية",
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.black);
@@ -373,7 +380,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     } else if (msg ==
                                         "Sorry : You have an holiday today!") {
                                       Fluttertoast.showToast(
-                                          msg: "خطأ فى التسجيل: اجازة شخصية",
+                                          msg: " لم يتم التسجيل: اجازة شخصية",
                                           gravity: ToastGravity.CENTER,
                                           toastLength: Toast.LENGTH_LONG,
                                           backgroundColor: Colors.red,
@@ -417,7 +424,6 @@ class TakePictureScreenState extends State<CameraPicker>
                                           textColor: Colors.black);
                                     } else if (msg ==
                                         "Failed : Mac address not match") {
-                                      //Error while saving Data : Object reference not set to an instance of an object.
                                       Fluttertoast.showToast(
                                           msg:
                                               "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",

@@ -192,8 +192,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print("####Recveiving data on message tapped ####");
       print(event.notification.body);
       print(event.notification.title);
+      print(event.data["category"] == "attend");
       saveNotificationToCache(event);
       player.play("notification.mp3");
+      if (event.data["category"] == "attend") {
+        Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
+      }
       // return showDialog(
       //   context: context,
       //   barrierDismissible: false,
@@ -292,11 +296,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                // sendRemoteMsg();
-                final storage = new FlutterSecureStorage();
+                // // sendRemoteMsg();
+                // final storage = new FlutterSecureStorage();
 
-                String chainValue = await storage.read(key: "deviceMac");
-                print(chainValue);
+                // String chainValue = await storage.read(key: "deviceMac");
+                // print(chainValue);
               },
               child: GestureDetector(
                 child: Scaffold(
