@@ -296,7 +296,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     ? AssignTaskToUser(
                                         function: () => widget.onResetMac(),
                                         iconData: Icons.repeat,
-                                        taskName: "اعادة ضبط المستخدم",
+                                        taskName: "اعادة ضبط هاتف المستخدم",
                                       )
                                     : Container(),
                                 userType == 4 ? Divider() : Container(),

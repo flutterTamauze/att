@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/services/MemberData.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -10,11 +11,9 @@ import 'package:qr_users/services/user_data.dart';
 import 'MyOrdersWidget.dart';
 
 class UserOrdersListView extends StatefulWidget {
-  const UserOrdersListView({
-    Key key,
-    @required this.provList,
-  }) : super(key: key);
-
+  const UserOrdersListView({Key key, @required this.provList, this.memberId})
+      : super(key: key);
+  final String memberId;
   final List<UserHolidays> provList;
 
   @override
@@ -27,9 +26,16 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    Provider.of<UserHolidaysData>(context, listen: false).getSingleUserHoliday(
-        userProvider.user.id, userProvider.user.userToken);
-    refreshController.refreshCompleted();
+    if (widget.memberId == "" || widget.memberId == null) {
+      Provider.of<UserHolidaysData>(context, listen: false)
+          .getSingleUserHoliday(
+              userProvider.user.id, userProvider.user.userToken);
+      refreshController.refreshCompleted();
+    } else {
+      Provider.of<UserHolidaysData>(context, listen: false)
+          .getSingleUserHoliday(widget.memberId, userProvider.user.userToken);
+      refreshController.refreshCompleted();
+    }
   }
 
   Widget build(BuildContext context) {

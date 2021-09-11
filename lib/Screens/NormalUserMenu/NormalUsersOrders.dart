@@ -222,7 +222,9 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                         } else {
                           return orderNumberController.text == ""
                               ? Expanded(
-                                  child: UserOrdersListView(provList: provList),
+                                  child: UserOrdersListView(
+                                    provList: provList,
+                                  ),
                                 )
                               : filteredOrderData == null ||
                                       filteredOrderData.isEmpty

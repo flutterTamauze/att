@@ -8,10 +8,12 @@ import 'package:qr_users/services/user_data.dart';
 import 'MyPermessionsWidget.dart';
 
 class UserPermessionListView extends StatefulWidget {
-  const UserPermessionListView({@required this.permessionsList, this.isFilter});
+  const UserPermessionListView(
+      {@required this.permessionsList, this.isFilter, this.memberId});
 
   final List<UserPermessions> permessionsList;
   final bool isFilter;
+  final String memberId;
   @override
   _UserPermessionListViewState createState() => _UserPermessionListViewState();
 }
@@ -21,10 +23,18 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    Provider.of<UserPermessionsData>(context, listen: false)
-        .getSingleUserPermession(
-            userProvider.user.id, userProvider.user.userToken);
-    refreshController.refreshCompleted();
+
+    if (widget.memberId == "" || widget.memberId == null) {
+      Provider.of<UserPermessionsData>(context, listen: false)
+          .getSingleUserPermession(
+              userProvider.user.id, userProvider.user.userToken);
+      refreshController.refreshCompleted();
+    } else {
+      Provider.of<UserPermessionsData>(context, listen: false)
+          .getSingleUserPermession(
+              widget.memberId, userProvider.user.userToken);
+      refreshController.refreshCompleted();
+    }
   }
 
   @override

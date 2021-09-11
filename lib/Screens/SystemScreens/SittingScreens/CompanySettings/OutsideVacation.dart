@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -5,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
-import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
+
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -20,10 +21,11 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
+import 'package:qr_users/widgets/UserRequests/UserOrdersListView.dart';
+import 'package:qr_users/widgets/UserRequests/UserPermessionsListView.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
@@ -56,6 +58,8 @@ String dateDifference;
 List<DateTime> picked = [];
 String formattedTime;
 String _selectedDateString;
+Future userHoliday;
+Future userPermession;
 
 class _OutsideVacationState extends State<OutsideVacation> {
   @override
@@ -158,6 +162,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
+    userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
+        .getSingleUserHoliday(widget.member.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
+    userPermession = Provider.of<UserPermessionsData>(context, listen: false)
+        .getSingleUserPermession(widget.member.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
     var now = DateTime.now();
     fromText = "";
     toText = "";
@@ -193,6 +203,127 @@ class _OutsideVacationState extends State<OutsideVacation> {
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
         },
         child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          floatingActionButton: radioVal2 == 2
+              ? Container()
+              : FadeInDown(
+                  child: FloatingActionButton(
+                    elevation: 4,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          List<UserHolidays> provList =
+                              Provider.of<UserHolidaysData>(context,
+                                      listen: true)
+                                  .singleUserHoliday;
+                          var permessionsList =
+                              Provider.of<UserPermessionsData>(
+                            context,
+                          ).singleUserPermessions;
+                          return FlipInY(
+                            child: Dialog(
+                              child: Container(
+                                height: radioVal2 == 1
+                                    ? provList.isEmpty
+                                        ? 100.h
+                                        : 500.h
+                                    : permessionsList.isEmpty
+                                        ? 100.h
+                                        : 500.h,
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      radioVal2 == 1
+                                          ? "اجازات المستخدم"
+                                          : "اذونات المستخدم",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Divider(),
+                                    radioVal2 == 1
+                                        ? FutureBuilder(
+                                            future: userHoliday,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  ),
+                                                );
+                                              } else {
+                                                return provList.isEmpty
+                                                    ? Text(
+                                                        "لا يوجد اجازات لهذا المستخدم",
+                                                        style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      )
+                                                    : Expanded(
+                                                        child:
+                                                            UserOrdersListView(
+                                                          provList: provList,
+                                                          memberId:
+                                                              widget.member.id,
+                                                        ),
+                                                      );
+                                              }
+                                            })
+                                        : FutureBuilder(
+                                            future: userPermession,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  ),
+                                                );
+                                              } else {
+                                                return Expanded(
+                                                  child: permessionsList.isEmpty
+                                                      ? Text(
+                                                          "لا يوجد اذونات لهذا المستخدم",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      : UserPermessionListView(
+                                                          isFilter: false,
+                                                          memberId:
+                                                              widget.member.id,
+                                                          permessionsList:
+                                                              permessionsList),
+                                                );
+                                              }
+                                            })
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    backgroundColor: Colors.orange[600],
+                    child: Icon(
+                      FontAwesomeIcons.info,
+                      color: Colors.black,
+                      size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                    ),
+                  ),
+                ),
           endDrawer: NotificationItem(),
           body: SingleChildScrollView(
             child: Container(
@@ -495,7 +626,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                             backgroundColor: Colors.orange)
                                         : RoundedButton(
                                             onPressed: () async {
-                                              if (picked != null) {
+                                              if (picked != null &&
+                                                  picked.isNotEmpty) {
                                                 final DateTime now =
                                                     DateTime.now();
                                                 final DateFormat format =
@@ -756,7 +888,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                           ),
                                         )),
                                         SizedBox(
-                                          height: 5,
+                                          height: 20.h,
                                         ),
                                         Provider.of<UserHolidaysData>(context)
                                                     .isLoading ||
