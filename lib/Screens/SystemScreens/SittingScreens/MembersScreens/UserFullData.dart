@@ -30,6 +30,7 @@ import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'package:qr_users/widgets/roundedButton.dart';
 
@@ -281,8 +282,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 ),
                                 Divider(),
                                 AssignTaskToUser(
-                                  taskName:
-                                      "تسجيل  مأموريات \n عرض اذونات و اجازات",
+                                  taskName: "تسجيل  مأموريات / اذونات / اجازات",
                                   iconData: FontAwesomeIcons.calendarCheck,
                                   function: () => Navigator.push(
                                       context,
@@ -451,6 +451,11 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     taskName: " إرسال اثبات حضور",
                                     iconData: FontAwesomeIcons.checkCircle,
                                     function: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return RoundedLoadingIndicator();
+                                          });
                                       await attendObj
                                           .sendAttendProof(
                                               Provider.of<UserData>(context,
@@ -515,7 +520,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                               }
                                             });
                                         }
-                                      });
+                                      }).then((value) =>
+                                              Navigator.pop(context));
                                     }),
                               ],
                             ),

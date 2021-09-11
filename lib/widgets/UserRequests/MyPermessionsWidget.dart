@@ -143,14 +143,16 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                 ),
                                               ),
                                             )
-                                          : Text(
-                                              "تعليق الأدمن  +: ${widget.adminComment}",
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                          : widget.adminComment == null
+                                              ? Container()
+                                              : Text(
+                                                  "تعليق الأدمن  : ${widget.adminComment}",
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
                                     ],
                                   )
                                 : Container(

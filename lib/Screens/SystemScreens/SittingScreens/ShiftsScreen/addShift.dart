@@ -672,6 +672,14 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                 return Column(
                                                   children: [
                                                     AdvancedShiftPicker(
+                                                      callBackfunFrom:
+                                                          (TimeOfDay v) {
+                                                        fromPicked = v;
+                                                      },
+                                                      callBackfunTo:
+                                                          (TimeOfDay v) {
+                                                        toPicked = v;
+                                                      },
                                                       enableText:
                                                           daysOff[0].isDayOff,
                                                       weekDay: "السبت",
@@ -1422,6 +1430,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                           alwaysUse24HourFormat: false);
 
                                   if (from != null) {
+                                    print(from);
                                     widget.fromPickedWeek = from;
                                     widget.callBackfunFrom(from);
                                     setState(() {

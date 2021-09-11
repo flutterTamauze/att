@@ -61,6 +61,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
     picked = null;
+
     timeOutController.text = "";
     toPicked = (intToTimeOfDay(0));
     selectedDateString = null;

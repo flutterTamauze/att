@@ -222,9 +222,8 @@ class UserData with ChangeNotifier {
               'Content-type': 'application/json',
               'x-api-key': _apiToken
             });
-
+        print(response.body);
         var decodedRes = json.decode(response.body);
-        print(decodedRes["message"]);
 
         if (decodedRes["message"] == "Verification code send to account ") {
           notifyListeners();

@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class StackedNotificaitonAlert extends StatefulWidget {
+  bool isAdmin = false;
   bool popWidget = false;
   final String notificationTitle,
       notificationContent,
@@ -26,6 +27,7 @@ class StackedNotificaitonAlert extends StatefulWidget {
       {this.notificationContent,
       this.notificationTitle,
       this.lottieAsset,
+      this.isAdmin,
       @required this.showToast,
       this.popWidget,
       @required this.repeatAnimation,
@@ -138,16 +140,21 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     } else {}
                                   } else {
                                     Navigator.pop(context);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => UserOrdersView(
-                                              selectedOrder: widget
-                                                      .notificationTitle
-                                                      .contains("الأذن")
-                                                  ? "الأذونات"
-                                                  : "الأجازات"),
-                                        ));
+                                    if (!widget.isAdmin) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserOrdersView(
+                                                    selectedOrder: widget
+                                                            .notificationTitle
+                                                            .contains("الأذن")
+                                                        ? "الأذونات"
+                                                        : "الأجازات"),
+                                          ));
+                                    } else {
+                                      Navigator.pop(context);
+                                    }
                                   }
                                 }),
                       ],

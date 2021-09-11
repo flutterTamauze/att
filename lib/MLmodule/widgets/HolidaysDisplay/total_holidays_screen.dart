@@ -39,12 +39,8 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
 
-    if (Provider.of<UserHolidaysData>(context, listen: false)
-        .holidaysList
-        .isEmpty) {
-      getAllHolidays = Provider.of<UserHolidaysData>(context, listen: false)
-          .getAllHolidays(userProvider.user.userToken, comProvider.com.id);
-    }
+    getAllHolidays = Provider.of<UserHolidaysData>(context, listen: false)
+        .getAllHolidays(userProvider.user.userToken, comProvider.com.id);
 
     super.initState();
   }

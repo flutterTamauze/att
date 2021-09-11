@@ -42,6 +42,8 @@ var selectedAction = "عارضة";
 var selectedMission = "داخلية";
 var sleectedMember;
 DateTime toDate;
+String toText;
+String fromText;
 DateTime fromDate;
 DateTime yesterday;
 TextEditingController timeOutController = TextEditingController();
@@ -53,6 +55,7 @@ TimeOfDay toPicked;
 String dateDifference;
 List<DateTime> picked = [];
 String formattedTime;
+String _selectedDateString;
 
 class _OutsideVacationState extends State<OutsideVacation> {
   @override
@@ -156,6 +159,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
   @override
   void initState() {
     var now = DateTime.now();
+    fromText = "";
+    toText = "";
+    _selectedDateString = DateTime.now().toString();
+    commentController.text = "";
     timeOutController.text = "";
     toPicked = (intToTimeOfDay(0));
     fromDate = DateTime(now.year, now.month, now.day);
@@ -180,6 +187,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     return GestureDetector(
         onTap: () {
+          print(fromText);
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -399,15 +407,19 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                       height: 3,
                                     ),
                                     dateDifference != null
-                                        ? Container(
-                                            padding: EdgeInsets.all(5),
-                                            alignment: Alignment.centerRight,
-                                            child: Text(
-                                              "تم اختيار $dateDifference يوم ",
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w300),
-                                            ))
+                                        ? fromText == ""
+                                            ? Container()
+                                            : Container(
+                                                padding: EdgeInsets.all(5),
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Text(
+                                                  "تم اختيار $dateDifference يوم ",
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ))
                                         : Container(),
                                     SizedBox(
                                       height: 5,
@@ -546,6 +558,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               "برجاء متابعة الطلب ",
                                                           roundedButtonTitle:
                                                               "متابعة",
+                                                          isAdmin: true,
                                                           lottieAsset:
                                                               "resources/success.json",
                                                           showToast: false,
@@ -666,13 +679,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .showDatePicker(
                                                             context: context,
                                                             initialFirstDate:
-                                                                DateTime(
-                                                                    DateTime.now()
-                                                                        .year,
-                                                                    DateTime.now()
-                                                                        .month,
-                                                                    DateTime.now()
-                                                                        .day),
+                                                                DateTime.now(),
                                                             initialLastDate:
                                                                 toDate,
                                                             firstDate: DateTime(
@@ -908,17 +915,17 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         data: clockTheme,
                                                         child: DateTimePicker(
                                                           initialValue:
-                                                              selectedDateString,
+                                                              _selectedDateString,
 
                                                           onChanged: (value) {
                                                             date = value;
 
                                                             setState(() {
-                                                              selectedDateString =
+                                                              _selectedDateString =
                                                                   date;
                                                               selectedDate =
                                                                   DateTime.parse(
-                                                                      selectedDateString);
+                                                                      _selectedDateString);
                                                             });
                                                           },
                                                           type:
@@ -1119,11 +1126,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 backgroundColor: Colors.orange)
                                             : RoundedButton(
                                                 onPressed: () async {
-                                                  if (selectedDateString !=
+                                                  if (_selectedDateString !=
                                                           null &&
                                                       timeOutController.text !=
                                                           "") {
-                                                    print(selectedDate);
+                                                    print(_selectedDateString);
                                                     print(
                                                         timeOutController.text);
                                                     String msg = await Provider

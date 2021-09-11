@@ -40,13 +40,8 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
 
-    if (Provider.of<UserPermessionsData>(context, listen: false)
-        .permessionsList
-        .isEmpty) {
-      getAllPermessions = Provider.of<UserPermessionsData>(context,
-              listen: false)
-          .getAllPermessions(comProvider.com.id, userProvider.user.userToken);
-    }
+    getAllPermessions = Provider.of<UserPermessionsData>(context, listen: false)
+        .getAllPermessions(comProvider.com.id, userProvider.user.userToken);
   }
 
   @override

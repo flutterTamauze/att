@@ -21,11 +21,15 @@ class VacationData with ChangeNotifier {
       Uri.parse("$baseURL/api/OfficialVacations/Del_OfficialVacationbyId/$id"),
       headers: {
         'Content-type': 'application/json',
+        'Authorization': "Bearer $token"
       },
     );
     isLoading = false;
     print(response.body);
     vactionList.removeAt(vacationIndex);
+
+    print(response.statusCode);
+    print(response.body);
     notifyListeners();
     return jsonDecode(response.body)["message"];
   }
@@ -95,6 +99,9 @@ class VacationData with ChangeNotifier {
   }
 
   getOfficialVacations(int companyId, String token) async {
+    vactionList = [];
+    isLoading = true;
+    notifyListeners();
     var response = await http.get(
         Uri.parse(
             "$baseURL/api/OfficialVacations/GetAllVacationsByCompanyId/$companyId"),
@@ -104,7 +111,7 @@ class VacationData with ChangeNotifier {
         });
     var decodedRes = json.decode(response.body);
     print(decodedRes);
-
+    isLoading = false;
     if (jsonDecode(response.body)["message"] == "Success") {
       var vacObjJson = jsonDecode(response.body)['data'] as List;
       vactionList = vacObjJson.map((json) => Vacation.fromJson(json)).toList();

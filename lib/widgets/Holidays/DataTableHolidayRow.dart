@@ -66,46 +66,40 @@ class DataTableHolidayRow extends StatelessWidget {
                                 ),
                               )),
                         ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(right: 15.w),
-                            height: 35.h,
-                            child: Center(
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: 20.h,
-                                child: AutoSizeText(
-                                  _holidays.fromDate
-                                      .toString()
-                                      .substring(0, 11),
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                  ),
+                        Container(
+                          height: 35.h,
+                          child: Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 20.h,
+                              child: AutoSizeText(
+                                _holidays.fromDate.toString().substring(0, 11),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: ScreenUtil()
+                                      .setSp(13, allowFontScalingSelf: true),
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
                         _holidays.fromDate.isBefore(_holidays.toDate)
-                            ? Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  height: 30.h,
-                                  child: Center(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: 20.h,
-                                      child: AutoSizeText(
-                                        _holidays.toDate
-                                            .toString()
-                                            .substring(0, 11),
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(13,
-                                              allowFontScalingSelf: true),
-                                        ),
+                            ? Container(
+                                padding: EdgeInsets.only(right: 20.w),
+                                height: 30.h,
+                                child: Center(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 20.h,
+                                    child: AutoSizeText(
+                                      _holidays.toDate
+                                          .toString()
+                                          .substring(0, 11),
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(13,
+                                            allowFontScalingSelf: true),
                                       ),
                                     ),
                                   ),
