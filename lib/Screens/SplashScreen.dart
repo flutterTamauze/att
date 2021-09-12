@@ -18,6 +18,7 @@ import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -100,6 +101,10 @@ class _SplashScreenState extends State<SplashScreen>
       Provider.of<UserData>(context, listen: false)
           .setCacheduserData(cachedUserData);
     }
+    await Provider.of<ShiftsData>(context, listen: false).getAllCompanyShifts(
+        Provider.of<CompanyData>(context, listen: false).com.id,
+        Provider.of<UserData>(context, listen: false).user.userToken,
+        context);
   }
 
   Future<String> _fileFromImageUrl(String path, String name) async {

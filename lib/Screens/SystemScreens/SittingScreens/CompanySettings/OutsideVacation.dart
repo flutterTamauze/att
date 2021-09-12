@@ -69,7 +69,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   TextEditingController _dateController = TextEditingController();
   addExternalMission() async {
-    if (fromText != "" && toText != "") {
+    if (fromDate != null && toDate != null) {
       String msg = await Provider.of<UserHolidaysData>(context, listen: false)
           .addHoliday(
               UserHolidays(
@@ -80,7 +80,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
               ),
               Provider.of<UserData>(context, listen: false).user.userToken,
               widget.member.id);
-      print("assssssssss");
       if (msg == "Success : Holiday Created!") {
         Fluttertoast.showToast(
             msg: "تمت اضافة المأمورية بنجاح",
@@ -107,9 +106,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
       }
     } else {
       Fluttertoast.showToast(
-          msg: "برجاء ادخال المدة",
-          backgroundColor: Colors.red,
-          gravity: ToastGravity.CENTER);
+          msg: "برجاء ادخال المدة", backgroundColor: Colors.red);
     }
   }
 
@@ -165,13 +162,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
-    // userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
-    //     .getSingleUserHoliday(widget.member.id,
-    //         Provider.of<UserData>(context, listen: false).user.userToken);
-    // userPermession = Provider.of<UserPermessionsData>(context, listen: false)
-    //     .getSingleUserPermession(widget.member.id,
-    //         Provider.of<UserData>(context, listen: false).user.userToken);
-    Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
+    userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
+        .getSingleUserHoliday(widget.member.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
+    userPermession = Provider.of<UserPermessionsData>(context, listen: false)
+        .getSingleUserPermession(widget.member.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
     var now = DateTime.now();
     fromText = "";
     toText = "";
@@ -358,14 +354,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                 SmallDirectoriesHeader(
                                   Lottie.asset("resources/calender.json",
                                       repeat: false),
-                                  "تسجيل مأمورية",
+                                  "الأجازات و المأموريات",
                                 ),
                               ],
                             ),
                           ),
                           VacationCardHeader(
                             header:
-                                "تسجيل مأمورية للمستخدم : ${widget.member.name}",
+                                "تسجيل طلب للمستخدم : ${widget.member.name}",
                           ),
                           // Directionality(
                           //   textDirection: ui.TextDirection.rtl,
@@ -405,48 +401,47 @@ class _OutsideVacationState extends State<OutsideVacation> {
                           //     ),
                           //   ),
                           // ),
-                          //COMMENTED TILL DISCUTION//
-                          // VacationCardHeader(
-                          //   header: "نوع الطلب",
-                          // ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(right: 20.w),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       RadioButtonWidg(
-                          //         radioVal2: radioVal2,
-                          //         radioVal: 3,
-                          //         title: "أذن",
-                          //         onchannge: (value) {
-                          //           setState(() {
-                          //             radioVal2 = value;
-                          //           });
-                          //         },
-                          //       ),
-                          //       RadioButtonWidg(
-                          //         radioVal2: radioVal2,
-                          //         radioVal: 1,
-                          //         title: "اجازة",
-                          //         onchannge: (value) {
-                          //           setState(() {
-                          //             radioVal2 = value;
-                          //           });
-                          //         },
-                          //       ),
-                          //       RadioButtonWidg(
-                          //         radioVal: 2,
-                          //         radioVal2: radioVal2,
-                          //         title: "مأمورية",
-                          //         onchannge: (value) {
-                          //           setState(() {
-                          //             radioVal2 = value;
-                          //           });
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          VacationCardHeader(
+                            header: "نوع الطلب",
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 20.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                RadioButtonWidg(
+                                  radioVal2: radioVal2,
+                                  radioVal: 3,
+                                  title: "أذن",
+                                  onchannge: (value) {
+                                    setState(() {
+                                      radioVal2 = value;
+                                    });
+                                  },
+                                ),
+                                RadioButtonWidg(
+                                  radioVal2: radioVal2,
+                                  radioVal: 1,
+                                  title: "اجازة",
+                                  onchannge: (value) {
+                                    setState(() {
+                                      radioVal2 = value;
+                                    });
+                                  },
+                                ),
+                                RadioButtonWidg(
+                                  radioVal: 2,
+                                  radioVal2: radioVal2,
+                                  title: "مأمورية",
+                                  onchannge: (value) {
+                                    setState(() {
+                                      radioVal2 = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                           radioVal2 == 1
                               ? Column(
                                   children: [
@@ -822,7 +817,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .showDatePicker(
                                                             context: context,
                                                             initialFirstDate:
-                                                                fromDate,
+                                                                DateTime.now(),
                                                             initialLastDate:
                                                                 toDate,
                                                             firstDate: DateTime(
@@ -839,26 +834,26 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       fromDate = picked.first;
                                                       toDate = picked.last;
 
-                                                      fromText =
+                                                      String fromText =
                                                           " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                      toText =
+                                                      String toText =
                                                           " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
                                                       newString =
                                                           "$fromText $toText";
-                                                      if (_dateController
-                                                              .text !=
-                                                          newString) {
-                                                        _dateController.text =
-                                                            newString;
-
-                                                        dateFromString =
-                                                            apiFormatter.format(
-                                                                fromDate);
-                                                        dateToString =
-                                                            apiFormatter
-                                                                .format(toDate);
-                                                      }
                                                     });
+
+                                                    if (_dateController.text !=
+                                                        newString) {
+                                                      _dateController.text =
+                                                          newString;
+
+                                                      dateFromString =
+                                                          apiFormatter
+                                                              .format(fromDate);
+                                                      dateToString =
+                                                          apiFormatter
+                                                              .format(toDate);
+                                                    }
                                                   },
                                                   child: Directionality(
                                                     textDirection:

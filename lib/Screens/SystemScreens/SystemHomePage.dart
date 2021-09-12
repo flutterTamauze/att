@@ -18,6 +18,7 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -101,6 +102,18 @@ class _SystemHomePageState extends State<SystemHomePage> {
         print('cron 1: every 1 minutes ');
       });
     }
+  }
+
+  String getShiftName() {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (list[i].shiftId ==
+          Provider.of<UserData>(context, listen: false).user.userShiftId) {
+        return list[i].shiftName;
+      }
+    }
+    return "";
   }
 
   shecdularFetching2(int endTime) async {
@@ -290,7 +303,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                   ),
                                                                 ),
                                                                 Container(
-                                                                  height: 20,
+                                                                  height: 20.h,
                                                                   child:
                                                                       AutoSizeText(
                                                                     "تسجيل عن طريق مسح الكود",
@@ -303,6 +316,18 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                             .black),
                                                                   ),
                                                                 ),
+                                                                SizedBox(
+                                                                  height: 10.h,
+                                                                ),
+                                                                Text(
+                                                                  getShiftName(),
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .orange,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                )
                                                               ],
                                                             )
                                                           : Container(
