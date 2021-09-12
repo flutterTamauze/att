@@ -132,6 +132,7 @@ class UserData with ChangeNotifier {
             user.phoneNum = decodedRes["userData"]["phoneNumber"];
             user.userType = decodedRes["userData"]["userType"];
             user.fcmToken = decodedRes["userData"]["fcmToken"];
+            user.salary = decodedRes["userData"]["salary"];
             user.createdOn =
                 DateTime.tryParse(decodedRes["userData"]["createdOn"]);
             user.userSiteId = decodedRes["companyData"]["siteId"] as int;
@@ -460,20 +461,26 @@ class UserData with ChangeNotifier {
     print("${user.id} -----edit-- $password");
     if (await isConnectedToInternet("www.google.com")) {
       try {
+        isLoading = true;
+        notifyListeners();
         final response = await http.put(
             Uri.parse("$baseURL/api/Users/UpdatePassword"),
             body: json.encode(
-              {"Id": user.id, "Password": password},
+              {
+                "Id": user.id,
+                "Password": password,
+              },
             ),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer ${user.userToken}"
             });
-
+        print(response.body);
+        isLoading = false;
         var decodedRes = json.decode(response.body);
         print(response.body);
         print(decodedRes["message"]);
-
+        notifyListeners();
         if (decodedRes["message"] == "Success : password updated successfuly") {
           return "success";
         } else {
@@ -608,6 +615,7 @@ class UserData with ChangeNotifier {
 class User {
   String userToken, fcmToken;
   String userID;
+  double salary;
   String name;
   bool isAllowedToAttend;
   int userSiteId;
@@ -626,6 +634,7 @@ class User {
     this.fcmToken,
     this.id,
     this.userImage,
+    this.salary,
     this.isAllowedToAttend,
     this.userShiftId,
     this.userSiteId,

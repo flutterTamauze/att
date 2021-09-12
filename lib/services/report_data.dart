@@ -512,8 +512,7 @@ class ReportsData with ChangeNotifier {
             newReportList = reportObjJson
                 .map((reportJson) => LateAbsenceReportUnit.fromJson(reportJson))
                 .toList();
-            print(
-                "dedddddddddddductoon ${newReportList[0].totalDeduction.toStringAsFixed(1)}");
+
             lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
             notifyListeners();
 

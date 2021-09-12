@@ -692,7 +692,7 @@ class DataTableRow extends StatelessWidget {
                           height: 50.h,
                           child: Center(
                               child: Container(
-                            height: 20,
+                            height: 20.h,
                             child: AutoSizeText(
                               userAttendanceReportUnit.totalLateDays,
                               maxLines: 1,
@@ -724,7 +724,7 @@ class DataTableRow extends StatelessWidget {
                           height: 50.h,
                           child: Center(
                               child: Container(
-                            height: 20,
+                            height: 20.h,
                             child: AutoSizeText(
                               userAttendanceReportUnit.totalDeduction
                                   .toStringAsFixed(1),

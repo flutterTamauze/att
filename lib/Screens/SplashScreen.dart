@@ -130,7 +130,11 @@ class _SplashScreenState extends State<SplashScreen>
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChangePasswordScreen(value, userName),
+                  builder: (context) => ChangePasswordScreen(
+                    userType: value,
+                    userName: userName,
+                    inAppEdit: false,
+                  ),
                 ));
           } else {
             if (value > 0) {

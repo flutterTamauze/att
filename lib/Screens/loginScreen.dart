@@ -281,8 +281,11 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  ChangePasswordScreen(value, _uniIdController.text),
+              builder: (context) => ChangePasswordScreen(
+                userType: value,
+                userName: _uniIdController.text,
+                inAppEdit: false,
+              ),
             ));
       } else {
         if (value == 0) {

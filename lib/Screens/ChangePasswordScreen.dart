@@ -33,8 +33,10 @@ import 'SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 class ChangePasswordScreen extends StatefulWidget {
   final int userType;
   final String userName;
+  bool inAppEdit = false;
 
-  ChangePasswordScreen(this.userType, this.userName);
+  ChangePasswordScreen(
+      {this.userType, this.userName, @required this.inAppEdit});
 
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
@@ -163,7 +165,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Stack(
                       children: [
                         ProfileHeader(
-                          title: "برجاء اختيار صورة شخصية",
+                          title:
+                              widget.inAppEdit ? "" : "برجاء اختيار صورة شخصية",
                           headerImage: Container(
                             height: 140.h,
                             child: CachedNetworkImage(
@@ -356,29 +359,82 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  await changePass();
+                                  if (!widget.inAppEdit) {
+                                    await changePass();
+                                  } else {
+                                    if (_profileFormKey.currentState
+                                        .validate()) {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      var msg = await Provider.of<UserData>(
+                                              context,
+                                              listen: false)
+                                          .editProfile(
+                                              _passwordController.text);
+                                      print(msg);
+                                      if (msg == "success") {
+                                        setState(() {
+                                          prefs.setStringList('userData', [
+                                            Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userID,
+                                            _passwordController.text
+                                          ]);
+
+                                          Navigator.pop(context);
+                                          print('Edit Done ');
+                                        });
+                                        successfulSaved();
+                                        Navigator.pop(context);
+                                      } else {
+                                        setState(() {
+                                          print('Edit Done ');
+                                        });
+                                        Fluttertoast.showToast(
+                                            msg: "خطأ في حفظ البيانات",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true));
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  }
                                 },
-                                child: Container(
-                                  width: 230.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25),
-                                      color: Colors.orange),
-                                  padding: EdgeInsets.all(15),
-                                  child: Center(
-                                    child: Container(
-                                      height: 20,
-                                      child: AutoSizeText(
-                                        'حفظ',
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: ScreenUtil().setSp(18,
-                                                allowFontScalingSelf: true)),
+                                child: userData.isLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.orange,
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 230.w,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            color: Colors.orange),
+                                        padding: EdgeInsets.all(15),
+                                        child: Center(
+                                          child: Container(
+                                            height: 20,
+                                            child: AutoSizeText(
+                                              'حفظ',
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      18,
+                                                      allowFontScalingSelf:
+                                                          true)),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ),
                             ],
                           ),

@@ -69,7 +69,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   TextEditingController _dateController = TextEditingController();
   addExternalMission() async {
-    if (fromDate != null && toDate != null) {
+    if (fromText != "" && toText != "") {
       String msg = await Provider.of<UserHolidaysData>(context, listen: false)
           .addHoliday(
               UserHolidays(
@@ -80,6 +80,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
               ),
               Provider.of<UserData>(context, listen: false).user.userToken,
               widget.member.id);
+      print("assssssssss");
       if (msg == "Success : Holiday Created!") {
         Fluttertoast.showToast(
             msg: "تمت اضافة المأمورية بنجاح",
@@ -106,7 +107,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
       }
     } else {
       Fluttertoast.showToast(
-          msg: "برجاء ادخال المدة", backgroundColor: Colors.red);
+          msg: "برجاء ادخال المدة",
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER);
     }
   }
 
@@ -162,12 +165,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
-    userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
-        .getSingleUserHoliday(widget.member.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
-    userPermession = Provider.of<UserPermessionsData>(context, listen: false)
-        .getSingleUserPermession(widget.member.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
+    // userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
+    //     .getSingleUserHoliday(widget.member.id,
+    //         Provider.of<UserData>(context, listen: false).user.userToken);
+    // userPermession = Provider.of<UserPermessionsData>(context, listen: false)
+    //     .getSingleUserPermession(widget.member.id,
+    //         Provider.of<UserData>(context, listen: false).user.userToken);
+    Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
     var now = DateTime.now();
     fromText = "";
     toText = "";
@@ -207,120 +211,126 @@ class _OutsideVacationState extends State<OutsideVacation> {
           floatingActionButton: radioVal2 == 2
               ? Container()
               : FadeInDown(
-                  child: FloatingActionButton(
-                    elevation: 4,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          List<UserHolidays> provList =
-                              Provider.of<UserHolidaysData>(context,
-                                      listen: true)
-                                  .singleUserHoliday;
-                          var permessionsList =
-                              Provider.of<UserPermessionsData>(
-                            context,
-                          ).singleUserPermessions;
-                          return FlipInY(
-                            child: Dialog(
-                              child: Container(
-                                height: radioVal2 == 1
-                                    ? provList.isEmpty
-                                        ? 100.h
-                                        : 500.h
-                                    : permessionsList.isEmpty
-                                        ? 100.h
-                                        : 500.h,
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Text(
+                  child: Container(
+                    width: 50.w,
+                    height: 50.h,
+                    child: FloatingActionButton(
+                      elevation: 4,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            List<UserHolidays> provList =
+                                Provider.of<UserHolidaysData>(context,
+                                        listen: true)
+                                    .singleUserHoliday;
+                            var permessionsList =
+                                Provider.of<UserPermessionsData>(
+                              context,
+                            ).singleUserPermessions;
+                            return FlipInY(
+                              child: Dialog(
+                                child: Container(
+                                  height: radioVal2 == 1
+                                      ? provList.isEmpty
+                                          ? 100.h
+                                          : 500.h
+                                      : permessionsList.isEmpty
+                                          ? 100.h
+                                          : 500.h,
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        radioVal2 == 1
+                                            ? "اجازات المستخدم"
+                                            : "اذونات المستخدم",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Divider(),
                                       radioVal2 == 1
-                                          ? "اجازات المستخدم"
-                                          : "اذونات المستخدم",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Divider(),
-                                    radioVal2 == 1
-                                        ? FutureBuilder(
-                                            future: userHoliday,
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    backgroundColor:
-                                                        Colors.orange,
-                                                  ),
-                                                );
-                                              } else {
-                                                return provList.isEmpty
-                                                    ? Text(
-                                                        "لا يوجد اجازات لهذا المستخدم",
-                                                        style: TextStyle(
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      )
-                                                    : Expanded(
-                                                        child:
-                                                            UserOrdersListView(
-                                                          provList: provList,
-                                                          memberId:
-                                                              widget.member.id,
-                                                        ),
-                                                      );
-                                              }
-                                            })
-                                        : FutureBuilder(
-                                            future: userPermession,
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    backgroundColor:
-                                                        Colors.orange,
-                                                  ),
-                                                );
-                                              } else {
-                                                return Expanded(
-                                                  child: permessionsList.isEmpty
+                                          ? FutureBuilder(
+                                              future: userHoliday,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return provList.isEmpty
                                                       ? Text(
-                                                          "لا يوجد اذونات لهذا المستخدم",
+                                                          "لا يوجد اجازات لهذا المستخدم",
                                                           style: TextStyle(
                                                               fontSize: 13,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600),
                                                         )
-                                                      : UserPermessionListView(
-                                                          isFilter: false,
-                                                          memberId:
-                                                              widget.member.id,
-                                                          permessionsList:
-                                                              permessionsList),
-                                                );
-                                              }
-                                            })
-                                  ],
+                                                      : Expanded(
+                                                          child:
+                                                              UserOrdersListView(
+                                                            provList: provList,
+                                                            memberId: widget
+                                                                .member.id,
+                                                          ),
+                                                        );
+                                                }
+                                              })
+                                          : FutureBuilder(
+                                              future: userPermession,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Expanded(
+                                                    child: permessionsList
+                                                            .isEmpty
+                                                        ? Text(
+                                                            "لا يوجد اذونات لهذا المستخدم",
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          )
+                                                        : UserPermessionListView(
+                                                            isFilter: false,
+                                                            memberId: widget
+                                                                .member.id,
+                                                            permessionsList:
+                                                                permessionsList),
+                                                  );
+                                                }
+                                              })
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    backgroundColor: Colors.orange[600],
-                    child: Icon(
-                      FontAwesomeIcons.info,
-                      color: Colors.black,
-                      size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                            );
+                          },
+                        );
+                      },
+                      backgroundColor: Colors.orange[600],
+                      child: Icon(
+                        FontAwesomeIcons.info,
+                        color: Colors.black,
+                        size:
+                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                      ),
                     ),
                   ),
                 ),
@@ -348,14 +358,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                 SmallDirectoriesHeader(
                                   Lottie.asset("resources/calender.json",
                                       repeat: false),
-                                  "الأجازات و المأموريات",
+                                  "تسجيل مأمورية",
                                 ),
                               ],
                             ),
                           ),
                           VacationCardHeader(
                             header:
-                                "تسجيل طلب للمستخدم : ${widget.member.name}",
+                                "تسجيل مأمورية للمستخدم : ${widget.member.name}",
                           ),
                           // Directionality(
                           //   textDirection: ui.TextDirection.rtl,
@@ -395,47 +405,48 @@ class _OutsideVacationState extends State<OutsideVacation> {
                           //     ),
                           //   ),
                           // ),
-                          VacationCardHeader(
-                            header: "نوع الطلب",
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RadioButtonWidg(
-                                  radioVal2: radioVal2,
-                                  radioVal: 3,
-                                  title: "أذن",
-                                  onchannge: (value) {
-                                    setState(() {
-                                      radioVal2 = value;
-                                    });
-                                  },
-                                ),
-                                RadioButtonWidg(
-                                  radioVal2: radioVal2,
-                                  radioVal: 1,
-                                  title: "اجازة",
-                                  onchannge: (value) {
-                                    setState(() {
-                                      radioVal2 = value;
-                                    });
-                                  },
-                                ),
-                                RadioButtonWidg(
-                                  radioVal: 2,
-                                  radioVal2: radioVal2,
-                                  title: "مأمورية",
-                                  onchannge: (value) {
-                                    setState(() {
-                                      radioVal2 = value;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                          //COMMENTED TILL DISCUTION//
+                          // VacationCardHeader(
+                          //   header: "نوع الطلب",
+                          // ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(right: 20.w),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       RadioButtonWidg(
+                          //         radioVal2: radioVal2,
+                          //         radioVal: 3,
+                          //         title: "أذن",
+                          //         onchannge: (value) {
+                          //           setState(() {
+                          //             radioVal2 = value;
+                          //           });
+                          //         },
+                          //       ),
+                          //       RadioButtonWidg(
+                          //         radioVal2: radioVal2,
+                          //         radioVal: 1,
+                          //         title: "اجازة",
+                          //         onchannge: (value) {
+                          //           setState(() {
+                          //             radioVal2 = value;
+                          //           });
+                          //         },
+                          //       ),
+                          //       RadioButtonWidg(
+                          //         radioVal: 2,
+                          //         radioVal2: radioVal2,
+                          //         title: "مأمورية",
+                          //         onchannge: (value) {
+                          //           setState(() {
+                          //             radioVal2 = value;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           radioVal2 == 1
                               ? Column(
                                   children: [
@@ -811,7 +822,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .showDatePicker(
                                                             context: context,
                                                             initialFirstDate:
-                                                                DateTime.now(),
+                                                                fromDate,
                                                             initialLastDate:
                                                                 toDate,
                                                             firstDate: DateTime(
@@ -828,26 +839,26 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       fromDate = picked.first;
                                                       toDate = picked.last;
 
-                                                      String fromText =
+                                                      fromText =
                                                           " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                      String toText =
+                                                      toText =
                                                           " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
                                                       newString =
                                                           "$fromText $toText";
+                                                      if (_dateController
+                                                              .text !=
+                                                          newString) {
+                                                        _dateController.text =
+                                                            newString;
+
+                                                        dateFromString =
+                                                            apiFormatter.format(
+                                                                fromDate);
+                                                        dateToString =
+                                                            apiFormatter
+                                                                .format(toDate);
+                                                      }
                                                     });
-
-                                                    if (_dateController.text !=
-                                                        newString) {
-                                                      _dateController.text =
-                                                          newString;
-
-                                                      dateFromString =
-                                                          apiFormatter
-                                                              .format(fromDate);
-                                                      dateToString =
-                                                          apiFormatter
-                                                              .format(toDate);
-                                                    }
                                                   },
                                                   child: Directionality(
                                                     textDirection:

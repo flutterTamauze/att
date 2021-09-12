@@ -163,7 +163,7 @@ class ShiftsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-
+        print(response.body);
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =

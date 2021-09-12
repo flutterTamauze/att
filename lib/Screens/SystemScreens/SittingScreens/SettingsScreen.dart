@@ -245,7 +245,7 @@ class ServiceTile extends StatelessWidget {
       child: ListTile(
         trailing: Icon(
           icon,
-          size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
+          size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
           color: Colors.orange,
         ),
         onTap: onTap,
