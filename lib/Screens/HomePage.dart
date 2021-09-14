@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -273,6 +274,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     });
   }
 
+  static Future<String> getDeviceUUID() async {
+    String identifier;
+
+    try {
+      if (Platform.isAndroid) {
+        identifier = await FlutterUdid.udid; //UUID for Android
+      } else if (Platform.isIOS) {
+        final storage = new FlutterSecureStorage();
+        identifier = await storage.read(key: "deviceMac"); //UUID for iOS
+      }
+    } catch (e) {
+      print('Failed to get platform version');
+    }
+//if (!mounted) return;
+    print(identifier);
+    return identifier;
+  }
+
   DateTime currentBackPressTime;
   @override
   Widget build(BuildContext context) {
@@ -296,61 +315,58 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                // // sendRemoteMsg();
-                // final storage = new FlutterSecureStorage();
-
-                // String chainValue = await storage.read(key: "deviceMac");
-                // print(chainValue);
+                DateTime startTime = DateTime(
+                  DateTime.now().year,
+                  1,
+                  1,
+                );
               },
-              child: GestureDetector(
-                child: Scaffold(
-                  endDrawer: NotificationItem(),
-                  backgroundColor: Colors.white,
-                  drawer:
-                      userDataProvider.user.userType == 0 ? DrawerI() : null,
-                  body: Container(
-                      padding: EdgeInsets.only(bottom: 15.h),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          userDataProvider.user.userType == 0
-                              ? Header(
-                                  nav: true,
-                                )
-                              : Container(),
-                          Expanded(
-                            child: Center(
-                              child: Lottie.asset("resources/qrlottie.json",
-                                  repeat: true),
-                            ),
+              child: Scaffold(
+                endDrawer: NotificationItem(),
+                backgroundColor: Colors.white,
+                drawer: userDataProvider.user.userType == 0 ? DrawerI() : null,
+                body: Container(
+                    padding: EdgeInsets.only(bottom: 15.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        userDataProvider.user.userType == 0
+                            ? Header(
+                                nav: true,
+                              )
+                            : Container(),
+                        Expanded(
+                          child: Center(
+                            child: Lottie.asset("resources/qrlottie.json",
+                                repeat: true),
                           ),
-                          Column(
-                            children: [
-                              Provider.of<PermissionHan>(context, listen: true)
-                                          .showNotification ==
-                                      true
-                                  ? Container()
-                                  : Container(
-                                      child: RoundedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ScanPage(),
-                                            ),
-                                          );
-                                        },
-                                        title: "سجل الأن",
-                                      ),
+                        ),
+                        Column(
+                          children: [
+                            Provider.of<PermissionHan>(context, listen: true)
+                                        .showNotification ==
+                                    true
+                                ? Container()
+                                : Container(
+                                    child: RoundedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ScanPage(),
+                                          ),
+                                        );
+                                      },
+                                      title: "سجل الأن",
                                     ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                            ],
-                          ),
-                        ],
-                      )),
-                ),
+                                  ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )),
               ),
             ));
   }

@@ -64,7 +64,7 @@ class DataTableHeaderTitles extends StatelessWidget {
           height: 50.h,
           child: Center(
               child: Container(
-            height: 20,
+            height: 30,
             child: AutoSizeText(
               title,
               maxLines: 1,

@@ -85,21 +85,23 @@ class DataTableHolidayRow extends StatelessWidget {
                           ),
                         ),
                         _holidays.fromDate.isBefore(_holidays.toDate)
-                            ? Container(
-                                padding: EdgeInsets.only(right: 20.w),
-                                height: 30.h,
-                                child: Center(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 20.h,
-                                    child: AutoSizeText(
-                                      _holidays.toDate
-                                          .toString()
-                                          .substring(0, 11),
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(13,
-                                            allowFontScalingSelf: true),
+                            ? Expanded(
+                                flex: 1,
+                                child: Container(
+                                  height: 30.h,
+                                  child: Center(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 20.h,
+                                      child: AutoSizeText(
+                                        _holidays.toDate
+                                            .toString()
+                                            .substring(0, 11),
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13,
+                                              allowFontScalingSelf: true),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -107,9 +109,24 @@ class DataTableHolidayRow extends StatelessWidget {
                               )
                             : Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  alignment: Alignment.center,
-                                  child: Text("---"),
+                                  height: 35.h,
+                                  child: Center(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 20.h,
+                                      child: AutoSizeText(
+                                        _holidays.fromDate
+                                            .toString()
+                                            .substring(0, 11),
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                       ],

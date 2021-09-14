@@ -109,7 +109,15 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "you can't register now during shift!":
         Fluttertoast.showToast(
-            msg: "لم يحن ميعاد التسجيل بعد",
+            msg: "لا يمكن التسجيل بمناوبتك الأن",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.black,
+            textColor: Colors.orange);
+        break;
+      case "Sorry : You have an external mission today!":
+        Fluttertoast.showToast(
+            msg: "لم يتم التسجيل: لديك مأمورية خارجية ",
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -195,6 +203,14 @@ class _ScanPageState extends State<ScanPage> {
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
+            textColor: Colors.black);
+        break;
+      case "Failed : Time Out":
+        Fluttertoast.showToast(
+            msg: "التسجيل غير متاح الأن",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.orange,
             textColor: Colors.black);
         break;
       default:

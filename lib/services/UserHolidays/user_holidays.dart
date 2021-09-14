@@ -7,6 +7,7 @@ import 'package:qr_users/constants.dart';
 
 class UserHolidays {
   String userId;
+  String fcmToken;
   String userName;
   String holidayDescription, adminResponse;
   int holidayNumber;
@@ -18,6 +19,7 @@ class UserHolidays {
       this.fromDate,
       this.holidayStatus,
       this.holidayType,
+      this.fcmToken,
       this.holidayNumber,
       this.holidayDescription,
       this.toDate,
@@ -32,6 +34,7 @@ class UserHolidays {
         userName: json["userName"],
         holidayStatus: json["status"],
         holidayNumber: json["id"],
+        fcmToken: json["fcmToken"] ?? "null",
         holidayDescription: json["desc"]);
   }
 }
@@ -41,6 +44,7 @@ class UserHolidaysData with ChangeNotifier {
   List<UserHolidays> holidaysList = [];
   List<UserHolidays> singleUserHoliday = [];
   List<UserHolidays> copyHolidaysList = [];
+  List<UserHolidays> pendingCompanyHolidays = [];
   List<String> userNames = [];
   getAllUserNamesInHolidays() {
     userNames = [];
@@ -59,6 +63,24 @@ class UserHolidaysData with ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  getPendingCompanyHolidays(int companyId, String userToken) async {
+    var response = await http.get(
+        Uri.parse("$baseURL/api/Holiday/GetAllHolidaysPending/$companyId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.body);
+    var decodedResp = json.decode(response.body);
+    if (decodedResp["message"] == "Success") {
+      var permessionsObj = jsonDecode(response.body)['data'] as List;
+      pendingCompanyHolidays =
+          permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
+
+      notifyListeners();
+    }
   }
 
   Future<List<UserHolidays>> getSingleUserHoliday(

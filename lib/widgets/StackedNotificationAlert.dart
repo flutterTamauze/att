@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class StackedNotificaitonAlert extends StatefulWidget {
-  bool isAdmin = false;
+  bool isAdmin;
   bool popWidget = false;
   final String notificationTitle,
       notificationContent,

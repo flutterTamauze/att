@@ -329,14 +329,6 @@ class TakePictureScreenState extends State<CameraPicker>
                               // }
                               else if (numberOfFacesDetected == 1) {
                                 if (widget.fromScreen == "register") {
-                                  print("i got the image : ${image.path}");
-                                  final storage = new FlutterSecureStorage();
-                                  final DeviceInfoPlugin deviceInfoPlugin =
-                                      new DeviceInfoPlugin();
-                                  var data = await deviceInfoPlugin.iosInfo;
-                                  String chainValue =
-                                      await storage.read(key: "deviceMac");
-                                  print(chainValue);
                                   Navigator.pop(context, image);
                                 } else {
                                   Future.delayed(const Duration(seconds: 3),
@@ -359,10 +351,19 @@ class TakePictureScreenState extends State<CameraPicker>
                                     } else if (msg ==
                                         "you can't register now during shift!") {
                                       Fluttertoast.showToast(
-                                          msg: "لم يحن ميعاد التسجيل بعد",
+                                          msg: "لا يمكن التسجيل بمناوبتك الأن",
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.black);
+                                    } else if (msg ==
+                                        "Sorry : You have an external mission today!") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "لم يتم التسجيل: لديك مأمورية خارجية ",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.orange);
                                     } else if (msg ==
                                         "Sorry : Today is an official vacation!") {
                                       Fluttertoast.showToast(
@@ -445,6 +446,12 @@ class TakePictureScreenState extends State<CameraPicker>
                                           msg: "خطأ فى التسجيل: كود غير صحيح",
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg == "Failed : Time Out") {
+                                      await Fluttertoast.showToast(
+                                          msg: "التسجيل غير متاح الأن",
+                                          gravity: ToastGravity.CENTER,
+                                          backgroundColor: Colors.orange,
                                           textColor: Colors.black);
                                     } else {
                                       await Fluttertoast.showToast(

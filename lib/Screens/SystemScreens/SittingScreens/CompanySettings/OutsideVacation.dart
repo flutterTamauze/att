@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +23,8 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
-import 'package:qr_users/widgets/UserRequests/UserOrdersListView.dart';
-import 'package:qr_users/widgets/UserRequests/UserPermessionsListView.dart';
+import 'package:qr_users/widgets/UserFullData/floating_button_missions.dart';
+import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
@@ -51,7 +50,7 @@ DateTime yesterday;
 TextEditingController timeOutController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
-List<String> actions = ["مرضى", "عارضة", "رصيد الاجازات", "حالة وفاة"];
+
 List<String> missions = ["داخلية", "خارجية"];
 TimeOfDay toPicked;
 String dateDifference;
@@ -60,6 +59,7 @@ String formattedTime;
 String _selectedDateString;
 Future userHoliday;
 Future userPermession;
+Future userMission;
 
 class _OutsideVacationState extends State<OutsideVacation> {
   @override
@@ -162,6 +162,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
+    userMission = getSingleUserMission();
     userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
         .getSingleUserHoliday(widget.member.id,
             Provider.of<UserData>(context, listen: false).user.userToken);
@@ -190,6 +191,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.dispose();
   }
 
+  getSingleUserMission() async {
+    userMission = await Provider.of<MissionsData>(context, listen: false)
+        .getSingleUserMissions(widget.member.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
+  }
+
   var selectedVal = "كل المواقع";
   @override
   Widget build(BuildContext context) {
@@ -205,144 +212,24 @@ class _OutsideVacationState extends State<OutsideVacation> {
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
           floatingActionButton: radioVal2 == 2
-              ? Container()
-              : FadeInDown(
-                  child: Container(
-                    width: 50.w,
-                    height: 50.h,
-                    child: FloatingActionButton(
-                      elevation: 4,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            List<UserHolidays> provList =
-                                Provider.of<UserHolidaysData>(context,
-                                        listen: true)
-                                    .singleUserHoliday;
-                            var permessionsList =
-                                Provider.of<UserPermessionsData>(
-                              context,
-                            ).singleUserPermessions;
-                            return FlipInY(
-                              child: Dialog(
-                                child: Container(
-                                  height: radioVal2 == 1
-                                      ? provList.isEmpty
-                                          ? 100.h
-                                          : 500.h
-                                      : permessionsList.isEmpty
-                                          ? 100.h
-                                          : 500.h,
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        radioVal2 == 1
-                                            ? "اجازات المستخدم"
-                                            : "اذونات المستخدم",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Divider(),
-                                      radioVal2 == 1
-                                          ? FutureBuilder(
-                                              future: userHoliday,
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      backgroundColor:
-                                                          Colors.orange,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return provList.isEmpty
-                                                      ? Text(
-                                                          "لا يوجد اجازات لهذا المستخدم",
-                                                          style: TextStyle(
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        )
-                                                      : Expanded(
-                                                          child:
-                                                              UserOrdersListView(
-                                                            provList: provList,
-                                                            memberId: widget
-                                                                .member.id,
-                                                          ),
-                                                        );
-                                                }
-                                              })
-                                          : FutureBuilder(
-                                              future: userPermession,
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      backgroundColor:
-                                                          Colors.orange,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return Expanded(
-                                                    child: permessionsList
-                                                            .isEmpty
-                                                        ? Text(
-                                                            "لا يوجد اذونات لهذا المستخدم",
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          )
-                                                        : UserPermessionListView(
-                                                            isFilter: false,
-                                                            memberId: widget
-                                                                .member.id,
-                                                            permessionsList:
-                                                                permessionsList),
-                                                  );
-                                                }
-                                              })
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      backgroundColor: Colors.orange[600],
-                      child: Icon(
-                        FontAwesomeIcons.info,
-                        color: Colors.black,
-                        size:
-                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                      ),
-                    ),
-                  ),
+              ? FadeInMissionsFAbutton()
+              : FadeInVacPermFloatingButton(
+                  radioVal2: radioVal2,
+                  memberId: widget.member.id,
                 ),
           endDrawer: NotificationItem(),
-          body: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Header(
-                    nav: false,
-                    goUserMenu: false,
-                    goUserHomeFromMenu: false,
-                  ),
-                  Expanded(
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Header(
+                  nav: false,
+                  goUserMenu: false,
+                  goUserHomeFromMenu: false,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
                     child: Container(
                       child: Column(
                         children: [
@@ -703,6 +590,50 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         );
                                                       },
                                                     );
+                                                  } else if (value ==
+                                                      "Failed : There are external mission in this period!") {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لا يمكن وضع الأجازة : يوجد مأمورية خارجية",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red);
+                                                  } else if (value ==
+                                                      "Failed : There are an holiday approved in this period!") {
+                                                    Fluttertoast.showToast(
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        msg:
+                                                            "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red);
+                                                  } else if (value ==
+                                                      "Failed : There are an internal Mission in this period!") {
+                                                    Fluttertoast.showToast(
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        msg:
+                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red);
+                                                  } else if (value ==
+                                                      "Failed : There are an permission in this period!") {
+                                                    Fluttertoast.showToast(
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        msg:
+                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red);
                                                   } else {
                                                     Fluttertoast.showToast(
                                                         msg:
@@ -1363,8 +1294,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ));

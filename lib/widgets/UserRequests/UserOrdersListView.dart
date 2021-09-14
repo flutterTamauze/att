@@ -54,23 +54,47 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                ExpandedOrderTile(
-                  index: index,
-                  adminComment: widget.provList[index].adminResponse,
-                  comments: widget.provList[index].holidayDescription,
-                  date: widget.provList[index].fromDate.toString(),
-                  iconData: widget.provList[index].holidayStatus == 1
-                      ? Icons.check
-                      : FontAwesomeIcons.times,
-                  response: widget.provList[index].adminResponse,
-                  status: widget.provList[index].holidayStatus,
-                  orderNum: widget.provList[index].holidayNumber.toString(),
-                  vacationDaysCount: [
-                    widget.provList[index].fromDate,
-                    widget.provList[index].toDate
-                  ],
-                  holidayType: widget.provList[index].holidayType,
-                ),
+                widget.memberId == ""
+                    ? ExpandedOrderTile(
+                        index: index,
+                        isAdmin: widget.memberId == "" ? false : true,
+                        adminComment: widget.provList[index].adminResponse,
+                        comments: widget.provList[index].holidayDescription,
+                        date: widget.provList[index].fromDate.toString(),
+                        iconData: widget.provList[index].holidayStatus == 1
+                            ? Icons.check
+                            : FontAwesomeIcons.times,
+                        response: widget.provList[index].adminResponse,
+                        status: widget.provList[index].holidayStatus,
+                        orderNum:
+                            widget.provList[index].holidayNumber.toString(),
+                        vacationDaysCount: [
+                          widget.provList[index].fromDate,
+                          widget.provList[index].toDate
+                        ],
+                        holidayType: widget.provList[index].holidayType,
+                      )
+                    : widget.provList[index].holidayStatus != 2
+                        ? ExpandedOrderTile(
+                            index: index,
+                            isAdmin: widget.memberId == "" ? false : true,
+                            adminComment: widget.provList[index].adminResponse,
+                            comments: widget.provList[index].holidayDescription,
+                            date: widget.provList[index].fromDate.toString(),
+                            iconData: widget.provList[index].holidayStatus == 1
+                                ? Icons.check
+                                : FontAwesomeIcons.times,
+                            response: widget.provList[index].adminResponse,
+                            status: widget.provList[index].holidayStatus,
+                            orderNum:
+                                widget.provList[index].holidayNumber.toString(),
+                            vacationDaysCount: [
+                              widget.provList[index].fromDate,
+                              widget.provList[index].toDate
+                            ],
+                            holidayType: widget.provList[index].holidayType,
+                          )
+                        : Container(),
                 Divider()
               ],
             );

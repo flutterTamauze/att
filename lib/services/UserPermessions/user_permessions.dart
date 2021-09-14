@@ -9,7 +9,8 @@ class UserPermessions {
   String permessionDescription, adminResponse;
   int permessionStatus; //1=>accept , //2 refused , //3 waiting..
   int permessionId;
-
+  String userID;
+  String fcmToken;
   int permessionType;
   DateTime date;
   String duration;
@@ -18,6 +19,8 @@ class UserPermessions {
       {this.date,
       this.adminResponse,
       this.duration,
+      this.fcmToken,
+      this.userID,
       this.permessionStatus,
       this.permessionDescription,
       this.permessionType,
@@ -29,7 +32,9 @@ class UserPermessions {
         date: DateTime.tryParse(json["date"]),
         duration: json["time"],
         permessionType: json["type"],
+        fcmToken: json["fcmToken"] ?? "null",
         permessionId: json["id"],
+        userID: json['userId'] ?? "",
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
@@ -42,6 +47,7 @@ class UserPermessionsData with ChangeNotifier {
   List<UserPermessions> permessionsList = [];
   List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
+  List<UserPermessions> pendingCompanyPermessions = [];
   List<String> userNames = [];
   getAllUserNamesInPermessions() {
     userNames = [];
@@ -49,6 +55,66 @@ class UserPermessionsData with ChangeNotifier {
       userNames.add(element.user);
     });
     // notifyListeners();
+  }
+
+  Future<String> acceptOrRefusePendingPermession(
+    int status,
+    int permID,
+    String userId,
+    String desc,
+    String userToken,
+  ) async {
+    print(desc);
+    isLoading = true;
+    notifyListeners();
+    var response = await http.put(
+        Uri.parse(
+          "$baseURL/api/Permissions/isApproved",
+        ),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+        body: json.encode({
+          "status": status,
+          "id": permID,
+          "userId": userId,
+          "adminResponse": "",
+          "Desc": desc
+        }));
+    isLoading = false;
+    notifyListeners();
+    print(response.body);
+    var decodedResp = json.decode(response.body);
+    if (response.statusCode == 200) {
+      pendingCompanyPermessions
+          .removeWhere((element) => element.permessionId == permID);
+
+      print(decodedResp["message"]);
+      notifyListeners();
+      return decodedResp["message"];
+    }
+    return "fail";
+  }
+
+  getPendingCompanyPermessions(int companyId, String userToken) async {
+    pendingCompanyPermessions = [];
+    var response = await http.get(
+        Uri.parse(
+            "$baseURL/api/Permissions/GetAllPermissionPending/$companyId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.body);
+    var decodedResp = json.decode(response.body);
+    if (decodedResp["message"] == "Success") {
+      var permessionsObj = jsonDecode(response.body)['data'] as List;
+      pendingCompanyPermessions =
+          permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
+      pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();
+      notifyListeners();
+    }
   }
 
   Future<List<UserPermessions>> getSingleUserPermession(
@@ -136,18 +202,27 @@ class UserPermessionsData with ChangeNotifier {
           }));
       print(response.body);
       isLoading = false;
-      print(json.decode(response.body)["message"]);
+      var decodedMsg = json.decode(response.body)["message"];
 
-      if (json.decode(response.body)["message"] ==
-          "Success : Permission Created!") {
+      if (decodedMsg == "Success : Permission Created!") {
         print(response.body);
         // permessionsList.add(userPermessions);
         notifyListeners();
         return "success";
-      } else if (json.decode(response.body)["message"] ==
+      } else if (decodedMsg ==
           "Failed : Another permission not approved for this user!") {
         notifyListeners();
         return "already exist";
+      } else if (decodedMsg == "Failed : Another permission in this date!") {
+        return "dublicate permession";
+      } else if (decodedMsg ==
+          "Failed : there is an external mission in this date!") {
+        return "external mission";
+      } else if (decodedMsg == "Failed : there is a holiday in this date!") {
+        return "holiday";
+      } else if (decodedMsg ==
+          "Failed : there is a holiday was not approved in this date!") {
+        return "holiday was not approved";
       }
       notifyListeners();
       return "failed";

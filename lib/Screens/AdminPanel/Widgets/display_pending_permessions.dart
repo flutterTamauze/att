@@ -2,23 +2,35 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
-class ExpandedPermessionsTile extends StatefulWidget {
-  final String desc, orderNum, adminComment, duration;
+class ExpandedPendingPermessions extends StatefulWidget {
+  final String desc, userName, adminComment, duration, userID;
   final IconData iconData;
+  final int id;
+  Function onAccept;
+  Function onRefused;
   final String vacationReason;
   final int status;
   bool isAdmin = false;
   final int permessionType;
   final String date;
 
-  ExpandedPermessionsTile({
-    this.orderNum,
+  ExpandedPendingPermessions({
+    this.userName,
     this.permessionType,
+    this.id,
+    this.onRefused,
+    this.onAccept,
     this.vacationReason,
     this.isAdmin,
     this.duration,
+    this.userID,
     this.iconData,
     this.adminComment,
     this.desc,
@@ -28,12 +40,15 @@ class ExpandedPermessionsTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ExpandedOrderTileState createState() => _ExpandedOrderTileState();
+  _ExpandedPendingPermessionsState createState() =>
+      _ExpandedPendingPermessionsState();
 }
 
-class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
+class _ExpandedPendingPermessionsState
+    extends State<ExpandedPendingPermessions> {
   @override
   Widget build(BuildContext context) {
+    var pendingList = Provider.of<UserPermessionsData>(context);
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Theme(
@@ -56,33 +71,18 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                             widget.date,
                           ),
                           FaIcon(
-                            widget.status == 3
-                                ? FontAwesomeIcons.hourglass
-                                : widget.status == 1
-                                    ? FontAwesomeIcons.check
-                                    : FontAwesomeIcons.times,
-                            color: widget.status == 3
-                                ? Colors.orange
-                                : widget.status == 1
-                                    ? Colors.green
-                                    : Colors.red,
+                            FontAwesomeIcons.hourglass,
+                            color: Colors.orange,
                             size: 15,
                           )
                         ],
                       ),
-                      Container(
-                        width: 3,
-                        color: widget.status == 3
-                            ? Colors.orange
-                            : widget.status == 1
-                                ? Colors.green
-                                : Colors.red,
-                      ),
+                      Container(width: 3, color: Colors.orange),
                     ],
                   ),
                 ),
                 title: Text(
-                  widget.orderNum,
+                  widget.userName,
                 ),
                 children: [
                   SlideInDown(
@@ -127,49 +127,40 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                 ? "اذن حتى الساعة : ${widget.duration}"
                                 : "اذن من الساعة : ${widget.duration}"),
                             widget.desc != null ? Divider() : Container(),
-                            widget.status != 3
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      widget.status == 2
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10.h),
-                                              child: Text(
-                                                "سبب الرفض : ${widget.adminComment}",
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            )
-                                          : widget.adminComment == null ||
-                                                  widget.adminComment == ""
-                                              ? Container()
-                                              : Text(
-                                                  "تعليق الأدمن  : ${widget.adminComment}",
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                    ],
-                                  )
-                                : Container(
-                                    alignment: Alignment.centerRight,
-                                    padding: EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      'تم ارسال الطلب برجاء انتظار الرد',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey[700],
-                                        fontWeight: FontWeight.w500,
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "قرارك",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () => widget.onAccept(),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.check,
+                                        color: Colors.green,
                                       ),
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    InkWell(
+                                      onTap: () => widget.onRefused(),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.times,
+                                        color: Colors.red,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),

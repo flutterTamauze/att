@@ -10,12 +10,16 @@ import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/AboutAppScreen.dart';
 import 'package:qr_users/Screens/AboutCompany.dart';
 import 'package:qr_users/Screens/AboutUsScreen.dart';
+import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/MainCompanySettings.dart';
 import 'package:qr_users/Screens/intro.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -26,6 +30,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DrawerI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var comId = Provider.of<CompanyData>(context, listen: false).com.id;
+    String token = Provider.of<UserData>(context, listen: false).user.userToken;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -130,6 +136,42 @@ class DrawerI extends StatelessWidget {
                   indent: 50,
                   endIndent: 50,
                 ),
+                Provider.of<UserData>(context, listen: true).user.userType == 4
+                    ? Column(
+                        children: [
+                          MenuItem(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return RoundedLoadingIndicator();
+                                    });
+                                await Provider.of<UserPermessionsData>(context,
+                                        listen: false)
+                                    .getPendingCompanyPermessions(comId, token);
+                                await Provider.of<UserHolidaysData>(context,
+                                        listen: false)
+                                    .getPendingCompanyHolidays(comId, token);
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AdminPanel(),
+                                    ));
+                              },
+                              title: "لوحة التحكم",
+                              icon: Icons.admin_panel_settings),
+                          Divider(
+                            height: 30.h,
+                            thickness: 0.5,
+                            color: Colors.white.withOpacity(0.3),
+                            indent: 50,
+                            endIndent: 50,
+                          )
+                        ],
+                      )
+                    : Container(),
+
                 Provider.of<UserData>(context, listen: true).user.userType == 4
                     ? Column(
                         children: [

@@ -13,11 +13,13 @@ class ExpandedOrderTile extends StatefulWidget {
   final int index;
   final List<DateTime> vacationDaysCount;
   final String date;
+  bool isAdmin = false;
   ExpandedOrderTile({
     this.comments,
     this.orderNum,
     this.vacationDaysCount,
     this.holidayType,
+    this.isAdmin,
     this.iconData,
     this.adminComment,
     this.response,
@@ -43,6 +45,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
             padding: const EdgeInsets.all(4.0),
             child: Container(
               child: ExpansionTile(
+                initiallyExpanded: widget.isAdmin,
                 trailing: Container(
                   width: 80.w,
                   child: Row(

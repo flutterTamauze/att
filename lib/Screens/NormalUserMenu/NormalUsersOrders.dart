@@ -224,6 +224,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               ? Expanded(
                                   child: UserOrdersListView(
                                     provList: provList,
+                                    memberId: "",
                                   ),
                                 )
                               : filteredOrderData == null ||
@@ -273,6 +274,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           return orderNumberController.text == ""
                               ? Expanded(
                                   child: UserPermessionListView(
+                                      memberId: "",
                                       isFilter: false,
                                       permessionsList: permessionsList),
                                 )
