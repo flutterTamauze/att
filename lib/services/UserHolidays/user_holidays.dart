@@ -85,6 +85,49 @@ class UserHolidaysData with ChangeNotifier {
     }
   }
 
+  Future<String> acceptOrRefusePendingVacation(
+    int status,
+    int vacID,
+    String desc,
+    String userToken,
+  ) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      var response = await http.put(
+          Uri.parse(
+            "$baseURL/api/Holiday/Approve",
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+          body: json.encode({
+            "status": status,
+            "id": vacID,
+            "adminResponse": "",
+            "Desc": desc
+          }));
+      print(response.statusCode);
+      isLoading = false;
+      notifyListeners();
+      print(response.body);
+      var decodedResp = json.decode(response.body);
+      if (response.statusCode == 200) {
+        pendingCompanyHolidays
+            .removeWhere((element) => element.holidayNumber == vacID);
+
+        print(decodedResp["message"]);
+        notifyListeners();
+        return decodedResp["message"];
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return "fail";
+  }
+
   Future<List<UserHolidays>> getSingleUserHoliday(
       String userId, String userToken) async {
     try {

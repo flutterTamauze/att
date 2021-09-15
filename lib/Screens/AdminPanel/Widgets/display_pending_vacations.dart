@@ -5,28 +5,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ExpandedPendingVacation extends StatefulWidget {
-  final String response, orderNum, adminComment;
-  final IconData iconData;
+  final String response, userName, adminComment;
   final String comments;
-  int holidayType;
-  String userId;
-  final int status;
-  final int index;
+  final int holidayType;
+  final Function onAccept, onRefused;
   final List<DateTime> vacationDaysCount;
   final String date;
-  bool isAdmin = false;
+  final bool isAdmin;
   ExpandedPendingVacation({
     this.comments,
-    this.orderNum,
-    this.userId,
+    this.userName,
+    this.onAccept,
+    this.onRefused,
     this.vacationDaysCount,
     this.holidayType,
     this.isAdmin,
-    this.iconData,
     this.adminComment,
     this.response,
-    this.status,
-    this.index,
     this.date,
     Key key,
   }) : super(key: key);
@@ -61,33 +56,18 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                             widget.date.substring(0, 11),
                           ),
                           FaIcon(
-                            widget.status == 3
-                                ? FontAwesomeIcons.hourglass
-                                : widget.status == 1
-                                    ? FontAwesomeIcons.check
-                                    : FontAwesomeIcons.times,
-                            color: widget.status == 3
-                                ? Colors.orange
-                                : widget.status == 1
-                                    ? Colors.green
-                                    : Colors.red,
+                            FontAwesomeIcons.hourglass,
+                            color: Colors.orange,
                             size: 15,
                           )
                         ],
                       ),
-                      Container(
-                        width: 3,
-                        color: widget.status == 2
-                            ? Colors.red
-                            : widget.status == 3
-                                ? Colors.orange
-                                : Colors.green,
-                      ),
+                      Container(width: 3, color: Colors.orange),
                     ],
                   ),
                 ),
                 title: Text(
-                  widget.orderNum,
+                  widget.userName,
                 ),
                 children: [
                   SlideInDown(
@@ -138,43 +118,40 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                       )
                                 : Container(),
                             widget.comments != null ? Divider() : Container(),
-                            widget.status != 3
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      widget.status == 2
-                                          ? widget.adminComment != null
-                                              ? Container(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: 10.h),
-                                                  child: Text(
-                                                    "سبب الرفض : ${widget.adminComment}",
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container()
-                                          : Container(),
-                                    ],
-                                  )
-                                : Container(
-                                    alignment: Alignment.centerRight,
-                                    padding: EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      'تم ارسال الطلب برجاء انتظار الرد',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey[700],
-                                        fontWeight: FontWeight.w500,
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "قرارك",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () => widget.onAccept(),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.check,
+                                        color: Colors.green,
                                       ),
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    InkWell(
+                                      onTap: () => widget.onRefused(),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.times,
+                                        color: Colors.red,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),

@@ -133,18 +133,22 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       widget.status == 2
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10.h),
-                                              child: Text(
-                                                "سبب الرفض : ${widget.adminComment}",
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            )
+                                          ? widget.adminComment == "" ||
+                                                  widget.adminComment == null
+                                              ? Container()
+                                              : Container(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 10.h),
+                                                  child: Text(
+                                                    "سبب الرفض : ${widget.adminComment}",
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                )
                                           : widget.adminComment == null ||
                                                   widget.adminComment == ""
                                               ? Container()

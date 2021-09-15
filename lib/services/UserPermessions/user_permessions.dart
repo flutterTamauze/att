@@ -202,6 +202,7 @@ class UserPermessionsData with ChangeNotifier {
           }));
       print(response.body);
       isLoading = false;
+      notifyListeners();
       var decodedMsg = json.decode(response.body)["message"];
 
       if (decodedMsg == "Success : Permission Created!") {
@@ -211,7 +212,6 @@ class UserPermessionsData with ChangeNotifier {
         return "success";
       } else if (decodedMsg ==
           "Failed : Another permission not approved for this user!") {
-        notifyListeners();
         return "already exist";
       } else if (decodedMsg == "Failed : Another permission in this date!") {
         return "dublicate permession";

@@ -60,12 +60,10 @@ class PendingCompanyPermessions extends StatelessWidget {
                                       date: pending.date
                                           .toString()
                                           .substring(0, 11),
-                                      userID: pending.userID,
                                       id: pending.permessionId,
                                       desc: pending.permessionDescription,
                                       permessionType: pending.permessionType,
                                       userName: pending.user.toString(),
-                                      status: pending.permessionStatus,
                                       duration: pending.duration,
                                       onRefused: () {
                                         return showDialog(

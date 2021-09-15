@@ -141,7 +141,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       widget.status == 2
-                                          ? widget.adminComment != null
+                                          ? widget.adminComment != null ||
+                                                  widget.adminComment == ""
                                               ? Container(
                                                   padding: EdgeInsets.only(
                                                       bottom: 10.h),

@@ -2,21 +2,15 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/roundedAlert.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
-  final String desc, userName, adminComment, duration, userID;
-  final IconData iconData;
+  final String desc, userName, adminComment, duration;
   final int id;
   Function onAccept;
   Function onRefused;
-  final String vacationReason;
-  final int status;
   bool isAdmin = false;
   final int permessionType;
   final String date;
@@ -27,14 +21,10 @@ class ExpandedPendingPermessions extends StatefulWidget {
     this.id,
     this.onRefused,
     this.onAccept,
-    this.vacationReason,
     this.isAdmin,
     this.duration,
-    this.userID,
-    this.iconData,
     this.adminComment,
     this.desc,
-    this.status,
     this.date,
     Key key,
   }) : super(key: key);
