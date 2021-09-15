@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
+import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -90,7 +91,14 @@ class _AdminPanelState extends State<AdminPanel> {
                               icon: Icons.calendar_today_sharp,
                               requestsCount: value.pendingCompanyHolidays.length
                                   .toString(),
-                              onTap: () {});
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PendingCompanyVacations(),
+                                    ));
+                              });
                         },
                       )
                     ]))

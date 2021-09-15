@@ -9,6 +9,7 @@ class UserHolidays {
   String userId;
   String fcmToken;
   String userName;
+
   String holidayDescription, adminResponse;
   int holidayNumber;
   int holidayStatus; //1=>accept , //2 refused , //3 waiting..
@@ -32,6 +33,7 @@ class UserHolidays {
         toDate: DateTime.tryParse(json["toDate"]),
         holidayType: json["typeId"],
         userName: json["userName"],
+        userId: json['userId'] ?? "",
         holidayStatus: json["status"],
         holidayNumber: json["id"],
         fcmToken: json["fcmToken"] ?? "null",
