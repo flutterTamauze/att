@@ -33,6 +33,7 @@ class MissionsData with ChangeNotifier {
   bool isLoading = false;
   List<String> userNames = [];
   List<CompanyMissions> copyMissionsList = [];
+  int internalMissionsCount = 0, externalMissionsCount = 0;
   getAllUserNamesInMission() {
     userNames = [];
     companyMissionsList.forEach((element) {
@@ -55,6 +56,8 @@ class MissionsData with ChangeNotifier {
     String userId,
     String userToken,
   ) async {
+    externalMissionsCount = 0;
+    internalMissionsCount = 0;
     String startTime = DateTime(
       DateTime.now().year,
       1,
@@ -81,6 +84,15 @@ class MissionsData with ChangeNotifier {
           internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
       singleUserMissionsList =
           [...externalMissions, ...internalMissions].toSet().toList();
+      if (singleUserMissionsList.length > 0) {
+        for (int i = 0; i < singleUserMissionsList.length; i++) {
+          if (singleUserMissionsList[i].typeId == 4) {
+            externalMissionsCount++;
+          } else {
+            internalMissionsCount++;
+          }
+        }
+      }
     }
     notifyListeners();
   }

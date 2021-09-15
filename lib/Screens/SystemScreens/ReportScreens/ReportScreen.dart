@@ -10,8 +10,11 @@ import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceRepor
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'DisplayPermessionAndVacations.dart';
 
@@ -68,7 +71,23 @@ class _ReportsScreenState extends State<ReportsScreen> {
           title: "الأجازات و الأذونات",
           subTitle: "تقرير الأجازات والأذونات",
           icon: FontAwesomeIcons.calendarCheck,
-          onTap: () {
+          onTap: () async {
+            var userProvider = Provider.of<UserData>(context, listen: false);
+            var comProvider = Provider.of<CompanyData>(context, listen: false);
+            if (Provider.of<MemberData>(context, listen: false)
+                .membersList
+                .isEmpty) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return RoundedLoadingIndicator();
+                  });
+
+              await Provider.of<MemberData>(context, listen: false)
+                  .getAllCompanyMember(-1, comProvider.com.id,
+                      userProvider.user.userToken, context);
+              Navigator.pop(context);
+            }
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => VacationAndPermessionsReport(),

@@ -11,46 +11,13 @@ class DataTableholidayHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: ui.TextDirection.rtl,
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              )),
-          child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10.w),
-                    height: 20.h,
-                    child: AutoSizeText(
-                      ' أسم المستخدم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  )),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("نوع الأجازة"),
-                    DataTableHeaderTitles("من"),
-                    DataTableHeaderTitles("الى"),
-                    Expanded(
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
+      child: Row(
+        children: [
+          DataTableHeaderTitles("نوع الأجازة", Colors.orange[600]),
+          DataTableHeaderTitles("من", Colors.orange[600]),
+          DataTableHeaderTitles("الى", Colors.orange[600]),
+        ],
+      ),
     );
   }
 }

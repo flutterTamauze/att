@@ -48,6 +48,8 @@ class UserPermessionsData with ChangeNotifier {
   List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
   List<UserPermessions> pendingCompanyPermessions = [];
+  int earlyLeaversCount = 0;
+  int lateAbesenceCount = 0;
   List<String> userNames = [];
   getAllUserNamesInPermessions() {
     userNames = [];
@@ -120,6 +122,8 @@ class UserPermessionsData with ChangeNotifier {
   Future<List<UserPermessions>> getSingleUserPermession(
       String userId, String userToken) async {
     try {
+      lateAbesenceCount = 0;
+      earlyLeaversCount = 0;
       var response = await http.get(
         Uri.parse("$baseURL/api/Permissions/GetPermissionbyUser/$userId"),
         headers: {
@@ -136,6 +140,17 @@ class UserPermessionsData with ChangeNotifier {
             .toList();
 
         singleUserPermessions = singleUserPermessions.reversed.toList();
+        print(singleUserPermessions[0].permessionType);
+        if (singleUserPermessions.length > 0) {
+          for (int i = 0; i < singleUserPermessions.length; i++) {
+            if (singleUserPermessions[i].permessionType == 2) {
+              earlyLeaversCount++;
+            } else if (singleUserPermessions[i].permessionType == 1) {
+              lateAbesenceCount++;
+            }
+          }
+        }
+
         notifyListeners();
 
         return singleUserPermessions;

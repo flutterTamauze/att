@@ -115,7 +115,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                   ),
                             Divider(),
                             Text(
-                              "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 2 ? "مرضية" : "رصيد اجازات"} ",
+                              "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

@@ -35,9 +35,9 @@ class DataTableHeader extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    DataTableHeaderTitles("التأخير"),
-                    DataTableHeaderTitles("حضور"),
-                    DataTableHeaderTitles("انصراف"),
+                    DataTableHeaderTitles("التأخير", Colors.black),
+                    DataTableHeaderTitles("حضور", Colors.black),
+                    DataTableHeaderTitles("انصراف", Colors.black),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -55,11 +55,11 @@ class DataTableHeader extends StatelessWidget {
 
 class DataTableHeaderTitles extends StatelessWidget {
   final String title;
-  DataTableHeaderTitles(this.title);
+  final Color color;
+  DataTableHeaderTitles(this.title, this.color);
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 3,
       child: Container(
           height: 50.h,
           child: Center(
@@ -71,7 +71,7 @@ class DataTableHeaderTitles extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                  color: Colors.black),
+                  color: color),
             ),
           ))),
     );

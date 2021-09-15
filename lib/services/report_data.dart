@@ -58,9 +58,9 @@ class DailyReportUnit {
         case "1":
           return "عارضة";
           break;
-        case "2":
-          return "رصيد اجازات";
         case "3":
+          return "رصيد اجازات";
+        case "2":
           return "مرضى";
         case "4":
           return "مأمورية خارجية";

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData.dart';
@@ -36,18 +37,17 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
   @override
   void initState() {
     widget._nameController.text = "";
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    getAllHolidays = Provider.of<UserHolidaysData>(context, listen: false)
-        .getAllHolidays(userProvider.user.userToken, comProvider.com.id);
-
+    Provider.of<UserHolidaysData>(context, listen: false)
+        .singleUserHoliday
+        .clear();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var holidayProv = Provider.of<UserHolidaysData>(context, listen: false);
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvider = Provider.of<CompanyData>(context, listen: false);
     return Expanded(
       child: Column(
         children: [
@@ -93,6 +93,11 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                 },
                 itemSubmitted: (item) async {
                   List<int> indexes = [];
+                  print(item.id);
+                  getAllHolidays =
+                      Provider.of<UserHolidaysData>(context, listen: false)
+                          .getSingleUserHoliday(
+                              item.id, userProvider.user.userToken);
                   for (int i = 0; i < holidayProv.userNames.length; i++) {
                     if (holidayProv.userNames[i] == item.name) {
                       indexes.add(i);
@@ -105,6 +110,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
 
                       Provider.of<UserHolidaysData>(context, listen: false)
                           .setCopyByIndex(indexes);
+
                       // isVacationselected = true;
                     });
                   }
@@ -151,7 +157,28 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
           SizedBox(
             height: 5,
           ),
-          Container(child: DataTableholidayHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
+          Container(
+              child: widget._nameController.text == ""
+                  ? Text(
+                      "برجاء اختيار اسم المستخدم",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange[600],
+                          fontSize: 15),
+                    )
+                  : DataTableholidayHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
@@ -165,36 +192,40 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                           ),
                         );
                       } else {
-                        if (holidayProv.holidaysList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              "لا يوجد اجازات",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                          );
-                        }
-                        return ListView.builder(
-                            itemCount: widget._nameController.text == ""
-                                ? holidayProv.holidaysList.length
-                                : holidayProv.copyHolidaysList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                children: [
-                                  DataTableHolidayRow(
-                                      widget._nameController.text == ""
-                                          ? holidayProv.holidaysList[index]
-                                          : holidayProv
-                                              .copyHolidaysList[index]),
-                                  Divider(
-                                    thickness: 1,
-                                  )
-                                ],
-                              );
-                            });
+                        return widget._nameController.text == ""
+                            ? Container()
+                            : holidayProv.singleUserHoliday.isEmpty
+                                ? Center(
+                                    child: Text(
+                                    "لا يوجد اجازات لهذا المستخدم",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                                : ListView.builder(
+                                    itemCount:
+                                        holidayProv.singleUserHoliday.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          DataTableHolidayRow(holidayProv
+                                              .singleUserHoliday[index]),
+                                          Divider(
+                                            thickness: 1,
+                                          )
+                                        ],
+                                      );
+                                    });
                       }
                     })),
           ),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(thickness: 1, color: Colors.orange[600]),
+          widget._nameController.text == ""
+              ? Container()
+              : HolidaySummaryTableEnd()
         ],
       ),
     );

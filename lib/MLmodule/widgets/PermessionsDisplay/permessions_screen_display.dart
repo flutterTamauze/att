@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
 
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData.dart';
 
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,11 +37,6 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
   void initState() {
     super.initState();
     widget._nameController.text = "";
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    getAllPermessions = Provider.of<UserPermessionsData>(context, listen: false)
-        .getAllPermessions(comProvider.com.id, userProvider.user.userToken);
   }
 
   @override
@@ -93,6 +88,13 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                   return a.name.compareTo(b.name);
                 },
                 itemSubmitted: (item) async {
+                  getAllPermessions =
+                      Provider.of<UserPermessionsData>(context, listen: false)
+                          .getSingleUserPermession(
+                              item.id,
+                              Provider.of<UserData>(context, listen: false)
+                                  .user
+                                  .userToken);
                   List<int> indexes = [];
                   for (int i = 0; i < permessionProv.userNames.length; i++) {
                     if (permessionProv.userNames[i] == item.name) {
@@ -152,7 +154,28 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
           SizedBox(
             height: 5,
           ),
-          Container(child: DataTablePermessionHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
+          Container(
+              child: widget._nameController.text == ""
+                  ? Text(
+                      "برجاء اختيار اسم المستخدم",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange[600],
+                          fontSize: 15),
+                    )
+                  : DataTablePermessionHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
@@ -166,37 +189,43 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                           ),
                         );
                       } else {
-                        if (permessionProv.permessionsList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              "لا يوجد اذونات",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                          );
-                        }
-                        return ListView.builder(
-                            itemCount: widget._nameController.text == ""
-                                ? permessionProv.permessionsList.length
-                                : permessionProv.copyPermessionsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                children: [
-                                  DataTablePermessionRow(
-                                      widget._nameController.text == ""
-                                          ? permessionProv
-                                              .permessionsList[index]
-                                          : permessionProv
-                                              .copyPermessionsList[index]),
-                                  Divider(
-                                    thickness: 1,
-                                  )
-                                ],
-                              );
-                            });
+                        return widget._nameController.text == ""
+                            ? Container()
+                            : permessionProv.singleUserPermessions.isEmpty
+                                ? Center(
+                                    child: Text(
+                                    "لا يوجد اذنات لهذا المستخدم",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                                : ListView.builder(
+                                    itemCount: permessionProv
+                                        .singleUserPermessions.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          DataTablePermessionRow(permessionProv
+                                              .singleUserPermessions[index]),
+                                          Divider(
+                                            thickness: 1,
+                                          )
+                                        ],
+                                      );
+                                    });
                       }
                     })),
           ),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
+          widget._nameController.text == ""
+              ? Container()
+              : PermessionsSummaryTableEnd()
         ],
       ),
     );

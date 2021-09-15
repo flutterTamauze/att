@@ -7,9 +7,7 @@ import 'package:qr_users/MLmodule/widgets/MissionsDisplay/CompanyMissionsDisplay
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
-import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/user_data.dart';
+
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,12 +26,6 @@ class _VacationAndPermessionsReportState
     extends State<VacationAndPermessionsReport> {
   @override
   void initState() {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-    if (Provider.of<MemberData>(context, listen: false).membersList.isEmpty) {
-      Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
-          -1, comProvider.com.id, userProvider.user.userToken, context);
-    }
     super.initState();
   }
 

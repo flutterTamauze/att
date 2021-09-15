@@ -12,45 +12,16 @@ class DataTableMissionsHeader extends StatelessWidget {
     return Directionality(
       textDirection: ui.TextDirection.rtl,
       child: Container(
-          decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              )),
           child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10.w),
-                    height: 20.h,
-                    child: AutoSizeText(
-                      ' أسم المستخدم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  )),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("النوع"),
-                    DataTableHeaderTitles("من"),
-                    DataTableHeaderTitles("الى"),
-                    Expanded(
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
+        children: [
+          DataTableHeaderTitles("النوع", Colors.orange[600]),
+          DataTableHeaderTitles("من", Colors.orange[600]),
+          DataTableHeaderTitles("الى", Colors.orange[600]),
+          Container(
+            height: 50.h,
+          ),
+        ],
+      )),
     );
   }
 }
@@ -73,9 +44,9 @@ class SingleUserMissionHeader extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                DataTableHeaderTitles("النوع"),
-                DataTableHeaderTitles("من"),
-                DataTableHeaderTitles("الى"),
+                DataTableHeaderTitles("النوع", Colors.black),
+                DataTableHeaderTitles("من", Colors.black),
+                DataTableHeaderTitles("الى", Colors.black),
               ],
             ),
           )),

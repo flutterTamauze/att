@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/DataTableMissionsHeader.dart';
+import 'package:qr_users/MLmodule/widgets/MissionsDisplay/missions_summary_table_end.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
+import 'package:qr_users/widgets/CompanyMissions/DataTableMissionRow.dart';
+import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'dart:ui' as ui;
 
 import 'data_table_mission_row_single_user.dart';
@@ -46,9 +49,18 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               Divider(),
+                              SizedBox(
+                                height: 10.h,
+                              ),
                               userMissionsList.isEmpty
                                   ? Container()
-                                  : Container(child: SingleUserMissionHeader()),
+                                  : DataTableholidayHeader(),
+                              userMissionsList.isEmpty
+                                  ? Container()
+                                  : Divider(
+                                      thickness: 1,
+                                      color: Colors.orange[600],
+                                    ),
                               Directionality(
                                 textDirection: ui.TextDirection.rtl,
                                 child: Expanded(
@@ -58,20 +70,24 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
                                             return Center(
-                                              child: CircularProgressIndicator(
-                                                backgroundColor: Colors.orange,
+                                              child: Expanded(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  backgroundColor:
+                                                      Colors.orange,
+                                                ),
                                               ),
                                             );
                                           } else {
                                             return userMissionsList.isEmpty
                                                 ? Center(
                                                     child: Text(
-                                                      "لا يوجد مأموريات",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  )
+                                                    "لا يوجد مأموريات لهذا المستخدم",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
                                                 : ListView.builder(
                                                     itemCount:
                                                         userMissionsList.length,
@@ -80,25 +96,9 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                                             int index) {
                                                       return Column(
                                                         children: [
-                                                          DataTableMissionSingleUser(
+                                                          DataTableMissionRow(
                                                               userMissionsList[
                                                                   index]),
-                                                          userMissionsList[
-                                                                          index]
-                                                                      .typeId !=
-                                                                  4
-                                                              ? Text(
-                                                                  userMissionsList[
-                                                                          index]
-                                                                      .sitename,
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                              .orange[
-                                                                          600],
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600))
-                                                              : Container(),
                                                           Divider(
                                                             thickness: 1,
                                                           )
@@ -108,6 +108,15 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                           }
                                         })),
                               ),
+                              userMissionsList.isEmpty
+                                  ? Container()
+                                  : Divider(
+                                      thickness: 1,
+                                      color: Colors.orange[600],
+                                    ),
+                              userMissionsList.isEmpty
+                                  ? Container()
+                                  : MissionsSummaryTableEnd()
                             ],
                           ),
                         ),

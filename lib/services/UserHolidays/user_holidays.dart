@@ -48,6 +48,7 @@ class UserHolidaysData with ChangeNotifier {
   List<UserHolidays> copyHolidaysList = [];
   List<UserHolidays> pendingCompanyHolidays = [];
   List<String> userNames = [];
+  int sickVacationCount = 0, vacationCreditCount = 0, suddenVacationCount = 0;
   getAllUserNamesInHolidays() {
     userNames = [];
     holidaysList.forEach((element) {
@@ -131,6 +132,9 @@ class UserHolidaysData with ChangeNotifier {
   Future<List<UserHolidays>> getSingleUserHoliday(
       String userId, String userToken) async {
     try {
+      sickVacationCount = 0;
+      suddenVacationCount = 0;
+      vacationCreditCount = 0;
       var response = await http.get(
         Uri.parse("$baseURL/api/Holiday/GetHolidaybyUser/$userId"),
         headers: {
@@ -145,7 +149,20 @@ class UserHolidaysData with ChangeNotifier {
         singleUserHoliday =
             permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
         singleUserHoliday = singleUserHoliday.reversed.toList();
+        if (singleUserHoliday.length > 0) {
+          for (int i = 0; i < singleUserHoliday.length; i++) {
+            if (singleUserHoliday[i].holidayType == 1) {
+              suddenVacationCount++;
+            } else if (singleUserHoliday[i].holidayType == 2) {
+              sickVacationCount++;
+            } else {
+              vacationCreditCount++;
+            }
+          }
+        }
+
         notifyListeners();
+
         return singleUserHoliday;
       }
     } catch (e) {

@@ -23,6 +23,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
 import '../../../constants.dart';
+import 'missions_summary_table_end.dart';
 
 class DisplayCompanyMissions extends StatefulWidget {
   final TextEditingController _nameController;
@@ -40,11 +41,6 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
   @override
   void initState() {
     widget._nameController.text = "";
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    getCompanyMissions = Provider.of<MissionsData>(context, listen: false)
-        .getCompanyMissions(comProvider.com.id, userProvider.user.userToken);
 
     super.initState();
   }
@@ -96,6 +92,13 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                   return a.name.compareTo(b.name);
                 },
                 itemSubmitted: (item) async {
+                  var userProvider =
+                      Provider.of<UserData>(context, listen: false);
+
+                  getCompanyMissions =
+                      Provider.of<MissionsData>(context, listen: false)
+                          .getSingleUserMissions(
+                              item.id, userProvider.user.userToken);
                   List<int> indexes = [];
 
                   print(comMissionProv.userNames.length);
@@ -157,7 +160,28 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
           SizedBox(
             height: 5,
           ),
-          Container(child: DataTableMissionsHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
+          Container(
+              child: widget._nameController.text == ""
+                  ? Text(
+                      "برجاء اختيار اسم المستخدم",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange[600],
+                          fontSize: 15),
+                    )
+                  : DataTableholidayHeader()),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
@@ -171,37 +195,43 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                           ),
                         );
                       } else {
-                        if (comMissionProv.companyMissionsList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              "لا يوجد مأموريات",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                          );
-                        }
-                        return ListView.builder(
-                            itemCount: widget._nameController.text == ""
-                                ? comMissionProv.companyMissionsList.length
-                                : comMissionProv.copyMissionsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                children: [
-                                  DataTableMissionRow(
-                                      widget._nameController.text == ""
-                                          ? comMissionProv
-                                              .companyMissionsList[index]
-                                          : comMissionProv
-                                              .copyMissionsList[index]),
-                                  Divider(
-                                    thickness: 1,
-                                  )
-                                ],
-                              );
-                            });
+                        return widget._nameController.text == ""
+                            ? Container()
+                            : comMissionProv.singleUserMissionsList.isEmpty
+                                ? Center(
+                                    child: Text(
+                                    "لا يوجد مأموريات لهذا المستخدم",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                                : ListView.builder(
+                                    itemCount: comMissionProv
+                                        .singleUserMissionsList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          DataTableMissionRow(comMissionProv
+                                              .singleUserMissionsList[index]),
+                                          Divider(
+                                            thickness: 1,
+                                          )
+                                        ],
+                                      );
+                                    });
                       }
                     })),
           ),
+          widget._nameController.text == ""
+              ? Container()
+              : Divider(
+                  thickness: 1,
+                  color: Colors.orange[600],
+                ),
+          widget._nameController.text == ""
+              ? Container()
+              : MissionsSummaryTableEnd()
         ],
       ),
     );
