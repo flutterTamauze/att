@@ -122,7 +122,6 @@ class DrawerI extends StatelessWidget {
                 ///---------------About Com-------------///
                 MenuItem(
                     onTap: () {
-                      Navigator.pop(context);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => NormalUserMenu()));
                     },

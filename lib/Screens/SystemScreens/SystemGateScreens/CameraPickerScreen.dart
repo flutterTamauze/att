@@ -447,7 +447,8 @@ class TakePictureScreenState extends State<CameraPicker>
                                           gravity: ToastGravity.CENTER,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.black);
-                                    } else if (msg == "Failed : Time Out") {
+                                    } else if (msg ==
+                                        "Failed : Out of shift time") {
                                       await Fluttertoast.showToast(
                                           msg: "التسجيل غير متاح الأن",
                                           gravity: ToastGravity.CENTER,

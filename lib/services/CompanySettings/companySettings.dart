@@ -30,6 +30,10 @@ class CompanySettingsService {
       int attendClearance,
       int leaveClearance,
       String userToken) async {
+    print(lateAllow);
+    print(attendClearance);
+    print(leaveClearance);
+    print(comID);
     var response =
         await http.put(Uri.parse("$baseURL/api/Settings/Edit/$comID"),
             headers: {
@@ -43,6 +47,7 @@ class CompanySettingsService {
               "leaveClearance": leaveClearance,
               "companyId": comID,
             }));
+    print(response.statusCode);
     print(response.body);
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {

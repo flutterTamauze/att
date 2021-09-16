@@ -411,7 +411,8 @@ class ReportsData with ChangeNotifier {
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
         print(response.body);
-
+        print("asdnklsfanlsfa0");
+        print(decodedRes['data']['totalLateDay']);
         if (decodedRes["message"] == "Success") {
           userAttendanceReport.totalOfficialVacation =
               decodedRes["data"]["totalOffcialVacation"];

@@ -68,6 +68,24 @@ class UserHolidaysData with ChangeNotifier {
     notifyListeners();
   }
 
+  deleteUserHoliday(int holidayID, String userToken) async {
+    isLoading = true;
+    notifyListeners();
+
+    var response = await http.delete(
+        Uri.parse("$baseURL/api/Holiday/DeleteHoliday?id=$holidayID"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.statusCode);
+    print(response.body);
+    isLoading = false;
+    notifyListeners();
+    var decodedResp = json.decode(response.body);
+    return decodedResp["message"];
+  }
+
   getPendingCompanyHolidays(int companyId, String userToken) async {
     var response = await http.get(
         Uri.parse("$baseURL/api/Holiday/GetAllHolidaysPending/$companyId"),

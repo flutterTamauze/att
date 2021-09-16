@@ -41,10 +41,6 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       info: _attendanceReport.totalAbsentDay.toString(),
                     )),
                     DataTableEndRowInfo(
-                      info: _attendanceReport.totalOfficialVacation.toString(),
-                      infoTitle: 'العطل الرسمية:',
-                    ),
-                    DataTableEndRowInfo(
                         info: _attendanceReport.totalLateDay.toString(),
                         infoTitle: "ايام التأخير:"),
                     DataTableEndRowInfo(

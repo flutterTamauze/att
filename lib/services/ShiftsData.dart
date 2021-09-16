@@ -54,6 +54,25 @@ class ShiftsData with ChangeNotifier {
     return shiftsBySite.length;
   }
 
+  setScheduleSiteAndShift(
+    int scheduleIndex,
+    int currentIndex,
+    int siteId,
+    int shiftId,
+  ) {
+    shiftScheduleList[scheduleIndex].scheduleSiteNumber[currentIndex] = siteId;
+    shiftScheduleList[scheduleIndex].scheduleShiftsNumber[currentIndex] =
+        shiftId;
+
+    notifyListeners();
+  }
+
+  setScheduleShiftFromAndto(int scheduleIndex, DateTime to, DateTime from) {
+    shiftScheduleList[scheduleIndex].scheduleToTime = to;
+    shiftScheduleList[scheduleIndex].scheduleFromTime = from;
+    notifyListeners();
+  }
+
   Future<String> deleteShiftScheduleById(
       int shiftId, String userToken, int currentIndex) async {
     print(currentIndex);
@@ -103,8 +122,74 @@ class ShiftsData with ChangeNotifier {
     return true;
   }
 
-  Future<String> addShiftSchedule(List<Day> shiftIds, String usertoken,
-      String userId, int usershiftId, DateTime from, DateTime to) async {
+  Future<String> editShiftSchedule(
+      List<Day> shiftIds,
+      String usertoken,
+      String userId,
+      int usershiftId,
+      DateTime from,
+      DateTime to,
+      userSiteid,
+      int scheduleId) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.put(
+        Uri.parse(
+          "$baseURL/api/ShiftSchedule/Edit/$scheduleId",
+        ),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $usertoken"
+        },
+        body: json.encode({
+          "id": scheduleId,
+          "fromDate": from.toIso8601String(),
+          "toDate": to.toIso8601String(),
+          "saturdayShift": shiftIds[0].shiftID,
+          "sunShift": shiftIds[1].shiftID,
+          "mondayShift": shiftIds[2].shiftID,
+          "tuesdayShift": shiftIds[3].shiftID,
+          "wednesdayShift": shiftIds[4].shiftID,
+          "thursdayShift": shiftIds[5].shiftID,
+          "fridayShift": shiftIds[6].shiftID,
+          "SatSiteId": shiftIds[0].siteID,
+          "SunSiteId": shiftIds[1].siteID,
+          "MonSiteId": shiftIds[2].siteID,
+          "TueSiteId": shiftIds[3].siteID,
+          "WedSiteId": shiftIds[4].siteID,
+          "ThursSiteId": shiftIds[5].siteID,
+          "FridaySiteId": shiftIds[6].siteID,
+          "OriginalSiteId": userSiteid,
+          "userId": userId,
+          "originalShift": usershiftId
+        }));
+    isLoading = false;
+    print(response.body);
+    notifyListeners();
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["statusCode"] == 200) {
+      if (decodedResponse["message"] == "Success") {
+        return "Success";
+      } else if (decodedResponse["message"] ==
+          "Fail: Schedle Shift not exist") {
+        return "not exist";
+      } else {
+        return "fail";
+      }
+    }
+    notifyListeners();
+    return "error";
+  }
+
+  Future<String> addShiftSchedule(
+    List<Day> shiftIds,
+    String usertoken,
+    String userId,
+    int usershiftId,
+    DateTime from,
+    DateTime to,
+    userSiteid,
+  ) async {
     print("adding shift sched for id $usershiftId");
     isLoading = true;
     notifyListeners();
@@ -126,6 +211,14 @@ class ShiftsData with ChangeNotifier {
           "wednesdayShift": shiftIds[4].shiftID,
           "thursdayShift": shiftIds[5].shiftID,
           "fridayShift": shiftIds[6].shiftID,
+          "SatSiteId": shiftIds[0].siteID,
+          "SunSiteId": shiftIds[1].siteID,
+          "MonSiteId": shiftIds[2].siteID,
+          "TueSiteId": shiftIds[3].siteID,
+          "WedSiteId": shiftIds[4].siteID,
+          "ThursSiteId": shiftIds[5].siteID,
+          "FridaySiteId": shiftIds[6].siteID,
+          "OriginalSiteId": userSiteid,
           "userId": userId,
           "originalShift": usershiftId
         }));

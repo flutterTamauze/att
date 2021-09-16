@@ -13,6 +13,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/Ou
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:qr_users/services/Sites_data.dart';
@@ -31,7 +32,9 @@ import '../../../../../constants.dart';
 
 class ReAllocateUsers extends StatefulWidget {
   final Member member;
-  ReAllocateUsers(this.member);
+  final bool isEdit;
+  final int index;
+  ReAllocateUsers(this.member, this.isEdit, this.index);
   @override
   _ReAllocateUsersState createState() => _ReAllocateUsersState();
 }
@@ -44,14 +47,24 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
   @override
   void initState() {
+    if (widget.isEdit) {
+      var scheduleList =
+          Provider.of<ShiftsData>(context, listen: false).shiftScheduleList;
+      _fromDate = scheduleList[widget.index].scheduleFromTime;
+      _toDate = scheduleList[widget.index].scheduleToTime;
+      _fromText = " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
+      _toText = " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
+      _dateController.text = "$_fromText $_toText";
+    } else {
+      var now = DateTime.now();
+      _dateController.text = "";
+      _fromDate = DateTime(now.year, now.month, now.day);
+      _toDate = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    }
     userProvider = Provider.of<UserData>(context, listen: false);
     _picked = null;
-    _yesterday = DateTime(DateTime.now().year, DateTime.december, 30);
-    _dateController.text = "";
-    var now = DateTime.now();
-    _fromDate = DateTime(now.year, now.month, now.day);
-    _toDate = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    lastDatee = DateTime(DateTime.now().year, DateTime.december, 30);
 
     Provider.of<ShiftsData>(context, listen: false).isLoading = false;
 
@@ -63,7 +76,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     super.dispose();
   }
 
-  var _yesterday;
+  var lastDatee;
   var _picked;
   var _toDate;
   UserData userProvider;
@@ -74,13 +87,47 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
   int getShiftid(String shiftName) {
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftName == list[i].shiftName) {
-        return list[i].shiftId;
-      }
-    }
-    return -1;
+    List<Shift> currentShift =
+        list.where((element) => element.shiftName == shiftName).toList();
+    return currentShift[0].shiftId;
+  }
+
+  int getsiteIDbyName(String siteName) {
+    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    List<Site> currentSite =
+        list.where((element) => element.name == siteName).toList();
+    return currentSite[0].id;
+  }
+
+  String getShiftNameById(
+    int id,
+  ) {
+    print("current id");
+    print(id);
+
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    print(list.length);
+
+    List<Shift> currentShift =
+        list.where((element) => element.shiftId == id).toList();
+    return currentShift[0].shiftName;
+  }
+
+  String getSiteNameById(
+    int id,
+  ) {
+    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    print(list.length);
+
+    List<Site> currentSite = list.where((element) => element.id == id).toList();
+    return currentSite[0].name;
+  }
+
+  int getsiteIDbyShiftId(int shiftId) {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    List<Shift> currentSite =
+        list.where((element) => element.shiftId == shiftId).toList();
+    return currentSite[0].siteID;
   }
 
   @override
@@ -89,19 +136,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     var selectedVal = prov.dropDownSitesList[1].name;
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-
+    var scheduleList =
+        Provider.of<ShiftsData>(context, listen: true).shiftScheduleList;
     ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
-          print(Provider.of<ShiftsData>(context, listen: false)
-              .shiftsBySite[0]
-              .shiftName);
-          print(Provider.of<ShiftsData>(context, listen: false)
-              .shiftsList[1]
-              .shiftName);
-          print(Provider.of<ShiftsData>(context, listen: false)
-              .shiftsList[prov.dropDownShiftIndex]
-              .shiftName);
+          getShiftNameById(scheduleList[0].scheduleShiftsNumber[0]);
+
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -150,16 +191,20 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                     _picked =
                                         await DateRagePicker.showDatePicker(
                                             context: context,
-                                            initialFirstDate: DateTime(
-                                                DateTime.now().year,
-                                                DateTime.now().month,
-                                                DateTime.now().day),
+                                            initialFirstDate: widget.isEdit
+                                                ? _fromDate
+                                                : DateTime(
+                                                    DateTime.now().year,
+                                                    DateTime.now().month,
+                                                    DateTime.now().day),
                                             initialLastDate: _toDate,
-                                            firstDate: DateTime(
-                                                DateTime.now().year,
-                                                DateTime.now().month,
-                                                DateTime.now().day),
-                                            lastDate: _yesterday);
+                                            firstDate: widget.isEdit
+                                                ? _fromDate
+                                                : DateTime(
+                                                    DateTime.now().year,
+                                                    DateTime.now().month,
+                                                    DateTime.now().day),
+                                            lastDate: lastDatee);
                                     var newString = "";
                                     setState(() {
                                       _fromDate = _picked.first;
@@ -237,27 +282,55 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             )
                                           : Stack(
                                               children: [
-                                                Card(
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    width: 250.w,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(daysofflist
-                                                            .reallocateUsers[
-                                                                index]
-                                                            .shiftname),
-                                                        Text(daysofflist
-                                                            .reallocateUsers[
-                                                                index]
-                                                            .sitename),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
+                                                widget.isEdit
+                                                    ? Card(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          width: 250.w,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(getShiftNameById(
+                                                                  scheduleList[
+                                                                          widget
+                                                                              .index]
+                                                                      .scheduleShiftsNumber[index])),
+                                                              Text(getSiteNameById(
+                                                                  scheduleList[
+                                                                          widget
+                                                                              .index]
+                                                                      .scheduleSiteNumber[index])),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Card(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          width: 250.w,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(daysofflist
+                                                                  .reallocateUsers[
+                                                                      index]
+                                                                  .shiftname),
+                                                              Text(daysofflist
+                                                                  .reallocateUsers[
+                                                                      index]
+                                                                  .sitename),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
                                                 Positioned(
                                                     child: InkWell(
                                                   onTap: () {
@@ -454,21 +527,32 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                   ),
                                                                   Spacer(),
                                                                   Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
+                                                                    padding: EdgeInsets.only(
                                                                         bottom:
-                                                                            10),
+                                                                            20.h),
                                                                     child: RoundedButton(
                                                                         title: "حفظ",
                                                                         onPressed: () async {
                                                                           String
                                                                               shiftName =
                                                                               Provider.of<ShiftsData>(context, listen: false).shiftsBySite[prov.dropDownShiftIndex].shiftName;
+                                                                          String
+                                                                              siteName =
+                                                                              Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].name;
+
+                                                                          Provider.of<ShiftsData>(context, listen: false).setScheduleSiteAndShift(
+                                                                              widget.index,
+                                                                              index,
+                                                                              getsiteIDbyName(siteName),
+                                                                              getShiftid(shiftName));
+
                                                                           await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
                                                                               index,
                                                                               selectedVal,
                                                                               shiftName,
-                                                                              getShiftid(shiftName));
+                                                                              getShiftid(shiftName),
+                                                                              getsiteIDbyName(siteName));
+
                                                                           prov.setDropDownIndex(
                                                                               0);
                                                                           await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
@@ -533,29 +617,65 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                   gravity: ToastGravity.CENTER,
                                   backgroundColor: Colors.red);
                             } else {
-                              String msg = await Provider.of<ShiftsData>(
-                                      context,
-                                      listen: false)
-                                  .addShiftSchedule(
-                                      daysofflist.reallocateUsers,
-                                      userProvider.user.userToken,
-                                      widget.member.id,
-                                      widget.member.shiftId,
-                                      _fromDate,
-                                      _toDate);
-                              if (msg == "Success") {
-                                Fluttertoast.showToast(
-                                    msg: "تمت اضافة الجدولة بنجاح",
-                                    gravity: ToastGravity.CENTER,
-                                    backgroundColor: Colors.green);
-                                Navigator.pop(context);
-                              } else if (msg == "exists") {
-                                Fluttertoast.showToast(
-                                    msg: "تم طلب جدولة لهذا المستخدم مسبقا",
-                                    gravity: ToastGravity.CENTER,
-                                    backgroundColor: Colors.red);
+                              if (widget.isEdit) {
+                                String msg = await Provider.of<ShiftsData>(
+                                        context,
+                                        listen: false)
+                                    .editShiftSchedule(
+                                        daysofflist.reallocateUsers,
+                                        userProvider.user.userToken,
+                                        widget.member.id,
+                                        widget.member.shiftId,
+                                        _fromDate,
+                                        _toDate,
+                                        getsiteIDbyShiftId(
+                                            widget.member.shiftId),
+                                        scheduleList[0].id);
+                                if (msg == "Success") {
+                                  Fluttertoast.showToast(
+                                      msg: "تم تعديل الجدولة بنجاح",
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.green);
+                                  Provider.of<ShiftsData>(context,
+                                          listen: false)
+                                      .setScheduleShiftFromAndto(
+                                          widget.index, _toDate, _fromDate);
+                                  Navigator.pop(context);
+                                } else if (msg == "not exists") {
+                                  Fluttertoast.showToast(
+                                      msg: "لا يوجد جدولة",
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.red);
+                                } else {
+                                  errorToast();
+                                }
                               } else {
-                                errorToast();
+                                String msg = await Provider.of<ShiftsData>(
+                                        context,
+                                        listen: false)
+                                    .addShiftSchedule(
+                                        daysofflist.reallocateUsers,
+                                        userProvider.user.userToken,
+                                        widget.member.id,
+                                        widget.member.shiftId,
+                                        _fromDate,
+                                        _toDate,
+                                        getsiteIDbyShiftId(
+                                            widget.member.shiftId));
+                                if (msg == "Success") {
+                                  Fluttertoast.showToast(
+                                      msg: "تمت اضافة الجدولة بنجاح",
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.green);
+                                  Navigator.pop(context);
+                                } else if (msg == "exists") {
+                                  Fluttertoast.showToast(
+                                      msg: "تم طلب جدولة لهذا المستخدم مسبقا",
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.red);
+                                } else {
+                                  errorToast();
+                                }
                               }
                             }
                           },

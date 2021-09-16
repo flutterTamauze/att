@@ -5,9 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftSchedule/ShiftScheduleModel.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -49,6 +52,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
     var scheduleList =
         Provider.of<ShiftsData>(context, listen: true).shiftScheduleList;
     return Scaffold(
+      endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
@@ -133,6 +137,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
                           fromTimee: scheduleList[index].scheduleFromTime,
                           endTimee: scheduleList[index].scheduleToTime,
                           currentIndex: index,
+                          member: widget.member,
                         );
                       },
                     ));
@@ -151,6 +156,7 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
     String shiftName = getShiftName();
+
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
     for (int i = 0; i < 7; i++) {
@@ -160,14 +166,15 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
               .sitesList[widget.siteIndex]
               .name,
           shiftName,
-          getShiftid(shiftName));
+          getShiftid(shiftName),
+          getsiteIDbyShiftId(widget.member.shiftId));
     }
     Navigator.pop(context);
 
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ReAllocateUsers(widget.member),
+          builder: (context) => ReAllocateUsers(widget.member, false, 0),
         )).then((value) => setState(() {
           fillSchedules();
         }));
@@ -175,38 +182,53 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
 
   int getShiftid(String shiftName) {
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftName == list[i].shiftName) {
-        return list[i].shiftId;
-      }
-    }
-    return -1;
+
+    List<Shift> currentShift =
+        list.where((element) => element.shiftName == shiftName).toList();
+
+    return currentShift[0].shiftId;
+  }
+
+  int getsiteIDbyShiftId(int shiftId) {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    List<Shift> currentSite =
+        list.where((element) => element.shiftId == shiftId).toList();
+    print(currentSite[0].siteID);
+    return currentSite[0].siteID;
+  }
+
+  int getSiteID(String siteName) {
+    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+
+    List<Site> currentShift =
+        list.where((element) => element.name == siteName).toList();
+
+    return currentShift[0].id;
   }
 
   String getShiftName() {
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (list[i].shiftId == widget.member.shiftId) {
-        return list[i].shiftName;
-      }
-    }
-    return "";
+
+    List<Shift> findShift;
+    findShift = list
+        .where((element) => element.shiftId == widget.member.shiftId)
+        .toList();
+
+    return findShift[0].shiftName;
   }
 }
 
 class ShiftScheduleCard extends StatefulWidget {
-  ShiftScheduleCard({
-    @required this.scheduleList,
-    this.endTimee,
-    this.fromTimee,
-    this.currentIndex,
-  });
+  ShiftScheduleCard(
+      {@required this.scheduleList,
+      this.endTimee,
+      this.fromTimee,
+      this.currentIndex,
+      this.member});
   final DateTime fromTimee, endTimee;
   final int currentIndex;
   final List<ShiftSheduleModel> scheduleList;
-
+  final Member member;
   @override
   _ShiftScheduleCardState createState() => _ShiftScheduleCardState();
 }
@@ -279,126 +301,28 @@ class _ShiftScheduleCardState extends State<ShiftScheduleCard> {
                   ),
                   Expanded(child: Container()),
                   InkWell(
-                    onTap: () {
-                      return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        20.0)), //this right here
-                                child: Directionality(
-                                  textDirection: ui.TextDirection.rtl,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 600.h,
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Column(
-                                          children: [
-                                            DirectoriesHeader(
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(40.0),
-                                                child: Lottie.asset(
-                                                    "resources/shifts.json",
-                                                    repeat: false),
-                                              ),
-                                              "بيانات جدولة الأسبوع",
-                                            ),
-                                            SizedBox(
-                                              height: 3.h,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "السبت",
-                                              schudleList: widget.scheduleList,
-                                              currentIndex: widget.currentIndex,
-                                              scheduleShiftsNumber: 0,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الأحد",
-                                              schudleList: widget.scheduleList,
-                                              currentIndex: widget.currentIndex,
-                                              scheduleShiftsNumber: 1,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الأثنين",
-                                              schudleList: widget.scheduleList,
-                                              currentIndex: widget.currentIndex,
-                                              scheduleShiftsNumber: 2,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الثلاثاء",
-                                              schudleList: widget.scheduleList,
-                                              currentIndex: widget.currentIndex,
-                                              scheduleShiftsNumber: 3,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الأربع",
-                                              schudleList: widget.scheduleList,
-                                              currentIndex: widget.currentIndex,
-                                              scheduleShiftsNumber: 4,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الخميس",
-                                              currentIndex: widget.currentIndex,
-                                              schudleList: widget.scheduleList,
-                                              scheduleShiftsNumber: 5,
-                                            ),
-                                            ScheduleWeekDayInfo(
-                                              dayName: "الجمعة",
-                                              currentIndex: widget.currentIndex,
-                                              schudleList: widget.scheduleList,
-                                              scheduleShiftsNumber: 6,
-                                            ),
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
-                                            Text(
-                                              "المناوبة الرئيسية : ${getShiftNameById(widget.scheduleList[widget.currentIndex].originalShift)}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 14,
-                                                  color: Colors.orange),
-                                            ),
-                                            Expanded(child: Container()),
-                                            Container(
-                                              width: 100.w,
-                                              child: RounderButton("غلق",
-                                                  () async {
-                                                Navigator.pop(context);
-                                              }),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 5.0.w,
-                                        top: 5.0.h,
-                                        child: Container(
-                                          width: 50.w,
-                                          height: 50.h,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Icon(
-                                              Icons.close,
-                                              color: Colors.orange,
-                                              size: ScreenUtil().setSp(25,
-                                                  allowFontScalingSelf: true),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ));
-                          });
+                    onTap: () async {
+                      var userProvider =
+                          Provider.of<UserData>(context, listen: false);
+                      var comProvider =
+                          Provider.of<CompanyData>(context, listen: false);
+                      if (Provider.of<DaysOffData>(context, listen: false)
+                          .reallocateUsers
+                          .isEmpty) {
+                        await Provider.of<DaysOffData>(context, listen: false)
+                            .getDaysOff(comProvider.com.id,
+                                userProvider.user.userToken, context);
+                      }
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReAllocateUsers(
+                                widget.member, true, widget.currentIndex),
+                          ));
                     },
                     child: Container(
-                      child: FaIcon(FontAwesomeIcons.infoCircle,
+                      child: FaIcon(FontAwesomeIcons.edit,
                           size: 30, color: Colors.orange),
                     ),
                   ),
@@ -478,15 +402,21 @@ class _ScheduleWeekDayInfoState extends State<ScheduleWeekDayInfo> {
   String getShiftNameById(
     int id,
   ) {
-    print("current id");
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (list[i].shiftId == id) {
-        return list[i].shiftName;
-      }
-    }
-    return "";
+    List<Shift> currentShift =
+        list.where((element) => element.shiftId == id).toList();
+
+    return currentShift[0].shiftName;
+  }
+
+  String getSiteNameById(
+    int id,
+  ) {
+    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    List<Site> currentShift =
+        list.where((element) => element.id == id).toList();
+
+    return currentShift[0].name;
   }
 
   @override

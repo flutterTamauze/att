@@ -9,6 +9,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,17 +66,6 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
               ),
             );
           }),
-      // ReportTile(
-      //     title: "الأشعارات",
-      //     subTitle: "تغير نغمة الأشعارات",
-      //     icon: FontAwesomeIcons.bell,
-      //     onTap: () {
-      //       Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => UserNotifications(),
-      //           ));
-      //     }),
     ];
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Consumer<MemberData>(builder: (context, memberData, child) {
@@ -94,7 +84,13 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                     Header(
                       nav: false,
                       goUserMenu: false,
-                      goUserHomeFromMenu: true,
+                      goUserHomeFromMenu:
+                          Provider.of<UserData>(context, listen: false)
+                                      .user
+                                      .userType ==
+                                  0
+                              ? false
+                              : true,
                     ),
                     DirectoriesHeader(
                         Padding(

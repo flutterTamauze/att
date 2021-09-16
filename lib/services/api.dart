@@ -18,7 +18,7 @@ class ShiftApi with ChangeNotifier {
   List<Shift> shiftsListProvider = [];
   Position currentPosition;
   DateTime currentBackPressTime;
-  bool isOnShift = false;
+  bool isOnShift = true;
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
@@ -243,16 +243,16 @@ class ShiftApi with ChangeNotifier {
         shiftEnd += 2400;
       }
 
-      if (currentTime >= shiftStart && currentTime < shiftEnd) {
-        print(
-            "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
-        currentShift = shiftsListProvider[i];
-        changeFlag(true);
-        return true;
-      }
+      // if (currentTime >= shiftStart && currentTime < shiftEnd) {
+      //   print(
+      //       "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
+      //   currentShift = shiftsListProvider[i];
+      //   changeFlag(true);
+      //   return true;
+      // }
     }
 
-    changeFlag(false);
+    // changeFlag(false);
     return false;
   }
 }

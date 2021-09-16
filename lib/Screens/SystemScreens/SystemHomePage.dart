@@ -104,18 +104,6 @@ class _SystemHomePageState extends State<SystemHomePage> {
     }
   }
 
-  String getShiftName() {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (list[i].shiftId ==
-          Provider.of<UserData>(context, listen: false).user.userShiftId) {
-        return list[i].shiftName;
-      }
-    }
-    return "";
-  }
-
   shecdularFetching2(int endTime) async {
     var end = endTime % 2400;
     print("crrent shift end Time = $end");
@@ -319,14 +307,43 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                 SizedBox(
                                                                   height: 10.h,
                                                                 ),
-                                                                Text(
-                                                                  getShiftName(),
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
+                                                                Column(
+                                                                  children: [
+                                                                    Text(
+                                                                      shiftApiConsumer
+                                                                          .shiftsListProvider[
+                                                                              0]
+                                                                          .shiftName,
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .orange,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 6,
+                                                                    ),
+                                                                    Directionality(
+                                                                      textDirection: ui
+                                                                          .TextDirection
+                                                                          .rtl,
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
+                                                                        maxLines:
+                                                                            3,
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            height:
+                                                                                1.5,
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(15, allowFontScalingSelf: true)),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 )
                                                               ],
                                                             )

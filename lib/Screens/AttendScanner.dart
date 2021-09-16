@@ -205,7 +205,7 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.red,
             textColor: Colors.black);
         break;
-      case "Failed : Time Out":
+      case "Failed : Out of shift time":
         Fluttertoast.showToast(
             msg: "التسجيل غير متاح الأن",
             gravity: ToastGravity.CENTER,

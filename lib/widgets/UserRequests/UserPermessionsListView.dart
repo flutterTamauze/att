@@ -49,9 +49,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                   children: [
                     ExpandedPermessionsTile(
                       desc: widget.permessionsList[index].permessionDescription,
-                      date: widget.permessionsList[index].date
-                          .toString()
-                          .substring(0, 11),
+                      date: widget.permessionsList[index].date,
                       permessionType:
                           widget.permessionsList[index].permessionType,
                       orderNum:
@@ -77,33 +75,40 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                 color: Colors.white,
                 backgroundColor: Colors.orange,
               ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      ExpandedPermessionsTile(
-                        isAdmin: widget.memberId == "" ? false : true,
-                        desc:
-                            widget.permessionsList[index].permessionDescription,
-                        date: widget.permessionsList[index].date
-                            .toString()
-                            .substring(0, 11),
-                        permessionType:
-                            widget.permessionsList[index].permessionType,
-                        orderNum: widget.permessionsList[index].permessionId
-                            .toString(),
-                        adminComment:
-                            widget.permessionsList[index].adminResponse,
-                        status: widget.permessionsList[index].permessionStatus,
-                        duration: widget.permessionsList[index].duration,
+              child: Provider.of<UserPermessionsData>(context, listen: true)
+                      .isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.orange,
                       ),
-                      Divider()
-                    ],
-                  );
-                },
-                itemCount: widget.permessionsList.length,
-              ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ExpandedPermessionsTile(
+                              isAdmin: widget.memberId == "" ? false : true,
+                              desc: widget
+                                  .permessionsList[index].permessionDescription,
+                              date: widget.permessionsList[index].date,
+                              permessionType:
+                                  widget.permessionsList[index].permessionType,
+                              orderNum: widget
+                                  .permessionsList[index].permessionId
+                                  .toString(),
+                              adminComment:
+                                  widget.permessionsList[index].adminResponse,
+                              status: widget
+                                  .permessionsList[index].permessionStatus,
+                              duration: widget.permessionsList[index].duration,
+                            ),
+                            Divider()
+                          ],
+                        );
+                      },
+                      itemCount: widget.permessionsList.length,
+                    ),
             ),
           );
   }

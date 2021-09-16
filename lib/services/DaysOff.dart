@@ -20,6 +20,7 @@ class Day {
   TimeOfDay toDate;
   String shiftname;
   int shiftID;
+  int siteID;
   TextEditingController timeInController = TextEditingController();
   TextEditingController timeOutController = TextEditingController();
 }
@@ -38,11 +39,13 @@ class DaysOffData with ChangeNotifier {
     notifyListeners();
   }
 
-  setSiteAndShift(int index, String sitename, String shiftname, int shiftID) {
+  setSiteAndShift(
+      int index, String sitename, String shiftname, int shiftID, int siteID) {
     print("setting att $index $shiftID");
     reallocateUsers[index].sitename = sitename;
     reallocateUsers[index].shiftname = shiftname;
     reallocateUsers[index].shiftID = shiftID;
+    reallocateUsers[index].siteID = siteID;
 
     notifyListeners();
   }

@@ -355,32 +355,50 @@ class ProfileHeader extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xffFF7E00),
-                            ),
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 60,
-                            child: Container(
-                              width: 200.w,
+                        Column(
+                          children: [
+                            Container(
                               decoration: BoxDecoration(
-                                // image: DecorationImage(
-                                //   image: headerImage,
-                                //   fit: BoxFit.fill,
-                                // ),
                                 shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(0xffFF7E00),
+                                ),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(75.0),
-                                child: headerImage,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 60,
+                                child: Container(
+                                  width: 200.w,
+                                  decoration: BoxDecoration(
+                                    // image: DecorationImage(
+                                    //   image: headerImage,
+                                    //   fit: BoxFit.fill,
+                                    // ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(75.0),
+                                    child: headerImage,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: Text(
+                                  Provider.of<UserData>(context, listen: false)
+                                      .user
+                                      .name,
+                                  style: TextStyle(
+                                    color: Colors.orange[600],
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          ],
                         ),
                       ],
                     ),

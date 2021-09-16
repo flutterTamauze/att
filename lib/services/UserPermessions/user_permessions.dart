@@ -160,6 +160,24 @@ class UserPermessionsData with ChangeNotifier {
     }
   }
 
+  deleteUserPermession(int permID, String userToken) async {
+    isLoading = true;
+    notifyListeners();
+
+    var response = await http.delete(
+        Uri.parse("$baseURL/api/Permissions/DeletePerm?id=$permID"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.statusCode);
+    print(response.body);
+    var decodedRsp = json.decode(response.body);
+    isLoading = false;
+    notifyListeners();
+    return decodedRsp["message"];
+  }
+
   setCopyByIndex(List<int> index) {
     print(permessionsList.length);
     copyPermessionsList = [];

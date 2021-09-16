@@ -53,6 +53,11 @@ class NotificationDataService with ChangeNotifier {
     return 0;
   }
 
+  clearNotifications() {
+    notification.clear();
+    notifyListeners();
+  }
+
   initializeNotification(BuildContext context) async {
     Provider.of<NotificationDataService>(context, listen: false)
         .notification

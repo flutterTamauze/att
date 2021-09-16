@@ -15,6 +15,7 @@ import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/Screens/Notifications/NotificationOnTapDialog.dart';
 import 'package:qr_users/widgets/UserProfileImageWidget.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 //  enum CategoriesNavigation {
 //   HealthCare,
 //   HegOmra,
@@ -124,7 +125,52 @@ class NotificationItem extends StatelessWidget {
                     },
                     itemCount: value.notification.length,
                   ),
-                ))
+                )),
+                Provider.of<NotificationDataService>(context, listen: true)
+                        .notification
+                        .isEmpty
+                    ? Container()
+                    : Divider(
+                        thickness: 1,
+                        color: Colors.white,
+                      ),
+                Provider.of<NotificationDataService>(context, listen: true)
+                        .notification
+                        .isEmpty
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () async {
+                            return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: RoundedAlert(
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          Provider.of<NotificationDataService>(
+                                                  context,
+                                                  listen: false)
+                                              .clearNotifications();
+                                          await db.clearNotifications();
+                                        },
+                                        content: "حذف الأشعارات",
+                                        onCancel: () {},
+                                        title: "هل تريد حذف كل الأشعارات؟"),
+                                  );
+                                });
+                          },
+                          child: Text(
+                            "مسح الكل",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      )
               ],
             ),
           ),
