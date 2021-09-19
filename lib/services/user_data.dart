@@ -87,42 +87,42 @@ class UserData with ChangeNotifier {
     print("i am in login now ");
     var token;
     if (connectivityResult != ConnectivityResult.none) {
-      try {
-        bool isError = false;
-        String isnull = await firebaseMessaging.getToken().catchError((e) {
-          token = "null";
-          isError = true;
-        });
+      bool isError = false;
+      String isnull = await firebaseMessaging.getToken().catchError((e) {
+        token = "null";
+        isError = true;
+      });
 
-        if (isError == false) {
-          token = await firebaseMessaging.getToken();
-        }
-        print("token fcm :$token");
-        var stability = await isConnectedToInternet("www.google.com");
-        if (stability) {
-          if (await isConnectedToInternet("www.tamauzeds.com") == false) {
-            return -3;
-          }
-          final response = await http.post(
-              Uri.parse("$baseURL/api/Authenticate/login"),
-              body: json.encode(
-                {"Username": username, "Password": password, "FCMToken": token},
-              ),
-              headers: {
-                'Content-type': 'application/json',
-                'x-api-key': _apiToken
-              }).timeout(
-              Duration(
-                seconds: 40,
-              ), onTimeout: () {
-            return;
-          });
+      if (isError == false) {
+        token = await firebaseMessaging.getToken();
+      }
 
-          var decodedRes = json.decode(response.body);
+      print("token fcm :$token");
+      var stability = await isConnectedToInternet("www.google.com");
+      if (stability) {
+        print("going to login");
+        final response = await http.post(
+            Uri.parse("$baseURL/api/Authenticate/login"),
+            body: json.encode(
+              {"Username": username, "Password": password, "FCMToken": token},
+            ),
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': _apiToken
+            }).timeout(
+          Duration(
+            seconds: 40,
+          ),
+        );
+
+        var decodedRes = json.decode(response.body);
+        print(decodedRes["statusCode"]);
+        if (decodedRes["statusCode"] == 200) {
           print(response.body);
-
+          print(response.statusCode);
           print("token is :${decodedRes["token"]}");
           if (decodedRes["message"] == "Success : ") {
+            print(decodedRes["userData"]["userType"]);
             user.userToken = decodedRes["token"];
             user.id = decodedRes["userData"]["id"];
             user.userID = decodedRes["userData"]["userName"];
@@ -147,6 +147,7 @@ class UserData with ChangeNotifier {
             print('com id :$companyId');
             var msg = await Provider.of<CompanyData>(context, listen: false)
                 .getCompanyProfileApi(companyId, user.userToken, context);
+            print(msg);
             if (msg == "Success") {
               print("ana get b success");
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -185,19 +186,20 @@ class UserData with ChangeNotifier {
               prefs.setStringList(('bgNotifyList'), []);
               return user.userType;
             }
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return -2;
-          } else if (decodedRes["message"] ==
-              "Fail : This Company is suspended") {
-            return -4;
           }
-        } else if (!stability) {
-          return -5;
+        } else if (decodedRes["statusCode"] == 400) {
+          return -3;
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return -2;
+        } else if (decodedRes["message"] ==
+            "Fail : This Company is suspended") {
+          return -4;
         }
-      } catch (e) {
-        print(e);
+      } else if (!stability) {
+        return -5;
       }
+
       return -3;
     } else {
       return -1;

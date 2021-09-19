@@ -45,6 +45,7 @@ class CompanySettingsService {
               "lateAllowance": lateAllow,
               "attendClearance": attendClearance,
               "leaveClearance": leaveClearance,
+              "workingDays": 1,
               "companyId": comID,
             }));
     print(response.statusCode);

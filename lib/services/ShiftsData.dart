@@ -23,6 +23,7 @@ class ShiftsData with ChangeNotifier {
   bool isLoading = false;
   InheritDefault inherit = InheritDefault();
   List<ShiftSheduleModel> shiftScheduleList = [];
+  ShiftSheduleModel firstAvailableSchedule;
   findMatchingShifts(int siteId, bool addallshiftsBool) {
     print("findMatchingShifts : $siteId");
     shiftsBySite =
@@ -91,6 +92,30 @@ class ShiftsData with ChangeNotifier {
     print(response.body);
     var decodedResponse = json.decode(response.body);
     return decodedResponse["message"];
+  }
+
+  Future<void> getFirstAvailableSchedule(
+      String userToken, String userId) async {
+    var response = await http.get(
+        Uri.parse(
+            "$baseURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.body);
+    var decodedResponse = json.decode(response.body);
+    var scheduleJson = decodedResponse['data'];
+    if (scheduleJson != null) {
+      firstAvailableSchedule = ShiftSheduleModel.fromJson(scheduleJson);
+      print(firstAvailableSchedule.originalShift);
+      if (firstAvailableSchedule != null) {
+        notifyListeners();
+      }
+    } else {
+      print("no schedules");
+      print(firstAvailableSchedule == null);
+    }
   }
 
   Future<bool> isShiftScheduleByIdEmpty(

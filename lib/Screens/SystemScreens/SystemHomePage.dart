@@ -240,329 +240,412 @@ class _SystemHomePageState extends State<SystemHomePage> {
                 shecdularFetching();
               }
 
-              return Container(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity.w,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: shiftApiConsumer.isConnected
-                                      ? shiftApiConsumer.permissionOff
-                                          ? shiftApiConsumer
-                                                      .isLocationServiceOn !=
-                                                  0
-                                              ? shiftApiConsumer
-                                                          .isLocationServiceOn !=
-                                                      2
-                                                  ? shiftApiConsumer
-                                                          .isOnLocation
-                                                      ? shiftApiConsumer
-                                                              .isOnShift
-                                                          ? Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                Container(
-                                                                  height: 250.h,
-                                                                  child: Center(
+              return GestureDetector(
+                onTap: () {
+                  print("qr code");
+                  print(shiftDataProvider.shiftQrCode);
+                },
+                child: Container(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: shiftApiConsumer.isConnected
+                                        ? shiftApiConsumer.permissionOff
+                                            ? shiftApiConsumer
+                                                        .isLocationServiceOn !=
+                                                    0
+                                                ? shiftApiConsumer
+                                                            .isLocationServiceOn !=
+                                                        2
+                                                    ? shiftApiConsumer
+                                                            .isOnLocation
+                                                        ? shiftApiConsumer
+                                                                .isOnShift
+                                                            ? Column(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Container(
+                                                                    height:
+                                                                        250.h,
                                                                     child:
-                                                                        Container(
-                                                                      decoration: BoxDecoration(
-                                                                          border: Border.all(
-                                                                              width: 2.w,
-                                                                              color: Colors.black)),
+                                                                        Center(
                                                                       child:
-                                                                          QrImage(
-                                                                        foregroundColor:
-                                                                            Colors.black,
-                                                                        backgroundColor:
-                                                                            Colors.white,
-                                                                        //plce where the QR Image will be shown
-                                                                        data: shiftDataProvider
-                                                                            .shiftQrCode,
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(border: Border.all(width: 2.w, color: Colors.black)),
+                                                                        child:
+                                                                            QrImage(
+                                                                          foregroundColor:
+                                                                              Colors.black,
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                          //plce where the QR Image will be shown
+                                                                          data:
+                                                                              shiftDataProvider.shiftQrCode,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                Container(
-                                                                  height: 20.h,
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    "تسجيل عن طريق مسح الكود",
-                                                                    maxLines: 1,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10.h,
-                                                                ),
-                                                                Column(
-                                                                  children: [
-                                                                    Text(
-                                                                      shiftApiConsumer
-                                                                          .shiftsListProvider[
-                                                                              0]
-                                                                          .shiftName,
+                                                                  Container(
+                                                                    height:
+                                                                        20.h,
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "تسجيل عن طريق مسح الكود",
+                                                                      maxLines:
+                                                                          1,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
                                                                       style: TextStyle(
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        10.h,
+                                                                  ),
+                                                                  Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        shiftApiConsumer
+                                                                            .shiftsListProvider[0]
+                                                                            .shiftName,
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.orange,
+                                                                            fontWeight: FontWeight.bold),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            6,
+                                                                      ),
+                                                                      Directionality(
+                                                                        textDirection: ui
+                                                                            .TextDirection
+                                                                            .rtl,
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
+                                                                          maxLines:
+                                                                              3,
+                                                                          style: TextStyle(
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              height: 1.5,
+                                                                              fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              )
+                                                            : Container(
+                                                                child: Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration: BoxDecoration(
                                                                           color: Colors
-                                                                              .orange,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
+                                                                              .black,
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              150),
+                                                                          border: Border.all(
+                                                                              color: Colors.orange,
+                                                                              width: 2)),
+                                                                      child: ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(150),
+                                                                          child: Image.network(
+                                                                            '${Provider.of<CompanyData>(context, listen: true).com.logo}',
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            loadingBuilder: (BuildContext context,
+                                                                                Widget child,
+                                                                                ImageChunkEvent loadingProgress) {
+                                                                              if (loadingProgress == null)
+                                                                                return child;
+                                                                              return Center(
+                                                                                child: CircularProgressIndicator(
+                                                                                  backgroundColor: Colors.white,
+                                                                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+                                                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes : null,
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          )),
+                                                                      height:
+                                                                          150.h,
+                                                                      width:
+                                                                          150.w,
                                                                     ),
                                                                     SizedBox(
-                                                                      height: 6,
+                                                                      height:
+                                                                          5.h,
                                                                     ),
                                                                     Directionality(
                                                                       textDirection: ui
                                                                           .TextDirection
                                                                           .rtl,
                                                                       child:
-                                                                          AutoSizeText(
-                                                                        " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
-                                                                        maxLines:
-                                                                            3,
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontWeight: FontWeight
-                                                                                .bold,
-                                                                            height:
-                                                                                1.5,
-                                                                            fontSize:
-                                                                                ScreenUtil().setSp(15, allowFontScalingSelf: true)),
+                                                                          Container(
+                                                                        height:
+                                                                            45.h,
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
+                                                                          maxLines:
+                                                                              3,
+                                                                          style: TextStyle(
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true)),
+                                                                        ),
                                                                       ),
-                                                                    ),
+                                                                    )
                                                                   ],
-                                                                )
-                                                              ],
-                                                            )
-                                                          : Container(
-                                                              child: Column(
-                                                                children: [
-                                                                  Container(
-                                                                    decoration: BoxDecoration(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                150),
-                                                                        border: Border.all(
-                                                                            color:
-                                                                                Colors.orange,
-                                                                            width: 2)),
-                                                                    child: ClipRRect(
-                                                                        borderRadius: BorderRadius.circular(150),
-                                                                        child: Image.network(
-                                                                          '${Provider.of<CompanyData>(context, listen: true).com.logo}',
-                                                                          fit: BoxFit
-                                                                              .cover,
-                                                                          loadingBuilder: (BuildContext context,
-                                                                              Widget child,
-                                                                              ImageChunkEvent loadingProgress) {
-                                                                            if (loadingProgress ==
-                                                                                null)
-                                                                              return child;
-                                                                            return Center(
-                                                                              child: CircularProgressIndicator(
-                                                                                backgroundColor: Colors.white,
-                                                                                valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
-                                                                                value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes : null,
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        )),
-                                                                    height:
-                                                                        150.h,
-                                                                    width:
-                                                                        150.w,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5.h,
-                                                                  ),
-                                                                  Directionality(
-                                                                    textDirection: ui
-                                                                        .TextDirection
-                                                                        .rtl,
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          45.h,
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
-                                                                        maxLines:
-                                                                            3,
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.bold,
-                                                                            fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true)),
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            )
-                                                      : Container(
-                                                          height: 100,
+                                                                ),
+                                                              )
+                                                        : Container(
+                                                            height: 100,
+                                                            child: AutoSizeText(
+                                                              "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              maxLines: 4,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  height: 2,
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      18,
+                                                                      allowFontScalingSelf:
+                                                                          true)),
+                                                            ),
+                                                          )
+                                                    : Container(
+                                                        height: 100,
+                                                        child: AutoSizeText(
+                                                          "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          maxLines: 4,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              height: 2,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(18,
+                                                                      allowFontScalingSelf:
+                                                                          true)),
+                                                        ),
+                                                      )
+                                                : Container(
+                                                    height: 20,
+                                                    child: AutoSizeText(
+                                                      "برجاء تفعيل الموقع الجغرافى للهاتف ",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(18,
+                                                                  allowFontScalingSelf:
+                                                                      true)),
+                                                    ),
+                                                  )
+                                            : Container(
+                                                height: 20,
+                                                child: AutoSizeText(
+                                                  "برجاء تفعيل تصريح الموقع الجغرافي ",
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          18,
+                                                          allowFontScalingSelf:
+                                                              true)),
+                                                ),
+                                              )
+                                        : Column(
+                                            children: [
+                                              Container(
+                                                child: Lottie.asset(
+                                                    "resources/21485-wifi-outline-icon.json",
+                                                    repeat: false),
+                                                height: 200.h,
+                                                width: 200.w,
+                                              ),
+                                              Container(
+                                                height: 20,
+                                                child: AutoSizeText(
+                                                  "لا يوجد اتصال بالانترنت ",
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          18,
+                                                          allowFontScalingSelf:
+                                                              true)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: shiftApiConsumer.permissionOff
+                                    ? Provider.of<ShiftApi>(context,
+                                                listen: true)
+                                            .isOnLocation
+                                        ? Provider.of<ShiftApi>(context,
+                                                    listen: true)
+                                                .isOnShift
+                                            ? Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Container(
+                                                        width: 120.w,
+                                                        child: Divider(
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        height: 20,
+                                                        child: AutoSizeText(
+                                                          "او",
+                                                          maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(20,
+                                                                      allowFontScalingSelf:
+                                                                          true)),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 120.w,
+                                                        child: Divider(
+                                                          color: Colors.black,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20.h,
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SystemScanPage(),
+                                                        )),
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      width:
+                                                          getkDeviceWidthFactor(
+                                                              context, 330.w),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color: Colors.orange),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 20,
                                                           child: AutoSizeText(
-                                                            "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            maxLines: 4,
+                                                            "التسجيل ببطاقة التعريف الشخصية",
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                height: 2,
-                                                                fontSize: ScreenUtil().setSp(
-                                                                    18,
-                                                                    allowFontScalingSelf:
-                                                                        true)),
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(18,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                color: Colors
+                                                                    .black),
                                                           ),
-                                                        )
-                                                  : Container(
-                                                      height: 100,
-                                                      child: AutoSizeText(
-                                                        "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        maxLines: 4,
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            height: 2,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(18,
-                                                                    allowFontScalingSelf:
-                                                                        true)),
+                                                        ),
                                                       ),
-                                                    )
-                                              : Container(
-                                                  height: 20,
-                                                  child: AutoSizeText(
-                                                    "برجاء تفعيل الموقع الجغرافى للهاتف ",
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(18,
-                                                                allowFontScalingSelf:
-                                                                    true)),
-                                                  ),
-                                                )
-                                          : Container(
-                                              height: 20,
-                                              child: AutoSizeText(
-                                                "برجاء تفعيل تصريح الموقع الجغرافي ",
-                                                maxLines: 1,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true)),
-                                              ),
-                                            )
-                                      : Column(
-                                          children: [
-                                            Container(
-                                              child: Lottie.asset(
-                                                  "resources/21485-wifi-outline-icon.json",
-                                                  repeat: false),
-                                              height: 200.h,
-                                              width: 200.w,
-                                            ),
-                                            Container(
-                                              height: 20,
-                                              child: AutoSizeText(
-                                                "لا يوجد اتصال بالانترنت ",
-                                                maxLines: 1,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true)),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: shiftApiConsumer.permissionOff
-                                  ? Provider.of<ShiftApi>(context, listen: true)
-                                          .isOnLocation
-                                      ? Provider.of<ShiftApi>(context,
-                                                  listen: true)
-                                              .isOnShift
-                                          ? Column(
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : Container()
+                                        : Container()
+                                    : FutureBuilder<void>(
+                                        future: futureShift,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            // If the Future is complete, display the preview.
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              valueColor:
+                                                  new AlwaysStoppedAnimation<
+                                                      Color>(Colors.orange),
+                                            ));
+                                          } else {
+                                            // Otherwise, display a loading indicator.
+
+                                            return Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Container(
-                                                      width: 120.w,
-                                                      child: Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      height: 20,
-                                                      child: AutoSizeText(
-                                                        "او",
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(20,
-                                                                    allowFontScalingSelf:
-                                                                        true)),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      width: 120.w,
-                                                      child: Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 20.h,
-                                                ),
                                                 InkWell(
-                                                  onTap: () => Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SystemScanPage(),
-                                                      )),
+                                                  onTap: () {
+                                                    futureShift = Provider.of<
+                                                                ShiftApi>(
+                                                            context,
+                                                            listen: false)
+                                                        .getShiftData(
+                                                            Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .id,
+                                                            Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .userToken);
+                                                    setState(() {});
+                                                  },
                                                   child: Container(
                                                     padding: EdgeInsets.all(10),
                                                     width:
@@ -577,7 +660,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                       child: Container(
                                                         height: 20,
                                                         child: AutoSizeText(
-                                                          "التسجيل ببطاقة التعريف الشخصية",
+                                                          "اضغط للمحاولة مره اخرى",
+                                                          maxLines: 1,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -592,86 +676,17 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                       ),
                                                     ),
                                                   ),
-                                                )
-                                              ],
-                                            )
-                                          : Container()
-                                      : Container()
-                                  : FutureBuilder<void>(
-                                      future: futureShift,
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          // If the Future is complete, display the preview.
-                                          return Center(
-                                              child: CircularProgressIndicator(
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
-                                          ));
-                                        } else {
-                                          // Otherwise, display a loading indicator.
-
-                                          return Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  futureShift = Provider.of<
-                                                              ShiftApi>(context,
-                                                          listen: false)
-                                                      .getShiftData(
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .id,
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .userToken);
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  width: getkDeviceWidthFactor(
-                                                      context, 330.w),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      color: Colors.orange),
-                                                  child: Center(
-                                                    child: Container(
-                                                      height: 20,
-                                                      child: AutoSizeText(
-                                                        "اضغط للمحاولة مره اخرى",
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(18,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                    ),
-                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                      },
-                                    )),
-                        ],
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      )),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),

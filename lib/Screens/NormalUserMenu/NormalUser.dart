@@ -4,16 +4,20 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/ShiftsData.dart';
+import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'NormalUserReport.dart';
 import 'NormalUserVacationRequest.dart';
@@ -54,7 +58,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
             );
           }),
       ReportTile(
-          title: "متابعة طلباتى ",
+          title: " طلباتى ",
           subTitle: "متابعة حالة الطلبات ",
           icon: FontAwesomeIcons.clipboardList,
           onTap: () {
@@ -63,6 +67,32 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 builder: (context) => UserOrdersView(
                   selectedOrder: "الأجازات",
                 ),
+              ),
+            );
+          }),
+      ReportTile(
+          title: "مناوباتى",
+          subTitle: "عرض مناوبات الأسبوع",
+          icon: FontAwesomeIcons.clock,
+          onTap: () async {
+            var user = Provider.of<UserData>(context, listen: false).user;
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedLoadingIndicator();
+                });
+            await Provider.of<ShiftsData>(context, listen: false)
+                .getFirstAvailableSchedule(user.userToken, user.id);
+            if (Provider.of<ShiftApi>(context, listen: false)
+                .shiftsListProvider
+                .isEmpty) {
+              await Provider.of<ShiftApi>(context, listen: false)
+                  .getShiftData(user.id, user.userToken);
+            }
+            Navigator.pop(context);
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => UserCurrentShifts(),
               ),
             );
           }),

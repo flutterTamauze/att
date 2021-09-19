@@ -147,52 +147,50 @@ class ShiftApi with ChangeNotifier {
         if (isMoc == 0) {
           print(currentPosition.latitude);
           print(currentPosition.longitude);
-          try {
-            final response = await http.post(
-                Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
-                headers: {
-                  'Content-type': 'application/json',
-                  'Authorization': "Bearer $userToken"
+
+          final response = await http.post(
+              Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
+              headers: {
+                'Content-type': 'application/json',
+                'Authorization': "Bearer $userToken"
+              },
+              body: json.encode(
+                {
+                  "ID": id,
+                  "Latitude": currentPosition.latitude.toString().trim(),
+                  "Longitude": currentPosition.longitude.toString().trim()
                 },
-                body: json.encode(
-                  {
-                    "ID": id,
-                    "Latitude": currentPosition.latitude.toString().trim(),
-                    "Longitude": currentPosition.longitude.toString().trim()
-                  },
-                ));
+              ));
+          print(response.body);
+          var decodedRes = json.decode(response.body);
 
-            var decodedRes = json.decode(response.body);
-            print(decodedRes);
+          if (jsonDecode(response.body)["message"] == "Success") {
+            var shiftObjJson = jsonDecode(response.body)['data'] as List;
+            shiftsList = shiftObjJson
+                .map((shiftJson) => Shift.fromJsonQR(shiftJson))
+                .toList();
 
-            if (jsonDecode(response.body)["message"] == "Success") {
-              var shiftObjJson = jsonDecode(response.body)['data'] as List;
-              shiftsList = shiftObjJson
-                  .map((shiftJson) => Shift.fromJsonQR(shiftJson))
-                  .toList();
+            print("QQQQQQQQRRRRRRRRRRRRR");
 
-              shiftsListProvider = shiftsList;
-              var now = DateTime.now();
-              var formater = DateFormat("Hm");
-              int currentTime =
-                  int.parse(formater.format(now).replaceAll(":", ""));
-              searchForCurrentShift(currentTime);
-              isOnLocation = true;
-              permissionOff = true;
-              isLocationServiceOn = 1;
-              notifyListeners();
-              return true;
-            } else {
-              print("isNotInLocation");
-              isOnLocation = false;
-              isLocationServiceOn = 1;
-              permissionOff = true;
+            shiftsListProvider = shiftsList;
+            var now = DateTime.now();
+            var formater = DateFormat("Hm");
+            int currentTime =
+                int.parse(formater.format(now).replaceAll(":", ""));
+            searchForCurrentShift(currentTime);
+            isOnLocation = true;
+            permissionOff = true;
+            isLocationServiceOn = 1;
+            notifyListeners();
+            return true;
+          } else {
+            print("isNotInLocation");
+            isOnLocation = false;
+            isLocationServiceOn = 1;
+            permissionOff = true;
 
-              notifyListeners();
-              return false;
-            }
-          } catch (e) {
-            print(e);
+            notifyListeners();
+            return false;
           }
         } else if (isMoc == 1) {
           print("Mock location");
@@ -243,13 +241,13 @@ class ShiftApi with ChangeNotifier {
         shiftEnd += 2400;
       }
 
-      // if (currentTime >= shiftStart && currentTime < shiftEnd) {
-      //   print(
-      //       "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
-      //   currentShift = shiftsListProvider[i];
-      //   changeFlag(true);
-      //   return true;
-      // }
+      if (currentTime >= shiftStart && currentTime < shiftEnd) {
+        print(
+            "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
+        currentShift = shiftsListProvider[i];
+        // changeFlag(true);
+        return true;
+      }
     }
 
     // changeFlag(false);

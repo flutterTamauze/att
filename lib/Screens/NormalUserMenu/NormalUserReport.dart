@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData.dart';
@@ -20,10 +19,8 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/UserReport/NormalUserDataTableEnd.dart';
 import 'package:qr_users/widgets/UserReport/UserReportDataTable.dart';
 import 'package:qr_users/widgets/UserReport/UserReportDataTableEnd.dart';
-import 'package:qr_users/widgets/UserReport/UserReportDataTableRow.dart';
 import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -102,17 +99,6 @@ class _NormalUserReportState extends State<NormalUserReport> {
       });
     }
     siteId = Provider.of<SiteData>(context, listen: false).sitesList[0].id;
-  }
-
-  int getSiteId(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   int siteId = 0;

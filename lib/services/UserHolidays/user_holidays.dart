@@ -104,12 +104,8 @@ class UserHolidaysData with ChangeNotifier {
     }
   }
 
-  Future<String> acceptOrRefusePendingVacation(
-    int status,
-    int vacID,
-    String desc,
-    String userToken,
-  ) async {
+  Future<String> acceptOrRefusePendingVacation(int status, int vacID,
+      String desc, String userToken, String adminComment) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -124,7 +120,7 @@ class UserHolidaysData with ChangeNotifier {
           body: json.encode({
             "status": status,
             "id": vacID,
-            "adminResponse": "",
+            "adminResponse": adminComment,
             "Desc": desc
           }));
       print(response.statusCode);

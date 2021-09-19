@@ -12,7 +12,7 @@ class ShiftSheduleModel {
       this.originalSite,
       this.scheduleSiteNumber,
       this.scheduleShiftsNumber});
-  factory ShiftSheduleModel.fromJson(dynamic json) {
+  factory ShiftSheduleModel.fromJson(json) {
     return ShiftSheduleModel(
       id: json["id"],
       originalShift: json["originalShift"],

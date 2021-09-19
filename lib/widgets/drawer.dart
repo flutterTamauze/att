@@ -11,6 +11,7 @@ import 'package:qr_users/Screens/AboutAppScreen.dart';
 import 'package:qr_users/Screens/AboutCompany.dart';
 import 'package:qr_users/Screens/AboutUsScreen.dart';
 import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
+import 'package:qr_users/Screens/ErrorScreen.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/MainCompanySettings.dart';
 import 'package:qr_users/Screens/intro.dart';
@@ -103,23 +104,6 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 25.h,
                 ),
-                // MenuItem(
-                //   onTap: () {
-                //     Navigator.of(context).pushAndRemoveUntil(
-                //         MaterialPageRoute(builder: (context) => HomePage()),
-                //         (Route<dynamic> route) => false);
-                //   },
-                //   title: "الرئيسية",
-                //   icon: Icons.logout,
-                // ),
-                // Divider(
-                //   height: 30,
-                //   thickness: 0.5,
-                //   color: Colors.white.withOpacity(0.3),
-                //   indent: 50,
-                //   endIndent: 50,
-                // ),
-                ///---------------About Com-------------///
                 MenuItem(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -127,7 +111,6 @@ class DrawerI extends StatelessWidget {
                     },
                     title: "حسابى",
                     icon: Icons.person),
-
                 Divider(
                   height: 30.h,
                   thickness: 0.5,
@@ -170,7 +153,6 @@ class DrawerI extends StatelessWidget {
                         ],
                       )
                     : Container(),
-
                 Provider.of<UserData>(context, listen: true).user.userType == 4
                     ? Column(
                         children: [
@@ -195,7 +177,6 @@ class DrawerI extends StatelessWidget {
                         ],
                       )
                     : Container(),
-
                 MenuItem(
                   onTap: () {
                     Navigator.pop(context);

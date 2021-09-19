@@ -124,6 +124,146 @@ class RoundedAlert extends StatelessWidget {
   }
 }
 
+class RoundedAlertWithComment extends StatelessWidget {
+  final String title;
+  final String content;
+  final Function onPressed;
+  final Function onCancel;
+  final Function onTapped;
+  final String hint;
+  RoundedAlertWithComment(
+      {this.title,
+      this.content,
+      @required this.onPressed,
+      this.onCancel,
+      this.onTapped,
+      this.hint});
+  TextEditingController _textEditingController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)), //this right here
+        child: Container(
+          height: getkDeviceHeightFactor(context, 250),
+          width: getkDeviceWidthFactor(context, 330),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Center(
+                          child: Container(
+                        height: 40.h,
+                        child: AutoSizeText(
+                          title,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 18,
+                              height: 1.8,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      )),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          onTapped(value);
+                        },
+                        maxLines: null,
+                        controller: _textEditingController,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orange[600]),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orange[600]),
+                          ),
+                          hintText: hint,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Center(
+                        child: Container(
+                          height: 20.h,
+                          child: AutoSizeText(
+                            content,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Material(
+                        elevation: 5.0,
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: MaterialButton(
+                          onPressed: onPressed,
+                          minWidth: 120,
+                          height: 30,
+                          child: Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              "نعم",
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Material(
+                        elevation: 5.0,
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onCancel();
+                          },
+                          minWidth: 120,
+                          height: 30,
+                          child: Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              "لا",
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+          ),
+        ));
+  }
+}
+
 class RoundedAlertEn extends StatelessWidget {
   final String title;
   final String content;

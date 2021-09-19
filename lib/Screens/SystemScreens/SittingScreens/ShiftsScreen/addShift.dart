@@ -1325,180 +1325,177 @@ class AdvancedShiftPicker extends StatefulWidget {
 class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
   @override
   Widget build(BuildContext context) {
-    return FadeInUp(
-      child: Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 50.h,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.weekDay,
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                    ),
+    return Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.weekDay,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                        child: Theme(
-                      data: clockTheme,
-                      child: Builder(
-                        builder: (context) {
-                          return InkWell(
-                              onTap: () async {
-                                if (!widget.enableText) {
-                                  var from = await showTimePicker(
-                                    context: context,
-                                    initialTime: widget.fromPickedWeek,
-                                    builder:
-                                        (BuildContext context, Widget child) {
-                                      return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: false),
-                                        child: child,
-                                      );
-                                    },
-                                  );
-                                  MaterialLocalizations localizations =
-                                      MaterialLocalizations.of(context);
-                                  String formattedTime =
-                                      localizations.formatTimeOfDay(from,
-                                          alwaysUse24HourFormat: false);
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                      child: Theme(
+                    data: clockTheme,
+                    child: Builder(
+                      builder: (context) {
+                        return InkWell(
+                            onTap: () async {
+                              if (!widget.enableText) {
+                                var from = await showTimePicker(
+                                  context: context,
+                                  initialTime: widget.fromPickedWeek,
+                                  builder:
+                                      (BuildContext context, Widget child) {
+                                    return MediaQuery(
+                                      data: MediaQuery.of(context).copyWith(
+                                          alwaysUse24HourFormat: false),
+                                      child: child,
+                                    );
+                                  },
+                                );
+                                MaterialLocalizations localizations =
+                                    MaterialLocalizations.of(context);
+                                String formattedTime =
+                                    localizations.formatTimeOfDay(from,
+                                        alwaysUse24HourFormat: false);
 
-                                  if (from != null) {
-                                    print(from);
-                                    widget.fromPickedWeek = from;
-                                    widget.callBackfunFrom(from);
-                                    setState(() {
-                                      if (Platform.isIOS) {
-                                        widget.timeInController.text =
-                                            formattedTime;
-                                      } else {
-                                        widget.timeInController.text =
-                                            "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
-                                      }
-                                    });
-                                  }
+                                if (from != null) {
+                                  print(from);
+                                  widget.fromPickedWeek = from;
+                                  widget.callBackfunFrom(from);
+                                  setState(() {
+                                    if (Platform.isIOS) {
+                                      widget.timeInController.text =
+                                          formattedTime;
+                                    } else {
+                                      widget.timeInController.text =
+                                          "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
+                                    }
+                                  });
                                 }
-                              },
-                              child: Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: Container(
-                                  child: IgnorePointer(
-                                    child: TextFormField(
-                                      enabled: !widget.enableText,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                      textInputAction: TextInputAction.next,
-                                      controller: widget.timeInController,
-                                      decoration:
-                                          kTextFieldDecorationFromTO.copyWith(
-                                              hintText: 'من',
-                                              prefixIcon: Icon(
-                                                Icons.alarm,
-                                                color: Colors.orange,
-                                              )),
-                                    ),
+                              }
+                            },
+                            child: Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: Container(
+                                child: IgnorePointer(
+                                  child: TextFormField(
+                                    enabled: !widget.enableText,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                    textInputAction: TextInputAction.next,
+                                    controller: widget.timeInController,
+                                    decoration:
+                                        kTextFieldDecorationFromTO.copyWith(
+                                            hintText: 'من',
+                                            prefixIcon: Icon(
+                                              Icons.alarm,
+                                              color: Colors.orange,
+                                            )),
                                   ),
                                 ),
-                              ));
-                        },
-                      ),
-                    )),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                        child: Theme(
-                      data: clockTheme,
-                      child: Builder(
-                        builder: (context) {
-                          return InkWell(
-                              onTap: () async {
-                                if (!widget.enableText) {
-                                  var to = await showTimePicker(
-                                    context: context,
-                                    initialTime: widget.toPickedWeek,
-                                    builder:
-                                        (BuildContext context, Widget child) {
-                                      return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: false),
-                                        child: child,
-                                      );
-                                    },
-                                  );
-                                  MaterialLocalizations localizations =
-                                      MaterialLocalizations.of(context);
-                                  String formattedTime2 =
-                                      localizations.formatTimeOfDay(to,
-                                          alwaysUse24HourFormat: false);
-                                  if (to != null) {
-                                    widget.toPickedWeek = to;
-                                    widget.callBackfunTo(to);
-                                    setState(() {
-                                      if (Platform.isIOS) {
-                                        widget.timeOutController.text =
-                                            formattedTime2;
-                                      } else {
-                                        widget.timeOutController.text =
-                                            "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
-                                      }
-                                    });
-                                  }
+                              ),
+                            ));
+                      },
+                    ),
+                  )),
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                      child: Theme(
+                    data: clockTheme,
+                    child: Builder(
+                      builder: (context) {
+                        return InkWell(
+                            onTap: () async {
+                              if (!widget.enableText) {
+                                var to = await showTimePicker(
+                                  context: context,
+                                  initialTime: widget.toPickedWeek,
+                                  builder:
+                                      (BuildContext context, Widget child) {
+                                    return MediaQuery(
+                                      data: MediaQuery.of(context).copyWith(
+                                          alwaysUse24HourFormat: false),
+                                      child: child,
+                                    );
+                                  },
+                                );
+                                MaterialLocalizations localizations =
+                                    MaterialLocalizations.of(context);
+                                String formattedTime2 =
+                                    localizations.formatTimeOfDay(to,
+                                        alwaysUse24HourFormat: false);
+                                if (to != null) {
+                                  widget.toPickedWeek = to;
+                                  widget.callBackfunTo(to);
+                                  setState(() {
+                                    if (Platform.isIOS) {
+                                      widget.timeOutController.text =
+                                          formattedTime2;
+                                    } else {
+                                      widget.timeOutController.text =
+                                          "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
+                                    }
+                                  });
                                 }
-                              },
-                              child: Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: Container(
-                                  child: IgnorePointer(
-                                    child: TextFormField(
-                                      enabled: !widget.enableText,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                      textInputAction: TextInputAction.next,
-                                      controller: widget.timeOutController,
-                                      decoration:
-                                          kTextFieldDecorationFromTO.copyWith(
-                                              hintText: 'الى',
-                                              prefixIcon: Icon(
-                                                Icons.alarm,
-                                                color: Colors.orange,
-                                              )),
-                                    ),
+                              }
+                            },
+                            child: Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: Container(
+                                child: IgnorePointer(
+                                  child: TextFormField(
+                                    enabled: !widget.enableText,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                    textInputAction: TextInputAction.next,
+                                    controller: widget.timeOutController,
+                                    decoration:
+                                        kTextFieldDecorationFromTO.copyWith(
+                                            hintText: 'الى',
+                                            prefixIcon: Icon(
+                                              Icons.alarm,
+                                              color: Colors.orange,
+                                            )),
                                   ),
                                 ),
-                              ));
-                        },
-                      ),
-                    )),
-                  ),
-                ],
-              ),
+                              ),
+                            ));
+                      },
+                    ),
+                  )),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 2,
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 2,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 2,
+          ),
+          Divider(
+            thickness: 1,
+          ),
+          SizedBox(
+            height: 2,
+          ),
+        ],
       ),
     );
   }

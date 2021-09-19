@@ -85,7 +85,10 @@ class CompanyData extends ChangeNotifier {
               Provider.of<UserData>(context, listen: false).user.userToken;
           await getCompanyProfileApi(companyId, userToken, context);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
+          print(response.body);
           var decodedRes = json.decode(response.body);
+          print("COMPANY MSG }");
+          print(decodedRes["message"]);
           if (decodedRes["message"] == "Success") {
             com.id = decodedRes["data"]["id"];
             com.nameAr = decodedRes["data"]["nameAr"];

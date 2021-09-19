@@ -539,12 +539,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                           String
                                                                               siteName =
                                                                               Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].name;
-
-                                                                          Provider.of<ShiftsData>(context, listen: false).setScheduleSiteAndShift(
-                                                                              widget.index,
-                                                                              index,
-                                                                              getsiteIDbyName(siteName),
-                                                                              getShiftid(shiftName));
+                                                                          if (widget
+                                                                              .isEdit)
+                                                                            Provider.of<ShiftsData>(context, listen: false).setScheduleSiteAndShift(
+                                                                                widget.index,
+                                                                                index,
+                                                                                getsiteIDbyName(siteName),
+                                                                                getShiftid(shiftName));
 
                                                                           await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
                                                                               index,

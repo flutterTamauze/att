@@ -88,7 +88,8 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
               },
               items: userDataProvider.user.userType >= 2
                   ? userDataProvider.user.userType == 4 ||
-                          userDataProvider.user.userType == 3
+                          userDataProvider.user.userType == 3 ||
+                          userDataProvider.user.userType == 2
                       ? [
                           Icon(
                             Icons.home,

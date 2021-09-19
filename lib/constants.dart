@@ -5,6 +5,8 @@ import 'dart:ui' as ui;
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+//http://192.168.0.119:8010
+//https://Chilangoback.tamauzeds.com
 final baseURL = "https://Chilangoback.tamauzeds.com";
 final localURL = "http://192.168.0.119:8010";
 // final baseURL = "http://192.168.1.38:45456";

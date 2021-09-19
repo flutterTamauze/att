@@ -388,7 +388,7 @@ class ProfileHeader extends StatelessWidget {
                               height: 5,
                             ),
                             Container(
-                              padding: EdgeInsets.only(right: 20.w),
+                              padding: EdgeInsets.only(right: 5.w),
                               child: Text(
                                   Provider.of<UserData>(context, listen: false)
                                       .user

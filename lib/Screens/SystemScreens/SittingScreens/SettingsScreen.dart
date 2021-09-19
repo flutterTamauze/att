@@ -83,29 +83,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: const EdgeInsets.only(top: 10),
                     child: Column(
                       children: [
-                        ServiceTile(
-                            title: "المواقع",
-                            subTitle: "ادارة المواقع",
-                            icon: Icons.location_on,
-                            onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => SitesScreen(),
-                                  ),
-                                );
-                              } else {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ErrorScreen(
-                                        "لا يوجد اتصال بالانترنت", false),
-                                  ),
-                                );
-                              }
-                              print("المواقع");
-                            }),
+                        userDataProvider.user.userType == 2
+                            ? Container()
+                            : ServiceTile(
+                                title: "المواقع",
+                                subTitle: "ادارة المواقع",
+                                icon: Icons.location_on,
+                                onTap: () async {
+                                  var bool = await userDataProvider
+                                      .isConnectedToInternet("www.google.com");
+                                  if (bool) {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => SitesScreen(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => ErrorScreen(
+                                            "لا يوجد اتصال بالانترنت", false),
+                                      ),
+                                    );
+                                  }
+                                  print("المواقع");
+                                }),
                         ServiceTile(
                             title: "المناوبات",
                             subTitle: "ادارة المناوبات",
@@ -189,29 +191,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               }
                               print("الموظفين");
                             }),
-                        ServiceTile(
-                            title: "اعدادات الشركة",
-                            subTitle: "ادارة اعدادات الشركة",
-                            icon: Icons.settings,
-                            onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CompanySettings(),
-                                    ));
-                              } else {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ErrorScreen(
-                                        "لا يوجد اتصال بالانترنت", false),
-                                  ),
-                                );
-                              }
-                              print("الموظفين");
-                            }),
+                        userDataProvider.user.userType == 2
+                            ? Container()
+                            : ServiceTile(
+                                title: "اعدادات الشركة",
+                                subTitle: "ادارة اعدادات الشركة",
+                                icon: Icons.settings,
+                                onTap: () async {
+                                  var bool = await userDataProvider
+                                      .isConnectedToInternet("www.google.com");
+                                  if (bool) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompanySettings(),
+                                        ));
+                                  } else {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => ErrorScreen(
+                                            "لا يوجد اتصال بالانترنت", false),
+                                      ),
+                                    );
+                                  }
+                                  print("الموظفين");
+                                }),
                       ],
                     ),
                   ),

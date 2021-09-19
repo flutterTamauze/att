@@ -60,12 +60,12 @@ class UserPermessionsData with ChangeNotifier {
   }
 
   Future<String> acceptOrRefusePendingPermession(
-    int status,
-    int permID,
-    String userId,
-    String desc,
-    String userToken,
-  ) async {
+      int status,
+      int permID,
+      String userId,
+      String desc,
+      String userToken,
+      String adminREsponse) async {
     print(desc);
     isLoading = true;
     notifyListeners();
@@ -81,7 +81,7 @@ class UserPermessionsData with ChangeNotifier {
           "status": status,
           "id": permID,
           "userId": userId,
-          "adminResponse": "",
+          "adminResponse": adminREsponse,
           "Desc": desc
         }));
     isLoading = false;
