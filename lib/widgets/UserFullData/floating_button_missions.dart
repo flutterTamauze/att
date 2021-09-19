@@ -38,87 +38,110 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                     ).singleUserMissionsList;
                     return FlipInY(
                       child: Dialog(
-                        child: Container(
-                          height: userMissionsList.isEmpty ? 100.h : 500.h,
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Text(
-                                "مأموريات المستخدم",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: userMissionsList.isEmpty ? 100.h : 500.h,
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "مأموريات المستخدم",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Divider(),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  userMissionsList.isEmpty
+                                      ? Container()
+                                      : DataTableholidayHeader(),
+                                  userMissionsList.isEmpty
+                                      ? Container()
+                                      : Divider(
+                                          thickness: 1,
+                                          color: Colors.orange[600],
+                                        ),
+                                  Directionality(
+                                    textDirection: ui.TextDirection.rtl,
+                                    child: Expanded(
+                                        child: FutureBuilder(
+                                            future: userMission,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Center(
+                                                  child: Expanded(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                return userMissionsList.isEmpty
+                                                    ? Center(
+                                                        child: Text(
+                                                        "لا يوجد مأموريات لهذا المستخدم",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ))
+                                                    : ListView.builder(
+                                                        itemCount:
+                                                            userMissionsList
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Column(
+                                                            children: [
+                                                              DataTableMissionRow(
+                                                                  userMissionsList[
+                                                                      index]),
+                                                              Divider(
+                                                                thickness: 1,
+                                                              )
+                                                            ],
+                                                          );
+                                                        });
+                                              }
+                                            })),
+                                  ),
+                                  userMissionsList.isEmpty
+                                      ? Container()
+                                      : Divider(
+                                          thickness: 1,
+                                          color: Colors.orange[600],
+                                        ),
+                                  userMissionsList.isEmpty
+                                      ? Container()
+                                      : MissionsSummaryTableEnd()
+                                ],
                               ),
-                              Divider(),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              userMissionsList.isEmpty
-                                  ? Container()
-                                  : DataTableholidayHeader(),
-                              userMissionsList.isEmpty
-                                  ? Container()
-                                  : Divider(
-                                      thickness: 1,
+                            ),
+                            Positioned(
+                                top: 0,
+                                left: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: FaIcon(
+                                      FontAwesomeIcons.times,
                                       color: Colors.orange[600],
                                     ),
-                              Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: Expanded(
-                                    child: FutureBuilder(
-                                        future: userMission,
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                              child: Expanded(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return userMissionsList.isEmpty
-                                                ? Center(
-                                                    child: Text(
-                                                    "لا يوجد مأموريات لهذا المستخدم",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ))
-                                                : ListView.builder(
-                                                    itemCount:
-                                                        userMissionsList.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return Column(
-                                                        children: [
-                                                          DataTableMissionRow(
-                                                              userMissionsList[
-                                                                  index]),
-                                                          Divider(
-                                                            thickness: 1,
-                                                          )
-                                                        ],
-                                                      );
-                                                    });
-                                          }
-                                        })),
-                              ),
-                              userMissionsList.isEmpty
-                                  ? Container()
-                                  : Divider(
-                                      thickness: 1,
-                                      color: Colors.orange[600],
-                                    ),
-                              userMissionsList.isEmpty
-                                  ? Container()
-                                  : MissionsSummaryTableEnd()
-                            ],
-                          ),
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
                     );

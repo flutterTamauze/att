@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -61,33 +62,21 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
 
-    if (userProvider.user.userType == 2) {
-      setState(() {
-        isLoading = true;
-      });
-      siteID = userProvider.user.userSiteId;
-      siteData = await Provider.of<SiteData>(context, listen: false)
-          .getSpecificSite(siteID, userProvider.user.userToken, context);
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-        await Provider.of<SiteData>(context, listen: false)
-            .getSitesByCompanyId(
-                comProvider.com.id, userProvider.user.userToken, context)
-            .then((value) {
-          siteID = Provider.of<SiteData>(context, listen: false)
-              .sitesList[siteIndex]
-              .id;
-          print("SiteIndex $siteIndex");
-        });
-      } else {
+    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+      await Provider.of<SiteData>(context, listen: false)
+          .getSitesByCompanyId(
+              comProvider.com.id, userProvider.user.userToken, context)
+          .then((value) {
         siteID = Provider.of<SiteData>(context, listen: false)
             .sitesList[siteIndex]
             .id;
-      }
+        print("SiteIndex $siteIndex");
+      });
+    } else {
+      siteID =
+          Provider.of<SiteData>(context, listen: false).sitesList[siteIndex].id;
     }
+
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
         userProvider.user.userToken, siteID, date, context);
   }
@@ -101,6 +90,23 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       }
     }
     return -1;
+  }
+
+  @override
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    // monitor network fetch
+    print("refresh");
+    // if failed,use refreshFailed()
+    setState(() {
+      isLoading = true;
+    });
+    await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
+        userProvider.user.userToken, siteId, date, context);
+    refreshController.refreshCompleted();
   }
 
   bool isToday(DateTime selectedDay) {
@@ -512,17 +518,30 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                 Expanded(
                                                                     child:
                                                                         Container(
-                                                                  child: ListView
-                                                                      .builder(
-                                                                          itemCount: reportsData
-                                                                              .dailyReport
-                                                                              .attendListUnits
-                                                                              .length,
-                                                                          itemBuilder:
-                                                                              (BuildContext context, int index) {
-                                                                            return DataTableRow(reportsData.dailyReport.attendListUnits[index],
-                                                                                siteId);
-                                                                          }),
+                                                                  child:
+                                                                      SmartRefresher(
+                                                                    onRefresh:
+                                                                        _onRefresh,
+                                                                    controller:
+                                                                        refreshController,
+                                                                    enablePullDown:
+                                                                        true,
+                                                                    header:
+                                                                        WaterDropMaterialHeader(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .orange,
+                                                                    ),
+                                                                    child: ListView
+                                                                        .builder(
+                                                                            itemCount:
+                                                                                reportsData.dailyReport.attendListUnits.length,
+                                                                            itemBuilder: (BuildContext context, int index) {
+                                                                              return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteId);
+                                                                            }),
+                                                                  ),
                                                                 )),
                                                                 !isToday(
                                                                         selectedDate)

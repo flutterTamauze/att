@@ -42,155 +42,179 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                 ).singleUserPermessions;
                 return FlipInY(
                   child: Dialog(
-                    child: Container(
-                      height: radioVal2 == 1
-                          ? provList.isEmpty
-                              ? 100.h
-                              : 500.h
-                          : permessionsList.isEmpty
-                              ? 100.h
-                              : 500.h,
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Text(
-                            radioVal2 == 1
-                                ? "اجازات المستخدم"
-                                : "اذونات المستخدم",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w700),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: radioVal2 == 1
+                              ? provList.isEmpty
+                                  ? 100.h
+                                  : 500.h
+                              : permessionsList.isEmpty
+                                  ? 100.h
+                                  : 500.h,
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Text(
+                                radioVal2 == 1
+                                    ? "اجازات المستخدم"
+                                    : "اذونات المستخدم",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w700),
+                              ),
+                              Divider(),
+                              radioVal2 == 1
+                                  ? provList.isEmpty
+                                      ? Container()
+                                      : DataTableholidayHeader()
+                                  : permessionsList.isEmpty
+                                      ? Container()
+                                      : DataTablePermessionHeader(),
+                              radioVal2 == 1
+                                  ? provList.isNotEmpty
+                                      ? Divider(
+                                          thickness: 1,
+                                          color: Colors.orange[600],
+                                        )
+                                      : Container()
+                                  : permessionsList.isNotEmpty
+                                      ? Divider(
+                                          thickness: 1,
+                                          color: Colors.orange[600],
+                                        )
+                                      : Container(),
+                              radioVal2 == 1
+                                  ? Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Expanded(
+                                          child: FutureBuilder(
+                                              future: userHoliday,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return provList.isEmpty
+                                                      ? Center(
+                                                          child: Text(
+                                                          "لا يوجد اجازات لهذا المستخدم",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ))
+                                                      : ListView.builder(
+                                                          itemCount:
+                                                              provList.length,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Column(
+                                                              children: [
+                                                                DataTableHolidayRow(
+                                                                    provList[
+                                                                        index]),
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                )
+                                                              ],
+                                                            );
+                                                          });
+                                                }
+                                              })),
+                                    )
+                                  : Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Expanded(
+                                          child: FutureBuilder(
+                                              future: userPermession,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return permessionsList.isEmpty
+                                                      ? Center(
+                                                          child: Text(
+                                                          "لا يوجد اذنات لهذا المستخدم",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ))
+                                                      : ListView.builder(
+                                                          itemCount:
+                                                              permessionsList
+                                                                  .length,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Column(
+                                                              children: [
+                                                                DataTablePermessionRow(
+                                                                    permessionsList[
+                                                                        index]),
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                )
+                                                              ],
+                                                            );
+                                                          });
+                                                }
+                                              })),
+                                    ),
+                              radioVal2 == 1
+                                  ? provList.isEmpty
+                                      ? Container()
+                                      : Divider(
+                                          thickness: 1,
+                                          color: Colors.orange[600],
+                                        )
+                                  : permessionsList.isEmpty
+                                      ? Container()
+                                      : Divider(color: Colors.orange[600]),
+                              radioVal2 == 1
+                                  ? provList.isEmpty
+                                      ? Container()
+                                      : HolidaySummaryTableEnd()
+                                  : permessionsList.isEmpty
+                                      ? Container()
+                                      : PermessionsSummaryTableEnd()
+                            ],
                           ),
-                          Divider(),
-                          radioVal2 == 1
-                              ? provList.isEmpty
-                                  ? Container()
-                                  : DataTableholidayHeader()
-                              : permessionsList.isEmpty
-                                  ? Container()
-                                  : DataTablePermessionHeader(),
-                          radioVal2 == 1
-                              ? provList.isNotEmpty
-                                  ? Divider(
-                                      thickness: 1,
-                                      color: Colors.orange[600],
-                                    )
-                                  : Container()
-                              : permessionsList.isNotEmpty
-                                  ? Divider(
-                                      thickness: 1,
-                                      color: Colors.orange[600],
-                                    )
-                                  : Container(),
-                          radioVal2 == 1
-                              ? Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: Expanded(
-                                      child: FutureBuilder(
-                                          future: userHoliday,
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                ),
-                                              );
-                                            } else {
-                                              return provList.isEmpty
-                                                  ? Center(
-                                                      child: Text(
-                                                      "لا يوجد اجازات لهذا المستخدم",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ))
-                                                  : ListView.builder(
-                                                      itemCount:
-                                                          provList.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return Column(
-                                                          children: [
-                                                            DataTableHolidayRow(
-                                                                provList[
-                                                                    index]),
-                                                            Divider(
-                                                              thickness: 1,
-                                                            )
-                                                          ],
-                                                        );
-                                                      });
-                                            }
-                                          })),
-                                )
-                              : Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: Expanded(
-                                      child: FutureBuilder(
-                                          future: userPermession,
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                ),
-                                              );
-                                            } else {
-                                              return permessionsList.isEmpty
-                                                  ? Center(
-                                                      child: Text(
-                                                      "لا يوجد اذنات لهذا المستخدم",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ))
-                                                  : ListView.builder(
-                                                      itemCount: permessionsList
-                                                          .length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return Column(
-                                                          children: [
-                                                            DataTablePermessionRow(
-                                                                permessionsList[
-                                                                    index]),
-                                                            Divider(
-                                                              thickness: 1,
-                                                            )
-                                                          ],
-                                                        );
-                                                      });
-                                            }
-                                          })),
+                        ),
+                        Positioned(
+                            top: 0,
+                            left: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: FaIcon(
+                                  FontAwesomeIcons.times,
+                                  color: Colors.orange[600],
                                 ),
-                          radioVal2 == 1
-                              ? provList.isEmpty
-                                  ? Container()
-                                  : Divider(
-                                      thickness: 1,
-                                      color: Colors.orange[600],
-                                    )
-                              : permessionsList.isEmpty
-                                  ? Container()
-                                  : Divider(color: Colors.orange[600]),
-                          radioVal2 == 1
-                              ? provList.isEmpty
-                                  ? Container()
-                                  : HolidaySummaryTableEnd()
-                              : permessionsList.isEmpty
-                                  ? Container()
-                                  : PermessionsSummaryTableEnd()
-                        ],
-                      ),
+                              ),
+                            ))
+                      ],
                     ),
                   ),
                 );
