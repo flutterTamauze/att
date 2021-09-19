@@ -25,31 +25,35 @@ class ShiftsData with ChangeNotifier {
   List<ShiftSheduleModel> shiftScheduleList = [];
   ShiftSheduleModel firstAvailableSchedule;
   findMatchingShifts(int siteId, bool addallshiftsBool) {
-    print("findMatchingShifts : $siteId");
-    shiftsBySite =
-        shiftsList.where((element) => element.siteID == siteId).toList();
-    if (addallshiftsBool == true) {
-      shiftsBySite.insert(
-          0,
-          Shift(
-            shiftEndTime: 0,
-            shiftId: -100,
-            shiftName: "كل المناوبات",
-            shiftStartTime: 0,
-            siteID: -100,
-            shiftQrCode: "",
-          ));
-    }
+    try {
+      print("findMatchingShifts : $siteId");
+      shiftsBySite =
+          shiftsList.where((element) => element.siteID == siteId).toList();
+      if (addallshiftsBool == true) {
+        shiftsBySite.insert(
+            0,
+            Shift(
+              shiftEndTime: 0,
+              shiftId: -100,
+              shiftName: "كل المناوبات",
+              shiftStartTime: 0,
+              siteID: -100,
+              shiftQrCode: "",
+            ));
+      }
 
-    if (shiftsBySite.length == 0) {
-      shiftsBySite = [
-        Shift(
-            shiftName: "لا يوجد مناوبات بهذا الموقع",
-            shiftStartTime: -1,
-            shiftEndTime: 0,
-            shiftId: 0,
-            siteID: 0)
-      ];
+      if (shiftsBySite.length == 0) {
+        shiftsBySite = [
+          Shift(
+              shiftName: "لا يوجد مناوبات بهذا الموقع",
+              shiftStartTime: -1,
+              shiftEndTime: 0,
+              shiftId: 0,
+              siteID: 0)
+        ];
+      }
+    } catch (e) {
+      print(e);
     }
 
     return shiftsBySite.length;

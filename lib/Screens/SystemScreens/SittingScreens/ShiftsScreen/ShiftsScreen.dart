@@ -103,22 +103,14 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
   getData() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvier = Provider.of<CompanyData>(context);
-    if (userProvider.user.userType == 2) {
+
+    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
       await Provider.of<SiteData>(context, listen: false)
-          .getSpecificSite(userProvider.user.userSiteId,
-              userProvider.user.userToken, context)
+          .getSitesByCompanyId(
+              comProvier.com.id, userProvider.user.userToken, context)
           .then((value) async {
         print("GOt Sites");
       });
-    } else {
-      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-        await Provider.of<SiteData>(context, listen: false)
-            .getSitesByCompanyId(
-                comProvier.com.id, userProvider.user.userToken, context)
-            .then((value) async {
-          print("GOt Sites");
-        });
-      }
     }
     if (Provider.of<ShiftsData>(context, listen: false).shiftsList.isEmpty) {
       await Provider.of<ShiftsData>(context, listen: false)
@@ -132,7 +124,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
   }
 
   fillList() async {
-    print(Provider.of<SiteData>(context, listen: false).sitesList[siteId]);
     await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
         Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
         false);
