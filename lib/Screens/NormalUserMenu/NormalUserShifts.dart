@@ -15,6 +15,8 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../constants.dart';
+
 class UserCurrentShifts extends StatefulWidget {
   @override
   _UserCurrentShiftsState createState() => _UserCurrentShiftsState();
@@ -94,15 +96,6 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
     return currentShift[0].shiftName;
   }
 
-  List<String> weekDays = [
-    "السبت",
-    "الأحد",
-    "الأتنين",
-    "الثلاثاء",
-    "الأربعاء",
-    "الخميس",
-    "الجمعة"
-  ];
   String getSiteNameById(
     int id,
   ) {
@@ -149,104 +142,118 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                   title: "مناوباتى الأساسية",
                   isShedcule: false,
                 ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Card(
-                      elevation: 5,
-                      child: ExpansionTile(
-                        collapsedIconColor: Colors.orange[600],
-                        iconColor: Colors.orange[600],
-                        textColor: Colors.orange[600],
-                        title: Row(
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.clock,
-                              color: Colors.orange[600],
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "مناوباتى المجدولة",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        children: [
-                          Container(
-                            height: 500.h,
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          daysofflist.reallocateUsers[index]
-                                                  .isDayOff
-                                              ? Card(
-                                                  child: Container(
-                                                    width: 250.w,
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Text("يوم عطلة",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 16),
-                                                        textAlign:
-                                                            TextAlign.center),
-                                                  ),
-                                                )
-                                              : Card(
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    width: 250.w,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          weekDays[index],
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                        Text(
-                                                          getSiteNameById(shiftDate
-                                                                  .scheduleSiteNumber[
-                                                              index]),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                        ],
-                                      ),
-                                      Divider()
-                                    ],
+                shiftDate.id == null
+                    ? Container()
+                    : Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Card(
+                            elevation: 5,
+                            child: ExpansionTile(
+                              collapsedIconColor: Colors.orange[600],
+                              iconColor: Colors.orange[600],
+                              textColor: Colors.orange[600],
+                              title: Row(
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.clock,
+                                    color: Colors.orange[600],
                                   ),
-                                );
-                              },
-                              itemCount: daysofflist.reallocateUsers.length,
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "مناوباتى المجدولة",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                Container(
+                                  height: 500.h,
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                daysofflist
+                                                        .reallocateUsers[index]
+                                                        .isDayOff
+                                                    ? Card(
+                                                        child: Container(
+                                                          width: 250.w,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          child: Text(
+                                                              "يوم عطلة",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 16),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center),
+                                                        ),
+                                                      )
+                                                    : Card(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          width: 250.w,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                weekDays[index],
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              Text(
+                                                                getSiteNameById(
+                                                                    shiftDate
+                                                                            .scheduleSiteNumber[
+                                                                        index]),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                              ],
+                                            ),
+                                            Divider()
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    itemCount:
+                                        daysofflist.reallocateUsers.length,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                          ),
+                        ),
+                      )
               ],
             ),
           ),

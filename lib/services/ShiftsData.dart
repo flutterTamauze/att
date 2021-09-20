@@ -55,7 +55,7 @@ class ShiftsData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
-
+    print("shift by site length ${shiftsBySite.length}");
     return shiftsBySite.length;
   }
 
@@ -337,10 +337,60 @@ class ShiftsData with ChangeNotifier {
     return false;
   }
 
-  Future getAllCompanyShifts(
-      int companyId, String userToken, BuildContext context) async {
-    futureListener = getAllCompanyShiftsApi(companyId, userToken, context);
+  Future getShifts(int companyId, String userToken, BuildContext context,
+      int userType, int siteId) async {
+    if (userType == 2) {
+      futureListener = getShiftsBySiteId(siteId, userToken, context);
+    } else {
+      futureListener = getAllCompanyShiftsApi(companyId, userToken, context);
+    }
     return futureListener;
+  }
+
+  getShiftsBySiteId(int siteId, String userToken, BuildContext context) async {
+    List<Shift> shiftsNewList;
+    if (await isConnectedToInternet()) {
+      final response = await http.get(
+          Uri.parse("$baseURL/api/Shifts/GetAllShiftInSite?siteId=$siteId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getShiftsBySiteId(
+          siteId,
+          userToken,
+          context,
+        );
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
+
+        if (decodedRes["message"] == "Success") {
+          var shiftObjJson = jsonDecode(response.body)['data'] as List;
+          shiftsNewList = shiftObjJson
+              .map((shiftJson) => Shift.fromJson(shiftJson))
+              .toList();
+
+          shiftsList = shiftsNewList;
+          notifyListeners();
+          print("got shifts for site admin");
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
+        }
+      }
+
+      return "failed";
+    } else {
+      return 'noInternet';
+    }
   }
 
   getAllCompanyShiftsApi(
@@ -354,7 +404,8 @@ class ShiftsData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print(response);
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =

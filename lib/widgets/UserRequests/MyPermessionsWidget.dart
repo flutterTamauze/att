@@ -15,7 +15,7 @@ class ExpandedPermessionsTile extends StatefulWidget {
   final String desc, orderNum, adminComment, duration;
   final IconData iconData;
   final String vacationReason;
-  final int status;
+  final int status, currentIndex;
   bool isAdmin = false;
   final int permessionType;
   final DateTime date;
@@ -25,6 +25,7 @@ class ExpandedPermessionsTile extends StatefulWidget {
     this.permessionType,
     this.vacationReason,
     this.isAdmin,
+    this.currentIndex,
     this.duration,
     this.iconData,
     this.adminComment,
@@ -223,7 +224,8 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                 Provider.of<UserData>(context,
                                                         listen: false)
                                                     .user
-                                                    .userToken);
+                                                    .userToken,
+                                                widget.currentIndex);
 
                                         if (msg ==
                                             "Success : Permission Deleted!") {

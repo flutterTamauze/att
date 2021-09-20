@@ -68,7 +68,7 @@ class UserHolidaysData with ChangeNotifier {
     notifyListeners();
   }
 
-  deleteUserHoliday(int holidayID, String userToken) async {
+  deleteUserHoliday(int holidayID, String userToken, int holidayIndex) async {
     isLoading = true;
     notifyListeners();
 
@@ -83,6 +83,10 @@ class UserHolidaysData with ChangeNotifier {
     isLoading = false;
     notifyListeners();
     var decodedResp = json.decode(response.body);
+    if (decodedResp["message"] == "Success : Holiday Deleted!") {
+      singleUserHoliday.removeAt(holidayIndex);
+      notifyListeners();
+    }
     return decodedResp["message"];
   }
 

@@ -144,7 +144,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                         companySettings.lateAllowance.toString(),
                         companySettings.leaveClearance.toString(),
                         companySettings.settingsID,
-                        comProvider.com.id);
+                        comProvider.com.id,
+                        companySettings.workingDays);
                   })
               : Container(),
         ],
@@ -152,8 +153,13 @@ class _CompanySettingsState extends State<CompanySettings> {
     );
   }
 
-  showAttendanceSettings(String attendClearance, String lateAlowance,
-      String leaveClearance, int settingsID, int companyId) async {
+  showAttendanceSettings(
+      String attendClearance,
+      String lateAlowance,
+      String leaveClearance,
+      int settingsID,
+      int companyId,
+      int workingDays) async {
     bool isLoading = false;
     return showDialog(
 
@@ -439,7 +445,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                             context,
                                                             listen: false)
                                                         .user
-                                                        .userToken)
+                                                        .userToken,
+                                                    workingDays)
                                                 .then((value) {
                                               if (value) {
                                                 successfulSaved();

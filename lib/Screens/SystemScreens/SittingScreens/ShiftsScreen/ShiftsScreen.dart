@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 
@@ -77,8 +79,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
       isLoading = true;
     });
     await Provider.of<ShiftsData>(context, listen: false)
-        .getAllCompanyShifts(
-            comProvier.com.id, userProvider.user.userToken, context)
+        .getShifts(comProvier.com.id, userProvider.user.userToken, context,
+            userProvider.user.userType, userProvider.user.userSiteId)
         .then((value) async {
       print("got Shifts");
     });
@@ -104,22 +106,19 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvier = Provider.of<CompanyData>(context);
 
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false)
-          .getSitesByCompanyId(
-              comProvier.com.id, userProvider.user.userToken, context)
-          .then((value) async {
-        print("GOt Sites");
-      });
-    }
-    if (Provider.of<ShiftsData>(context, listen: false).shiftsList.isEmpty) {
-      await Provider.of<ShiftsData>(context, listen: false)
-          .getAllCompanyShifts(
-              comProvier.com.id, userProvider.user.userToken, context)
-          .then((value) async {
-        print("got Shifts");
-      });
-    }
+    await Provider.of<SiteData>(context, listen: false)
+        .getSitesByCompanyId(
+            comProvier.com.id, userProvider.user.userToken, context)
+        .then((value) async {
+      print("GOt Sites");
+    });
+
+    await Provider.of<ShiftsData>(context, listen: false)
+        .getShifts(comProvier.com.id, userProvider.user.userToken, context,
+            userProvider.user.userType, userProvider.user.userSiteId)
+        .then((value) async {
+      print("got Shifts");
+    });
     await fillList();
   }
 
@@ -653,10 +652,23 @@ class _ShiftTileState extends State<ShiftTile> {
   showShiftDetails() {
     String end = amPmChanger(widget.shift.shiftEndTime);
     String start = amPmChanger(widget.shift.shiftStartTime);
+    String sunSt = amPmChanger(widget.shift.sunShiftstTime);
+    String sunEn = amPmChanger(widget.shift.sunShiftenTime);
+    String monSt = amPmChanger(widget.shift.monShiftstTime);
+    String monEn = amPmChanger(widget.shift.mondayShiftenTime);
+    String tuesSt = amPmChanger(widget.shift.tuesdayShiftstTime);
+    String tuesEnd = amPmChanger(widget.shift.tuesdayShiftenTime);
+    String wedSt = amPmChanger(widget.shift.wednesDayShiftstTime);
+    String wedEn = amPmChanger(widget.shift.wednesDayShiftenTime);
+    String thuSt = amPmChanger(widget.shift.thursdayShiftstTime);
+    String thuEn = amPmChanger(widget.shift.thursdayShiftenTime);
+    String friSt = amPmChanger(widget.shift.fridayShiftstTime);
+    String friEn = amPmChanger(widget.shift.fridayShiftenTime);
 
     return showDialog(
         context: context,
         builder: (BuildContext context) {
+          var daysOff = Provider.of<DaysOffData>(context).weak;
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
@@ -665,7 +677,7 @@ class _ShiftTileState extends State<ShiftTile> {
                 child: Stack(
                   children: [
                     Container(
-                      height: 350.h,
+                      height: 1000.h,
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
@@ -701,31 +713,50 @@ class _ShiftTileState extends State<ShiftTile> {
                                       SizedBox(
                                         height: 10.0.h,
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: dateDataField(
-                                                controller:
-                                                    TextEditingController(
-                                                        text: start),
-                                                icon: Icons.alarm,
-                                                labelText: "من"),
-                                          ),
-                                          SizedBox(
-                                            width: 5.0.w,
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: dateDataField(
-                                                controller:
-                                                    TextEditingController(
-                                                        text: end),
-                                                icon: Icons.alarm,
-                                                labelText: "الى"),
-                                          ),
-                                        ],
+                                      FromToShiftDisplay(
+                                        start: start,
+                                        end: end,
+                                        weekDay: daysOff[0].isDayOff
+                                            ? "عطلة"
+                                            : weekDays[0],
                                       ),
+                                      FromToShiftDisplay(
+                                        start: sunSt,
+                                        end: sunEn,
+                                        weekDay: daysOff[1].isDayOff
+                                            ? "عطلة"
+                                            : weekDays[1],
+                                      ),
+                                      FromToShiftDisplay(
+                                          start: monSt,
+                                          end: monEn,
+                                          weekDay: daysOff[2].isDayOff
+                                              ? "عطلة"
+                                              : weekDays[2]),
+                                      FromToShiftDisplay(
+                                          start: tuesSt,
+                                          end: tuesEnd,
+                                          weekDay: daysOff[3].isDayOff
+                                              ? "عطلة"
+                                              : weekDays[3]),
+                                      FromToShiftDisplay(
+                                          start: wedSt,
+                                          end: wedEn,
+                                          weekDay: daysOff[4].isDayOff
+                                              ? "عطلة"
+                                              : weekDays[4]),
+                                      FromToShiftDisplay(
+                                          start: thuSt,
+                                          end: thuEn,
+                                          weekDay: daysOff[5].isDayOff
+                                              ? "عطلة"
+                                              : weekDays[5]),
+                                      FromToShiftDisplay(
+                                          start: friSt,
+                                          end: friEn,
+                                          weekDay: daysOff[6].isDayOff
+                                              ? "عطلة"
+                                              : weekDays[6]),
                                     ],
                                   ),
                                 ),
@@ -783,6 +814,56 @@ class _ShiftTileState extends State<ShiftTile> {
                 ),
               ));
         });
+  }
+}
+
+class FromToShiftDisplay extends StatelessWidget {
+  const FromToShiftDisplay(
+      {Key key, @required this.start, @required this.end, this.weekDay})
+      : super(key: key);
+
+  final String start;
+  final String weekDay;
+  final String end;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideInUp(
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              weekDay,
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: dateDataField(
+                    controller: TextEditingController(text: start),
+                    icon: Icons.alarm,
+                    labelText: "من"),
+              ),
+              SizedBox(
+                width: 5.0.w,
+              ),
+              Expanded(
+                flex: 1,
+                child: dateDataField(
+                    controller: TextEditingController(text: end),
+                    icon: Icons.alarm,
+                    labelText: "الى"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

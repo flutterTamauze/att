@@ -160,7 +160,7 @@ class UserPermessionsData with ChangeNotifier {
     }
   }
 
-  deleteUserPermession(int permID, String userToken) async {
+  deleteUserPermession(int permID, String userToken, int permIndex) async {
     isLoading = true;
     notifyListeners();
 
@@ -175,6 +175,11 @@ class UserPermessionsData with ChangeNotifier {
     var decodedRsp = json.decode(response.body);
     isLoading = false;
     notifyListeners();
+    if (decodedRsp["message"] == "Success : Permission Deleted!") {
+      print(permIndex);
+      singleUserPermessions.removeAt(permIndex);
+      notifyListeners();
+    }
     return decodedRsp["message"];
   }
 

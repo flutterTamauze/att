@@ -244,16 +244,19 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 ),
                                 Row(
                                   children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: UserDataField(
-                                        icon: Icons.location_on,
-                                        text: Provider.of<SiteData>(context,
-                                                listen: true)
-                                            .sitesList[widget.siteIndex]
-                                            .name,
-                                      ),
-                                    ),
+                                    userType != 2
+                                        ? Expanded(
+                                            flex: 1,
+                                            child: UserDataField(
+                                              icon: Icons.location_on,
+                                              text: Provider.of<SiteData>(
+                                                      context,
+                                                      listen: true)
+                                                  .sitesList[widget.siteIndex]
+                                                  .name,
+                                            ),
+                                          )
+                                        : Container(),
                                     Expanded(
                                       flex: 1,
                                       child: UserDataField(
@@ -280,17 +283,21 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     ],
                                   ),
                                 ),
-                                Divider(),
-                                AssignTaskToUser(
-                                  taskName: "تسجيل  مأموريات / اذونات / اجازات",
-                                  iconData: FontAwesomeIcons.calendarCheck,
-                                  function: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            OutsideVacation(widget.user),
-                                      )),
-                                ),
+                                userType == 4 ? Divider() : Container(),
+                                userType != 2
+                                    ? AssignTaskToUser(
+                                        taskName:
+                                            "تسجيل  مأموريات / اذونات / اجازات",
+                                        iconData:
+                                            FontAwesomeIcons.calendarCheck,
+                                        function: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OutsideVacation(widget.user),
+                                            )),
+                                      )
+                                    : Container(),
                                 Divider(),
                                 userType == 4
                                     ? AssignTaskToUser(
@@ -425,7 +432,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                       )
                                     : Container(),
                                 userType == 4 ? Divider() : Container(),
-                                userType == 4
+                                userType == 4 || userType == 2
                                     ? AssignTaskToUser(
                                         taskName: "جدولة المناوبات",
                                         iconData: Icons.table_view,
@@ -447,82 +454,88 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         })
                                     : Container(),
                                 userType == 4 ? Divider() : Container(),
-                                AssignTaskToUser(
-                                    taskName: " إرسال اثبات حضور",
-                                    iconData: FontAwesomeIcons.checkCircle,
-                                    function: () async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedLoadingIndicator();
-                                          });
-                                      await attendObj
-                                          .sendAttendProof(
-                                              Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userToken,
-                                              widget.user.id,
-                                              widget.user.fcmToken)
-                                          .then((value) {
-                                        print("VAlue $value");
-                                        switch (value) {
-                                          case "fail shift":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "null":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "fail present":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "لم يتم تسجيل حضور هذا المتسخدم",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "fail":
-                                            errorToast();
-                                            break;
-                                          default:
-                                            sendFcmMessage(
-                                                    topicName: "",
-                                                    userToken:
-                                                        widget.user.fcmToken,
-                                                    title: "اثبات حضور",
-                                                    category: "attend",
-                                                    message:
-                                                        "برجاء اثبات حضورك الأن")
-                                                .then((value) {
-                                              if (value) {
+                                userType != 2
+                                    ? AssignTaskToUser(
+                                        taskName: " إرسال اثبات حضور",
+                                        iconData: FontAwesomeIcons.checkCircle,
+                                        function: () async {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return RoundedLoadingIndicator();
+                                              });
+                                          await attendObj
+                                              .sendAttendProof(
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userToken,
+                                                  widget.user.id,
+                                                  widget.user.fcmToken)
+                                              .then((value) {
+                                            print("VAlue $value");
+                                            switch (value) {
+                                              case "fail shift":
                                                 Fluttertoast.showToast(
-                                                    msg: "تم الأرسال بنجاح",
-                                                    backgroundColor:
-                                                        Colors.green,
+                                                    msg:
+                                                        "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
+                                                    backgroundColor: Colors.red,
                                                     gravity:
                                                         ToastGravity.CENTER);
-                                              } else {
-                                                if (value) {
-                                                  Fluttertoast.showToast(
-                                                      msg: "خطأ فى الأرسال ",
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      gravity:
-                                                          ToastGravity.CENTER);
-                                                }
-                                              }
-                                            });
-                                        }
-                                      }).then((value) =>
-                                              Navigator.pop(context));
-                                    }),
+                                                break;
+                                              case "null":
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
+                                                    backgroundColor: Colors.red,
+                                                    gravity:
+                                                        ToastGravity.CENTER);
+                                                break;
+                                              case "fail present":
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "لم يتم تسجيل حضور هذا المتسخدم",
+                                                    backgroundColor: Colors.red,
+                                                    gravity:
+                                                        ToastGravity.CENTER);
+                                                break;
+                                              case "fail":
+                                                errorToast();
+                                                break;
+                                              default:
+                                                sendFcmMessage(
+                                                        topicName: "",
+                                                        userToken: widget
+                                                            .user.fcmToken,
+                                                        title: "اثبات حضور",
+                                                        category: "attend",
+                                                        message:
+                                                            "برجاء اثبات حضورك الأن")
+                                                    .then((value) {
+                                                  if (value) {
+                                                    Fluttertoast.showToast(
+                                                        msg: "تم الأرسال بنجاح",
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    if (value) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "خطأ فى الأرسال ",
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          gravity: ToastGravity
+                                                              .CENTER);
+                                                    }
+                                                  }
+                                                });
+                                            }
+                                          }).then((value) =>
+                                                  Navigator.pop(context));
+                                        })
+                                    : Container(),
                               ],
                             ),
                           ),

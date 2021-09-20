@@ -21,6 +21,7 @@ class Company {
   String nameEn;
   int id;
   String logo;
+  int legalComDate;
   String email;
   int companyUsers;
   int companySites;
@@ -33,6 +34,7 @@ class Company {
     this.nameEn,
     this.id,
     this.logo,
+    this.legalComDate,
     this.email,
     this.companySites,
     this.companyUsers,
@@ -51,6 +53,7 @@ class CompanyData extends ChangeNotifier {
       nameAr: "",
       logo: "",
       email: "",
+      legalComDate: 1,
       companySites: 0,
       companyUsers: 0);
 
@@ -98,6 +101,7 @@ class CompanyData extends ChangeNotifier {
             com.companyUsers = decodedRes["data"]["companyUsers"];
             com.companySites = decodedRes["data"]["companySites"];
             com.createdOn = DateTime.tryParse(decodedRes["data"]["createdOn"]);
+            com.legalComDate = decodedRes["data"]["monthStartDate"];
             print("company created on ${com.createdOn}");
             notifyListeners();
             return "Success";

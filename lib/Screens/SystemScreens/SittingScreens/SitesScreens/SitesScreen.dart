@@ -60,18 +60,15 @@ class _SitesScreenState extends State<SitesScreen> {
     var userProvider = Provider.of<UserData>(context);
     var companyProvider = Provider.of<CompanyData>(context, listen: false);
 
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
-          companyProvider.com.id, userProvider.user.userToken, context);
-    }
-    if (Provider.of<ShiftsData>(context, listen: false).shiftsList.isEmpty) {
-      await Provider.of<ShiftsData>(context, listen: false)
-          .getAllCompanyShifts(
-              companyProvider.com.id, userProvider.user.userToken, context)
-          .then((value) async {
-        print("got Shifts");
-      });
-    }
+    await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
+        companyProvider.com.id, userProvider.user.userToken, context);
+
+    await Provider.of<ShiftsData>(context, listen: false)
+        .getShifts(companyProvider.com.id, userProvider.user.userToken, context,
+            userProvider.user.userType, userProvider.user.userSiteId)
+        .then((value) async {
+      print("got Shifts");
+    });
   }
 
   @override

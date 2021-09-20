@@ -11,7 +11,15 @@ final baseURL = "https://Chilangoback.tamauzeds.com";
 final localURL = "http://192.168.0.119:8010";
 // final baseURL = "http://192.168.1.38:45456";
 final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
-
+List<String> weekDays = [
+  "السبت",
+  "الأحد",
+  "الأتنين",
+  "الثلاثاء",
+  "الأربعاء",
+  "الخميس",
+  "الجمعة"
+];
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;
 // int kAfterEndShift = 600;

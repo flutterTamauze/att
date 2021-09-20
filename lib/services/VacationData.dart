@@ -35,11 +35,11 @@ class VacationData with ChangeNotifier {
   }
 
   Future<String> addVacation(
-      Vacation vacation, String token, int companyId) async {
+      Vacation vacation, String token, int companyId, int vacationCount) async {
     isLoading = true;
     notifyListeners();
     var response = await http.post(
-        Uri.parse("$baseURL/api/OfficialVacations/Add"),
+        Uri.parse("$baseURL/api/OfficialVacations/Add/$vacationCount"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $token"

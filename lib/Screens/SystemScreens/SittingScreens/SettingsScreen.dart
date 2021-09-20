@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens//MembersScreens/UsersScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/SiteAdminUsersScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/SiteAdminShiftScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SitesScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
@@ -83,29 +85,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: const EdgeInsets.only(top: 10),
                     child: Column(
                       children: [
-                        ServiceTile(
-                            title: "المواقع",
-                            subTitle: "ادارة المواقع",
-                            icon: Icons.location_on,
-                            onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => SitesScreen(),
-                                  ),
-                                );
-                              } else {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ErrorScreen(
-                                        "لا يوجد اتصال بالانترنت", false),
-                                  ),
-                                );
-                              }
-                              print("المواقع");
-                            }),
+                        userProvider.user.userType == 2
+                            ? Container()
+                            : ServiceTile(
+                                title: "المواقع",
+                                subTitle: "ادارة المواقع",
+                                icon: Icons.location_on,
+                                onTap: () async {
+                                  var bool = await userDataProvider
+                                      .isConnectedToInternet("www.google.com");
+                                  if (bool) {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => SitesScreen(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => ErrorScreen(
+                                            "لا يوجد اتصال بالانترنت", false),
+                                      ),
+                                    );
+                                  }
+                                  print("المواقع");
+                                }),
                         ServiceTile(
                             title: "المناوبات",
                             subTitle: "ادارة المناوبات",
@@ -114,11 +118,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               var bool = await userDataProvider
                                   .isConnectedToInternet("www.google.com");
                               if (bool) {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ShiftsScreen(0, -1),
-                                  ),
-                                );
+                                userProvider.user.userType == 2
+                                    ? Navigator.of(context).push(
+                                        new MaterialPageRoute(
+                                          builder: (context) =>
+                                              SiteAdminShiftScreen(0, -1),
+                                        ),
+                                      )
+                                    : Navigator.of(context).push(
+                                        new MaterialPageRoute(
+                                          builder: (context) =>
+                                              ShiftsScreen(0, -1),
+                                        ),
+                                      );
                               } else {
                                 Navigator.of(context).push(
                                   new MaterialPageRoute(
@@ -134,84 +146,139 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             subTitle: "ادارة المستخدمين",
                             icon: Icons.person,
                             onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
-                                Provider.of<SiteData>(context, listen: false)
-                                    .setSiteValue("كل المواقع");
-                                Provider.of<SiteData>(context, listen: false)
-                                    .setDropDownIndex(0);
-                                if (Provider.of<SiteData>(context,
-                                        listen: false)
-                                    .sitesList
-                                    .isEmpty) {
-                                  await Provider.of<SiteData>(context,
-                                          listen: false)
-                                      .getSitesByCompanyId(comProvier.com.id,
-                                          userProvider.user.userToken, context)
-                                      .then((value) async {
-                                    print("Got Sites");
-                                  });
-                                }
+                              if (userProvider.user.userType == 2) {
+                                var siteProv = Provider.of<SiteData>(context,
+                                    listen: false);
+                                var shiftProv = Provider.of<ShiftsData>(context,
+                                    listen: false);
                                 await Provider.of<ShiftsData>(context,
                                         listen: false)
                                     .findMatchingShifts(
-                                        Provider.of<SiteData>(context,
-                                                listen: false)
-                                            .sitesList[Provider.of<SiteData>(
-                                                    context,
-                                                    listen: false)
-                                                .dropDownSitesIndex]
-                                            .id,
+                                        userDataProvider.user.userSiteId,
                                         false);
-                                Provider.of<SiteData>(context, listen: false)
-                                    .fillCurrentShiftID(Provider.of<ShiftsData>(
-                                            context,
+                                siteProv.setDropDownShift(
+                                    0); //الموقع علي حسب ال اندكس اللي
+                                siteProv.setSiteValue(Provider.of<ShiftsData>(
+                                        context,
+                                        listen: false)
+                                    .shiftsBySite[0]
+                                    .shiftName);
+                                siteProv.fillCurrentShiftID(
+                                    Provider.of<ShiftsData>(context,
                                             listen: false)
-                                        .shiftsBySite[Provider.of<SiteData>(
-                                                context,
-                                                listen: false)
-                                            .dropDownSitesIndex]
+                                        .shiftsBySite[0]
                                         .shiftId);
+                                siteProv.setDropDownShift(0);
+                                siteProv.setDropDownIndex(
+                                    userDataProvider.user.userSiteId);
+                                siteProv.fillCurrentShiftID(
+                                    Provider.of<ShiftsData>(context,
+                                            listen: false)
+                                        .shiftsBySite[0]
+                                        .shiftId);
+
+                                await Provider.of<ShiftsData>(context,
+                                        listen: false)
+                                    .findMatchingShifts(
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userSiteId,
+                                        false);
                                 Navigator.of(context).push(
                                   new MaterialPageRoute(
-                                    builder: (context) =>
-                                        UsersScreen(-1, false, ""),
+                                    builder: (context) => SiteAdminUserScreen(
+                                        userProvider.user.userSiteId + 1,
+                                        true,
+                                        shiftProv.shiftsBySite[0].shiftName),
                                   ),
                                 );
                               } else {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ErrorScreen(
-                                        "لا يوجد اتصال بالانترنت", false),
-                                  ),
-                                );
+                                var bool = await userDataProvider
+                                    .isConnectedToInternet("www.google.com");
+                                if (bool) {
+                                  Provider.of<SiteData>(context, listen: false)
+                                      .setSiteValue("كل المواقع");
+                                  Provider.of<SiteData>(context, listen: false)
+                                      .setDropDownIndex(0);
+                                  if (Provider.of<SiteData>(context,
+                                          listen: false)
+                                      .sitesList
+                                      .isEmpty) {
+                                    await Provider.of<SiteData>(context,
+                                            listen: false)
+                                        .getSitesByCompanyId(
+                                            comProvier.com.id,
+                                            userProvider.user.userToken,
+                                            context)
+                                        .then((value) async {
+                                      print("Got Sites");
+                                    });
+                                  }
+                                  await Provider.of<ShiftsData>(context,
+                                          listen: false)
+                                      .findMatchingShifts(
+                                          Provider.of<SiteData>(context,
+                                                  listen: false)
+                                              .sitesList[Provider.of<SiteData>(
+                                                      context,
+                                                      listen: false)
+                                                  .dropDownSitesIndex]
+                                              .id,
+                                          false);
+                                  Provider.of<SiteData>(context, listen: false)
+                                      .fillCurrentShiftID(
+                                          Provider.of<ShiftsData>(context,
+                                                  listen: false)
+                                              .shiftsBySite[
+                                                  Provider.of<SiteData>(context,
+                                                          listen: false)
+                                                      .dropDownSitesIndex]
+                                              .shiftId);
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) =>
+                                          UsersScreen(-1, false, ""),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) => ErrorScreen(
+                                          "لا يوجد اتصال بالانترنت", false),
+                                    ),
+                                  );
+                                }
                               }
+
                               print("الموظفين");
                             }),
-                        ServiceTile(
-                            title: "اعدادات الشركة",
-                            subTitle: "ادارة اعدادات الشركة",
-                            icon: Icons.settings,
-                            onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CompanySettings(),
-                                    ));
-                              } else {
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => ErrorScreen(
-                                        "لا يوجد اتصال بالانترنت", false),
-                                  ),
-                                );
-                              }
-                              print("الموظفين");
-                            }),
+                        userProvider.user.userType == 2
+                            ? Container()
+                            : ServiceTile(
+                                title: "اعدادات الشركة",
+                                subTitle: "ادارة اعدادات الشركة",
+                                icon: Icons.settings,
+                                onTap: () async {
+                                  var bool = await userDataProvider
+                                      .isConnectedToInternet("www.google.com");
+                                  if (bool) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompanySettings(),
+                                        ));
+                                  } else {
+                                    Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                        builder: (context) => ErrorScreen(
+                                            "لا يوجد اتصال بالانترنت", false),
+                                      ),
+                                    );
+                                  }
+                                  print("الموظفين");
+                                }),
                       ],
                     ),
                   ),

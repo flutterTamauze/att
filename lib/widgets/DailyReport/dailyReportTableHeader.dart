@@ -60,20 +60,19 @@ class DataTableHeaderTitles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 4,
       child: Container(
-          height: 50.h,
           child: Center(
               child: Container(
-            height: 30,
-            child: AutoSizeText(
-              title,
-              maxLines: 1,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                  color: color),
-            ),
-          ))),
+        child: AutoSizeText(
+          title,
+          maxLines: 1,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+              color: color),
+        ),
+      ))),
     );
   }
 }

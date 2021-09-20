@@ -37,7 +37,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   TextEditingController _dateController = TextEditingController();
   int selectedDuration;
   var toDate;
-  var fromDate;
+  DateTime fromDate;
   DateTime yesterday;
   Site siteData;
   String diff;
@@ -47,7 +47,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     super.initState();
     var now = DateTime.now();
 
-    fromDate = DateTime(now.year, now.month, now.day - 1);
+    fromDate = DateTime(now.year, now.month,
+        Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     toDate = DateTime(now.year, now.month, now.day - 1);
     yesterday = DateTime(now.year, now.month, now.day - 1);
 
@@ -122,7 +123,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     final userDataProvider = Provider.of<UserData>(context, listen: false);
-
+    var comProv = Provider.of<CompanyData>(context, listen: false);
     return Consumer<ReportsData>(builder: (context, reportsData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -231,23 +232,21 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             builder: (context) {
                                               return InkWell(
                                                   onTap: () async {
-                                                    final List<DateTime>
-                                                        picked =
-                                                        await DateRagePicker.showDatePicker(
-                                                            context: context,
-                                                            initialFirstDate:
-                                                                fromDate,
-                                                            initialLastDate:
-                                                                toDate,
-                                                            firstDate: Provider
-                                                                    .of<CompanyData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                .com
-                                                                .createdOn,
-                                                            lastDate:
-                                                                yesterday);
+                                                    final List<
+                                                            DateTime> picked =
+                                                        await DateRagePicker
+                                                            .showDatePicker(
+                                                                context:
+                                                                    context,
+                                                                initialFirstDate:
+                                                                    fromDate,
+                                                                initialLastDate:
+                                                                    toDate,
+                                                                firstDate: comProv
+                                                                    .com
+                                                                    .createdOn,
+                                                                lastDate:
+                                                                    yesterday);
                                                     var newString = "";
                                                     setState(() {
                                                       fromDate = picked.first;

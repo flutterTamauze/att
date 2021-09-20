@@ -4,9 +4,12 @@ import 'dart:convert';
 import '../../constants.dart';
 
 class CompanySettingsService {
-  int lateAllowance, attendClearance, leaveClearance, settingsID;
+  int lateAllowance, attendClearance, leaveClearance, settingsID, workingDays;
   CompanySettingsService(
-      {this.attendClearance, this.lateAllowance, this.leaveClearance});
+      {this.attendClearance,
+      this.lateAllowance,
+      this.leaveClearance,
+      this.workingDays});
   getCompanySettingsTime(int comID, String userToken) async {
     var response = await http
         .get(Uri.parse("$baseURL/api/Settings?CompanyId=$comID"), headers: {
@@ -19,17 +22,22 @@ class CompanySettingsService {
       this.attendClearance = decodedResponse["data"]["attendClearance"];
       this.lateAllowance = decodedResponse["data"]["lateAllowance"];
       this.leaveClearance = decodedResponse["data"]["leaveClearance"];
+
       this.settingsID = decodedResponse["data"]["id"];
+      this.workingDays = decodedResponse["data"]["workingDays"];
     }
   }
 
   Future<bool> updateCompanySettingsTime(
-      int settingsId,
-      int comID,
-      int lateAllow,
-      int attendClearance,
-      int leaveClearance,
-      String userToken) async {
+    int settingsId,
+    int comID,
+    int lateAllow,
+    int attendClearance,
+    int leaveClearance,
+    String userToken,
+    int workingDays,
+  ) async {
+    print(workingDays);
     print(lateAllow);
     print(attendClearance);
     print(leaveClearance);
@@ -45,7 +53,7 @@ class CompanySettingsService {
               "lateAllowance": lateAllow,
               "attendClearance": attendClearance,
               "leaveClearance": leaveClearance,
-              "workingDays": 1,
+              "workingDays": workingDays,
               "companyId": comID,
             }));
     print(response.statusCode);

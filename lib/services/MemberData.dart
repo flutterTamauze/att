@@ -250,7 +250,12 @@ class MemberData with ChangeNotifier {
           memberNewList = memberObjJson
               .map((memberJson) => Member.fromJson(memberJson))
               .toList();
+          print("MEMBER DATA length");
+          print(memberNewList.length);
 
+          membersList = [...memberNewList];
+          membersListScreenDropDownSearch = [...membersList];
+          copyMemberList = membersList;
           dropDownMembersList = memberNewList;
           notifyListeners();
 

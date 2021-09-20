@@ -68,8 +68,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
             print("الموظفين");
           }),
       ReportTile(
-          title: "الأجازات و الأذونات",
-          subTitle: "تقرير الأجازات والأذونات",
+          title: "الأجازات و المأموريات",
+          subTitle: "تقرير الأجازات المأموريات",
           icon: FontAwesomeIcons.calendarCheck,
           onTap: () async {
             var userProvider = Provider.of<UserData>(context, listen: false);

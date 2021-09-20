@@ -55,40 +55,47 @@ class _ShiftScheduleScreenState extends State<ShiftScheduleScreen> {
       endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton(
-        elevation: 3,
-        tooltip: "اضافة جدولة مناوبة",
-        backgroundColor: Colors.orange[600],
-        onPressed: () async {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedLoadingIndicator();
-              });
-          var userProvider = Provider.of<UserData>(context, listen: false);
+      floatingActionButton:
+          Provider.of<UserData>(context, listen: false).user.userType == 2
+              ? Container()
+              : FloatingActionButton(
+                  elevation: 3,
+                  tooltip: "اضافة جدولة مناوبة",
+                  backgroundColor: Colors.orange[600],
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return RoundedLoadingIndicator();
+                        });
+                    var userProvider =
+                        Provider.of<UserData>(context, listen: false);
 
-          var comProvider = Provider.of<CompanyData>(context, listen: false);
-          await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
-              comProvider.com.id, userProvider.user.userToken, context);
-          await Provider.of<SiteData>(context, listen: false)
-              .setDropDownShift(0);
-          await Provider.of<SiteData>(context, listen: false)
-              .setDropDownIndex(0);
-          await Provider.of<ShiftsData>(context, listen: false)
-              .findMatchingShifts(
-                  Provider.of<SiteData>(context, listen: false)
-                      .sitesList[Provider.of<SiteData>(context, listen: false)
-                          .dropDownSitesIndex]
-                      .id,
-                  false);
-          shiftScheduling();
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-          size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
-        ),
-      ),
+                    var comProvider =
+                        Provider.of<CompanyData>(context, listen: false);
+                    await Provider.of<DaysOffData>(context, listen: false)
+                        .getDaysOff(comProvider.com.id,
+                            userProvider.user.userToken, context);
+                    await Provider.of<SiteData>(context, listen: false)
+                        .setDropDownShift(0);
+                    await Provider.of<SiteData>(context, listen: false)
+                        .setDropDownIndex(0);
+                    await Provider.of<ShiftsData>(context, listen: false)
+                        .findMatchingShifts(
+                            Provider.of<SiteData>(context, listen: false)
+                                .sitesList[Provider.of<SiteData>(context,
+                                        listen: false)
+                                    .dropDownSitesIndex]
+                                .id,
+                            false);
+                    shiftScheduling();
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+                  ),
+                ),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -300,83 +307,91 @@ class _ShiftScheduleCardState extends State<ShiftScheduleCard> {
                     ),
                   ),
                   Expanded(child: Container()),
-                  InkWell(
-                    onTap: () async {
-                      var userProvider =
-                          Provider.of<UserData>(context, listen: false);
-                      var comProvider =
-                          Provider.of<CompanyData>(context, listen: false);
-                      if (Provider.of<DaysOffData>(context, listen: false)
-                          .reallocateUsers
-                          .isEmpty) {
-                        await Provider.of<DaysOffData>(context, listen: false)
-                            .getDaysOff(comProvider.com.id,
-                                userProvider.user.userToken, context);
-                      }
+                  Provider.of<UserData>(context, listen: false).user.userType ==
+                          2
+                      ? Container()
+                      : InkWell(
+                          onTap: () async {
+                            var userProvider =
+                                Provider.of<UserData>(context, listen: false);
+                            var comProvider = Provider.of<CompanyData>(context,
+                                listen: false);
+                            if (Provider.of<DaysOffData>(context, listen: false)
+                                .reallocateUsers
+                                .isEmpty) {
+                              await Provider.of<DaysOffData>(context,
+                                      listen: false)
+                                  .getDaysOff(comProvider.com.id,
+                                      userProvider.user.userToken, context);
+                            }
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReAllocateUsers(
-                                widget.member, true, widget.currentIndex),
-                          ));
-                    },
-                    child: Container(
-                      child: FaIcon(FontAwesomeIcons.edit,
-                          size: 30, color: Colors.orange),
-                    ),
-                  ),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReAllocateUsers(
+                                      widget.member, true, widget.currentIndex),
+                                ));
+                          },
+                          child: Container(
+                            child: FaIcon(FontAwesomeIcons.edit,
+                                size: 30, color: Colors.orange),
+                          ),
+                        ),
                   SizedBox(
                     width: 5,
                   ),
-                  InkWell(
-                      onTap: () async {
-                        print(widget.currentIndex);
-                        print(widget.scheduleList[widget.currentIndex].id);
-                        return showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Provider.of<ShiftsData>(context,
-                                          listen: true)
-                                      .isLoading
-                                  ? Center(
-                                      child: CircularProgressIndicator(
-                                        backgroundColor: Colors.orange,
-                                      ),
-                                    )
-                                  : RoundedAlert(
-                                      onPressed: () async {
-                                        String msg =
-                                            await Provider.of<ShiftsData>(
-                                                    context,
-                                                    listen: false)
-                                                .deleteShiftScheduleById(
-                                                    widget
-                                                        .scheduleList[
-                                                            widget.currentIndex]
-                                                        .id,
-                                                    Provider.of<UserData>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .userToken,
-                                                    widget.currentIndex);
-                                        if (msg == "Success") {
-                                          Fluttertoast.showToast(
-                                              msg: "تم حذف  الجدولة بنجاح",
-                                              backgroundColor: Colors.green,
-                                              gravity: ToastGravity.CENTER);
-                                        }
-                                        Navigator.pop(context);
-                                      },
-                                      title: 'ازالة جدولة ',
-                                      content: "هل تريد ازالة هذه الجدولة ؟");
-                            });
-                      },
-                      child: Container(
-                        child: FaIcon(FontAwesomeIcons.timesCircle,
-                            size: 30, color: Colors.red),
-                      )),
+                  Provider.of<UserData>(context, listen: false).user.userType ==
+                          2
+                      ? Container()
+                      : InkWell(
+                          onTap: () async {
+                            print(widget.currentIndex);
+                            print(widget.scheduleList[widget.currentIndex].id);
+                            return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Provider.of<ShiftsData>(context,
+                                              listen: true)
+                                          .isLoading
+                                      ? Center(
+                                          child: CircularProgressIndicator(
+                                            backgroundColor: Colors.orange,
+                                          ),
+                                        )
+                                      : RoundedAlert(
+                                          onPressed: () async {
+                                            String msg =
+                                                await Provider.of<ShiftsData>(
+                                                        context,
+                                                        listen: false)
+                                                    .deleteShiftScheduleById(
+                                                        widget
+                                                            .scheduleList[widget
+                                                                .currentIndex]
+                                                            .id,
+                                                        Provider.of<UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userToken,
+                                                        widget.currentIndex);
+                                            if (msg == "Success") {
+                                              Fluttertoast.showToast(
+                                                  msg: "تم حذف  الجدولة بنجاح",
+                                                  backgroundColor: Colors.green,
+                                                  gravity: ToastGravity.CENTER);
+                                            }
+                                            Navigator.pop(context);
+                                          },
+                                          title: 'ازالة جدولة ',
+                                          content:
+                                              "هل تريد ازالة هذه الجدولة ؟");
+                                });
+                          },
+                          child: Container(
+                            child: FaIcon(FontAwesomeIcons.timesCircle,
+                                size: 30, color: Colors.red),
+                          )),
                 ],
               ),
             ),

@@ -223,7 +223,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                             context,
                                                             listen: false)
                                                         .user
-                                                        .userToken);
+                                                        .userToken,
+                                                    widget.index);
 
                                         if (msg ==
                                             "Success : Holiday Deleted!") {

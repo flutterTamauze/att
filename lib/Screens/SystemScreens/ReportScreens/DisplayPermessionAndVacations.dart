@@ -51,10 +51,10 @@ class _VacationAndPermessionsReportState
               ),
               SmallDirectoriesHeader(
                 Lottie.asset("resources/report.json", repeat: false),
-                "تقرير الأجازات و الأذونات",
+                "تقرير الأجازات و المأموريات",
               ),
-              VacationCardHeader(
-                header: "نوع الطلب",
+              SizedBox(
+                height: 20,
               ),
               Padding(
                 padding: EdgeInsets.only(right: 20.w),
