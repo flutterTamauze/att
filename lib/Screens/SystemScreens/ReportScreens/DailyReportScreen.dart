@@ -61,20 +61,32 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     var siteID;
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+    if (userProvider.user.userType == 2) {
       await Provider.of<SiteData>(context, listen: false)
-          .getSitesByCompanyId(
-              comProvider.com.id, userProvider.user.userToken, context)
+          .getSpecificSite(userProvider.user.userSiteId,
+              userProvider.user.userToken, context)
           .then((value) {
+        siteID = Provider.of<SiteData>(context, listen: false).sitesList[0].id;
+        print("SiteIndex $siteIndex");
+      });
+
+      siteData = Provider.of<SiteData>(context, listen: false).sitesList[0];
+    } else {
+      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+        await Provider.of<SiteData>(context, listen: false)
+            .getSitesByCompanyId(
+                comProvider.com.id, userProvider.user.userToken, context)
+            .then((value) {
+          siteID = Provider.of<SiteData>(context, listen: false)
+              .sitesList[siteIndex]
+              .id;
+          print("SiteIndex $siteIndex");
+        });
+      } else {
         siteID = Provider.of<SiteData>(context, listen: false)
             .sitesList[siteIndex]
             .id;
-        print("SiteIndex $siteIndex");
-      });
-    } else {
-      siteID =
-          Provider.of<SiteData>(context, listen: false).sitesList[siteIndex].id;
+      }
     }
 
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
@@ -180,17 +192,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           reportType: 0,
                                                           title:
                                                               "تقرير الحضور اليومى",
-                                                          site: userDataProvider
-                                                                      .user
-                                                                      .userType ==
-                                                                  2
-                                                              ? siteData.name
-                                                              : Provider.of<
-                                                                          SiteData>(
-                                                                      context)
-                                                                  .sitesList[
-                                                                      siteId]
-                                                                  .name,
+                                                          site: Provider.of<
+                                                                      SiteData>(
+                                                                  context)
+                                                              .sitesList[siteId]
+                                                              .name,
                                                           day: date,
                                                         )
                                                   : Container(),

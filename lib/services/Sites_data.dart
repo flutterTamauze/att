@@ -141,7 +141,7 @@ class SiteData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
-
+        print(response.statusCode);
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =
@@ -161,7 +161,10 @@ class SiteData with ChangeNotifier {
                 lat: double.parse(decodedRes['data']['siteLat'].toString()),
                 long: double.parse(decodedRes['data']['siteLan'].toString()),
                 name: decodedRes['data']['siteName']);
-
+            sitesList = [
+              Site(id: site.id, lat: site.lat, long: site.long, name: site.name)
+            ];
+            notifyListeners();
             return site;
           } else if (decodedRes["message"] ==
               "Fail : You must delete all shifts in site then delete site") {
@@ -196,6 +199,7 @@ class SiteData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
 
+        print("status code ${response.statusCode}");
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =

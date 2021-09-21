@@ -333,7 +333,7 @@ class _ShiftScheduleCardState extends State<ShiftScheduleCard> {
                                 ));
                           },
                           child: Container(
-                            child: FaIcon(FontAwesomeIcons.edit,
+                            child: FaIcon(Icons.edit,
                                 size: 30, color: Colors.orange),
                           ),
                         ),
