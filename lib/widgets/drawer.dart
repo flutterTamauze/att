@@ -68,8 +68,8 @@ class DrawerI extends StatelessWidget {
                             ),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage("resources/image.png"),
-                            )),
+                                image: AssetImage("resources/image.jpg"),
+                                fit: BoxFit.fill)),
                       ),
                     ),
                   ),

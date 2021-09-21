@@ -60,7 +60,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
                         infoTitle: 'خصم الغياب:',
                       ),
                       DataTableEndRowInfo(
-                        info: _attendanceReport.totalDeductionAbsent
+                        info: _attendanceReport.totalLateDeduction
                             .toStringAsFixed(1),
                         infoTitle: ' خصم التأخير:',
                       ),

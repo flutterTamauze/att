@@ -105,7 +105,7 @@ class ShiftsData with ChangeNotifier {
       String userToken, String userId) async {
     var response = await http.get(
         Uri.parse(
-            "$localURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
+            "$baseURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
