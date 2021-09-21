@@ -65,11 +65,14 @@ class _ErrorScreenState extends State<ErrorScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
+                      Lottie.network(
+                          "https://assets10.lottiefiles.com/packages/lf20_z8szrftm.json",
+                          width: 300.w,
+                          height: 300.h),
                       Container(
-                        height: 40,
+                        height: 80,
                         child: AutoSizeText(
                           message,
-                          maxLines: 2,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
@@ -142,7 +145,13 @@ class _ErrorScreenState extends State<ErrorScreen> {
           .catchError(((e) {
         print(e);
       })).then((value) {
-        if (value > 0) {
+        if (value == null) {
+          setState(() {
+            isLoading = false;
+            message =
+                "خطأ فى بيانات الحساب\nالخدمة متوقفة حاليا\nمن فضلك راجع مدير النظام";
+          });
+        } else if (value > 0) {
           print("laaa");
           Navigator.pushReplacement(
               context,

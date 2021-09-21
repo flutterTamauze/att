@@ -94,7 +94,12 @@ class _UserOrdersViewState extends State<UserOrdersView> {
             children: [
               Header(
                 nav: false,
-                goUserMenu: true,
+                goUserMenu: Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userType ==
+                        0
+                    ? false
+                    : true,
                 goUserHomeFromMenu: false,
               ),
               Directionality(

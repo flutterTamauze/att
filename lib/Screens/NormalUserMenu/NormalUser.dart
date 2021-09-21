@@ -83,12 +83,10 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 });
             await Provider.of<ShiftsData>(context, listen: false)
                 .getFirstAvailableSchedule(user.userToken, user.id);
-            if (Provider.of<ShiftApi>(context, listen: false)
-                .shiftsListProvider
-                .isEmpty) {
-              await Provider.of<ShiftApi>(context, listen: false)
-                  .getShiftData(user.id, user.userToken);
-            }
+
+            await Provider.of<ShiftApi>(context, listen: false)
+                .getShiftByShiftId(user.userShiftId, user.userToken);
+
             Navigator.pop(context);
             Navigator.of(context).push(
               new MaterialPageRoute(
