@@ -522,7 +522,19 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               0
                                                           ? Column(
                                                               children: [
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                          .orange[
+                                                                      600],
+                                                                ),
                                                                 DataTableHeader(),
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                          .orange[
+                                                                      600],
+                                                                ),
                                                                 Expanded(
                                                                     child:
                                                                         Container(

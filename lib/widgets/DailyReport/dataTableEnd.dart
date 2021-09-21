@@ -11,27 +11,29 @@ class DailyReportTableEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-          )),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-          height: 50.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              DataTableEndRowInfo(
-                infoTitle: 'مجموع الحضور:',
-                info: totalAttend,
+        child: Column(
+          children: [
+            Divider(
+              thickness: 1,
+              color: Colors.orange[600],
+            ),
+            Container(
+              height: 50.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DataTableEndRowInfo(
+                    infoTitle: 'مجموع الحضور:',
+                    info: totalAttend,
+                  ),
+                  DataTableEndRowInfo(
+                      info: totalAbsents, infoTitle: "مجموع الغياب:")
+                ],
               ),
-              DataTableEndRowInfo(
-                  info: totalAbsents, infoTitle: "مجموع الغياب:")
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

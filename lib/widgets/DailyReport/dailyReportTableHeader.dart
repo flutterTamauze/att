@@ -7,49 +7,43 @@ class DataTableHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            )),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: [
-              Container(
-                  width: 160.w,
-                  child: Center(
-                      child: Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      'الاسم',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black),
-                    ),
-                  ))),
-              Expanded(
-                child: Row(
-                  children: [
-                    DataTableHeaderTitles("التأخير", Colors.black),
-                    DataTableHeaderTitles("حضور", Colors.black),
-                    DataTableHeaderTitles("انصراف", Colors.black),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 50.h,
-                      ),
-                    ),
-                  ],
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          Container(
+              width: 160.w,
+              child: Center(
+                  child: Container(
+                height: 20,
+                child: AutoSizeText(
+                  'الاسم',
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize:
+                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      color: Colors.orange[600]),
                 ),
-              )
-            ],
-          ),
-        ));
+              ))),
+          Expanded(
+            child: Row(
+              children: [
+                DataTableHeaderTitles("التأخير", Colors.orange[600]),
+                DataTableHeaderTitles("حضور", Colors.orange[600]),
+                DataTableHeaderTitles("انصراف", Colors.orange[600]),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 50.h,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 

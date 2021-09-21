@@ -5,9 +5,11 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/Shift.dart';
+import 'package:qr_users/services/ShiftSchedule/ShiftScheduleModel.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/api.dart';
@@ -184,86 +186,86 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                       ],
                                     ),
                                     children: [
-                                      Container(
-                                        height: 500.h,
-                                        child: ListView.builder(
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      daysofflist
-                                                              .reallocateUsers[
-                                                                  index]
-                                                              .isDayOff
-                                                          ? Card(
-                                                              child: Container(
-                                                                width: 250.w,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10),
-                                                                child: Text(
-                                                                    "يوم عطلة",
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
-                                                                        fontSize:
-                                                                            16),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center),
-                                                              ),
-                                                            )
-                                                          : Card(
-                                                              child: Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10),
-                                                                width: 250.w,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      weekDays[
-                                                                          index],
-                                                                      style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    ),
-                                                                    Text(
-                                                                      getSiteNameById(
-                                                                          shiftDate
-                                                                              .scheduleSiteNumber[index]),
-                                                                      style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            )
-                                                    ],
-                                                  ),
-                                                  Divider()
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                          itemCount: daysofflist
-                                              .reallocateUsers.length,
-                                        ),
+                                      Column(
+                                        children: [
+                                          FeatureScheduleShiftCard(
+                                              currentIndex: 0,
+                                              startTime:
+                                                  shiftDate.satShift.startTime,
+                                              endTime:
+                                                  shiftDate.satShift.endTime,
+                                              shiftname:
+                                                  shiftDate.satShift.shiftName,
+                                              sitename:
+                                                  shiftDate.satShift.siteName,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.sunShift.startTime,
+                                              endTime:
+                                                  shiftDate.sunShift.endTime,
+                                              currentIndex: 1,
+                                              shiftname:
+                                                  shiftDate.sunShift.shiftName,
+                                              sitename:
+                                                  shiftDate.sunShift.siteName,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.monShift.startTime,
+                                              endTime:
+                                                  shiftDate.monShift.endTime,
+                                              currentIndex: 2,
+                                              shiftname:
+                                                  shiftDate.monShift.shiftName,
+                                              sitename:
+                                                  shiftDate.monShift.siteName,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.tuesShift.startTime,
+                                              endTime:
+                                                  shiftDate.tuesShift.endTime,
+                                              currentIndex: 3,
+                                              shiftname:
+                                                  shiftDate.tuesShift.shiftName,
+                                              sitename:
+                                                  shiftDate.tuesShift.siteName,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.wednShift.startTime,
+                                              endTime:
+                                                  shiftDate.wednShift.endTime,
+                                              currentIndex: 4,
+                                              shiftname:
+                                                  shiftDate.wednShift.shiftName,
+                                              sitename:
+                                                  shiftDate.wednShift.siteName,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.thurShift.startTime,
+                                              endTime:
+                                                  shiftDate.thurShift.endTime,
+                                              shiftname:
+                                                  shiftDate.thurShift.shiftName,
+                                              sitename:
+                                                  shiftDate.thurShift.siteName,
+                                              currentIndex: 5,
+                                              shiftDate: shiftDate),
+                                          FeatureScheduleShiftCard(
+                                              startTime:
+                                                  shiftDate.friShift.startTime,
+                                              endTime:
+                                                  shiftDate.friShift.endTime,
+                                              currentIndex: 6,
+                                              shiftname:
+                                                  shiftDate.friShift.shiftName,
+                                              sitename:
+                                                  shiftDate.friShift.siteName,
+                                              shiftDate: shiftDate),
+                                        ],
                                       )
                                     ],
                                   ),
@@ -274,6 +276,113 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
               ),
             ),
           )),
+    );
+  }
+}
+
+class FeatureScheduleShiftCard extends StatelessWidget {
+  const FeatureScheduleShiftCard({
+    Key key,
+    @required this.shiftDate,
+    this.shiftname,
+    this.sitename,
+    this.startTime,
+    this.endTime,
+    this.currentIndex,
+  }) : super(key: key);
+
+  final ShiftSheduleModel shiftDate;
+  final String shiftname, sitename;
+  final int currentIndex;
+  final String startTime, endTime;
+
+  @override
+  Widget build(BuildContext context) {
+    var daysofflist = Provider.of<DaysOffData>(context, listen: true);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          daysofflist.reallocateUsers[currentIndex].isDayOff
+              ? Card(
+                  child: Container(
+                    width: 250.w,
+                    padding: EdgeInsets.all(10),
+                    child: Text("يوم عطلة",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 15),
+                        textAlign: TextAlign.center),
+                  ),
+                )
+              : Card(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              weekDays[currentIndex],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: Colors.orange[600]),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                sitename,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Text(
+                              shiftname,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: dateDataField(
+                                controller: TextEditingController(
+                                    text: amPmChanger(int.parse(startTime))),
+                                icon: Icons.alarm,
+                                labelText: "من"),
+                          ),
+                          SizedBox(
+                            width: 5.0.w,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: dateDataField(
+                                controller: TextEditingController(
+                                    text: amPmChanger(int.parse(endTime))),
+                                icon: Icons.alarm,
+                                labelText: "الى"),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      )
+                    ],
+                  ),
+                ),
+          Divider()
+        ],
+      ),
     );
   }
 }

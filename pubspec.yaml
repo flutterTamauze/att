@@ -86,6 +86,7 @@ dependencies:
   flutter_slidable: ^0.6.0
   huawei_push: ^5.1.1+301
   flutter_phoenix: ^1.0.0
+  huawei_location: ^5.1.0+303
 
 dev_dependencies:
   flutter_test:
@@ -93,7 +94,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "resources/image.png"
+  image_path: "resources/image.jpg"
   image_path_ios: "resources/imgIos.jpg"
 
 # For information on the generic Dart part of this file, see the

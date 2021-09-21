@@ -14,18 +14,19 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
-import 'package:qr_users/MLmodule/services/classifier.dart';
-import 'package:qr_users/MLmodule/services/facenet.service.dart';
+import 'package:qr_users/MLmodule/recognition_services/FaceDetectorPainter.dart';
+
 import 'package:image/image.dart' as img;
-import 'package:qr_users/MLmodule/services/quant.dart';
+import 'package:qr_users/MLmodule/recognition_services/UtilsScanner.dart';
+import 'package:qr_users/MLmodule/recognition_services/classifier.dart';
+import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
+import 'package:qr_users/MLmodule/recognition_services/quant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
-import "package:qr_users/MLmodule/services/UtilsScanner.dart";
-import 'package:qr_users/MLmodule/services/FaceDetectorPainter.dart';
 
 import 'NavScreenPartTwo.dart';
 

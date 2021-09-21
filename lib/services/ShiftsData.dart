@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/DaysOff.dart';
+import 'package:qr_users/services/FuturedScheduleShift.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -24,6 +26,7 @@ class ShiftsData with ChangeNotifier {
   InheritDefault inherit = InheritDefault();
   List<ShiftSheduleModel> shiftScheduleList = [];
   ShiftSheduleModel firstAvailableSchedule;
+  FutureShiftSchedule satShift;
   findMatchingShifts(int siteId, bool addallshiftsBool) {
     try {
       print("findMatchingShifts : $siteId");
@@ -102,7 +105,7 @@ class ShiftsData with ChangeNotifier {
       String userToken, String userId) async {
     var response = await http.get(
         Uri.parse(
-            "$baseURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
+            "$localURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
@@ -110,9 +113,11 @@ class ShiftsData with ChangeNotifier {
     print(response.body);
     var decodedResponse = json.decode(response.body);
     var scheduleJson = decodedResponse['data'];
+
     if (scheduleJson != null) {
-      firstAvailableSchedule = ShiftSheduleModel.fromJson(scheduleJson);
-      print(firstAvailableSchedule.originalShift);
+      firstAvailableSchedule =
+          ShiftSheduleModel.futuredSchedule(decodedResponse['data']);
+      log("تمت بحمد الله");
       if (firstAvailableSchedule != null) {
         notifyListeners();
       }
@@ -131,6 +136,8 @@ class ShiftsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $usertoken"
         });
+    print(response.statusCode);
+    print("asdms");
     print(response.body);
     var decodedResponse = json.decode(response.body);
 
