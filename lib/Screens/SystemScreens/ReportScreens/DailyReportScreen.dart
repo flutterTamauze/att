@@ -62,14 +62,16 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
     if (userProvider.user.userType == 2) {
-      await Provider.of<SiteData>(context, listen: false)
-          .getSpecificSite(userProvider.user.userSiteId,
-              userProvider.user.userToken, context)
-          .then((value) {
-        siteID = Provider.of<SiteData>(context, listen: false).sitesList[0].id;
-        print("SiteIndex $siteIndex");
-      });
-
+      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+        await Provider.of<SiteData>(context, listen: false)
+            .getSpecificSite(userProvider.user.userSiteId,
+                userProvider.user.userToken, context)
+            .then((value) {
+          siteID =
+              Provider.of<SiteData>(context, listen: false).sitesList[0].id;
+          print("SiteIndex $siteIndex");
+        });
+      }
       siteData = Provider.of<SiteData>(context, listen: false).sitesList[0];
     } else {
       if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
