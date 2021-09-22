@@ -79,7 +79,7 @@ class _UserAttendanceReportScreenState
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
-    ;
+
     if (fromDate.isBefore(companyDate)) {
       fromDate = companyDate;
     }

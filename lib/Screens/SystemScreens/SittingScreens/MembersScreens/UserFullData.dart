@@ -16,13 +16,18 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ShiftSchedule.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
+import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/company.dart';
 
 import 'package:qr_users/services/user_data.dart';
 
@@ -101,6 +106,37 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     animateControllerTwo = AnimationController(
         vsync: this, // the SingleTickerProviderStateMixin
         duration: Duration(milliseconds: 200));
+  }
+
+  List<String> sitesList = [], shiftsList = [];
+  fillSitesList() {
+    sitesList = [];
+    var scheduleList =
+        Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
+    sitesList = [
+      scheduleList.satShift.siteName,
+      scheduleList.sunShift.siteName,
+      scheduleList.monShift.siteName,
+      scheduleList.tuesShift.siteName,
+      scheduleList.wednShift.siteName,
+      scheduleList.thurShift.siteName,
+      scheduleList.friShift.siteName
+    ];
+  }
+
+  fillScheduleShiftsList() {
+    shiftsList = [];
+    var scheduleList =
+        Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
+    shiftsList = [
+      scheduleList.satShift.shiftName,
+      scheduleList.sunShift.shiftName,
+      scheduleList.monShift.shiftName,
+      scheduleList.tuesShift.shiftName,
+      scheduleList.wednShift.shiftName,
+      scheduleList.thurShift.shiftName,
+      scheduleList.friShift.shiftName
+    ];
   }
 
   void playLoopedMusic() async {
@@ -437,20 +473,121 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         taskName: "جدولة المناوبات",
                                         iconData: Icons.table_view,
                                         function: () async {
-                                          // showDialog(
-                                          //     context: context,
-                                          //     builder: (BuildContext context) {
-                                          //       return RoundedLoadingIndicator();
-                                          //     });
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ShiftScheduleScreen(
-                                                  member: widget.user,
-                                                  siteIndex: widget.siteIndex,
-                                                ),
-                                              ));
+                                          var userProv = Provider.of<UserData>(
+                                                  context,
+                                                  listen: false)
+                                              .user;
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return RoundedLoadingIndicator();
+                                              });
+                                          var isEdit =
+                                              await Provider.of<ShiftsData>(
+                                                      context,
+                                                      listen: false)
+                                                  .getFirstAvailableSchedule(
+                                                      userProv.userToken,
+                                                      widget.user.id);
+                                          print(isEdit);
+                                          if (isEdit == false) {
+                                            var userProvider =
+                                                Provider.of<UserData>(context,
+                                                    listen: false);
+
+                                            var comProvider =
+                                                Provider.of<CompanyData>(
+                                                    context,
+                                                    listen: false);
+                                            await Provider.of<DaysOffData>(
+                                                    context,
+                                                    listen: false)
+                                                .getDaysOff(
+                                                    comProvider.com.id,
+                                                    userProvider.user.userToken,
+                                                    context);
+                                            await Provider.of<SiteData>(context,
+                                                    listen: false)
+                                                .setDropDownShift(0);
+                                            await Provider.of<SiteData>(context,
+                                                    listen: false)
+                                                .setDropDownIndex(0);
+                                            await Provider.of<ShiftsData>(
+                                                    context,
+                                                    listen: false)
+                                                .findMatchingShifts(
+                                                    Provider.of<SiteData>(
+                                                            context,
+                                                            listen: false)
+                                                        .sitesList[Provider.of<
+                                                                    SiteData>(
+                                                                context,
+                                                                listen: false)
+                                                            .dropDownSitesIndex]
+                                                        .id,
+                                                    false);
+                                            shiftScheduling();
+                                            Navigator.pop(context);
+                                          } else {
+                                            var scheduleList =
+                                                Provider.of<ShiftsData>(context,
+                                                        listen: false)
+                                                    .firstAvailableSchedule;
+                                            Navigator.pop(context);
+
+                                            Provider.of<ShiftsData>(context,
+                                                    listen: false)
+                                                .sitesSchedules = [
+                                              scheduleList.satShift.siteName,
+                                              scheduleList.sunShift.siteName,
+                                              scheduleList.monShift.siteName,
+                                              scheduleList.tuesShift.siteName,
+                                              scheduleList.wednShift.siteName,
+                                              scheduleList.thurShift.siteName,
+                                              scheduleList.friShift.siteName
+                                            ];
+                                            Provider.of<ShiftsData>(context,
+                                                    listen: false)
+                                                .shiftSchedules = [
+                                              scheduleList.satShift.shiftName,
+                                              scheduleList.sunShift.shiftName,
+                                              scheduleList.monShift.shiftName,
+                                              scheduleList.tuesShift.shiftName,
+                                              scheduleList.wednShift.shiftName,
+                                              scheduleList.thurShift.shiftName,
+                                              scheduleList.friShift.shiftName
+                                            ];
+                                            for (int i = 0; i < 7; i++) {
+                                              await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
+                                                  i,
+                                                  Provider.of<ShiftsData>(context,
+                                                          listen: false)
+                                                      .sitesSchedules[i],
+                                                  Provider.of<ShiftsData>(
+                                                          context,
+                                                          listen: false)
+                                                      .shiftSchedules[i],
+                                                  getShiftid(
+                                                      Provider.of<ShiftsData>(
+                                                              context,
+                                                              listen: false)
+                                                          .shiftSchedules[i]),
+                                                  getsiteIDbyName(
+                                                      Provider.of<ShiftsData>(
+                                                              context,
+                                                              listen: false)
+                                                          .sitesSchedules[i]));
+                                            }
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ReAllocateUsers(
+                                                          widget.user,
+                                                          isEdit,
+                                                          0,
+                                                        )));
+                                          }
                                         })
                                     : Container(),
                                 userType == 4 ? Divider() : Container(),
@@ -568,6 +705,60 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
         ],
       ),
     );
+  }
+
+  int getsiteIDbyName(String siteName) {
+    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    List<Site> currentSite =
+        list.where((element) => element.name == siteName).toList();
+    return currentSite[0].id;
+  }
+
+  int getShiftid(String shiftName) {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+
+    List<Shift> currentShift =
+        list.where((element) => element.shiftName == shiftName).toList();
+
+    return currentShift[0].shiftId;
+  }
+
+  int getsiteIDbyShiftId(int shiftId) {
+    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    List<Shift> currentSite =
+        list.where((element) => element.shiftId == shiftId).toList();
+    print(currentSite[0].siteID);
+    return currentSite[0].siteID;
+  }
+
+  shiftScheduling() async {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    String shiftName = getShiftName();
+
+    await Provider.of<DaysOffData>(context, listen: false)
+        .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
+    for (int i = 0; i < 7; i++) {
+      await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
+          i,
+          Provider.of<SiteData>(context, listen: false)
+              .sitesList[widget.siteIndex]
+              .name,
+          shiftName,
+          getShiftid(shiftName),
+          getsiteIDbyShiftId(widget.user.shiftId));
+    }
+    Navigator.pop(context);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReAllocateUsers(
+            widget.user,
+            false,
+            0,
+          ),
+        ));
   }
 
   String getShiftName() {

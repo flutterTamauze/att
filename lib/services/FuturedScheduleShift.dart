@@ -10,7 +10,6 @@ class FutureShiftSchedule {
       this.startTime});
 
   factory FutureShiftSchedule.fromJson(json) {
-    print("a7a");
     return FutureShiftSchedule(
         endTime: json[0]["shiftEntime"],
         shiftId: json[0]["shiftId"],

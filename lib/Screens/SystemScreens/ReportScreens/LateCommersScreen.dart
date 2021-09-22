@@ -13,6 +13,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/report_data.dart';
@@ -66,31 +67,32 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     var siteID;
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
-
+    var siteProv = Provider.of<SiteData>(context, listen: false);
+    var memProv = Provider.of<MemberData>(context, listen: false);
     if (userProvider.user.userType == 2) {
       setState(() {
         isLoading = true;
       });
       siteID = userProvider.user.userSiteId;
-      siteData = await Provider.of<SiteData>(context, listen: false)
-          .getSpecificSite(siteID, userProvider.user.userToken, context);
+      siteData = await siteProv.getSpecificSite(
+          siteID, userProvider.user.userToken, context);
       setState(() {
         isLoading = false;
       });
     } else {
-      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-        await Provider.of<SiteData>(context, listen: false)
+      if (memProv.membersList.isEmpty) {
+        await memProv.getAllCompanyMember(
+            siteId, comProvider.com.id, userProvider.user.userToken, context);
+      }
+      if (siteProv.sitesList.isEmpty) {
+        await siteProv
             .getSitesByCompanyId(
                 comProvider.com.id, userProvider.user.userToken, context)
             .then((value) {
-          siteID = Provider.of<SiteData>(context, listen: false)
-              .sitesList[siteIndex]
-              .id;
+          siteID = siteProv.sitesList[siteIndex].id;
         });
       } else {
-        siteID = Provider.of<SiteData>(context, listen: false)
-            .sitesList[siteIndex]
-            .id;
+        siteID = siteProv.sitesList[siteIndex].id;
       }
     }
     await Provider.of<ReportsData>(context, listen: false).getLateAbsenceReport(
@@ -99,9 +101,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
         dateFromString,
         dateToString,
         context);
-    print(Provider.of<ReportsData>(context, listen: false)
-        .lateAbsenceReport
-        .absentRatio);
   }
 
   int getSiteId(String siteName) {

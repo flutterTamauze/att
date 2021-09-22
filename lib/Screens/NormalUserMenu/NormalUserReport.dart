@@ -340,7 +340,15 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                         child:
                                                                             Column(
                                                                           children: [
+                                                                            Divider(
+                                                                              thickness: 1,
+                                                                              color: Colors.orange[600],
+                                                                            ),
                                                                             UserReportTableHeader(),
+                                                                            Divider(
+                                                                              thickness: 1,
+                                                                              color: Colors.orange[600],
+                                                                            ),
                                                                             Expanded(
                                                                                 child: Container(
                                                                                     child: snapshot.data == "user created after period"

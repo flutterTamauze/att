@@ -29,7 +29,7 @@ class UserHolidays {
   factory UserHolidays.fromJson(dynamic json) {
     return UserHolidays(
         adminResponse: json["adminResponse"],
-        fromDate: DateTime.tryParse(json["fromDate"]),
+        fromDate: DateTime.tryParse(json["fromdate"]),
         toDate: DateTime.tryParse(json["toDate"]),
         holidayType: json["typeId"],
         userName: json["userName"],

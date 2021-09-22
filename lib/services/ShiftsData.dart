@@ -26,6 +26,9 @@ class ShiftsData with ChangeNotifier {
   InheritDefault inherit = InheritDefault();
   List<ShiftSheduleModel> shiftScheduleList = [];
   ShiftSheduleModel firstAvailableSchedule;
+  List<String> sitesSchedules = [];
+  List<String> shiftSchedules = [];
+
   FutureShiftSchedule satShift;
   findMatchingShifts(int siteId, bool addallshiftsBool) {
     try {
@@ -63,15 +66,9 @@ class ShiftsData with ChangeNotifier {
   }
 
   setScheduleSiteAndShift(
-    int scheduleIndex,
-    int currentIndex,
-    int siteId,
-    int shiftId,
-  ) {
-    shiftScheduleList[scheduleIndex].scheduleSiteNumber[currentIndex] = siteId;
-    shiftScheduleList[scheduleIndex].scheduleShiftsNumber[currentIndex] =
-        shiftId;
-
+      int scheduleIndex, int currentIndex, String sitename, String shiftname) {
+    sitesSchedules[currentIndex] = sitename;
+    shiftSchedules[currentIndex] = shiftname;
     notifyListeners();
   }
 
@@ -82,9 +79,9 @@ class ShiftsData with ChangeNotifier {
   }
 
   Future<String> deleteShiftScheduleById(
-      int shiftId, String userToken, int currentIndex) async {
-    print(currentIndex);
-    print(shiftScheduleList[currentIndex].id);
+    int shiftId,
+    String userToken,
+  ) async {
     isLoading = true;
     notifyListeners();
     var response = await http.delete(
@@ -93,7 +90,7 @@ class ShiftsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    shiftScheduleList.removeAt(currentIndex);
+
     isLoading = false;
     notifyListeners();
     print(response.body);
@@ -101,11 +98,12 @@ class ShiftsData with ChangeNotifier {
     return decodedResponse["message"];
   }
 
-  Future<void> getFirstAvailableSchedule(
+  Future<bool> getFirstAvailableSchedule(
       String userToken, String userId) async {
+    print(userId);
     var response = await http.get(
         Uri.parse(
-            "$baseURL/api/ShiftSchedule/GetFutureScheduledShiftsbyUserId/$userId"),
+            "$baseURL/api/ShiftSchedule/DetailedScheduleShiftsbyUserId/$userId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
@@ -117,14 +115,14 @@ class ShiftsData with ChangeNotifier {
     if (scheduleJson != null) {
       firstAvailableSchedule =
           ShiftSheduleModel.futuredSchedule(decodedResponse['data']);
-      log("تمت بحمد الله");
       if (firstAvailableSchedule != null) {
         notifyListeners();
+        return true;
       }
     } else {
       print("no schedules");
-      print(firstAvailableSchedule == null);
     }
+    return false;
   }
 
   Future<bool> isShiftScheduleByIdEmpty(
@@ -169,6 +167,9 @@ class ShiftsData with ChangeNotifier {
       int scheduleId) async {
     isLoading = true;
     notifyListeners();
+    print(scheduleId);
+    print(shiftIds[0].shiftname);
+    print(shiftIds[1].shiftname);
     var response = await http.put(
         Uri.parse(
           "$baseURL/api/ShiftSchedule/Edit/$scheduleId",
@@ -206,6 +207,9 @@ class ShiftsData with ChangeNotifier {
     if (decodedResponse["statusCode"] == 200) {
       if (decodedResponse["message"] == "Success") {
         return "Success";
+      } else if (decodedResponse["message"] ==
+          "Fail: FromDate less than today!") {
+        return "less than today";
       } else if (decodedResponse["message"] ==
           "Fail: Schedle Shift not exist") {
         return "not exist";

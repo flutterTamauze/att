@@ -57,6 +57,7 @@ class ShiftSheduleModel {
   }
   factory ShiftSheduleModel.futuredSchedule(json) {
     return ShiftSheduleModel(
+      id: json["scheduleId"],
       originalShift: json["originalShiftId"] as int,
       scheduleFromTime: DateTime.tryParse(json["fromDate"]),
       scheduleToTime: DateTime.tryParse(json["toDate"]),

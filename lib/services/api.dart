@@ -184,9 +184,7 @@ class ShiftApi with ChangeNotifier {
                   "Longitude": currentPosition.longitude.toString().trim()
                 },
               ));
-          print(response.body);
-          print(
-              "start time ${json.decode(response.body)["data"][2]["shiftSttime"]}");
+
           if (jsonDecode(response.body)["message"] == "Success") {
             var shiftObjJson = jsonDecode(response.body)['data'] as List;
             shiftsList = shiftObjJson

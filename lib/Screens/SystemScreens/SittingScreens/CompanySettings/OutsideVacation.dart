@@ -355,13 +355,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 DateTime.now()
                                                                     .month,
                                                                 DateTime.now()
-                                                                    .day),
+                                                                        .day +
+                                                                    1),
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
                                                             DateTime.now()
                                                                 .month,
-                                                            DateTime.now().day),
+                                                            DateTime.now().day +
+                                                                1),
                                                         lastDate: yesterday);
                                                 var newString = "";
                                                 setState(() {

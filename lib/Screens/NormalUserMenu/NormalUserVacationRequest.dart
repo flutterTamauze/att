@@ -171,20 +171,29 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 picked = await DateRagePicker
                                                     .showDatePicker(
                                                         context: context,
-                                                        initialFirstDate:
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year,
-                                                                DateTime.now()
-                                                                    .month,
-                                                                DateTime.now()
-                                                                    .day),
+                                                        initialFirstDate: DateTime(
+                                                            DateTime.now().year,
+                                                            DateTime.now()
+                                                                .month,
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? DateTime.now()
+                                                                    .day
+                                                                : DateTime.now()
+                                                                        .day +
+                                                                    1),
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
                                                             DateTime.now()
                                                                 .month,
-                                                            DateTime.now().day),
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? DateTime.now()
+                                                                    .day
+                                                                : DateTime.now()
+                                                                        .day +
+                                                                    1),
                                                         lastDate: yesterday);
                                                 var newString = "";
                                                 setState(() {

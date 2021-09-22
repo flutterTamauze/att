@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +22,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -34,7 +33,12 @@ class ReAllocateUsers extends StatefulWidget {
   final Member member;
   final bool isEdit;
   final int index;
-  ReAllocateUsers(this.member, this.isEdit, this.index);
+
+  ReAllocateUsers(
+    this.member,
+    this.isEdit,
+    this.index,
+  );
   @override
   _ReAllocateUsersState createState() => _ReAllocateUsersState();
 }
@@ -48,13 +52,14 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   @override
   void initState() {
     if (widget.isEdit) {
-      var scheduleList =
-          Provider.of<ShiftsData>(context, listen: false).shiftScheduleList;
-      _fromDate = scheduleList[widget.index].scheduleFromTime;
-      _toDate = scheduleList[widget.index].scheduleToTime;
+      var scheduleList = Provider.of<ShiftsData>(context, listen: false)
+          .firstAvailableSchedule;
+      _fromDate = scheduleList.scheduleFromTime;
+      _toDate = scheduleList.scheduleToTime;
       _fromText = " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
       _toText = " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
       _dateController.text = "$_fromText $_toText";
+      print("length");
     } else {
       var now = DateTime.now();
       _dateController.text = "";
@@ -99,20 +104,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     return currentSite[0].id;
   }
 
-  String getShiftNameById(
-    int id,
-  ) {
-    print("current id");
-    print(id);
-
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    print(list.length);
-
-    List<Shift> currentShift =
-        list.where((element) => element.shiftId == id).toList();
-    return currentShift[0].shiftName;
-  }
-
   String getSiteNameById(
     int id,
   ) {
@@ -137,12 +128,14 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var scheduleList =
-        Provider.of<ShiftsData>(context, listen: true).shiftScheduleList;
+        Provider.of<ShiftsData>(context, listen: true).firstAvailableSchedule;
+    List<String> sites =
+        Provider.of<ShiftsData>(context, listen: true).sitesSchedules;
+    List<String> shifts =
+        Provider.of<ShiftsData>(context, listen: true).shiftSchedules;
     ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
-          getShiftNameById(scheduleList[0].scheduleShiftsNumber[0]);
-
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -282,55 +275,31 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             )
                                           : Stack(
                                               children: [
-                                                widget.isEdit
-                                                    ? Card(
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  10),
-                                                          width: 250.w,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(getShiftNameById(
-                                                                  scheduleList[
-                                                                          widget
-                                                                              .index]
-                                                                      .scheduleShiftsNumber[index])),
-                                                              Text(getSiteNameById(
-                                                                  scheduleList[
-                                                                          widget
-                                                                              .index]
-                                                                      .scheduleSiteNumber[index])),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Card(
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  10),
-                                                          width: 250.w,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(daysofflist
-                                                                  .reallocateUsers[
-                                                                      index]
-                                                                  .shiftname),
-                                                              Text(daysofflist
-                                                                  .reallocateUsers[
-                                                                      index]
-                                                                  .sitename),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
+                                                Card(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    width: 250.w,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(widget.isEdit
+                                                            ? shifts[index]
+                                                            : daysofflist
+                                                                .reallocateUsers[
+                                                                    index]
+                                                                .shiftname),
+                                                        Text(widget.isEdit
+                                                            ? sites[index]
+                                                            : daysofflist
+                                                                .reallocateUsers[
+                                                                    index]
+                                                                .sitename),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                                 Positioned(
                                                     child: InkWell(
                                                   onTap: () {
@@ -544,8 +513,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                             Provider.of<ShiftsData>(context, listen: false).setScheduleSiteAndShift(
                                                                                 widget.index,
                                                                                 index,
-                                                                                getsiteIDbyName(siteName),
-                                                                                getShiftid(shiftName));
+                                                                                siteName,
+                                                                                shiftName);
 
                                                                           await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
                                                                               index,
@@ -610,77 +579,143 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                           child: CircularProgressIndicator(
                           backgroundColor: Colors.orange,
                         ))
-                      : RoundedButton(
-                          onPressed: () async {
-                            if (_fromText == null || _toText == null) {
-                              Fluttertoast.showToast(
-                                  msg: "برجاء ادخال المدة",
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red);
-                            } else {
-                              if (widget.isEdit) {
-                                String msg = await Provider.of<ShiftsData>(
-                                        context,
-                                        listen: false)
-                                    .editShiftSchedule(
-                                        daysofflist.reallocateUsers,
-                                        userProvider.user.userToken,
-                                        widget.member.id,
-                                        widget.member.shiftId,
-                                        _fromDate,
-                                        _toDate,
-                                        getsiteIDbyShiftId(
-                                            widget.member.shiftId),
-                                        scheduleList[0].id);
-                                if (msg == "Success") {
-                                  Fluttertoast.showToast(
-                                      msg: "تم تعديل الجدولة بنجاح",
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.green);
-                                  Provider.of<ShiftsData>(context,
-                                          listen: false)
-                                      .setScheduleShiftFromAndto(
-                                          widget.index, _toDate, _fromDate);
-                                  Navigator.pop(context);
-                                } else if (msg == "not exists") {
-                                  Fluttertoast.showToast(
-                                      msg: "لا يوجد جدولة",
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.red);
-                                } else {
-                                  errorToast();
-                                }
-                              } else {
-                                String msg = await Provider.of<ShiftsData>(
-                                        context,
-                                        listen: false)
-                                    .addShiftSchedule(
-                                        daysofflist.reallocateUsers,
-                                        userProvider.user.userToken,
-                                        widget.member.id,
-                                        widget.member.shiftId,
-                                        _fromDate,
-                                        _toDate,
-                                        getsiteIDbyShiftId(
-                                            widget.member.shiftId));
-                                if (msg == "Success") {
-                                  Fluttertoast.showToast(
-                                      msg: "تمت اضافة الجدولة بنجاح",
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.green);
-                                  Navigator.pop(context);
-                                } else if (msg == "exists") {
-                                  Fluttertoast.showToast(
-                                      msg: "تم طلب جدولة لهذا المستخدم مسبقا",
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.red);
-                                } else {
-                                  errorToast();
-                                }
-                              }
-                            }
-                          },
-                          title: "حفظ",
+                      : Row(
+                          mainAxisAlignment: widget.isEdit
+                              ? MainAxisAlignment.spaceEvenly
+                              : MainAxisAlignment.center,
+                          children: [
+                            !widget.isEdit
+                                ? Container()
+                                : RoundedButton(
+                                    title: "حذف",
+                                    onPressed: () {
+                                      return showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Directionality(
+                                              textDirection:
+                                                  ui.TextDirection.rtl,
+                                              child: RoundedAlert(
+                                                onPressed: () async {
+                                                  String msg = await Provider
+                                                          .of<ShiftsData>(
+                                                              context,
+                                                              listen: false)
+                                                      .deleteShiftScheduleById(
+                                                    scheduleList.id,
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken,
+                                                  );
+                                                  Navigator.pop(context);
+                                                  if (msg == "Success") {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "تم حذف  الجدولة بنجاح",
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                        msg: "خطأ فى الحذف",
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  }
+
+                                                  Navigator.pop(context);
+                                                },
+                                                content: "هل تريد حذف الجدولة",
+                                                onCancel: () {},
+                                                title: "حذف الجدولة",
+                                              ),
+                                            );
+                                          });
+                                    }),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  if (_fromText == null || _toText == null) {
+                                    Fluttertoast.showToast(
+                                        msg: "برجاء ادخال المدة",
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red);
+                                  } else {
+                                    if (widget.isEdit) {
+                                      String msg =
+                                          await Provider.of<ShiftsData>(context,
+                                                  listen: false)
+                                              .editShiftSchedule(
+                                                  daysofflist.reallocateUsers,
+                                                  userProvider.user.userToken,
+                                                  widget.member.id,
+                                                  widget.member.shiftId,
+                                                  _fromDate,
+                                                  _toDate,
+                                                  getsiteIDbyShiftId(
+                                                      widget.member.shiftId),
+                                                  scheduleList.id);
+                                      if (msg == "Success") {
+                                        Fluttertoast.showToast(
+                                            msg: "تم تعديل الجدولة بنجاح",
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.green);
+
+                                        Navigator.pop(context);
+                                      } else if (msg == "less than today") {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة",
+                                            gravity: ToastGravity.CENTER,
+                                            toastLength: Toast.LENGTH_LONG,
+                                            backgroundColor: Colors.red);
+                                      } else if (msg == "not exists") {
+                                        Fluttertoast.showToast(
+                                            msg: "لا يوجد جدولة",
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        errorToast();
+                                      }
+                                    } else {
+                                      String msg =
+                                          await Provider.of<ShiftsData>(context,
+                                                  listen: false)
+                                              .addShiftSchedule(
+                                                  daysofflist.reallocateUsers,
+                                                  userProvider.user.userToken,
+                                                  widget.member.id,
+                                                  widget.member.shiftId,
+                                                  _fromDate,
+                                                  _toDate,
+                                                  getsiteIDbyShiftId(
+                                                      widget.member.shiftId));
+                                      if (msg == "Success") {
+                                        Fluttertoast.showToast(
+                                            msg: "تمت اضافة الجدولة بنجاح",
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.green);
+                                        Navigator.pop(context);
+                                      } else if (msg == "exists") {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "تم طلب جدولة لهذا المستخدم مسبقا",
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        errorToast();
+                                      }
+                                    }
+                                  }
+                                },
+                                title: widget.isEdit ? "تعديل" : "حفظ",
+                              ),
+                            ),
+                          ],
                         )
                 ],
               ),

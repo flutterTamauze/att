@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -218,9 +219,8 @@ class SiteData with ChangeNotifier {
             sitesNewList = sitesNewList
                 .map((siteJson) => Site.fromJson(siteJson))
                 .toList();
-            print("sitesNewList.length = ${sitesNewList.length}");
             sitesList = sitesNewList;
-
+            log("no problem");
             dropDownSitesList = [...sitesNewList];
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));

@@ -238,6 +238,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                       child: Text("لا يوجد طلب بهذا الرقم"),
                                     )
                                   : ExpandedOrderTile(
+                                      isAdmin: false,
                                       comments: filteredOrderData[0]
                                           .holidayDescription,
                                       date: filteredOrderData[0]

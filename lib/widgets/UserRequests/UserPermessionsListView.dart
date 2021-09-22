@@ -48,6 +48,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                 return Column(
                   children: [
                     ExpandedPermessionsTile(
+                      isAdmin: false,
                       currentIndex: index,
                       desc: widget.permessionsList[index].permessionDescription,
                       date: widget.permessionsList[index].date,

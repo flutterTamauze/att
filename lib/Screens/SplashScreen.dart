@@ -290,10 +290,13 @@ class _SplashScreenState extends State<SplashScreen>
                         Center(
                             child: Container(
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(150),
-                              child: Image.asset('resources/image.jpg')),
-                          height: 190,
-                          width: 190,
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.asset(
+                              'resources/image.png',
+                            ),
+                          ),
+                          height: 150,
+                          width: 150,
                         )),
                         Center(
                           child: Padding(
