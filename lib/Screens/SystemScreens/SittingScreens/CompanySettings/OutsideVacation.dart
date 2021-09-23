@@ -60,6 +60,7 @@ String _selectedDateString;
 Future userHoliday;
 Future userPermession;
 Future userMission;
+TextEditingController externalMissionController = TextEditingController();
 
 class _OutsideVacationState extends State<OutsideVacation> {
   @override
@@ -175,6 +176,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     _selectedDateString = DateTime.now().toString();
     commentController.text = "";
     timeOutController.text = "";
+    externalMissionController.text = "";
     toPicked = (intToTimeOfDay(0));
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
@@ -204,7 +206,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     return GestureDetector(
         onTap: () {
-          print(fromText);
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -829,6 +830,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                         SizedBox(
                                           height: 20.h,
                                         ),
+                                        DetialsTextField(
+                                            externalMissionController),
                                         Provider.of<UserHolidaysData>(context)
                                                     .isLoading ||
                                                 Provider.of<MissionsData>(

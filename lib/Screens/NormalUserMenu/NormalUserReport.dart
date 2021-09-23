@@ -59,9 +59,10 @@ class _NormalUserReportState extends State<NormalUserReport> {
     super.initState();
 
     var now = DateTime.now();
-
+    int legalDay =
+        Provider.of<CompanyData>(context, listen: false).com.legalComDate;
     toDate = DateTime(now.year, now.month, now.day - 1);
-    fromDate = DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
+    fromDate = DateTime(DateTime.now().year, DateTime.now().month, legalDay);
 
     yesterday = DateTime(now.year, now.month, now.day - 1);
 

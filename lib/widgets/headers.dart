@@ -485,14 +485,14 @@ class HeaderBeforeLogin extends StatelessWidget {
                       height: 70.h,
                       width: 70.w,
                       decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Color(0xffFF7E00),
-                          ),
+                          // border: Border.all(
+                          //   width: 1,
+                          //   color: Color(0xffFF7E00),
+                          // ),
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("resources/image.png"),
-                          )),
+                              image: AssetImage("resources/image.png"),
+                              fit: BoxFit.fill)),
                     ),
                   ],
                 ),

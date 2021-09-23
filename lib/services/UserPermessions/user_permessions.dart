@@ -140,12 +140,13 @@ class UserPermessionsData with ChangeNotifier {
             .toList();
 
         singleUserPermessions = singleUserPermessions.reversed.toList();
-        print(singleUserPermessions[0].permessionType);
         if (singleUserPermessions.length > 0) {
           for (int i = 0; i < singleUserPermessions.length; i++) {
-            if (singleUserPermessions[i].permessionType == 2) {
+            if (singleUserPermessions[i].permessionType == 2 &&
+                singleUserPermessions[i].permessionStatus == 1) {
               earlyLeaversCount++;
-            } else if (singleUserPermessions[i].permessionType == 1) {
+            } else if (singleUserPermessions[i].permessionType == 1 &&
+                singleUserPermessions[i].permessionStatus == 1) {
               lateAbesenceCount++;
             }
           }

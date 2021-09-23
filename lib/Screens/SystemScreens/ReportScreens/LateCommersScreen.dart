@@ -64,9 +64,9 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   }
 
   getData(int siteIndex) async {
-    var siteID;
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    int siteID;
+    UserData userProvider = Provider.of<UserData>(context, listen: false);
+    CompanyData comProvider = Provider.of<CompanyData>(context, listen: false);
     var siteProv = Provider.of<SiteData>(context, listen: false);
     var memProv = Provider.of<MemberData>(context, listen: false);
     if (userProvider.user.userType == 2) {
@@ -76,6 +76,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       siteID = userProvider.user.userSiteId;
       siteData = await siteProv.getSpecificSite(
           siteID, userProvider.user.userToken, context);
+      if (memProv.membersList.isEmpty) {
+        print("getting all members for site");
+        await memProv.getAllSiteMembers(
+            siteID, userProvider.user.userToken, context);
+      }
       setState(() {
         isLoading = false;
       });

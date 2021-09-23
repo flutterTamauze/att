@@ -16,11 +16,8 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
-import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
-import 'package:qr_users/services/Sites_data.dart';
+
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -105,23 +102,6 @@ class _SplashScreenState extends State<SplashScreen>
       print(cachedUserData[4]);
       Provider.of<UserData>(context, listen: false)
           .setCacheduserData(cachedUserData);
-    }
-    int userType = Provider.of<UserData>(context, listen: false).user.userType;
-    if (userType != 2 && userType != 0) {
-      await Provider.of<ShiftsData>(context, listen: false).getShifts(
-          Provider.of<CompanyData>(context, listen: false).com.id,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context,
-          userType,
-          0);
-    } else if (userType == 2) {
-      print("get site admin shifts");
-      Provider.of<ShiftsData>(context, listen: false).getShifts(
-          Provider.of<UserData>(context, listen: false).user.userSiteId,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context,
-          userType,
-          Provider.of<UserData>(context, listen: false).user.userSiteId);
     }
   }
 
@@ -293,6 +273,7 @@ class _SplashScreenState extends State<SplashScreen>
                             borderRadius: BorderRadius.circular(100),
                             child: Image.asset(
                               'resources/image.png',
+                              fit: BoxFit.fill,
                             ),
                           ),
                           height: 150,

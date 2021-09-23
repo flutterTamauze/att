@@ -6,15 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:qr_users/constants.dart';
 
 class UserHolidays {
-  String userId;
-  String fcmToken;
-  String userName;
-
-  String holidayDescription, adminResponse;
-  int holidayNumber;
-  int holidayStatus; //1=>accept , //2 refused , //3 waiting..
-  int holidayType; //عارضة مرضيه رصيد اجازات
-  DateTime fromDate, toDate;
+  String userId,
+      fcmToken,
+      userName,
+      holidayDescription,
+      adminResponse,
+      approvedByUserId;
+  int holidayNumber,
+      holidayStatus, //1=>accept , //2 refused , //3 waiting..
+      holidayType; //عارضة مرضيه رصيد اجازات
+  DateTime fromDate, toDate, createdOnDate, approvedDate;
   UserHolidays(
       {this.adminResponse,
       this.fromDate,
@@ -25,19 +26,23 @@ class UserHolidays {
       this.holidayDescription,
       this.toDate,
       this.userName,
-      this.userId});
+      this.userId,
+      this.approvedByUserId,
+      this.approvedDate,
+      this.createdOnDate});
   factory UserHolidays.fromJson(dynamic json) {
     return UserHolidays(
-        adminResponse: json["adminResponse"],
-        fromDate: DateTime.tryParse(json["fromdate"]),
-        toDate: DateTime.tryParse(json["toDate"]),
-        holidayType: json["typeId"],
-        userName: json["userName"],
-        userId: json['userId'] ?? "",
-        holidayStatus: json["status"],
-        holidayNumber: json["id"],
-        fcmToken: json["fcmToken"] ?? "null",
-        holidayDescription: json["desc"]);
+      adminResponse: json["adminResponse"],
+      fromDate: DateTime.tryParse(json["fromdate"]),
+      toDate: DateTime.tryParse(json["toDate"]),
+      holidayType: json["typeId"],
+      userName: json["userName"],
+      userId: json['userId'] ?? "",
+      holidayStatus: json["status"],
+      holidayNumber: json["id"],
+      fcmToken: json["fcmToken"] ?? "null",
+      holidayDescription: json["desc"],
+    );
   }
 }
 
@@ -169,12 +174,15 @@ class UserHolidaysData with ChangeNotifier {
         singleUserHoliday = singleUserHoliday.reversed.toList();
         if (singleUserHoliday.length > 0) {
           for (int i = 0; i < singleUserHoliday.length; i++) {
-            if (singleUserHoliday[i].holidayType == 1) {
+            if (singleUserHoliday[i].holidayType == 1 &&
+                singleUserHoliday[i].holidayStatus == 1) {
               suddenVacationCount++;
-            } else if (singleUserHoliday[i].holidayType == 2) {
+            } else if (singleUserHoliday[i].holidayType == 2 &&
+                singleUserHoliday[i].holidayStatus == 1) {
               sickVacationCount++;
             } else {
-              vacationCreditCount++;
+              if (singleUserHoliday[i].holidayStatus == 1)
+                vacationCreditCount++;
             }
           }
         }
@@ -228,7 +236,7 @@ class UserHolidaysData with ChangeNotifier {
           "toDate": (holiday.toDate.toIso8601String()),
           "userId": userId,
           "desc": holiday.holidayDescription,
-          "status": 3
+          "status": 3,
         }));
     isLoading = false;
     notifyListeners();

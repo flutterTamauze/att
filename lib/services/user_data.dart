@@ -24,6 +24,8 @@ import 'package:qr_users/services/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
 
+import 'ShiftsData.dart';
+
 class UserData with ChangeNotifier {
   var changedWidget = Image.asset("resources/personicon.png");
   // Company com = Company(id: 0, logo: "", nameAr: "", nameEn: "");
@@ -181,7 +183,31 @@ class UserData with ChangeNotifier {
                     context);
               }
               await initializeNotification(context);
-
+              int userType = user.userType;
+              if (userType != 2 && userType != 0) {
+                await Provider.of<ShiftsData>(context, listen: false).getShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken,
+                    context,
+                    userType,
+                    0);
+              } else if (userType == 2) {
+                print("get site admin shifts");
+                Provider.of<ShiftsData>(context, listen: false).getShifts(
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userSiteId,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken,
+                    context,
+                    userType,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userSiteId);
+              }
               notifyListeners();
               prefs.setStringList(('bgNotifyList'), []);
               return user.userType;

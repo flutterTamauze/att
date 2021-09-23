@@ -70,8 +70,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     var now = DateTime.now();
     commentController.text = "";
     fromDate = DateTime(now.year, now.month, now.day);
-    toDate = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    toDate =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     yesterday = DateTime(now.year, DateTime.december, 30);
 
     super.initState();
@@ -84,6 +84,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
 
   String formattedTime;
   var selectedVal = "كل المواقع";
+  var newString = "";
   @override
   Widget build(BuildContext context) {
     var userdata = Provider.of<UserData>(context, listen: false).user;
@@ -156,6 +157,68 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                               ? Column(
                                   children: [
                                     VacationCardHeader(
+                                      header: "نوع الأجازة",
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5.w),
+                                      child: Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              alignment: Alignment.topRight,
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(width: 1)),
+                                              width: 150.w,
+                                              height: 40.h,
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                elevation: 2,
+                                                isExpanded: true,
+                                                items: actions.map((String x) {
+                                                  return DropdownMenuItem<
+                                                          String>(
+                                                      value: x,
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Text(
+                                                          x,
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.orange,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ));
+                                                }).toList(),
+                                                onChanged: (String value) {
+                                                  setState(() {
+                                                    selectedReason = value;
+                                                    if (value != "عارضة") {
+                                                      _dateController.text = "";
+                                                      newString = "";
+                                                    }
+                                                  });
+                                                },
+                                                value: selectedReason,
+                                              )),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    VacationCardHeader(
                                       header: "مدة الأجازة",
                                     ),
                                     SizedBox(
@@ -168,34 +231,37 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         builder: (context) {
                                           return InkWell(
                                               onTap: () async {
-                                                picked = await DateRagePicker
-                                                    .showDatePicker(
-                                                        context: context,
-                                                        initialFirstDate: DateTime(
-                                                            DateTime.now().year,
-                                                            DateTime.now()
-                                                                .month,
-                                                            selectedReason ==
-                                                                    "عارضة"
-                                                                ? DateTime.now()
-                                                                    .day
-                                                                : DateTime.now()
+                                                picked = await DateRagePicker.showDatePicker(
+                                                    context: context,
+                                                    initialFirstDate: DateTime(
+                                                        DateTime.now().year,
+                                                        DateTime.now().month,
+                                                        selectedReason == "عارضة"
+                                                            ? DateTime.now().day
+                                                            : DateTime.now()
+                                                                    .day +
+                                                                1),
+                                                    initialLastDate:
+                                                        selectedReason == "عارضة"
+                                                            ? toDate
+                                                            : toDate = DateTime(
+                                                                DateTime.now()
+                                                                    .year,
+                                                                DateTime.now()
+                                                                    .month,
+                                                                DateTime.now()
                                                                         .day +
                                                                     1),
-                                                        initialLastDate: toDate,
-                                                        firstDate: DateTime(
-                                                            DateTime.now().year,
-                                                            DateTime.now()
-                                                                .month,
-                                                            selectedReason ==
-                                                                    "عارضة"
-                                                                ? DateTime.now()
-                                                                    .day
-                                                                : DateTime.now()
-                                                                        .day +
-                                                                    1),
-                                                        lastDate: yesterday);
-                                                var newString = "";
+                                                    firstDate: DateTime(
+                                                        DateTime.now().year,
+                                                        DateTime.now().month,
+                                                        selectedReason == "عارضة"
+                                                            ? DateTime.now().day
+                                                            : DateTime.now()
+                                                                    .day +
+                                                                1),
+                                                    lastDate: yesterday);
+
                                                 setState(() {
                                                   fromDate = picked.first;
                                                   toDate = picked.last;
@@ -275,64 +341,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         : Container(),
                                     SizedBox(
                                       height: 5,
-                                    ),
-                                    VacationCardHeader(
-                                      header: "نوع الأجازة",
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.w),
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              alignment: Alignment.topRight,
-                                              padding:
-                                                  EdgeInsets.only(right: 10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(width: 1)),
-                                              width: 150.w,
-                                              height: 40.h,
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                elevation: 2,
-                                                isExpanded: true,
-                                                items: actions.map((String x) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: x,
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Text(
-                                                          x,
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.orange,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedReason = value;
-                                                  });
-                                                },
-                                                value: selectedReason,
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ),
                                     DetialsTextField(commentController),
                                     SizedBox(

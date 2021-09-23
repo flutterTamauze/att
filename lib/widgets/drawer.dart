@@ -74,8 +74,16 @@ class DrawerI extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(
                   height: 20,
+                ),
+                Text(
+                  "V3.0,0",
+                  style: TextStyle(
+                      color: Colors.orange[600],
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic),
                 ),
                 // Center(
                 //   child: Container(

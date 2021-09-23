@@ -35,6 +35,9 @@ class ShiftsData with ChangeNotifier {
       print("findMatchingShifts : $siteId");
       shiftsBySite =
           shiftsList.where((element) => element.siteID == siteId).toList();
+      print("shiftsBySite length : ${shiftsBySite.length}");
+      print("shiftsLength : ${shiftsList.length}");
+
       if (addallshiftsBool == true) {
         shiftsBySite.insert(
             0,
@@ -359,6 +362,7 @@ class ShiftsData with ChangeNotifier {
   }
 
   getShiftsBySiteId(int siteId, String userToken, BuildContext context) async {
+    print(siteId);
     List<Shift> shiftsNewList;
     if (await isConnectedToInternet()) {
       final response = await http.get(

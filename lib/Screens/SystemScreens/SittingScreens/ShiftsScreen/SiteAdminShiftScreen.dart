@@ -73,6 +73,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
     setState(() {
       isLoading = true;
     });
+
+    print("user type${userProvider.user.userType} ");
     await Provider.of<ShiftsData>(context, listen: false)
         .getShifts(comProvier.com.id, userProvider.user.userToken, context,
             userProvider.user.userType, 0)
@@ -112,8 +114,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
   }
 
   fillList() async {
-    await Provider.of<ShiftsData>(context, listen: false)
-        .findMatchingShifts(siteId, false);
+    await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+        Provider.of<UserData>(context, listen: false).user.userSiteId, false);
   }
 
   bool isLoading = false;

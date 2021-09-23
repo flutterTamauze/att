@@ -134,24 +134,20 @@ class ShiftApi with ChangeNotifier {
   }
 
   getShiftByShiftId(int shiftID, String usertoken) async {
-    try {
-      var response = await http.get(
-        Uri.parse("$baseURL/api/Shifts/$shiftID"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $usertoken"
-        },
-      );
-      print(response.statusCode);
-      print(jsonDecode(response.body)["message"]);
-      if (jsonDecode(response.body)["message"] == "Success") {
-        var shiftObjJson = jsonDecode(response.body)['data'];
-        userShift = Shift.fromJson(shiftObjJson);
-        print(userShift.shiftId);
-        notifyListeners();
-      }
-    } catch (e) {
-      print(e);
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Shifts/$shiftID"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $usertoken"
+      },
+    );
+    print(response.statusCode);
+    print(jsonDecode(response.body)["message"]);
+    if (jsonDecode(response.body)["message"] == "Success") {
+      var shiftObjJson = jsonDecode(response.body)['data'];
+      userShift = Shift.fromJson(shiftObjJson);
+      print(userShift.shiftId);
+      notifyListeners();
     }
   }
 

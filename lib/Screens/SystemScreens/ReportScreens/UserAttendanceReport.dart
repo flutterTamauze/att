@@ -219,15 +219,10 @@ class _UserAttendanceReportScreenState
                                                     day: _dateController.text,
                                                     userName:
                                                         _nameController.text,
-                                                    site: userDataProvider.user
-                                                                .userType ==
-                                                            2
-                                                        ? siteData.name
-                                                        : Provider.of<SiteData>(
-                                                                context)
-                                                            .sitesList[
-                                                                siteIdIndex]
-                                                            .name,
+                                                    site: Provider.of<SiteData>(
+                                                            context)
+                                                        .sitesList[siteIdIndex]
+                                                        .name,
                                                   )
                                                 : Container();
 
