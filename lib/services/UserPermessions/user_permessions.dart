@@ -5,14 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:qr_users/constants.dart';
 
 class UserPermessions {
-  String user;
-  String permessionDescription, adminResponse;
+  String user, permessionDescription, adminResponse, approvedByUserId;
   int permessionStatus; //1=>accept , //2 refused , //3 waiting..
   int permessionId;
   String userID;
   String fcmToken;
   int permessionType;
-  DateTime date;
+  DateTime date, createdOn, approvedDate;
   String duration;
 
   UserPermessions(
@@ -25,6 +24,9 @@ class UserPermessions {
       this.permessionDescription,
       this.permessionType,
       this.user,
+      this.approvedByUserId,
+      this.createdOn,
+      this.approvedDate,
       this.permessionId});
 
   factory UserPermessions.fromJson(dynamic json) {
@@ -38,6 +40,11 @@ class UserPermessions {
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
+        approvedByUserId: json["approvedbyUserId"] ?? "غير معروف",
+        createdOn: DateTime.tryParse(json["createdOn"]),
+        approvedDate: DateTime.tryParse(
+          json["approvedDate"],
+        ),
         user: json["userName"]);
   }
 }
@@ -60,12 +67,13 @@ class UserPermessionsData with ChangeNotifier {
   }
 
   Future<String> acceptOrRefusePendingPermession(
-      int status,
-      int permID,
-      String userId,
-      String desc,
-      String userToken,
-      String adminREsponse) async {
+    int status,
+    int permID,
+    String userId,
+    String desc,
+    String userToken,
+    String adminREsponse,
+  ) async {
     print(desc);
     isLoading = true;
     notifyListeners();
@@ -121,42 +129,38 @@ class UserPermessionsData with ChangeNotifier {
 
   Future<List<UserPermessions>> getSingleUserPermession(
       String userId, String userToken) async {
-    try {
-      lateAbesenceCount = 0;
-      earlyLeaversCount = 0;
-      var response = await http.get(
-        Uri.parse("$baseURL/api/Permissions/GetPermissionbyUser/$userId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      print(response.body);
-      var decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        var permessionsObj = jsonDecode(response.body)['data'] as List;
-        singleUserPermessions = permessionsObj
-            .map((json) => UserPermessions.fromJson(json))
-            .toList();
+    lateAbesenceCount = 0;
+    earlyLeaversCount = 0;
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Permissions/GetPermissionbyUser/$userId"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    print(response.body);
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      var permessionsObj = jsonDecode(response.body)['data'] as List;
+      singleUserPermessions =
+          permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
 
-        singleUserPermessions = singleUserPermessions.reversed.toList();
-        print(singleUserPermessions[0].permessionType);
-        if (singleUserPermessions.length > 0) {
-          for (int i = 0; i < singleUserPermessions.length; i++) {
-            if (singleUserPermessions[i].permessionType == 2) {
-              earlyLeaversCount++;
-            } else if (singleUserPermessions[i].permessionType == 1) {
-              lateAbesenceCount++;
-            }
+      singleUserPermessions = singleUserPermessions.reversed.toList();
+      if (singleUserPermessions.length > 0) {
+        for (int i = 0; i < singleUserPermessions.length; i++) {
+          if (singleUserPermessions[i].permessionType == 2 &&
+              singleUserPermessions[i].permessionStatus == 1) {
+            earlyLeaversCount++;
+          } else if (singleUserPermessions[i].permessionType == 1 &&
+              singleUserPermessions[i].permessionStatus == 1) {
+            lateAbesenceCount++;
           }
         }
-
-        notifyListeners();
-
-        return singleUserPermessions;
       }
-    } catch (e) {
-      print(e);
+
+      notifyListeners();
+
+      return singleUserPermessions;
     }
   }
 
@@ -236,6 +240,7 @@ class UserPermessionsData with ChangeNotifier {
             "time": userPermessions.duration,
             "userId": userId,
             "Desc": userPermessions.permessionDescription,
+            "createdonDate": userPermessions.createdOn.toIso8601String(),
             "Status": 3
           }));
       print(response.body);

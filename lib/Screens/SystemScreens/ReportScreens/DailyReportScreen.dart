@@ -61,24 +61,34 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     var siteID;
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false)
-          .getSitesByCompanyId(
-              comProvider.com.id, userProvider.user.userToken, context)
-          .then((value) {
+    if (userProvider.user.userType == 2) {
+      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+        await Provider.of<SiteData>(context, listen: false).getSpecificSite(
+            userProvider.user.userSiteId, userProvider.user.userToken, context);
+      }
+    } else {
+      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+        await Provider.of<SiteData>(context, listen: false)
+            .getSitesByCompanyId(
+                comProvider.com.id, userProvider.user.userToken, context)
+            .then((value) {
+          siteID = Provider.of<SiteData>(context, listen: false)
+              .sitesList[siteIndex]
+              .id;
+          print("SiteIndex $siteIndex");
+        });
+      } else {
         siteID = Provider.of<SiteData>(context, listen: false)
             .sitesList[siteIndex]
             .id;
-        print("SiteIndex $siteIndex");
-      });
-    } else {
-      siteID =
-          Provider.of<SiteData>(context, listen: false).sitesList[siteIndex].id;
+      }
     }
 
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
-        userProvider.user.userToken, siteID, date, context);
+        userProvider.user.userToken,
+        userProvider.user.userType == 2 ? userProvider.user.userSiteId : siteID,
+        date,
+        context);
   }
 
   int getSiteIndex(String siteName) {
@@ -180,17 +190,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           reportType: 0,
                                                           title:
                                                               "تقرير الحضور اليومى",
-                                                          site: userDataProvider
-                                                                      .user
-                                                                      .userType ==
-                                                                  2
-                                                              ? siteData.name
-                                                              : Provider.of<
-                                                                          SiteData>(
-                                                                      context)
-                                                                  .sitesList[
-                                                                      siteId]
-                                                                  .name,
+                                                          site: Provider.of<
+                                                                      SiteData>(
+                                                                  context)
+                                                              .sitesList[siteId]
+                                                              .name,
                                                           day: date,
                                                         )
                                                   : Container(),
@@ -261,8 +265,10 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                         onChange:
                                                             (value) async {
                                                           var lastRec = siteId;
+
                                                           siteId = getSiteIndex(
                                                               value);
+
                                                           if (lastRec !=
                                                               siteId) {
                                                             setState(() {});
@@ -514,7 +520,19 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               0
                                                           ? Column(
                                                               children: [
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                          .orange[
+                                                                      600],
+                                                                ),
                                                                 DataTableHeader(),
+                                                                Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                          .orange[
+                                                                      600],
+                                                                ),
                                                                 Expanded(
                                                                     child:
                                                                         Container(
@@ -783,12 +801,11 @@ class _DataTableRowState extends State<DataTableRow> {
                                           ),
                                         )
                                       : Container(
-                                          height: 20,
                                           child: AutoSizeText(
                                             widget.attendUnit.lateTime,
                                             maxLines: 1,
                                             style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(14,
+                                                fontSize: ScreenUtil().setSp(13,
                                                     allowFontScalingSelf: true),
                                                 color: Colors.red),
                                           ),
@@ -797,11 +814,9 @@ class _DataTableRowState extends State<DataTableRow> {
                         Expanded(
                           flex: 3,
                           child: Container(
-                              height: 50.h,
                               child: Center(
                                   child: widget.attendUnit.timeIn == "-"
                                       ? Container(
-                                          height: 20,
                                           child: AutoSizeText(
                                             "غياب",
                                             maxLines: 1,
@@ -830,14 +845,12 @@ class _DataTableRowState extends State<DataTableRow> {
                                                             true),
                                                   ),
                                             Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2),
                                               child: AutoSizeText(
                                                 widget.attendUnit.timeIn,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: ScreenUtil().setSp(
-                                                        11,
+                                                        13,
                                                         allowFontScalingSelf:
                                                             true),
                                                     color: Colors.black),
@@ -868,6 +881,7 @@ class _DataTableRowState extends State<DataTableRow> {
                                             )
                                           : Container(
                                               height: 20,
+                                              width: 0,
                                               child: AutoSizeText(
                                                 "-",
                                                 maxLines: 1,
@@ -892,13 +906,12 @@ class _DataTableRowState extends State<DataTableRow> {
                                                   allowFontScalingSelf: true),
                                             ),
                                             Container(
-                                              height: 20,
                                               child: AutoSizeText(
                                                 widget.attendUnit.timeOut ?? "",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     fontSize: ScreenUtil().setSp(
-                                                        14,
+                                                        13,
                                                         allowFontScalingSelf:
                                                             true),
                                                     color: Colors.black),
@@ -909,7 +922,7 @@ class _DataTableRowState extends State<DataTableRow> {
                         ),
                         !widget.attendUnit.timeIn.contains(":")
                             ? Padding(
-                                padding: EdgeInsets.only(left: 10.w),
+                                padding: EdgeInsets.only(left: 20.w),
                                 child: Container(),
                               )
                             : Expanded(

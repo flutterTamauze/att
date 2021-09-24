@@ -21,7 +21,7 @@ class DataTableEndRowInfo extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true),
-                color: Colors.black),
+                color: Colors.orange[600]),
           ),
         ),
         SizedBox(
@@ -35,7 +35,7 @@ class DataTableEndRowInfo extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true),
-                color: Colors.black),
+                color: Colors.orange[600]),
           ),
         ),
       ],

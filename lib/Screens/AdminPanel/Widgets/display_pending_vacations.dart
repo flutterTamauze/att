@@ -10,7 +10,7 @@ class ExpandedPendingVacation extends StatefulWidget {
   final int holidayType;
   final Function onAccept, onRefused;
   final List<DateTime> vacationDaysCount;
-  final String date;
+  final String date, createdOn;
   final bool isAdmin;
   ExpandedPendingVacation({
     this.comments,
@@ -23,6 +23,7 @@ class ExpandedPendingVacation extends StatefulWidget {
     this.adminComment,
     this.response,
     this.date,
+    this.createdOn,
     Key key,
   }) : super(key: key);
 
@@ -53,7 +54,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            widget.date.substring(0, 11),
+                            widget.createdOn.substring(0, 11),
                           ),
                           FaIcon(
                             FontAwesomeIcons.hourglass,

@@ -60,6 +60,7 @@ String _selectedDateString;
 Future userHoliday;
 Future userPermession;
 Future userMission;
+TextEditingController externalMissionController = TextEditingController();
 
 class _OutsideVacationState extends State<OutsideVacation> {
   @override
@@ -73,11 +74,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
       String msg = await Provider.of<UserHolidaysData>(context, listen: false)
           .addHoliday(
               UserHolidays(
-                userId: widget.member.id,
-                holidayType: 4,
-                fromDate: fromDate,
-                toDate: toDate,
-              ),
+                  userId: widget.member.id,
+                  holidayType: 4,
+                  fromDate: fromDate,
+                  toDate: toDate,
+                  holidayDescription: externalMissionController.text),
               Provider.of<UserData>(context, listen: false).user.userToken,
               widget.member.id);
       if (msg == "Success : Holiday Created!") {
@@ -96,6 +97,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
           "Failed : Another Holiday not approved for this user!") {
         Fluttertoast.showToast(
             msg: "تم وضع مأمورية لهذا المستخدم من قبل",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else if (msg == "Failed : You can't request a holiday from today!") {
+        Fluttertoast.showToast(
+            msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else {
@@ -175,6 +181,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     _selectedDateString = DateTime.now().toString();
     commentController.text = "";
     timeOutController.text = "";
+    externalMissionController.text = "";
     toPicked = (intToTimeOfDay(0));
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
@@ -204,7 +211,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     return GestureDetector(
         onTap: () {
-          print(fromText);
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -355,13 +361,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 DateTime.now()
                                                                     .month,
                                                                 DateTime.now()
-                                                                    .day),
+                                                                        .day +
+                                                                    1),
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
                                                             DateTime.now()
                                                                 .month,
-                                                            DateTime.now().day),
+                                                            DateTime.now().day +
+                                                                1),
                                                         lastDate: yesterday);
                                                 var newString = "";
                                                 setState(() {
@@ -827,6 +835,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                         SizedBox(
                                           height: 20.h,
                                         ),
+                                        DetialsTextField(
+                                            externalMissionController),
                                         Provider.of<UserHolidaysData>(context)
                                                     .isLoading ||
                                                 Provider.of<MissionsData>(
@@ -1202,32 +1212,34 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     print(_selectedDateString);
                                                     print(
                                                         timeOutController.text);
-                                                    String msg = await Provider
-                                                            .of<UserPermessionsData>(context,
-                                                                listen: false)
-                                                        .addUserPermession(
-                                                            UserPermessions(
-                                                                date:
-                                                                    selectedDate,
-                                                                duration:
-                                                                    formattedTime,
-                                                                permessionType:
-                                                                    selectedPermession == "تأخير عن الحضور"
-                                                                        ? 1
-                                                                        : 2,
-                                                                permessionDescription: commentController.text == ""
+                                                    String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
+                                                        UserPermessions(
+                                                            createdOn: DateTime
+                                                                .now(),
+                                                            date: selectedDate,
+                                                            duration:
+                                                                formattedTime,
+                                                            permessionType:
+                                                                selectedPermession ==
+                                                                        "تأخير عن الحضور"
+                                                                    ? 1
+                                                                    : 2,
+                                                            permessionDescription:
+                                                                commentController
+                                                                            .text ==
+                                                                        ""
                                                                     ? "لا يوجد تعليق"
                                                                     : commentController
                                                                         .text,
-                                                                user: widget
-                                                                    .member
+                                                            user:
+                                                                widget.member
                                                                     .name),
-                                                            Provider.of<UserData>(
-                                                                    context,
-                                                                    listen: false)
-                                                                .user
-                                                                .userToken,
-                                                            widget.member.id);
+                                                        Provider.of<UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userToken,
+                                                        widget.member.id);
                                                     if (msg == "success") {
                                                       return showDialog(
                                                         context: context,

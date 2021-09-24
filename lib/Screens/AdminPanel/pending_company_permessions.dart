@@ -63,6 +63,9 @@ class PendingCompanyPermessions extends StatelessWidget {
                                     children: [
                                       ExpandedPendingPermessions(
                                         isAdmin: true,
+                                        createdOn: pending.createdOn
+                                            .toString()
+                                            .substring(0, 11),
                                         date: pending.date
                                             .toString()
                                             .substring(0, 11),

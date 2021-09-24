@@ -8,10 +8,12 @@ import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/services/DaysOff.dart';
 
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -83,12 +85,13 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 });
             await Provider.of<ShiftsData>(context, listen: false)
                 .getFirstAvailableSchedule(user.userToken, user.id);
-            if (Provider.of<ShiftApi>(context, listen: false)
-                .shiftsListProvider
-                .isEmpty) {
-              await Provider.of<ShiftApi>(context, listen: false)
-                  .getShiftData(user.id, user.userToken);
-            }
+
+            await Provider.of<ShiftApi>(context, listen: false)
+                .getShiftByShiftId(user.userShiftId, user.userToken);
+            await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken,
+                context);
             Navigator.pop(context);
             Navigator.of(context).push(
               new MaterialPageRoute(

@@ -94,7 +94,12 @@ class _UserOrdersViewState extends State<UserOrdersView> {
             children: [
               Header(
                 nav: false,
-                goUserMenu: true,
+                goUserMenu: Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userType ==
+                        0
+                    ? false
+                    : true,
                 goUserHomeFromMenu: false,
               ),
               Directionality(
@@ -233,6 +238,10 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                       child: Text("لا يوجد طلب بهذا الرقم"),
                                     )
                                   : ExpandedOrderTile(
+                                      isAdmin: false,
+                                      createdDate: filteredOrderData[0]
+                                          .createdOnDate
+                                          .toString(),
                                       comments: filteredOrderData[0]
                                           .holidayDescription,
                                       date: filteredOrderData[0]

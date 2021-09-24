@@ -128,6 +128,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                           msg: widget.notificationToast,
                                           backgroundColor: Colors.green,
                                           gravity: ToastGravity.CENTER);
+                                      Navigator.pop(context);
                                     }
 
                                     Provider.of<PermissionHan>(context,

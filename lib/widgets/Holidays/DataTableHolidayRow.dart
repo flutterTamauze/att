@@ -23,7 +23,8 @@ class DataTableHolidayRow extends StatelessWidget {
                     child: Center(
                       child: Container(
                         alignment: Alignment.centerRight,
-                        height: 30.h,
+                        height: 40.h,
+                        width: 50,
                         child: AutoSizeText(
                           _holidays.holidayType == 1
                               ? "عارضة"

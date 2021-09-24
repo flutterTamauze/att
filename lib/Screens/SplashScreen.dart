@@ -9,18 +9,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
-import 'package:qr_users/MLmodule/services/facenet.service.dart';
+import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
-import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:qr_users/services/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
-import 'package:qr_users/services/Sites_data.dart';
+
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -106,23 +103,6 @@ class _SplashScreenState extends State<SplashScreen>
       Provider.of<UserData>(context, listen: false)
           .setCacheduserData(cachedUserData);
     }
-    int userType = Provider.of<UserData>(context, listen: false).user.userType;
-    if (userType != 2 && userType != 0) {
-      await Provider.of<ShiftsData>(context, listen: false).getShifts(
-          Provider.of<CompanyData>(context, listen: false).com.id,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context,
-          userType,
-          0);
-    } else if (userType == 2) {
-      print("get site admin shifts");
-      Provider.of<ShiftsData>(context, listen: false).getShifts(
-          Provider.of<UserData>(context, listen: false).user.userSiteId,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context,
-          userType,
-          Provider.of<UserData>(context, listen: false).user.userSiteId);
-    }
   }
 
   Future<String> _fileFromImageUrl(String path, String name) async {
@@ -160,7 +140,13 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ));
           } else {
-            if (value > 0) {
+            if (value == null) {
+              await getUserData();
+              Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                  builder: (context) => ErrorScreen(
+                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك",
+                      true)));
+            } else if (value > 0) {
               print(" usertype $value");
 
               Navigator.pushReplacement(context,
@@ -284,10 +270,14 @@ class _SplashScreenState extends State<SplashScreen>
                         Center(
                             child: Container(
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(150),
-                              child: Image.asset('resources/smartlogo.png')),
-                          height: 190,
-                          width: 190,
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.asset(
+                              'resources/image.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          height: 150,
+                          width: 150,
                         )),
                         Center(
                           child: Padding(

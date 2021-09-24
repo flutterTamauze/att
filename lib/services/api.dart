@@ -19,12 +19,13 @@ class ShiftApi with ChangeNotifier {
   Position currentPosition;
   DateTime currentBackPressTime;
   bool isOnShift = true;
+  int currentShiftSTtime, currentShiftEndTime;
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
   bool permissionOff = false;
   bool firstCall = false;
-
+  Shift userShift;
   changeFlag(bool value) {
     isOnShift = value;
     print("shift closed/opened");
@@ -132,6 +133,24 @@ class ShiftApi with ChangeNotifier {
     return false;
   }
 
+  getShiftByShiftId(int shiftID, String usertoken) async {
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Shifts/$shiftID"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $usertoken"
+      },
+    );
+    print(response.statusCode);
+    print(jsonDecode(response.body)["message"]);
+    if (jsonDecode(response.body)["message"] == "Success") {
+      var shiftObjJson = jsonDecode(response.body)['data'];
+      userShift = Shift.fromJson(shiftObjJson);
+      print(userShift.shiftId);
+      notifyListeners();
+    }
+  }
+
   Future<bool> getShiftData(String id, String userToken) async {
     print(shiftsListProvider.length);
     //3shan low my3radsh el code low bara el location : low bara we 3ala nafs el screen hyasht3'al 3adi...
@@ -161,17 +180,16 @@ class ShiftApi with ChangeNotifier {
                   "Longitude": currentPosition.longitude.toString().trim()
                 },
               ));
-          print(response.body);
-          var decodedRes = json.decode(response.body);
 
           if (jsonDecode(response.body)["message"] == "Success") {
             var shiftObjJson = jsonDecode(response.body)['data'] as List;
             shiftsList = shiftObjJson
                 .map((shiftJson) => Shift.fromJsonQR(shiftJson))
                 .toList();
-
-            print("QQQQQQQQRRRRRRRRRRRRR");
-
+            currentShiftSTtime =
+                int.parse(jsonDecode(response.body)['data'][2]["shiftSttime"]);
+            currentShiftEndTime =
+                int.parse(jsonDecode(response.body)['data'][2]["shiftEntime"]);
             shiftsListProvider = shiftsList;
             var now = DateTime.now();
             var formater = DateFormat("Hm");

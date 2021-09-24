@@ -79,7 +79,7 @@ class _UserAttendanceReportScreenState
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
-    ;
+
     if (fromDate.isBefore(companyDate)) {
       fromDate = companyDate;
     }
@@ -219,15 +219,10 @@ class _UserAttendanceReportScreenState
                                                     day: _dateController.text,
                                                     userName:
                                                         _nameController.text,
-                                                    site: userDataProvider.user
-                                                                .userType ==
-                                                            2
-                                                        ? siteData.name
-                                                        : Provider.of<SiteData>(
-                                                                context)
-                                                            .sitesList[
-                                                                siteIdIndex]
-                                                            .name,
+                                                    site: Provider.of<SiteData>(
+                                                            context)
+                                                        .sitesList[siteIdIndex]
+                                                        .name,
                                                   )
                                                 : Container();
 
@@ -643,7 +638,9 @@ class _UserAttendanceReportScreenState
                                                                           textDirection: ui.TextDirection.rtl,
                                                                           child: Column(
                                                                             children: [
+                                                                              Divider(thickness: 1, color: Colors.orange[600]),
                                                                               UserReportTableHeader(),
+                                                                              Divider(thickness: 1, color: Colors.orange[600]),
                                                                               Expanded(
                                                                                   child: Container(
                                                                                       child: snapshot.data == "user created after period"

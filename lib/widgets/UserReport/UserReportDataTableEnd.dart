@@ -14,66 +14,69 @@ class UserReprotDataTableEnd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return Column(
+      children: [
+        Divider(
+          thickness: 1,
           color: Colors.orange,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-          )),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10,
         ),
-        child: Container(
-          height: 65.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                        child: DataTableEndRowInfo(
-                      infoTitle: 'ايام الغياب:',
-                      info: _attendanceReport.totalAbsentDay.toString(),
-                    )),
-                    DataTableEndRowInfo(
-                        info: _attendanceReport.totalLateDay.toString(),
-                        infoTitle: "ايام التأخير:"),
-                    DataTableEndRowInfo(
-                      infoTitle: 'مدة التأخير:',
-                      info: _attendanceReport.totalLateDuration,
-                    ),
-                  ],
-                ),
-              ),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Container(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10,
+            ),
+            child: Container(
+              height: 65.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DataTableEndRowInfo(
-                    info: _attendanceReport.totalDeductionAbsent
-                        .toStringAsFixed(1),
-                    infoTitle: 'خصم الغياب:',
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            child: DataTableEndRowInfo(
+                          infoTitle: 'ايام الغياب:',
+                          info: _attendanceReport.totalAbsentDay.toString(),
+                        )),
+                        DataTableEndRowInfo(
+                          infoTitle: 'مدة التأخير:',
+                          info: _attendanceReport.totalLateDuration,
+                        ),
+                        DataTableEndRowInfo(
+                            info: _attendanceReport.totalLateDay.toString(),
+                            infoTitle: "ايام التأخير:"),
+                      ],
+                    ),
                   ),
-                  DataTableEndRowInfo(
-                    info: _attendanceReport.totalDeductionAbsent
-                        .toStringAsFixed(1),
-                    infoTitle: ' خصم التأخير:',
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DataTableEndRowInfo(
+                        info: _attendanceReport.totalDeductionAbsent
+                            .toStringAsFixed(1),
+                        infoTitle: 'خصم الغياب:',
+                      ),
+                      DataTableEndRowInfo(
+                        info: _attendanceReport.totalLateDeduction
+                            .toStringAsFixed(1),
+                        infoTitle: ' خصم التأخير:',
+                      ),
+                      DataTableEndRowInfo(
+                        info:
+                            _attendanceReport.totalDeduction.toStringAsFixed(1),
+                        infoTitle: ' إجمالى الخصومات:',
+                      )
+                    ],
                   ),
-                  DataTableEndRowInfo(
-                    info: _attendanceReport.totalDeduction.toStringAsFixed(1),
-                    infoTitle: ' إجمالى الخصومات:',
-                  )
                 ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

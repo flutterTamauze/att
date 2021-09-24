@@ -56,11 +56,15 @@ List<String> permessionTitles = ["تأخير عن الحضور", "انصراف �
 TimeOfDay toPicked;
 String dateDifference;
 List<DateTime> picked = [];
+DateTime _today, _tomorow;
 
 class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
     picked = null;
+    _today = DateTime.now();
+    _tomorow = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
     timeOutController.text = "";
     toPicked = (intToTimeOfDay(0));
@@ -84,6 +88,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
 
   String formattedTime;
   var selectedVal = "كل المواقع";
+  var newString = "";
   @override
   Widget build(BuildContext context) {
     var userdata = Provider.of<UserData>(context, listen: false).user;
@@ -156,6 +161,75 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                               ? Column(
                                   children: [
                                     VacationCardHeader(
+                                      header: "نوع الأجازة",
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5.w),
+                                      child: Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              alignment: Alignment.topRight,
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(width: 1)),
+                                              width: 150.w,
+                                              height: 40.h,
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                elevation: 2,
+                                                isExpanded: true,
+                                                items: actions.map((String x) {
+                                                  return DropdownMenuItem<
+                                                          String>(
+                                                      value: x,
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Text(
+                                                          x,
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.orange,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ));
+                                                }).toList(),
+                                                onChanged: (String value) {
+                                                  setState(() {
+                                                    selectedReason = value;
+                                                    if (value != "عارضة") {
+                                                      _dateController.text = "";
+                                                      newString = "";
+                                                      _tomorow = DateTime(
+                                                          DateTime.now().year,
+                                                          DateTime.now().month,
+                                                          DateTime.now().day +
+                                                              1);
+                                                      _today = DateTime.now();
+                                                      toDate = _tomorow;
+                                                    }
+                                                  });
+                                                },
+                                                value: selectedReason,
+                                              )),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    VacationCardHeader(
                                       header: "مدة الأجازة",
                                     ),
                                     SizedBox(
@@ -172,22 +246,27 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     .showDatePicker(
                                                         context: context,
                                                         initialFirstDate:
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year,
-                                                                DateTime.now()
-                                                                    .month,
-                                                                DateTime.now()
-                                                                    .day),
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? _today
+                                                                : _tomorow,
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
                                                             DateTime.now()
                                                                 .month,
-                                                            DateTime.now().day),
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? DateTime.now()
+                                                                    .day
+                                                                : DateTime.now()
+                                                                        .day +
+                                                                    1),
                                                         lastDate: yesterday);
-                                                var newString = "";
+
                                                 setState(() {
+                                                  _today = picked.first;
+                                                  _tomorow = picked.first;
                                                   fromDate = picked.first;
                                                   toDate = picked.last;
                                                   dateDifference = (toDate
@@ -266,64 +345,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         : Container(),
                                     SizedBox(
                                       height: 5,
-                                    ),
-                                    VacationCardHeader(
-                                      header: "نوع الأجازة",
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5.w),
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              alignment: Alignment.topRight,
-                                              padding:
-                                                  EdgeInsets.only(right: 10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(width: 1)),
-                                              width: 150.w,
-                                              height: 40.h,
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                elevation: 2,
-                                                isExpanded: true,
-                                                items: actions.map((String x) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: x,
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Text(
-                                                          x,
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.orange,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedReason = value;
-                                                  });
-                                                },
-                                                value: selectedReason,
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ),
                                     DetialsTextField(commentController),
                                     SizedBox(
@@ -672,6 +693,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     listen: false)
                                                 .addHoliday(
                                                     UserHolidays(
+                                                        createdOnDate:
+                                                            DateTime.now(),
                                                         holidayDescription:
                                                             commentController
                                                                 .text,
@@ -796,6 +819,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     listen: false)
                                                 .addUserPermession(
                                                     UserPermessions(
+                                                        createdOn:
+                                                            DateTime.now(),
                                                         date: selectedDate,
                                                         duration: formattedTime,
                                                         permessionType:
@@ -811,8 +836,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 : commentController
                                                                     .text,
                                                         user: userdata.name),
-                                                    Provider.of<UserData>(
-                                                            context,
+                                                    Provider.of<UserData>(context,
                                                             listen: false)
                                                         .user
                                                         .userToken,

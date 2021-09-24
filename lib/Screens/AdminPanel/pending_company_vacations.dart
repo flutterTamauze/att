@@ -63,6 +63,8 @@ class PendingCompanyVacations extends StatelessWidget {
                                     children: [
                                       ExpandedPendingVacation(
                                         isAdmin: true,
+                                        createdOn:
+                                            pending.createdOnDate.toString(),
                                         adminComment: pending.adminResponse,
                                         comments: pending.holidayDescription,
                                         date: pending.fromDate.toString(),

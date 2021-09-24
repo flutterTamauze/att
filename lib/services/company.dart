@@ -81,14 +81,14 @@ class CompanyData extends ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
-
+        print(response.statusCode);
+        print(response.body);
         if (response.statusCode == 401) {
           await inheritDefault.login(context);
           userToken =
               Provider.of<UserData>(context, listen: false).user.userToken;
           await getCompanyProfileApi(companyId, userToken, context);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          print(response.body);
           var decodedRes = json.decode(response.body);
           print("COMPANY MSG }");
           print(decodedRes["message"]);

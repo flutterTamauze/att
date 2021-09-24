@@ -45,19 +45,22 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
             child: ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
+                var permList = widget.permessionsList[index];
                 return Column(
                   children: [
                     ExpandedPermessionsTile(
+                      approvedBy: permList.approvedByUserId,
+                      approvedDate: permList.approvedDate,
+                      isAdmin: false,
                       currentIndex: index,
-                      desc: widget.permessionsList[index].permessionDescription,
-                      date: widget.permessionsList[index].date,
-                      permessionType:
-                          widget.permessionsList[index].permessionType,
-                      orderNum:
-                          widget.permessionsList[index].permessionId.toString(),
-                      adminComment: widget.permessionsList[index].adminResponse,
-                      status: widget.permessionsList[index].permessionStatus,
-                      duration: widget.permessionsList[index].duration,
+                      createdOn: permList.createdOn,
+                      desc: permList.permessionDescription,
+                      date: permList.date,
+                      permessionType: permList.permessionType,
+                      orderNum: permList.permessionId.toString(),
+                      adminComment: permList.adminResponse,
+                      status: permList.permessionStatus,
+                      duration: permList.duration,
                     ),
                     Divider()
                   ],
@@ -86,24 +89,22 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                   : ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
+                        var permList = widget.permessionsList[index];
                         return Column(
                           children: [
                             ExpandedPermessionsTile(
+                              approvedBy: permList.approvedByUserId,
+                              approvedDate: permList.approvedDate,
                               currentIndex: index,
                               isAdmin: widget.memberId == "" ? false : true,
-                              desc: widget
-                                  .permessionsList[index].permessionDescription,
-                              date: widget.permessionsList[index].date,
-                              permessionType:
-                                  widget.permessionsList[index].permessionType,
-                              orderNum: widget
-                                  .permessionsList[index].permessionId
-                                  .toString(),
-                              adminComment:
-                                  widget.permessionsList[index].adminResponse,
-                              status: widget
-                                  .permessionsList[index].permessionStatus,
-                              duration: widget.permessionsList[index].duration,
+                              desc: permList.permessionDescription,
+                              date: permList.date,
+                              permessionType: permList.permessionType,
+                              orderNum: permList.permessionId.toString(),
+                              createdOn: permList.createdOn,
+                              adminComment: permList.adminResponse,
+                              status: permList.permessionStatus,
+                              duration: permList.duration,
                             ),
                             Divider()
                           ],

@@ -23,7 +23,8 @@ import '../../../constants.dart';
 
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
-  DisplayHolidays(this._nameController);
+  final Future getHoliday;
+  DisplayHolidays(this._nameController, this.getHoliday);
   @override
   _DisplayHolidaysState createState() => _DisplayHolidaysState();
 }
@@ -36,7 +37,6 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
 
   @override
   void initState() {
-    widget._nameController.text = "";
     Provider.of<UserHolidaysData>(context, listen: false)
         .singleUserHoliday
         .clear();
@@ -46,116 +46,12 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
   @override
   Widget build(BuildContext context) {
     var holidayProv = Provider.of<UserHolidaysData>(context, listen: false);
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+
     return Expanded(
       child: Column(
         children: [
-          Container(
-            child: VacationCardHeader(
-              header: "عرض الأجازات",
-            ),
-          ),
           SizedBox(
-            height: 5,
-          ),
-          Container(
-            width: 330.w,
-            child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: searchTextField = AutoCompleteTextField<Member>(
-                key: key,
-                clearOnSubmit: false,
-                controller: widget._nameController,
-                suggestions:
-                    Provider.of<MemberData>(context, listen: true).membersList,
-                style: TextStyle(
-                    fontSize:
-                        ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
-                decoration: kTextFieldDecorationFromTO.copyWith(
-                    hintStyle: TextStyle(
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500),
-                    hintText: 'اسم المستخدم',
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.orange,
-                    )),
-                itemFilter: (item, query) {
-                  return item.name.toLowerCase().contains(query.toLowerCase());
-                },
-                itemSorter: (a, b) {
-                  return a.name.compareTo(b.name);
-                },
-                itemSubmitted: (item) async {
-                  List<int> indexes = [];
-                  print(item.id);
-                  getAllHolidays =
-                      Provider.of<UserHolidaysData>(context, listen: false)
-                          .getSingleUserHoliday(
-                              item.id, userProvider.user.userToken);
-                  for (int i = 0; i < holidayProv.userNames.length; i++) {
-                    if (holidayProv.userNames[i] == item.name) {
-                      indexes.add(i);
-                    }
-                  }
-                  if (widget._nameController.text != item.name) {
-                    setState(() {
-                      print(item.name);
-                      searchTextField.textField.controller.text = item.name;
-
-                      Provider.of<UserHolidaysData>(context, listen: false)
-                          .setCopyByIndex(indexes);
-
-                      // isVacationselected = true;
-                    });
-                  }
-                },
-                itemBuilder: (context, item) {
-                  // ui for the autocompelete row
-                  return Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 10,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Container(
-                            height: 20,
-                            child: AutoSizeText(
-                              item.name,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Divider(
-                            color: Colors.grey,
-                            thickness: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 5,
+            height: 10,
           ),
           widget._nameController.text == ""
               ? Container()
@@ -183,7 +79,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
                 child: FutureBuilder(
-                    future: getAllHolidays,
+                    future: widget.getHoliday,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

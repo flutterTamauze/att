@@ -100,6 +100,7 @@ class DaysOffData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
+        print("days of status code ${response.statusCode}");
 
         if (response.statusCode == 401) {
           await inheritDefault.login(context);

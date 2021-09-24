@@ -1,9 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -15,11 +17,11 @@ class ExpandedOrderTile extends StatefulWidget {
   final String response, orderNum, adminComment;
   final IconData iconData;
   final String comments;
-  int holidayType;
+  final int holidayType;
   final int status;
   final int index;
   final List<DateTime> vacationDaysCount;
-  final String date;
+  final String date, createdDate, approveDate;
   bool isAdmin = false;
   ExpandedOrderTile({
     this.comments,
@@ -33,6 +35,8 @@ class ExpandedOrderTile extends StatefulWidget {
     this.status,
     this.index,
     this.date,
+    this.createdDate,
+    this.approveDate,
     Key key,
   }) : super(key: key);
 
@@ -66,13 +70,12 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                     trailing: Container(
                       width: 80.w,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                widget.date.substring(0, 11),
+                                widget.createdDate.substring(0, 11),
                               ),
                               FaIcon(
                                 widget.status == 3
@@ -108,91 +111,132 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                         child: Card(
                           elevation: 5,
                           child: Container(
-                            width: 300.w,
+                            width: 350.w,
                             margin: EdgeInsets.all(15),
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            padding: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                widget.vacationDaysCount[1]
-                                        .isBefore(widget.vacationDaysCount[0])
-                                    ? Text(
-                                        " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      )
-                                    : Text(
-                                        "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                Divider(),
-                                Text(
-                                  "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                widget.comments == "" ? Container() : Divider(),
-                                widget.comments != null
-                                    ? widget.comments == ""
-                                        ? Container()
-                                        : Text(
-                                            "تفاصيل الطلب : ${widget.comments}",
-                                            textAlign: TextAlign.right,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    widget.vacationDaysCount[1].isBefore(
+                                            widget.vacationDaysCount[0])
+                                        ? Text(
+                                            " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           )
-                                    : Container(),
-                                widget.comments != null
-                                    ? Divider()
-                                    : Container(),
-                                widget.status != 3
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          widget.status == 2
-                                              ? widget.adminComment != null ||
-                                                      widget.adminComment == ""
-                                                  ? Container(
-                                                      padding: EdgeInsets.only(
-                                                          bottom: 10.h),
-                                                      child: Text(
-                                                        "سبب الرفض : ${widget.adminComment}",
-                                                        textAlign:
-                                                            TextAlign.right,
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container()
-                                              : Container(),
-                                        ],
-                                      )
-                                    : Container(
-                                        alignment: Alignment.centerRight,
-                                        padding: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                          'تم ارسال الطلب برجاء انتظار الرد',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey[700],
-                                            fontWeight: FontWeight.w500,
+                                        : Text(
+                                            "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
-                                        ),
+                                    Divider(),
+                                    Text(
+                                      "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
                                       ),
+                                    ),
+                                    widget.comments == ""
+                                        ? Container()
+                                        : Divider(),
+                                    widget.comments != null
+                                        ? widget.comments == ""
+                                            ? Container()
+                                            : Text(
+                                                "تفاصيل الطلب : ${widget.comments}",
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                        : Container(),
+                                    widget.comments != null
+                                        ? Divider()
+                                        : Container(),
+                                    widget.status != 3
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              widget.status == 2
+                                                  ? widget.adminComment !=
+                                                              null ||
+                                                          widget.adminComment ==
+                                                              ""
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10.h),
+                                                          child: Text(
+                                                            "سبب الرفض : ${widget.adminComment}",
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container()
+                                                  : Container(),
+                                            ],
+                                          )
+                                        : Container(
+                                            alignment: Alignment.centerRight,
+                                            padding: EdgeInsets.only(bottom: 5),
+                                            child: Text(
+                                              'تم ارسال الطلب برجاء انتظار الرد',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.grey[700],
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                    widget.status == 1
+                                        ? Divider()
+                                        : Container(),
+                                    widget.status == 1
+                                        ? Container(
+                                            padding:
+                                                EdgeInsets.only(bottom: 10.h),
+                                            // child: Text(
+                                            //   " تاريخ الموافقة : ${widget.approveDate.substring(0, 11)}",
+                                            //   textAlign: TextAlign.right,
+                                            //   style: TextStyle(
+                                            //     fontSize: 14,
+                                            //     color: Colors.red,
+                                            //     fontWeight: FontWeight.bold,
+                                            //   ),
+                                            // ),
+                                          )
+                                        : Container()
+                                  ],
+                                ),
+                                widget.status == 1 || widget.status == 2
+                                    ? Lottie.asset(
+                                        widget.status == 1
+                                            ? "resources/accepted.json"
+                                            : "resources/refused.json",
+                                        width:
+                                            widget.status == 1 ? 100.w : 60.w,
+                                        height: widget.status == 1 ? 100 : 60.h,
+                                        repeat: false)
+                                    : Container()
                               ],
                             ),
                           ),

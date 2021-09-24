@@ -27,7 +27,8 @@ import 'missions_summary_table_end.dart';
 
 class DisplayCompanyMissions extends StatefulWidget {
   final TextEditingController _nameController;
-  DisplayCompanyMissions(this._nameController);
+  final Future _getMission;
+  DisplayCompanyMissions(this._nameController, this._getMission);
   @override
   _DisplayHolidaysState createState() => _DisplayHolidaysState();
 }
@@ -40,8 +41,6 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
 
   @override
   void initState() {
-    widget._nameController.text = "";
-
     super.initState();
   }
 
@@ -51,114 +50,8 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
     return Expanded(
       child: Column(
         children: [
-          Container(
-            child: VacationCardHeader(
-              header: "عرض المأموريات",
-            ),
-          ),
           SizedBox(
-            height: 5,
-          ),
-          Container(
-            width: 330.w,
-            child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: searchTextField = AutoCompleteTextField<Member>(
-                key: key,
-                clearOnSubmit: false,
-                controller: widget._nameController,
-                suggestions:
-                    Provider.of<MemberData>(context, listen: true).membersList,
-                style: TextStyle(
-                    fontSize:
-                        ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
-                decoration: kTextFieldDecorationFromTO.copyWith(
-                    hintStyle: TextStyle(
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500),
-                    hintText: 'اسم المستخدم',
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.orange,
-                    )),
-                itemFilter: (item, query) {
-                  return item.name.toLowerCase().contains(query.toLowerCase());
-                },
-                itemSorter: (a, b) {
-                  return a.name.compareTo(b.name);
-                },
-                itemSubmitted: (item) async {
-                  var userProvider =
-                      Provider.of<UserData>(context, listen: false);
-
-                  getCompanyMissions =
-                      Provider.of<MissionsData>(context, listen: false)
-                          .getSingleUserMissions(
-                              item.id, userProvider.user.userToken);
-                  List<int> indexes = [];
-
-                  print(comMissionProv.userNames.length);
-                  for (int i = 0; i < comMissionProv.userNames.length; i++) {
-                    if (comMissionProv.userNames[i] == item.name) {
-                      indexes.add(i);
-                    }
-                  }
-                  if (widget._nameController.text != item.name) {
-                    setState(() {
-                      print(item.name);
-                      searchTextField.textField.controller.text = item.name;
-
-                      Provider.of<MissionsData>(context, listen: false)
-                          .setCopyByIndex(indexes);
-                      // isVacationselected = true;
-                    });
-                  }
-                },
-                itemBuilder: (context, item) {
-                  // ui for the autocompelete row
-                  return Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 10,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Container(
-                            height: 20,
-                            child: AutoSizeText(
-                              item.name,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Divider(
-                            color: Colors.grey,
-                            thickness: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 5,
+            height: 10,
           ),
           widget._nameController.text == ""
               ? Container()
@@ -186,7 +79,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
                 child: FutureBuilder(
-                    future: getCompanyMissions,
+                    future: widget._getMission,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

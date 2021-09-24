@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class SiteData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
-
+        print(response.statusCode);
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =
@@ -161,7 +162,10 @@ class SiteData with ChangeNotifier {
                 lat: double.parse(decodedRes['data']['siteLat'].toString()),
                 long: double.parse(decodedRes['data']['siteLan'].toString()),
                 name: decodedRes['data']['siteName']);
-
+            sitesList = [
+              Site(id: site.id, lat: site.lat, long: site.long, name: site.name)
+            ];
+            notifyListeners();
             return site;
           } else if (decodedRes["message"] ==
               "Fail : You must delete all shifts in site then delete site") {
@@ -196,6 +200,7 @@ class SiteData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
 
+        print("status code ${response.statusCode}");
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =
@@ -214,9 +219,8 @@ class SiteData with ChangeNotifier {
             sitesNewList = sitesNewList
                 .map((siteJson) => Site.fromJson(siteJson))
                 .toList();
-            print("sitesNewList.length = ${sitesNewList.length}");
             sitesList = sitesNewList;
-
+            log("no problem");
             dropDownSitesList = [...sitesNewList];
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));

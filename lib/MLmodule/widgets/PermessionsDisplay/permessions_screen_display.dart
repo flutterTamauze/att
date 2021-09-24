@@ -20,8 +20,9 @@ import '../../../constants.dart';
 import 'DataTablePermessionHeader.dart';
 
 class DisplayPermessions extends StatefulWidget {
+  Future getAllPermessions;
   TextEditingController _nameController = TextEditingController();
-  DisplayPermessions(this._nameController);
+  DisplayPermessions(this._nameController, this.getAllPermessions);
   @override
   _DisplayPermessionsState createState() => _DisplayPermessionsState();
 }
@@ -31,12 +32,9 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
 
   GlobalKey<AutoCompleteTextFieldState<Member>> key = new GlobalKey();
 
-  Future getAllPermessions;
-
   @override
   void initState() {
     super.initState();
-    widget._nameController.text = "";
   }
 
   @override
@@ -47,112 +45,8 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
     return Expanded(
       child: Column(
         children: [
-          Container(
-            child: VacationCardHeader(
-              header: "عرض الأذونات",
-            ),
-          ),
           SizedBox(
-            height: 5,
-          ),
-          Container(
-            width: 330.w,
-            child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: searchTextField = AutoCompleteTextField<Member>(
-                key: key,
-                clearOnSubmit: false,
-                controller: widget._nameController,
-                suggestions:
-                    Provider.of<MemberData>(context, listen: true).membersList,
-                style: TextStyle(
-                    fontSize:
-                        ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
-                decoration: kTextFieldDecorationFromTO.copyWith(
-                    hintStyle: TextStyle(
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500),
-                    hintText: 'اسم المستخدم',
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.orange,
-                    )),
-                itemFilter: (item, query) {
-                  return item.name.toLowerCase().contains(query.toLowerCase());
-                },
-                itemSorter: (a, b) {
-                  return a.name.compareTo(b.name);
-                },
-                itemSubmitted: (item) async {
-                  getAllPermessions =
-                      Provider.of<UserPermessionsData>(context, listen: false)
-                          .getSingleUserPermession(
-                              item.id,
-                              Provider.of<UserData>(context, listen: false)
-                                  .user
-                                  .userToken);
-                  List<int> indexes = [];
-                  for (int i = 0; i < permessionProv.userNames.length; i++) {
-                    if (permessionProv.userNames[i] == item.name) {
-                      indexes.add(i);
-                    }
-                  }
-                  if (widget._nameController.text != item.name) {
-                    setState(() {
-                      print(item.name);
-                      searchTextField.textField.controller.text = item.name;
-
-                      Provider.of<UserPermessionsData>(context, listen: false)
-                          .setCopyByIndex(indexes);
-                      // isVacationselected = true;
-                    });
-                  }
-                },
-                itemBuilder: (context, item) {
-                  // ui for the autocompelete row
-                  return Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 10,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Container(
-                            height: 20,
-                            child: AutoSizeText(
-                              item.name,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Divider(
-                            color: Colors.grey,
-                            thickness: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 5,
+            height: 10,
           ),
           widget._nameController.text == ""
               ? Container()
@@ -180,7 +74,7 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
             textDirection: ui.TextDirection.rtl,
             child: Expanded(
                 child: FutureBuilder(
-                    future: getAllPermessions,
+                    future: widget.getAllPermessions,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

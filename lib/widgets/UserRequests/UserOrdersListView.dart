@@ -64,6 +64,10 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
                     children: [
                       widget.memberId == ""
                           ? ExpandedOrderTile(
+                              approveDate: widget.provList[index].approvedDate
+                                  .toString(),
+                              createdDate: widget.provList[index].createdOnDate
+                                  .toString(),
                               index: index,
                               isAdmin: widget.memberId == "" ? false : true,
                               adminComment:
@@ -87,7 +91,13 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
                             )
                           : widget.provList[index].holidayStatus != 2
                               ? ExpandedOrderTile(
+                                  approveDate: widget
+                                      .provList[index].approvedDate
+                                      .toString(),
                                   index: index,
+                                  createdDate: widget
+                                      .provList[index].createdOnDate
+                                      .toString(),
                                   isAdmin: widget.memberId == "" ? false : true,
                                   adminComment:
                                       widget.provList[index].adminResponse,

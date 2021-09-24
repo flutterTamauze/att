@@ -59,38 +59,46 @@ class DrawerI extends StatelessWidget {
                       onTap: () =>
                           launch("https://chilangov3.tamauzeds.com/#/"),
                       child: Container(
-                        height: 100.h,
-                        width: 100.w,
+                        height: 90.h,
+                        width: 90.w,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xffFF7E00),
-                            ),
+                            // border: Border.all(
+                            //   width: 1,
+                            //   color: Color(0xffFF7E00),
+                            // ),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage("resources/image.png"),
-                            )),
+                                image: AssetImage("resources/image.png"),
+                                fit: BoxFit.fill)),
                       ),
                     ),
                   ),
                 ),
+
                 SizedBox(
                   height: 20,
                 ),
-                Center(
-                  child: Container(
-                    height: 20,
-                    child: AutoSizeText(
-                      "Chilango",
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontSize:
-                            ScreenUtil().setSp(20, allowFontScalingSelf: true),
-                      ),
-                    ),
-                  ),
+                Text(
+                  "V3.0,0",
+                  style: TextStyle(
+                      color: Colors.orange[600],
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic),
                 ),
+                // Center(
+                //   child: Container(
+                //     height: 20,
+                //     child: AutoSizeText(
+                //       "Chilango",
+                //       maxLines: 1,
+                //       style: TextStyle(
+                //         color: Colors.orange,
+                //         fontSize:
+                //             ScreenUtil().setSp(20, allowFontScalingSelf: true),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
