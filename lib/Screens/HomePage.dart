@@ -315,6 +315,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
+                print(userDataProvider.user.userShiftId);
                 DateTime startTime = DateTime(
                   DateTime.now().year,
                   1,

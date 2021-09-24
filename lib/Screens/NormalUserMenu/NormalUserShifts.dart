@@ -142,7 +142,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                   title: "مناوباتى الأساسية",
                   isShedcule: false,
                 ),
-                shiftDate.id == null
+                shiftDate == null
                     ? Container()
                     : Directionality(
                         textDirection: TextDirection.rtl,
