@@ -21,6 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
+import '../HomePage.dart';
 import 'NormalUserReport.dart';
 import 'NormalUserVacationRequest.dart';
 import 'NormalUsersOrders.dart';
@@ -157,9 +158,15 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
   }
 
   Future<bool> onWillPop() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(0)),
-        (Route<dynamic> route) => false);
+    if (Provider.of<UserData>(context, listen: false).user.userType != 0) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => NavScreenTwo(0)),
+          (Route<dynamic> route) => false);
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePage()),
+          (Route<dynamic> route) => false);
+    }
     return Future.value(false);
   }
 }

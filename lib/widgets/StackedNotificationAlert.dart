@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: must_be_immutable
 class StackedNotificaitonAlert extends StatefulWidget {
   bool isAdmin;
-  bool popWidget = false;
+  bool popWidget = false, isFromBackground = false;
   final String notificationTitle,
       notificationContent,
       notificationToast,
@@ -32,6 +32,7 @@ class StackedNotificaitonAlert extends StatefulWidget {
       this.popWidget,
       @required this.repeatAnimation,
       this.notificationToast,
+      this.isFromBackground,
       this.roundedButtonTitle});
 
   @override
@@ -128,9 +129,17 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                           msg: widget.notificationToast,
                                           backgroundColor: Colors.green,
                                           gravity: ToastGravity.CENTER);
-                                      Navigator.pop(context);
                                     }
-
+                                    if (user.userType != 0 &&
+                                        !widget.isFromBackground) {
+                                      print("not user not back ground");
+                                      Navigator.pop(context);
+                                    } else {
+                                      print("normal user");
+                                      if (!widget.isFromBackground) {
+                                        Navigator.pop(context);
+                                      }
+                                    }
                                     Provider.of<PermissionHan>(context,
                                             listen: false)
                                         .setAttendProoftoDefault();
@@ -138,9 +147,8 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     if (widget.popWidget) {
                                       Navigator.pop(context);
                                       Navigator.pop(context);
-                                    } else {}
+                                    }
                                   } else {
-                                    Navigator.pop(context);
                                     if (!widget.isAdmin) {
                                       Navigator.push(
                                           context,

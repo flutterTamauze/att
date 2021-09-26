@@ -1,15 +1,20 @@
+import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:path_provider/path_provider.dart' as p;
 import 'Notifications/Notifications.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -18,9 +23,46 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
+  String _filePath;
+  bool _isLoading = false;
+  String progress;
+  Dio dio;
   @override
   void initState() {
+    dio = Dio();
     super.initState();
+  }
+
+  _getExternalStorage() async {
+    print(p.getExternalStorageDirectories(type: p.StorageDirectory.downloads));
+    return p.getExternalStorageDirectories(type: p.StorageDirectory.downloads);
+  }
+
+  Future<List<Directory>> _getStorage() {}
+  var finalPath;
+  Future _downloadFromUrl(filename) async {
+    try {
+      final dirList = await _getExternalStorage();
+      final path = dirList[0].path;
+      final file = File("$path/$filename");
+      await dio.download(
+        "https://cdn.macmillanyounglearners.com/default-public/A-Z-Alphabet-Book-and-1-10.pdf",
+        file.path,
+        onReceiveProgress: (count, total) {
+          setState(() {
+            _isLoading = true;
+            progress = ((count / total) * 100).toStringAsFixed(0) + " %";
+            log(progress);
+          });
+        },
+      );
+      setState(() {
+        finalPath = file.path;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget build(BuildContext context) {
@@ -223,6 +265,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   SizedBox(
                                     height: 15.h,
                                   ),
+                                  // TextButton(
+                                  //     onPressed: () {
+                                  //       _downloadFromUrl("release.pdf");
+                                  //     },
+                                  //     child: Text("تحميل اخر نسخة")),
+                                  // Text(
+                                  //   finalPath.toString(),
+                                  //   style: TextStyle(color: Colors.red),
+                                  // )
                                 ],
                               ),
                             ),

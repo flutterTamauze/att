@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 // import 'package:audioplayers/audio_cache.dart';
 
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ Future<bool> isConnectedToInternet(String url) async {
   return false;
 }
 
-AudioCache player = AudioCache();
+// AudioCache player = AudioCache();
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 void notificationPermessions() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -105,32 +106,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
-    //  Called when a data message is received
-    print("message recieved ");
-    String data = remoteMessage.data;
-    NotificationDataService dataService = NotificationDataService();
-    dataService.showAttendanceCheckDialog(context);
-    print(data);
-  }
+  // void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
+  //   //  Called when a data message is received
+  //   print("message recieved ");
+  //   String data = remoteMessage.data;
+  //   NotificationDataService dataService = NotificationDataService();
+  //   dataService.showAttendanceCheckDialog(context);
+  //   print(data);
+  // }
 
-  void sendRemoteMsg() async {
-    hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
-        to: _token,
-        data: {"Data": "test"},
-        messageType: "my_type",
-        ttl: 120,
-        messageId: "122",
-        collapseKey: '-1',
-        sendMode: 1,
-        receiptMode: 1);
-    String result = await hawawi.Push.sendRemoteMessage(remoteMsg);
-    print(result);
-  }
+  // void sendRemoteMsg() async {
+  //   hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
+  //       to: _token,
+  //       data: {"Data": "test"},
+  //       messageType: "my_type",
+  //       ttl: 120,
+  //       messageId: "122",
+  //       collapseKey: '-1',
+  //       sendMode: 1,
+  //       receiptMode: 1);
+  //   String result = await hawawi.Push.sendRemoteMessage(remoteMsg);
+  //   print(result);
+  // }
 
-  void _onMessageReceiveError(Object error) {
-    // Called when an error occurs while receiving the data message
-  }
+  // void _onMessageReceiveError(Object error) {
+  //   // Called when an error occurs while receiving the data message
+  // }
   @override
   void initState() {
     // test();
@@ -165,33 +166,33 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           title: event.notification.title,
         ),
         context);
-    player.play("notification.mp3");
+    // player.play("notification.mp3");
   }
 
-  String _token = '';
-  void _onTokenEvent(String event) {
-    // Requested tokens can be obtained here
-    setState(() {
-      _token = event;
-    });
-    print("TokenEvent: " + _token);
-  }
+  // String _token = '';
+  // void _onTokenEvent(String event) {
+  //   // Requested tokens can be obtained here
+  //   setState(() {
+  //     _token = event;
+  //   });
+  //   print("TokenEvent: " + _token);
+  // }
 
-  void _onTokenError(Object error) {
-    PlatformException e = error;
-    print("TokenErrorEvent: " + e.message);
-  }
+  // void _onTokenError(Object error) {
+  //   PlatformException e = error;
+  //   print("TokenErrorEvent: " + e.message);
+  // }
 
-  Future<void> initPlatformState() async {
-    var code = await hawawi.Push.getAAID();
-    await hawawi.Push.getToken(code);
-    if (!mounted) return;
-    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-    if (!mounted) return;
-    hawawi.Push.onMessageReceivedStream
-        .listen(_onMessageReceived, onError: _onMessageReceiveError);
-  }
-
+  // Future<void> initPlatformState() async {
+  //   var code = await hawawi.Push.getAAID();
+  //   await hawawi.Push.getToken(code);
+  //   if (!mounted) return;
+  //   hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  //   if (!mounted) return;
+  //   hawawi.Push.onMessageReceivedStream
+  //       .listen(_onMessageReceived, onError: _onMessageReceiveError);
+  // }
+  NotificationDataService _notifService = NotificationDataService();
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
       print("####Recveiving data on message tapped ####");
@@ -199,9 +200,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print(event.notification.title);
       print(event.data["category"] == "attend");
       saveNotificationToCache(event);
-      player.play("notification.mp3");
+      // player.play("notification.mp3");
       if (event.data["category"] == "attend") {
-        Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
+        log("Opened an attend proov notification !");
+        print(event.notification.body);
+        print(event.notification.title);
+        _notifService.showAttendanceCheckDialog(context);
       }
     });
   }
@@ -235,6 +239,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             .attendProovTriggered
         ? StackedNotificaitonAlert(
             popWidget: false,
+            isFromBackground: true,
             notificationTitle: "اثبات حضور",
             notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
             roundedButtonTitle: "اثبات",
@@ -248,11 +253,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: GestureDetector(
               onTap: () async {
                 print(userDataProvider.user.userShiftId);
-                DateTime startTime = DateTime(
-                  DateTime.now().year,
-                  1,
-                  1,
-                );
               },
               child: GestureDetector(
                 onTap: () async {
