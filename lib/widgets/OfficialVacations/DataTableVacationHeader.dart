@@ -8,12 +8,6 @@ class DataTableVacationHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 50.h,
-        decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            )),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
@@ -30,7 +24,7 @@ class DataTableVacationHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize:
                           ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.black),
+                      color: Colors.orange[600]),
                 ),
               )),
               Container(
@@ -44,7 +38,7 @@ class DataTableVacationHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize:
                           ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.black),
+                      color: Colors.orange[600]),
                 ),
               )),
             ],

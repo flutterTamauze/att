@@ -347,7 +347,15 @@ class _OfficialVacationState extends State<OfficialVacation> {
                       textDirection: ui.TextDirection.rtl,
                       child: Column(
                         children: [
+                          Divider(
+                            thickness: 1,
+                            color: Colors.orange[600],
+                          ),
                           DataTableVacationHeader(),
+                          Divider(
+                            thickness: 1,
+                            color: Colors.orange[600],
+                          ),
                           vactionProv.isLoading
                               ? Expanded(
                                   child: Center(

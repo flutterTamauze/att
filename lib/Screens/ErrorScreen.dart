@@ -54,21 +54,13 @@ class _ErrorScreenState extends State<ErrorScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       message.toString().contains("لا يوجد اتصال بالانترنت")
-                          ? Container(
-                              child: Lottie.asset(
-                                  "resources/21485-wifi-outline-icon.json",
-                                  repeat: false),
-                              height: 200.h,
-                              width: 200.w,
-                            )
+                          ? Container()
                           : Container(),
                       SizedBox(
                         height: 10.h,
                       ),
-                      Lottie.network(
-                          "https://assets10.lottiefiles.com/packages/lf20_z8szrftm.json",
-                          width: 300.w,
-                          height: 300.h),
+                      Lottie.asset("resources/noNetwork.json",
+                          width: 300.w, height: 300.h),
                       Container(
                         height: 80,
                         child: AutoSizeText(

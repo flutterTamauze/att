@@ -36,11 +36,10 @@ class ErrorScreen2 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      child: Lottie.asset(
-                          "resources/21485-wifi-outline-icon.json",
+                      child: Lottie.asset("resources/noNetwork.json",
                           repeat: false),
-                      height: 200.h,
-                      width: 200.w,
+                      height: 300.h,
+                      width: 300.w,
                     ),
                     SizedBox(
                       height: 10.h,
@@ -71,7 +70,7 @@ class ErrorScreen2 extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: ScreenUtil()
-                                  .setSp(14, allowFontScalingSelf: true),
+                                  .setSp(15, allowFontScalingSelf: true),
                             ),
                             textAlign: TextAlign.center,
                           ),

@@ -180,7 +180,7 @@ class ShiftApi with ChangeNotifier {
                   "Longitude": currentPosition.longitude.toString().trim()
                 },
               ));
-
+          print(response.body);
           if (jsonDecode(response.body)["message"] == "Success") {
             var shiftObjJson = jsonDecode(response.body)['data'] as List;
             shiftsList = shiftObjJson
