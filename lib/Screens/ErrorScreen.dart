@@ -59,13 +59,19 @@ class _ErrorScreenState extends State<ErrorScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Lottie.asset("resources/noNetwork.json",
-                          width: 300.w, height: 300.h),
+                      Lottie.asset(
+                          message.toString().contains("لا يوجد اتصال بالانترنت")
+                              ? "resources/noNetwork.json"
+                              : "resources/maintenance.json",
+                          width: 300.w,
+                          height: 300.h,
+                          repeat: true),
                       Container(
                         height: 80,
                         child: AutoSizeText(
                           message,
                           style: TextStyle(
+                            height: 1.5,
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(18, allowFontScalingSelf: true),

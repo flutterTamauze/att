@@ -1,12 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:open_file/open_file.dart' as open_file;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -14,7 +17,6 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path_provider/path_provider.dart' as p;
 import 'Notifications/Notifications.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -33,36 +35,48 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     super.initState();
   }
 
-  _getExternalStorage() async {
-    print(p.getExternalStorageDirectories(type: p.StorageDirectory.downloads));
-    return p.getExternalStorageDirectories(type: p.StorageDirectory.downloads);
-  }
-
-  Future<List<Directory>> _getStorage() {}
   var finalPath;
   Future _downloadFromUrl(filename) async {
-    try {
-      final dirList = await _getExternalStorage();
-      final path = dirList[0].path;
-      final file = File("$path/$filename");
-      await dio.download(
-        "https://cdn.macmillanyounglearners.com/default-public/A-Z-Alphabet-Book-and-1-10.pdf",
-        file.path,
-        onReceiveProgress: (count, total) {
-          setState(() {
-            _isLoading = true;
-            progress = ((count / total) * 100).toStringAsFixed(0) + " %";
-            log(progress);
-          });
-        },
-      );
-      setState(() {
-        finalPath = file.path;
-        _isLoading = false;
-      });
-    } catch (e) {
-      print(e);
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
     }
+    ProgressDialog pr;
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    pr.style(message: "Downloading  ...");
+
+    final path = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS);
+    await pr.show();
+
+    final file = File("$path/$filename");
+    log(file.path);
+    await dio.download(
+      "https://www.ostora.tv/download/v4/ostora_v4.8.apk",
+      file.path,
+      onReceiveProgress: (count, total) {
+        setState(() {
+          _isLoading = true;
+          progress = ((count / total) * 100).toStringAsFixed(0) + " %";
+          log(progress);
+          pr.update(message: "Please wait : $progress");
+        });
+      },
+    );
+    pr.hide();
+    setState(() {
+      finalPath = file.path;
+      _isLoading = false;
+    });
+    final snackBar = SnackBar(
+      content: Text(
+        'تم التحميل بنجاح',
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.right,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    await open_file.OpenFile.open(file.path);
   }
 
   Widget build(BuildContext context) {
@@ -265,15 +279,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   SizedBox(
                                     height: 15.h,
                                   ),
-                                  // TextButton(
-                                  //     onPressed: () {
-                                  //       _downloadFromUrl("release.pdf");
-                                  //     },
-                                  //     child: Text("تحميل اخر نسخة")),
-                                  // Text(
-                                  //   finalPath.toString(),
-                                  //   style: TextStyle(color: Colors.red),
-                                  // )
+                                  Platform.isAndroid
+                                      ? TextButton(
+                                          onPressed: () {
+                                            _downloadFromUrl("ChilangoV3.apk");
+                                          },
+                                          child:
+                                              Text("تحميل اخر نسخة من التطبيق"))
+                                      : Container(),
                                 ],
                               ),
                             ),

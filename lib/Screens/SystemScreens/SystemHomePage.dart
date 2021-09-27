@@ -340,7 +340,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                             .rtl,
                                                                         child:
                                                                             AutoSizeText(
-                                                                          " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.currentShiftSTtime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.currentShiftEndTime)}",
+                                                                          " تسجيل الحضور من ${amPmChanger(int.parse(shiftApiConsumer.currentShiftSTtime[0]))} الى ${amPmChanger(int.parse(shiftApiConsumer.currentShiftSTtime[1]))} \n تسجيل الانصراف من ${amPmChanger(int.parse(shiftApiConsumer.currentShiftEndTime[0]))} الى ${amPmChanger(int.parse(shiftApiConsumer.currentShiftEndTime[1]))}",
                                                                           maxLines:
                                                                               3,
                                                                           style: TextStyle(

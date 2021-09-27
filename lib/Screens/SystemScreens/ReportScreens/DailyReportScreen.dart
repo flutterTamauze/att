@@ -56,9 +56,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   String selectedDateString;
   DateTime selectedDate;
   DateTime today;
+  int siteID;
 
   getData(int siteIndex, String date) async {
-    var siteID;
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
     if (userProvider.user.userType == 2) {
@@ -83,7 +83,8 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
             .id;
       }
     }
-
+    print(siteID);
+    print(date);
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
         userProvider.user.userToken,
         userProvider.user.userType == 2 ? userProvider.user.userSiteId : siteID,
@@ -114,8 +115,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     setState(() {
       isLoading = true;
     });
+
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
-        userProvider.user.userToken, siteId, date, context);
+        userProvider.user.userToken,
+        userProvider.user.userType == 2 ? userProvider.user.userSiteId : siteID,
+        date,
+        context);
     refreshController.refreshCompleted();
   }
 
@@ -142,7 +147,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
           backgroundColor: Colors.white,
           body: Container(
             child: GestureDetector(
-              onTap: () => print(siteData.name),
+              onTap: () => print(siteID),
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();

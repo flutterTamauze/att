@@ -37,7 +37,7 @@ class ErrorScreen2 extends StatelessWidget {
                   children: [
                     Container(
                       child: Lottie.asset("resources/noNetwork.json",
-                          repeat: false),
+                          repeat: true),
                       height: 300.h,
                       width: 300.w,
                     ),

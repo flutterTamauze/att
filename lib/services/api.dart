@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,7 @@ class ShiftApi with ChangeNotifier {
   Position currentPosition;
   DateTime currentBackPressTime;
   bool isOnShift = true;
-  int currentShiftSTtime, currentShiftEndTime;
+  List<String> currentShiftSTtime, currentShiftEndTime;
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
@@ -180,16 +181,23 @@ class ShiftApi with ChangeNotifier {
                   "Longitude": currentPosition.longitude.toString().trim()
                 },
               ));
-          print(response.body);
+          log(response.body);
+
+          print("من ${jsonDecode(response.body)['data'][1]["shiftSttime"]}");
+          print("الى ${jsonDecode(response.body)['data'][1]["shiftEntime"]}");
           if (jsonDecode(response.body)["message"] == "Success") {
             var shiftObjJson = jsonDecode(response.body)['data'] as List;
             shiftsList = shiftObjJson
                 .map((shiftJson) => Shift.fromJsonQR(shiftJson))
                 .toList();
-            currentShiftSTtime =
-                int.parse(jsonDecode(response.body)['data'][2]["shiftSttime"]);
-            currentShiftEndTime =
-                int.parse(jsonDecode(response.body)['data'][2]["shiftEntime"]);
+            currentShiftSTtime = [
+              jsonDecode(response.body)['data'][0]["shiftSttime"],
+              jsonDecode(response.body)['data'][0]["shiftEntime"]
+            ];
+            currentShiftEndTime = [
+              jsonDecode(response.body)['data'][1]["shiftSttime"],
+              jsonDecode(response.body)['data'][1]["shiftEntime"]
+            ];
             shiftsListProvider = shiftsList;
             var now = DateTime.now();
             var formater = DateFormat("Hm");

@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //http://192.168.0.119:8010
 //https://Chilangoback.tamauzeds.com
 final googleDriveLink =
-    "https://drive.google.com/u/0/uc?export=download&confirm=dNBl&id=1iBMuZO_tgX-5PG65ChpCA8o-t0ISRt6G";
+    "https://download1484.mediafire.com/f48w8k7ip7xg/kij2aisrzghhz5p/ChilangoV3.apk";
 final baseURL = "https://Chilangoback.tamauzeds.com";
 final localURL = "http://192.168.0.119:8010";
 // final baseURL = "http://192.168.1.38:45456";

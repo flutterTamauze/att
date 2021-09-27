@@ -40,7 +40,7 @@ class UserPermessions {
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
-        approvedByUserId: json["approvedbyUserId"] ?? "غير معروف",
+        approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
         createdOn: DateTime.tryParse(json["createdOn"]),
         approvedDate: DateTime.tryParse(
           json["approvedDate"],
@@ -116,6 +116,7 @@ class UserPermessionsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
+    print("permessions");
     print(response.body);
     var decodedResp = json.decode(response.body);
     if (decodedResp["message"] == "Success") {

@@ -46,7 +46,7 @@ DateTime toDate;
 String toText;
 String fromText;
 DateTime fromDate;
-DateTime yesterday;
+DateTime yesterday, tomorrow;
 TextEditingController timeOutController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
@@ -178,14 +178,17 @@ class _OutsideVacationState extends State<OutsideVacation> {
     var now = DateTime.now();
     fromText = "";
     toText = "";
-    _selectedDateString = DateTime.now().toString();
+
     commentController.text = "";
     timeOutController.text = "";
     externalMissionController.text = "";
     toPicked = (intToTimeOfDay(0));
-    fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    tomorrow = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    fromDate = tomorrow;
+    _selectedDateString = tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
     sleectedMember =
         Provider.of<MemberData>(context, listen: false).membersList[0].name;
@@ -355,14 +358,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     .showDatePicker(
                                                         context: context,
                                                         initialFirstDate:
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year,
-                                                                DateTime.now()
-                                                                    .month,
-                                                                DateTime.now()
-                                                                        .day +
-                                                                    1),
+                                                            fromDate,
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
@@ -756,16 +752,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .showDatePicker(
                                                             context: context,
                                                             initialFirstDate:
-                                                                DateTime.now(),
+                                                                fromDate,
                                                             initialLastDate:
                                                                 toDate,
-                                                            firstDate: DateTime(
-                                                                DateTime.now()
-                                                                    .year,
-                                                                DateTime.now()
-                                                                    .month,
-                                                                DateTime.now()
-                                                                    .day),
+                                                            firstDate: tomorrow,
                                                             lastDate:
                                                                 yesterday);
                                                     var newString = "";
@@ -1010,8 +1000,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           type:
                                                               DateTimePickerType
                                                                   .date,
-                                                          firstDate:
-                                                              DateTime.now(),
+                                                          initialDate: fromDate,
+                                                          firstDate: tomorrow,
                                                           lastDate: DateTime(
                                                               DateTime.now()
                                                                   .year,

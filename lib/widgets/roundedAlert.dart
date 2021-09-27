@@ -716,29 +716,8 @@ class RoundedLoadingIndicator extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0)), //this right here
         child: Container(
             height: 80,
-            child: Lottie.network(
-              "https://assets9.lottiefiles.com/packages/lf20_9oa8cz3i.json",
-            )
-            // Padding(
-            //   padding: const EdgeInsets.all(12.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Container(
-            //         height: 20,
-            //         child: AutoSizeText(
-            //           "برجاء الانتظار",
-            //           style: TextStyle(color: Color(0xffffad00), fontSize: 20),
-            //           maxLines: 1,
-            //         ),
-            //       ),
-            //       Container(
-            //           color: Colors.black,
-            //           child: Lottie.asset("resources/loading.json",
-            //               width: 80, height: 80)),
-            //     ],
-            //   ),
-            // ),
-            ));
+            child: Lottie.asset(
+              "resources/loadingQR.json",
+            )));
   }
 }

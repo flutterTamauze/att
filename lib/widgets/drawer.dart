@@ -31,6 +31,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DrawerI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    int userType = Provider.of<UserData>(context, listen: true).user.userType;
     var comId = Provider.of<CompanyData>(context, listen: false).com.id;
     String token = Provider.of<UserData>(context, listen: false).user.userToken;
     return GestureDetector(
@@ -126,7 +127,7 @@ class DrawerI extends StatelessWidget {
                   indent: 50,
                   endIndent: 50,
                 ),
-                Provider.of<UserData>(context, listen: true).user.userType == 4
+                userType == 4 || userType == 3
                     ? Column(
                         children: [
                           MenuItem(
@@ -161,7 +162,7 @@ class DrawerI extends StatelessWidget {
                         ],
                       )
                     : Container(),
-                Provider.of<UserData>(context, listen: true).user.userType == 4
+                userType == 4
                     ? Column(
                         children: [
                           MenuItem(
@@ -206,12 +207,7 @@ class DrawerI extends StatelessWidget {
                     Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PageIntro(
-                              userType: Provider.of<UserData>(context)
-                                          .user
-                                          .userType ==
-                                      0
-                                  ? 0
-                                  : 1,
+                              userType: userType == 0 ? 0 : 1,
                             )));
                   },
                   title: "المعرض",
