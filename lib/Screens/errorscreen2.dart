@@ -25,8 +25,6 @@ class ErrorScreen2 extends StatelessWidget {
     return GestureDetector(
       onTap: () => print(userData.cachedUserData.isNotEmpty),
       child: Scaffold(
-        drawer: DrawerI(),
-        endDrawer: NotificationItem(),
         body: Column(
           children: [
             NewHeader(userData.cachedUserData),

@@ -17,8 +17,6 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ShiftSchedule.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
@@ -636,8 +634,9 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           case "fail shift":
                                             Fluttertoast.showToast(
                                                 msg:
-                                                    "خطأ فى الأرسال : لم تبدأ المناوبة بعد",
+                                                    "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
                                                 backgroundColor: Colors.red,
+                                                toastLength: Toast.LENGTH_LONG,
                                                 gravity: ToastGravity.CENTER);
                                             break;
                                           case "null":

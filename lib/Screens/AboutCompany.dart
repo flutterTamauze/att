@@ -143,7 +143,6 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var comProvider = Provider.of<CompanyData>(context, listen: false).com;
     return Scaffold(
       body: Stack(
         children: [

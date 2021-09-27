@@ -88,7 +88,7 @@ class _UserAttendanceReportScreenState
       toDate = widget.userToDate;
     }
 
-    yesterday = DateTime(now.year, now.month, now.day);
+    yesterday = DateTime(now.year, now.month, now.day - 1);
 
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);

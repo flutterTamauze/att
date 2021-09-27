@@ -192,7 +192,10 @@ class MemberData with ChangeNotifier {
       String userID, bool allowValue, String userToken) async {
     try {
       var response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
-          body: json.encode({"userId": userID, "value": allowValue}),
+          body: json.encode({
+            "usersId": [userID],
+            "value": [allowValue]
+          }),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
@@ -207,7 +210,10 @@ class MemberData with ChangeNotifier {
     try {
       var response = await http.put(
           Uri.parse("$baseURL/api/Users/excludeFromReport"),
-          body: json.encode({"userId": userID, "value": allowValue}),
+          body: json.encode({
+            "usersId": [userID],
+            "value": [allowValue]
+          }),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"

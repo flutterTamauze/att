@@ -43,8 +43,6 @@ class _ErrorScreenState extends State<ErrorScreen> {
         theme: ThemeData(fontFamily: "Almarai-Regular"),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          drawer: DrawerI(),
-          endDrawer: NotificationItem(),
           body: Column(
             children: [
               NewHeader(userData.cachedUserData),

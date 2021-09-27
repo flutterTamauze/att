@@ -46,9 +46,7 @@ class _VacationAndPermessionsReportState
   @override
   Widget build(BuildContext context) {
     var comMissionProv = Provider.of<MissionsData>(context, listen: false);
-    var holidayProv = Provider.of<UserHolidaysData>(context, listen: false);
-    var permessionProv =
-        Provider.of<UserPermessionsData>(context, listen: false);
+
     return GestureDetector(
       onTap: () {
         print(_nameController.text);

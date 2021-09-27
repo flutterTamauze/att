@@ -242,10 +242,10 @@ class ShiftApi with ChangeNotifier {
         notifyListeners();
         return false;
       }
-      return false;
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   bool searchForCurrentShift(int currentTime) {

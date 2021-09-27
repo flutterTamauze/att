@@ -563,10 +563,11 @@ class _LocationTileState extends State<LocationTile> {
                                           .sitesList[widget.index]
                                           .id,
                                       true);
-                              print(Provider.of<ShiftsData>(context,
-                                      listen: false)
-                                  .shiftsBySite[0]
-                                  .shiftId);
+
+                              Provider.of<SiteData>(context, listen: false)
+                                  .setDropDownIndex(widget.index);
+                              print("selected index = ${widget.index}");
+
                               Provider.of<SiteData>(context, listen: false)
                                   .setDropDownShift(1);
                               Navigator.of(context).push(

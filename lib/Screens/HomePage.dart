@@ -257,10 +257,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               },
               child: GestureDetector(
                 onTap: () async {
-                  HuaweiServices huaweiServices = HuaweiServices();
-                  bool status =
-                      await huaweiServices.isUnsupportedHuaweiDevice();
-                  print(status);
                   // sendRemoteMsg();
                   // FusedLocationProviderClient locationService =
                   //     FusedLocationProviderClient();

@@ -16,10 +16,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 
 import 'package:qr_users/Screens/HomePage.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';

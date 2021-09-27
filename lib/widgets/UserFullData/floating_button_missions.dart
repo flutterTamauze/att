@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/MLmodule/widgets/MissionsDisplay/DataTableMissionsHeader.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/missions_summary_table_end.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +10,6 @@ import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/widgets/CompanyMissions/DataTableMissionRow.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'dart:ui' as ui;
-
-import 'data_table_mission_row_single_user.dart';
 
 class FadeInMissionsFAbutton extends StatelessWidget {
   const FadeInMissionsFAbutton({
