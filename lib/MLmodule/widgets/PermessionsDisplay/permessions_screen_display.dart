@@ -1,22 +1,16 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
 
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData.dart';
 
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/user_data.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
-import '../../../constants.dart';
 import 'DataTablePermessionHeader.dart';
 
 class DisplayPermessions extends StatefulWidget {
@@ -98,15 +92,22 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                         .singleUserPermessions.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return Column(
-                                        children: [
-                                          DataTablePermessionRow(permessionProv
-                                              .singleUserPermessions[index]),
-                                          Divider(
-                                            thickness: 1,
-                                          )
-                                        ],
-                                      );
+                                      return permessionProv
+                                                  .singleUserPermessions[index]
+                                                  .permessionStatus ==
+                                              1
+                                          ? Column(
+                                              children: [
+                                                DataTablePermessionRow(
+                                                    permessionProv
+                                                            .singleUserPermessions[
+                                                        index]),
+                                                Divider(
+                                                  thickness: 1,
+                                                )
+                                              ],
+                                            )
+                                          : Container();
                                     });
                       }
                     })),

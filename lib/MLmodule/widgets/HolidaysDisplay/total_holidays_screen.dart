@@ -1,25 +1,17 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
-import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
-
-import '../../../constants.dart';
 
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
@@ -103,15 +95,20 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                         holidayProv.singleUserHoliday.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return Column(
-                                        children: [
-                                          DataTableHolidayRow(holidayProv
-                                              .singleUserHoliday[index]),
-                                          Divider(
-                                            thickness: 1,
-                                          )
-                                        ],
-                                      );
+                                      return holidayProv
+                                                  .singleUserHoliday[index]
+                                                  .holidayStatus ==
+                                              1
+                                          ? Column(
+                                              children: [
+                                                DataTableHolidayRow(holidayProv
+                                                    .singleUserHoliday[index]),
+                                                Divider(
+                                                  thickness: 1,
+                                                )
+                                              ],
+                                            )
+                                          : Container();
                                     });
                       }
                     })),

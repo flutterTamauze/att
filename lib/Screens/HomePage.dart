@@ -28,6 +28,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
@@ -256,6 +257,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               },
               child: GestureDetector(
                 onTap: () async {
+                  HuaweiServices huaweiServices = HuaweiServices();
+                  bool status =
+                      await huaweiServices.isUnsupportedHuaweiDevice();
+                  print(status);
                   // sendRemoteMsg();
                   // FusedLocationProviderClient locationService =
                   //     FusedLocationProviderClient();

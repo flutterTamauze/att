@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -139,10 +140,10 @@ class UserPermessionsData with ChangeNotifier {
         'Authorization': "Bearer $userToken"
       },
     );
-    print(response.body);
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
-      var permessionsObj = jsonDecode(response.body)['data'] as List;
+      var permessionsObj =
+          jsonDecode(response.body)['data']["Permissions"] as List;
       singleUserPermessions =
           permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
 

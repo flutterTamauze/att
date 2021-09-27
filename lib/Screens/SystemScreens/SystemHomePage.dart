@@ -418,7 +418,39 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                   ],
                                                                 ),
                                                               )
-                                                        : Container(
+                                                        : Column(
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  "resources/wrongLocation.json",
+                                                                  repeat: false,
+                                                                  width: 120.w,
+                                                                  height:
+                                                                      120.h),
+                                                              Container(
+                                                                height: 100,
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  maxLines: 4,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      height: 2,
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          18,
+                                                                          allowFontScalingSelf:
+                                                                              true)),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                    : Column(
+                                                        children: [
+                                                          Container(
                                                             height: 100,
                                                             child: AutoSizeText(
                                                               "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
@@ -436,24 +468,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                       allowFontScalingSelf:
                                                                           true)),
                                                             ),
-                                                          )
-                                                    : Container(
-                                                        height: 100,
-                                                        child: AutoSizeText(
-                                                          "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          maxLines: 4,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              height: 2,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(18,
-                                                                      allowFontScalingSelf:
-                                                                          true)),
-                                                        ),
+                                                          ),
+                                                        ],
                                                       )
                                                 : Container(
                                                     height: 20,
