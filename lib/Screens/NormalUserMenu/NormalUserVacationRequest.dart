@@ -263,6 +263,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                         .day +
                                                                     1),
                                                         lastDate: yesterday);
+                                                print(picked.length);
 
                                                 setState(() {
                                                   _today = picked.first;
@@ -282,7 +283,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   newString =
                                                       "$fromText $toText";
                                                 });
-
+                                                print(picked.length);
+                                                print(fromDate);
+                                                print(toDate);
                                                 if (_dateController.text !=
                                                     newString) {
                                                   _dateController.text =
@@ -699,11 +702,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         holidayDescription:
                                                             commentController
                                                                 .text,
-                                                        fromDate: picked[0],
-                                                        toDate: picked.length ==
-                                                                2
-                                                            ? picked[1]
-                                                            : DateTime.now(),
+                                                        fromDate: fromDate,
+                                                        toDate:
+                                                            picked.length == 2
+                                                                ? toDate
+                                                                : fromDate,
                                                         holidayType:
                                                             selectedReason ==
                                                                     "عارضة"
@@ -793,13 +796,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "لقد تم تقديم طلب من قبل",
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                errorToast();
                                               }
                                             });
                                           } else {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
@@ -72,11 +74,12 @@ class MissionsData with ChangeNotifier {
           'Authorization': "Bearer $userToken"
         });
 
-    print(response.body);
     var decodedResp = json.decode(response.body);
     if (decodedResp["message"] == "Success") {
-      var missionsObj = jsonDecode(response.body)['data'][1] as List;
-      var internalObj = jsonDecode(response.body)['data'][0] as List;
+      var missionsObj =
+          jsonDecode(response.body)['data']["ExternalMissions"] as List;
+      var internalObj =
+          jsonDecode(response.body)['data']["InternalMissions"] as List;
 
       List<CompanyMissions> externalMissions =
           missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();

@@ -74,6 +74,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
       String msg = await Provider.of<UserHolidaysData>(context, listen: false)
           .addHoliday(
               UserHolidays(
+                  createdOnDate: DateTime.now(),
                   userId: widget.member.id,
                   holidayType: 4,
                   fromDate: fromDate,
@@ -190,6 +191,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     fromDate = tomorrow;
     _selectedDateString = tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
+    _today = DateTime.now();
     sleectedMember =
         Provider.of<MemberData>(context, listen: false).membersList[0].name;
     super.initState();
@@ -561,12 +563,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             holidayDescription:
                                                                 commentController
                                                                     .text,
-                                                            fromDate: picked[0],
+                                                            fromDate: fromDate,
                                                             toDate:
                                                                 picked.length == 2
-                                                                    ? picked[1]
-                                                                    : DateTime
-                                                                        .now(),
+                                                                    ? toDate
+                                                                    : fromDate,
                                                             holidayType:
                                                                 selectedReason ==
                                                                         "عارضة"
@@ -575,6 +576,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                             "مرضية"
                                                                         ? 2
                                                                         : 3,
+                                                            createdOnDate:
+                                                                DateTime.now(),
                                                             holidayStatus: 3),
                                                         Provider.of<UserData>(
                                                                 context,
@@ -660,13 +663,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            "لقد تم تقديم طلب من قبل",
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        backgroundColor:
-                                                            Colors.red);
+                                                    errorToast();
                                                   }
                                                 });
                                               } else {

@@ -631,32 +631,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           .then((value) {
                                         print("VAlue $value");
                                         switch (value) {
-                                          case "fail shift":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
-                                                backgroundColor: Colors.red,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "null":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "fail present":
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    "لم يتم تسجيل حضور هذا المتسخدم",
-                                                backgroundColor: Colors.red,
-                                                gravity: ToastGravity.CENTER);
-                                            break;
-                                          case "fail":
-                                            errorToast();
-                                            break;
-                                          default:
+                                          case "success":
                                             sendFcmMessage(
                                                     topicName: "",
                                                     userToken:
@@ -684,6 +659,35 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                                 }
                                               }
                                             });
+                                            break;
+
+                                          case "fail shift":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
+                                                backgroundColor: Colors.red,
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "null":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "fail present":
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "لم يتم تسجيل حضور هذا المتسخدم",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER);
+                                            break;
+                                          case "fail":
+                                            errorToast();
+                                            break;
+                                          default:
+                                            errorToast();
                                         }
                                       }).then((value) =>
                                               Navigator.pop(context));

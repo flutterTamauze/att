@@ -101,7 +101,9 @@ class PendingCompanyVacations extends StatelessWidget {
                                                                           false)
                                                                   .user
                                                                   .userToken,
-                                                              comment);
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
 
                                                       if (msg ==
                                                           "Success : Updated!") {
@@ -171,7 +173,9 @@ class PendingCompanyVacations extends StatelessWidget {
                                                                           false)
                                                                   .user
                                                                   .userToken,
-                                                              comment);
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
 
                                                       if (msg ==
                                                           "Success : Updated!") {

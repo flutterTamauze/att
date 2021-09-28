@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
@@ -117,8 +119,14 @@ class UserHolidaysData with ChangeNotifier {
     }
   }
 
-  Future<String> acceptOrRefusePendingVacation(int status, int vacID,
-      String desc, String userToken, String adminComment) async {
+  Future<String> acceptOrRefusePendingVacation(
+      int status,
+      int vacID,
+      String desc,
+      String userToken,
+      String adminComment,
+      DateTime fromDate,
+      DateTime toDate) async {
     try {
       print(vacID);
       isLoading = true;
@@ -135,7 +143,9 @@ class UserHolidaysData with ChangeNotifier {
             "status": status,
             "id": vacID,
             "adminResponse": adminComment,
-            "Desc": desc
+            "Desc": desc,
+            "fromdate": fromDate.toIso8601String(),
+            "todate": toDate.toIso8601String()
           }));
       print(response.statusCode);
       isLoading = false;
@@ -232,6 +242,7 @@ class UserHolidaysData with ChangeNotifier {
     print(holiday.holidayDescription);
     isLoading = true;
     notifyListeners();
+
     var response = await http.post(Uri.parse("$baseURL/api/Holiday/AddHoliday"),
         headers: {
           'Content-type': 'application/json',
@@ -239,8 +250,8 @@ class UserHolidaysData with ChangeNotifier {
         },
         body: json.encode({
           "typeId": holiday.holidayType,
-          "fromdate": (holiday.fromDate.toIso8601String()),
-          "toDate": (holiday.toDate.toIso8601String()),
+          "fromdate": holiday.fromDate.toIso8601String(),
+          "toDate": holiday.toDate.toIso8601String(),
           "userId": userId,
           "desc": holiday.holidayDescription,
           "createdonDate": holiday.createdOnDate.toIso8601String(),

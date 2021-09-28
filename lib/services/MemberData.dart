@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/ApplicationRoles/application_roles.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
