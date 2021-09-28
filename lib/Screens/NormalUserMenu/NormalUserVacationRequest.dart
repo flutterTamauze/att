@@ -487,9 +487,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                   selectedDateString);
                                                         });
                                                       },
+                                                      initialDate: _tomorow,
                                                       type: DateTimePickerType
                                                           .date,
-                                                      firstDate: DateTime.now(),
+                                                      firstDate: _tomorow,
                                                       lastDate: DateTime(
                                                           DateTime.now().year,
                                                           DateTime.december,

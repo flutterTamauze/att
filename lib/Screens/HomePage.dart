@@ -140,34 +140,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
-    // checkBackgroundNotification();
-    checkForegroundNotification();
 
     notificationPermessions();
 
     WidgetsBinding.instance.addObserver(this);
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-
-    super.dispose();
-  }
-
-  saveNotificationToCache(RemoteMessage event) async {
-    await db.insertNotification(
-        NotificationMessage(
-          category: event.data["category"],
-          dateTime: DateTime.now().toString().substring(0, 10),
-          message: event.notification.body,
-          messageSeen: 0,
-          title: event.notification.title,
-        ),
-        context);
-    // player.play("notification.mp3");
   }
 
   // String _token = '';
@@ -193,23 +171,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   //   hawawi.Push.onMessageReceivedStream
   //       .listen(_onMessageReceived, onError: _onMessageReceiveError);
   // }
-  NotificationDataService _notifService = NotificationDataService();
-  checkForegroundNotification() {
-    FirebaseMessaging.onMessageOpenedApp.listen((event) async {
-      print("####Recveiving data on message tapped ####");
-      print(event.notification.body);
-      print(event.notification.title);
-      print(event.data["category"] == "attend");
-      saveNotificationToCache(event);
-      // player.play("notification.mp3");
-      if (event.data["category"] == "attend") {
-        log("Opened an attend proov notification !");
-        print(event.notification.body);
-        print(event.notification.title);
-        _notifService.showAttendanceCheckDialog(context);
-      }
-    });
-  }
 
   static Future<String> getDeviceUUID() async {
     String identifier;
@@ -257,6 +218,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               },
               child: GestureDetector(
                 onTap: () async {
+                  print(await getDeviceUUID());
                   // sendRemoteMsg();
                   // FusedLocationProviderClient locationService =
                   //     FusedLocationProviderClient();

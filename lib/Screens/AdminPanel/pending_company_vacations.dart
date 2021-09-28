@@ -20,9 +20,7 @@ class PendingCompanyVacations extends StatelessWidget {
   Widget build(BuildContext context) {
     var pendingList = Provider.of<UserHolidaysData>(context);
     return GestureDetector(
-      onTap: () {
-        print(comment);
-      },
+      onTap: () {},
       child: Scaffold(
         endDrawer: NotificationItem(),
         body: Container(
@@ -121,6 +119,13 @@ class PendingCompanyVacations extends StatelessWidget {
                                                                 "تم الموافقة بنجاح",
                                                             backgroundColor:
                                                                 Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail : User not found") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى بيانات المستخدم",
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg:
@@ -184,6 +189,13 @@ class PendingCompanyVacations extends StatelessWidget {
                                                                 "تم الرفض بنجاح",
                                                             backgroundColor:
                                                                 Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail : User not found") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى بيانات المستخدم",
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: "خطأ في الرفض",

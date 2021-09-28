@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dart:ui' as ui;
 import 'package:getwidget/components/animation/gf_animation.dart';
@@ -141,35 +142,31 @@ class NotificationItem extends StatelessWidget {
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
-                          onTap: () async {
-                            return showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: RoundedAlert(
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          Provider.of<NotificationDataService>(
-                                                  context,
-                                                  listen: false)
-                                              .clearNotifications();
-                                          await db.clearNotifications();
-                                        },
-                                        content: "حذف الأشعارات",
-                                        onCancel: () {},
-                                        title: "هل تريد حذف كل الأشعارات؟"),
-                                  );
-                                });
-                          },
-                          child: Text(
-                            "مسح الكل",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
+                            onTap: () async {
+                              return showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: RoundedAlert(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            Provider.of<NotificationDataService>(
+                                                    context,
+                                                    listen: false)
+                                                .clearNotifications();
+                                            await db.clearNotifications();
+                                          },
+                                          content: "حذف الأشعارات",
+                                          onCancel: () {},
+                                          title: "هل تريد حذف كل الأشعارات؟"),
+                                    );
+                                  });
+                            },
+                            child: FaIcon(
+                              FontAwesomeIcons.trash,
+                              color: Colors.white,
+                            )),
                       )
               ],
             ),

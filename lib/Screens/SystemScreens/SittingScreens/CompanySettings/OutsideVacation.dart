@@ -46,11 +46,11 @@ DateTime toDate;
 String toText;
 String fromText;
 DateTime fromDate;
-DateTime yesterday, tomorrow;
+DateTime yesterday, tomorrow, _today;
 TextEditingController timeOutController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
-
+String newString = "";
 List<String> missions = ["داخلية", "خارجية"];
 TimeOfDay toPicked;
 String dateDifference;
@@ -358,17 +358,27 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     .showDatePicker(
                                                         context: context,
                                                         initialFirstDate:
-                                                            fromDate,
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? _today
+                                                                : tomorrow,
                                                         initialLastDate: toDate,
                                                         firstDate: DateTime(
                                                             DateTime.now().year,
                                                             DateTime.now()
                                                                 .month,
-                                                            DateTime.now().day +
-                                                                1),
+                                                            selectedReason ==
+                                                                    "عارضة"
+                                                                ? DateTime.now()
+                                                                    .day
+                                                                : DateTime.now()
+                                                                        .day +
+                                                                    1),
                                                         lastDate: yesterday);
-                                                var newString = "";
+
                                                 setState(() {
+                                                  _today = picked.first;
+                                                  tomorrow = picked.first;
                                                   fromDate = picked.first;
                                                   toDate = picked.last;
                                                   dateDifference = (toDate
@@ -501,6 +511,17 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     selectedReason = value;
+                                                    if (value != "عارضة") {
+                                                      _dateController.text = "";
+                                                      newString = "";
+                                                      tomorrow = DateTime(
+                                                          DateTime.now().year,
+                                                          DateTime.now().month,
+                                                          DateTime.now().day +
+                                                              1);
+                                                      _today = DateTime.now();
+                                                      toDate = tomorrow;
+                                                    }
                                                   });
                                                 },
                                                 value: selectedReason,

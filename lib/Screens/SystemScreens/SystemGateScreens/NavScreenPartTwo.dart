@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/ReportScreen.dart';
@@ -51,7 +55,39 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     current = getIndex;
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
+    checkForegroundNotification();
     super.initState();
+  }
+
+  saveNotificationToCache(RemoteMessage event) async {
+    await db.insertNotification(
+        NotificationMessage(
+          category: event.data["category"],
+          dateTime: DateTime.now().toString().substring(0, 10),
+          message: event.notification.body,
+          messageSeen: 0,
+          title: event.notification.title,
+        ),
+        context);
+    // player.play("notification.mp3");
+  }
+
+  NotificationDataService _notifService = NotificationDataService();
+  checkForegroundNotification() {
+    FirebaseMessaging.onMessageOpenedApp.listen((event) async {
+      print("####Recveiving data on message tapped ####");
+      print(event.notification.body);
+      print(event.notification.title);
+      print(event.data["category"] == "attend");
+      saveNotificationToCache(event);
+      // player.play("notification.mp3");
+      if (event.data["category"] == "attend") {
+        log("Opened an attend proov notification !");
+        print(event.notification.body);
+        print(event.notification.title);
+        _notifService.showAttendanceCheckDialog(context);
+      }
+    });
   }
 
   @override

@@ -120,6 +120,7 @@ class UserHolidaysData with ChangeNotifier {
   Future<String> acceptOrRefusePendingVacation(int status, int vacID,
       String desc, String userToken, String adminComment) async {
     try {
+      print(vacID);
       isLoading = true;
       notifyListeners();
       var response = await http.put(
@@ -141,7 +142,8 @@ class UserHolidaysData with ChangeNotifier {
       notifyListeners();
       print(response.body);
       var decodedResp = json.decode(response.body);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 &&
+          (!decodedResp["message"].toString().contains("Fail"))) {
         pendingCompanyHolidays
             .removeWhere((element) => element.holidayNumber == vacID);
 

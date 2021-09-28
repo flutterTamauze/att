@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -130,6 +131,19 @@ class NotificationDataService with ChangeNotifier {
         // player.play("notification.mp3");
       }
     });
+  }
+
+  saveNotificationToCache(RemoteMessage event, BuildContext context) async {
+    await db.insertNotification(
+        NotificationMessage(
+          category: event.data["category"],
+          dateTime: DateTime.now().toString().substring(0, 10),
+          message: event.notification.body,
+          messageSeen: 0,
+          title: event.notification.title,
+        ),
+        context);
+    // player.play("notification.mp3");
   }
 
   showAttendanceCheckDialog(BuildContext context) {
