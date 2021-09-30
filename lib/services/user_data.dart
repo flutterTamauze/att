@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
-
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -20,6 +21,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
@@ -32,6 +34,7 @@ class UserData with ChangeNotifier {
 //   var cacheValCompanyIcon = "";
 // var companyDataArname="";
   String siteName;
+  String hawawiToken = "";
   Position _currentPosition;
   bool changedPassword;
   bool isLoading = false;
@@ -88,15 +91,23 @@ class UserData with ChangeNotifier {
 
     print("i am in login now ");
     var token;
+    bool isHuawei = false;
     if (connectivityResult != ConnectivityResult.none) {
-      bool isError = false;
-      String isnull = await firebaseMessaging.getToken().catchError((e) {
-        token = "null";
-        isError = true;
-      });
+      HuaweiServices _huawei = HuaweiServices();
+      if (await _huawei.isHuaweiDevice()) {
+        log("huawei detected");
+        token = hawawiToken;
+        isHuawei = true;
+      } else {
+        bool isError = false;
+        String isnull = await firebaseMessaging.getToken().catchError((e) {
+          token = "null";
+          isError = true;
+        });
 
-      if (isError == false) {
-        token = await firebaseMessaging.getToken();
+        if (isError == false) {
+          token = await firebaseMessaging.getToken();
+        }
       }
 
       print("token fcm :$token");
@@ -106,7 +117,16 @@ class UserData with ChangeNotifier {
         final response = await http.post(
             Uri.parse("$baseURL/api/Authenticate/login"),
             body: json.encode(
-              {"Username": username, "Password": password, "FCMToken": token},
+              {
+                "Username": username,
+                "Password": password,
+                "FCMToken": token,
+                "MobileOS": isHuawei
+                    ? 3
+                    : Platform.isIOS
+                        ? 2
+                        : 1
+              },
             ),
             headers: {
               'Content-type': 'application/json',
@@ -120,7 +140,7 @@ class UserData with ChangeNotifier {
         var decodedRes = json.decode(response.body);
         print(decodedRes["statusCode"]);
         if (decodedRes["statusCode"] == 200) {
-          print(response.body);
+          log(response.body);
           print(response.statusCode);
           print("token is :${decodedRes["token"]}");
           if (decodedRes["message"] == "Success : ") {
@@ -134,6 +154,7 @@ class UserData with ChangeNotifier {
             user.phoneNum = decodedRes["userData"]["phoneNumber"];
             user.userType = decodedRes["userData"]["userType"];
             user.fcmToken = decodedRes["userData"]["fcmToken"];
+            user.osType = decodedRes["userData"]["mobileOS"];
             user.salary = decodedRes["userData"]["salary"];
             user.createdOn =
                 DateTime.tryParse(decodedRes["userData"]["createdOn"]);
@@ -379,7 +400,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         String imei = await getDeviceUUID();
         print("imei is : $imei");
-        final uri = '$localURL/api/AttendLogin';
+        final uri = '$baseURL/api/AttendLogin';
         print(
             "Request:- URL:$uri Qrcode:$qrCode UserID:${user.id} long:${_currentPosition.longitude.toString()} lat:${_currentPosition.latitude.toString()} UserMacAdd: $imei token:${user.userToken} ");
         final headers = {
@@ -646,7 +667,7 @@ class User {
   double salary;
   String name;
   bool isAllowedToAttend;
-  int userSiteId;
+  int userSiteId, osType;
   int userType;
   int userShiftId;
   String email;
@@ -657,22 +678,22 @@ class User {
   String id;
   DateTime createdOn;
 
-  User({
-    this.userToken,
-    this.fcmToken,
-    this.id,
-    this.userImage,
-    this.salary,
-    this.isAllowedToAttend,
-    this.userShiftId,
-    this.userSiteId,
-    this.userID,
-    this.name,
-    this.createdOn,
-    this.userJob,
-    this.email,
-    this.userType,
-    this.phoneNum,
-    this.password,
-  });
+  User(
+      {this.userToken,
+      this.fcmToken,
+      this.id,
+      this.userImage,
+      this.salary,
+      this.isAllowedToAttend,
+      this.userShiftId,
+      this.userSiteId,
+      this.userID,
+      this.name,
+      this.createdOn,
+      this.userJob,
+      this.email,
+      this.userType,
+      this.phoneNum,
+      this.password,
+      this.osType});
 }

@@ -9,20 +9,24 @@ import 'package:huawei_location/location/location_request.dart';
 import 'package:huawei_location/location/location_settings_request.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import '../../constants.dart';
 
 class HuaweiServices {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  Future<bool> isUnsupportedHuaweiDevice() async {
+  Future<bool> isHuaweiDevice() async {
     bool isFirebaseSupported = true;
     await firebaseMessaging.getToken().catchError((e) {
       isFirebaseSupported = false;
     });
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    if (androidInfo.model == "HUAWEI" && isFirebaseSupported == false) {
+    String deviceType = androidInfo.manufacturer;
+    if ((deviceType == "HUAWEI" ||
+            deviceType == "Huawei" ||
+            deviceType == "huawei") &&
+        isFirebaseSupported == false) {
       return true;
     }
     return false;
@@ -62,20 +66,16 @@ class HuaweiServices {
     return json.decode(response.body)["access_token"];
   }
 
-  huaweiPostNotification(tokenAccess, deviceToken) async {
+  huaweiPostNotification(
+      deviceToken, String title, String desc, String category) async {
     var mData = {
-      "pushtype":
-          0, // The value 0 indicates that the message is a notification message.
-      "pushbody": {
-        "title": "Push message title",
-        "description": "Push message content",
-        // Path of the quick app page that is displayed when a user taps a notification message. This parameter is valid only when pushtype is set to 0. The value / indicates that the target page is the quick app home page.
-      }
+      "pushtype": 0,
+      "pushbody": {"title": title, "description": desc, "category": category}
     };
     try {
       log("sending huawei post");
 
-      print(tokenAccess);
+      var tokenAccess = await getAccessToken();
       var response = await http.post(
           Uri.parse(
               "https://push-api.cloud.huawei.com/v1/$huaweiAppId/messages:send"),
@@ -86,7 +86,7 @@ class HuaweiServices {
           body: json.encode({
             "validate_only": false,
             "message": {
-              "data": mData.toString(),
+              "data": json.encode(mData),
               "android": {"fast_app_target": 1},
               "token": [deviceToken],
             }

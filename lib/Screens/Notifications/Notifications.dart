@@ -239,7 +239,7 @@ class _NotificationsDataState extends State<NotificationsData>
                   ),
                   child: Container(
                       padding: EdgeInsets.all(5),
-                      height: 70.h,
+                      height: 90.h,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -313,6 +313,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                       widget.notoficationSubtitle,
                                       style: TextStyle(
                                           color: Colors.grey[300],
+                                          height: 1.2,
                                           fontSize: 11),
                                       textAlign: TextAlign.right,
                                     ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,8 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/DaysOff.dart';
-
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -86,7 +88,11 @@ class _SplashScreenState extends State<SplashScreen>
     Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
 
     return Provider.of<UserData>(context, listen: false)
-        .loginPost(userName, password, context)
+        .loginPost(
+      userName,
+      password,
+      context,
+    )
         .catchError(((e) {
       print(e);
     }));
@@ -209,13 +215,36 @@ class _SplashScreenState extends State<SplashScreen>
     // _mlKitService.initialize();
   }
 
+  String _token = "";
+  void _onTokenEvent(String event) {
+    _token = event;
+    print("TokenEvent: " + _token);
+  }
+
+  initPlatformState() async {
+    var code = await hawawi.Push.getAAID();
+    await hawawi.Push.getToken(code);
+    hawawi.Push.getTokenStream.listen(_onTokenEvent).onData((data) {
+      log(data);
+      Provider.of<UserData>(context, listen: false).hawawiToken = data;
+    });
+  }
+
+  HuaweiServices huaweiServices = HuaweiServices();
+  fillHuaweiToken() async {
+    bool isHuawei = await huaweiServices.isHuaweiDevice();
+    if (isHuawei) {
+      log("iS HUAWEI IS SUCCESS");
+      await initPlatformState();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    DatabaseHelper db = DatabaseHelper();
     // filterList();
     // loadModel();
-
+    fillHuaweiToken();
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,

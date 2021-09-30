@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -107,15 +108,35 @@ class PendingCompanyVacations extends StatelessWidget {
 
                                                       if (msg ==
                                                           "Success : Updated!") {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "vacation",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اجازة",
-                                                            message:
-                                                                "تم الموافقة على طلب الأجازة");
+                                                        HuaweiServices _huawei =
+                                                            HuaweiServices();
+                                                        if (Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .osType ==
+                                                            3) {
+                                                          await _huawei
+                                                              .huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اجازة",
+                                                                  "تم الموافقة على طلب الأجازة",
+                                                                  "vacation");
+                                                        } else {
+                                                          await sendFcmMessage(
+                                                              category:
+                                                                  "vacation",
+                                                              topicName: "",
+                                                              userToken: pending
+                                                                  .fcmToken,
+                                                              title:
+                                                                  "طلب اجازة",
+                                                              message:
+                                                                  "تم الموافقة على طلب الأجازة");
+                                                        }
+
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 "تم الموافقة بنجاح",

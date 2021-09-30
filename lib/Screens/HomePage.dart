@@ -79,7 +79,7 @@ void notificationPermessions() async {
   print("User granted permession ${settings.authorizationStatus}");
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> {
   static const MethodChannel _channel =
       MethodChannel('tdsChilango.com/channel_test');
   Map<String, String> channelMap = {
@@ -95,14 +95,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
-    //  Called when a data message is received
-    log("message recieved ");
-    String data = remoteMessage.data;
-    // NotificationDataService dataService = NotificationDataService();
-    // dataService.showAttendanceCheckDialog(context);
-    print(data);
-  }
+  // void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
+  //   //  Called when a data message is received
+  //   log("message recieved ");
+  //   var data = remoteMessage.data;
+  //   log(data);
+
+  //   var decodedREspo = json.decode(data);
+  //   // NotificationDataService dataService = NotificationDataService();
+  //   // dataService.showAttendanceCheckDialog(context);
+
+  //   print(decodedREspo["pushbody"]);
+  // }
 
   // void sendRemoteMsg() async {
   //   hawawi.RemoteMessageBuilder remoteMsg = hawawi.RemoteMessageBuilder(
@@ -118,20 +122,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   //   print(result);
   // }
 
-  void _onMessageReceiveError(Object error) {
-    // Called when an error occurs while receiving the data message
-  }
+  // void _onMessageReceiveError(Object error) {
+  //   // Called when an error occurs while receiving the data message
+  // }
   @override
   void initState() {
     // test();
 
-    initPlatformState();
+    // initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
-
+    Provider.of<NotificationDataService>(context, listen: false)
+        .huaweiMessagingConfig(context);
     notificationPermessions();
-
-    WidgetsBinding.instance.addObserver(this);
 
     super.initState();
   }
@@ -150,15 +153,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print("TokenErrorEvent: " + e.message);
   }
 
-  Future<void> initPlatformState() async {
-    var code = await hawawi.Push.getAAID();
-    await hawawi.Push.getToken(code);
-    if (!mounted) return;
-    hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-    if (!mounted) return;
-    hawawi.Push.onMessageReceivedStream
-        .listen(_onMessageReceived, onError: _onMessageReceiveError);
-  }
+  // Future<void> initPlatformState() async {
+  //   var code = await hawawi.Push.getAAID();
+  //   await hawawi.Push.getToken(code);
+  //   if (!mounted) return;
+  //   hawawi.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+  //   if (!mounted) return;
+  //   hawawi.Push.onMessageReceivedStream
+  //       .listen(_onMessageReceived, onError: _onMessageReceiveError);
+  // }
 
   static Future<String> getDeviceUUID() async {
     String identifier;
@@ -203,9 +206,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: GestureDetector(
               onTap: () async {
                 print(await getDeviceUUID());
-                print(Provider.of<ShiftsData>(context, listen: false)
-                    .shiftsList[3]
-                    .shiftQrCode);
+                print(userDataProvider.user.fcmToken);
+                print(userDataProvider.user.osType);
+
+                // await huaweiServices.huaweiPostNotification(
+                //     "AGZ8A8VIgh_7YdND0zl4rdDyELzf8z7WTA29kFj92suWmP1ldxHBSWcLwAsioNduuEf1rXlM0ZRlbss9ba_reqYSivXdSLCxcKD8Kms0RTFMymlmMccP_qpm9g2-93WW1Q");
                 // String accessToken = await (getAccessToken());
                 // await huaweiPostNotification(accessToken, _token);
                 // sendRemoteMsg();

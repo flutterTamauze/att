@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 // import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +13,11 @@ import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 
 import 'NotificationMessage.dart';
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 
 class NotificationDataService with ChangeNotifier {
   bool showNotificationDot = false;
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
 
   List<NotificationMessage> notification = [];
   // setNotificationList(List<NotificationMessage> notifyList) {
@@ -97,6 +100,40 @@ class NotificationDataService with ChangeNotifier {
 
   bool finshed = false;
   int counter = 0;
+  huaweiMessagingConfig(BuildContext context) async {
+    hawawi.Push.onMessageReceivedStream.listen((_onMessageReceived) async {
+      log("huawei message recieved ");
+
+      // NotificationDataService dataService = NotificationDataService();
+      // dataService.showAttendanceCheckDialog(context);
+      var data = _onMessageReceived.data;
+      var decodedResponse = json.decode(data);
+      if (decodedResponse["pushbody"]["category"] == "attend") {
+        showAttendanceCheckDialog(context);
+      }
+      await db
+          .insertNotification(
+              NotificationMessage(
+                  category: decodedResponse["pushbody"]["category"],
+                  dateTime: DateTime.now().toString().substring(0, 10),
+                  message: decodedResponse["pushbody"]["description"],
+                  messageSeen: 0,
+                  title: decodedResponse["pushbody"]["title"],
+                  timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
+              context)
+          .then((value) => counter = 0)
+          .then((value) async => await addNotification(
+              decodedResponse["pushbody"]["title"],
+              decodedResponse["pushbody"]["description"],
+              DateTime.now().toString().substring(0, 10),
+              decodedResponse["pushbody"]["category"],
+              DateFormat('kk:mm:a').format(DateTime.now()),
+              value));
+
+      player.play("notification.mp3");
+    });
+  }
+
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
       counter++;
@@ -128,7 +165,7 @@ class NotificationDataService with ChangeNotifier {
                 DateFormat('kk:mm:a').format(DateTime.now()),
                 value));
 
-        // player.play("notification.mp3");
+        player.play("notification.mp3");
       }
     });
   }

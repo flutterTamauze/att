@@ -21,6 +21,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/Shift
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/DaysOff.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -632,33 +633,42 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         print("VAlue $value");
                                         switch (value) {
                                           case "success":
-                                            sendFcmMessage(
-                                                    topicName: "",
-                                                    userToken:
-                                                        widget.user.fcmToken,
-                                                    title: "اثبات حضور",
-                                                    category: "attend",
-                                                    message:
-                                                        "برجاء اثبات حضورك الأن")
-                                                .then((value) {
-                                              if (value) {
-                                                Fluttertoast.showToast(
-                                                    msg: "تم الأرسال بنجاح",
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                    gravity:
-                                                        ToastGravity.CENTER);
-                                              } else {
+                                            HuaweiServices _huawei =
+                                                HuaweiServices();
+                                            if (widget.user.osType == 3) {
+                                              _huawei.huaweiPostNotification(
+                                                  widget.user.fcmToken,
+                                                  "اثبات حضور",
+                                                  "تم وضع اجازة لك ",
+                                                  "attend");
+                                            } else
+                                              sendFcmMessage(
+                                                      topicName: "",
+                                                      userToken:
+                                                          widget.user.fcmToken,
+                                                      title: "اثبات حضور",
+                                                      category: "attend",
+                                                      message:
+                                                          "برجاء اثبات حضورك الأن")
+                                                  .then((value) {
                                                 if (value) {
                                                   Fluttertoast.showToast(
-                                                      msg: "خطأ فى الأرسال ",
+                                                      msg: "تم الأرسال بنجاح",
                                                       backgroundColor:
-                                                          Colors.red,
+                                                          Colors.green,
                                                       gravity:
                                                           ToastGravity.CENTER);
+                                                } else {
+                                                  if (value) {
+                                                    Fluttertoast.showToast(
+                                                        msg: "خطأ فى الأرسال ",
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  }
                                                 }
-                                              }
-                                            });
+                                              });
                                             break;
 
                                           case "fail shift":

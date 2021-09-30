@@ -777,7 +777,6 @@ class _DataTableRowState extends State<DataTableRow> {
                   : Container(
                       width: 160.w,
                       child: Container(
-                        height: 30.h,
                         child: AutoSizeText(
                           widget.attendUnit.userName,
                           maxLines: 1,

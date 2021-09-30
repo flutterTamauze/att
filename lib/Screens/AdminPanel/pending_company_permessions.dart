@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -108,15 +109,34 @@ class PendingCompanyPermessions extends StatelessWidget {
 
                                                       if (msg ==
                                                           "Success : User Updated!") {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "permession",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اذن",
-                                                            message:
-                                                                "تم رفض طلب الأذن");
+                                                        HuaweiServices _huawei =
+                                                            HuaweiServices();
+                                                        if (Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .osType ==
+                                                            3) {
+                                                          await _huawei
+                                                              .huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اذن",
+                                                                  "تم رفض طلب الأذن",
+                                                                  "permession");
+                                                        } else {
+                                                          await sendFcmMessage(
+                                                              category:
+                                                                  "permession",
+                                                              topicName: "",
+                                                              userToken: pending
+                                                                  .fcmToken,
+                                                              title: "طلب اذن",
+                                                              message:
+                                                                  "تم رفض طلب الأذن");
+                                                        }
+
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 "تم الرفض بنجاح",
@@ -171,15 +191,34 @@ class PendingCompanyPermessions extends StatelessWidget {
 
                                                       if (msg ==
                                                           "Success : User Updated!") {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "permession",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اذن",
-                                                            message:
-                                                                "تم الموافقة على طلب الأذن");
+                                                        HuaweiServices _huawei =
+                                                            HuaweiServices();
+                                                        if (Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .osType ==
+                                                            3) {
+                                                          await _huawei
+                                                              .huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اذن",
+                                                                  "تم الموافقة على طلب الأذن",
+                                                                  "permession");
+                                                        } else {
+                                                          await sendFcmMessage(
+                                                              category:
+                                                                  "permession",
+                                                              topicName: "",
+                                                              userToken: pending
+                                                                  .fcmToken,
+                                                              title: "طلب اذن",
+                                                              message:
+                                                                  "تم الموافقة على طلب الأذن");
+                                                        }
+
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 "تم الموافقة بنجاح",

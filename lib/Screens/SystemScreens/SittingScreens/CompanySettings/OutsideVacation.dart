@@ -14,6 +14,7 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -89,7 +90,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
             gravity: ToastGravity.CENTER);
         await sendFcmMessage(
           category: "externalMission",
-          message: "تم تسجيل مأمورية خارجية لك",
+          message:
+              "تم تسجيل مأمورية خارجية لك \n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
           userToken: widget.member.fcmToken,
           topicName: "",
           title: "تم تكليفك بمأمورية",
@@ -105,6 +107,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
             msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
+      } else if (msg ==
+          "Failed : There are an internal Mission in this period!") {
+        Fluttertoast.showToast(
+            msg: "يوجد مأمورية داخلية فى هذا التاريخ",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
       } else {
         Fluttertoast.showToast(
             msg: "خطأ في اضافة المأمورية",
@@ -118,7 +126,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
   }
 
   List<DateTime> picked = [];
-  addInternalMission() async {
+  addInternalMission(
+      String sitename, String shiftname, String fromdate, String todate) async {
     var prov = Provider.of<SiteData>(context, listen: false);
     if (prov.siteValue == "كل المواقع" || picked.isEmpty) {
       Fluttertoast.showToast(
@@ -143,13 +152,25 @@ class _OutsideVacationState extends State<OutsideVacation> {
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
         print(widget.member.fcmToken);
-        sendFcmMessage(
-          category: "internalMission",
-          message: "تم تسجيل مأمورية داخلية لك ",
-          userToken: widget.member.fcmToken,
-          topicName: "",
-          title: "تم تكليفك بمأمورية",
-        ).then((value) => Navigator.pop(context));
+        HuaweiServices _huawei = HuaweiServices();
+        if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+          await _huawei.huaweiPostNotification(
+            widget.member.fcmToken,
+            "تم تكليفك بمأمورية",
+            " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftname )\n من ( $fromdate - $todate )",
+            widget.member.fcmToken,
+          );
+          Navigator.pop(context);
+        } else {
+          sendFcmMessage(
+            category: "internalMission",
+            message:
+                " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftname )\n من ( $fromdate - $todate )",
+            userToken: widget.member.fcmToken,
+            topicName: "",
+            title: "تم تكليفك بمأمورية",
+          ).then((value) => Navigator.pop(context));
+        }
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         Fluttertoast.showToast(
@@ -214,6 +235,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
   Widget build(BuildContext context) {
     var prov = Provider.of<SiteData>(context, listen: false);
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
+    var shiftsData = Provider.of<ShiftsData>(context, listen: false);
+    var sitesData = Provider.of<SiteData>(context, listen: false);
     return GestureDetector(
         onTap: () {
           _nameController.text == ""
@@ -591,15 +614,34 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     return showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                        sendFcmMessage(
-                                                          topicName: "",
-                                                          title: "أجازة",
-                                                          category: "vacation",
-                                                          userToken: widget
-                                                              .member.fcmToken,
-                                                          message:
+                                                        HuaweiServices _huawei =
+                                                            HuaweiServices();
+                                                        if (Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .osType ==
+                                                            3) {
+                                                          _huawei.huaweiPostNotification(
+                                                              widget.member
+                                                                  .fcmToken,
+                                                              "أجازة",
                                                               "تم وضع اجازة لك ",
-                                                        );
+                                                              "vacation");
+                                                        } else {
+                                                          sendFcmMessage(
+                                                            topicName: "",
+                                                            title: "أجازة",
+                                                            category:
+                                                                "vacation",
+                                                            userToken: widget
+                                                                .member
+                                                                .fcmToken,
+                                                            message:
+                                                                "تم وضع اجازة لك ",
+                                                          );
+                                                        }
 
                                                         return StackedNotificaitonAlert(
                                                           repeatAnimation:
@@ -864,7 +906,21 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     addExternalMission();
                                                   } //داخلية
                                                   else {
-                                                    addInternalMission();
+                                                    addInternalMission(
+                                                        sitesData
+                                                            .sitesList[sitesData
+                                                                .dropDownSitesIndex]
+                                                            .name,
+                                                        shiftsData
+                                                            .shiftsBySite[sitesData
+                                                                .dropDownShiftIndex]
+                                                            .shiftName,
+                                                        fromDate
+                                                            .toString()
+                                                            .substring(0, 11),
+                                                        toDate
+                                                            .toString()
+                                                            .substring(0, 11));
                                                   }
                                                 },
                                                 title: "حفظ",
@@ -1252,17 +1308,35 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       return showDialog(
                                                         context: context,
                                                         builder: (context) {
-                                                          sendFcmMessage(
-                                                            topicName: "",
-                                                            userToken: widget
-                                                                .member
-                                                                .fcmToken,
-                                                            title: "اذن",
-                                                            category:
-                                                                "permession",
-                                                            message:
-                                                                "تم وضع اذن لك",
-                                                          );
+                                                          HuaweiServices
+                                                              _huawei =
+                                                              HuaweiServices();
+                                                          if (Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .osType ==
+                                                              3) {
+                                                            _huawei.huaweiPostNotification(
+                                                                widget.member
+                                                                    .fcmToken,
+                                                                "اذن",
+                                                                "تم وضع اجازة لك ",
+                                                                "permession");
+                                                          } else {
+                                                            sendFcmMessage(
+                                                              topicName: "",
+                                                              userToken: widget
+                                                                  .member
+                                                                  .fcmToken,
+                                                              title: "اذن",
+                                                              category:
+                                                                  "permession",
+                                                              message:
+                                                                  "تم وضع اذن لك",
+                                                            );
+                                                          }
 
                                                           return StackedNotificaitonAlert(
                                                             repeatAnimation:

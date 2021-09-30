@@ -55,6 +55,8 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     current = getIndex;
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
+    Provider.of<NotificationDataService>(context, listen: false)
+        .huaweiMessagingConfig(context);
     checkForegroundNotification();
     super.initState();
   }

@@ -21,7 +21,7 @@ class Member {
   String jobTitle;
   String userImageURL;
   String normalizedName;
-  int shiftId;
+  int shiftId, osType;
   String email;
   String phoneNumber;
   String id;
@@ -37,6 +37,7 @@ class Member {
     this.excludeFromReport,
     this.jobTitle,
     this.email,
+    this.osType,
     this.normalizedName,
     this.id,
     this.shiftId,
@@ -57,6 +58,7 @@ class Member {
         salary: json["salary"],
         hiredDate: DateTime.tryParse(json["createdOn"]),
         userType: json['userType'],
+        osType: json["mobileOS"],
         normalizedName: json["userName"],
         jobTitle: json['userJob']);
   }
