@@ -128,6 +128,13 @@ class PendingCompanyVacations extends StatelessWidget {
                                                                 "خطأ فى بيانات المستخدم",
                                                             backgroundColor:
                                                                 Colors.red);
+                                                      } else if (msg ==
+                                                          "Fail: holiday time out!") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى الموافقة : انتهى وقت الرد",
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg:
@@ -198,6 +205,13 @@ class PendingCompanyVacations extends StatelessWidget {
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 "خطأ فى بيانات المستخدم",
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else if (msg ==
+                                                          "Fail: holiday time out!") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى الرفض : انتهى وقت الرد",
                                                             backgroundColor:
                                                                 Colors.red);
                                                       } else {

@@ -159,8 +159,10 @@ class UserHolidaysData with ChangeNotifier {
 
         print(decodedResp["message"]);
         notifyListeners();
+        log(decodedResp["message"]);
         return decodedResp["message"];
       }
+      return decodedResp["message"];
     } catch (e) {
       print(e);
     }

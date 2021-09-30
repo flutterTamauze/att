@@ -10,7 +10,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 final googleDriveLink =
     "https://download1484.mediafire.com/f48w8k7ip7xg/kij2aisrzghhz5p/ChilangoV3.apk";
 final baseURL = "https://Chilangoback.tamauzeds.com";
-final localURL = "http://192.168.0.119:8010";
+final localURL = "http://192.168.0.123:8010";
+final huaweiAppId = "104665933";
+final huaweiSecret =
+    "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
 // final baseURL = "http://192.168.1.38:45456";
 final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 List<String> weekDays = [

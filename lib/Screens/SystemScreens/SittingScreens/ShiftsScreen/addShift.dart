@@ -11,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
 
 import 'package:qr_users/constants.dart';
@@ -186,6 +187,18 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
       fromPicked = (intToTimeOfDay(0));
       toPicked = (intToTimeOfDay(0));
+      friFromT = (intToTimeOfDay(0));
+      friToT = (intToTimeOfDay(0));
+      sunFromT = (intToTimeOfDay(0));
+      sunToT = (intToTimeOfDay(0));
+      monFromT = (intToTimeOfDay(0));
+      monToT = (intToTimeOfDay(0));
+      tuesFromT = (intToTimeOfDay(0));
+      tuesToT = (intToTimeOfDay(0));
+      thuFromT = (intToTimeOfDay(0));
+      thuToT = (intToTimeOfDay(0));
+      wedFromT = (intToTimeOfDay(0));
+      wedToT = (intToTimeOfDay(0));
 
       siteId = widget.siteId;
     }
@@ -216,6 +229,17 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     return "${formatter.format(h)}:${formatter.format(m)}";
   }
 
+  bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
+    int startNumber = (startTime.hour * 60) + startTime.minute;
+    int endNumber = (endTime.hour * 60) + endTime.minute;
+    int difference = endNumber - startNumber.abs();
+    print(difference);
+    if (difference >= 180)
+      return true;
+    else
+      return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
@@ -233,9 +257,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           height: MediaQuery.of(context).size.height,
           child: GestureDetector(
             onTap: () {
-              print(tuesFromT);
-              print(tuesFrom);
-              print(_tuesFrom);
+              print(sunFromT);
+              print(compareShiftTime(sunFromT, sunToT));
             },
             behavior: HitTestBehavior.opaque,
             onPanDown: (_) {
@@ -976,89 +999,109 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           return RoundedLoadingIndicator();
         });
     var user = Provider.of<UserData>(context, listen: false).user;
-    print(Provider.of<SiteData>(context, listen: false).sitesList[siteId].id);
-    print("yom al tlat");
-    print(int.parse(_tuesFrom.replaceAll(":", "")));
-    var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
-        Shift(
-          fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
-          fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
-          monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
-          mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
-          sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
-          sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
-          thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
-          thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
-          tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
-          tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
-          wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
-          wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
-          shiftStartTime: int.parse(startString.replaceAll(":", "")),
-          shiftEndTime: int.parse(endString.replaceAll(":", "")),
-          shiftName: _title.text,
-          shiftId: widget.shift.shiftId,
-          siteID: Provider.of<SiteData>(context, listen: false)
-              .sitesList[siteId]
-              .id,
-        ),
-        widget.id,
-        user.userToken,
-        context);
+    bool mondayCheck = compareShiftTime(monFromT, monToT),
+        sundayCheck = compareShiftTime(sunFromT, sunToT),
+        tuesCheck = compareShiftTime(tuesFromT, tuesToT),
+        wednCheck = compareShiftTime(wedFromT, wedToT),
+        thursCheck = compareShiftTime(thuFromT, thuToT),
+        friCheck = compareShiftTime(friFromT, friToT);
 
-    if (msg == "Success") {
-      setState(() {
-        edit = false;
-      });
+    print(_monFrom);
+    if (!mondayCheck ||
+        !sundayCheck ||
+        !tuesCheck ||
+        !thursCheck ||
+        !wednCheck ||
+        !friCheck) {
       Fluttertoast.showToast(
-              msg: "تم تعديل المناوبة بنجاح",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
-          .then((value) => Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => ShiftsScreen(0, -1)),
-              (Route<dynamic> route) => false));
-    } else if (msg == "exists") {
-      Fluttertoast.showToast(
-          msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-    } else if (msg == "failed") {
-      Fluttertoast.showToast(
-          msg: "خطأ في تعديل المناوبة",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-    } else if (msg == "noInternet") {
-      Fluttertoast.showToast(
-          msg: "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
+          msg:
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات ",
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+          toastLength: Toast.LENGTH_LONG);
+      Navigator.pop(context);
     } else {
-      Fluttertoast.showToast(
-          msg: msg,
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          gravity: ToastGravity.CENTER,
-          textColor: Colors.black,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
+          Shift(
+            fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
+            fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
+            monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
+            mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
+            sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
+            sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
+            thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
+            thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
+            tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
+            tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
+            wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
+            wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
+            shiftStartTime: int.parse(startString.replaceAll(":", "")),
+            shiftEndTime: int.parse(endString.replaceAll(":", "")),
+            shiftName: _title.text,
+            shiftId: widget.shift.shiftId,
+            siteID: Provider.of<SiteData>(context, listen: false)
+                .sitesList[siteId]
+                .id,
+          ),
+          widget.id,
+          user.userToken,
+          context);
+
+      if (msg == "Success") {
+        setState(() {
+          edit = false;
+        });
+        Fluttertoast.showToast(
+                msg: "تم تعديل المناوبة بنجاح",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
+            .then((value) => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => ShiftsScreen(0, -1)),
+                (Route<dynamic> route) => false));
+      } else if (msg == "exists") {
+        Fluttertoast.showToast(
+            msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else if (msg == "failed") {
+        Fluttertoast.showToast(
+            msg: "خطأ في تعديل المناوبة",
+            toastLength: Toast.LENGTH_SHORT,
+            timeInSecForIosWeb: 1,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else if (msg == "noInternet") {
+        Fluttertoast.showToast(
+            msg: "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت",
+            toastLength: Toast.LENGTH_SHORT,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      } else {
+        Fluttertoast.showToast(
+            msg: msg,
+            toastLength: Toast.LENGTH_SHORT,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER,
+            textColor: Colors.black,
+            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+      }
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
-    Navigator.pop(context);
   }
 
   addShiftFun() async {
@@ -1069,24 +1112,24 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         });
 
     var user = Provider.of<UserData>(context, listen: false).user;
-    int mondayCheck = (monToT.hour - monFromT.hour).abs(),
-        sundayCheck = (sunToT.hour - sunFromT.hour).abs(),
-        tuesCheck = (tuesToT.hour - tuesFromT.hour).abs(),
-        wednCheck = (wedToT.hour - wedFromT.hour).abs(),
-        thursCheck = (thuToT.hour - thuFromT.hour).abs(),
-        friCheck = (friToT.hour - friFromT.hour).abs();
+    bool mondayCheck = compareShiftTime(monFromT, monToT),
+        sundayCheck = compareShiftTime(sunFromT, sunToT),
+        tuesCheck = compareShiftTime(tuesFromT, tuesToT),
+        wednCheck = compareShiftTime(wedFromT, wedToT),
+        thursCheck = compareShiftTime(thuFromT, thuToT),
+        friCheck = compareShiftTime(friFromT, friToT);
 
     print(_monFrom);
     var msg;
-    if (mondayCheck < 2 ||
-        sundayCheck < 2 ||
-        tuesCheck < 2 ||
-        thursCheck < 2 ||
-        wednCheck < 2 ||
-        friCheck < 2) {
+    if (!mondayCheck ||
+        !sundayCheck ||
+        !tuesCheck ||
+        !thursCheck ||
+        !wednCheck ||
+        !friCheck) {
       Fluttertoast.showToast(
           msg:
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ساعتين ",
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات ",
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);
@@ -1323,6 +1366,17 @@ class AdvancedShiftPicker extends StatefulWidget {
 }
 
 class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
+  bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
+    int startNumber = (startTime.hour * 60) + startTime.minute;
+    int endNumber = (endTime.hour * 60) + endTime.minute;
+    int difference = endNumber - startNumber.abs();
+    print(difference);
+    if (difference >= 180)
+      return true;
+    else
+      return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -1486,6 +1540,26 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
               ],
             ),
           ),
+          widget.enableText
+              ? Container()
+              : widget.fromPickedWeek == intToTimeOfDay(0) &&
+                      widget.toPickedWeek == intToTimeOfDay(0)
+                  ? Container()
+                  : !compareShiftTime(
+                          widget.fromPickedWeek, widget.toPickedWeek)
+                      ? Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Text(
+                              "يجب ان لا تقل المدة عن 3 ساعات",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        )
+                      : Container(),
           SizedBox(
             height: 2,
           ),

@@ -181,7 +181,7 @@ class ShiftApi with ChangeNotifier {
                   "Longitude": currentPosition.longitude.toString().trim()
                 },
               ));
-
+          log(response.body);
           if (jsonDecode(response.body)["message"] == "Success") {
             var shiftObjJson = jsonDecode(response.body)['data'] as List;
             shiftsList = shiftObjJson
@@ -264,13 +264,11 @@ class ShiftApi with ChangeNotifier {
         shiftEnd += 2400;
       }
 
-      if (currentTime >= shiftStart && currentTime < shiftEnd) {
-        print(
-            "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
-        currentShift = shiftsListProvider[i];
-        // changeFlag(true);
-        return true;
-      }
+      print(
+          "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
+      currentShift = shiftsListProvider[i];
+      // changeFlag(true);
+      return true;
     }
 
     // changeFlag(false);

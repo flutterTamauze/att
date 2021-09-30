@@ -103,7 +103,8 @@ class PendingCompanyPermessions extends StatelessWidget {
                                                                           false)
                                                                   .user
                                                                   .userToken,
-                                                              comment);
+                                                              comment,
+                                                              pending.date);
 
                                                       if (msg ==
                                                           "Success : User Updated!") {
@@ -165,7 +166,8 @@ class PendingCompanyPermessions extends StatelessWidget {
                                                                           false)
                                                                   .user
                                                                   .userToken,
-                                                              comment);
+                                                              comment,
+                                                              pending.date);
 
                                                       if (msg ==
                                                           "Success : User Updated!") {

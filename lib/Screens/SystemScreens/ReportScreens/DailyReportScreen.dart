@@ -459,133 +459,32 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                         height: 10.h,
                                       ),
                                       Expanded(
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: snapshot.data ==
-                                                      "officialHoliday"
-                                                  ? Container(
-                                                      child: Center(
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              height: 20,
-                                                              child:
-                                                                  AutoSizeText(
-                                                                "لا يوجد تسجيلات : عطلة رسمية",
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10.h,
-                                                            ),
-                                                            Container(
-                                                              height: 20,
-                                                              child: AutoSizeText(
-                                                                  reportsData
-                                                                      .dailyReport
-                                                                      .officialHoliday,
-                                                                  maxLines: 1,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        17,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .orange,
-                                                                  )),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : !reportsData
-                                                          .dailyReport.isHoliday
-                                                      ? reportsData
-                                                                  .dailyReport
-                                                                  .attendListUnits
-                                                                  .length !=
-                                                              0
-                                                          ? Column(
-                                                              children: [
-                                                                Divider(
-                                                                  thickness: 1,
-                                                                  color: Colors
-                                                                          .orange[
-                                                                      600],
-                                                                ),
-                                                                DataTableHeader(),
-                                                                Divider(
-                                                                  thickness: 1,
-                                                                  color: Colors
-                                                                          .orange[
-                                                                      600],
-                                                                ),
-                                                                Expanded(
-                                                                    child:
-                                                                        Container(
-                                                                  child:
-                                                                      SmartRefresher(
-                                                                    onRefresh:
-                                                                        _onRefresh,
-                                                                    controller:
-                                                                        refreshController,
-                                                                    enablePullDown:
-                                                                        true,
-                                                                    header:
-                                                                        WaterDropMaterialHeader(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .orange,
-                                                                    ),
-                                                                    child: ListView
-                                                                        .builder(
-                                                                            itemCount:
-                                                                                reportsData.dailyReport.attendListUnits.length,
-                                                                            itemBuilder: (BuildContext context, int index) {
-                                                                              return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteId);
-                                                                            }),
-                                                                  ),
-                                                                )),
-                                                                !isToday(
-                                                                        selectedDate)
-                                                                    ? DailyReportTableEnd(
-                                                                        totalAbsents: reportsData
-                                                                            .dailyReport
-                                                                            .totalAbsent
-                                                                            .toString(),
-                                                                        totalAttend: reportsData
-                                                                            .dailyReport
-                                                                            .totalAttend
-                                                                            .toString())
-                                                                    : Container()
-                                                              ],
-                                                            )
-                                                          : Center(
-                                                              child: Container(
+                                        child: SmartRefresher(
+                                          onRefresh: _onRefresh,
+                                          controller: refreshController,
+                                          header: WaterDropMaterialHeader(
+                                            color: Colors.white,
+                                            backgroundColor: Colors.orange,
+                                          ),
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: snapshot.data ==
+                                                        "officialHoliday"
+                                                    ? Container(
+                                                        child: Center(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
                                                                 height: 20,
                                                                 child:
                                                                     AutoSizeText(
-                                                                  "لا يوجد تسجيلات بهذا الموقع",
+                                                                  "لا يوجد تسجيلات : عطلة رسمية",
                                                                   maxLines: 1,
                                                                   style: TextStyle(
                                                                       fontSize: ScreenUtil().setSp(
@@ -597,24 +496,131 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                               .w700),
                                                                 ),
                                                               ),
-                                                            )
-                                                      : Center(
-                                                          child: Container(
-                                                            height: 20,
-                                                            child: AutoSizeText(
-                                                              "لا يوجد تسجيلات: يوم اجازة",
-                                                              maxLines: 1,
-                                                              style: TextStyle(
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      16,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                            ),
+                                                              SizedBox(
+                                                                height: 10.h,
+                                                              ),
+                                                              Container(
+                                                                height: 20,
+                                                                child: AutoSizeText(
+                                                                    reportsData
+                                                                        .dailyReport
+                                                                        .officialHoliday,
+                                                                    maxLines: 1,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          17,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    )),
+                                                              )
+                                                            ],
                                                           ),
-                                                        )),
+                                                        ),
+                                                      )
+                                                    : !reportsData.dailyReport
+                                                            .isHoliday
+                                                        ? reportsData
+                                                                    .dailyReport
+                                                                    .attendListUnits
+                                                                    .length !=
+                                                                0
+                                                            ? Column(
+                                                                children: [
+                                                                  Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                    color: Colors
+                                                                            .orange[
+                                                                        600],
+                                                                  ),
+                                                                  DataTableHeader(),
+                                                                  Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                    color: Colors
+                                                                            .orange[
+                                                                        600],
+                                                                  ),
+                                                                  Expanded(
+                                                                      child:
+                                                                          SmartRefresher(
+                                                                    onRefresh:
+                                                                        _onRefresh,
+                                                                    controller:
+                                                                        refreshController,
+                                                                    header:
+                                                                        WaterDropMaterialHeader(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .orange,
+                                                                    ),
+                                                                    child: ListView.builder(
+                                                                        physics: AlwaysScrollableScrollPhysics(),
+                                                                        itemCount: reportsData.dailyReport.attendListUnits.length,
+                                                                        itemBuilder: (BuildContext context, int index) {
+                                                                          return DataTableRow(
+                                                                              reportsData.dailyReport.attendListUnits[index],
+                                                                              siteId);
+                                                                        }),
+                                                                  )),
+                                                                  !isToday(selectedDate)
+                                                                      ? DailyReportTableEnd(
+                                                                          totalAbsents: reportsData
+                                                                              .dailyReport
+                                                                              .totalAbsent
+                                                                              .toString(),
+                                                                          totalAttend: reportsData
+                                                                              .dailyReport
+                                                                              .totalAttend
+                                                                              .toString())
+                                                                      : Container()
+                                                                ],
+                                                              )
+                                                            : Center(
+                                                                child:
+                                                                    Container(
+                                                                  height: 20,
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    "لا يوجد تسجيلات بهذا الموقع",
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                        : Center(
+                                                            child: Container(
+                                                              height: 20,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "لا يوجد تسجيلات: يوم اجازة",
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            ),
+                                                          )),
+                                          ),
                                         ),
                                       ),
                                     ],

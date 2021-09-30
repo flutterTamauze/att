@@ -379,7 +379,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         String imei = await getDeviceUUID();
         print("imei is : $imei");
-        final uri = '$baseURL/api/AttendLogin';
+        final uri = '$localURL/api/AttendLogin';
         print(
             "Request:- URL:$uri Qrcode:$qrCode UserID:${user.id} long:${_currentPosition.longitude.toString()} lat:${_currentPosition.latitude.toString()} UserMacAdd: $imei token:${user.userToken} ");
         final headers = {

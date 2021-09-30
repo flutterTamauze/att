@@ -283,18 +283,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         textInputAction: TextInputAction.next,
                                         textAlign: TextAlign.right,
                                         validator: (text) {
-                                          if (text == null || text.isEmpty) {
-                                            return 'مطلوب';
-                                          } else {
+                                          if (text != "") {
                                             Pattern pattern =
                                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+\.[a-zA-Z]+";
 
                                             RegExp regex = new RegExp(pattern);
                                             if (!regex.hasMatch(text))
                                               return 'البريد الإلكترونى غير صحيح';
-                                            else
-                                              return null;
                                           }
+                                          return null;
                                         },
                                         controller: _emailController,
                                         decoration:

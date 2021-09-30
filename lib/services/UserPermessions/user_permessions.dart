@@ -74,6 +74,7 @@ class UserPermessionsData with ChangeNotifier {
     String desc,
     String userToken,
     String adminREsponse,
+    DateTime permDate,
   ) async {
     print(desc);
     isLoading = true;
@@ -90,6 +91,7 @@ class UserPermessionsData with ChangeNotifier {
           "status": status,
           "id": permID,
           "userId": userId,
+          "permDate": permDate.toIso8601String(),
           "adminResponse": adminREsponse,
           "Desc": desc
         }));
