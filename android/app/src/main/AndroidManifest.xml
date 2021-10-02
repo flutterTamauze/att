@@ -28,7 +28,23 @@
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqJB00PNv89PvcwyGkk7Wo0tN8-oO7uyA"/>
+             <!-- These receivers are for sending scheduled local notifications -->
+        <receiver android:name="com.huawei.hms.flutter.push.receiver.local.HmsLocalNotificationBootEventReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.huawei.hms.flutter.push.receiver.local.HmsLocalNotificationScheduledPublisher"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
 
+        <receiver android:name="com.huawei.hms.flutter.push.receiver.BackgroundMessageBroadcastReceiver"
+            android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="com.huawei.hms.flutter.push.receiver.BACKGROUND_REMOTE_MESSAGE" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

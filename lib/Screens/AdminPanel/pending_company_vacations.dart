@@ -207,15 +207,35 @@ class PendingCompanyVacations extends StatelessWidget {
 
                                                       if (msg ==
                                                           "Success : Updated!") {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "vacation",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اجازة",
-                                                            message:
-                                                                "تم رفض طلب الأذن");
+                                                        HuaweiServices _huawei =
+                                                            HuaweiServices();
+                                                        if (Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .osType ==
+                                                            3) {
+                                                          await _huawei
+                                                              .huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اجازة",
+                                                                  "تم رفض طلب الأجازة",
+                                                                  "vacation");
+                                                        } else {
+                                                          await sendFcmMessage(
+                                                              category:
+                                                                  "vacation",
+                                                              topicName: "",
+                                                              userToken: pending
+                                                                  .fcmToken,
+                                                              title:
+                                                                  "طلب اجازة",
+                                                              message:
+                                                                  "تم رفض طلب الأجازة");
+                                                        }
+
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 "تم الرفض بنجاح",

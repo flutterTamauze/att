@@ -205,9 +205,12 @@ class _HomePageState extends State<HomePage> {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                print(await getDeviceUUID());
-                print(userDataProvider.user.fcmToken);
-                print(userDataProvider.user.osType);
+                // HuaweiServices _huawei = HuaweiServices();
+                // _huawei.huaweiPostNotification(
+                //     "ABHYqziBNxmrMbBMal6AxMhBirfxJpgKOfDY9fpCu9G2vZGahnr6elOPfnGVVIRIm9gemAZg3h5DozvcIJ8MmbyP6bh96pgGqUjme1V_EQes5-5cEr5ZLAEkLBeEJGDu_g",
+                //     "اثبات حضور",
+                //     "برجاء اثبات حضورك الأن",
+                //     "attend");
 
                 // await huaweiServices.huaweiPostNotification(
                 //     "AGZ8A8VIgh_7YdND0zl4rdDyELzf8z7WTA29kFj92suWmP1ldxHBSWcLwAsioNduuEf1rXlM0ZRlbss9ba_reqYSivXdSLCxcKD8Kms0RTFMymlmMccP_qpm9g2-93WW1Q");

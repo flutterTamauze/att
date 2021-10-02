@@ -639,8 +639,12 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                               _huawei.huaweiPostNotification(
                                                   widget.user.fcmToken,
                                                   "اثبات حضور",
-                                                  "تم وضع اجازة لك ",
+                                                  "برجاء اثبات حضورك الأن",
                                                   "attend");
+                                              Fluttertoast.showToast(
+                                                  msg: "تم الأرسال بنجاح",
+                                                  backgroundColor: Colors.green,
+                                                  gravity: ToastGravity.CENTER);
                                             } else
                                               sendFcmMessage(
                                                       topicName: "",

@@ -70,7 +70,8 @@ class HuaweiServices {
       deviceToken, String title, String desc, String category) async {
     var mData = {
       "pushtype": 0,
-      "pushbody": {"title": title, "description": desc, "category": category}
+      "pushbody": {"title": title, "description": desc, "category": category},
+      "params": {"title": title, "description": desc}
     };
     try {
       log("sending huawei post");
@@ -87,7 +88,14 @@ class HuaweiServices {
             "validate_only": false,
             "message": {
               "data": json.encode(mData),
-              "android": {"fast_app_target": 1},
+              "android": {
+                "fast_app_target":
+                    2, // The value 1 indicates that the message is sent to a quick app running on Quick App Loader. To send message to a quick app to be released on AppGallery, set the value to 2.
+                "collapse_key": -1,
+                "delivery_priority": "HIGH",
+                "ttl": "1448s",
+                "bi_tag": "Trump",
+              },
               "token": [deviceToken],
             }
           }));

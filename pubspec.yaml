@@ -85,7 +85,7 @@ dependencies:
   sqflite: ^2.0.0+3
   getwidget: ^1.2.4
   flutter_slidable: ^0.6.0
-  huawei_push: ^5.1.1+301
+  huawei_push: ^5.0.2+301
   flutter_phoenix: ^1.0.0
   huawei_location: ^5.1.0+303
   dio: ^4.0.0

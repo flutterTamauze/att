@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dar
 import 'package:qr_users/Screens/SystemScreens/SystemHomePage.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -50,9 +51,21 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     });
   }
 
+  Future<void> initPlatformState() async {
+    if (!mounted) return;
+    hawawi.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
+  }
+
+  void _onNotificationOpenedApp(hawawi.RemoteMessage remoteMessage) {
+    print("onNotificationOpenedApp: " + remoteMessage.data);
+  }
+
   @override
   void initState() {
     current = getIndex;
+    if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+      initPlatformState();
+    }
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)

@@ -103,11 +103,13 @@ class NotificationDataService with ChangeNotifier {
   huaweiMessagingConfig(BuildContext context) async {
     hawawi.Push.onMessageReceivedStream.listen((_onMessageReceived) async {
       log("huawei message recieved ");
-
       // NotificationDataService dataService = NotificationDataService();
       // dataService.showAttendanceCheckDialog(context);
-      var data = _onMessageReceived.data;
+      String data = _onMessageReceived.data;
+      log(data);
+
       var decodedResponse = json.decode(data);
+      print(decodedResponse["pushbody"]);
       if (decodedResponse["pushbody"]["category"] == "attend") {
         showAttendanceCheckDialog(context);
       }
