@@ -57,11 +57,6 @@ void main() async {
   runApp(Phoenix(child: MyApp()));
 }
 
-void getInitialNotification() async {
-  var initialNotification = await hawawi.Push.getInitialNotification();
-  print("getInitialNotification: " + initialNotification.toString());
-}
-
 void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
   String data = remoteMessage.data;
   log("recieved huawei back ground message");
@@ -72,15 +67,13 @@ void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
     hawawi.HMSLocalNotificationAttr.TITLE: decodedResponse["pushbody"]["title"],
     hawawi.HMSLocalNotificationAttr.MESSAGE: decodedResponse["pushbody"]
         ["description"],
-    hawawi.HMSLocalNotificationAttr.CHANNEL_NAME:
-        'tdsChilango.com/channel_test',
     hawawi.HMSLocalNotificationAttr.PLAY_SOUND: true,
     hawawi.HMSLocalNotificationAttr.SMALL_ICON: "@mipmap/launcher_icon",
     hawawi.HMSLocalNotificationAttr.LARGE_ICON: "@mipmap/launcher_icon",
     hawawi.HMSLocalNotificationAttr.ACTIONS: ["open"],
     hawawi.HMSLocalNotificationAttr.PRIORITY: "HIGH",
     hawawi.HMSLocalNotificationAttr.SOUND_NAME: "your_sweet_sound.wav",
-    hawawi.HMSLocalNotificationAttr.VIBRATE: false
+    hawawi.HMSLocalNotificationAttr.VIBRATE: false,
   });
 }
 
@@ -130,8 +123,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    getInitialNotification();
-
     huaweiHandler();
     super.initState();
   }

@@ -153,7 +153,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
             gravity: ToastGravity.CENTER);
         print(widget.member.fcmToken);
         HuaweiServices _huawei = HuaweiServices();
-        if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+        if (widget.member.osType == 3) {
           await _huawei.huaweiPostNotification(
             widget.member.fcmToken,
             "تم تكليفك بمأمورية",
@@ -616,11 +616,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       builder: (context) {
                                                         HuaweiServices _huawei =
                                                             HuaweiServices();
-                                                        if (Provider.of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
+                                                        if (widget.member
                                                                 .osType ==
                                                             3) {
                                                           _huawei.huaweiPostNotification(
@@ -1311,11 +1307,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           HuaweiServices
                                                               _huawei =
                                                               HuaweiServices();
-                                                          if (Provider.of<UserData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .user
+                                                          if (widget.member
                                                                   .osType ==
                                                               3) {
                                                             _huawei.huaweiPostNotification(

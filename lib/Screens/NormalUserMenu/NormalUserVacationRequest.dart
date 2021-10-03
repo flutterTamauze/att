@@ -12,6 +12,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -724,14 +725,23 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
-                                                    sendFcmMessage(
-                                                      topicName:
-                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                      title: "طلب أجازة",
-                                                      category: "",
-                                                      message:
+                                                    if (userdata.osType == 3) {
+                                                      HuaweiServices _huawei =
+                                                          HuaweiServices();
+                                                      _huawei.huaweiSendToTopic(
+                                                          "طلب أجازة",
                                                           "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                    );
+                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                                    } else {
+                                                      sendFcmMessage(
+                                                        topicName:
+                                                            "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                        title: "طلب أجازة",
+                                                        category: "",
+                                                        message:
+                                                            "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                      );
+                                                    }
 
                                                     return StackedNotificaitonAlert(
                                                       repeatAnimation: false,

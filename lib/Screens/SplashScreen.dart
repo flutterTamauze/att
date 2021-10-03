@@ -67,8 +67,13 @@ class _SplashScreenState extends State<SplashScreen>
           print("topic name : ");
           print(
               "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-          await firebaseMessaging.subscribeToTopic(
-              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+            await hawawi.Push.subscribe(
+                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          } else {
+            await firebaseMessaging.subscribeToTopic(
+                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          }
         }
       }
 

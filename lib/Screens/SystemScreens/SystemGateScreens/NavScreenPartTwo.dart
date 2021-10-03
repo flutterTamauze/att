@@ -60,12 +60,23 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     print("onNotificationOpenedApp: " + remoteMessage.data);
   }
 
+  Future<void> onHuaweiOpened() async {
+    if (!mounted) return;
+    hawawi.Push.onLocalNotificationClick.listen(_onLocalNotificationClickEvent);
+  }
+
+  _onLocalNotificationClickEvent(Map<String, dynamic> event) {
+    print("onBACKGROUND click");
+    print(event);
+  }
+
   @override
   void initState() {
     current = getIndex;
-    if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
-      initPlatformState();
-    }
+    // if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+
+    // }
+    initPlatformState();
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)
