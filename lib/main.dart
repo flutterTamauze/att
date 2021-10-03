@@ -42,7 +42,9 @@ HuaweiServices huaweiServices = HuaweiServices();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await hawawi.Push.registerBackgroundMessageHandler(backgroundMessageCallback);
+  if (Platform.isAndroid)
+    await hawawi.Push.registerBackgroundMessageHandler(
+        backgroundMessageCallback);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -55,11 +57,6 @@ void main() async {
   }
 
   runApp(Phoenix(child: MyApp()));
-}
-
-void getInitialNotification() async {
-  var initialNotification = await hawawi.Push.getInitialNotification();
-  print("getInitialNotification: " + initialNotification.toString());
 }
 
 void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
@@ -130,9 +127,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    getInitialNotification();
-
-    huaweiHandler();
+    if (Platform.isAndroid) huaweiHandler();
     super.initState();
   }
 

@@ -18,7 +18,7 @@ PODS:
     - Flutter
   - camera (0.0.1):
     - Flutter
-  - connectivity (0.0.1):
+  - connectivity_plus (0.0.1):
     - Flutter
     - Reachability
   - device_info (0.0.1):
@@ -87,12 +87,12 @@ PODS:
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
-  - google_ml_vision (0.0.2):
+  - google_ml_vision (0.0.7):
     - Flutter
-    - GoogleMLKit/BarcodeScanning
-    - GoogleMLKit/FaceDetection
-    - GoogleMLKit/ImageLabeling
-    - GoogleMLKit/TextRecognition
+    - GoogleMLKit/BarcodeScanning (~> 2.2.0)
+    - GoogleMLKit/FaceDetection (~> 2.2.0)
+    - GoogleMLKit/ImageLabeling (~> 2.2.0)
+    - GoogleMLKit/TextRecognition (~> 2.2.0)
   - GoogleDataTransport (9.1.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
@@ -259,7 +259,7 @@ PODS:
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
-  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - ext_storage (from `.symlinks/plugins/ext_storage/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -335,8 +335,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/audioplayers/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
-  connectivity:
-    :path: ".symlinks/plugins/connectivity/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   ext_storage:
@@ -398,7 +398,7 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
-  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   ext_storage: 4eaf3a84d5594106e2ebcc2502248cfde53c8fa1
@@ -420,7 +420,7 @@ SPEC CHECKSUMS:
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   get_mac: b90f006186f20adf5b9d1f65b530599d39470b16
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
-  google_ml_vision: 8e7d8f4bef247a2b255b835b846342e8e2267141
+  google_ml_vision: d16cd76617b3260c4283a28843555a8c6253a171
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleMaps: 086ae1dab659eaa7339bdb30fc88e2f44e7c597c
   GoogleMLKit: 85ffdc9641d05311c76dbba5bbf93059087be12f
@@ -465,6 +465,6 @@ SPEC CHECKSUMS:
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   ZLPhotoBrowser-objc: c7684215bbde0ee990ad7bd1008e13bc3e6f6a32
 
-PODFILE CHECKSUM: b5739b90ff5d59c4667cc41f6f84340f55166f1b
+PODFILE CHECKSUM: 84ca8ff09d6b4a62ee7620b25c6c392a5748ef0d
 
 COCOAPODS: 1.11.0.rc.1

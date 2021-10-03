@@ -244,7 +244,10 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     // filterList();
     // loadModel();
-    fillHuaweiToken();
+    if (Platform.isAndroid) {
+      fillHuaweiToken();
+    }
+
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,

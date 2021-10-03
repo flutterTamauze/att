@@ -93,11 +93,23 @@ class UserData with ChangeNotifier {
     var token;
     bool isHuawei = false;
     if (connectivityResult != ConnectivityResult.none) {
-      HuaweiServices _huawei = HuaweiServices();
-      if (await _huawei.isHuaweiDevice()) {
-        log("huawei detected");
-        token = hawawiToken;
-        isHuawei = true;
+      if (Platform.isAndroid) {
+        HuaweiServices _huawei = HuaweiServices();
+        if (await _huawei.isHuaweiDevice()) {
+          log("huawei detected");
+          token = hawawiToken;
+          isHuawei = true;
+        } else {
+          bool isError = false;
+          String isnull = await firebaseMessaging.getToken().catchError((e) {
+            token = "null";
+            isError = true;
+          });
+
+          if (isError == false) {
+            token = await firebaseMessaging.getToken();
+          }
+        }
       } else {
         bool isError = false;
         String isnull = await firebaseMessaging.getToken().catchError((e) {

@@ -160,9 +160,6 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                             child: Card(
                               elevation: 5,
                               child: ExpansionTile(
-                                collapsedIconColor: Colors.orange[600],
-                                iconColor: Colors.orange[600],
-                                textColor: Colors.orange[600],
                                 title: Row(
                                   children: [
                                     FaIcon(
@@ -422,9 +419,6 @@ class ExpansionUserShiftTile extends StatelessWidget {
           child: Card(
             elevation: 5,
             child: ExpansionTile(
-              collapsedIconColor: Colors.orange[600],
-              iconColor: Colors.orange[600],
-              textColor: Colors.orange[600],
               title: Row(
                 children: [
                   FaIcon(
