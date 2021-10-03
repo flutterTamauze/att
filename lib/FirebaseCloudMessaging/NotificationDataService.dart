@@ -98,6 +98,15 @@ class NotificationDataService with ChangeNotifier {
     notifyListeners();
   }
 
+  void getInitialNotification(BuildContext context) async {
+    var initialNotification = await hawawi.Push.getInitialNotification();
+    print("getInitialNotification: " + initialNotification.toString());
+    if (initialNotification.toString().contains("اثبات حضور")) {
+      print("YES IT CONTAINS !");
+      showAttendanceCheckDialog(context);
+    }
+  }
+
   bool finshed = false;
   int counter = 0;
   huaweiMessagingConfig(BuildContext context) async {

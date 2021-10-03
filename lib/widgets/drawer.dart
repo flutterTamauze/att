@@ -349,7 +349,7 @@ class MenuItem extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       child: SizedBox(
-                        height: 20,
+                        height: 22,
                         child: Padding(
                           padding: EdgeInsets.only(top: 5.h),
                           child: AutoSizeText(

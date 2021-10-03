@@ -53,9 +53,7 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
           context,
         ).isLoading
             ? Center(
-                child: CircularProgressIndicator(
-                  color: Colors.orange,
-                ),
+                child: CircularProgressIndicator(),
               )
             : ListView.builder(
                 shrinkWrap: true,

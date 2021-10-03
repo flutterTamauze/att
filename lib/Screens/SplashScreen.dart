@@ -59,6 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (value == 4) {
         //subscribe admin channel
         bool isError = false;
+
         await firebaseMessaging.getToken().catchError((e) {
           print(e);
           isError = true;
@@ -151,7 +152,13 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ));
           } else {
-            if (value > 0) {
+            if (value == -4 || value == -3 || value == null) {
+              await getUserData();
+              Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                  builder: (context) => ErrorScreen(
+                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك",
+                      true)));
+            } else if (value > 0) {
               print(" usertype $value");
 
               Navigator.pushReplacement(context,
@@ -183,11 +190,6 @@ class _SplashScreenState extends State<SplashScreen>
             } else if (value == -2) {
               Navigator.of(context).pushReplacement(
                   new MaterialPageRoute(builder: (context) => LoginScreen()));
-            } else if (value == -4 || value == -3 || value == null) {
-              Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (context) => ErrorScreen(
-                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك",
-                      true)));
             } else {
               Navigator.of(context).pushReplacement(
                   new MaterialPageRoute(builder: (context) => PageIntro()));
@@ -249,7 +251,10 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     // filterList();
     // loadModel();
-    fillHuaweiToken();
+    if (Platform.isAndroid) {
+      fillHuaweiToken();
+    }
+
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,

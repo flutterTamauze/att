@@ -9,15 +9,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:huawei_location/location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:trust_location/trust_location.dart';
 
 class ShiftApi with ChangeNotifier {
   List<Shift> shiftsListProvider = [];
   Position currentPosition;
+  Location currentHuaweiLocation;
   DateTime currentBackPressTime;
   bool isOnShift = true;
   List<String> currentShiftSTtime, currentShiftEndTime;
@@ -46,17 +49,49 @@ class ShiftApi with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     try {
-      if (await Permission.location.isGranted) {
-        bool enabled = false;
-        enabled = await Geolocator.isLocationServiceEnabled();
-        print("api");
-        print("enable locaiton : $enabled");
-        if (Platform.isIOS) {
-          try {
-            if (enabled) {
-              bool isMock = await detectJailBreak();
+      HuaweiServices _huawi = HuaweiServices();
+      if (await _huawi.isHuaweiDevice()) {
+        await _huawi.getHuaweiCurrentLocation().then((value) {
+          currentHuaweiLocation = value;
+        });
+        return 0;
+      } else {
+        if (await Permission.location.isGranted) {
+          bool enabled = false;
+          enabled = await Geolocator.isLocationServiceEnabled();
+          print("api");
+          print("enable locaiton : $enabled");
+          if (Platform.isIOS) {
+            try {
+              if (enabled) {
+                bool isMock = await detectJailBreak();
 
-              if (!isMock) {
+                if (!isMock) {
+                  await Geolocator.getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.best)
+                      .then((Position position) {
+                    print("position : $position");
+                    currentPosition = position;
+                  }).catchError((e) {
+                    print(e);
+                  });
+                  return 0;
+                } else {
+                  if (firstCall == true) {
+                    return 1;
+                  }
+                }
+              } else {
+                return 2;
+              }
+            } catch (e) {
+              print(e);
+            }
+          } else {
+            if (enabled) {
+              bool isMockLocation = await TrustLocation.isMockLocation;
+
+              if (!isMockLocation) {
                 await Geolocator.getCurrentPosition(
                         desiredAccuracy: LocationAccuracy.best)
                     .then((Position position) {
@@ -69,42 +104,18 @@ class ShiftApi with ChangeNotifier {
               } else {
                 if (firstCall == true) {
                   return 1;
+                } else {
+                  return 2;
                 }
               }
             } else {
               return 2;
             }
-          } catch (e) {
-            print(e);
           }
         } else {
-          if (enabled) {
-            bool isMockLocation = await TrustLocation.isMockLocation;
-
-            if (!isMockLocation) {
-              await Geolocator.getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.best)
-                  .then((Position position) {
-                print("position : $position");
-                currentPosition = position;
-              }).catchError((e) {
-                print(e);
-              });
-              return 0;
-            } else {
-              if (firstCall == true) {
-                return 1;
-              } else {
-                return 2;
-              }
-            }
-          } else {
-            return 2;
-          }
+          await Permission.location.request();
+          return 3;
         }
-      } else {
-        await Permission.location.request();
-        return 3;
       }
     } catch (e) {
       print(e);
@@ -161,13 +172,17 @@ class ShiftApi with ChangeNotifier {
       if (await isConnectedToInternet()) {
         isConnected = true;
         List<Shift> shiftsList;
-        int isMoc = await getCurrentLocation();
+        HuaweiServices _huawi = HuaweiServices();
+        bool isHawawi = await _huawi.isHuaweiDevice();
+        int isMoc;
+        if (isHawawi) {
+          isMoc = 0;
+        } else {
+          isMoc = await getCurrentLocation();
+        }
         print("IS MOC RESULT : $isMoc");
         print(id);
         if (isMoc == 0) {
-          print(currentPosition.latitude);
-          print(currentPosition.longitude);
-
           final response = await http.post(
               Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
               headers: {
@@ -177,8 +192,12 @@ class ShiftApi with ChangeNotifier {
               body: json.encode(
                 {
                   "ID": id,
-                  "Latitude": currentPosition.latitude.toString().trim(),
-                  "Longitude": currentPosition.longitude.toString().trim()
+                  "Latitude": isHawawi
+                      ? currentHuaweiLocation.latitude.toString().trim()
+                      : currentPosition.latitude.toString().trim(),
+                  "Longitude": isHawawi
+                      ? currentHuaweiLocation.longitude.toString().trim()
+                      : currentPosition.longitude.toString().trim()
                 },
               ));
           log(response.body);

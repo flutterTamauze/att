@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:huawei_location/location/location.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -46,6 +48,7 @@ class CompanyData extends ChangeNotifier {
   final _apiToken = 'ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM';
   InheritDefault inheritDefault = InheritDefault();
   Position _currentPosition;
+  Location _currentHawawiLocation;
   int companyId = -1;
   Company com = Company(
       id: 0,
@@ -133,30 +136,46 @@ class CompanyData extends ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     //await checkPermissions();
+
     if (Platform.isAndroid) {
-      bool enabled = await Geolocator.isLocationServiceEnabled();
+      HuaweiServices _huawei = HuaweiServices();
+      bool isHawawi = await _huawei.isHuaweiDevice();
+      bool enabled;
+      if (isHawawi) {
+        enabled = await Geolocator.isLocationServiceEnabled();
+      }
+
       print("company");
       print("enable locaiton : $enabled");
-      var pos = await TrustLocation.getLatLong;
-      print("--------------${pos[0]}------------");
+
       // && pos[0] != null
-      if (enabled) {
-        bool isMockLocation = await TrustLocation.isMockLocation;
-        // bool isEmulator= await FlutterIsEmulator.isDeviceAnEmulatorOrASimulator;
-        if (!isMockLocation) {
-          await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best)
-              .then((Position position) {
-            _currentPosition = position;
-          }).catchError((e) {
-            print(e);
-          });
-          return 0;
-        } else {
-          return 1;
-        }
+      if (isHawawi) {
+        await _huawei.getHuaweiCurrentLocation().then((currentLoc) {
+          _currentHawawiLocation = currentLoc;
+        }).catchError((e) {
+          print(e);
+        });
+
+        return 0;
       } else {
-        return 2;
+        if (enabled) {
+          bool isMockLocation = await TrustLocation.isMockLocation;
+          // bool isEmulator= await FlutterIsEmulator.isDeviceAnEmulatorOrASimulator;
+          if (!isMockLocation) {
+            await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.best)
+                .then((Position position) {
+              _currentPosition = position;
+            }).catchError((e) {
+              print(e);
+            });
+            return 0;
+          } else {
+            return 1;
+          }
+        } else {
+          return 2;
+        }
       }
     } else if (Platform.isIOS) {
       bool enabled = await Geolocator.isLocationServiceEnabled();

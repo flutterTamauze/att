@@ -82,9 +82,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
               child: Provider.of<UserPermessionsData>(context, listen: true)
                       .isLoading
                   ? Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.orange,
-                      ),
+                      child: CircularProgressIndicator(),
                     )
                   : ListView.builder(
                       shrinkWrap: true,

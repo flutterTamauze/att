@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key> NSContactsUsageDescription </key>
-	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -34,8 +32,16 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Play when recieving notification</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We need access to bluetooth connection to upload data from the device</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app need to access calendar for date information</string>
 	<key>NSCameraUsageDescription</key>
 	<string>...</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open and in the background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -50,6 +56,10 @@
 	<string>...</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>...</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>recognize speech</string>
+	<key>Privacy - ContactsUsageDescription</key>
+	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

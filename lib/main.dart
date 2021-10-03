@@ -42,7 +42,9 @@ HuaweiServices huaweiServices = HuaweiServices();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await hawawi.Push.registerBackgroundMessageHandler(backgroundMessageCallback);
+  if (Platform.isAndroid)
+    await hawawi.Push.registerBackgroundMessageHandler(
+        backgroundMessageCallback);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -70,7 +72,7 @@ void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
     hawawi.HMSLocalNotificationAttr.PLAY_SOUND: true,
     hawawi.HMSLocalNotificationAttr.SMALL_ICON: "@mipmap/launcher_icon",
     hawawi.HMSLocalNotificationAttr.LARGE_ICON: "@mipmap/launcher_icon",
-    hawawi.HMSLocalNotificationAttr.ACTIONS: ["open"],
+    hawawi.HMSLocalNotificationAttr.ACTIONS: ["OPEN"],
     hawawi.HMSLocalNotificationAttr.PRIORITY: "HIGH",
     hawawi.HMSLocalNotificationAttr.SOUND_NAME: "your_sweet_sound.wav",
     hawawi.HMSLocalNotificationAttr.VIBRATE: false,
@@ -123,7 +125,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    huaweiHandler();
+    if (Platform.isAndroid) huaweiHandler();
     super.initState();
   }
 

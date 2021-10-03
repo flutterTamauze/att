@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
+import 'package:huawei_location/location/location.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +37,7 @@ class UserData with ChangeNotifier {
   String siteName;
   String hawawiToken = "";
   Position _currentPosition;
+  Location _currentHawawiLocation;
   bool changedPassword;
   bool isLoading = false;
   User user = User(
@@ -112,6 +114,7 @@ class UserData with ChangeNotifier {
 
       print("token fcm :$token");
       var stability = await isConnectedToInternet("www.google.com");
+      print(stability);
       if (stability) {
         print("going to login");
         final response = await http.post(
@@ -136,12 +139,11 @@ class UserData with ChangeNotifier {
             seconds: 40,
           ),
         );
-
         var decodedRes = json.decode(response.body);
-        print(decodedRes["statusCode"]);
+        log(decodedRes["statusCode"].toString());
         if (decodedRes["statusCode"] == 200) {
           log(response.body);
-          print(response.statusCode);
+          log(response.statusCode.toString());
           print("token is :${decodedRes["token"]}");
           if (decodedRes["message"] == "Success : ") {
             print(decodedRes["userData"]["userType"]);
@@ -328,6 +330,8 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
+    HuaweiServices _huawei = HuaweiServices();
+    bool isHawawi = await _huawei.isHuaweiDevice();
     print(image.lengthSync());
     String msg;
     print("uploading image......$cardCode...${cardCode.length}...");
@@ -348,8 +352,12 @@ class UserData with ChangeNotifier {
         request.files.add(multipartFile);
         request.fields['Userid'] = "0";
         request.fields['Qrcode'] = cardCode;
-        request.fields['Longitude'] = _currentPosition.longitude.toString();
-        request.fields['Latitude'] = _currentPosition.latitude.toString();
+        request.fields['Longitude'] = isHawawi
+            ? _currentHawawiLocation.longitude.toString()
+            : _currentPosition.longitude.toString();
+        request.fields['Latitude'] = isHawawi
+            ? _currentHawawiLocation.latitude.toString()
+            : _currentPosition.latitude.toString();
         request.fields['userLogintype'] = "1";
         print("card code :$cardCode");
         print("**************");
@@ -397,39 +405,41 @@ class UserData with ChangeNotifier {
     String msg;
     if (await isConnectedToInternet("www.google.com")) {
       int locationService = await getCurrentLocation();
+      HuaweiServices _huawei = HuaweiServices();
+      bool isHawawi = await _huawei.isHuaweiDevice();
       if (locationService == 0) {
         String imei = await getDeviceUUID();
         print("imei is : $imei");
         final uri = '$baseURL/api/AttendLogin';
-        print(
-            "Request:- URL:$uri Qrcode:$qrCode UserID:${user.id} long:${_currentPosition.longitude.toString()} lat:${_currentPosition.latitude.toString()} UserMacAdd: $imei token:${user.userToken} ");
+
         final headers = {
           'Authorization': "Bearer ${user.userToken}",
           "Accept": "application/json"
         };
-        try {
-          http.Response response = await http.post(
-            Uri.parse(uri),
-            headers: headers,
-            body: {
-              'Userid': user.id,
-              'Qrcode': qrCode,
-              'Longitude': _currentPosition.longitude.toString(),
-              'Latitude': _currentPosition.latitude.toString(),
-              'userLogintype': "0",
-              'UserMac': imei,
-            },
-          );
-          String responseBody = response.body;
-          print(response.body);
-          msg = jsonDecode(responseBody)['message'];
-          print(
-              "-----------------------------${jsonDecode(responseBody)}-----------------------");
-          print("imei after attend is : $imei");
-          print("msg after attend is :$msg");
-        } catch (e) {
-          print(e);
-        }
+
+        http.Response response = await http.post(
+          Uri.parse(uri),
+          headers: headers,
+          body: {
+            'Userid': user.id,
+            'Qrcode': qrCode,
+            'Longitude': isHawawi
+                ? _currentHawawiLocation.longitude.toString()
+                : _currentPosition.longitude.toString(),
+            'Latitude': isHawawi
+                ? _currentHawawiLocation.latitude.toString()
+                : _currentPosition.latitude.toString(),
+            'userLogintype': "0",
+            'UserMac': imei,
+          },
+        );
+        String responseBody = response.body;
+        print(response.body);
+        msg = jsonDecode(responseBody)['message'];
+        print(
+            "-----------------------------${jsonDecode(responseBody)}-----------------------");
+        print("imei after attend is : $imei");
+        print("msg after attend is :$msg");
       } else if (locationService == 1) {
         msg = 'mock';
       } else {
@@ -610,13 +620,14 @@ class UserData with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     //await checkPermissions();
-
-    bool enabled = await Geolocator.isLocationServiceEnabled();
+    HuaweiServices _huawei = HuaweiServices();
+    bool enabled;
+    bool isHawawi = await _huawei.isHuaweiDevice();
+    if (!isHawawi) {
+      enabled = await Geolocator.isLocationServiceEnabled();
+    }
     print("userdata");
     print("enable locaiton : $enabled");
-    var pos = await TrustLocation.getLatLong.catchError(((e) {
-      print(e);
-    }));
 
     // && pos[0] != null
     if (Platform.isIOS) {
@@ -639,23 +650,32 @@ class UserData with ChangeNotifier {
         return 2;
       }
     } else {
-      if (enabled) {
-        bool isMockLocation = await TrustLocation.isMockLocation;
+      HuaweiServices _huawei = HuaweiServices();
+      if (isHawawi) {
+        await _huawei.getHuaweiCurrentLocation().then((currentLoc) {
+          _currentHawawiLocation = currentLoc;
+        });
 
-        if (!isMockLocation) {
-          await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best)
-              .then((Position position) {
-            _currentPosition = position;
-          }).catchError((e) {
-            print(e);
-          });
-          return 0;
-        } else {
-          return 1;
-        }
+        return 0;
       } else {
-        return 2;
+        if (enabled) {
+          bool isMockLocation = await TrustLocation.isMockLocation;
+
+          if (!isMockLocation) {
+            await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.best)
+                .then((Position position) {
+              _currentPosition = position;
+            }).catchError((e) {
+              print(e);
+            });
+            return 0;
+          } else {
+            return 1;
+          }
+        } else {
+          return 2;
+        }
       }
     }
   }

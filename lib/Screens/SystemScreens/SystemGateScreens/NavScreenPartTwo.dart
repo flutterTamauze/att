@@ -51,14 +51,10 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     });
   }
 
-  Future<void> initPlatformState() async {
-    if (!mounted) return;
-    hawawi.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
-  }
-
-  void _onNotificationOpenedApp(hawawi.RemoteMessage remoteMessage) {
-    print("onNotificationOpenedApp: " + remoteMessage.data);
-  }
+  // Future<void> initPlatformState() async {
+  //   if (!mounted) return;
+  //   hawawi.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
+  // }
 
   Future<void> onHuaweiOpened() async {
     if (!mounted) return;
@@ -70,20 +66,32 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
     print(event);
   }
 
+  // Future<void> initPlatformState() async {
+  //   if (!mounted) return;
+  //   hawawi.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
+  // }
+
   @override
   void initState() {
     current = getIndex;
-    // if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+    // initPlatformState();
+    // initPlatformState();
+    var notificationProv =
+        Provider.of<NotificationDataService>(context, listen: false);
+    notificationProv.firebaseMessagingConfig(context);
+    if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+      notificationProv.huaweiMessagingConfig(context);
 
-    // }
-    initPlatformState();
-    Provider.of<NotificationDataService>(context, listen: false)
-        .firebaseMessagingConfig(context);
-    Provider.of<NotificationDataService>(context, listen: false)
-        .huaweiMessagingConfig(context);
+      notificationProv.getInitialNotification(context);
+    }
+
     checkForegroundNotification();
     super.initState();
   }
+
+  // void _onNotificationOpenedApp(RemoteMessage remoteMessage) {
+  //   print("onNotificationOpenedApp: " + remoteMessage.data.toString());
+  // }
 
   saveNotificationToCache(RemoteMessage event) async {
     await db.insertNotification(

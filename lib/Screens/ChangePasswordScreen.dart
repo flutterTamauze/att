@@ -407,9 +407,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 },
                                 child: userData.isLoading
                                     ? Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.orange,
-                                        ),
+                                        child: CircularProgressIndicator(),
                                       )
                                     : Container(
                                         width: 230.w,

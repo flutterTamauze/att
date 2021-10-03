@@ -141,7 +141,13 @@ class _ErrorScreenState extends State<ErrorScreen> {
           .catchError(((e) {
         print(e);
       })).then((value) {
-        if (value > 0) {
+        if (value == -4 || value == -3 || value == null) {
+          setState(() {
+            isLoading = false;
+            message =
+                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك";
+          });
+        } else if (value > 0) {
           print("laaa");
           Navigator.pushReplacement(
               context,
@@ -168,12 +174,6 @@ class _ErrorScreenState extends State<ErrorScreen> {
           setState(() {
             isLoading = false;
             message = "لا يوجد اتصال بالانترنت\nبرجاء المحاولة مرة اخرى";
-          });
-        } else if (value == -4 || value == -3 || value == null) {
-          setState(() {
-            isLoading = false;
-            message =
-                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك";
           });
         } else {
           Navigator.of(context).pushReplacement(
