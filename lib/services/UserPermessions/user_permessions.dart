@@ -8,7 +8,7 @@ import 'package:qr_users/constants.dart';
 class UserPermessions {
   String user, permessionDescription, adminResponse, approvedByUserId;
   int permessionStatus; //1=>accept , //2 refused , //3 waiting..
-  int permessionId;
+  int permessionId, osType;
   String userID;
   String fcmToken;
   int permessionType;
@@ -21,6 +21,7 @@ class UserPermessions {
       this.duration,
       this.fcmToken,
       this.userID,
+      this.osType,
       this.permessionStatus,
       this.permessionDescription,
       this.permessionType,
@@ -38,6 +39,7 @@ class UserPermessions {
         fcmToken: json["fcmToken"] ?? "null",
         userID: json['userId'] ?? "",
         permessionId: json["id"],
+        osType: json["mobileOS"],
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],

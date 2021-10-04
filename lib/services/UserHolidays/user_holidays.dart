@@ -16,7 +16,8 @@ class UserHolidays {
       approvedByUserId;
   int holidayNumber,
       holidayStatus, //1=>accept , //2 refused , //3 waiting..
-      holidayType; //عارضة مرضيه رصيد اجازات
+      holidayType,
+      osType;
   DateTime fromDate, toDate, createdOnDate, approvedDate;
   UserHolidays(
       {this.adminResponse,
@@ -28,6 +29,7 @@ class UserHolidays {
       this.holidayDescription,
       this.toDate,
       this.userName,
+      this.osType,
       this.userId,
       this.approvedByUserId,
       this.approvedDate,
@@ -39,13 +41,13 @@ class UserHolidays {
         toDate: DateTime.tryParse(json["toDate"]),
         holidayType: json["typeId"],
         userName: json["userName"],
-        userId: json['userId'] ?? "",
+        userId: json['userId'],
         holidayStatus: json["status"],
         holidayNumber: json["id"],
-        fcmToken: json["fcmToken"] ?? "null",
+        fcmToken: json["fcmToken"],
         holidayDescription: json["desc"],
         approvedDate: DateTime.tryParse(json["approvedDate"]),
-        //lsa mgtsh
+        osType: json["mobileOS"],
         approvedByUserId: json["aprrovedbyUserId"],
         createdOnDate: DateTime.tryParse(json["createdOn"]));
   }

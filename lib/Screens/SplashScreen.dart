@@ -117,25 +117,11 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
-  Future<String> _fileFromImageUrl(String path, String name) async {
-    final response = await http.get(Uri.parse(path));
-
-    final documentDirectory = await getApplicationDocumentsDirectory();
-
-    final file = File(p.join(documentDirectory.path, '$name.png'));
-
-    file.writeAsBytesSync(response.bodyBytes);
-
-    return file.path;
-  }
-
   AnimationController animationController;
   reverse(String userName, value) {
     //Reverse animation Function
     var userData = Provider.of<UserData>(context, listen: false);
-    //Get roles dropdown.
-    // Provider.of<MemberData>(context, listen: false)
-    //     .getAppRoles(userData.user.userToken);
+
     setState(() {
       animationController.reverse();
       Timer(new Duration(milliseconds: 2000), () async {
@@ -156,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen>
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
-                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك",
+                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج",
                       true)));
             } else if (value > 0) {
               print(" usertype $value");
@@ -339,10 +325,6 @@ class _SplashScreenState extends State<SplashScreen>
                                           )),
                                     ],
                                   ),
-                                  // Text(
-                                  //   "AMH Group احدى شركات ",
-                                  //   style: TextStyle(color: Colors.orange),
-                                  // ),
                                 ],
                               ),
                             ),

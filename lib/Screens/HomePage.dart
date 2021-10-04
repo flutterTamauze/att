@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 // import 'package:audioplayers/audio_cache.dart';
 
 // import 'package:audioplayers/audioplayers.dart';
-import 'package:device_info/device_info.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +19,11 @@ import 'package:huawei_location/location/location_settings_states.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:open_file/open_file.dart' as open_file;
 
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'package:huawei_location/location/fused_location_provider_client.dart';
@@ -29,13 +32,14 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -79,6 +83,8 @@ void notificationPermessions() async {
   print("User granted permession ${settings.authorizationStatus}");
 }
 
+bool showApk = true;
+
 class _HomePageState extends State<HomePage> {
   static const MethodChannel _channel =
       MethodChannel('tdsChilango.com/channel_test');
@@ -93,6 +99,49 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future downloadFromUrl(filename) async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    ProgressDialog pr;
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    pr.style(message: "Downloading  ...");
+
+    final path = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS);
+    await pr.show();
+
+    final file = File("$path/$filename");
+    log(file.path);
+    await dio.download(
+      "https://www.ostora.tv/download/v4/ostora_v4.8.apk",
+      file.path,
+      onReceiveProgress: (count, total) {
+        setState(() {
+          _isLoading = true;
+          progress = ((count / total) * 100).toStringAsFixed(0) + " %";
+          log(progress);
+          pr.update(message: "Please wait : $progress");
+        });
+      },
+    );
+    pr.hide();
+    setState(() {
+      finalPath = file.path;
+      _isLoading = false;
+    });
+    final snackBar = SnackBar(
+      content: Text(
+        'تم التحميل بنجاح',
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.right,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    await open_file.OpenFile.open(file.path);
   }
 
   // void _onMessageReceived(hawawi.RemoteMessage remoteMessage) {
@@ -125,11 +174,43 @@ class _HomePageState extends State<HomePage> {
   // void _onMessageReceiveError(Object error) {
   //   // Called when an error occurs while receiving the data message
   // }
+  var finalPath;
+  String _filePath;
+  bool _isLoading = false;
+  Dio dio;
+  String progress;
+
   @override
   void initState() {
     // test();
+    print("initstate");
+    print(showApk);
+    dio = Dio();
 
     // initPlatformState();
+    if (Platform.isAndroid) {
+      if (showApk) {
+        showApk = false;
+
+        if (kReleaseData.isAfter(
+            Provider.of<UserData>(context, listen: false).user.apkDate)) {
+          Future.delayed(Duration.zero, () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedAlert(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        downloadFromUrl("ChilangoV3.apk");
+                      },
+                      title: 'يوجد نسخة جديدة من التطبيق',
+                      content: "هل تريد تحميل النسخة الأخيرة ؟");
+                });
+          });
+        }
+      }
+    }
+
     Provider.of<NotificationDataService>(context, listen: false)
         .firebaseMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)
@@ -185,6 +266,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserData>(context, listen: false);
+    showApk = false;
     SystemChrome.setEnabledSystemUIOverlays([]);
     print(Provider.of<PermissionHan>(context, listen: false)
         .attendProovTriggered);
@@ -205,12 +287,13 @@ class _HomePageState extends State<HomePage> {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                HuaweiServices _huawei = HuaweiServices();
-                _huawei.huaweiPostNotification(
-                    "AHuhHui46-M2C1qnHjbr7G8w2bE1mMLrsSGtO3evA0bioqW-Y-XJBVaGVmYQdRDr8SucpuKwK5RpYroHi453nq75fyj5vyIxp34F_BODqD9-MYYHpPshUiohLboipAVOvw",
-                    "اثبات حضور",
-                    "برجاء اثبات حضورك الأن",
-                    "attend");
+                print(userDataProvider.user.apkDate);
+                // HuaweiServices _huawei = HuaweiServices();
+                // _huawei.huaweiPostNotification(
+                //     "AHuhHui46-M2C1qnHjbr7G8w2bE1mMLrsSGtO3evA0bioqW-Y-XJBVaGVmYQdRDr8SucpuKwK5RpYroHi453nq75fyj5vyIxp34F_BODqD9-MYYHpPshUiohLboipAVOvw",
+                //     "اثبات حضور",
+                //     "برجاء اثبات حضورك الأن",
+                //     "attend");
 
                 // // await huaweiServices.huaweiPostNotification(
                 //     "AGZ8A8VIgh_7YdND0zl4rdDyELzf8z7WTA29kFj92suWmP1ldxHBSWcLwAsioNduuEf1rXlM0ZRlbss9ba_reqYSivXdSLCxcKD8Kms0RTFMymlmMccP_qpm9g2-93WW1Q");

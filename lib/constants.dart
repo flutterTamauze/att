@@ -25,6 +25,7 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
+DateTime kReleaseData = DateTime(DateTime.now().year, 11, 12);
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;
 // int kAfterEndShift = 600;
@@ -242,3 +243,15 @@ const kTextFieldDecorationFromTO = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
 );
+
+  // Future<String> _fileFromImageUrl(String path, String name) async {
+  //   final response = await http.get(Uri.parse(path));
+
+  //   final documentDirectory = await getApplicationDocumentsDirectory();
+
+  //   final file = File(p.join(documentDirectory.path, '$name.png'));
+
+  //   file.writeAsBytesSync(response.bodyBytes);
+
+  //   return file.path;
+  // }

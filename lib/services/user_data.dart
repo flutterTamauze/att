@@ -146,7 +146,6 @@ class UserData with ChangeNotifier {
           log(response.statusCode.toString());
           print("token is :${decodedRes["token"]}");
           if (decodedRes["message"] == "Success : ") {
-            print(decodedRes["userData"]["userType"]);
             user.userToken = decodedRes["token"];
             user.id = decodedRes["userData"]["id"];
             user.userID = decodedRes["userData"]["userName"];
@@ -160,6 +159,9 @@ class UserData with ChangeNotifier {
             user.salary = decodedRes["userData"]["salary"];
             user.createdOn =
                 DateTime.tryParse(decodedRes["userData"]["createdOn"]);
+            user.apkDate = DateTime.tryParse(decodedRes["apkDate"]["apkDate"]);
+            user.iosBundleDate =
+                DateTime.tryParse(decodedRes["apkDate"]["ios"]);
             user.userSiteId = decodedRes["companyData"]["siteId"] as int;
             user.userShiftId = decodedRes["userData"]["shiftId"];
             user.isAllowedToAttend = decodedRes["userData"]["isAllowtoAttend"];
@@ -682,21 +684,24 @@ class UserData with ChangeNotifier {
 }
 
 class User {
-  String userToken, fcmToken;
-  String userID;
+  String userToken,
+      fcmToken,
+      userID,
+      email,
+      phoneNum,
+      userJob,
+      password,
+      userImage,
+      id,
+      name;
+
   double salary;
-  String name;
   bool isAllowedToAttend;
   int userSiteId, osType;
   int userType;
   int userShiftId;
-  String email;
-  String phoneNum;
-  String userJob;
-  String password;
-  String userImage;
-  String id;
-  DateTime createdOn;
+
+  DateTime createdOn, apkDate, iosBundleDate;
 
   User(
       {this.userToken,
@@ -715,5 +720,7 @@ class User {
       this.userType,
       this.phoneNum,
       this.password,
-      this.osType});
+      this.osType,
+      this.apkDate,
+      this.iosBundleDate});
 }

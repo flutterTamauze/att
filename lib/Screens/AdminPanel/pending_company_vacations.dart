@@ -110,12 +110,7 @@ class PendingCompanyVacations extends StatelessWidget {
                                                           "Success : Updated!") {
                                                         HuaweiServices _huawei =
                                                             HuaweiServices();
-                                                        if (Provider.of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
-                                                                .osType ==
+                                                        if (pending.osType ==
                                                             3) {
                                                           await _huawei
                                                               .huaweiPostNotification(
@@ -209,12 +204,7 @@ class PendingCompanyVacations extends StatelessWidget {
                                                           "Success : Updated!") {
                                                         HuaweiServices _huawei =
                                                             HuaweiServices();
-                                                        if (Provider.of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
-                                                                .osType ==
+                                                        if (pending.osType ==
                                                             3) {
                                                           await _huawei
                                                               .huaweiPostNotification(

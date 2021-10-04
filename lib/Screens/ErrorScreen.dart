@@ -65,14 +65,14 @@ class _ErrorScreenState extends State<ErrorScreen> {
                           height: 300.h,
                           repeat: true),
                       Container(
-                        height: 80,
+                        height: 100.h,
                         child: AutoSizeText(
                           message,
                           style: TextStyle(
                             height: 1.5,
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
-                                .setSp(18, allowFontScalingSelf: true),
+                                .setSp(20, allowFontScalingSelf: true),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -145,7 +145,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
           setState(() {
             isLoading = false;
             message =
-                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك";
+                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج";
           });
         } else if (value > 0) {
           print("laaa");

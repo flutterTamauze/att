@@ -16,6 +16,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:open_file/open_file.dart' as open_file;
 import 'Notifications/Notifications.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   }
 
   var finalPath;
-  Future _downloadFromUrl(filename) async {
+  Future downloadFromUrl(filename) async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
@@ -281,7 +282,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   Platform.isAndroid
                                       ? TextButton(
                                           onPressed: () {
-                                            _downloadFromUrl("ChilangoV3.apk");
+                                            downloadFromUrl("ChilangoV3.apk");
                                           },
                                           child:
                                               Text("تحميل اخر نسخة من التطبيق"))
