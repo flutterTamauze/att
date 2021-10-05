@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
@@ -115,8 +116,8 @@ class _ExpandedPendingPermessionsState
                                 "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
                             Divider(),
                             Text(widget.permessionType == 1
-                                ? "اذن حتى الساعة : ${widget.duration}"
-                                : "اذن من الساعة : ${widget.duration}"),
+                                ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
+                                : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
                             widget.desc != null ? Divider() : Container(),
                             SizedBox(
                               height: 10,

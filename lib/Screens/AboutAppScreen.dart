@@ -279,14 +279,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   SizedBox(
                                     height: 15.h,
                                   ),
-                                  Platform.isAndroid
-                                      ? TextButton(
-                                          onPressed: () {
-                                            downloadFromUrl("ChilangoV3.apk");
-                                          },
-                                          child:
-                                              Text("تحميل اخر نسخة من التطبيق"))
-                                      : Container(),
+                                  // Platform.isAndroid
+                                  //     ? TextButton(
+                                  //         onPressed: () {
+                                  //           downloadFromUrl("ChilangoV3.apk");
+                                  //         },
+                                  //         child:
+                                  //             Text("تحميل اخر نسخة من التطبيق"))
+                                  //     : Container(),
                                 ],
                               ),
                             ),

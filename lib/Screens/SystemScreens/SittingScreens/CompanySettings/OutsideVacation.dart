@@ -69,127 +69,17 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.didChangeDependencies();
   }
 
+  bool isPicked = false;
+
   TextEditingController _dateController = TextEditingController();
-  addExternalMission() async {
-    if (fromDate != null && toDate != null) {
-      String msg = await Provider.of<UserHolidaysData>(context, listen: false)
-          .addHoliday(
-              UserHolidays(
-                  createdOnDate: DateTime.now(),
-                  userId: widget.member.id,
-                  holidayType: 4,
-                  fromDate: fromDate,
-                  toDate: toDate,
-                  holidayDescription: externalMissionController.text),
-              Provider.of<UserData>(context, listen: false).user.userToken,
-              widget.member.id);
-      if (msg == "Success : Holiday Created!") {
-        Fluttertoast.showToast(
-            msg: "تمت اضافة المأمورية بنجاح",
-            backgroundColor: Colors.green,
-            gravity: ToastGravity.CENTER);
-        await sendFcmMessage(
-          category: "externalMission",
-          message:
-              "تم تسجيل مأمورية خارجية لك \n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
-          userToken: widget.member.fcmToken,
-          topicName: "",
-          title: "تم تكليفك بمأمورية",
-        ).then((value) => Navigator.pop(context));
-      } else if (msg ==
-          "Failed : Another Holiday not approved for this user!") {
-        Fluttertoast.showToast(
-            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else if (msg == "Failed : You can't request a holiday from today!") {
-        Fluttertoast.showToast(
-            msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else if (msg ==
-          "Failed : There are an internal Mission in this period!") {
-        Fluttertoast.showToast(
-            msg: "يوجد مأمورية داخلية فى هذا التاريخ",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else {
-        Fluttertoast.showToast(
-            msg: "خطأ في اضافة المأمورية",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      }
-    } else {
-      Fluttertoast.showToast(
-          msg: "برجاء ادخال المدة", backgroundColor: Colors.red);
-    }
-  }
 
   List<DateTime> picked = [];
-  addInternalMission(
-      String sitename, String shiftname, String fromdate, String todate) async {
-    var prov = Provider.of<SiteData>(context, listen: false);
-    if (prov.siteValue == "كل المواقع" || picked.isEmpty) {
-      Fluttertoast.showToast(
-          msg: "برجاء ادخال البيانات المطلوبة",
-          backgroundColor: Colors.red,
-          gravity: ToastGravity.CENTER);
-    } else {
-      String msg = await Provider.of<MissionsData>(context, listen: false)
-          .addUserMission(
-        UserMissions(
-            fromDate: fromDate,
-            toDate: toDate,
-            shiftId: Provider.of<ShiftsData>(context, listen: false)
-                .shiftsBySite[prov.dropDownShiftIndex]
-                .shiftId,
-            userId: widget.member.id),
-        Provider.of<UserData>(context, listen: false).user.userToken,
-      );
-      if (msg == "Success : InternalMission Created!") {
-        Fluttertoast.showToast(
-            msg: "تمت اضافة المأمورية بنجاح",
-            backgroundColor: Colors.green,
-            gravity: ToastGravity.CENTER);
-        print(widget.member.fcmToken);
-        HuaweiServices _huawei = HuaweiServices();
-        if (widget.member.osType == 3) {
-          await _huawei.huaweiPostNotification(
-            widget.member.fcmToken,
-            "تم تكليفك بمأمورية",
-            " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftname )\n من ( $fromdate - $todate )",
-            widget.member.fcmToken,
-          );
-          Navigator.pop(context);
-        } else {
-          sendFcmMessage(
-            category: "internalMission",
-            message:
-                " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftname )\n من ( $fromdate - $todate )",
-            userToken: widget.member.fcmToken,
-            topicName: "",
-            title: "تم تكليفك بمأمورية",
-          ).then((value) => Navigator.pop(context));
-        }
-      } else if (msg ==
-          "Failed : Another InternalMission not approved for this user!") {
-        Fluttertoast.showToast(
-            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else {
-        Fluttertoast.showToast(
-            msg: "خطأ فى اضافة المأمورية",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      }
-    }
-  }
 
   TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
+    isPicked = false;
     userMission = getSingleUserMission();
     userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
         .getSingleUserHoliday(widget.member.id,
@@ -818,7 +708,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     setState(() {
                                                       fromDate = picked.first;
                                                       toDate = picked.last;
-
+                                                      isPicked = true;
                                                       String fromText =
                                                           " من ${DateFormat('yMMMd').format(fromDate).toString()}";
                                                       String toText =
@@ -899,24 +789,50 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 onPressed: () async {
                                                   if (selectedMission ==
                                                       "خارجية") {
-                                                    addExternalMission();
+                                                    if (isPicked == false) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "برجاء ادخال المدة",
+                                                          backgroundColor:
+                                                              Colors.red);
+                                                    } else {
+                                                      Provider.of<UserHolidaysData>(
+                                                              context,
+                                                              listen: false)
+                                                          .addExternalMission(
+                                                              fromDate,
+                                                              toDate,
+                                                              context,
+                                                              widget.member.id,
+                                                              externalMissionController
+                                                                  .text,
+                                                              widget.member
+                                                                  .fcmToken);
+                                                    }
                                                   } //داخلية
                                                   else {
-                                                    addInternalMission(
-                                                        sitesData
-                                                            .sitesList[sitesData
-                                                                .dropDownSitesIndex]
-                                                            .name,
-                                                        shiftsData
-                                                            .shiftsBySite[sitesData
-                                                                .dropDownShiftIndex]
-                                                            .shiftName,
-                                                        fromDate
-                                                            .toString()
-                                                            .substring(0, 11),
-                                                        toDate
-                                                            .toString()
-                                                            .substring(0, 11));
+                                                    Provider.of<MissionsData>(
+                                                            context,
+                                                            listen: false)
+                                                        .addInternalMission(
+                                                            context,
+                                                            picked,
+                                                            fromDate,
+                                                            toDate,
+                                                            widget.member.id,
+                                                            widget.member
+                                                                .fcmToken,
+                                                            widget
+                                                                .member.osType,
+                                                            sitesData
+                                                                .sitesList[sitesData
+                                                                    .dropDownSitesIndex]
+                                                                .name,
+                                                            shiftsData
+                                                                .shiftsBySite[
+                                                                    sitesData
+                                                                        .dropDownShiftIndex]
+                                                                .shiftName);
                                                   }
                                                 },
                                                 title: "حفظ",

@@ -18,7 +18,7 @@ import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 class NotificationDataService with ChangeNotifier {
   bool showNotificationDot = false;
   AudioCache player = AudioCache();
-
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   List<NotificationMessage> notification = [];
   // setNotificationList(List<NotificationMessage> notifyList) {
   //   notification = notifyList;
@@ -105,6 +105,25 @@ class NotificationDataService with ChangeNotifier {
       print("YES IT CONTAINS !");
       showAttendanceCheckDialog(context);
     }
+  }
+
+  void notificationPermessions() async {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+    NotificationSettings settings = await firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    print("User granted permession ${settings.authorizationStatus}");
   }
 
   bool finshed = false;

@@ -4,9 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
+import 'package:qr_users/services/ShiftsData.dart';
+import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserMissions/CompanyMissions.dart';
+import 'package:qr_users/services/user_data.dart';
 
 class UserMissions {
   DateTime fromDate, toDate;
@@ -100,6 +107,97 @@ class MissionsData with ChangeNotifier {
     notifyListeners();
   }
 
+  addUserMission(
+    UserMissions userMissions,
+    String userToken,
+  ) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.post(
+        Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+        body: json.encode({
+          "fromdate": userMissions.fromDate.toIso8601String(),
+          "shiftId": userMissions.shiftId,
+          "toDate": userMissions.toDate.toIso8601String(),
+          "userId": userMissions.userId,
+          "desc": userMissions.description
+        }));
+
+    isLoading = false;
+    notifyListeners();
+    print(response.body);
+    return json.decode(response.body)["message"];
+  }
+
+  addInternalMission(
+      BuildContext context,
+      picked,
+      DateTime fromDate,
+      DateTime toDate,
+      String userId,
+      String fcmToken,
+      int osType,
+      String sitename,
+      String shiftName) async {
+    var prov = Provider.of<SiteData>(context, listen: false);
+    if (prov.siteValue == "كل المواقع" || picked.isEmpty) {
+      Fluttertoast.showToast(
+          msg: "برجاء ادخال البيانات المطلوبة",
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER);
+    } else {
+      String msg = await addUserMission(
+        UserMissions(
+            fromDate: fromDate,
+            toDate: toDate,
+            shiftId: Provider.of<ShiftsData>(context, listen: false)
+                .shiftsBySite[prov.dropDownShiftIndex]
+                .shiftId,
+            userId: userId),
+        Provider.of<UserData>(context, listen: false).user.userToken,
+      );
+      if (msg == "Success : InternalMission Created!") {
+        Fluttertoast.showToast(
+            msg: "تمت اضافة المأمورية بنجاح",
+            backgroundColor: Colors.green,
+            gravity: ToastGravity.CENTER);
+        HuaweiServices _huawei = HuaweiServices();
+        if (osType == 3) {
+          await _huawei.huaweiPostNotification(
+            fcmToken,
+            "تم تكليفك بمأمورية",
+            " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
+            fcmToken,
+          );
+          Navigator.pop(context);
+        } else {
+          sendFcmMessage(
+            category: "internalMission",
+            message:
+                " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
+            userToken: fcmToken,
+            topicName: "",
+            title: "تم تكليفك بمأمورية",
+          ).then((value) => Navigator.pop(context));
+        }
+      } else if (msg ==
+          "Failed : Another InternalMission not approved for this user!") {
+        Fluttertoast.showToast(
+            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else {
+        Fluttertoast.showToast(
+            msg: "خطأ فى اضافة المأمورية",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      }
+    }
+  }
   // getCompanyMissions(int companyId, String userToken) async {
   //   isLoading = true;
   //   try {
@@ -134,30 +232,4 @@ class MissionsData with ChangeNotifier {
   //     print(e);
   //   }
   // }
-
-  addUserMission(
-    UserMissions userMissions,
-    String userToken,
-  ) async {
-    isLoading = true;
-    notifyListeners();
-    var response = await http.post(
-        Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-        body: json.encode({
-          "fromdate": userMissions.fromDate.toIso8601String(),
-          "shiftId": userMissions.shiftId,
-          "toDate": userMissions.toDate.toIso8601String(),
-          "userId": userMissions.userId,
-          "desc": userMissions.description
-        }));
-
-    isLoading = false;
-    notifyListeners();
-    print(response.body);
-    return json.decode(response.body)["message"];
-  }
 }

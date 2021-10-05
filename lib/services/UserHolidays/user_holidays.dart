@@ -4,8 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/user_data.dart';
 
 class UserHolidays {
   String userId,
@@ -266,5 +270,68 @@ class UserHolidaysData with ChangeNotifier {
     print("adding holiday");
     print(response.body);
     return json.decode(response.body)["message"];
+  }
+
+  addExternalMission(DateTime fromDate, DateTime toDate, BuildContext context,
+      String memId, String desc, String fcmToken) async {
+    print(fromDate);
+    print(toDate);
+    if (fromDate != null && toDate != null) {
+      String msg = await Provider.of<UserHolidaysData>(context, listen: false)
+          .addHoliday(
+              UserHolidays(
+                  createdOnDate: DateTime.now(),
+                  userId: memId,
+                  holidayType: 4,
+                  fromDate: fromDate,
+                  toDate: toDate,
+                  holidayDescription: desc),
+              Provider.of<UserData>(context, listen: false).user.userToken,
+              memId);
+      if (msg == "Success : Holiday Created!") {
+        Fluttertoast.showToast(
+            msg: "تمت اضافة المأمورية بنجاح",
+            backgroundColor: Colors.green,
+            gravity: ToastGravity.CENTER);
+        await sendFcmMessage(
+          category: "externalMission",
+          message:
+              "تم تسجيل مأمورية خارجية لك \n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
+          userToken: fcmToken,
+          topicName: "",
+          title: "تم تكليفك بمأمورية",
+        ).then((value) => Navigator.pop(context));
+      } else if (msg ==
+          "Failed : Another Holiday not approved for this user!") {
+        Fluttertoast.showToast(
+            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else if (msg == "Failed : You can't request a holiday from today!") {
+        Fluttertoast.showToast(
+            msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else if (msg ==
+          "Failed : There are an internal Mission in this period!") {
+        Fluttertoast.showToast(
+            msg: "يوجد مأمورية داخلية فى هذا التاريخ",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else if (msg == "Failed : There are external mission in this period!") {
+        Fluttertoast.showToast(
+            msg: "يوجد مأمورية خارجية فى هذا التاريخ",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      } else {
+        Fluttertoast.showToast(
+            msg: "خطأ في اضافة المأمورية",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "برجاء ادخال المدة", backgroundColor: Colors.red);
+    }
   }
 }

@@ -107,6 +107,22 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.black,
             textColor: Colors.orange);
         break;
+      case "Success : already registered attend":
+        Fluttertoast.showToast(
+            msg: "لقد تم تسجيل الحضور من قبل",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.black,
+            textColor: Colors.orange);
+        break;
+      case "Success : already registered leave":
+        Fluttertoast.showToast(
+            msg: "لقد تم تسجيل الأنصراف من قبل",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.black,
+            textColor: Colors.orange);
+        break;
       case "you can't register now during shift!":
         Fluttertoast.showToast(
             msg: "لا يمكن التسجيل بمناوبتك الأن",

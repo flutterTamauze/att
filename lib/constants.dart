@@ -7,8 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 //http://192.168.0.119:8010
 //https://Chilangoback.tamauzeds.com
-final googleDriveLink =
-    "https://download1484.mediafire.com/f48w8k7ip7xg/kij2aisrzghhz5p/ChilangoV3.apk";
+final androidDownloadLink =
+    "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
+final iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 final baseURL = "https://Chilangoback.tamauzeds.com";
 final localURL = "http://192.168.0.123:8010";
 final huaweiAppId = "104665933";
@@ -25,7 +26,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kReleaseData = DateTime(DateTime.now().year, 11, 12);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 4);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 3);
+
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;
 // int kAfterEndShift = 600;

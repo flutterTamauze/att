@@ -457,7 +457,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                                                                     await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
 
-                                                                                                    prov.fillCurrentShiftID(list[prov.dropDownSitesIndex + 1].id);
+                                                                                                    prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].id);
 
                                                                                                     prov.setSiteValue(v);
                                                                                                     setState(() {

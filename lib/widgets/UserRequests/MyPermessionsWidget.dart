@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -150,8 +151,8 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                         "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
                                     Divider(),
                                     Text(widget.permessionType == 1
-                                        ? "اذن حتى الساعة : ${widget.duration}"
-                                        : "اذن من الساعة : ${widget.duration}"),
+                                        ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
+                                        : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
                                     widget.desc != null
                                         ? Divider()
                                         : Container(),

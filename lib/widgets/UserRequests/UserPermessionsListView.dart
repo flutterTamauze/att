@@ -60,7 +60,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                       orderNum: permList.permessionId.toString(),
                       adminComment: permList.adminResponse,
                       status: permList.permessionStatus,
-                      duration: permList.duration,
+                      duration: permList.duration.replaceAll(":", ""),
                     ),
                     Divider()
                   ],
@@ -102,7 +102,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                               createdOn: permList.createdOn,
                               adminComment: permList.adminResponse,
                               status: permList.permessionStatus,
-                              duration: permList.duration,
+                              duration: permList.duration.replaceAll(":", ""),
                             ),
                             Divider()
                           ],
