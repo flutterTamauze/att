@@ -229,6 +229,8 @@ class UserPermessionsData with ChangeNotifier {
   Future<String> addUserPermession(
       UserPermessions userPermessions, String userToken, String userId) async {
     isLoading = false;
+    log(userPermessions.date.toIso8601String());
+    log(userPermessions.createdOn.toIso8601String());
     print(userPermessions.permessionDescription);
     try {
       //1 تأخخير عن الحضور
@@ -278,5 +280,6 @@ class UserPermessionsData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return "failed";
   }
 }

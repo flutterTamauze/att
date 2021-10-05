@@ -35,50 +35,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     super.initState();
   }
 
-  var finalPath;
-  Future downloadFromUrl(filename) async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    ProgressDialog pr;
-    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
-    pr.style(message: "Downloading  ...");
-
-    final path = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
-    await pr.show();
-
-    final file = File("$path/$filename");
-    log(file.path);
-    await dio.download(
-      "https://www.ostora.tv/download/v4/ostora_v4.8.apk",
-      file.path,
-      onReceiveProgress: (count, total) {
-        setState(() {
-          _isLoading = true;
-          progress = ((count / total) * 100).toStringAsFixed(0) + " %";
-          log(progress);
-          pr.update(message: "Please wait : $progress");
-        });
-      },
-    );
-    pr.hide();
-    setState(() {
-      finalPath = file.path;
-      _isLoading = false;
-    });
-    final snackBar = SnackBar(
-      content: Text(
-        'تم التحميل بنجاح',
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.right,
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    await open_file.OpenFile.open(file.path);
-  }
-
   Widget build(BuildContext context) {
     return Consumer<UserData>(builder: (context, userData, child) {
       return SafeArea(
@@ -189,7 +145,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                       children: [
                                         Container(
                                           height: 20,
-                                          child: AutoSizeText("Version 2.0.0",
+                                          child: AutoSizeText("Version 3.0.0",
                                               textAlign: TextAlign.center,
                                               maxLines: 1,
                                               style: TextStyle(

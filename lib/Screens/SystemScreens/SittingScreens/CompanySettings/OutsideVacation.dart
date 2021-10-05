@@ -501,51 +501,39 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     .then((value) {
                                                   if (value ==
                                                       "Success : Holiday Created!") {
-                                                    return showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        HuaweiServices _huawei =
-                                                            HuaweiServices();
-                                                        if (widget.member
-                                                                .osType ==
-                                                            3) {
-                                                          _huawei.huaweiPostNotification(
+                                                    Fluttertoast.showToast(
+                                                            msg:
+                                                                "تم وضع الأجازة بنجاح",
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            backgroundColor:
+                                                                Colors.green)
+                                                        .whenComplete(() =>
+                                                            Navigator.pop(
+                                                                context));
+                                                    HuaweiServices _huawei =
+                                                        HuaweiServices();
+                                                    if (widget.member.osType ==
+                                                        3) {
+                                                      _huawei
+                                                          .huaweiPostNotification(
                                                               widget.member
                                                                   .fcmToken,
                                                               "أجازة",
                                                               "تم وضع اجازة لك ",
                                                               "vacation");
-                                                        } else {
-                                                          sendFcmMessage(
-                                                            topicName: "",
-                                                            title: "أجازة",
-                                                            category:
-                                                                "vacation",
-                                                            userToken: widget
-                                                                .member
-                                                                .fcmToken,
-                                                            message:
-                                                                "تم وضع اجازة لك ",
-                                                          );
-                                                        }
-
-                                                        return StackedNotificaitonAlert(
-                                                          repeatAnimation:
-                                                              false,
-                                                          popWidget: true,
-                                                          notificationTitle:
-                                                              "تم وضع الطلب  بنجاح ",
-                                                          notificationContent:
-                                                              "برجاء متابعة الطلب ",
-                                                          roundedButtonTitle:
-                                                              "متابعة",
-                                                          isAdmin: true,
-                                                          lottieAsset:
-                                                              "resources/success.json",
-                                                          showToast: false,
-                                                        );
-                                                      },
-                                                    );
+                                                    } else {
+                                                      sendFcmMessage(
+                                                        topicName: "",
+                                                        title: "أجازة",
+                                                        category: "vacation",
+                                                        userToken: widget
+                                                            .member.fcmToken,
+                                                        message:
+                                                            "تم وضع اجازة لك ",
+                                                      );
+                                                    }
                                                   } else if (value ==
                                                       "Failed : There are external mission in this period!") {
                                                     Fluttertoast.showToast(
@@ -1185,14 +1173,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           null &&
                                                       timeOutController.text !=
                                                           "") {
-                                                    print(_selectedDateString);
-                                                    print(
-                                                        timeOutController.text);
                                                     String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
                                                         UserPermessions(
-                                                            createdOn: DateTime
-                                                                .now(),
-                                                            date: selectedDate,
+                                                            createdOn:
+                                                                DateTime.now(),
+                                                            date: DateTime.parse(
+                                                                _selectedDateString),
                                                             duration:
                                                                 formattedTime,
                                                             permessionType:
@@ -1208,8 +1194,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                     : commentController
                                                                         .text,
                                                             user:
-                                                                widget.member
-                                                                    .name),
+                                                                widget
+                                                                    .member.name),
                                                         Provider.of<UserData>(
                                                                 context,
                                                                 listen: false)
@@ -1217,51 +1203,50 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             .userToken,
                                                         widget.member.id);
                                                     if (msg == "success") {
-                                                      return showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          HuaweiServices
-                                                              _huawei =
-                                                              HuaweiServices();
-                                                          if (widget.member
-                                                                  .osType ==
-                                                              3) {
-                                                            _huawei.huaweiPostNotification(
-                                                                widget.member
-                                                                    .fcmToken,
-                                                                "اذن",
-                                                                "تم وضع اجازة لك ",
-                                                                "permession");
-                                                          } else {
-                                                            sendFcmMessage(
-                                                              topicName: "",
-                                                              userToken: widget
-                                                                  .member
-                                                                  .fcmToken,
-                                                              title: "اذن",
-                                                              category:
-                                                                  "permession",
-                                                              message:
-                                                                  "تم وضع اذن لك",
-                                                            );
-                                                          }
-
-                                                          return StackedNotificaitonAlert(
-                                                            repeatAnimation:
-                                                                false,
-                                                            popWidget: true,
-                                                            notificationTitle:
-                                                                "تم وضع الطلب  بنجاح ",
-                                                            notificationContent:
-                                                                "برجاء متابعة الطلب ",
-                                                            roundedButtonTitle:
-                                                                "متابعة",
-                                                            lottieAsset:
-                                                                "resources/success.json",
-                                                            showToast: false,
-                                                          );
-                                                        },
-                                                      );
+                                                      Fluttertoast.showToast(
+                                                              msg:
+                                                                  "تم وضع الأذن بنجاح",
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER)
+                                                          .whenComplete(() =>
+                                                              Navigator.pop(
+                                                                  context));
+                                                      HuaweiServices _huawei =
+                                                          HuaweiServices();
+                                                      if (widget
+                                                              .member.osType ==
+                                                          3) {
+                                                        _huawei.huaweiPostNotification(
+                                                            widget.member
+                                                                .fcmToken,
+                                                            "اذن",
+                                                            "تم وضع اجازة لك ",
+                                                            "permession");
+                                                      } else {
+                                                        sendFcmMessage(
+                                                          topicName: "",
+                                                          userToken: widget
+                                                              .member.fcmToken,
+                                                          title: "اذن",
+                                                          category:
+                                                              "permession",
+                                                          message:
+                                                              "تم وضع اذن لك",
+                                                        );
+                                                      }
+                                                    } else if (msg ==
+                                                        "external mission") {
+                                                      print("external found");
+                                                      Fluttertoast.showToast(
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          msg:
+                                                              "يوجد مأمورية خارجية فى هذا اليوم");
                                                     } else if (msg ==
                                                         'already exist') {
                                                       Fluttertoast.showToast(
@@ -1274,6 +1259,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     } else if (msg ==
                                                         "failed") {
                                                       errorToast();
+                                                    } else if (msg ==
+                                                        "dublicate permession") {
+                                                      Fluttertoast.showToast(
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          msg:
+                                                              "يوجد اذن فى هذا اليوم");
                                                     }
                                                   } else {
                                                     print(selectedDateString);
