@@ -30,7 +30,7 @@ import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/VacationData.dart';
 
-import 'package:qr_users/services/report_data.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';

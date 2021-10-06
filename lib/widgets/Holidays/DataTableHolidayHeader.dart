@@ -1,10 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
-import 'package:qr_users/widgets/DailyReport/dailyReportTableHeader.dart';
+import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 
 class DataTableholidayHeader extends StatelessWidget {
   @override

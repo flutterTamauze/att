@@ -19,7 +19,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/report_data.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets//XlsxExportButton.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -31,7 +31,7 @@ import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../services/report_data.dart';
+import '../../../services/Reports/Services/report_data.dart';
 import 'package:intl/intl.dart';
 
 class UserAttendanceReportScreen extends StatefulWidget {

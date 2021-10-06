@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
-import 'package:qr_users/widgets/DailyReport/dailyReportTableHeader.dart';
+import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 
 class DataTableMissionsHeader extends StatelessWidget {
   @override

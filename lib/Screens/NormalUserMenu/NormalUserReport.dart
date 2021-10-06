@@ -16,7 +16,7 @@ import 'package:qr_users/services/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 
 import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/report_data.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/UserReport/UserReportDataTable.dart';

@@ -61,25 +61,14 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
-    // monitor network fetch
-    print("refresh");
-    // if failed,use refreshFailed()
-    setState(() {
-      isLoading = true;
-    });
-
-    print("user type${userProvider.user.userType} ");
-    await Provider.of<ShiftsData>(context, listen: false)
-        .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-            userProvider.user.userType, 0)
-        .then((value) async {
-      print("got Shifts");
-    });
-    setState(() {
-      isLoading = false;
-    });
+    Provider.of<ShiftsData>(context, listen: false)
+        .getShifts(
+            Provider.of<UserData>(context, listen: false).user.userSiteId,
+            Provider.of<UserData>(context, listen: false).user.userToken,
+            context,
+            2,
+            Provider.of<UserData>(context, listen: false).user.userSiteId)
+        .then((value) => fillList());
 
     refreshController.refreshCompleted();
   }
@@ -94,7 +83,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
 
   getData() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context);
+    var comProvier = Provider.of<CompanyData>(context, listen: false);
     print(userProvider.user.userSiteId);
     if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
       siteId = userProvider.user.userSiteId;

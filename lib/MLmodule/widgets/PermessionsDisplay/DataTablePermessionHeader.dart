@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_users/widgets/DailyReport/dailyReportTableHeader.dart';
 import 'dart:ui' as ui;
+
+import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 
 class DataTablePermessionHeader extends StatelessWidget {
   @override

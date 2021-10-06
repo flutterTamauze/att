@@ -9,7 +9,7 @@ import 'package:open_file/open_file.dart' as open_file;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/services/report_data.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class XlsxExportButton extends StatefulWidget {

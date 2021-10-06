@@ -26,7 +26,7 @@ import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/connectivity_service.dart';
 import 'package:qr_users/services/permissions_data.dart';
-import 'package:qr_users/services/report_data.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'enums/connectivity_status.dart';

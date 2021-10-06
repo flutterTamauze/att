@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:qr_users/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoundedButton extends StatelessWidget {
   RoundedButton({
@@ -53,8 +54,12 @@ class RounderButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        height: 40.h,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.orange),
+          color: Colors.white,
+          border: Border.all(width: 1, color: Colors.orange[600]),
+          borderRadius: BorderRadius.circular(10),
+        ),
         padding: EdgeInsets.all(5),
         child: Center(
           child: Container(
@@ -63,9 +68,9 @@ class RounderButton extends StatelessWidget {
               text,
               maxLines: 1,
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.orange[600],
                   fontWeight: FontWeight.bold,
-                  fontSize: ScreenUtil().setSp(14, allowFontScalingSelf: true)),
+                  fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
             ),
           ),
         ),
