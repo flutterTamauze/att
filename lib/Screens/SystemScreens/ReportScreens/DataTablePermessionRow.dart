@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
 class DataTablePermessionRow extends StatelessWidget {
@@ -63,7 +64,8 @@ class DataTablePermessionRow extends StatelessWidget {
                 alignment: Alignment.center,
                 height: 20.h,
                 child: AutoSizeText(
-                  permessions.duration,
+                  amPmChanger(
+                      int.parse(permessions.duration.replaceAll(":", ""))),
                   maxLines: 1,
                   style: TextStyle(
                     fontSize:

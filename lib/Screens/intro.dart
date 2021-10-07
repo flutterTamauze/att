@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import "../services/user_data.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,6 +59,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
         fit: BoxFit.fill,
       ),
     ];
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
       onTap: () =>
           print(Provider.of<UserData>(context, listen: false).loggedIn),

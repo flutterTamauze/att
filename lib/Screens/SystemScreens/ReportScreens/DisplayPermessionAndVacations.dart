@@ -230,7 +230,7 @@ class _VacationAndPermessionsReportState
                     RadioButtonWidg(
                       radioVal2: radioVal2,
                       radioVal: 3,
-                      title: "الأذنات",
+                      title: "الأذونات",
                       onchannge: (value) {
                         setState(() {
                           radioVal2 = value;

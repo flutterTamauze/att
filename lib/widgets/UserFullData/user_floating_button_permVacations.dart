@@ -159,7 +159,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                   return permessionsList.isEmpty
                                                       ? Center(
                                                           child: Text(
-                                                          "لا يوجد اذنات لهذا المستخدم",
+                                                          "لا يوجد اذونات لهذا المستخدم",
                                                           style: TextStyle(
                                                               fontSize: 15,
                                                               fontWeight:

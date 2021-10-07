@@ -113,9 +113,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: RoundedLoadingIndicator(),
-                      );
+                      return RoundedLoadingIndicator();
                     });
                 await getOfficialVacations();
                 Navigator.pop(context);

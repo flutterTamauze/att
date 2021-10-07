@@ -50,7 +50,7 @@ class PendingCompanyPermessions extends StatelessWidget {
                       : pendingList.pendingCompanyPermessions.length == 0
                           ? Center(
                               child: Text(
-                              "لا يوجد اذنات لم يتم الرد عليها",
+                              "لا يوجد اذونات لم يتم الرد عليها",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ))

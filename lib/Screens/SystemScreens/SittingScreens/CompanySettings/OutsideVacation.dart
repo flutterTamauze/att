@@ -127,6 +127,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
     var shiftsData = Provider.of<ShiftsData>(context, listen: false);
     var sitesData = Provider.of<SiteData>(context, listen: false);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
         onTap: () {
           _nameController.text == ""

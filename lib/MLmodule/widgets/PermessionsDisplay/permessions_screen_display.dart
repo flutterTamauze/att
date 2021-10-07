@@ -82,9 +82,9 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                             : permessionProv.singleUserPermessions.isEmpty
                                 ? Center(
                                     child: Text(
-                                    "لا يوجد اذنات لهذا المستخدم",
+                                    "لا يوجد اذونات لهذا المستخدم",
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                   ))
                                 : ListView.builder(
