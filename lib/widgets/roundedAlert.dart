@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -710,14 +711,11 @@ class RoundedAlertOkOnly extends StatelessWidget {
 class RoundedLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0)), //this right here
-        child: Container(
-            height: 80,
-            child: Lottie.asset(
-              "resources/loadingQR.json",
-            )));
+    return Container(
+      padding: EdgeInsets.all(60.w),
+      child: Lottie.asset(
+        "resources/loading.json",
+      ),
+    );
   }
 }

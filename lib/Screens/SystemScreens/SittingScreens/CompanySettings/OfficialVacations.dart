@@ -359,7 +359,9 @@ class _OfficialVacationState extends State<OfficialVacation> {
                           vactionProv.isLoading
                               ? Expanded(
                                   child: Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: Colors.orange,
+                                    ),
                                   ),
                                 )
                               : Expanded(

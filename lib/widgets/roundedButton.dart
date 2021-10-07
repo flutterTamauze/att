@@ -20,8 +20,9 @@ class RoundedButton extends StatelessWidget {
       child: Container(
         width: getkDeviceWidthFactor(context, 160),
         decoration: BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          border: Border.all(width: 1, color: Colors.orange[600]),
+          borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.all(10),
         child: Center(
@@ -31,7 +32,7 @@ class RoundedButton extends StatelessWidget {
               title,
               maxLines: 1,
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.orange[600],
                   fontWeight: FontWeight.bold,
                   fontSize:
                       ScreenUtil().setSp(17.0, allowFontScalingSelf: true)),

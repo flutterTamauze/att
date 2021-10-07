@@ -99,7 +99,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return RoundedLoadingIndicator();
+                      return Container(child: RoundedLoadingIndicator());
                     });
                 await getDaysOff();
                 Navigator.pop(context);
@@ -113,7 +113,9 @@ class _CompanySettingsState extends State<CompanySettings> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return RoundedLoadingIndicator();
+                      return AlertDialog(
+                        content: RoundedLoadingIndicator(),
+                      );
                     });
                 await getOfficialVacations();
                 Navigator.pop(context);

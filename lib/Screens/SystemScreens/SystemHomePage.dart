@@ -315,7 +315,11 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(12),
-                                                          color: Colors.orange),
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color:
+                                                                  Colors.orange[
+                                                                      600])),
                                                       child: Center(
                                                         child: Container(
                                                           height: 20,
@@ -330,7 +334,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                                         allowFontScalingSelf:
                                                                             true),
                                                                 color: Colors
-                                                                    .black),
+                                                                        .orange[
+                                                                    600]),
                                                           ),
                                                         ),
                                                       ),
