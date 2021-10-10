@@ -89,7 +89,8 @@ dependencies:
   flutter_phoenix: ^1.0.0
   huawei_location: ^5.1.0+303
   dio: ^4.0.0
-  progress_dialog: ^1.2.4  
+  progress_dialog: ^1.2.4
+  jwt_decoder: ^2.0.1  
 dev_dependencies:
   flutter_test:
     sdk: flutter

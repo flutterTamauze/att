@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Notifications/Notifications.dart';
+import 'SuperAdmin/Screen/super_admin.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -304,11 +305,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => NavScreenTwo(0),
               ));
         } else if (value == 6) {
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => NavScreenTwo(0),
-          //     ));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => SuperAdminScreen()));
         } else if (value == -1) {
           return showDialog(
               context: context,

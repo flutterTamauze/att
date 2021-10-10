@@ -1,12 +1,10 @@
 class SuperCompaniesModel {
-  String companyName, companyImage;
+  String companyName;
   int companyId;
-  SuperCompaniesModel({this.companyId, this.companyImage, this.companyName});
+  SuperCompaniesModel({this.companyId, this.companyName});
 
   factory SuperCompaniesModel.fromJson(json) {
     return SuperCompaniesModel(
-        companyId: json["comid"],
-        companyImage: json["comImg"],
-        companyName: json["comName"]);
+        companyId: json["companyId"], companyName: json["companyName"]);
   }
 }

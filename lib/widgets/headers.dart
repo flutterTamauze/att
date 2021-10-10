@@ -320,6 +320,248 @@ class Header extends StatelessWidget {
   }
 }
 
+class SuperadminHeader extends StatelessWidget {
+  final String text;
+
+  SuperadminHeader({
+    this.text,
+  });
+  @override
+  Widget build(BuildContext context) {
+    User _userData = Provider.of<UserData>(context, listen: true).user;
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: DiagonalPathClipperOne(),
+          child: Container(
+            height: 135.h,
+            color: Colors.orange,
+            child: Stack(
+              children: [
+                ClipPath(
+                  clipper: DiagonalPathClipperOne(),
+                  child: Container(
+                    height: 130.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+            right: 10.w,
+            top: 10.h,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.only(right: 5.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileScreen(),
+                                      ));
+                                },
+                                child: Container(
+                                  height: 30.h,
+                                  child: AutoSizeText(
+                                    _userData.name,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                      fontSize: 17,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 30.h,
+                                child: AutoSizeText(
+                                  _userData.userJob,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      fontSize: ScreenUtil().setSp(13,
+                                          allowFontScalingSelf: true),
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 35.w,
+                          child: Container(
+                            height: 75.h,
+                            width: 70.w,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Color(0xffFF7E00),
+                              ),
+                              // image: DecorationImage(
+                              //   image: headerImage,
+                              //   fit: BoxFit.fill,
+                              // ),
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(75.0),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    Provider.of<UserData>(context, listen: true)
+                                        .user
+                                        .userImage,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Platform.isIOS
+                                    ? CupertinoActivityIndicator(
+                                        radius: 20,
+                                      )
+                                    : CircularProgressIndicator(
+                                        backgroundColor: Colors.white,
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                Colors.orange),
+                                      ),
+                                errorWidget: (context, url, error) =>
+                                    Provider.of<UserData>(context, listen: true)
+                                        .changedWidget,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                    right: 0,
+                    top: 8.w,
+                    child: GestureDetector(
+                      onTap: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      child: Consumer<NotificationDataService>(
+                        builder: (context, value, child) {
+                          return Stack(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(3),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Color(0xffFF7E00).withOpacity(0.9),
+                                      ),
+                                      child: Icon(
+                                        Icons.notification_important,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              value.getUnSeenNotifications() == 0
+                                  ? Container()
+                                  : Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.red,
+                                          ),
+                                          child: Text(
+                                            value
+                                                .getUnSeenNotifications()
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11),
+                                          )),
+                                    )
+                            ],
+                          );
+                        },
+                      ),
+                    ))
+              ],
+            )),
+        Positioned(
+          top: getkDeviceHeightFactor(context, 50),
+          left: 40,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: Color(0xffFF7E00),
+              ),
+              // image: DecorationImage(
+              //   image: headerImage,
+              //   fit: BoxFit.fill,
+              // ),
+              shape: BoxShape.circle,
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.black),
+                  child: CachedNetworkImage(
+                    imageUrl: Provider.of<CompanyData>(context, listen: true)
+                        .com
+                        .logo,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Platform.isIOS
+                        ? CupertinoActivityIndicator(
+                            radius: 20,
+                          )
+                        : CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                Colors.orange),
+                          ),
+                    errorWidget: (context, url, error) =>
+                        Provider.of<UserData>(context, listen: true)
+                            .changedWidget,
+                  ),
+                )),
+          ),
+          width: getkDeviceWidthFactor(context, 60),
+          height: getkDeviceWidthFactor(context, 60),
+        ),
+      ],
+    );
+  }
+}
+
 class ProfileHeader extends StatelessWidget {
   final headerImage;
   final onPressed;

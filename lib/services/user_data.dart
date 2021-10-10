@@ -15,12 +15,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/company.dart';
@@ -35,11 +37,13 @@ class UserData with ChangeNotifier {
 //   var cacheValCompanyIcon = "";
 // var companyDataArname="";
   String siteName;
+  List<SuperCompaniesModel> superCompaniesList = [];
   String hawawiToken = "";
   Position _currentPosition;
   Location _currentHawawiLocation;
   bool changedPassword;
   bool isLoading = false;
+  bool isSuperAdmin = false;
   User user = User(
     userSiteId: 0,
     isAllowedToAttend: false,
@@ -118,7 +122,7 @@ class UserData with ChangeNotifier {
       if (stability) {
         print("going to login");
         final response = await http.post(
-            Uri.parse("$baseURL/api/Authenticate/login"),
+            Uri.parse("$localURL/api/Authenticate/login"),
             body: json.encode(
               {
                 "Username": username,
@@ -139,9 +143,21 @@ class UserData with ChangeNotifier {
             seconds: 40,
           ),
         );
+
         var decodedRes = json.decode(response.body);
         log(decodedRes["statusCode"].toString());
         if (decodedRes["statusCode"] == 200) {
+          Map<String, dynamic> decodedToken =
+              JwtDecoder.decode(decodedRes["token"]);
+          print(decodedToken);
+
+          print(decodedToken[
+              "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
+          isSuperAdmin = decodedToken[
+                  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+              .toString()
+              .contains("[");
+          print("is super admin ? $isSuperAdmin");
           log(response.body);
           log(response.statusCode.toString());
           print("token is :${decodedRes["token"]}");
@@ -168,7 +184,13 @@ class UserData with ChangeNotifier {
             user.userImage = "$baseURL/${decodedRes["userData"]["userImage"]}";
             changedPassword = decodedRes["userData"]["changedPassword"] as bool;
             siteName = decodedRes["companyData"]["siteName"];
-            // cacheValCompanyIcon = decodedRes["companyData"]["logo"];
+            if (isSuperAdmin) {
+              print(decodedRes['superAdminCompanies']);
+              var obJson = decodedRes['superAdminCompanies'] as List;
+              superCompaniesList = obJson
+                  .map((json) => SuperCompaniesModel.fromJson(json))
+                  .toList();
+            }
 
             var companyId = decodedRes["companyData"]["id"];
             print('com id :$companyId');
@@ -209,7 +231,9 @@ class UserData with ChangeNotifier {
               }
               await initializeNotification(context);
               int userType = user.userType;
-              if (userType != 2 && userType != 0) {
+              if (isSuperAdmin) {
+                return 6;
+              } else if (userType != 2 && userType != 0) {
                 await Provider.of<ShiftsData>(context, listen: false).getShifts(
                     Provider.of<CompanyData>(context, listen: false).com.id,
                     Provider.of<UserData>(context, listen: false)

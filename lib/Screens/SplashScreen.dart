@@ -160,6 +160,7 @@ class _SplashScreenState extends State<SplashScreen>
                   MaterialPageRoute(builder: (context) {
                 return SuperAdminScreen();
               }));
+              getUserData();
             } else if (value == 0) {
               Navigator.pushReplacement(
                   context,
