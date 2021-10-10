@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
-        } else if (value > 0) {
+        } else if (value > 0 && value < 5) {
           prefs.setStringList(
               'userData', [_uniIdController.text, _passwordController.text]);
 
@@ -303,6 +303,12 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(
                 builder: (context) => NavScreenTwo(0),
               ));
+        } else if (value == 6) {
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => NavScreenTwo(0),
+          //     ));
         } else if (value == -1) {
           return showDialog(
               context: context,

@@ -4,8 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserReport.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesRepo.dart';
+import 'package:qr_users/Screens/SuperAdmin/widgets/SuperAdminTile.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/DaysOff.dart';
@@ -20,87 +26,26 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
-import '../HomePage.dart';
-import 'NormalUserReport.dart';
-import 'NormalUserVacationRequest.dart';
-import 'NormalUsersOrders.dart';
-import 'ReportTile.dart';
+import '../../HomePage.dart';
 
-class NormalUserMenu extends StatefulWidget {
+class SuperAdminScreen extends StatefulWidget {
   @override
-  _NormalUserMenuState createState() => _NormalUserMenuState();
+  _SuperAdminScreenState createState() => _SuperAdminScreenState();
 }
 
-class _NormalUserMenuState extends State<NormalUserMenu> {
+class _SuperAdminScreenState extends State<SuperAdminScreen> {
+  SuperCompaniesRepo _superRepo = SuperCompaniesRepo();
+  Future superCountries;
+  @override
+  void initState() {
+    super.initState();
+    superCountries = _superRepo.getSuperCompanies(
+        Provider.of<UserData>(context, listen: false).user.userToken);
+  }
+
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
-    List<ReportTile> reports = [
-      ReportTile(
-          title: "التقرير",
-          subTitle: "تقرير الحضور ",
-          icon: Icons.calendar_today_rounded,
-          onTap: () {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => NormalUserReport(),
-              ),
-            );
-
-            print("الموظفين");
-          }),
-      ReportTile(
-          title: "الطلبات",
-          subTitle: "طلب اذن/ اجازة",
-          icon: Icons.person,
-          onTap: () {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => UserVacationRequest(1),
-              ),
-            );
-          }),
-      ReportTile(
-          title: " طلباتى ",
-          subTitle: "متابعة حالة الطلبات ",
-          icon: FontAwesomeIcons.clipboardList,
-          onTap: () {
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => UserOrdersView(
-                  selectedOrder: "الأجازات",
-                ),
-              ),
-            );
-          }),
-      ReportTile(
-          title: "مناوباتى",
-          subTitle: "عرض مناوبات الأسبوع",
-          icon: FontAwesomeIcons.clock,
-          onTap: () async {
-            var user = Provider.of<UserData>(context, listen: false).user;
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundedLoadingIndicator();
-                });
-            await Provider.of<ShiftsData>(context, listen: false)
-                .getFirstAvailableSchedule(user.userToken, user.id);
-
-            await Provider.of<ShiftApi>(context, listen: false)
-                .getShiftByShiftId(user.userShiftId, user.userToken);
-            await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
-                Provider.of<CompanyData>(context, listen: false).com.id,
-                Provider.of<UserData>(context, listen: false).user.userToken,
-                context);
-            Navigator.pop(context);
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => UserCurrentShifts(),
-              ),
-            );
-          }),
-    ];
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Consumer<MemberData>(builder: (context, memberData, child) {
       return WillPopScope(
@@ -131,21 +76,43 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                           padding: const EdgeInsets.all(10),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(60.0),
-                            child: Lottie.asset("resources/user.json",
+                            child: Lottie.asset("resources/CompanyLottie.json",
                                 repeat: false),
                           ),
                         ),
-                        "حسابى"),
+                        "شركاتى"),
                     SizedBox(
                       height: 20,
                     ),
 
                     ///List OF SITES
                     Expanded(
-                        child: ListView.builder(
-                            itemCount: reports.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return reports[index];
+                        child: FutureBuilder(
+                            future: superCountries,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.orange,
+                                  ),
+                                );
+                              }
+
+                              return ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return SuperAdminTile(
+                                      compPicture: snapshot.data[index].comId,
+                                      onTap: () {
+                                        print(
+                                          snapshot.data[index].id,
+                                        );
+                                      },
+                                      title: snapshot.data[index].comName,
+                                    );
+                                  });
                             }))
                   ],
                 ),

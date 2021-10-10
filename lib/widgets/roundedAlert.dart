@@ -76,7 +76,7 @@ class RoundedAlert extends StatelessWidget {
                         child: MaterialButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            onCancel();
+                            // onCancel();
                           },
                           minWidth: 120,
                           height: 30,

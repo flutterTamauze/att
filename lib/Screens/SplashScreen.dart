@@ -14,6 +14,7 @@ import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
@@ -144,15 +145,21 @@ class _SplashScreenState extends State<SplashScreen>
                   builder: (context) => ErrorScreen(
                       "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج",
                       true)));
-            } else if (value > 0) {
+            } else if (value > 0 && value < 6) {
               print(" usertype $value");
 
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return NavScreenTwo(0);
+                // return SuperAdminScreen();
               }));
 
               getUserData();
+            } else if (value == 6) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return SuperAdminScreen();
+              }));
             } else if (value == 0) {
               Navigator.pushReplacement(
                   context,

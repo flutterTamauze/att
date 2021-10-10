@@ -323,6 +323,12 @@ class UserHolidaysData with ChangeNotifier {
             msg: "يوجد مأمورية خارجية فى هذا التاريخ",
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
+      } else if (msg ==
+          "Failed : There are an holiday approved in this period!") {
+        Fluttertoast.showToast(
+            msg: "يوجد اجازة موافق عليها فى هذة الفترة",
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER);
       } else {
         Fluttertoast.showToast(
             msg: "خطأ في اضافة المأمورية",

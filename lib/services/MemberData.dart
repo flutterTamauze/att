@@ -85,21 +85,6 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  // List<AppRoles> rolesList = [];
-  // getAppRoles(String userToken) async {
-  //   var response = await http.get(
-  //     Uri.parse("$baseURL/api/Authenticate/GetRoles"),
-  //     headers: {
-  //       'Content-type': 'application/json',
-  //       'Authorization': "Bearer $userToken"
-  //     },
-  //   );
-  //   print(response.body);
-  //   var roles = jsonDecode(response.body) as List;
-  //   rolesList = roles.map((siteJson) => AppRoles.fromJson(siteJson)).toList();
-  //   notifyListeners();
-  // }
-
   searchUsersList(String filter) {
     List<Member> tmpList = [];
     for (int i = 0; i < membersList.length; i++) {

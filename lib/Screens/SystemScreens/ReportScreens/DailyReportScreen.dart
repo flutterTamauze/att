@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
@@ -71,6 +72,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
+    print("starrt refresh");
     var userProvider = Provider.of<UserData>(context, listen: false);
     print("refresh");
     setState(() {
@@ -79,7 +81,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
 
     await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
         userProvider.user.userToken,
-        userProvider.user.userType == 2 ? userProvider.user.userSiteId : siteID,
+        userProvider.user.userType == 2
+            ? userProvider.user.userSiteId
+            : Provider.of<SiteData>(context, listen: false)
+                .sitesList[siteId]
+                .id,
         date,
         context);
     refreshController.refreshCompleted();
@@ -194,6 +200,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                     ),
                                   );
                                 case ConnectionState.done:
+                                  log(snapshot.data);
                                   return Column(
                                     children: [
                                       Container(
@@ -415,14 +422,21 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                           Colors
                                                                               .orange,
                                                                     ),
-                                                                    child: ListView.builder(
-                                                                        physics: AlwaysScrollableScrollPhysics(),
-                                                                        itemCount: reportsData.dailyReport.attendListUnits.length,
-                                                                        itemBuilder: (BuildContext context, int index) {
-                                                                          return DataTableRow(
-                                                                              reportsData.dailyReport.attendListUnits[index],
-                                                                              siteId);
-                                                                        }),
+                                                                    child: snapshot.data ==
+                                                                            "Date is older than company date"
+                                                                        ? Center(
+                                                                            child:
+                                                                                Text(
+                                                                              "التاريخ قبل إنشاء الشركة",
+                                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                          )
+                                                                        : ListView.builder(
+                                                                            physics: AlwaysScrollableScrollPhysics(),
+                                                                            itemCount: reportsData.dailyReport.attendListUnits.length,
+                                                                            itemBuilder: (BuildContext context, int index) {
+                                                                              return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteId);
+                                                                            }),
                                                                   )),
                                                                   !isToday(selectedDate)
                                                                       ? DailyReportTableEnd(

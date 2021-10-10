@@ -7,6 +7,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:open_file/open_file.dart' as open_file;
 import 'package:lottie/lottie.dart';
@@ -101,6 +103,23 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  static Future<String> getDeviceUUID() async {
+    String identifier;
+
+    try {
+      if (Platform.isAndroid) {
+        identifier = await FlutterUdid.udid; //UUID for Android
+      } else if (Platform.isIOS) {
+        final storage = new FlutterSecureStorage();
+        identifier = await storage.read(key: "deviceMac"); //UUID for iOS
+      }
+    } catch (e) {
+      print('Failed to get platform version');
+    }
+//if (!mounted) return;
+    return identifier;
+  }
+
   DateTime currentBackPressTime;
   @override
   Widget build(BuildContext context) {
@@ -125,7 +144,9 @@ class _HomePageState extends State<HomePage> {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                print(await getDeviceUUID());
+              },
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,

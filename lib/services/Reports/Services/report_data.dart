@@ -309,9 +309,10 @@ class ReportsData with ChangeNotifier {
     return futureListener;
   }
 
-  getDailyReportUnitsApi(
+  Future<String> getDailyReportUnitsApi(
       String userToken, int siteId, String date, BuildContext context) async {
     List<DailyReportUnit> newReportList;
+    print("site id $siteId");
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
@@ -320,6 +321,7 @@ class ReportsData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
+      print(response.statusCode);
       print(response.body);
       if (response.statusCode == 401) {
         await inherit.login(context);
@@ -345,6 +347,9 @@ class ReportsData with ChangeNotifier {
           notifyListeners();
           print("message ${dailyReport.isHoliday}");
           return "Success";
+        } else if (decodedRes["message"] ==
+            "Success : Date is older than company date") {
+          return "Date is older than company date";
         } else if (decodedRes["message"] == "Success : Holiday Day") {
           dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
 
