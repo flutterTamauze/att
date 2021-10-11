@@ -122,7 +122,7 @@ class UserData with ChangeNotifier {
       if (stability) {
         print("going to login");
         final response = await http.post(
-            Uri.parse("$localURL/api/Authenticate/login"),
+            Uri.parse("$baseURL/api/Authenticate/login"),
             body: json.encode(
               {
                 "Username": username,
@@ -184,13 +184,6 @@ class UserData with ChangeNotifier {
             user.userImage = "$baseURL/${decodedRes["userData"]["userImage"]}";
             changedPassword = decodedRes["userData"]["changedPassword"] as bool;
             siteName = decodedRes["companyData"]["siteName"];
-            if (isSuperAdmin) {
-              print(decodedRes['superAdminCompanies']);
-              var obJson = decodedRes['superAdminCompanies'] as List;
-              superCompaniesList = obJson
-                  .map((json) => SuperCompaniesModel.fromJson(json))
-                  .toList();
-            }
 
             var companyId = decodedRes["companyData"]["id"];
             print('com id :$companyId');
@@ -202,7 +195,20 @@ class UserData with ChangeNotifier {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String comImageFilePath =
                   "$baseURL/${decodedRes["companyData"]["logo"]}";
+
               String userImage = user.userImage;
+              var comProv = Provider.of<CompanyData>(context, listen: false);
+              if (isSuperAdmin) {
+                print(decodedRes['superAdminCompanies']);
+                var obJson = decodedRes['superAdminCompanies'] as List;
+                superCompaniesList.add(SuperCompaniesModel(
+                    companyId: comProv.com.id,
+                    companyName: comProv.com.nameAr));
+                List<SuperCompaniesModel> tempComp = obJson
+                    .map((json) => SuperCompaniesModel.fromJson(json))
+                    .toList();
+                superCompaniesList.addAll(tempComp);
+              }
 
               List<String> userData = [
                 user.name,
@@ -623,7 +629,7 @@ class UserData with ChangeNotifier {
     await db.clearNotifications();
 
     loggedIn = false;
-    manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
+    // manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     changedWidget = Image.asset("resources/personicon.png");

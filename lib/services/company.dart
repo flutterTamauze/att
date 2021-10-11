@@ -106,6 +106,7 @@ class CompanyData extends ChangeNotifier {
             com.createdOn = DateTime.tryParse(decodedRes["data"]["createdOn"]);
             com.legalComDate = decodedRes["data"]["monthStartDate"];
             print("company created on ${com.createdOn}");
+
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==

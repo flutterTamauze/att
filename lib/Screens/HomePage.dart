@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Download/download_service.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -145,6 +146,8 @@ class _HomePageState extends State<HomePage> {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
+                print(
+                    Provider.of<UserData>(context, listen: false).isSuperAdmin);
                 print(await getDeviceUUID());
               },
               child: Scaffold(
@@ -199,23 +202,31 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      Fluttertoast.showToast(
-        msg: "اضغط مره اخرى للخروج من التطبيق",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.orange,
-        fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-      );
+    if (Provider.of<UserData>(context, listen: false).isSuperAdmin) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SuperAdminScreen(),
+          ));
       return Future.value(false);
     } else {
-      SystemNavigator.pop();
-      return Future.value(false);
+      if (currentBackPressTime == null ||
+          now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+        currentBackPressTime = now;
+        Fluttertoast.showToast(
+          msg: "اضغط مره اخرى للخروج من التطبيق",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.orange,
+          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+        );
+        return Future.value(false);
+      } else {
+        SystemNavigator.pop();
+        return Future.value(false);
+      }
     }
   }
 }
