@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -232,8 +233,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
     int startNumber = (startTime.hour * 60) + startTime.minute;
     int endNumber = (endTime.hour * 60) + endTime.minute;
-    int difference = endNumber - startNumber.abs();
-    print(difference);
+    int difference = (endNumber - startNumber).abs();
+    log(difference.toString());
     if (difference >= 180)
       return true;
     else
@@ -1369,8 +1370,8 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
   bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
     int startNumber = (startTime.hour * 60) + startTime.minute;
     int endNumber = (endTime.hour * 60) + endTime.minute;
-    int difference = endNumber - startNumber.abs();
-    print(difference);
+    int difference = (endNumber - startNumber).abs();
+    log(difference.toString());
     if (difference >= 180)
       return true;
     else
@@ -1551,11 +1552,19 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                           alignment: Alignment.centerRight,
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              "يجب ان لا تقل المدة عن 3 ساعات",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600),
+                            child: GestureDetector(
+                              onTap: () {
+                                print(widget.fromPickedWeek);
+                                print(widget.toPickedWeek);
+                                print(compareShiftTime(widget.fromPickedWeek,
+                                    widget.toPickedWeek));
+                              },
+                              child: Text(
+                                "يجب ان لا تقل المدة عن 3 ساعات",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
                         )

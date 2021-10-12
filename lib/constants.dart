@@ -26,8 +26,8 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 7);
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 7);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 12);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 12);
 
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;

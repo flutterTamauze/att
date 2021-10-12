@@ -136,6 +136,7 @@ class MissionsData with ChangeNotifier {
   addInternalMission(
       BuildContext context,
       picked,
+      String description,
       DateTime fromDate,
       DateTime toDate,
       String userId,
@@ -152,6 +153,7 @@ class MissionsData with ChangeNotifier {
     } else {
       String msg = await addUserMission(
         UserMissions(
+            description: description ?? "لا يوجد تفاصيل",
             fromDate: fromDate,
             toDate: toDate,
             shiftId: Provider.of<ShiftsData>(context, listen: false)

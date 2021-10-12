@@ -38,7 +38,7 @@ class PendingCompanyPermessions extends StatelessWidget {
               ),
               SmallDirectoriesHeader(
                 Lottie.asset("resources/calender.json", repeat: false),
-                "طلبات الأذنات",
+                "طلبات الأذونات",
               ),
               Expanded(
                   child: pendingList.isLoading

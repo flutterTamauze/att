@@ -36,6 +36,7 @@ Future<bool> sendFcmMessage(
           // "image": "default",
           "content_available": true,
           "mutable_content": true,
+          'sound': 'default'
           // "android_channel_id": "ChilangoNotifications",
           // "sound": "your_sweet_sound.wav",
         },

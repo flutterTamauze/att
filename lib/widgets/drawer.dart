@@ -13,6 +13,7 @@ import 'package:qr_users/Screens/AboutCompany.dart';
 import 'package:qr_users/Screens/AboutUsScreen.dart';
 import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/intro.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
 
@@ -70,10 +71,6 @@ class DrawerI extends StatelessWidget {
                         height: 90.h,
                         width: 90.w,
                         decoration: BoxDecoration(
-                            // border: Border.all(
-                            //   width: 1,
-                            //   color: Color(0xffFF7E00),
-                            // ),
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 image: AssetImage("resources/image.png"),
@@ -84,7 +81,7 @@ class DrawerI extends StatelessWidget {
                 ),
 
                 SizedBox(
-                  height: 20,
+                  height: 5.h,
                 ),
                 Text(
                   "V3.0.0",
@@ -120,196 +117,211 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 25.h,
                 ),
-                connectivityResult == ConnectivityResult.none
-                    ? Container()
-                    : Column(
-                        children: [
-                          MenuItem(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => NormalUserMenu()));
-                              },
-                              title: "حسابى",
-                              icon: Icons.person),
-                          Divider(
-                            height: 30.h,
-                            thickness: 0.5,
-                            color: Colors.white.withOpacity(0.3),
-                            indent: 50,
-                            endIndent: 50,
-                          ),
-                          userType == 4 || userType == 3
-                              ? Column(
-                                  children: [
-                                    MenuItem(
-                                        onTap: () async {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return RoundedLoadingIndicator();
-                                              });
-                                          await Provider.of<
-                                                      UserPermessionsData>(
-                                                  context,
-                                                  listen: false)
-                                              .getPendingCompanyPermessions(
-                                                  comId, token);
-                                          await Provider.of<UserHolidaysData>(
-                                                  context,
-                                                  listen: false)
-                                              .getPendingCompanyHolidays(
-                                                  comId, token);
-
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AdminPanel(),
-                                              ));
-                                        },
-                                        title: "لوحة التحكم",
-                                        icon: Icons.admin_panel_settings),
-                                    Divider(
-                                      height: 30.h,
-                                      thickness: 0.5,
-                                      color: Colors.white.withOpacity(0.3),
-                                      indent: 50,
-                                      endIndent: 50,
-                                    )
-                                  ],
-                                )
-                              : Container(),
-                          userType == 4
-                              ? Column(
-                                  children: [
-                                    MenuItem(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CompanyProfileScreen()));
-                                      },
-                                      title:
-                                          "عن ${Provider.of<CompanyData>(context, listen: true).com.nameAr}",
-                                      icon: Icons.apartment,
-                                    ),
-                                    Divider(
-                                      height: 30.h,
-                                      thickness: 0.5,
-                                      color: Colors.white.withOpacity(0.3),
-                                      indent: 50,
-                                      endIndent: 50,
-                                    )
-                                  ],
-                                )
-                              : Container(),
-                          MenuItem(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ContactUsScreen()));
-                            },
-                            title: "عن التطبيق",
-                            icon: Icons.info_outlined,
-                          ),
-                          Divider(
-                            height: 30.h,
-                            thickness: 0.5,
-                            color: Colors.white.withOpacity(0.3),
-                            indent: 50,
-                            endIndent: 50,
-                          ),
-                          MenuItem(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PageIntro(
-                                        userType: userType == 0 ? 0 : 1,
-                                      )));
-                            },
-                            title: "المعرض",
-                            icon: Icons.image,
-                          ),
-                          Divider(
-                            height: 30.h,
-                            thickness: 0.5,
-                            color: Colors.white.withOpacity(0.3),
-                            indent: 50,
-                            endIndent: 50,
-                          ),
-                          MenuItem(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AboutUsScreen()));
-                            },
-                            title: "من نحن",
-                            icon: FontAwesomeIcons.globe,
-                          ),
-                          Divider(
-                            height: 30.h,
-                            thickness: 0.5,
-                            color: Colors.white.withOpacity(0.3),
-                            indent: 50,
-                            endIndent: 50,
-                          ),
-                          MenuItem(
-                            onTap: () {
-                              return showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RoundedAlert(
-                                        onPressed: () async {
-                                          if (userType == 4) {
-                                            //subscribe admin channel
-                                            bool isError = false;
-                                            await _firebaseMessaging
-                                                .getToken()
-                                                .catchError((e) {
-                                              print(e);
-                                              isError = true;
-                                            });
-                                            if (isError == false) {
-                                              print("topic name : ");
-                                              print(
-                                                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-                                              await _firebaseMessaging
-                                                  .unsubscribeFromTopic(
-                                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-                                            }
-                                          }
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .logout();
-                                          Provider.of<MemberData>(context,
-                                                  listen: false)
-                                              .membersList = [];
-                                          Provider.of<SiteData>(context,
-                                                  listen: false)
-                                              .sitesList = [];
-                                          Provider.of<ShiftsData>(context,
-                                                  listen: false)
-                                              .shiftsList = [];
-                                          Provider.of<ShiftsData>(context,
-                                                  listen: false)
-                                              .shiftsBySite = [];
-
-                                          Phoenix.rebirth(context);
-                                          // Navigator.of(context).pushAndRemoveUntil(
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) => LoginScreen()),
-                                          //     (Route<dynamic> route) => false);
-                                        },
-                                        title: 'تسجيل خروج',
-                                        content: "هل تريد تسجيل الخروج ؟");
-                                  });
-                            },
-                            title: "تسجيل خروج",
-                            icon: Icons.logout,
-                          ),
-                        ],
+                Column(
+                  children: [
+                    MenuItem(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => NormalUserMenu()));
+                        },
+                        title: "حسابى",
+                        icon: Icons.person),
+                    Divider(
+                      height: 30.h,
+                      thickness: 0.5,
+                      color: Colors.white.withOpacity(0.3),
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    if (Provider.of<UserData>(context, listen: false)
+                        .isSuperAdmin) ...[
+                      MenuItem(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SuperAdminScreen(),
+                              ));
+                        },
+                        title: "شركاتى",
+                        icon: FontAwesomeIcons.building,
                       ),
+                      Divider(
+                        height: 30.h,
+                        thickness: 0.5,
+                        color: Colors.white.withOpacity(0.3),
+                        indent: 50,
+                        endIndent: 50,
+                      ),
+                    ],
+                    userType == 4 || userType == 3
+                        ? Column(
+                            children: [
+                              MenuItem(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return RoundedLoadingIndicator();
+                                        });
+                                    await Provider.of<UserPermessionsData>(
+                                            context,
+                                            listen: false)
+                                        .getPendingCompanyPermessions(
+                                            comId, token);
+                                    await Provider.of<UserHolidaysData>(context,
+                                            listen: false)
+                                        .getPendingCompanyHolidays(
+                                            comId, token);
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AdminPanel(),
+                                        ));
+                                  },
+                                  title: "لوحة التحكم",
+                                  icon: Icons.admin_panel_settings),
+                              Divider(
+                                height: 30.h,
+                                thickness: 0.5,
+                                color: Colors.white.withOpacity(0.3),
+                                indent: 50,
+                                endIndent: 50,
+                              )
+                            ],
+                          )
+                        : Container(),
+                    userType == 4
+                        ? Column(
+                            children: [
+                              MenuItem(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          CompanyProfileScreen()));
+                                },
+                                title:
+                                    "عن ${Provider.of<CompanyData>(context, listen: true).com.nameAr}",
+                                icon: Icons.apartment,
+                              ),
+                              Divider(
+                                height: 30.h,
+                                thickness: 0.5,
+                                color: Colors.white.withOpacity(0.3),
+                                indent: 50,
+                                endIndent: 50,
+                              )
+                            ],
+                          )
+                        : Container(),
+                    MenuItem(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ContactUsScreen()));
+                      },
+                      title: "عن التطبيق",
+                      icon: Icons.info_outlined,
+                    ),
+                    Divider(
+                      height: 30.h,
+                      thickness: 0.5,
+                      color: Colors.white.withOpacity(0.3),
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    MenuItem(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PageIntro(
+                                  userType: userType == 0 ? 0 : 1,
+                                )));
+                      },
+                      title: "المعرض",
+                      icon: Icons.image,
+                    ),
+                    Divider(
+                      height: 30.h,
+                      thickness: 0.5,
+                      color: Colors.white.withOpacity(0.3),
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    MenuItem(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AboutUsScreen()));
+                      },
+                      title: "من نحن",
+                      icon: FontAwesomeIcons.globe,
+                    ),
+                    Divider(
+                      height: 30.h,
+                      thickness: 0.5,
+                      color: Colors.white.withOpacity(0.3),
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    MenuItem(
+                      onTap: () {
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return RoundedAlert(
+                                  onPressed: () async {
+                                    if (userType == 4) {
+                                      //subscribe admin channel
+                                      bool isError = false;
+                                      await _firebaseMessaging
+                                          .getToken()
+                                          .catchError((e) {
+                                        print(e);
+                                        isError = true;
+                                      });
+                                      if (isError == false) {
+                                        print("topic name : ");
+                                        print(
+                                            "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                        await _firebaseMessaging
+                                            .unsubscribeFromTopic(
+                                                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                      }
+                                    }
+                                    Provider.of<UserData>(context,
+                                            listen: false)
+                                        .logout();
+                                    Provider.of<MemberData>(context,
+                                            listen: false)
+                                        .membersList = [];
+                                    Provider.of<SiteData>(context,
+                                            listen: false)
+                                        .sitesList = [];
+                                    Provider.of<ShiftsData>(context,
+                                            listen: false)
+                                        .shiftsList = [];
+                                    Provider.of<ShiftsData>(context,
+                                            listen: false)
+                                        .shiftsBySite = [];
+
+                                    Phoenix.rebirth(context);
+                                    // Navigator.of(context).pushAndRemoveUntil(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => LoginScreen()),
+                                    //     (Route<dynamic> route) => false);
+                                  },
+                                  title: 'تسجيل خروج',
+                                  content: "هل تريد تسجيل الخروج ؟");
+                            });
+                      },
+                      title: "تسجيل خروج",
+                      icon: Icons.logout,
+                    ),
+                  ],
+                ),
               ],
             ),
             AMHPoweredWidght(),

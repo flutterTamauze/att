@@ -130,6 +130,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
         onTap: () {
+          print(externalMissionController.text);
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -806,6 +807,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .addInternalMission(
                                                             context,
                                                             picked,
+                                                            externalMissionController
+                                                                .text,
                                                             fromDate,
                                                             toDate,
                                                             widget.member.id,

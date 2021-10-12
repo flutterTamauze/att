@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'NotificationMessage.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
@@ -114,6 +116,7 @@ class NotificationDataService with ChangeNotifier {
       badge: true,
       sound: true,
     );
+
     NotificationSettings settings = await firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
@@ -169,33 +172,43 @@ class NotificationDataService with ChangeNotifier {
       counter++;
       print(event.notification.body);
       print(event.notification.title);
+      print(event.data["category"]);
       print(counter);
-      if (counter == 1) {
-        if (event.data["category"] == "attend") {
-          showAttendanceCheckDialog(context);
+      if (event.data["category"] == "internalMission") {
+        print("revieved internalMission ");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        List<String> userData = (prefs.getStringList('userData') ?? null);
+        await Provider.of<UserData>(context, listen: false)
+            .loginPost(userData[0], userData[1], context)
+            .then((value) => print('login successs'));
+      } else {
+        if (counter == 1) {
+          if (event.data["category"] == "attend") {
+            showAttendanceCheckDialog(context);
+          }
+
+          await db
+              .insertNotification(
+                  NotificationMessage(
+                      category: event.data["category"],
+                      dateTime: DateTime.now().toString().substring(0, 10),
+                      message: event.notification.body,
+                      messageSeen: 0,
+                      title: event.notification.title,
+                      timeOfMessage:
+                          DateFormat('kk:mm:a').format(DateTime.now())),
+                  context)
+              .then((value) => counter = 0)
+              .then((value) async => await addNotification(
+                  event.notification.title,
+                  event.notification.body,
+                  DateTime.now().toString().substring(0, 10),
+                  event.data["category"],
+                  DateFormat('kk:mm:a').format(DateTime.now()),
+                  value));
+
+          player.play("notification.mp3");
         }
-
-        await db
-            .insertNotification(
-                NotificationMessage(
-                    category: event.data["category"],
-                    dateTime: DateTime.now().toString().substring(0, 10),
-                    message: event.notification.body,
-                    messageSeen: 0,
-                    title: event.notification.title,
-                    timeOfMessage:
-                        DateFormat('kk:mm:a').format(DateTime.now())),
-                context)
-            .then((value) => counter = 0)
-            .then((value) async => await addNotification(
-                event.notification.title,
-                event.notification.body,
-                DateTime.now().toString().substring(0, 10),
-                event.data["category"],
-                DateFormat('kk:mm:a').format(DateTime.now()),
-                value));
-
-        player.play("notification.mp3");
       }
     });
   }

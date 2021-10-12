@@ -202,31 +202,23 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-    if (Provider.of<UserData>(context, listen: false).isSuperAdmin) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SuperAdminScreen(),
-          ));
+
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(
+        msg: "اضغط مره اخرى للخروج من التطبيق",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.orange,
+        fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+      );
       return Future.value(false);
     } else {
-      if (currentBackPressTime == null ||
-          now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-        currentBackPressTime = now;
-        Fluttertoast.showToast(
-          msg: "اضغط مره اخرى للخروج من التطبيق",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.orange,
-          fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-        );
-        return Future.value(false);
-      } else {
-        SystemNavigator.pop();
-        return Future.value(false);
-      }
+      SystemNavigator.pop();
+      return Future.value(false);
     }
   }
 }

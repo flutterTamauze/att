@@ -237,8 +237,10 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.red,
             textColor: Colors.black);
     }
-
-    if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
+    if (mounted) if (Provider.of<UserData>(context, listen: false)
+            .user
+            .userType ==
+        0) {
       Navigator.of(context)
           .pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => HomePage()),
