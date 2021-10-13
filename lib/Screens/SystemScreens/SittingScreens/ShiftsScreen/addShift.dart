@@ -326,7 +326,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         height: 10.0.h,
                                       ),
                                       TextFormField(
-                                        enabled: edit,
                                         onFieldSubmitted: (_) {},
                                         textInputAction: TextInputAction.next,
                                         textAlign: TextAlign.right,
@@ -653,8 +652,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   callBackfunTo: (TimeOfDay v) {
                                                     toPicked = v;
                                                   },
-                                                  enableText:
-                                                      daysOff[0].isDayOff,
                                                   weekDay: "السبت",
                                                   fromPickedWeek: fromPicked,
                                                   timeInController:
@@ -664,8 +661,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   toPickedWeek: toPicked,
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[1].isDayOff,
                                                   weekDay: "الأحد",
                                                   fromPickedWeek: sunFromT,
                                                   timeInController:
@@ -682,8 +677,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[2].isDayOff,
                                                   weekDay: "الأتنين",
                                                   fromPickedWeek: monFromT,
                                                   timeInController:
@@ -700,8 +693,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[3].isDayOff,
                                                   weekDay: "الثلاثاء",
                                                   fromPickedWeek: tuesFromT,
                                                   timeInController:
@@ -718,8 +709,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[4].isDayOff,
                                                   weekDay: "الأربعاء",
                                                   fromPickedWeek: wedFromT,
                                                   timeInController:
@@ -736,8 +725,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[5].isDayOff,
                                                   weekDay: "الخميس",
                                                   fromPickedWeek: thuFromT,
                                                   timeInController:
@@ -754,8 +741,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
-                                                  enableText:
-                                                      daysOff[6].isDayOff,
                                                   weekDay: "الجمعة",
                                                   fromPickedWeek: friFromT,
                                                   timeInController:
@@ -1349,7 +1334,6 @@ class CircularIconButton extends StatelessWidget {
 class AdvancedShiftPicker extends StatefulWidget {
   String weekDay;
 
-  bool enableText;
   Function callBackfunFrom, callBackfunTo;
   TextEditingController timeInController, timeOutController;
   TimeOfDay fromPickedWeek, toPickedWeek;
@@ -1358,7 +1342,6 @@ class AdvancedShiftPicker extends StatefulWidget {
       this.callBackfunFrom,
       this.timeInController,
       this.timeOutController,
-      this.enableText,
       this.callBackfunTo,
       this.toPickedWeek,
       this.weekDay});
@@ -1404,39 +1387,36 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                       builder: (context) {
                         return InkWell(
                             onTap: () async {
-                              if (!widget.enableText) {
-                                var from = await showTimePicker(
-                                  context: context,
-                                  initialTime: widget.fromPickedWeek,
-                                  builder:
-                                      (BuildContext context, Widget child) {
-                                    return MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: false),
-                                      child: child,
-                                    );
-                                  },
-                                );
-                                MaterialLocalizations localizations =
-                                    MaterialLocalizations.of(context);
-                                String formattedTime =
-                                    localizations.formatTimeOfDay(from,
-                                        alwaysUse24HourFormat: false);
+                              var from = await showTimePicker(
+                                context: context,
+                                initialTime: widget.fromPickedWeek,
+                                builder: (BuildContext context, Widget child) {
+                                  return MediaQuery(
+                                    data: MediaQuery.of(context)
+                                        .copyWith(alwaysUse24HourFormat: false),
+                                    child: child,
+                                  );
+                                },
+                              );
+                              MaterialLocalizations localizations =
+                                  MaterialLocalizations.of(context);
+                              String formattedTime =
+                                  localizations.formatTimeOfDay(from,
+                                      alwaysUse24HourFormat: false);
 
-                                if (from != null) {
-                                  print(from);
-                                  widget.fromPickedWeek = from;
-                                  widget.callBackfunFrom(from);
-                                  setState(() {
-                                    if (Platform.isIOS) {
-                                      widget.timeInController.text =
-                                          formattedTime;
-                                    } else {
-                                      widget.timeInController.text =
-                                          "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
-                                    }
-                                  });
-                                }
+                              if (from != null) {
+                                print(from);
+                                widget.fromPickedWeek = from;
+                                widget.callBackfunFrom(from);
+                                setState(() {
+                                  if (Platform.isIOS) {
+                                    widget.timeInController.text =
+                                        formattedTime;
+                                  } else {
+                                    widget.timeInController.text =
+                                        "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
+                                  }
+                                });
                               }
                             },
                             child: Directionality(
@@ -1444,7 +1424,6 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                               child: Container(
                                 child: IgnorePointer(
                                   child: TextFormField(
-                                    enabled: !widget.enableText,
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -1478,37 +1457,34 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                       builder: (context) {
                         return InkWell(
                             onTap: () async {
-                              if (!widget.enableText) {
-                                var to = await showTimePicker(
-                                  context: context,
-                                  initialTime: widget.toPickedWeek,
-                                  builder:
-                                      (BuildContext context, Widget child) {
-                                    return MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: false),
-                                      child: child,
-                                    );
-                                  },
-                                );
-                                MaterialLocalizations localizations =
-                                    MaterialLocalizations.of(context);
-                                String formattedTime2 =
-                                    localizations.formatTimeOfDay(to,
-                                        alwaysUse24HourFormat: false);
-                                if (to != null) {
-                                  widget.toPickedWeek = to;
-                                  widget.callBackfunTo(to);
-                                  setState(() {
-                                    if (Platform.isIOS) {
-                                      widget.timeOutController.text =
-                                          formattedTime2;
-                                    } else {
-                                      widget.timeOutController.text =
-                                          "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
-                                    }
-                                  });
-                                }
+                              var to = await showTimePicker(
+                                context: context,
+                                initialTime: widget.toPickedWeek,
+                                builder: (BuildContext context, Widget child) {
+                                  return MediaQuery(
+                                    data: MediaQuery.of(context)
+                                        .copyWith(alwaysUse24HourFormat: false),
+                                    child: child,
+                                  );
+                                },
+                              );
+                              MaterialLocalizations localizations =
+                                  MaterialLocalizations.of(context);
+                              String formattedTime2 =
+                                  localizations.formatTimeOfDay(to,
+                                      alwaysUse24HourFormat: false);
+                              if (to != null) {
+                                widget.toPickedWeek = to;
+                                widget.callBackfunTo(to);
+                                setState(() {
+                                  if (Platform.isIOS) {
+                                    widget.timeOutController.text =
+                                        formattedTime2;
+                                  } else {
+                                    widget.timeOutController.text =
+                                        "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
+                                  }
+                                });
                               }
                             },
                             child: Directionality(
@@ -1516,7 +1492,6 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                               child: Container(
                                 child: IgnorePointer(
                                   child: TextFormField(
-                                    enabled: !widget.enableText,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,
@@ -1541,34 +1516,30 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
               ],
             ),
           ),
-          widget.enableText
+          widget.fromPickedWeek == intToTimeOfDay(0) &&
+                  widget.toPickedWeek == intToTimeOfDay(0)
               ? Container()
-              : widget.fromPickedWeek == intToTimeOfDay(0) &&
-                      widget.toPickedWeek == intToTimeOfDay(0)
-                  ? Container()
-                  : !compareShiftTime(
-                          widget.fromPickedWeek, widget.toPickedWeek)
-                      ? Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                print(widget.fromPickedWeek);
-                                print(widget.toPickedWeek);
-                                print(compareShiftTime(widget.fromPickedWeek,
-                                    widget.toPickedWeek));
-                              },
-                              child: Text(
-                                "يجب ان لا تقل المدة عن 3 ساعات",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+              : !compareShiftTime(widget.fromPickedWeek, widget.toPickedWeek)
+                  ? Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            print(widget.fromPickedWeek);
+                            print(widget.toPickedWeek);
+                            print(compareShiftTime(
+                                widget.fromPickedWeek, widget.toPickedWeek));
+                          },
+                          child: Text(
+                            "يجب ان لا تقل المدة عن 3 ساعات",
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w600),
                           ),
-                        )
-                      : Container(),
+                        ),
+                      ),
+                    )
+                  : Container(),
           SizedBox(
             height: 2,
           ),

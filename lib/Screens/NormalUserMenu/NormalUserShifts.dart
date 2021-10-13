@@ -441,46 +441,34 @@ class ExpansionUserShiftTile extends StatelessWidget {
                       child: Column(
                         children: [
                           AdvancedShiftPicker(
-                            enableText: true,
                             timeInController: _timeInController,
                             timeOutController: _timeOutController,
                             weekDay: "السبت",
                           ),
                           AdvancedShiftPicker(
-                            enableText: true,
                             weekDay: "الأحد",
                             timeInController: _sunTimeInController,
                             timeOutController: _sunTimeOutController,
                           ),
                           AdvancedShiftPicker(
-                            enableText: true,
                             weekDay: "الأتنين",
                             timeInController: _monTimeInController,
                             timeOutController: _monTimeOutController,
                           ),
                           AdvancedShiftPicker(
-                            enableText: true,
                             weekDay: "الثلاثاء",
                             timeInController: _tuesTimeInController,
                             timeOutController: _tuesTimeOutController,
                           ),
                           AdvancedShiftPicker(
-                            enableText: true,
                             weekDay: "الأربعاء",
                             timeInController: _wedTimeInController,
                             timeOutController: _wedTimeOutController,
                           ),
                           AdvancedShiftPicker(
-                            enableText: true,
                             weekDay: "الخميس",
                             timeInController: _thuTimeInController,
                             timeOutController: _thuTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            enableText: true,
-                            weekDay: "الجمعة",
-                            timeInController: _friTimeInController,
-                            timeOutController: _friTimeOutController,
                           ),
                         ],
                       ),

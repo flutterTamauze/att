@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'dart:ui' as ui;
 
@@ -27,7 +28,29 @@ List<String> weekDays = [
   "الجمعة"
 ];
 DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 12);
+DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 12);
+Future<bool> onWillPop() {
+  DateTime now = DateTime.now();
+
+  if (_currentBackPressTime == null ||
+      now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
+    _currentBackPressTime = now;
+    Fluttertoast.showToast(
+      msg: "اضغط مره اخرى للخروج من التطبيق",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.orange,
+      fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+    );
+    return Future.value(false);
+  } else {
+    SystemNavigator.pop();
+    return Future.value(false);
+  }
+}
 
 int kBeforeStartShift = 100;
 // int kAfterStartShift = 200;

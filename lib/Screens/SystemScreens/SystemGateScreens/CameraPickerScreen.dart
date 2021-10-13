@@ -350,6 +350,15 @@ class TakePictureScreenState extends State<CameraPicker>
                                           backgroundColor: Colors.black,
                                           textColor: Colors.white);
                                     } else if (msg ==
+                                        "Success : User was not proof") {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.black);
+                                    } else if (msg ==
                                         "you can't register now during shift!") {
                                       Fluttertoast.showToast(
                                           msg: "لا يمكن التسجيل بمناوبتك الأن",

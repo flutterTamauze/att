@@ -717,47 +717,33 @@ class _ShiftTileState extends State<ShiftTile> {
                                       FromToShiftDisplay(
                                         start: start,
                                         end: end,
-                                        weekDay: daysOff[0].isDayOff
-                                            ? "عطلة"
-                                            : weekDays[0],
+                                        weekDay: weekDays[0],
                                       ),
                                       FromToShiftDisplay(
                                         start: sunSt,
                                         end: sunEn,
-                                        weekDay: daysOff[1].isDayOff
-                                            ? "عطلة"
-                                            : weekDays[1],
+                                        weekDay: weekDays[1],
                                       ),
                                       FromToShiftDisplay(
                                           start: monSt,
                                           end: monEn,
-                                          weekDay: daysOff[2].isDayOff
-                                              ? "عطلة"
-                                              : weekDays[2]),
+                                          weekDay: weekDays[2]),
                                       FromToShiftDisplay(
                                           start: tuesSt,
                                           end: tuesEnd,
-                                          weekDay: daysOff[3].isDayOff
-                                              ? "عطلة"
-                                              : weekDays[3]),
+                                          weekDay: weekDays[3]),
                                       FromToShiftDisplay(
                                           start: wedSt,
                                           end: wedEn,
-                                          weekDay: daysOff[4].isDayOff
-                                              ? "عطلة"
-                                              : weekDays[4]),
+                                          weekDay: weekDays[4]),
                                       FromToShiftDisplay(
                                           start: thuSt,
                                           end: thuEn,
-                                          weekDay: daysOff[5].isDayOff
-                                              ? "عطلة"
-                                              : weekDays[5]),
+                                          weekDay: weekDays[5]),
                                       FromToShiftDisplay(
                                           start: friSt,
                                           end: friEn,
-                                          weekDay: daysOff[6].isDayOff
-                                              ? "عطلة"
-                                              : weekDays[6]),
+                                          weekDay: weekDays[6]),
                                     ],
                                   ),
                                 ),
