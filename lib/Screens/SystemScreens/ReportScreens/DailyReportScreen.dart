@@ -332,7 +332,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                 textDirection:
                                                     ui.TextDirection.rtl,
                                                 child: snapshot.data ==
-                                                        "officialHoliday"
+                                                        "No records found official vacation"
                                                     ? Container(
                                                         child: Center(
                                                           child: Column(
@@ -383,9 +383,27 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           ),
                                                         ),
                                                       )
-                                                    : !reportsData.dailyReport
-                                                            .isHoliday
-                                                        ? reportsData
+                                                    : snapshot.data ==
+                                                            "No records found holiday"
+                                                        ? Center(
+                                                            child: Container(
+                                                              height: 20,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "لا يوجد تسجيلات: عطلة اسبوعية",
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : reportsData
                                                                     .dailyReport
                                                                     .attendListUnits
                                                                     .length !=
@@ -438,17 +456,33 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                               return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteId);
                                                                             }),
                                                                   )),
-                                                                  !isToday(selectedDate)
-                                                                      ? DailyReportTableEnd(
-                                                                          totalAbsents: reportsData
-                                                                              .dailyReport
-                                                                              .totalAbsent
-                                                                              .toString(),
-                                                                          totalAttend: reportsData
-                                                                              .dailyReport
-                                                                              .totalAttend
-                                                                              .toString())
-                                                                      : Container()
+                                                                  !isToday(
+                                                                          selectedDate)
+                                                                      ? snapshot.data ==
+                                                                              "Success"
+                                                                          ? DailyReportTableEnd(
+                                                                              totalAbsents: reportsData.dailyReport.totalAbsent.toString(),
+                                                                              totalAttend: reportsData.dailyReport.totalAttend.toString())
+                                                                          : snapshot.data == "Success : Official Vacation Day"
+                                                                              ? DailyReportTodayTableEnd(
+                                                                                  titleHeader: "عطلة رسمية :",
+                                                                                  title: reportsData.dailyReport.officialHoliday,
+                                                                                )
+                                                                              : DailyReportTodayTableEnd(
+                                                                                  titleHeader: "عطلة اسبوعية",
+                                                                                  title: "",
+                                                                                )
+                                                                      : snapshot.data == "Success"
+                                                                          ? Container()
+                                                                          : snapshot.data == "Success : Official Vacation Day"
+                                                                              ? DailyReportTodayTableEnd(
+                                                                                  titleHeader: "عطلة رسمية :",
+                                                                                  title: reportsData.dailyReport.officialHoliday,
+                                                                                )
+                                                                              : DailyReportTodayTableEnd(
+                                                                                  titleHeader: "عطلة اسبوعية",
+                                                                                  title: "",
+                                                                                )
                                                                 ],
                                                               )
                                                             : Center(
@@ -468,25 +502,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                             FontWeight.w700),
                                                                   ),
                                                                 ),
-                                                              )
-                                                        : Center(
-                                                            child: Container(
-                                                              height: 20,
-                                                              child:
-                                                                  AutoSizeText(
-                                                                "لا يوجد تسجيلات: يوم اجازة",
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
-                                                              ),
-                                                            ),
-                                                          )),
+                                                              )),
                                           ),
                                         ),
                                       ),

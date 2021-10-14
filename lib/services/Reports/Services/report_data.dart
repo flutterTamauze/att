@@ -316,7 +316,7 @@ class ReportsData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
-              "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
+              "$localURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
@@ -331,22 +331,34 @@ class ReportsData with ChangeNotifier {
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
         print(response.body);
-        if (decodedRes["message"] == "Success") {
+        if (decodedRes["message"] == "Success" ||
+            decodedRes["message"] == "Success : Official Vacation Day" ||
+            decodedRes["message"] == "Success : Holiday Day") {
           dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
           dailyReport.totalAttend = decodedRes['data']['totalAttend'] as int;
           dailyReport.totalAbsent = decodedRes['data']['totalAbsent'] as int;
+          if (decodedRes["message"] == "Success : Official Vacation Day") {
+            dailyReport.officialHoliday =
+                decodedRes["data"]["officialVactionName"];
+          }
+          if (decodedRes["data"]["users"] != null) {
+            var reportObjJson =
+                jsonDecode(response.body)['data']['users'] as List;
 
-          var reportObjJson =
-              jsonDecode(response.body)['data']['users'] as List;
+            newReportList = reportObjJson
+                .map((reportJson) => DailyReportUnit.fromJson(reportJson))
+                .toList();
 
-          newReportList = reportObjJson
-              .map((reportJson) => DailyReportUnit.fromJson(reportJson))
-              .toList();
-
-          dailyReport.attendListUnits = [...newReportList];
-          notifyListeners();
-          print("message ${dailyReport.isHoliday}");
-          return "Success";
+            dailyReport.attendListUnits = [...newReportList];
+            notifyListeners();
+            print("message ${dailyReport.isHoliday}");
+            return decodedRes["message"];
+          } else {
+            if (decodedRes["message"] == "Success : Official Vacation Day")
+              return "No records found official vacation";
+            else if (decodedRes["message"] == "Success : Holiday Day")
+              return "No records found holiday";
+          }
         } else if (decodedRes["message"] ==
             "Success : Date is older than company date") {
           return "Date is older than company date";
@@ -357,14 +369,16 @@ class ReportsData with ChangeNotifier {
           notifyListeners();
           print("message ${dailyReport.isHoliday}");
           return "holiday";
-        } else if (decodedRes["message"] == "Success : Official Vacation Day") {
-          dailyReport.officialHoliday =
-              decodedRes["data"]["officialVactionName"];
-          dailyReport.attendListUnits.clear();
-          notifyListeners();
+        }
+        // else if (decodedRes["message"] == "Success : Official Vacation Day") {
+        //   dailyReport.officialHoliday =
+        //       decodedRes["data"]["officialVactionName"];
+        //   dailyReport.attendListUnits.clear();
+        //   notifyListeners();
 
-          return "officialHoliday";
-        } else {
+        //   return "officialHoliday";
+        // }
+        else {
           return "wrong";
         }
       }

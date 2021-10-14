@@ -290,6 +290,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             RegExp regex = new RegExp(pattern);
                                             if (!regex.hasMatch(text))
                                               return 'البريد الإلكترونى غير صحيح';
+                                          } else if (text == "") {
+                                            return "مطلوب";
                                           }
                                           return null;
                                         },

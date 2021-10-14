@@ -39,3 +39,37 @@ class DailyReportTableEnd extends StatelessWidget {
     );
   }
 }
+
+class DailyReportTodayTableEnd extends StatelessWidget {
+  final String title, titleHeader;
+  DailyReportTodayTableEnd({this.title, this.titleHeader});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          children: [
+            Divider(
+              thickness: 1,
+              color: Colors.orange[600],
+            ),
+            Container(
+              height: 50.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DataTableEndRowInfo(
+                    infoTitle: titleHeader,
+                    info: title,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
