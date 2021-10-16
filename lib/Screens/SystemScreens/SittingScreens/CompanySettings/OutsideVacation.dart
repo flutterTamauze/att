@@ -35,7 +35,8 @@ import 'dart:ui' as ui;
 
 class OutsideVacation extends StatefulWidget {
   final Member member;
-  OutsideVacation(this.member);
+  int radioValue;
+  OutsideVacation(this.member, this.radioValue);
   @override
   _OutsideVacationState createState() => _OutsideVacationState();
 }
@@ -108,7 +109,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.initState();
   }
 
-  var radioVal2 = 2;
   @override
   void dispose() {
     super.dispose();
@@ -137,10 +137,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
         },
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-          floatingActionButton: radioVal2 == 2
+          floatingActionButton: widget.radioValue == 2
               ? FadeInMissionsFAbutton()
               : FadeInVacPermFloatingButton(
-                  radioVal2: radioVal2,
+                  radioVal2: widget.radioValue,
                   memberId: widget.member.id,
                 ),
           endDrawer: NotificationItem(),
@@ -176,44 +176,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
                             header:
                                 "تسجيل طلب للمستخدم : ${widget.member.name}",
                           ),
-                          // Directionality(
-                          //   textDirection: ui.TextDirection.rtl,
-                          //   child: Container(
-                          //     child: SearchableDropdown.single(
-                          //       dialogBox: false,
-                          //       menuConstraints:
-                          //           BoxConstraints.tight(Size.fromHeight(400)),
-                          //       items: Provider.of<MemberData>(context,
-                          //               listen: false)
-                          //           .membersList
-                          //           .map(
-                          //             (value) => DropdownMenuItem(
-                          //                 child: Container(
-                          //                     alignment: Alignment.topRight,
-                          //                     height: 20,
-                          //                     child: AutoSizeText(
-                          //                       value.name,
-                          //                       style: TextStyle(
-                          //                           color: Colors.black,
-                          //                           fontSize: ScreenUtil().setSp(12,
-                          //                               allowFontScalingSelf: true),
-                          //                           fontWeight: FontWeight.w700),
-                          //                     )),
-                          //                 value: value.name),
-                          //           )
-                          //           .toList(),
-                          //       value: sleectedMember,
-                          //       hint: "اسم المستخدم",
-                          //       closeButton: "غلق",
-                          //       onChanged: (value) {
-                          //         setState(() {
-                          //           sleectedMember = value;
-                          //         });
-                          //       },
-                          //       isExpanded: true,
-                          //     ),
-                          //   ),
-                          // ),
                           VacationCardHeader(
                             header: "نوع الطلب",
                           ),
@@ -223,39 +185,39 @@ class _OutsideVacationState extends State<OutsideVacation> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 RadioButtonWidg(
-                                  radioVal2: radioVal2,
+                                  radioVal2: widget.radioValue,
                                   radioVal: 3,
                                   title: "أذن",
                                   onchannge: (value) {
                                     setState(() {
-                                      radioVal2 = value;
+                                      widget.radioValue = value;
                                     });
                                   },
                                 ),
                                 RadioButtonWidg(
-                                  radioVal2: radioVal2,
+                                  radioVal2: widget.radioValue,
                                   radioVal: 1,
                                   title: "اجازة",
                                   onchannge: (value) {
                                     setState(() {
-                                      radioVal2 = value;
+                                      widget.radioValue = value;
                                     });
                                   },
                                 ),
                                 RadioButtonWidg(
                                   radioVal: 2,
-                                  radioVal2: radioVal2,
+                                  radioVal2: widget.radioValue,
                                   title: "مأمورية",
                                   onchannge: (value) {
                                     setState(() {
-                                      radioVal2 = value;
+                                      widget.radioValue = value;
                                     });
                                   },
                                 ),
                               ],
                             ),
                           ),
-                          radioVal2 == 1
+                          widget.radioValue == 1
                               ? Column(
                                   children: [
                                     VacationCardHeader(
@@ -597,7 +559,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                           )
                                   ],
                                 )
-                              : radioVal2 == 2
+                              : widget.radioValue == 2
                                   ? Column(
                                       children: [
                                         VacationCardHeader(

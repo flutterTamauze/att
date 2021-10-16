@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
@@ -22,11 +23,14 @@ import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
+import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
+import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -474,9 +478,9 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   Widget build(BuildContext context) {
+    final userDataProvider = Provider.of<UserData>(context, listen: false).user;
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    var prov = Provider.of<SiteData>(context, listen: false);
     return Consumer<MemberData>(builder: (context, memberData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -664,91 +668,103 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                         itemBuilder:
                                                                             (BuildContext context,
                                                                                 int index) {
-                                                                          return MemberTile(
-                                                                            user:
-                                                                                memberData.membersListScreenDropDownSearch[index],
-                                                                            onTapDelete:
+                                                                          return InkWell(
+                                                                            onLongPress:
                                                                                 () {
-                                                                              return showDialog(
-                                                                                  context: context,
-                                                                                  builder: (BuildContext context) {
-                                                                                    return RoundedAlert(
-                                                                                        onPressed: () async {
-                                                                                          showDialog(
-                                                                                              context: context,
-                                                                                              builder: (BuildContext context) {
-                                                                                                return RoundedLoadingIndicator();
-                                                                                              });
-                                                                                          var token = Provider.of<UserData>(context, listen: false).user.userToken;
-                                                                                          if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
-                                                                                            Navigator.pop(context);
-                                                                                            successfullDelete();
-                                                                                          } else {
-                                                                                            unSuccessfullDelete();
-                                                                                          }
-                                                                                          Navigator.pop(context);
-                                                                                          Navigator.pop(context);
-                                                                                        },
-                                                                                        title: 'إزالة مستخدم',
-                                                                                        content: "هل تريد إزالة${memberData.membersListScreenDropDownSearch[index].name} ؟");
-                                                                                  });
-                                                                            },
-                                                                            onTapEdit:
-                                                                                () async {
-                                                                              print(index);
-                                                                              print(memberData.membersListScreenDropDownSearch[index].shiftId);
-                                                                              print(memberData.membersListScreenDropDownSearch[index].id);
-                                                                              print(memberData.membersListScreenDropDownSearch[index].phoneNumber);
-                                                                              var phone = await getPhoneInEdit(memberData.membersListScreenDropDownSearch[index].phoneNumber[0] != "+" ? "+${memberData.membersListScreenDropDownSearch[index].phoneNumber}" : memberData.membersListScreenDropDownSearch[index].phoneNumber);
-
-                                                                              Navigator.of(context).push(
-                                                                                new MaterialPageRoute(
-                                                                                  builder: (context) => AddUserScreen(memberData.membersListScreenDropDownSearch[index], index, true, phone[0], phone[1], false, ""),
-                                                                                ),
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (context) {
+                                                                                  return Container(
+                                                                                    child: UserPropertiesMenu(
+                                                                                      user: memberData.membersListScreenDropDownSearch[index],
+                                                                                    ),
+                                                                                  );
+                                                                                },
                                                                               );
                                                                             },
-                                                                            onResetMac:
-                                                                                () {
-                                                                              return showDialog(
-                                                                                  context: context,
-                                                                                  builder: (BuildContext context) {
-                                                                                    return RoundedAlert(
-                                                                                        onPressed: () async {
-                                                                                          showDialog(
-                                                                                              context: context,
-                                                                                              builder: (BuildContext context) {
-                                                                                                return RoundedLoadingIndicator();
-                                                                                              });
-                                                                                          var token = Provider.of<UserData>(context, listen: false).user.userToken;
-                                                                                          if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, token, context) == "Success") {
+                                                                            child:
+                                                                                MemberTile(
+                                                                              user: memberData.membersListScreenDropDownSearch[index],
+                                                                              onTapDelete: () {
+                                                                                return showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return RoundedAlert(
+                                                                                          onPressed: () async {
+                                                                                            showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return RoundedLoadingIndicator();
+                                                                                                });
+                                                                                            var token = Provider.of<UserData>(context, listen: false).user.userToken;
+                                                                                            if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
+                                                                                              Navigator.pop(context);
+                                                                                              successfullDelete();
+                                                                                            } else {
+                                                                                              unSuccessfullDelete();
+                                                                                            }
                                                                                             Navigator.pop(context);
-                                                                                            Fluttertoast.showToast(
-                                                                                              msg: "تم اعادة الضبط بنجاح",
-                                                                                              gravity: ToastGravity.CENTER,
-                                                                                              toastLength: Toast.LENGTH_SHORT,
-                                                                                              timeInSecForIosWeb: 1,
-                                                                                              backgroundColor: Colors.green,
-                                                                                              textColor: Colors.white,
-                                                                                              fontSize: 16.0,
-                                                                                            );
-                                                                                          } else {
-                                                                                            Fluttertoast.showToast(
-                                                                                              msg: "خطأ في اعادة الضبط",
-                                                                                              gravity: ToastGravity.CENTER,
-                                                                                              toastLength: Toast.LENGTH_SHORT,
-                                                                                              timeInSecForIosWeb: 1,
-                                                                                              backgroundColor: Colors.red,
-                                                                                              textColor: Colors.black,
-                                                                                              fontSize: 16.0,
-                                                                                            );
-                                                                                          }
-                                                                                          Navigator.pop(context);
-                                                                                          Navigator.pop(context);
-                                                                                        },
-                                                                                        title: 'إعادة ضبط بيانات مستخدم',
-                                                                                        content: "هل تريد اعادة ضبط بيانات هاتف المستخدم؟");
-                                                                                  });
-                                                                            },
+                                                                                            Navigator.pop(context);
+                                                                                          },
+                                                                                          title: 'إزالة مستخدم',
+                                                                                          content: "هل تريد إزالة${memberData.membersListScreenDropDownSearch[index].name} ؟");
+                                                                                    });
+                                                                              },
+                                                                              onTapEdit: () async {
+                                                                                print(index);
+                                                                                print(memberData.membersListScreenDropDownSearch[index].shiftId);
+                                                                                print(memberData.membersListScreenDropDownSearch[index].id);
+                                                                                print(memberData.membersListScreenDropDownSearch[index].phoneNumber);
+                                                                                var phone = await getPhoneInEdit(memberData.membersListScreenDropDownSearch[index].phoneNumber[0] != "+" ? "+${memberData.membersListScreenDropDownSearch[index].phoneNumber}" : memberData.membersListScreenDropDownSearch[index].phoneNumber);
+
+                                                                                Navigator.of(context).push(
+                                                                                  new MaterialPageRoute(
+                                                                                    builder: (context) => AddUserScreen(memberData.membersListScreenDropDownSearch[index], index, true, phone[0], phone[1], false, ""),
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                              onResetMac: () {
+                                                                                return showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return RoundedAlert(
+                                                                                          onPressed: () async {
+                                                                                            showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return RoundedLoadingIndicator();
+                                                                                                });
+                                                                                            var token = Provider.of<UserData>(context, listen: false).user.userToken;
+                                                                                            if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, token, context) == "Success") {
+                                                                                              Navigator.pop(context);
+                                                                                              Fluttertoast.showToast(
+                                                                                                msg: "تم اعادة الضبط بنجاح",
+                                                                                                gravity: ToastGravity.CENTER,
+                                                                                                toastLength: Toast.LENGTH_SHORT,
+                                                                                                timeInSecForIosWeb: 1,
+                                                                                                backgroundColor: Colors.green,
+                                                                                                textColor: Colors.white,
+                                                                                                fontSize: 16.0,
+                                                                                              );
+                                                                                            } else {
+                                                                                              Fluttertoast.showToast(
+                                                                                                msg: "خطأ في اعادة الضبط",
+                                                                                                gravity: ToastGravity.CENTER,
+                                                                                                toastLength: Toast.LENGTH_SHORT,
+                                                                                                timeInSecForIosWeb: 1,
+                                                                                                backgroundColor: Colors.red,
+                                                                                                textColor: Colors.black,
+                                                                                                fontSize: 16.0,
+                                                                                              );
+                                                                                            }
+                                                                                            Navigator.pop(context);
+                                                                                            Navigator.pop(context);
+                                                                                          },
+                                                                                          title: 'إعادة ضبط بيانات مستخدم',
+                                                                                          content: "هل تريد اعادة ضبط بيانات هاتف المستخدم؟");
+                                                                                    });
+                                                                              },
+                                                                            ),
                                                                           );
                                                                         }),
                                                               ),
@@ -814,32 +830,14 @@ class _UsersScreenState extends State<UsersScreen> {
                   ],
                 ),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.startFloat,
               floatingActionButton:
                   Provider.of<UserData>(context, listen: false).user.userType ==
                           4
-                      ? FloatingActionButton(
-                          tooltip: "اضافة مستخدم",
-                          child: Icon(
-                            Icons.person_add,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          backgroundColor: Colors.orange[600],
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddUserScreen(
-                                        Member(),
-                                        0,
-                                        false,
-                                        "",
-                                        "",
-                                        widget.comingFromShifts,
-                                        widget.comingShiftName)));
-                          },
+                      ? MultipleFloatingButtons(
+                          comingFromShifts: widget.comingFromShifts,
+                          shiftName: widget.comingShiftName,
+                          mainTitle: 'إضافة مستخدم',
+                          mainIconData: Icons.person_add,
                         )
                       : Container()),
         ),

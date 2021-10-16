@@ -658,9 +658,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                       _timeInController,
                                                   timeOutController:
                                                       _timeOutController,
+                                                  isShiftsScreen: true,
                                                   toPickedWeek: toPicked,
                                                 ),
                                                 AdvancedShiftPicker(
+                                                  isShiftsScreen: true,
                                                   weekDay: "الأحد",
                                                   fromPickedWeek: sunFromT,
                                                   timeInController:
@@ -678,6 +680,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                 ),
                                                 AdvancedShiftPicker(
                                                   weekDay: "الأتنين",
+                                                  isShiftsScreen: true,
                                                   fromPickedWeek: monFromT,
                                                   timeInController:
                                                       monTimeInController,
@@ -693,6 +696,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                   },
                                                 ),
                                                 AdvancedShiftPicker(
+                                                  isShiftsScreen: true,
                                                   weekDay: "الثلاثاء",
                                                   fromPickedWeek: tuesFromT,
                                                   timeInController:
@@ -710,6 +714,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                 ),
                                                 AdvancedShiftPicker(
                                                   weekDay: "الأربعاء",
+                                                  isShiftsScreen: true,
                                                   fromPickedWeek: wedFromT,
                                                   timeInController:
                                                       wedTimeInController,
@@ -726,6 +731,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                 ),
                                                 AdvancedShiftPicker(
                                                   weekDay: "الخميس",
+                                                  isShiftsScreen: true,
                                                   fromPickedWeek: thuFromT,
                                                   timeInController:
                                                       thuTimeInController,
@@ -742,6 +748,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                 ),
                                                 AdvancedShiftPicker(
                                                   weekDay: "الجمعة",
+                                                  isShiftsScreen: true,
                                                   fromPickedWeek: friFromT,
                                                   timeInController:
                                                       friTimeInController,
@@ -1333,7 +1340,7 @@ class CircularIconButton extends StatelessWidget {
 
 class AdvancedShiftPicker extends StatefulWidget {
   String weekDay;
-
+  bool isShiftsScreen;
   Function callBackfunFrom, callBackfunTo;
   TextEditingController timeInController, timeOutController;
   TimeOfDay fromPickedWeek, toPickedWeek;
@@ -1344,7 +1351,8 @@ class AdvancedShiftPicker extends StatefulWidget {
       this.timeOutController,
       this.callBackfunTo,
       this.toPickedWeek,
-      this.weekDay});
+      this.weekDay,
+      this.isShiftsScreen});
   @override
   _AdvancedShiftPickerState createState() => _AdvancedShiftPickerState();
 }
@@ -1516,30 +1524,29 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
               ],
             ),
           ),
-          widget.fromPickedWeek == intToTimeOfDay(0) &&
-                  widget.toPickedWeek == intToTimeOfDay(0)
-              ? Container()
-              : !compareShiftTime(widget.fromPickedWeek, widget.toPickedWeek)
-                  ? Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print(widget.fromPickedWeek);
-                            print(widget.toPickedWeek);
-                            print(compareShiftTime(
-                                widget.fromPickedWeek, widget.toPickedWeek));
-                          },
-                          child: Text(
-                            "يجب ان لا تقل المدة عن 3 ساعات",
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w600),
+          widget.isShiftsScreen
+              ? widget.fromPickedWeek == intToTimeOfDay(0) &&
+                      widget.toPickedWeek == intToTimeOfDay(0)
+                  ? Container()
+                  : !compareShiftTime(
+                          widget.fromPickedWeek, widget.toPickedWeek)
+                      ? Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "يجب ان لا تقل المدة عن 3 ساعات",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : Container(),
+                        )
+                      : Container()
+              : Container(),
           SizedBox(
             height: 2,
           ),

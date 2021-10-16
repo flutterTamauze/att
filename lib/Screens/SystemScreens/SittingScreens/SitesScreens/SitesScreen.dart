@@ -26,6 +26,7 @@ import 'package:qr_users/widgets/headers.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
 import 'dart:ui' as ui;
 
@@ -355,34 +356,14 @@ class _SitesScreenState extends State<SitesScreen> {
                   ],
                 ),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.startFloat,
               floatingActionButton:
                   Provider.of<UserData>(context, listen: false).user.userType ==
                           4
-                      ? FloatingActionButton(
-                          elevation: 3,
-                          tooltip: "اضافة موقع",
-                          backgroundColor: Colors.orange[600],
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddLocationMapScreen(
-                                      Site(
-                                        lat: 0.0,
-                                        long: 0.0,
-                                        name: "",
-                                      ),
-                                      0)),
-                            );
-                          },
-                          child: Icon(
-                            Icons.add_location_alt,
-                            color: Colors.black,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                          ),
+                      ? MultipleFloatingButtons(
+                          mainTitle: "إضافة موقع",
+                          shiftName: "",
+                          comingFromShifts: false,
+                          mainIconData: Icons.add_location_alt,
                         )
                       : Container()));
     });

@@ -29,6 +29,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import "package:qr_users/services/Sites_data.dart";
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
 import '../../../../services/ShiftsData.dart';
@@ -428,32 +429,15 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                 ],
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startFloat,
-            floatingActionButton: Provider.of<UserData>(context, listen: false)
-                        .user
-                        .userType ==
-                    4
-                ? FloatingActionButton(
-                    tooltip: "اضافة مناوبة",
-                    splashColor: Colors.white,
-                    elevation: 5,
-                    backgroundColor: Colors.orange[600],
-                    child: Icon(
-                      Icons.alarm_add_sharp,
-                      color: Colors.black,
-                      size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                AddShiftScreen(Shift(), 0, false, siteId)),
-                      );
-                    },
-                  )
-                : Container()),
+            floatingActionButton:
+                Provider.of<UserData>(context, listen: false).user.userType == 4
+                    ? MultipleFloatingButtons(
+                        mainTitle: "إضافة مناوبة",
+                        shiftName: "",
+                        siteId: siteId,
+                        comingFromShifts: false,
+                        mainIconData: Icons.alarm_add_sharp)
+                    : Container()),
       );
     });
   }

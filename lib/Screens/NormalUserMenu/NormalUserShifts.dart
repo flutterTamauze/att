@@ -443,29 +443,35 @@ class ExpansionUserShiftTile extends StatelessWidget {
                           AdvancedShiftPicker(
                             timeInController: _timeInController,
                             timeOutController: _timeOutController,
+                            isShiftsScreen: false,
                             weekDay: "السبت",
                           ),
                           AdvancedShiftPicker(
+                            isShiftsScreen: false,
                             weekDay: "الأحد",
                             timeInController: _sunTimeInController,
                             timeOutController: _sunTimeOutController,
                           ),
                           AdvancedShiftPicker(
+                            isShiftsScreen: false,
                             weekDay: "الأتنين",
                             timeInController: _monTimeInController,
                             timeOutController: _monTimeOutController,
                           ),
                           AdvancedShiftPicker(
+                            isShiftsScreen: false,
                             weekDay: "الثلاثاء",
                             timeInController: _tuesTimeInController,
                             timeOutController: _tuesTimeOutController,
                           ),
                           AdvancedShiftPicker(
+                            isShiftsScreen: false,
                             weekDay: "الأربعاء",
                             timeInController: _wedTimeInController,
                             timeOutController: _wedTimeOutController,
                           ),
                           AdvancedShiftPicker(
+                            isShiftsScreen: false,
                             weekDay: "الخميس",
                             timeInController: _thuTimeInController,
                             timeOutController: _thuTimeOutController,
