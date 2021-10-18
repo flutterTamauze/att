@@ -44,6 +44,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
     }
   }
 
+  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
@@ -106,9 +107,10 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                         "got company members for super admin");
                                     await siteProv
                                         .getSitesByCompanyId(
-                                            comProvider.com.id,
-                                            userProvider.user.userToken,
-                                            context)
+                                      comProvider.com.id,
+                                      userProvider.user.userToken,
+                                      context,
+                                    )
                                         .then((value) {
                                       print("got sites for super admin");
                                     });

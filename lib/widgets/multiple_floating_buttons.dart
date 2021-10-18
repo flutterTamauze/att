@@ -29,6 +29,7 @@ class MultipleFloatingButtons extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(left: 20.w),
         child: SpeedDial(
+          overlayOpacity: 0,
           animatedIcon: AnimatedIcons.menu_close,
           animatedIconTheme: IconThemeData(size: 22),
           backgroundColor: Colors.orange[600],

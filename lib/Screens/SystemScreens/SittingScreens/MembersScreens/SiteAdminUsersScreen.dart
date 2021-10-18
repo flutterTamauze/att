@@ -22,6 +22,7 @@ import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
+import 'package:qr_users/widgets/Shared/shimmer_builder.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -251,6 +252,7 @@ class SiteAdminUserScreen extends StatefulWidget {
 
 class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   TextEditingController _nameController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   // AutoCompleteTextField searchTextField;
   String currentShiftName;
   void _onRefresh() async {
@@ -288,7 +290,10 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
     if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
       await Provider.of<SiteData>(context, listen: false)
           .getSitesByCompanyId(
-              comProvier.com.id, userProvider.user.userToken, context)
+        comProvier.com.id,
+        userProvider.user.userToken,
+        context,
+      )
           .then((value) async {
         print("Got Sites");
       });
@@ -400,7 +405,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                 }
                                 switch (snapshot.connectionState) {
                                   case ConnectionState.waiting:
-                                    return Container(child: buildShimmer(5));
+                                    return Container(child: ShimmerBuilder(5));
                                   case ConnectionState.done:
                                     return Column(
                                       children: [
@@ -669,50 +674,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
         (Route<dynamic> route) => false);
     return Future.value(false);
   }
-}
-
-Widget buildShimmer(int count) {
-  return ListView.builder(
-    itemCount: count,
-    itemBuilder: (context, index) {
-      return Card(
-        elevation: 5,
-        child: Container(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Row(
-                  children: [
-                    Shimmer.fromColors(
-                        child: Container(
-                          width: 64.w,
-                          height: 64.h,
-                          child: CircleAvatar(),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        baseColor: Colors.grey[400],
-                        highlightColor: Colors.grey[300]),
-                    Container(
-                      child: Shimmer.fromColors(
-                          child: Container(
-                            height: 40.h,
-                            width: 200,
-                            child: SizedBox(
-                              child: Text("جارى التحميل"),
-                            ),
-                            padding: EdgeInsets.only(top: 10.h, right: 5.w),
-                          ),
-                          baseColor: Colors.grey[400],
-                          highlightColor: Colors.grey[300]),
-                    )
-                  ],
-                )),
-          ),
-        ),
-      );
-    },
-  );
 }
 
 class MemberTile extends StatefulWidget {

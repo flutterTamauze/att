@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -77,8 +78,13 @@ class MemberData with ChangeNotifier {
   List<Member> membersListScreenDropDownSearch = [];
   List<Member> dropDownMembersList = [];
   List<Member> copyMemberList = [];
+  List<Member> memberNewList = [];
   List<Member> copyMembersListScreenDropDownSearch = [];
   Future futureListener;
+  int allPageIndex = 0;
+  int bySitePageIndex = 0;
+  bool keepRetriving = true;
+  bool isLoading = false;
   setMmemberList(List<Member> newList) {
     membersList = newList;
     membersListScreenDropDownSearch = [...membersList];
@@ -117,11 +123,41 @@ class MemberData with ChangeNotifier {
 
   getAllCompanyMember(
       int siteId, int companyId, String userToken, BuildContext context) {
+    print(siteId);
+    isLoading = true;
+    if (siteId == -1) {
+      allPageIndex++;
+      if (allPageIndex > 1) {
+        notifyListeners();
+      }
+    } else {
+      bySitePageIndex++;
+      if (bySitePageIndex > 1) {
+        notifyListeners();
+      }
+    }
     String url = "";
     if (siteId == -1) {
-      url = "$baseURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId";
+      if (allPageIndex == 1) {
+        membersList = [];
+        memberNewList = [];
+        membersListScreenDropDownSearch = [];
+        keepRetriving = true;
+      }
+      url =
+          "$localURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=7";
     } else {
-      url = "$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId";
+      print("by site");
+      if (bySitePageIndex == 1) {
+        membersList = [];
+        memberNewList = [];
+        membersListScreenDropDownSearch = [];
+        copyMemberList = [];
+        keepRetriving = true;
+      }
+
+      url =
+          "$localURL/api/Users/GetAllEmployeeInSite?siteId=$siteId&pageNumber=$bySitePageIndex&pageSize=7";
     }
     futureListener = getAllCompanyMemberApi(url, userToken, siteId, context);
     return futureListener;
@@ -130,33 +166,39 @@ class MemberData with ChangeNotifier {
   getAllCompanyMemberApi(
       String url, String userToken, int siteId, BuildContext context) async {
     print("get all members");
-    List<Member> memberNewList;
+
+    print(url);
     if (await isConnectedToInternet()) {
       try {
+        print(("printing the page index $allPageIndex"));
+        print(("printing the page index $bySitePageIndex"));
         final response = await http.get(Uri.parse(url), headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getAllCompanyMemberApi(url, userToken, siteId, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
-            memberNewList = memberObjJson
-                .map((memberJson) => Member.fromJson(memberJson))
-                .toList();
+            if (memberObjJson.isEmpty) {
+              keepRetriving = false;
+              notifyListeners();
+            }
+            if (keepRetriving) {
+              memberNewList.addAll(memberObjJson
+                  .map((memberJson) => Member.fromJson(memberJson))
+                  .toSet()
+                  .toList());
 
-            membersList = memberNewList;
-            membersListScreenDropDownSearch = [...membersList];
+              membersList = memberNewList;
+              membersListScreenDropDownSearch = memberNewList;
 
-            copyMemberList = membersList;
+              copyMemberList = membersList = memberNewList;
+            }
+            isLoading = false;
             notifyListeners();
 
             return "Success";

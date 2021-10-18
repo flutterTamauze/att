@@ -41,7 +41,10 @@ class _DataTableRowState extends State<DataTableRow> {
       if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
         await Provider.of<SiteData>(context, listen: false)
             .getSitesByCompanyId(
-                comProvider.com.id, userProvider.user.userToken, context)
+          comProvider.com.id,
+          userProvider.user.userToken,
+          context,
+        )
             .then((value) async {
           print("Got Sites");
         });

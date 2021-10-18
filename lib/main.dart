@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -61,7 +61,6 @@ void main() async {
 
 void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
   String data = remoteMessage.data;
-  log("recieved huawei back ground message");
   var decodedResponse = json.decode(data);
   print(data);
 

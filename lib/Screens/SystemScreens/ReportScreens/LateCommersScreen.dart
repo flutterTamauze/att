@@ -34,7 +34,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
   String dateToString = "";
   String dateFromString = "";
-
+  ScrollController _scrollController = ScrollController();
   TextEditingController _dateController = TextEditingController();
   int selectedDuration;
   var toDate;
@@ -92,7 +92,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       if (siteProv.sitesList.isEmpty) {
         await siteProv
             .getSitesByCompanyId(
-                comProvider.com.id, userProvider.user.userToken, context)
+          comProvider.com.id,
+          userProvider.user.userToken,
+          context,
+        )
             .then((value) {
           siteID = siteProv.sitesList[siteIndex].id;
         });

@@ -110,7 +110,10 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 
     await Provider.of<SiteData>(context, listen: false)
         .getSitesByCompanyId(
-            comProvier.com.id, userProvider.user.userToken, context)
+      comProvier.com.id,
+      userProvider.user.userToken,
+      context,
+    )
         .then((value) async {
       print("GOt Sites");
     });

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -182,7 +183,10 @@ class SiteData with ChangeNotifier {
   }
 
   Future getSitesByCompanyId(
-      int companyId, String userToken, BuildContext context) async {
+    int companyId,
+    String userToken,
+    BuildContext context,
+  ) async {
     futureListener = getSitesByCompanyIdApi(companyId, userToken, context);
     return futureListener;
   }
@@ -227,6 +231,7 @@ class SiteData with ChangeNotifier {
             filSitesStringsList();
             print(dropDownSitesStrings);
             notifyListeners();
+
             return sitesList;
           } else if (decodedRes["message"] ==
               "Failed : user name and password not match ") {

@@ -208,9 +208,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     await Provider.of<SiteData>(context,
                                             listen: false)
                                         .getSitesByCompanyId(
-                                            comProvier.com.id,
-                                            userProvider.user.userToken,
-                                            context)
+                                      comProvier.com.id,
+                                      userProvider.user.userToken,
+                                      context,
+                                    )
                                         .then((value) async {
                                       print("Got Sites");
                                     });

@@ -109,6 +109,7 @@ class _UserAttendanceReportScreenState
     }
   }
 
+  ScrollController _scrollController = ScrollController();
   getMembersData() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
@@ -123,7 +124,10 @@ class _UserAttendanceReportScreenState
       if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
         await Provider.of<SiteData>(context, listen: false)
             .getSitesByCompanyId(
-                comProvider.com.id, userProvider.user.userToken, context)
+          comProvider.com.id,
+          userProvider.user.userToken,
+          context,
+        )
             .then((value) async {
           print("Got Sites");
         });

@@ -54,7 +54,10 @@ class _SitesScreenState extends State<SitesScreen> {
     print("refresh");
     // if failed,use refreshFailed()
     await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
-        companyProvider.com.id, userProvider.user.userToken, context);
+      companyProvider.com.id,
+      userProvider.user.userToken,
+      context,
+    );
   }
 
   getData() async {
@@ -62,7 +65,10 @@ class _SitesScreenState extends State<SitesScreen> {
     var companyProvider = Provider.of<CompanyData>(context, listen: false);
 
     await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
-        companyProvider.com.id, userProvider.user.userToken, context);
+      companyProvider.com.id,
+      userProvider.user.userToken,
+      context,
+    );
 
     await Provider.of<ShiftsData>(context, listen: false)
         .getShifts(companyProvider.com.id, userProvider.user.userToken, context,

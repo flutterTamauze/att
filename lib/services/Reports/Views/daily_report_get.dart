@@ -19,7 +19,10 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
     if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
       await Provider.of<SiteData>(context, listen: false)
           .getSitesByCompanyId(
-              comProvider.com.id, userProvider.user.userToken, context)
+        comProvider.com.id,
+        userProvider.user.userToken,
+        context,
+      )
           .then((value) {
         siteID = Provider.of<SiteData>(context, listen: false)
             .sitesList[siteIndex]
