@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
 
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 

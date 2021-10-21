@@ -227,15 +227,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   .dropDownSitesIndex]
                                               .id,
                                           false);
-                                  Provider.of<SiteData>(context, listen: false)
-                                      .fillCurrentShiftID(
-                                          Provider.of<ShiftsData>(context,
-                                                  listen: false)
-                                              .shiftsBySite[
-                                                  Provider.of<SiteData>(context,
-                                                          listen: false)
-                                                      .dropDownSitesIndex]
-                                              .shiftId);
+                                  // Provider.of<SiteData>(context, listen: false)
+                                  //     .fillCurrentShiftID(
+                                  //         Provider.of<ShiftsData>(context,
+                                  //                 listen: false)
+                                  //             .shiftsBySite[
+                                  //                 Provider.of<SiteData>(context,
+                                  //                         listen: false)
+                                  //                     .dropDownSitesIndex]
+                                  //             .shiftId);
                                   Navigator.of(context).push(
                                     new MaterialPageRoute(
                                       builder: (context) =>

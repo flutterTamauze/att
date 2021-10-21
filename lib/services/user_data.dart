@@ -24,6 +24,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -216,7 +217,8 @@ class UserData with ChangeNotifier {
                       .toList();
                   superCompaniesList.addAll(tempComp);
                 }
-
+                Provider.of<SiteShiftsData>(context, listen: false)
+                    .getAllSitesAndShifts(companyId, user.userToken);
                 List<String> userData = [
                   user.name,
                   user.userJob,

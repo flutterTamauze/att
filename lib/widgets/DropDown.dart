@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +12,7 @@ class SiteDropdown extends StatefulWidget {
   final IconData icon;
   final Color hintColor;
   final Color borderColor;
-  final List<Site> list;
+  final List<SiteShiftsModel> list;
   final Function onChange;
   String selectedvalue;
   final Color textColor;
@@ -53,9 +55,9 @@ class _SiteDropdownState extends State<SiteDropdown> {
                 ),
                 elevation: 2,
                 isExpanded: true,
-                items: widget.list.map((Site x) {
+                items: widget.list.map((SiteShiftsModel x) {
                   return DropdownMenuItem<String>(
-                      value: x.name,
+                      value: x.siteName,
                       child: Row(
                         children: [
                           Expanded(
@@ -64,7 +66,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
                               child: Container(
                                 height: 20.h,
                                 child: AutoSizeText(
-                                  x.name,
+                                  x.siteName,
                                   maxLines: 1,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
@@ -191,7 +193,7 @@ class ShiftsDropDown extends StatefulWidget {
   final IconData icon;
   final Color hintColor;
   final Color borderColor;
-  final List<Shift> list;
+  final List<Shifts> list;
   final Function onChange;
   String selectedvalue;
   final Color textColor;
@@ -225,13 +227,20 @@ class _ShiftsDropDownState extends State<ShiftsDropDown> {
             Icon(Icons.arrow_drop_down),
             Expanded(
               child: DropdownButton(
+                hint: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "لا يوجد مناوبات",
+                    textAlign: TextAlign.right,
+                  ),
+                ),
                 icon: Icon(
                   widget.icon,
                   color: Colors.orange,
                 ),
                 elevation: 2,
                 isExpanded: true,
-                items: widget.list.map((Shift x) {
+                items: widget.list.map((Shifts x) {
                   return DropdownMenuItem<String>(
                       value: x.shiftName,
                       child: Row(

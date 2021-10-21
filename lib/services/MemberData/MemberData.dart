@@ -6,14 +6,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
+class SearchMember {
+  String id, username;
+  SearchMember({this.id, this.username});
+  factory SearchMember.fromJson(json) {
+    return SearchMember(id: json["id"], username: json["name"]);
+  }
+}
+
 class Member {
   String name;
-  String fcmToken;
+  String fcmToken, siteName, shiftName;
   double salary;
   DateTime hiredDate;
   bool isAllowedToAttend = false;
@@ -27,25 +36,45 @@ class Member {
   String phoneNumber;
   String id;
 
-  Member({
-    this.name,
-    this.userImageURL,
-    this.userType,
-    this.fcmToken,
-    this.salary,
-    this.hiredDate,
-    this.isAllowedToAttend,
-    this.excludeFromReport,
-    this.jobTitle,
-    this.email,
-    this.osType,
-    this.normalizedName,
-    this.id,
-    this.shiftId,
-    this.phoneNumber,
-  });
+  Member(
+      {this.name,
+      this.userImageURL,
+      this.userType,
+      this.fcmToken,
+      this.salary,
+      this.hiredDate,
+      this.isAllowedToAttend,
+      this.excludeFromReport,
+      this.jobTitle,
+      this.email,
+      this.shiftName,
+      this.osType,
+      this.normalizedName,
+      this.id,
+      this.shiftId,
+      this.phoneNumber,
+      this.siteName});
 
   factory Member.fromJson(dynamic json) {
+    return Member(
+        name: json['userName1'],
+        userImageURL: json['userImage'],
+        // email: json['email'],
+        id: json['id'],
+        isAllowedToAttend: json["isAllowtoAttend"],
+        excludeFromReport: json["excludeFromReport"],
+        // shiftId: json['shiftId'],
+        fcmToken: json["fcmToken"],
+
+        // phoneNumber: json['phoneNumber'],
+        // salary: json["salary"],
+        // hiredDate: DateTime.tryParse(json["createdOn"]),
+        // userType: json['userType'],
+        osType: json["mobileOS"],
+        // normalizedName: json["userName"],
+        jobTitle: json['userJob']);
+  }
+  factory Member.fullDataMemberFromJson(dynamic json) {
     return Member(
         name: json['userName1'],
         userImageURL: json['userImage'],
@@ -59,7 +88,9 @@ class Member {
         salary: json["salary"],
         hiredDate: DateTime.tryParse(json["createdOn"]),
         userType: json['userType'],
+        // shiftName: json["attendShift"]["shiftName"],
         osType: json["mobileOS"],
+        // siteName: json["attendShift"]["attendSite"]["siteName"],
         normalizedName: json["userName"],
         jobTitle: json['userJob']);
   }
@@ -80,10 +111,13 @@ class MemberData with ChangeNotifier {
   List<Member> copyMemberList = [];
   List<Member> memberNewList = [];
   List<Member> copyMembersListScreenDropDownSearch = [];
+  List<SearchMember> userSearchMember = [];
+  Member singleMember = Member();
   Future futureListener;
   int allPageIndex = 0;
   int bySitePageIndex = 0;
   bool keepRetriving = true;
+  bool loadingShifts = false;
   bool isLoading = false;
   setMmemberList(List<Member> newList) {
     membersList = newList;
@@ -91,15 +125,42 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  searchUsersList(String filter) {
-    List<Member> tmpList = [];
-    for (int i = 0; i < membersList.length; i++) {
-      if (membersList[i].name.toLowerCase().contains(filter.toLowerCase())) {
-        tmpList.add(membersList[i]);
+  searchUsersList(
+      String filter, String userToken, siteId, int companyId) async {
+    if (siteId == -1) {
+      siteId = "";
+    }
+    print(siteId);
+    var response = await http.get(
+        Uri.parse(
+            "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    userSearchMember = [];
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var decodedRes = json.decode(response.body);
+      print(response.body);
+      if (decodedRes["message"] == "Success") {
+        var memberObjJson = jsonDecode(response.body)['data'] as List;
+        if (memberObjJson != null) {
+          userSearchMember = memberObjJson
+              .map((memberJson) => SearchMember.fromJson(memberJson))
+              .toList();
+          notifyListeners();
+        }
       }
     }
-    membersListScreenDropDownSearch = tmpList;
-    notifyListeners();
+    // List<Member> tmpList = [];
+    // for (int i = 0; i < membersList.length; i++) {
+    //   if (membersList[i].name.toLowerCase().contains(filter.toLowerCase())) {
+    //     tmpList.add(membersList[i]);
+    //   }
+    // }
+    // membersListScreenDropDownSearch = tmpList;
+    // notifyListeners();
   }
 
   resetUsers() {
@@ -121,50 +182,99 @@ class MemberData with ChangeNotifier {
     return false;
   }
 
-  getAllCompanyMember(
-      int siteId, int companyId, String userToken, BuildContext context) {
-    print(siteId);
-    isLoading = true;
-    if (siteId == -1) {
-      allPageIndex++;
-      if (allPageIndex > 1) {
-        notifyListeners();
+  getUserById(String id, String userToken) async {
+    try {
+      var response = await http.get(
+          Uri.parse(
+            "$baseURL/api/Users/GetUserbyId/$id",
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+
+        if (decodedRes["message"] == "Success") {
+          var memberObjJson = jsonDecode(response.body)['data'];
+          singleMember = Member.fullDataMemberFromJson(memberObjJson);
+          print("success");
+
+          print(response.body);
+
+          isLoading = false;
+          notifyListeners();
+
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
+        }
       }
-    } else {
-      bySitePageIndex++;
-      if (bySitePageIndex > 1) {
-        notifyListeners();
-      }
+    } catch (e) {
+      print(e);
     }
+  }
+
+  getAllCompanyMember(int siteId, int companyId, String userToken,
+      BuildContext context, int shiftId) {
     String url = "";
-    if (siteId == -1) {
-      if (allPageIndex == 1) {
-        membersList = [];
-        memberNewList = [];
-        membersListScreenDropDownSearch = [];
-        keepRetriving = true;
-      }
+    isLoading = true;
+    if (shiftId != -1) {
+      loadingShifts = true;
+      membersList = [];
+      memberNewList = [];
+      membersListScreenDropDownSearch = [];
       url =
-          "$localURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=7";
+          "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$allPageIndex&pageSize=7";
+      notifyListeners();
     } else {
-      print("by site");
-      if (bySitePageIndex == 1) {
-        membersList = [];
-        memberNewList = [];
-        membersListScreenDropDownSearch = [];
-        copyMemberList = [];
-        keepRetriving = true;
+      if (siteId == -1) {
+        loadingShifts = false;
+        allPageIndex++;
+        if (allPageIndex > 1) {
+          notifyListeners();
+        }
+      } else {
+        bySitePageIndex++;
+        if (bySitePageIndex > 1) {
+          notifyListeners();
+        }
       }
 
-      url =
-          "$localURL/api/Users/GetAllEmployeeInSite?siteId=$siteId&pageNumber=$bySitePageIndex&pageSize=7";
+      if (siteId == -1) {
+        loadingShifts = false;
+        if (allPageIndex == 1) {
+          membersList = [];
+          memberNewList = [];
+          membersListScreenDropDownSearch = [];
+          keepRetriving = true;
+        }
+        url =
+            "$baseURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=7";
+      } else {
+        print("by site");
+        if (bySitePageIndex == 1) {
+          membersList = [];
+          memberNewList = [];
+          membersListScreenDropDownSearch = [];
+          copyMemberList = [];
+          keepRetriving = true;
+        }
+
+        url =
+            "$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId&pageNumber=$bySitePageIndex&pageSize=7";
+      }
     }
-    futureListener = getAllCompanyMemberApi(url, userToken, siteId, context);
+
+    futureListener =
+        getAllCompanyMemberApi(url, userToken, siteId, context, shiftId);
     return futureListener;
   }
 
-  getAllCompanyMemberApi(
-      String url, String userToken, int siteId, BuildContext context) async {
+  getAllCompanyMemberApi(String url, String userToken, int siteId,
+      BuildContext context, shiftId) async {
     print("get all members");
 
     print(url);
@@ -184,10 +294,13 @@ class MemberData with ChangeNotifier {
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
             if (memberObjJson.isEmpty) {
-              keepRetriving = false;
+              if (!loadingShifts) {
+                keepRetriving = false;
+              }
+
               notifyListeners();
             }
-            if (keepRetriving) {
+            if (shiftId != -1) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
                   .toSet()
@@ -195,9 +308,19 @@ class MemberData with ChangeNotifier {
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;
+            } else {
+              if (keepRetriving) {
+                memberNewList.addAll(memberObjJson
+                    .map((memberJson) => Member.fromJson(memberJson))
+                    .toSet()
+                    .toList());
 
-              copyMemberList = membersList = memberNewList;
+                membersList = memberNewList;
+                membersListScreenDropDownSearch = memberNewList;
+              }
             }
+
+            log(membersList.length.toString());
             isLoading = false;
             notifyListeners();
 

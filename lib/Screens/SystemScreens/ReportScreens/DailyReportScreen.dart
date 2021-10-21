@@ -13,6 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Reports/Views/daily_report_get.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -57,10 +58,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   }
 
   int getSiteIndex(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
+      if (siteName == list[i].siteName) {
         return i;
       }
     }
@@ -83,9 +85,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
         userProvider.user.userToken,
         userProvider.user.userType == 2
             ? userProvider.user.userSiteId
-            : Provider.of<SiteData>(context, listen: false)
-                .sitesList[siteId]
-                .id,
+            : Provider.of<SiteShiftsData>(context, listen: false)
+                .siteShiftList[siteId]
+                .siteId,
         date,
         context);
     refreshController.refreshCompleted();
@@ -162,10 +164,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           title:
                                                               "تقرير الحضور اليومى",
                                                           site: Provider.of<
-                                                                      SiteData>(
+                                                                      SiteShiftsData>(
                                                                   context)
-                                                              .sitesList[siteId]
-                                                              .name,
+                                                              .siteShiftList[
+                                                                  siteId]
+                                                              .siteName,
                                                           day: date,
                                                         )
                                                   : Container(),
@@ -213,9 +216,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                       child: SiteDropdown(
                                                         edit: true,
                                                         list: Provider.of<
-                                                                    SiteData>(
+                                                                    SiteShiftsData>(
                                                                 context)
-                                                            .sitesList,
+                                                            .siteShiftList,
                                                         colour: Colors.white,
                                                         icon: Icons.location_on,
                                                         borderColor:
@@ -239,10 +242,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           }
                                                         },
                                                         selectedvalue: Provider
-                                                                .of<SiteData>(
+                                                                .of<SiteShiftsData>(
                                                                     context)
-                                                            .sitesList[siteId]
-                                                            .name,
+                                                            .siteShiftList[
+                                                                siteId]
+                                                            .siteName,
                                                         textColor:
                                                             Colors.orange,
                                                       ),
@@ -479,10 +483,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : DailyReportTodayTableEnd(
-                                                                                  titleHeader: "عطلة اسبوعية",
-                                                                                  title: "",
-                                                                                )
+                                                                              : snapshot.data == "Date is older than company date"
+                                                                                  ? Container()
+                                                                                  : DailyReportTodayTableEnd(
+                                                                                      titleHeader: "عطلة اسبوعية",
+                                                                                      title: "",
+                                                                                    )
                                                                 ],
                                                               )
                                                             : Center(

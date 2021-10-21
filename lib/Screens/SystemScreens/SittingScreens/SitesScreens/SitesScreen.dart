@@ -111,7 +111,6 @@ class _SitesScreenState extends State<SitesScreen> {
                           ),
 
                           ///List OF SITES
-
                           Expanded(
                             child: FutureBuilder(
                                 future: siteData.futureListener,

@@ -30,11 +30,15 @@ class ShiftsData with ChangeNotifier {
   List<String> shiftSchedules = [];
 
   FutureShiftSchedule satShift;
-  findMatchingShifts(int siteId, bool addallshiftsBool) {
+  findMatchingShifts(
+    int siteId,
+    bool addallshiftsBool,
+  ) {
     try {
       print("findMatchingShifts : $siteId");
       shiftsBySite =
           shiftsList.where((element) => element.siteID == siteId).toList();
+      print(shiftsBySite[0].shiftName);
       print("shiftsBySite length : ${shiftsBySite.length}");
       print("shiftsLength : ${shiftsList.length}");
 
@@ -355,16 +359,21 @@ class ShiftsData with ChangeNotifier {
       int userType, int siteId) async {
     if (userType == 2) {
       futureListener = getShiftsBySiteId(siteId, userToken, context);
-    } else {
-      futureListener = getAllCompanyShiftsApi(companyId, userToken, context);
     }
+    // else {
+    //   futureListener = getAllCompanyShiftsApi(companyId, userToken, context);
+    // }
     return futureListener;
   }
 
-  getShiftsBySiteId(int siteId, String userToken, BuildContext context) async {
+  Future<String> getShiftsBySiteId(
+      int siteId, String userToken, BuildContext context) async {
     print(siteId);
-    List<Shift> shiftsNewList;
+    List<Shift> shiftsNewList = [];
     if (await isConnectedToInternet()) {
+      try {} catch (e) {
+        print(e);
+      }
       final response = await http.get(
           Uri.parse("$baseURL/api/Shifts/GetAllShiftInSite?siteId=$siteId"),
           headers: {
@@ -391,11 +400,14 @@ class ShiftsData with ChangeNotifier {
           shiftsNewList = shiftObjJson
               .map((shiftJson) => Shift.fromJson(shiftJson))
               .toList();
-
+          log(shiftsNewList.length.toString());
           shiftsList = shiftsNewList;
           notifyListeners();
-          print("got shifts for site admin");
           return "Success";
+        } else if (decodedRes["message"] ==
+            "Error : There are no shifts at cuurent time") {
+          shiftsList = [];
+          notifyListeners();
         } else if (decodedRes["message"] ==
             "Failed : user name and password not match ") {
           return "wrong";
@@ -408,53 +420,54 @@ class ShiftsData with ChangeNotifier {
     }
   }
 
-  getAllCompanyShiftsApi(
-      int companyId, String userToken, BuildContext context) async {
-    List<Shift> shiftsNewList;
-    if (await isConnectedToInternet()) {
-      final response = await http.get(
-          Uri.parse(
-              "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print(response.statusCode);
-      print(response.body);
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getAllCompanyShiftsApi(
-          companyId,
-          userToken,
-          context,
-        );
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
-        print(response.body);
+  // getAllCompanyShiftsApi(
+  //     int companyId, String userToken, BuildContext context) async {
+  //   List<Shift> shiftsNewList = [];
+  //   if (await isConnectedToInternet()) {
+  //     final response = await http.get(
+  //         Uri.parse(
+  //             "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId&pageNumber=1&pageSize=100"),
+  //         headers: {
+  //           'Content-type': 'application/json',
+  //           'Authorization': "Bearer $userToken"
+  //         });
+  //     print(response.statusCode);
+  //     print(response.body);
+  //     if (response.statusCode == 401) {
+  //       await inherit.login(context);
+  //       userToken =
+  //           Provider.of<UserData>(context, listen: false).user.userToken;
+  //       await getAllCompanyShiftsApi(
+  //         companyId,
+  //         userToken,
+  //         context,
+  //       );
+  //     } else if (response.statusCode == 200 || response.statusCode == 201) {
+  //       var decodedRes = json.decode(response.body);
+  //       print(response.body);
 
-        if (decodedRes["message"] == "Success") {
-          var shiftObjJson = jsonDecode(response.body)['data'] as List;
-          shiftsNewList = shiftObjJson
-              .map((shiftJson) => Shift.fromJson(shiftJson))
-              .toList();
+  //       if (decodedRes["message"] == "Success") {
+  //         var shiftObjJson = jsonDecode(response.body)['data'] as List;
+  //         shiftsNewList = shiftObjJson
+  //             .map((shiftJson) => Shift.fromJson(shiftJson))
+  //             .toList();
 
-          shiftsList = shiftsNewList;
-          notifyListeners();
+  //         shiftsList = shiftsNewList;
 
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
-      }
+  //         notifyListeners();
 
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
+  //         return "Success";
+  //       } else if (decodedRes["message"] ==
+  //           "Failed : user name and password not match ") {
+  //         return "wrong";
+  //       }
+  //     }
+
+  //     return "failed";
+  //   } else {
+  //     return 'noInternet';
+  //   }
+  // }
 
   addShift(Shift shift, String userToken, BuildContext context) async {
     if (await isConnectedToInternet()) {

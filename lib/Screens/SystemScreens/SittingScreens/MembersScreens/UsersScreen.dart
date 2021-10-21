@@ -15,8 +15,10 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -63,7 +65,8 @@ class _UsersScreenState extends State<UsersScreen> {
             .id,
         comProvier.com.id,
         userProvider.user.userToken,
-        context);
+        context,
+        -1);
     refreshController.refreshCompleted();
   }
 
@@ -97,7 +100,8 @@ class _UsersScreenState extends State<UsersScreen> {
                         .id,
                     comProvier.com.id,
                     userProvider.user.userToken,
-                    context);
+                    context,
+                    -1);
           }
         }
         goMaxScroll = true;
@@ -121,14 +125,7 @@ class _UsersScreenState extends State<UsersScreen> {
         print("Got Sites");
       });
     }
-    if (Provider.of<ShiftsData>(context, listen: false).shiftsList.isEmpty) {
-      await Provider.of<ShiftsData>(context, listen: false)
-          .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-              userProvider.user.userType, userProvider.user.userSiteId)
-          .then((value) async {
-        print("Got shifts");
-      });
-    }
+
     if (widget.selectedIndex != -1) {
       siteIndex = widget.selectedIndex;
       if (widget.comingFromShifts) {
@@ -142,20 +139,11 @@ class _UsersScreenState extends State<UsersScreen> {
                     .id,
                 comProvier.com.id,
                 userProvider.user.userToken,
-                context);
-
-        List<Member> finalTest = [];
-
-        Provider.of<MemberData>(context, listen: false)
-            .copyMemberList
-            .forEach((element) {
-          if (element.shiftId ==
-              Provider.of<SiteData>(context, listen: false).currentShiftID) {
-            finalTest.add(element);
-          }
-        });
-        Provider.of<MemberData>(context, listen: false)
-            .setMmemberList(finalTest);
+                context,
+                Provider.of<SiteShiftsData>(context, listen: false)
+                    .shifts[Provider.of<SiteData>(context, listen: false)
+                        .dropDownShiftIndex]
+                    .shiftId);
       } else if (!widget.comingFromShifts) {
         print(
           "eeeE  ${Provider.of<SiteData>(context, listen: false).dropDownSitesList[siteIndex].id}",
@@ -166,12 +154,13 @@ class _UsersScreenState extends State<UsersScreen> {
                 .id,
             comProvier.com.id,
             userProvider.user.userToken,
-            context);
+            context,
+            -1);
       }
     } else {
       await Provider.of<MemberData>(context, listen: false)
           .getAllCompanyMember(
-              -1, comProvier.com.id, userProvider.user.userToken, context)
+              -1, comProvier.com.id, userProvider.user.userToken, context, -1)
           .then((value) async {
         print("Got members");
       });
@@ -194,15 +183,39 @@ class _UsersScreenState extends State<UsersScreen> {
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
-  searchInList(String value) {
+  searchInList(String value, int siteId, int companyId) {
     if (value.isNotEmpty) {
-      Provider.of<MemberData>(context, listen: false).searchUsersList(value);
+      print(companyId);
+      Provider.of<MemberData>(context, listen: false).searchUsersList(
+          value,
+          Provider.of<UserData>(context, listen: false).user.userToken,
+          siteId,
+          companyId);
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();
     }
   }
 
+  int getSiteIndex(String siteName) {
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
+    int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (siteName == list[i].siteName) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   Settings settings = Settings();
+  Timer _debounce;
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     var companyProv = Provider.of<CompanyData>(context, listen: false);
     var siteProv = Provider.of<SiteData>(context, listen: false);
@@ -212,7 +225,11 @@ class _UsersScreenState extends State<UsersScreen> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            setState(() {
+              _nameController.text = "";
+            });
+          },
           child: Scaffold(
               endDrawer: NotificationItem(),
               backgroundColor: Colors.white,
@@ -295,7 +312,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                   1 &&
                                               Provider.of<MemberData>(context)
                                                       .bySitePageIndex !=
-                                                  1) {
+                                                  1 &&
+                                              _nameController.text == "" &&
+                                              Provider.of<MemberData>(context)
+                                                      .loadingShifts ==
+                                                  false) {
                                             goMaxScroll = false;
                                             Timer(
                                               Duration(milliseconds: 1),
@@ -318,9 +339,36 @@ class _UsersScreenState extends State<UsersScreen> {
                                                   dropdownValue:
                                                       widget.selectedValue,
                                                   searchFun: (value) {
-                                                    print(value);
-                                                    searchInList(value);
-                                                    currentShiftName = value;
+                                                    int siteiD = -1;
+                                                    int siteindex =
+                                                        getSiteIndex(Provider
+                                                                .of<SiteData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                            .siteValue);
+
+                                                    if (siteindex != -1) {
+                                                      siteiD = Provider.of<
+                                                                  SiteData>(
+                                                              context,
+                                                              listen: false)
+                                                          .sitesList[siteindex]
+                                                          .id;
+                                                    }
+
+                                                    searchInList(
+                                                        value,
+                                                        siteiD,
+                                                        Provider.of<CompanyData>(
+                                                                context,
+                                                                listen: false)
+                                                            .com
+                                                            .id);
+                                                    setState(() {
+                                                      currentShiftName = value;
+                                                    });
+                                                    // do something with query
                                                   },
                                                   textController:
                                                       _nameController,
@@ -330,6 +378,13 @@ class _UsersScreenState extends State<UsersScreen> {
                                                           value;
                                                       print(
                                                           "current : ${widget.selectedValue}");
+                                                      currentShiftName = "";
+                                                      _nameController.clear();
+                                                      Provider.of<MemberData>(
+                                                              context,
+                                                              listen: false)
+                                                          .userSearchMember
+                                                          .clear();
                                                     });
 
                                                     var userProvider =
@@ -365,7 +420,8 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                   .com.id,
                                                               userProvider.user
                                                                   .userToken,
-                                                              context);
+                                                              context,
+                                                              -1);
                                                       setState(() {
                                                         widget.selectedValue =
                                                             siteProv
@@ -378,8 +434,70 @@ class _UsersScreenState extends State<UsersScreen> {
                                                 ),
                                               ),
                                               Expanded(
-                                                  child:
-                                                      memberData.membersList
+                                                  child: _nameController.text !=
+                                                              null &&
+                                                          _nameController
+                                                                  .text !=
+                                                              ""
+                                                      ? Consumer<MemberData>(
+                                                          builder: (context,
+                                                              value, child) {
+                                                            return Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topCenter,
+                                                                width: double
+                                                                    .infinity,
+                                                                child: ListView
+                                                                    .builder(
+                                                                        itemCount: value
+                                                                            .userSearchMember
+                                                                            .length,
+                                                                        itemBuilder:
+                                                                            (BuildContext context,
+                                                                                int index) {
+                                                                          return Directionality(
+                                                                            textDirection:
+                                                                                TextDirection.rtl,
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () {
+                                                                                Navigator.push(
+                                                                                    context,
+                                                                                    MaterialPageRoute(
+                                                                                      builder: (context) => UserFullDataScreen(
+                                                                                        index: index,
+                                                                                        onResetMac: () {
+                                                                                          settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                        },
+                                                                                        onTapDelete: () {
+                                                                                          settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                        },
+                                                                                        siteIndex: siteIndex,
+                                                                                        userId: value.userSearchMember[index].id,
+                                                                                      ),
+                                                                                    ));
+                                                                              },
+                                                                              child: Card(
+                                                                                elevation: 2,
+                                                                                child: Container(
+                                                                                  alignment: Alignment.centerRight,
+                                                                                  width: double.infinity,
+                                                                                  height: 50.h,
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.all(10.0),
+                                                                                    child: Text(
+                                                                                      value.userSearchMember[index].username,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }));
+                                                          },
+                                                        )
+                                                      : memberData.membersList
                                                                   .length !=
                                                               0
                                                           ? Container(
@@ -401,42 +519,24 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                         Member
                                                                             user =
                                                                             memberData.membersListScreenDropDownSearch[index];
-                                                                        return InkWell(
-                                                                          onLongPress:
+                                                                        return MemberTile(
+                                                                          index:
+                                                                              index,
+                                                                          user:
+                                                                              memberData.membersListScreenDropDownSearch[index],
+                                                                          onTapDelete:
                                                                               () {
-                                                                            showDialog(
-                                                                              context: context,
-                                                                              builder: (context) {
-                                                                                return Container(
-                                                                                  child: UserPropertiesMenu(
-                                                                                    user: user,
-                                                                                  ),
-                                                                                );
-                                                                              },
-                                                                            );
+                                                                            settings.deleteUser(
+                                                                                context,
+                                                                                user.id,
+                                                                                index,
+                                                                                user.name);
                                                                           },
-                                                                          child:
-                                                                              MemberTile(
-                                                                            user:
-                                                                                memberData.membersListScreenDropDownSearch[index],
-                                                                            onTapDelete:
-                                                                                () {
-                                                                              settings.deleteUser(context, user, index);
-                                                                            },
-                                                                            onTapEdit:
-                                                                                () async {
-                                                                              var phone = await getPhoneInEdit(user.phoneNumber[0] != "+" ? "+${memberData.membersListScreenDropDownSearch[index].phoneNumber}" : memberData.membersListScreenDropDownSearch[index].phoneNumber);
-                                                                              Navigator.of(context).push(
-                                                                                new MaterialPageRoute(
-                                                                                  builder: (context) => AddUserScreen(user, index, true, phone[0], phone[1], false, ""),
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                            onResetMac:
-                                                                                () {
-                                                                              settings.resetMacAddress(context, user);
-                                                                            },
-                                                                          ),
+                                                                          onResetMac:
+                                                                              () {
+                                                                            settings.resetMacAddress(context,
+                                                                                user.id);
+                                                                          },
                                                                         );
                                                                       }),
                                                             )
@@ -505,7 +605,9 @@ class _UsersScreenState extends State<UsersScreen> {
                           4
                       ? MultipleFloatingButtons(
                           comingFromShifts: widget.comingFromShifts,
-                          shiftName: widget.comingShiftName,
+                          shiftName: widget.comingShiftName == ""
+                              ? Provider.of<SiteData>(context).siteValue
+                              : widget.comingShiftName,
                           mainTitle: 'إضافة مستخدم',
                           mainIconData: Icons.person_add,
                         )

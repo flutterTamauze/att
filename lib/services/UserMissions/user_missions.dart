@@ -8,7 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -113,6 +115,7 @@ class MissionsData with ChangeNotifier {
   ) async {
     isLoading = true;
     notifyListeners();
+    print(userMissions.shiftId);
     var response = await http.post(
         Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
         headers: {
@@ -156,8 +159,8 @@ class MissionsData with ChangeNotifier {
             description: description ?? "لا يوجد تفاصيل",
             fromDate: fromDate,
             toDate: toDate,
-            shiftId: Provider.of<ShiftsData>(context, listen: false)
-                .shiftsBySite[prov.dropDownShiftIndex]
+            shiftId: Provider.of<SiteShiftsData>(context, listen: false)
+                .shifts[prov.dropDownShiftIndex]
                 .shiftId,
             userId: userId),
         Provider.of<UserData>(context, listen: false).user.userToken,

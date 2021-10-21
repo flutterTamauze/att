@@ -377,7 +377,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pop(context);
                     },
                     title: 'خطأ فى البيانات الحساب',
-                    content: "الخدمة متوقفة حاليا\nمن فضلك راجع مدير النظام");
+                    content: "الشركة متوقفة حاليا\nمن فضلك راجع مدير النظام");
               }).then((value) {
             setState(() {
               isLoading = false;

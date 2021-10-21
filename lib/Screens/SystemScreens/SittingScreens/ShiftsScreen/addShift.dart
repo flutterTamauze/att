@@ -16,6 +16,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
 
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
@@ -303,8 +304,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         ignoring: !edit,
                                         child: SiteDropdown(
                                           edit: edit,
-                                          list: Provider.of<SiteData>(context)
-                                              .sitesList,
+                                          list: Provider.of<SiteShiftsData>(
+                                                  context)
+                                              .siteShiftList,
                                           colour: Colors.white,
                                           icon: Icons.location_on,
                                           borderColor: Colors.black,

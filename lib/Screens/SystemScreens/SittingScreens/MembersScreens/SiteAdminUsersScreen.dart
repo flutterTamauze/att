@@ -14,7 +14,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -335,7 +335,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
       RefreshController(initialRefresh: false);
   searchInList(String value) {
     if (value.isNotEmpty) {
-      Provider.of<MemberData>(context, listen: false).searchUsersList(value);
+      // Provider.of<MemberData>(context, listen: false).searchUsersList(value);
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();
     }
@@ -513,14 +513,16 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                         Navigator.of(context)
                                                                             .push(
                                                                           new MaterialPageRoute(
-                                                                            builder: (context) => AddUserScreen(
-                                                                                memberData.membersListScreenDropDownSearch[index],
-                                                                                index,
-                                                                                true,
-                                                                                phone[0],
-                                                                                phone[1],
-                                                                                false,
-                                                                                ""),
+                                                                            builder: (context) =>
+                                                                                AddUserScreen(
+                                                                              memberData.membersListScreenDropDownSearch[index],
+                                                                              index,
+                                                                              true,
+                                                                              phone[0],
+                                                                              phone[1],
+                                                                              false,
+                                                                              "",
+                                                                            ),
                                                                           ),
                                                                         );
                                                                       },
@@ -653,13 +655,14 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddUserScreen(
-                                        Member(),
-                                        0,
-                                        false,
-                                        "",
-                                        "",
-                                        widget.comingFromShifts,
-                                        widget.comingShiftName)));
+                                          Member(),
+                                          0,
+                                          false,
+                                          "",
+                                          "",
+                                          widget.comingFromShifts,
+                                          widget.comingShiftName,
+                                        )));
                           },
                         )
                       : Container()),
@@ -752,7 +755,7 @@ class _MemberTileState extends State<MemberTile> {
                   onTapDelete: widget.onTapDelete,
                   onTapEdit: widget.onTapEdit,
                   siteIndex: siteIndex,
-                  user: widget.user,
+                  userId: widget.user.id,
                 ),
               ));
           // showUserDetails(widget.user);

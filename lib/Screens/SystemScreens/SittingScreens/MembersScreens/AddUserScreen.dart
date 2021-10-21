@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -12,8 +13,10 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -29,14 +32,21 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart'
 class AddUserScreen extends StatefulWidget {
   final Member member;
   final int id;
-
   final String editableUserPhone;
   final String editiableDial;
   final isEdit;
+
   bool comingFromShifts = false;
   final String shiftNameIncoming;
-  AddUserScreen(this.member, this.id, this.isEdit, this.editableUserPhone,
-      this.editiableDial, this.comingFromShifts, this.shiftNameIncoming);
+  AddUserScreen(
+    this.member,
+    this.id,
+    this.isEdit,
+    this.editableUserPhone,
+    this.editiableDial,
+    this.comingFromShifts,
+    this.shiftNameIncoming,
+  );
 
   @override
   _AddUserScreenState createState() => _AddUserScreenState();
@@ -48,10 +58,31 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   intlPhone.PhoneNumber number =
       intlPhone.PhoneNumber(dialCode: "+20", isoCode: "EG");
+
+  int getShiftIndex() {
+    int holder = 0;
+    List<String> x = [];
+    print(Provider.of<SiteData>(context, listen: false).currentShiftName);
+    Provider.of<SiteShiftsData>(context, listen: false)
+        .shifts
+        .forEach((element) {
+      x.add(element.shiftName);
+    });
+
+    holder = x.indexOf(
+        Provider.of<SiteData>(context, listen: false).currentShiftName);
+    log(holder.toString());
+    if (holder != null && holder != -1) {
+      return holder;
+    } else {
+      return 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    log(widget.shiftNameIncoming);
     print(widget.comingFromShifts);
     if (widget.comingFromShifts) {
       print("shift incoming =${widget.shiftNameIncoming}");
@@ -81,9 +112,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
       print(
           "dropdownindex ${Provider.of<SiteData>(context, listen: false).dropDownSitesIndex}");
       if (!widget.comingFromShifts) {
-        Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-            Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
-            false);
+        Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+            widget.shiftNameIncoming == "كل المواقع"
+                ? Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[0]
+                    .siteName
+                : widget.shiftNameIncoming);
+        // Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+        //     Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
+        //     false);
       }
     }
   }
@@ -110,11 +147,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
     if (widget.isEdit) {
       print("edit screen");
       edit = true;
-      await Provider.of<ShiftsData>(context, listen: false)
-          .findMatchingShifts(getSiteIdByShiftId(widget.member.shiftId), false);
+      Provider.of<SiteShiftsData>(context, listen: false)
+          .getShiftsList(widget.member.siteName);
 
       shiftIndex = getShiftListIndex(widget.member.shiftId);
-      siteId = getSiteListIndex(shiftIndex);
+      // siteId = getSiteListIndex(shiftIndex);
       _nameController.text = widget.member.name;
       _emailController.text = widget.member.email;
       _phoneController.text = widget.member.phoneNumber;
@@ -124,11 +161,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
       setState(() {});
     } else {
       print(widget.comingFromShifts);
-      // if (!widget.comingFromShifts) {
-      //   Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-      //       Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
-      //       false);
-      // }
+      if (!widget.comingFromShifts) {
+        Provider.of<SiteShiftsData>(context, listen: false)
+            .getShiftsList(widget.shiftNameIncoming);
+      }
     }
   }
 
@@ -593,8 +629,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         ignoring: !edit,
                                         child: SiteDropdown(
                                           edit: edit,
-                                          list: Provider.of<SiteData>(context)
-                                              .sitesList,
+                                          list: Provider.of<SiteShiftsData>(
+                                                  context)
+                                              .siteShiftList,
                                           colour: Colors.white,
                                           icon: Icons.location_on,
                                           borderColor: Colors.black,
@@ -602,17 +639,20 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // print()
-
+                                            log(value);
                                             siteId = getSiteId(value);
-                                            Provider.of<ShiftsData>(context,
+                                            Provider.of<SiteShiftsData>(context,
                                                     listen: false)
-                                                .findMatchingShifts(
-                                                    Provider.of<SiteData>(
-                                                            context,
-                                                            listen: false)
-                                                        .sitesList[siteId]
-                                                        .id,
-                                                    false);
+                                                .getShiftsList(value);
+                                            // Provider.of<ShiftsData>(context,
+                                            //         listen: false)
+                                            //     .findMatchingShifts(
+                                            //         Provider.of<SiteData>(
+                                            //                 context,
+                                            //                 listen: false)
+                                            //             .sitesList[siteId]
+                                            //             .id,
+                                            //         false);
                                             setState(() {
                                               shiftIndex = 0;
                                             });
@@ -629,9 +669,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             print(value);
                                           },
                                           selectedvalue:
-                                              Provider.of<SiteData>(context)
-                                                  .sitesList[siteId]
-                                                  .name,
+                                              Provider.of<SiteShiftsData>(
+                                                      context)
+                                                  .siteShiftList[siteId]
+                                                  .siteName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -642,13 +683,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         ignoring: !edit,
                                         child: ShiftsDropDown(
                                           edit: edit,
-                                          list: Provider.of<ShiftsData>(context,
+                                          list: Provider.of<SiteShiftsData>(
+                                                  context,
                                                   listen: true)
-                                              .shiftsBySite
-                                              .where((element) =>
-                                                  element.shiftName !=
-                                                  "كل المناوبات")
-                                              .toList(),
+                                              .shifts,
                                           colour: Colors.white,
                                           icon: Icons.location_on,
                                           borderColor: Colors.black,
@@ -656,6 +694,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // print()
+                                            log(value);
                                             Provider.of<SiteData>(context,
                                                     listen: false)
                                                 .setSiteValue("كل المواقع");
@@ -670,17 +709,18 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 "shiftid..... =    $shiftIndex");
                                           },
                                           selectedvalue: Provider.of<
-                                                  ShiftsData>(context)
-                                              .shiftsBySite[
-                                                  Provider.of<ShiftsData>(
-                                                                  context)
-                                                              .shiftsBySite[
-                                                                  shiftIndex]
-                                                              .shiftName ==
-                                                          "كل المناوبات"
-                                                      ? shiftIndex + 1
-                                                      : shiftIndex]
-                                              .shiftName,
+                                                      SiteShiftsData>(context)
+                                                  .shifts
+                                                  .isEmpty
+                                              ? null
+                                              : Provider.of<SiteShiftsData>(
+                                                          context)
+                                                      .shifts[getShiftIndex()]
+                                                      .shiftName ??
+                                                  Provider.of<SiteShiftsData>(
+                                                          context)
+                                                      .shifts[0]
+                                                      .shiftName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -1198,30 +1238,31 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   int getSiteId(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
+      if (siteName == list[i].siteName) {
         return i;
       }
     }
     return -1;
   }
 
-  int getSiteListIndex(int fShiftId) {
-    var fSiteId = Provider.of<ShiftsData>(context, listen: false)
-        .shiftsBySite[fShiftId]
-        .siteID;
+  // int getSiteListIndex(int fShiftId) {
+  //   var fSiteId = Provider.of<ShiftsData>(context, listen: false)
+  //       .shiftsBySite[fShiftId]
+  //       .siteID;
 
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (fSiteId == list[i].id) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  //   var list = Provider.of<SiteData>(context, listen: false).sitesList;
+  //   int index = list.length;
+  //   for (int i = 0; i < index; i++) {
+  //     if (fSiteId == list[i].id) {
+  //       return i;
+  //     }
+  //   }
+  //   return -1;
+  // }
 
   int getShiftListIndex(int shiftId) {
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsBySite;
@@ -1236,7 +1277,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   int getShiftid(String shiftName) {
     print("shiftName getShiftId $shiftName");
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsBySite;
+    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
     int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftName == list[i].shiftName) {

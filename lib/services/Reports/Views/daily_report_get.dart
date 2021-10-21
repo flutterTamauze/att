@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -30,8 +31,9 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
         print("SiteIndex $siteIndex");
       });
     } else {
-      siteID =
-          Provider.of<SiteData>(context, listen: false).sitesList[siteIndex].id;
+      siteID = Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[siteIndex]
+          .siteId;
     }
   }
   print(siteID);

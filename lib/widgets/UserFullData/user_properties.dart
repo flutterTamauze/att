@@ -9,9 +9,10 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/Ou
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -72,15 +73,17 @@ class _UserPropertiesState extends State<UserProperties> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
     String shiftName = getShiftName();
-
+    print("index");
+    print(widget.siteIndex);
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
     for (int i = 0; i < 7; i++) {
       await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
+          //hngeb al data de mn al back kolha
           i,
-          Provider.of<SiteData>(context, listen: false)
-              .sitesList[widget.siteIndex]
-              .name,
+          Provider.of<SiteShiftsData>(context, listen: false)
+              .siteShiftList[widget.siteIndex]
+              .siteName, //default site name
           shiftName,
           getShiftid(shiftName),
           getsiteIDbyShiftId(widget.user.shiftId));
@@ -317,17 +320,17 @@ class _UserPropertiesState extends State<UserProperties> {
                                 await Provider.of<SiteData>(context,
                                         listen: false)
                                     .setDropDownIndex(0);
-                                await Provider.of<ShiftsData>(context,
-                                        listen: false)
-                                    .findMatchingShifts(
-                                        Provider.of<SiteData>(context,
-                                                listen: false)
-                                            .sitesList[Provider.of<SiteData>(
-                                                    context,
-                                                    listen: false)
-                                                .dropDownSitesIndex]
-                                            .id,
-                                        false);
+                                // await Provider.of<ShiftsData>(context,
+                                //         listen: false)
+                                //     .findMatchingShifts(
+                                //         Provider.of<SiteData>(context,
+                                //                 listen: false)
+                                //             .sitesList[Provider.of<SiteData>(
+                                //                     context,
+                                //                     listen: false)
+                                //                 .dropDownSitesIndex]
+                                //             .id,
+                                //         false);
                                 shiftScheduling();
                                 Navigator.pop(context);
                               } else {

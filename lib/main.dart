@@ -12,9 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SplashScreen.dart';
+import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -173,6 +175,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => MissionsData(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SiteShiftsData(),
+        )
       ],
       child: ScreenUtilInit(
         designSize: Size(392.72, 807.27),

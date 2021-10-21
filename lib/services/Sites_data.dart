@@ -37,8 +37,14 @@ class SiteData with ChangeNotifier {
   String currentSiteName = "";
   InheritDefault inherit = InheritDefault();
   String siteValue = 'كل المواقع';
+  String currentShiftName = "";
   setSiteValue(String v) {
     siteValue = v;
+    notifyListeners();
+  }
+
+  setShiftValue(String v) {
+    currentShiftName = v;
     notifyListeners();
   }
 

@@ -20,6 +20,7 @@ import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Download/download_service.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -146,6 +147,14 @@ class _HomePageState extends State<HomePage> {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
+                print(Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[0]
+                    .shifts
+                    .length);
+                print(Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[5]
+                    .siteName);
+
                 print(
                     Provider.of<UserData>(context, listen: false).isSuperAdmin);
                 print(await getDeviceUUID());

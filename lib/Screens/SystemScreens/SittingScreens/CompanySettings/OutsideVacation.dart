@@ -14,8 +14,9 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -125,7 +126,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
   Widget build(BuildContext context) {
     var prov = Provider.of<SiteData>(context, listen: false);
     var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
-    var shiftsData = Provider.of<ShiftsData>(context, listen: false);
+    var shiftsData = Provider.of<SiteShiftsData>(context, listen: false);
     var sitesData = Provider.of<SiteData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
@@ -783,9 +784,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                     .dropDownSitesIndex]
                                                                 .name,
                                                             shiftsData
-                                                                .shiftsBySite[
-                                                                    sitesData
-                                                                        .dropDownShiftIndex]
+                                                                .shifts[sitesData
+                                                                    .dropDownShiftIndex]
                                                                 .shiftName);
                                                   }
                                                 },
@@ -1308,7 +1308,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                         children: [
                           Directionality(
                             textDirection: ui.TextDirection.rtl,
-                            child: Consumer<ShiftsData>(
+                            child: Consumer<SiteShiftsData>(
                               builder: (context, value, child) {
                                 return IgnorePointer(
                                   ignoring:
@@ -1319,7 +1319,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                       isExpanded: true,
                                       underline: SizedBox(),
                                       elevation: 5,
-                                      items: value.shiftsBySite
+                                      items: value.shifts
                                           .map(
                                             (value) => DropdownMenuItem(
                                                 child: Container(
@@ -1345,7 +1345,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                             "كل المواقع") {
                                           List<String> x = [];
 
-                                          value.shiftsBySite.forEach((element) {
+                                          value.shifts.forEach((element) {
                                             x.add(element.shiftName);
                                           });
 
@@ -1354,7 +1354,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
 
                                           widget.prov.setDropDownShift(holder);
                                           shiftId =
-                                              value.shiftsList[holder].shiftId;
+                                              value.shifts[holder].shiftId;
                                         }
                                       },
                                       hint: Text("كل المناوبات"),
@@ -1362,7 +1362,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                           widget.prov.siteValue == "كل المواقع"
                                               ? null
                                               : value
-                                                  .shiftsBySite[widget
+                                                  .shifts[widget
                                                       .prov.dropDownShiftIndex]
                                                   .shiftName
 
@@ -1429,7 +1429,9 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                   onChanged: (v) async {
                                     print(v);
                                     widget.prov.setDropDownShift(0);
-
+                                    Provider.of<SiteShiftsData>(context,
+                                            listen: false)
+                                        .getShiftsList(v);
                                     if (v != "كل المواقع") {
                                       widget.prov.setDropDownIndex(widget
                                               .prov.dropDownSitesStrings
@@ -1438,15 +1440,15 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                     } else {
                                       widget.prov.setDropDownIndex(0);
                                     }
-                                    await Provider.of<ShiftsData>(context,
-                                            listen: false)
-                                        .findMatchingShifts(
-                                            Provider.of<SiteData>(context,
-                                                    listen: false)
-                                                .sitesList[widget
-                                                    .prov.dropDownSitesIndex]
-                                                .id,
-                                            false);
+                                    // await Provider.of<ShiftsData>(context,
+                                    //         listen: false)
+                                    //     .findMatchingShifts(
+                                    //         Provider.of<SiteData>(context,
+                                    //                 listen: false)
+                                    //             .sitesList[widget
+                                    //                 .prov.dropDownSitesIndex]
+                                    //             .id,
+                                    //         false);
 
                                     widget.prov.fillCurrentShiftID(widget
                                         .list[

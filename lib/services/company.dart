@@ -11,7 +11,7 @@ import 'package:huawei_location/location/location.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:trust_location/trust_location.dart';
@@ -240,32 +240,32 @@ class CompanyData extends ChangeNotifier {
     }
   }
 
-  Future<String> addGuestCompany(
-      {File image, Company company, BuildContext context}) async {
-    String msg;
-    if (await isConnectedToInternet()) {
-      String guestToken = await guestTokaen();
-      msg = await createCompany(
-          image: image,
-          company: company,
-          context: context,
-          guestToken: guestToken);
+  // Future<String> addGuestCompany(
+  //     {File image, Company company, BuildContext context}) async {
+  //   String msg;
+  //   if (await isConnectedToInternet()) {
+  //     String guestToken = await guestTokaen();
+  //     msg = await createCompany(
+  //         image: image,
+  //         company: company,
+  //         context: context,
+  //         guestToken: guestToken);
 
-      if (msg == "Success") {
-        msg = await getdefualtShiftAndCreateUser(
-            guestToken, companyId, context, company);
+  //     if (msg == "Success") {
+  //       msg = await getdefualtShiftAndCreateUser(
+  //           guestToken, companyId, context, company);
 
-        return msg;
-      } else if (msg == "nameExists") {
-        msg = "nameExists";
-        return msg;
-      }
-    } else {
-      msg = 'noInternet';
-      return msg;
-    }
-    return msg;
-  }
+  //       return msg;
+  //     } else if (msg == "nameExists") {
+  //       msg = "nameExists";
+  //       return msg;
+  //     }
+  //   } else {
+  //     msg = 'noInternet';
+  //     return msg;
+  //   }
+  //   return msg;
+  // }
 
   Future<String> createCompany(
       {File image,
@@ -327,40 +327,40 @@ class CompanyData extends ChangeNotifier {
     return msg;
   }
 
-  getdefualtShiftAndCreateUser(String guestToken, int companyId,
-      BuildContext context, Company company) async {
-    final response = await http.get(
-        Uri.parse(
-            "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $guestToken"
-        });
+  // getdefualtShiftAndCreateUser(String guestToken, int companyId,
+  //     BuildContext context, Company company) async {
+  //   final response = await http.get(
+  //       Uri.parse(
+  //           "$baseURL/api/Shifts/GetAllShiftInCompany?companyId=$companyId"),
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Authorization': "Bearer $guestToken"
+  //       });
 
-    var decodedRes = json.decode(response.body);
-    print(response.body);
+  //   var decodedRes = json.decode(response.body);
+  //   print(response.body);
 
-    if (decodedRes["message"] == "Success") {
-      var shiftObjJson = jsonDecode(response.body)['data'] as List;
-      int defaultShiftID = shiftObjJson[0]['id'];
-      var msg = await Provider.of<MemberData>(context, listen: false)
-          .addMember(
-              Member(
-                  name: company.nameAr,
-                  jobTitle: "ادمن",
-                  phoneNumber: company.adminPhoneNumber,
-                  email: company.email,
-                  shiftId: defaultShiftID,
-                  userType: 4),
-              guestToken,
-              context,
-              "Admin")
-          .then((value) async {
-        return value;
-      });
-      return msg;
-    }
-  }
+  //   if (decodedRes["message"] == "Success") {
+  //     var shiftObjJson = jsonDecode(response.body)['data'] as List;
+  //     int defaultShiftID = shiftObjJson[0]['id'];
+  //     var msg = await Provider.of<MemberData>(context, listen: false)
+  //         .addMember(
+  //             Member(
+  //                 name: company.nameAr,
+  //                 jobTitle: "ادمن",
+  //                 phoneNumber: company.adminPhoneNumber,
+  //                 email: company.email,
+  //                 shiftId: defaultShiftID,
+  //                 userType: 4),
+  //             guestToken,
+  //             context,
+  //             "Admin")
+  //         .then((value) async {
+  //       return value;
+  //     });
+  //     return msg;
+  //   }
+  // }
 
   Future<String> editCompanyProfile(
       Company com, String token, BuildContext context) async {

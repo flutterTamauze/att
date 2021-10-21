@@ -5,43 +5,34 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
+import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
-import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/RoundedAlert.dart';
-import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
-import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
-import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart'
-    as intlPhone;
-import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
+
 import 'package:qr_users/widgets/roundedButton.dart';
-import 'package:shimmer/shimmer.dart';
 
 class MemberTile extends StatefulWidget {
   final Member user;
   final Function onTapEdit;
   final Function onTapDelete;
   final Function onResetMac;
+  final int index;
 
-  MemberTile({this.user, this.onTapEdit, this.onTapDelete, this.onResetMac});
+  MemberTile(
+      {this.user,
+      this.onTapEdit,
+      this.onTapDelete,
+      this.onResetMac,
+      this.index});
 
   @override
   _MemberTileState createState() => _MemberTileState();
@@ -84,9 +75,11 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   int getShiftListIndex(int shiftId) {
+    print("my shift = $shiftId");
     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
+      print(list[i].shiftId);
       if (shiftId == list[i].shiftId) {
         return i;
       }
@@ -101,9 +94,25 @@ class _MemberTileState extends State<MemberTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: InkWell(
+        onLongPress: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: UserPropertiesMenu(
+                  user: widget.user,
+                ),
+              );
+            },
+          );
+        },
         onTap: () {
-          shiftId = getShiftListIndex(widget.user.shiftId);
-          siteIndex = getSiteListIndex(shiftId);
+          print(widget.user.id);
+          print(widget.user.name);
+
+          // shiftId = getShiftListIndex(widget.user.shiftId);
+          // print(shiftId);
+          // siteIndex = getSiteListIndex(shiftId);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -111,8 +120,9 @@ class _MemberTileState extends State<MemberTile> {
                   onResetMac: widget.onResetMac,
                   onTapDelete: widget.onTapDelete,
                   onTapEdit: widget.onTapEdit,
-                  siteIndex: siteIndex,
-                  user: widget.user,
+                  // siteIndex: siteIndex,
+                  userId: widget.user.id,
+                  index: widget.index,
                 ),
               ));
           // showUserDetails(widget.user);
@@ -132,46 +142,46 @@ class _MemberTileState extends State<MemberTile> {
                       Row(
                         children: [
                           Container(
-                            width: 55.w,
-                            height: 55.h,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
+                                borderRadius: BorderRadius.circular(40),
                                 border:
                                     Border.all(width: 2, color: Colors.orange)),
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(25),
-                                child: Image(
-                                  width: 55.w,
-                                  height: 55.h,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Container(
-                                      width: 55.w,
-                                      height: 55.h,
-                                      child: Center(
-                                          child: CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.orange),
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes
-                                            : null,
-                                      )),
-                                    );
-                                  },
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    '$baseURL/${widget.user.userImageURL}',
+                                child: Container(
+                                  child: Image(
+                                    width: 90.w,
+                                    height: 90.h,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        width: 55.w,
+                                        height: 55.h,
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                          valueColor:
+                                              new AlwaysStoppedAnimation<Color>(
+                                                  Colors.orange),
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        )),
+                                      );
+                                    },
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                      '$baseURL/${widget.user.userImageURL}',
+                                    ),
                                   ),
                                 ),
                               ),

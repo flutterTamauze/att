@@ -301,9 +301,10 @@ class TakePictureScreenState extends State<CameraPicker>
                                   image = File(newPath);
                                 });
 
-                              await testCompressAndGetFile(
+                              File imgCompressed = await testCompressAndGetFile(
                                   file: img, targetPath: newPath);
                               // _cameraService.cameraController.dispose();
+
                               cameraController.dispose();
                               // _cameraService.cameraController.dispose();
                               print("=====Compressed==========");
@@ -340,7 +341,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                         .attendByCard(
                                             qrCode: widget.shiftQrcode,
                                             cardCode: widget.qrText,
-                                            image: img);
+                                            image: imgCompressed);
                                     print(msg);
                                     if (msg ==
                                         "Success : successfully registered") {

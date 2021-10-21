@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -15,9 +16,11 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/Use
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
+import 'package:qr_users/services/api.dart';
 
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -52,7 +55,12 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
   void initState() {
     // x
     super.initState();
+    print("init state");
     siteId = widget.siteId;
+    Provider.of<SiteData>(context, listen: false).setCurrentSiteName(
+        Provider.of<SiteShiftsData>(context, listen: false)
+            .siteShiftList[0]
+            .siteName);
   }
 
   // String getTimeToString(int time) {
@@ -80,65 +88,74 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     setState(() {
       isLoading = true;
     });
-    await Provider.of<ShiftsData>(context, listen: false)
-        .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-            userProvider.user.userType, userProvider.user.userSiteId)
-        .then((value) async {
-      print("got Shifts");
-    });
+    await getData(Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[siteId]
+        .siteId);
+    // await Provider.of<ShiftsData>(context, listen: false)
+    //     .getShifts(comProvier.com.id, userProvider.user.userToken, context,
+    //         userProvider.user.userType, userProvider.user.userSiteId)
+    //     .then((value) async {
+    //   print("got Shifts");
+    // });
     setState(() {
       isLoading = false;
     });
 
-    await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-        Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
-        false);
+    // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+    //     Provider.of<SiteShiftsData>(context, listen: false)
+    //         .siteShiftList[siteId]
+    //         .siteId,
+    //     false);
     refreshController.refreshCompleted();
   }
 
   void didChangeDependencies() async {
     isLoading = false;
-    if (mounted) {}
-
+    print("start state");
     super.didChangeDependencies();
-    await getData();
+    // await getData();
+    getData(Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[siteId]
+        .siteId);
   }
 
-  getData() async {
+  Future loadShift;
+  getData(int siteId) async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context);
-
-    await Provider.of<SiteData>(context, listen: false)
-        .getSitesByCompanyId(
-      comProvier.com.id,
-      userProvider.user.userToken,
-      context,
-    )
-        .then((value) async {
-      print("GOt Sites");
-    });
-
-    await Provider.of<ShiftsData>(context, listen: false)
-        .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-            userProvider.user.userType, userProvider.user.userSiteId)
-        .then((value) async {
-      print("got Shifts");
-    });
-    await fillList();
+    loadShift = Provider.of<ShiftsData>(context, listen: false)
+        .getShiftsBySiteId(siteId, userProvider.user.userToken, context);
+    // await fillList();
   }
+  // getData() async {
+  //   var userProvider = Provider.of<UserData>(context, listen: false);
+  //   var comProvier = Provider.of<CompanyData>(context);
 
-  fillList() async {
-    await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-        Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
-        false);
-  }
+  //   await Provider.of<SiteData>(context, listen: false)
+  //       .getSitesByCompanyId(
+  //     comProvier.com.id,
+  //     userProvider.user.userToken,
+  //     context,
+  //   )
+  //       .then((value) async {
+  //     print("GOt Sites");
+  //   });
+
+  //   await Provider.of<ShiftsData>(context, listen: false)
+  //       .getShifts(comProvier.com.id, userProvider.user.userToken, context,
+  //           userProvider.user.userType, userProvider.user.userSiteId)
+  //       .then((value) async {
+  //     print("got Shifts");
+  //   });
+
+  // }
 
   bool isLoading = false;
   int getSiteName(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
+      if (siteName == list[i].siteName) {
         return i;
       }
     }
@@ -175,234 +192,214 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 
                       Expanded(
                         child: FutureBuilder(
-                            future:
-                                Provider.of<SiteData>(context).futureListener,
+                            future: loadShift,
                             builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return Container(
-                                  color: Colors.white,
-                                  child: Center(
-                                    child: Platform.isIOS
-                                        ? CupertinoActivityIndicator(
-                                            radius: 20,
-                                          )
-                                        : CircularProgressIndicator(
-                                            backgroundColor: Colors.white,
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
-                                          ),
-                                  ),
-                                );
-                              }
-                              return FutureBuilder(
-                                  future: shiftsData.futureListener,
-                                  builder: (context, snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.waiting:
-                                        return Container(
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              backgroundColor: Colors.white,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
-                                            ),
-                                          ),
-                                        );
-                                      case ConnectionState.done:
-                                        return Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 5),
-                                              child: SiteDropdown(
-                                                edit: true,
-                                                list: Provider.of<SiteData>(
-                                                        context,
-                                                        listen: true)
-                                                    .sitesList,
-                                                colour: Colors.white,
-                                                icon: Icons.location_on,
-                                                borderColor: Colors.black,
-                                                hint: "الموقع",
-                                                hintColor: Colors.black,
-                                                onChange: (value) async {
-                                                  // print()
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return Container(
+                                    color: Colors.white,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: Colors.white,
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                Colors.orange),
+                                      ),
+                                    ),
+                                  );
+                                case ConnectionState.done:
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: SiteDropdown(
+                                          edit: true,
+                                          list: Provider.of<SiteShiftsData>(
+                                                  context,
+                                                  listen: true)
+                                              .siteShiftList,
+                                          colour: Colors.white,
+                                          icon: Icons.location_on,
+                                          borderColor: Colors.black,
+                                          hint: "الموقع",
+                                          hintColor: Colors.black,
+                                          onChange: (value) async {
+                                            // print()
 
-                                                  _onRefresh();
-                                                  siteId = getSiteName(value);
-                                                  Provider.of<SiteData>(context,
-                                                          listen: false)
-                                                      .setCurrentSiteName(
-                                                          value);
-                                                  print(
-                                                      "site name from monawbat $value");
-
-                                                  Provider.of<ShiftsData>(
-                                                          context,
-                                                          listen: false)
-                                                      .findMatchingShifts(
-                                                          Provider.of<SiteData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .sitesList[siteId]
-                                                              .id,
-                                                          false);
-                                                },
-                                                selectedvalue:
-                                                    Provider.of<SiteData>(
-                                                            context)
-                                                        .sitesList[siteId]
-                                                        .name,
-                                                textColor: Colors.orange,
-                                              ),
-                                            ),
-                                            Expanded(
-                                                child: shiftsData
-                                                            .shiftsBySite[0]
-                                                            .shiftStartTime !=
-                                                        -1
-                                                    ? SmartRefresher(
-                                                        onRefresh: _onRefresh,
-                                                        controller:
-                                                            refreshController,
-                                                        enablePullDown: true,
-                                                        header:
-                                                            WaterDropMaterialHeader(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.orange,
-                                                        ),
-                                                        child: isLoading
-                                                            ? Center(
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  valueColor: new AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                      Colors
-                                                                          .orange),
-                                                                ),
-                                                              )
-                                                            : ListView.builder(
-                                                                itemCount:
-                                                                    shiftsData
-                                                                        .shiftsBySite
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (BuildContext
+                                            siteId = getSiteName(value);
+                                            _onRefresh();
+                                            Provider.of<SiteData>(context,
+                                                    listen: false)
+                                                .setCurrentSiteName(value);
+                                            print(
+                                                "site name from monawbat $value");
+                                            print(Provider.of<SiteShiftsData>(
+                                                    context,
+                                                    listen: false)
+                                                .siteShiftList[siteId]
+                                                .siteId);
+                                            // Provider.of<ShiftsData>(context,
+                                            //         listen: false)
+                                            //     .findMatchingShifts(
+                                            //         Provider.of<SiteShiftsData>(
+                                            //                 context,
+                                            //                 listen: false)
+                                            //             .siteShiftList[siteId]
+                                            //             .siteId,
+                                            //         false);
+                                          },
+                                          selectedvalue:
+                                              Provider.of<SiteShiftsData>(
+                                                      context)
+                                                  .siteShiftList[siteId]
+                                                  .siteName,
+                                          textColor: Colors.orange,
+                                        ),
+                                      ),
+                                      Consumer<ShiftsData>(
+                                        builder: (context, value, child) {
+                                          return Expanded(
+                                              child: value.shiftsList.isNotEmpty
+                                                  ? SmartRefresher(
+                                                      onRefresh: _onRefresh,
+                                                      controller:
+                                                          refreshController,
+                                                      enablePullDown: true,
+                                                      header:
+                                                          WaterDropMaterialHeader(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.orange,
+                                                      ),
+                                                      child: isLoading
+                                                          ? Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                valueColor:
+                                                                    new AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                        Colors
+                                                                            .orange),
+                                                              ),
+                                                            )
+                                                          : ListView.builder(
+                                                              itemCount: value
+                                                                  .shiftsList
+                                                                  .length,
+                                                              itemBuilder:
+                                                                  (BuildContext
+                                                                          context,
+                                                                      int index) {
+                                                                return ShiftTile(
+                                                                  siteName: value
+                                                                      .shiftsList[
+                                                                          index]
+                                                                      .shiftName,
+                                                                  siteIndex:
+                                                                      siteId,
+                                                                  index: index,
+                                                                  shift: value
+                                                                          .shiftsList[
+                                                                      index],
+                                                                  onTapDelete:
+                                                                      () {
+                                                                    var token = Provider.of<UserData>(
                                                                             context,
-                                                                        int index) {
-                                                                  return ShiftTile(
-                                                                    siteName: shiftsData
-                                                                        .shiftsBySite[
-                                                                            index]
-                                                                        .shiftName,
-                                                                    siteIndex:
-                                                                        siteId,
-                                                                    index:
-                                                                        index,
-                                                                    shift: shiftsData
-                                                                            .shiftsBySite[
-                                                                        index],
-                                                                    onTapDelete:
-                                                                        () {
-                                                                      var token = Provider.of<UserData>(
-                                                                              context,
-                                                                              listen: false)
-                                                                          .user
-                                                                          .userToken;
-                                                                      return showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (BuildContext context) {
-                                                                            return RoundedAlert(
-                                                                                onPressed: () async {
-                                                                                  showDialog(
-                                                                                      context: context,
-                                                                                      builder: (BuildContext context) {
-                                                                                        return RoundedLoadingIndicator();
-                                                                                      });
-                                                                                  var msg = await shiftsData.deleteShift(shiftsData.shiftsBySite[index].shiftId, token, index, context);
+                                                                            listen:
+                                                                                false)
+                                                                        .user
+                                                                        .userToken;
+                                                                    return showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return RoundedAlert(
+                                                                              onPressed: () async {
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return RoundedLoadingIndicator();
+                                                                                    });
+                                                                                var msg = await shiftsData.deleteShift(value.shiftsList[index].shiftId, token, index, context);
 
-                                                                                  if (msg == "Success") {
-                                                                                    Navigator.pop(context);
-                                                                                    Fluttertoast.showToast(msg: "تم الحذف بنجاح", toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.green, gravity: ToastGravity.CENTER, textColor: Colors.white, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                                  } else if (msg == "hasData") {
-                                                                                    Fluttertoast.showToast(msg: "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                                  } else if (msg == "failed") {
-                                                                                    Fluttertoast.showToast(msg: "خطأ في اثناء الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                                  } else if (msg == "noInternet") {
-                                                                                    Fluttertoast.showToast(msg: "خطأ في الحذف: لا يوجد اتصال بالانترنت.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                                  } else {
-                                                                                    Fluttertoast.showToast(msg: "خطأ في الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                                  }
+                                                                                if (msg == "Success") {
                                                                                   Navigator.pop(context);
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                title: 'إزالة مناوبة',
-                                                                                content: "هل تريد إزالة${shiftsData.shiftsBySite[index].shiftName} ؟");
-                                                                          });
-                                                                    },
-                                                                    onTapEdit:
-                                                                        () {
-                                                                      print(
-                                                                          "aaaaaaaaa :${shiftsData.shiftsBySite[index].shiftId}");
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                        new MaterialPageRoute(
-                                                                          builder: (context) => AddShiftScreen(
-                                                                              shiftsData.shiftsBySite[index],
-                                                                              index,
-                                                                              true,
-                                                                              siteId),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                }),
-                                                      )
-                                                    : Center(
-                                                        child: Container(
-                                                          height: 50,
-                                                          child: AutoSizeText(
-                                                            "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
-                                                            maxLines: 1,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                height: 2,
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
-                                                          ),
+                                                                                  Fluttertoast.showToast(msg: "تم الحذف بنجاح", toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.green, gravity: ToastGravity.CENTER, textColor: Colors.white, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                } else if (msg == "hasData") {
+                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                } else if (msg == "failed") {
+                                                                                  Fluttertoast.showToast(msg: "خطأ في اثناء الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                } else if (msg == "noInternet") {
+                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف: لا يوجد اتصال بالانترنت.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                } else {
+                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                }
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              title: 'إزالة مناوبة',
+                                                                              content: "هل تريد إزالة${value.shiftsList[index].shiftName} ؟");
+                                                                        });
+                                                                  },
+                                                                  onTapEdit:
+                                                                      () {
+                                                                    print(
+                                                                        "aaaaaaaaa :${value.shiftsList[index].shiftId}");
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                      new MaterialPageRoute(
+                                                                        builder: (context) => AddShiftScreen(
+                                                                            value.shiftsList[index],
+                                                                            index,
+                                                                            true,
+                                                                            siteId),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              }),
+                                                    )
+                                                  : Center(
+                                                      child: Container(
+                                                        height: 50,
+                                                        child: AutoSizeText(
+                                                          "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
+                                                          maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              height: 2,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(16,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
                                                         ),
-                                                      )),
-                                          ],
-                                        );
-                                      default:
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            backgroundColor: Colors.white,
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
-                                          ),
-                                        );
-                                    }
-                                  });
+                                                      ),
+                                                    ));
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                default:
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              Colors.orange),
+                                    ),
+                                  );
+                              }
                             }),
                       ),
                     ],
@@ -480,10 +477,6 @@ class ShiftTile extends StatefulWidget {
 
 class _ShiftTileState extends State<ShiftTile> {
   int siteId;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   String amPmChanger(int intTime) {
     int hours = (intTime ~/ 100);
@@ -558,29 +551,24 @@ class _ShiftTileState extends State<ShiftTile> {
                               siteProv.setDropDownShift(
                                   widget.index); //الموقع علي حسب ال اندكس اللي
                               siteProv.setSiteValue(widget.siteName);
-                              siteProv.fillCurrentShiftID(
-                                  Provider.of<ShiftsData>(context,
-                                          listen: false)
-                                      .shiftsBySite[widget.index]
-                                      .shiftId);
-                              siteProv.setDropDownShift(widget.index + 1);
+                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
                               siteProv.setDropDownIndex(widget.siteIndex);
-                              siteProv.fillCurrentShiftID(
-                                  Provider.of<ShiftsData>(context,
-                                          listen: false)
-                                      .shiftsBySite[widget.index]
-                                      .shiftId);
+                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
 
                               print("finding matching shifts");
-                              shiftProv.findMatchingShifts(
-                                  siteProv.sitesList[widget.siteIndex].id,
-                                  true);
-                              print("siteIndex ${widget.siteIndex}");
+
+                              var index = getSiteName(siteProv.currentSiteName);
+
+                              Provider.of<SiteShiftsData>(context,
+                                      listen: false)
+                                  .getShiftsList(Provider.of<SiteShiftsData>(
+                                          context,
+                                          listen: false)
+                                      .siteShiftList[index]
+                                      .siteName);
                               print(widget.index);
-                              print(shiftProv
-                                  .shiftsBySite[widget.index + 1].shiftName);
-                              // print(siteProv.sitesList[widget.siteIndex].name);
-                              // var index = getSiteName(siteProv.currentSiteName);
+                              siteProv.setDropDownShift(
+                                  widget.index); //+1 lw feh all shifts
 
                               // print(siteProv.sitesList[index].name);
                               // shiftProv.findMatchingShifts(siteProv.sitesList[0].name, ddallshiftsBool)
@@ -589,8 +577,7 @@ class _ShiftTileState extends State<ShiftTile> {
                                   builder: (context) => UsersScreen(
                                       widget.siteIndex + 1,
                                       true,
-                                      shiftProv.shiftsBySite[widget.index + 1]
-                                          .shiftName),
+                                      widget.shift.shiftName),
                                 ),
                               );
                             },
@@ -627,10 +614,11 @@ class _ShiftTileState extends State<ShiftTile> {
   }
 
   int getSiteName(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
+      if (siteName == list[i].siteName) {
         return i;
       }
     }
@@ -694,9 +682,10 @@ class _ShiftTileState extends State<ShiftTile> {
                                     children: [
                                       UserDataField(
                                         icon: Icons.location_on,
-                                        text: Provider.of<SiteData>(context)
-                                            .sitesList[widget.siteIndex]
-                                            .name,
+                                        text:
+                                            Provider.of<SiteShiftsData>(context)
+                                                .siteShiftList[widget.siteIndex]
+                                                .siteName,
                                       ),
                                       SizedBox(
                                         height: 10.0.h,

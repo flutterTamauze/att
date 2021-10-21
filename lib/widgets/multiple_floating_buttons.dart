@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -16,12 +19,14 @@ class MultipleFloatingButtons extends StatelessWidget {
   final String mainTitle;
   final IconData mainIconData;
   final int siteId;
+  final int shiftIndex;
   MultipleFloatingButtons(
       {this.comingFromShifts,
       this.shiftName,
       @required this.mainIconData,
       @required this.mainTitle,
-      this.siteId});
+      this.siteId,
+      this.shiftIndex});
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -45,11 +50,32 @@ class MultipleFloatingButtons extends StatelessWidget {
                 onTap: () {
                   switch (mainTitle) {
                     case "إضافة مستخدم":
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddUserScreen(Member(), 0,
-                                  false, "", "", comingFromShifts, shiftName)));
+                      if (Provider.of<SiteShiftsData>(context, listen: false)
+                              .shifts
+                              .isEmpty &&
+                          Provider.of<SiteData>(context, listen: false)
+                                  .siteValue !=
+                              "كل المواقع") {
+                        Fluttertoast.showToast(
+                            backgroundColor: Colors.red,
+                            msg:
+                                "لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا",
+                            gravity: ToastGravity.CENTER);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddUserScreen(
+                                      Member(),
+                                      0,
+                                      false,
+                                      "",
+                                      "",
+                                      comingFromShifts,
+                                      shiftName,
+                                    )));
+                      }
+
                       break;
 
                     case "إضافة موقع":

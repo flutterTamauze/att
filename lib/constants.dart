@@ -27,9 +27,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 17);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 19);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 17);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 19);
 Future<bool> onWillPop() {
   DateTime now = DateTime.now();
 
@@ -190,6 +190,11 @@ const kTextFieldDecorationWhite = InputDecoration(
   disabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Color(0xffD7D7D7), width: 1.0),
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Color(0xffD7D7D7),
+    ),
   ),
 //  contentPadding: EdgeInsets.symmetric(),
   border: OutlineInputBorder(

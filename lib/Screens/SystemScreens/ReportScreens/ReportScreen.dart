@@ -9,7 +9,7 @@ import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.d
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -85,7 +85,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
               await Provider.of<MemberData>(context, listen: false)
                   .getAllCompanyMember(-1, comProvider.com.id,
-                      userProvider.user.userToken, context);
+                      userProvider.user.userToken, context, -1);
               Navigator.pop(context);
             }
             Navigator.of(context).push(

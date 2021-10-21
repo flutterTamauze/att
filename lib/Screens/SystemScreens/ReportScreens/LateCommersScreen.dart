@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
@@ -86,8 +87,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       });
     } else {
       if (memProv.membersList.isEmpty) {
-        await memProv.getAllCompanyMember(
-            siteId, comProvider.com.id, userProvider.user.userToken, context);
+        await memProv.getAllCompanyMember(siteId, comProvider.com.id,
+            userProvider.user.userToken, context, -1);
       }
       if (siteProv.sitesList.isEmpty) {
         await siteProv
@@ -100,7 +101,9 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
           siteID = siteProv.sitesList[siteIndex].id;
         });
       } else {
-        siteID = siteProv.sitesList[siteIndex].id;
+        siteID = Provider.of<SiteShiftsData>(context, listen: false)
+            .siteShiftList[siteIndex]
+            .siteId;
       }
     }
     await Provider.of<ReportsData>(context, listen: false).getLateAbsenceReport(
@@ -112,10 +115,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   }
 
   int getSiteId(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     int index = list.length;
     for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
+      if (siteName == list[i].siteName) {
         return i;
       }
     }
@@ -194,11 +198,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                   2
                                                               ? siteData.name
                                                               : Provider.of<
-                                                                          SiteData>(
+                                                                          SiteShiftsData>(
                                                                       context)
-                                                                  .sitesList[
+                                                                  .siteShiftList[
                                                                       siteIdIndex]
-                                                                  .name,
+                                                                  .siteName,
                                                         )
                                                   : Container()
                                               : Container();
@@ -302,13 +306,13 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                 listen: false)
                                                             .getLateAbsenceReport(
                                                                 user.userToken,
-                                                                Provider.of<SiteData>(
+                                                                Provider.of<SiteShiftsData>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                    .sitesList[
+                                                                    .siteShiftList[
                                                                         siteIdIndex]
-                                                                    .id,
+                                                                    .siteId,
                                                                 dateFromString,
                                                                 dateToString,
                                                                 context);
@@ -374,9 +378,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                     context, 330),
                                                 child: SiteDropdown(
                                                   edit: true,
-                                                  list: Provider.of<SiteData>(
+                                                  list: Provider.of<
+                                                              SiteShiftsData>(
                                                           context)
-                                                      .sitesList,
+                                                      .siteShiftList,
                                                   colour: Colors.white,
                                                   icon: Icons.location_on,
                                                   borderColor: Colors.black,
@@ -387,19 +392,19 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                     siteIdIndex =
                                                         getSiteId(value);
                                                     if (siteId !=
-                                                        Provider.of<SiteData>(
+                                                        Provider.of<SiteShiftsData>(
                                                                 context,
                                                                 listen: false)
-                                                            .sitesList[
+                                                            .siteShiftList[
                                                                 siteIdIndex]
-                                                            .id) {
-                                                      siteId =
-                                                          Provider.of<SiteData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .sitesList[
-                                                                  siteIdIndex]
-                                                              .id;
+                                                            .siteId) {
+                                                      siteId = Provider.of<
+                                                                  SiteShiftsData>(
+                                                              context,
+                                                              listen: false)
+                                                          .siteShiftList[
+                                                              siteIdIndex]
+                                                          .siteId;
 
                                                       var userToken =
                                                           Provider.of<UserData>(
@@ -423,9 +428,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                     print(value);
                                                   },
                                                   selectedvalue: Provider.of<
-                                                          SiteData>(context)
-                                                      .sitesList[siteIdIndex]
-                                                      .name,
+                                                              SiteShiftsData>(
+                                                          context)
+                                                      .siteShiftList[
+                                                          siteIdIndex]
+                                                      .siteName,
                                                   textColor: Colors.orange,
                                                 ),
                                               )

@@ -16,8 +16,9 @@ import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/intro.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
-import 'package:qr_users/services/MemberData.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -303,9 +304,9 @@ class DrawerI extends StatelessWidget {
                                     Provider.of<ShiftsData>(context,
                                             listen: false)
                                         .shiftsList = [];
-                                    Provider.of<ShiftsData>(context,
+                                    Provider.of<SiteShiftsData>(context,
                                             listen: false)
-                                        .shiftsBySite = [];
+                                        .shifts = [];
 
                                     Phoenix.rebirth(context);
                                     // Navigator.of(context).pushAndRemoveUntil(
