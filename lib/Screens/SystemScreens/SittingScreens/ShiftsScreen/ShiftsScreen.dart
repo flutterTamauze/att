@@ -561,14 +561,15 @@ class _ShiftTileState extends State<ShiftTile> {
 
                               Provider.of<SiteShiftsData>(context,
                                       listen: false)
-                                  .getShiftsList(Provider.of<SiteShiftsData>(
-                                          context,
-                                          listen: false)
-                                      .siteShiftList[index]
-                                      .siteName);
+                                  .getShiftsList(
+                                      Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .siteShiftList[index]
+                                          .siteName,
+                                      false);
                               print(widget.index);
                               siteProv.setDropDownShift(
-                                  widget.index); //+1 lw feh all shifts
+                                  widget.index + 1); //+1 lw feh all shifts
 
                               // print(siteProv.sitesList[index].name);
                               // shiftProv.findMatchingShifts(siteProv.sitesList[0].name, ddallshiftsBool)

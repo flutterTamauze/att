@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -17,6 +18,7 @@ import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class RoundedSearchBar extends StatelessWidget {
@@ -109,11 +111,34 @@ class RoundedSearchBar extends StatelessWidget {
                                                 });
 
                                                 holder = x.indexOf(val);
+                                                print(shiftData
+                                                    .shifts[holder].shiftId);
+                                                if (shiftData.shifts[holder]
+                                                        .shiftId ==
+                                                    -100) {
+                                                  Provider.of<MemberData>(
+                                                          context,
+                                                          listen: false)
+                                                      .bySitePageIndex = 0;
+                                                  Provider.of<MemberData>(
+                                                          context,
+                                                          listen: false)
+                                                      .keepRetriving = true;
+                                                }
                                                 Provider.of<MemberData>(context,
                                                         listen: false)
                                                     .getAllCompanyMember(
-                                                        4,
-                                                        5,
+                                                        Provider.of<SiteShiftsData>(
+                                                                context,
+                                                                listen: false)
+                                                            .siteShiftList[prov
+                                                                .dropDownSitesIndex]
+                                                            .siteId,
+                                                        Provider.of<CompanyData>(
+                                                                context,
+                                                                listen: false)
+                                                            .com
+                                                            .id,
                                                         Provider.of<UserData>(
                                                                 context,
                                                                 listen: false)
@@ -121,7 +146,12 @@ class RoundedSearchBar extends StatelessWidget {
                                                             .userToken,
                                                         context,
                                                         shiftData.shifts[holder]
-                                                            .shiftId);
+                                                                    .shiftId ==
+                                                                -100
+                                                            ? -1
+                                                            : shiftData
+                                                                .shifts[holder]
+                                                                .shiftId);
                                                 prov.setDropDownShift(holder);
                                               }
                                             },
@@ -208,10 +238,11 @@ class RoundedSearchBar extends StatelessWidget {
                                                 ))
                                             .toList(),
                                         onChanged: (v) async {
-                                          prov.setDropDownShift(0);
                                           Provider.of<SiteShiftsData>(context,
                                                   listen: false)
-                                              .getShiftsList(v);
+                                              .getShiftsList(v, true);
+                                          prov.setDropDownShift(0);
+
                                           dropdownFun(v);
                                           if (v != "كل المواقع") {
                                             prov.setDropDownIndex(prov

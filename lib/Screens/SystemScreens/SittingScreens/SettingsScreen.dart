@@ -12,6 +12,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/Shift
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/SiteAdminShiftScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SitesScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -151,11 +152,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     listen: false);
                                 var shiftProv = Provider.of<ShiftsData>(context,
                                     listen: false);
-                                await Provider.of<ShiftsData>(context,
+                                Provider.of<SiteShiftsData>(context,
                                         listen: false)
-                                    .findMatchingShifts(
-                                        userDataProvider.user.userSiteId,
-                                        false);
+                                    .getShiftsList(
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[0]
+                                            .siteName,
+                                        true);
                                 siteProv.setDropDownShift(
                                     0); //الموقع علي حسب ال اندكس اللي
                                 siteProv.setSiteValue(Provider.of<ShiftsData>(

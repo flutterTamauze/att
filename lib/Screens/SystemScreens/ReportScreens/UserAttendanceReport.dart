@@ -54,7 +54,7 @@ class _UserAttendanceReportScreenState
 
   TextEditingController _nameController = TextEditingController();
   AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Member>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<SearchMember>> key = new GlobalKey();
 
   DateTime toDate;
   DateTime fromDate;
@@ -80,7 +80,7 @@ class _UserAttendanceReportScreenState
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
-
+    Provider.of<MemberData>(context, listen: false).loadingSearch = false;
     if (fromDate.isBefore(companyDate)) {
       fromDate = companyDate;
     }
@@ -88,7 +88,7 @@ class _UserAttendanceReportScreenState
       fromDate = widget.userFromDate;
       toDate = widget.userToDate;
     }
-
+    FocusNode focusNode = FocusNode();
     yesterday = DateTime(now.year, now.month, now.day - 1);
 
     dateFromString = apiFormatter.format(fromDate);
@@ -109,20 +109,20 @@ class _UserAttendanceReportScreenState
     }
   }
 
-  searchInList(String value, int siteId, int companyId) {
+  searchInList(String value, int siteId, int companyId) async {
     if (value.isNotEmpty) {
       print(companyId);
-      Provider.of<MemberData>(context, listen: false).searchUsersList(
+      await Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
           siteId,
           companyId);
+      focusNode.requestFocus();
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();
     }
   }
 
-  ScrollController _scrollController = ScrollController();
   getMembersData() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
@@ -131,8 +131,8 @@ class _UserAttendanceReportScreenState
       siteId = userProvider.user.userSiteId;
       siteData = await Provider.of<SiteData>(context, listen: false)
           .getSpecificSite(siteId, userProvider.user.userToken, context);
-      await Provider.of<MemberData>(context, listen: false)
-          .getAllSiteMembers(siteId, userProvider.user.userToken, context);
+      // await Provider.of<MemberData>(context, listen: false)
+      //     .getAllSiteMembers(siteId, userProvider.user.userToken, context);
     } else {
       if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
         await Provider.of<SiteData>(context, listen: false)
@@ -149,8 +149,8 @@ class _UserAttendanceReportScreenState
           .siteShiftList[0]
           .siteId;
 
-      await Provider.of<MemberData>(context, listen: false)
-          .getAllSiteMembers(siteId, userProvider.user.userToken, context);
+      // await Provider.of<MemberData>(context, listen: false)
+      //     .getAllSiteMembers(siteId, userProvider.user.userToken, context);
     }
   }
 
@@ -186,7 +186,9 @@ class _UserAttendanceReportScreenState
           child: GestureDetector(
             onTap: () {
               print(_nameController.text);
-
+              print(Provider.of<MemberData>(context, listen: false)
+                  .userSearchMember[0]
+                  .username);
               _nameController.text == ""
                   ? FocusScope.of(context).unfocus()
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -258,526 +260,468 @@ class _UserAttendanceReportScreenState
                           ),
                         ),
                         Expanded(
-                          child: FutureBuilder(
-                              future:
-                                  Provider.of<MemberData>(context, listen: true)
-                                      .futureListener,
-                              builder: (context, snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.waiting:
-                                    return Container(
-                                      color: Colors.white,
-                                      child: Center(
-                                        child: Platform.isIOS
-                                            ? CupertinoActivityIndicator(
-                                                radius: 20,
-                                              )
-                                            : CircularProgressIndicator(
-                                                backgroundColor: Colors.white,
-                                                valueColor:
-                                                    new AlwaysStoppedAnimation<
-                                                        Color>(Colors.orange),
-                                              ),
-                                      ),
-                                    );
-                                  case ConnectionState.done:
-                                    return Column(
-                                      children: [
-                                        Container(
-                                            child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Theme(
-                                              data: clockTheme1,
-                                              child: Builder(
-                                                builder: (context) {
-                                                  return InkWell(
-                                                      onTap: () async {
-                                                        final List<DateTime>
-                                                            picked =
-                                                            await DateRagePicker.showDatePicker(
-                                                                context:
-                                                                    context,
-                                                                initialFirstDate:
-                                                                    fromDate,
-                                                                initialLastDate:
-                                                                    toDate,
-                                                                firstDate: Provider.of<
-                                                                            CompanyData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .com
-                                                                    .createdOn,
-                                                                lastDate:
-                                                                    yesterday);
-                                                        var newString = "";
-                                                        setState(() {
-                                                          fromDate =
-                                                              picked.first;
-                                                          toDate = picked.last;
+                            child: Column(
+                          children: [
+                            Container(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Theme(
+                                  data: clockTheme1,
+                                  child: Builder(
+                                    builder: (context) {
+                                      return InkWell(
+                                          onTap: () async {
+                                            final List<DateTime> picked =
+                                                await DateRagePicker
+                                                    .showDatePicker(
+                                                        context: context,
+                                                        initialFirstDate:
+                                                            fromDate,
+                                                        initialLastDate: toDate,
+                                                        firstDate: Provider.of<
+                                                                    CompanyData>(
+                                                                context,
+                                                                listen: false)
+                                                            .com
+                                                            .createdOn,
+                                                        lastDate: yesterday);
+                                            var newString = "";
+                                            setState(() {
+                                              fromDate = picked.first;
+                                              toDate = picked.last;
 
-                                                          String fromText =
-                                                              " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                          String toText =
-                                                              " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                                          newString =
-                                                              "$fromText $toText";
-                                                        });
+                                              String fromText =
+                                                  " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                              String toText =
+                                                  " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                              newString = "$fromText $toText";
+                                            });
 
-                                                        if (_dateController
-                                                                .text !=
-                                                            newString) {
-                                                          _dateController.text =
-                                                              newString;
+                                            if (_dateController.text !=
+                                                newString) {
+                                              _dateController.text = newString;
 
-                                                          dateFromString =
-                                                              apiFormatter
-                                                                  .format(
-                                                                      fromDate);
-                                                          dateToString =
-                                                              apiFormatter
-                                                                  .format(
-                                                                      toDate);
+                                              dateFromString =
+                                                  apiFormatter.format(fromDate);
+                                              dateToString =
+                                                  apiFormatter.format(toDate);
 
-                                                          if (_nameController
-                                                                      .text !=
-                                                                  "" ||
-                                                              Provider.of<UserData>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .user
-                                                                      .userType ==
-                                                                  2) {
-                                                            await Provider.of<
-                                                                        ReportsData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .getUserReportUnits(
-                                                                    userToken
-                                                                        .user
-                                                                        .userToken,
-                                                                    selectedId,
-                                                                    dateFromString,
-                                                                    dateToString,
-                                                                    context);
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Directionality(
-                                                        textDirection: ui
-                                                            .TextDirection.rtl,
-                                                        child: Container(
-                                                          width: 330.w,
-                                                          child: IgnorePointer(
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              controller:
-                                                                  _dateController,
-                                                              decoration: kTextFieldDecorationFromTO
-                                                                  .copyWith(
-                                                                      hintText:
-                                                                          'المدة من / إلى',
-                                                                      prefixIcon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .calendar_today_rounded,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ));
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    3 ||
-                                                Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    4
-                                            ? Container(
-                                                width: 330.w,
-                                                child: SiteDropdown(
-                                                  edit: true,
-                                                  list: Provider.of<
-                                                              SiteShiftsData>(
-                                                          context)
-                                                      .siteShiftList,
-                                                  colour: Colors.white,
-                                                  icon: Icons.location_on,
-                                                  borderColor: Colors.black,
-                                                  hint: "الموقع",
-                                                  hintColor: Colors.black,
-                                                  onChange: (value) {
-                                                    // print()
-
-                                                    siteIdIndex =
-                                                        getSiteId(value);
-                                                    if (siteId !=
-                                                        siteProv
-                                                            .siteShiftList[
-                                                                siteIdIndex]
-                                                            .siteId) {
-                                                      _nameController.text = "";
-                                                      siteId = siteProv
-                                                          .siteShiftList[
-                                                              siteIdIndex]
-                                                          .siteId;
-
-                                                      Provider.of<MemberData>(
-                                                              context,
+                                              if (_nameController.text != "" ||
+                                                  Provider.of<UserData>(context,
                                                               listen: false)
-                                                          .getAllSiteMembers(
-                                                              siteId,
-                                                              Provider.of<UserData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .user
-                                                                  .userToken,
-                                                              context);
-                                                      setState(() {});
-                                                    }
-                                                    print(value);
-                                                  },
-                                                  selectedvalue: siteProv
-                                                      .siteShiftList[
-                                                          siteIdIndex]
-                                                      .siteName,
-                                                  textColor: Colors.orange,
-                                                ),
-                                              )
-                                            : Container(),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        Form(
-                                          key: _formKey,
+                                                          .user
+                                                          .userType ==
+                                                      2) {
+                                                await Provider.of<ReportsData>(
+                                                        context,
+                                                        listen: false)
+                                                    .getUserReportUnits(
+                                                        userToken
+                                                            .user.userToken,
+                                                        selectedId,
+                                                        dateFromString,
+                                                        dateToString,
+                                                        context);
+                                              }
+                                            }
+                                          },
                                           child: Directionality(
                                             textDirection: ui.TextDirection.rtl,
                                             child: Container(
-                                                height: 44.0.h,
-                                                width: 320.w,
-                                                child: Center(
-                                                  child: TextFormField(
-                                                    validator: (value) {
-                                                      if (value.length < 3) {
-                                                        return "يجب ان لا يقل البحث عن 3 احرف";
-                                                      }
-                                                      return null;
-                                                    },
-                                                    controller: _nameController,
-                                                    style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true)),
-                                                    decoration: kTextFieldDecorationWhite
-                                                        .copyWith(
-                                                            hintText:
-                                                                'اسم المستخدم',
-                                                            hintStyle:
-                                                                TextStyle(
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                            fillColor: Color(
-                                                                0xFFE9E9E9),
-                                                            contentPadding:
-                                                                EdgeInsets.only(
-                                                                    left: 11,
-                                                                    right: 13,
-                                                                    top: 20,
-                                                                    bottom: 14),
-                                                            errorStyle:
-                                                                TextStyle(
-                                                              fontSize: 13,
-                                                              height: 0.7,
-                                                            ),
-                                                            suffixIcon:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                print(
-                                                                    _nameController
-                                                                        .text);
-                                                                if (!_formKey
-                                                                    .currentState
-                                                                    .validate()) {
-                                                                  return;
-                                                                } else {
-                                                                  setState(() {
-                                                                    searchInList(
-                                                                        _nameController
-                                                                            .text,
-                                                                        siteId,
-                                                                        Provider.of<CompanyData>(context,
-                                                                                listen: false)
-                                                                            .com
-                                                                            .id);
-                                                                  });
-                                                                }
-                                                              },
-                                                              child: Icon(
-                                                                Icons.search,
+                                              width: 330.w,
+                                              child: IgnorePointer(
+                                                child: TextFormField(
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  controller: _dateController,
+                                                  decoration:
+                                                      kTextFieldDecorationFromTO
+                                                          .copyWith(
+                                                              hintText:
+                                                                  'المدة من / إلى',
+                                                              prefixIcon: Icon(
+                                                                Icons
+                                                                    .calendar_today_rounded,
                                                                 color: Colors
                                                                     .orange,
-                                                              ),
-                                                            ),
-                                                            errorMaxLines: 2),
-                                                  ),
-                                                )),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        _nameController.text != ""
-                                            ? Expanded(
-                                                child: FutureBuilder(
-                                                    future: Provider.of<
-                                                                ReportsData>(
-                                                            context)
-                                                        .futureListener,
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      switch (snapshot
-                                                          .connectionState) {
-                                                        case ConnectionState
-                                                            .waiting:
-                                                          return Container(
-                                                            color: Colors.white,
-                                                            child: Center(
-                                                              child: Platform
-                                                                      .isIOS
-                                                                  ? CupertinoActivityIndicator()
-                                                                  : CircularProgressIndicator(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      valueColor: new AlwaysStoppedAnimation<
-                                                                              Color>(
-                                                                          Colors
-                                                                              .orange),
-                                                                    ),
-                                                            ),
-                                                          );
-                                                        case ConnectionState
-                                                            .done:
-                                                          return reportsData
-                                                                      .userAttendanceReport
-                                                                      .isDayOff !=
-                                                                  1
-                                                              ? _nameController
-                                                                          .text ==
-                                                                      ""
-                                                                  ? reportsData
-                                                                              .userAttendanceReport
-                                                                              .userAttendListUnits
-                                                                              .length !=
-                                                                          0
-                                                                      ? Container(
-                                                                          color:
-                                                                              Colors.white,
-                                                                          child: Directionality(
-                                                                              textDirection: ui.TextDirection.rtl,
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Divider(thickness: 1, color: Colors.orange[600]),
-                                                                                  UserReportTableHeader(),
-                                                                                  Divider(thickness: 1, color: Colors.orange[600]),
-                                                                                  Expanded(
-                                                                                      child: Container(
-                                                                                          child: snapshot.data == "user created after period"
-                                                                                              ? Container(
-                                                                                                  child: Center(
-                                                                                                    child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                                                  ),
-                                                                                                )
-                                                                                              : ListView.builder(
-                                                                                                  itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
-                                                                                                  itemBuilder: (BuildContext context, int index) {
-                                                                                                    return UserReportDataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
-                                                                                                  }))),
-                                                                                  UserReprotDataTableEnd(reportsData.userAttendanceReport)
-                                                                                ],
-                                                                              )),
-                                                                        )
-                                                                      : Row(
-                                                                          children: [
-                                                                            Expanded(
-                                                                                child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                Container(
-                                                                                  height: 20,
-                                                                                  child: AutoSizeText(
-                                                                                    "لا يوجد تسجيلات بهذا المستخدم",
-                                                                                    maxLines: 1,
-                                                                                    style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true), fontWeight: FontWeight.bold),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            )),
-                                                                          ],
-                                                                        )
-                                                                  : Consumer<
-                                                                      MemberData>(
-                                                                      builder: (context,
-                                                                          value,
-                                                                          child) {
-                                                                        return Container(
-                                                                            alignment:
-                                                                                Alignment.topCenter,
-                                                                            width: double.infinity,
-                                                                            child: ListView.builder(
-                                                                                itemCount: value.userSearchMember.length,
-                                                                                itemBuilder: (BuildContext context, int index) {
-                                                                                  return Directionality(
-                                                                                    textDirection: ui.TextDirection.rtl,
-                                                                                    child: InkWell(
-                                                                                      onTap: () async {
-                                                                                        if (_nameController.text != value.userSearchMember[index].username) {
-                                                                                          setState(() {
-                                                                                            _nameController.text = "";
-                                                                                          });
-                                                                                          selectedId = value.singleMember.id;
+                                                              )),
+                                                ),
+                                              ),
+                                            ),
+                                          ));
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Provider.of<UserData>(context, listen: false)
+                                            .user
+                                            .userType ==
+                                        3 ||
+                                    Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userType ==
+                                        4
+                                ? Container(
+                                    width: 330.w,
+                                    child: SiteDropdown(
+                                      edit: true,
+                                      list: Provider.of<SiteShiftsData>(context)
+                                          .siteShiftList,
+                                      colour: Colors.white,
+                                      icon: Icons.location_on,
+                                      borderColor: Colors.black,
+                                      hint: "الموقع",
+                                      hintColor: Colors.black,
+                                      onChange: (value) {
+                                        // print()
 
-                                                                                          await Provider.of<ReportsData>(context, listen: false).getUserReportUnits(userToken.user.userToken, value.userSearchMember[index].id, dateFromString, dateToString, context);
-                                                                                        }
-                                                                                      },
-                                                                                      child: Card(
-                                                                                        elevation: 2,
-                                                                                        child: Container(
-                                                                                          alignment: Alignment.centerRight,
-                                                                                          width: double.infinity,
-                                                                                          height: 50.h,
-                                                                                          child: Padding(
-                                                                                            padding: const EdgeInsets.all(10.0),
-                                                                                            child: Text(
-                                                                                              value.userSearchMember[index].username,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  );
-                                                                                }));
-                                                                      },
-                                                                    )
-                                                              : Row(
-                                                                  children: [
-                                                                    Expanded(
-                                                                        child:
-                                                                            Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Container(
-                                                                          height:
-                                                                              20,
-                                                                          child:
-                                                                              AutoSizeText(
-                                                                            "لا يوجد تسجيلات: يوم اجازة",
-                                                                            maxLines:
-                                                                                1,
-                                                                            style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                                                                                fontWeight: FontWeight.bold),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                                  ],
-                                                                );
-                                                        default:
-                                                          return Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              backgroundColor:
-                                                                  Colors.white,
-                                                              valueColor:
-                                                                  new AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                      Colors
-                                                                          .orange),
-                                                            ),
-                                                          );
-                                                      }
-                                                    }),
-                                              )
-                                            : Row(
+                                        siteIdIndex = getSiteId(value);
+                                        if (siteId !=
+                                            siteProv.siteShiftList[siteIdIndex]
+                                                .siteId) {
+                                          _nameController.text = "";
+                                          siteId = siteProv
+                                              .siteShiftList[siteIdIndex]
+                                              .siteId;
+
+                                          Provider.of<MemberData>(context,
+                                                  listen: false)
+                                              .getAllSiteMembers(
+                                                  siteId,
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userToken,
+                                                  context);
+                                          setState(() {});
+                                        }
+                                        print(value);
+                                      },
+                                      selectedvalue: siteProv
+                                          .siteShiftList[siteIdIndex].siteName,
+                                      textColor: Colors.orange,
+                                    ),
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Container(
+                              width: 330.w,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Provider.of<MemberData>(context)
+                                        .loadingSearch
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                        color: Colors.orange,
+                                      ))
+                                    : searchTextField =
+                                        AutoCompleteTextField<SearchMember>(
+                                        key: key,
+                                        clearOnSubmit: false,
+                                        focusNode: focusNode,
+                                        controller: _nameController,
+                                        suggestions:
+                                            Provider.of<MemberData>(context)
+                                                .userSearchMember,
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                        decoration:
+                                            kTextFieldDecorationFromTO.copyWith(
+                                                hintStyle: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        16,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.grey.shade700,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                hintText: 'الأسم',
+                                                suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      searchInList(
+                                                          _nameController.text,
+                                                          siteId,
+                                                          Provider.of<CompanyData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .com
+                                                              .id);
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    color: Colors.orange,
+                                                  ),
+                                                ),
+                                                prefixIcon: Icon(
+                                                  Icons.person,
+                                                  color: Colors.orange,
+                                                )),
+                                        itemFilter: (item, query) {
+                                          return item.username
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase());
+                                        },
+                                        itemSorter: (a, b) {
+                                          return a.username
+                                              .compareTo(b.username);
+                                        },
+                                        itemSubmitted: (item) async {
+                                          if (_nameController.text !=
+                                              item.username) {
+                                            setState(() {
+                                              searchTextField
+                                                  .textField
+                                                  .controller
+                                                  .text = item.username;
+                                            });
+                                            selectedId = item.id;
+
+                                            await Provider.of<ReportsData>(
+                                                    context,
+                                                    listen: false)
+                                                .getUserReportUnits(
+                                                    userToken.user.userToken,
+                                                    item.id,
+                                                    dateFromString,
+                                                    dateToString,
+                                                    context);
+                                          }
+                                        },
+                                        itemBuilder: (context, item) {
+                                          // ui for the autocompelete row
+                                          return Directionality(
+                                            textDirection: ui.TextDirection.rtl,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                right: 10,
+                                                bottom: 5,
+                                              ),
+                                              child: Column(
                                                 children: [
-                                                  Expanded(
-                                                      child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                  Row(
                                                     children: [
+                                                      SizedBox(
+                                                        width: 10.w,
+                                                      ),
                                                       Container(
                                                         height: 20,
                                                         child: AutoSizeText(
-                                                          "برجاء اختيار اسم مستخدم",
+                                                          item.username,
                                                           maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.right,
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.orange,
                                                               fontSize: ScreenUtil()
                                                                   .setSp(16,
                                                                       allowFontScalingSelf:
                                                                           true),
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold),
+                                                                      .w500),
                                                         ),
                                                       ),
                                                     ],
-                                                  )),
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.grey,
+                                                    thickness: 1,
+                                                  ),
                                                 ],
                                               ),
-                                      ],
-                                    );
-                                  default:
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.orange),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                }
-                              }),
-                        ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            _nameController.text != ""
+                                ? Expanded(
+                                    child: FutureBuilder(
+                                        future:
+                                            Provider.of<ReportsData>(context)
+                                                .futureListener,
+                                        builder: (context, snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.waiting:
+                                              return Container(
+                                                color: Colors.white,
+                                                child: Center(
+                                                  child: Platform.isIOS
+                                                      ? CupertinoActivityIndicator()
+                                                      : CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          valueColor:
+                                                              new AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                  Colors
+                                                                      .orange),
+                                                        ),
+                                                ),
+                                              );
+                                            case ConnectionState.done:
+                                              return reportsData
+                                                          .userAttendanceReport
+                                                          .isDayOff !=
+                                                      1
+                                                  ? reportsData
+                                                              .userAttendanceReport
+                                                              .userAttendListUnits
+                                                              .length !=
+                                                          0
+                                                      ? Container(
+                                                          color: Colors.white,
+                                                          child: Directionality(
+                                                              textDirection: ui
+                                                                  .TextDirection
+                                                                  .rtl,
+                                                              child: Column(
+                                                                children: [
+                                                                  Divider(
+                                                                      thickness:
+                                                                          1,
+                                                                      color: Colors
+                                                                              .orange[
+                                                                          600]),
+                                                                  UserReportTableHeader(),
+                                                                  Divider(
+                                                                      thickness:
+                                                                          1,
+                                                                      color: Colors
+                                                                              .orange[
+                                                                          600]),
+                                                                  Expanded(
+                                                                      child: Container(
+                                                                          child: snapshot.data == "user created after period"
+                                                                              ? Container(
+                                                                                  child: Center(
+                                                                                    child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                  ),
+                                                                                )
+                                                                              : ListView.builder(
+                                                                                  itemCount: reportsData.userAttendanceReport.userAttendListUnits.length,
+                                                                                  itemBuilder: (BuildContext context, int index) {
+                                                                                    return UserReportDataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
+                                                                                  }))),
+                                                                  UserReprotDataTableEnd(
+                                                                      reportsData
+                                                                          .userAttendanceReport)
+                                                                ],
+                                                              )),
+                                                        )
+                                                      : Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  height: 20,
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    "لا يوجد تسجيلات بهذا المستخدم",
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )),
+                                                          ],
+                                                        )
+                                                  : Row(
+                                                      children: [
+                                                        Expanded(
+                                                            child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height: 20,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "لا يوجد تسجيلات: يوم اجازة",
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )),
+                                                      ],
+                                                    );
+                                            default:
+                                              return Container();
+                                          }
+                                        }),
+                                  )
+                                : Row(
+                                    children: [
+                                      Expanded(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 20,
+                                            child: AutoSizeText(
+                                              "برجاء اختيار اسم مستخدم",
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  color: Colors.orange,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                    ],
+                                  ),
+                          ],
+                        ))
                       ],
                     ),
                     Positioned(

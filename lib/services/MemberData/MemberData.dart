@@ -117,6 +117,7 @@ class MemberData with ChangeNotifier {
   int allPageIndex = 0;
   int bySitePageIndex = 0;
   bool keepRetriving = true;
+  bool loadingSearch = false;
   bool loadingShifts = false;
   bool isLoading = false;
   setMmemberList(List<Member> newList) {
@@ -131,6 +132,7 @@ class MemberData with ChangeNotifier {
       siteId = "";
     }
     print(siteId);
+    loadingSearch = true;
     var response = await http.get(
         Uri.parse(
             "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId"),
@@ -149,6 +151,7 @@ class MemberData with ChangeNotifier {
           userSearchMember = memberObjJson
               .map((memberJson) => SearchMember.fromJson(memberJson))
               .toList();
+          loadingSearch = false;
           notifyListeners();
         }
       }

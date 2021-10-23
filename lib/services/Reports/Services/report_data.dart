@@ -282,6 +282,7 @@ class UserAttendanceReportUnit {
 
 class ReportsData with ChangeNotifier {
   Future futureListener;
+  bool isLoading = false;
   DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
@@ -412,6 +413,7 @@ class ReportsData with ChangeNotifier {
       String dateFrom, String dateTo, BuildContext context) async {
     print("UseriD $userId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<UserAttendanceReportUnit> newReportList;
+    isLoading = true;
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
@@ -429,6 +431,7 @@ class ReportsData with ChangeNotifier {
             userToken, userId, dateFrom, dateTo, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
+        isLoading = false;
         print(response.body);
         print("asdnklsfanlsfa0");
         print(decodedRes['data']['totalLateDay']);

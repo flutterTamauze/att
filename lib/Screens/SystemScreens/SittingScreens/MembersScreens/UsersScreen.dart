@@ -76,6 +76,7 @@ class _UsersScreenState extends State<UsersScreen> {
     Provider.of<MemberData>(context, listen: false).allPageIndex = 0;
     Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
     Provider.of<MemberData>(context, listen: false).keepRetriving = true;
+
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {

@@ -1431,7 +1431,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                     widget.prov.setDropDownShift(0);
                                     Provider.of<SiteShiftsData>(context,
                                             listen: false)
-                                        .getShiftsList(v);
+                                        .getShiftsList(v, false);
                                     if (v != "كل المواقع") {
                                       widget.prov.setDropDownIndex(widget
                                               .prov.dropDownSitesStrings

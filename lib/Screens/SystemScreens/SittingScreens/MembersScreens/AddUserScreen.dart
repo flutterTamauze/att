@@ -117,7 +117,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 ? Provider.of<SiteShiftsData>(context, listen: false)
                     .siteShiftList[0]
                     .siteName
-                : widget.shiftNameIncoming);
+                : widget.shiftNameIncoming,
+            false);
         // Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
         //     Provider.of<SiteData>(context, listen: false).sitesList[siteId].id,
         //     false);
@@ -148,7 +149,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
       print("edit screen");
       edit = true;
       Provider.of<SiteShiftsData>(context, listen: false)
-          .getShiftsList(widget.member.siteName);
+          .getShiftsList(widget.member.siteName, false);
 
       shiftIndex = getShiftListIndex(widget.member.shiftId);
       // siteId = getSiteListIndex(shiftIndex);
@@ -163,7 +164,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
       print(widget.comingFromShifts);
       if (!widget.comingFromShifts) {
         Provider.of<SiteShiftsData>(context, listen: false)
-            .getShiftsList(widget.shiftNameIncoming);
+            .getShiftsList(widget.shiftNameIncoming, false);
       }
     }
   }
@@ -643,7 +644,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             siteId = getSiteId(value);
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
-                                                .getShiftsList(value);
+                                                .getShiftsList(value, false);
                                             // Provider.of<ShiftsData>(context,
                                             //         listen: false)
                                             //     .findMatchingShifts(
