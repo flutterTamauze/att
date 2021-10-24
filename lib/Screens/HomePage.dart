@@ -146,19 +146,7 @@ class _HomePageState extends State<HomePage> {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () async {
-                print(Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[0]
-                    .shifts
-                    .length);
-                print(Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[5]
-                    .siteName);
-
-                print(
-                    Provider.of<UserData>(context, listen: false).isSuperAdmin);
-                print(await getDeviceUUID());
-              },
+              onTap: () async {},
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,

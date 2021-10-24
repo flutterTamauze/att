@@ -4,17 +4,22 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/FuturedScheduleShift.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
+import 'AllSiteShiftsData/site_shifts_all.dart';
 import 'Shift.dart';
 import 'ShiftSchedule/ShiftScheduleModel.dart';
+import 'company.dart';
 
 class ShiftsData with ChangeNotifier {
   List<Shift> shiftsList = [];
@@ -242,7 +247,7 @@ class ShiftsData with ChangeNotifier {
     notifyListeners();
     var response = await http.post(
         Uri.parse(
-          "$baseURL/api/ShiftSchedule/Add",
+          "$localURL/api/ShiftSchedule/Add",
         ),
         headers: {
           'Content-type': 'application/json',
@@ -469,7 +474,8 @@ class ShiftsData with ChangeNotifier {
   //   }
   // }
 
-  addShift(Shift shift, String userToken, BuildContext context) async {
+  addShift(
+      Shift shift, String userToken, BuildContext context, int index) async {
     if (await isConnectedToInternet()) {
       try {
         final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
@@ -502,11 +508,7 @@ class ShiftsData with ChangeNotifier {
           await inherit.login(context);
           userToken =
               Provider.of<UserData>(context, listen: false).user.userToken;
-          await addShift(
-            shift,
-            userToken,
-            context,
-          );
+          await addShift(shift, userToken, context, index);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
           print(response.body);
@@ -541,6 +543,18 @@ class ShiftsData with ChangeNotifier {
                 siteID: decodedRes['data']['siteId'] as int);
 
             shiftsList.add(newShift);
+            Provider.of<SiteShiftsData>(context, listen: false)
+                .siteShiftList[index]
+                .shifts
+                .add(Shifts(
+                    shiftName: newShift.shiftName, shiftId: newShift.shiftId));
+
+            await sendFcmMessage(
+                category: "reloadData",
+                message: "data",
+                title: "data incoming",
+                topicName:
+                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==
@@ -570,7 +584,8 @@ class ShiftsData with ChangeNotifier {
     }
   }
 
-  editShift(Shift shift, int id, String usertoken, BuildContext context) async {
+  editShift(Shift shift, int id, String usertoken, BuildContext context,
+      index) async {
     print("Shift ID : ${shift.shiftId}");
     print("Site ID : ${shift.siteID}");
     print("index : $id");
@@ -609,12 +624,7 @@ class ShiftsData with ChangeNotifier {
         await inherit.login(context);
         usertoken =
             Provider.of<UserData>(context, listen: false).user.userToken;
-        await editShift(
-          shift,
-          id,
-          usertoken,
-          context,
-        );
+        await editShift(shift, id, usertoken, context, index);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
         print(response.body);
@@ -651,6 +661,28 @@ class ShiftsData with ChangeNotifier {
 
           shiftsList[shiftsListIndex] = newShift;
           shiftsBySite[id] = newShift;
+          for (int i = 0;
+              i <
+                  Provider.of<SiteShiftsData>(context, listen: false)
+                      .siteShiftList[index]
+                      .shifts
+                      .length;
+              i++) {
+            if (shift.shiftName ==
+                Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[index]
+                    .shifts[i]
+                    .shiftName) {
+              Provider.of<SiteShiftsData>(context, listen: false)
+                  .siteShiftList[index]
+                  .shifts[i]
+                  .shiftName = newShift.shiftName;
+              Provider.of<SiteShiftsData>(context, listen: false)
+                  .siteShiftList[index]
+                  .shifts[i]
+                  .shiftId = newShift.shiftId;
+            }
+          }
           notifyListeners();
 
           return "Success";

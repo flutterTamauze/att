@@ -95,8 +95,8 @@ class MultipleFloatingButtons extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  AddShiftScreen(Shift(), 0, false, siteId)));
+                              builder: (context) => AddShiftScreen(
+                                  Shift(), 0, false, siteId, siteId)));
                       break;
                       ;
                   }

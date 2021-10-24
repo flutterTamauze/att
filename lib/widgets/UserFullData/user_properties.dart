@@ -9,6 +9,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/Ou
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -53,26 +54,29 @@ class _UserPropertiesState extends State<UserProperties> {
     return "";
   }
 
-  int getShiftid(String shiftName) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+//   int getShiftid(String shiftName) {
+//     var list =
+//         Provider.of<SiteShiftsData>(context, listen: false).allCompanyShifts;
 
-    List<Shift> currentShift =
-        list.where((element) => element.shiftName == shiftName).toList();
+//  for (int i=0;i<list.length;i++)
+//  {
+//    if (list[0].)
+//  }
 
-    return currentShift[0].shiftId;
-  }
+//   }
 
   int getsiteIDbyName(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    List<Site> currentSite =
-        list.where((element) => element.name == siteName).toList();
-    return currentSite[0].id;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
+    List<SiteShiftsModel> currentSite =
+        list.where((element) => element.siteName == siteName).toList();
+    return currentSite[0].siteId;
   }
 
   shiftScheduling() async {
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvider = Provider.of<CompanyData>(context, listen: false);
-    String shiftName = getShiftName();
+    // String shiftName = getShiftName();
     print("index");
     print(widget.siteIndex);
     await Provider.of<DaysOffData>(context, listen: false)
@@ -81,12 +85,10 @@ class _UserPropertiesState extends State<UserProperties> {
       await Provider.of<DaysOffData>(context, listen: false).setSiteAndShift(
           //hngeb al data de mn al back kolha
           i,
-          Provider.of<SiteShiftsData>(context, listen: false)
-              .siteShiftList[widget.siteIndex]
-              .siteName, //default site name
-          shiftName,
-          getShiftid(shiftName),
-          getsiteIDbyShiftId(widget.user.shiftId));
+          widget.user.siteName, //default site name
+          widget.user.shiftName,
+          widget.user.shiftId,
+          widget.user.siteId);
     }
     Navigator.pop(context);
 
@@ -320,6 +322,18 @@ class _UserPropertiesState extends State<UserProperties> {
                                 await Provider.of<SiteData>(context,
                                         listen: false)
                                     .setDropDownIndex(0);
+                                Provider.of<SiteShiftsData>(context,
+                                        listen: false)
+                                    .getShiftsList(
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[
+                                                Provider.of<SiteData>(context,
+                                                        listen: false)
+                                                    .dropDownSitesIndex]
+                                            .siteName,
+                                        false);
+
                                 // await Provider.of<ShiftsData>(context,
                                 //         listen: false)
                                 //     .findMatchingShifts(
@@ -361,26 +375,67 @@ class _UserPropertiesState extends State<UserProperties> {
                                   scheduleList.friShift.shiftName
                                 ];
                                 for (int i = 0; i < 7; i++) {
-                                  await Provider.of<DaysOffData>(context, listen: false)
+                                  await Provider.of<DaysOffData>(context,
+                                          listen: false)
                                       .setSiteAndShift(
-                                          i,
-                                          Provider.of<ShiftsData>(context, listen: false)
-                                              .sitesSchedules[i],
-                                          Provider.of<ShiftsData>(context,
-                                                  listen: false)
-                                              .shiftSchedules[i],
-                                          userDataProvider.userType == 2
-                                              ? userProv.userShiftId
-                                              : getShiftid(
-                                                  Provider.of<ShiftsData>(context,
-                                                          listen: false)
-                                                      .shiftSchedules[i]),
-                                          userDataProvider.userType == 2
-                                              ? userProv.userSiteId
-                                              : getsiteIDbyName(
-                                                  Provider.of<ShiftsData>(context,
-                                                          listen: false)
-                                                      .sitesSchedules[i]));
+                                    i,
+                                    Provider.of<ShiftsData>(context,
+                                            listen: false)
+                                        .sitesSchedules[i],
+                                    Provider.of<ShiftsData>(context,
+                                            listen: false)
+                                        .shiftSchedules[i],
+                                    userDataProvider.userType == 2
+                                        ? userProv.userShiftId
+                                        : i == 0
+                                            ? scheduleList.satShift.shiftId
+                                            : i == 1
+                                                ? scheduleList.sunShift.shiftId
+                                                : i == 2
+                                                    ? scheduleList
+                                                        .monShift.shiftId
+                                                    : i == 3
+                                                        ? scheduleList
+                                                            .tuesShift.shiftId
+                                                        : i == 4
+                                                            ? scheduleList
+                                                                .wednShift
+                                                                .shiftId
+                                                            : i == 5
+                                                                ? scheduleList
+                                                                    .thurShift
+                                                                    .shiftId
+                                                                : i == 6
+                                                                    ? scheduleList
+                                                                        .friShift
+                                                                        .shiftId
+                                                                    : 0,
+                                    userDataProvider.userType == 2
+                                        ? userProv.userSiteId
+                                        : i == 0
+                                            ? scheduleList.satShift.siteId
+                                            : i == 1
+                                                ? scheduleList.sunShift.siteId
+                                                : i == 2
+                                                    ? scheduleList
+                                                        .monShift.siteId
+                                                    : i == 3
+                                                        ? scheduleList
+                                                            .tuesShift.siteId
+                                                        : i == 4
+                                                            ? scheduleList
+                                                                .wednShift
+                                                                .siteId
+                                                            : i == 5
+                                                                ? scheduleList
+                                                                    .thurShift
+                                                                    .siteId
+                                                                : i == 6
+                                                                    ? scheduleList
+                                                                        .friShift
+                                                                        .siteId
+                                                                    : 0,
+                                  );
                                 }
                                 Navigator.push(
                                     context,

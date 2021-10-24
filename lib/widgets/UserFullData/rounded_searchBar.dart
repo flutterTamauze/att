@@ -263,9 +263,9 @@ class RoundedSearchBar extends StatelessWidget {
                                           //             .id,
                                           //         true);
 
-                                          prov.fillCurrentShiftID(
-                                              list[prov.dropDownSitesIndex + 1]
-                                                  .id);
+                                          // prov.fillCurrentShiftID(
+                                          //     list[prov.dropDownSitesIndex + 1]
+                                          //         .id);
 
                                           prov.setSiteValue(v);
                                           print(prov.dropDownSitesStrings);

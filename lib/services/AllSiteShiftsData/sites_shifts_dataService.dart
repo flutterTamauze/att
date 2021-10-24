@@ -12,6 +12,7 @@ import 'package:qr_users/services/Shift.dart';
 class SiteShiftsData with ChangeNotifier {
   List<SiteShiftsModel> siteShiftList = [];
   List<Shifts> shifts = [];
+
   List<Shifts> getShiftsList(String siteName, bool addallshiftsBool) {
     shifts = [];
 

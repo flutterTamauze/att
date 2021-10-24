@@ -31,7 +31,7 @@ class Member {
   String jobTitle;
   String userImageURL;
   String normalizedName;
-  int shiftId, osType;
+  int shiftId, osType, siteId;
   String email;
   String phoneNumber;
   String id;
@@ -52,6 +52,7 @@ class Member {
       this.normalizedName,
       this.id,
       this.shiftId,
+      this.siteId,
       this.phoneNumber,
       this.siteName});
 
@@ -88,9 +89,10 @@ class Member {
         salary: json["salary"],
         hiredDate: DateTime.tryParse(json["createdOn"]),
         userType: json['userType'],
-        // shiftName: json["attendShift"]["shiftName"],
+        shiftName: json["shiftName"],
         osType: json["mobileOS"],
-        // siteName: json["attendShift"]["attendSite"]["siteName"],
+        siteName: json["sitetName"],
+        siteId: json["siteId"],
         normalizedName: json["userName"],
         jobTitle: json['userJob']);
   }
@@ -189,7 +191,7 @@ class MemberData with ChangeNotifier {
     try {
       var response = await http.get(
           Uri.parse(
-            "$baseURL/api/Users/GetUserbyId/$id",
+            "$localURL/api/Users/GetUser/$id",
           ),
           headers: {
             'Content-type': 'application/json',
@@ -204,7 +206,7 @@ class MemberData with ChangeNotifier {
           singleMember = Member.fullDataMemberFromJson(memberObjJson);
           print("success");
 
-          print(response.body);
+          log(response.body);
 
           isLoading = false;
           notifyListeners();

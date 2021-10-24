@@ -129,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     : Navigator.of(context).push(
                                         new MaterialPageRoute(
                                           builder: (context) =>
-                                              ShiftsScreen(0, -1),
+                                              ShiftsScreen(0, -1, 0),
                                         ),
                                       );
                               } else {
@@ -181,14 +181,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         .shiftsBySite[0]
                                         .shiftId);
 
-                                await Provider.of<ShiftsData>(context,
-                                        listen: false)
-                                    .findMatchingShifts(
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userSiteId,
-                                        false);
+                                // await Provider.of<ShiftsData>(context,
+                                //         listen: false)
+                                //     .findMatchingShifts(
+                                //         Provider.of<UserData>(context,
+                                //                 listen: false)
+                                //             .user
+                                //             .userSiteId,
+                                //         false);
                                 Navigator.of(context).push(
                                   new MaterialPageRoute(
                                     builder: (context) => SiteAdminUserScreen(
@@ -220,17 +220,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       print("Got Sites");
                                     });
                                   }
-                                  await Provider.of<ShiftsData>(context,
-                                          listen: false)
-                                      .findMatchingShifts(
-                                          Provider.of<SiteData>(context,
-                                                  listen: false)
-                                              .sitesList[Provider.of<SiteData>(
-                                                      context,
-                                                      listen: false)
-                                                  .dropDownSitesIndex]
-                                              .id,
-                                          false);
+                                  // await Provider.of<ShiftsData>(context,
+                                  //         listen: false)
+                                  //     .findMatchingShifts(
+                                  //         Provider.of<SiteData>(context,
+                                  //                 listen: false)
+                                  //             .sitesList[Provider.of<SiteData>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .dropDownSitesIndex]
+                                  //             .id,
+                                  //         false);
                                   // Provider.of<SiteData>(context, listen: false)
                                   //     .fillCurrentShiftID(
                                   //         Provider.of<ShiftsData>(context,

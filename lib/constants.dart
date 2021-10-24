@@ -12,7 +12,7 @@ final androidDownloadLink =
     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
 final iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 final baseURL = "https://Chilangoback.tamauzeds.com";
-final localURL = "http://192.168.0.123:8010";
+final localURL = "http://192.168.0.114:8010";
 final huaweiAppId = "104665933";
 final huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";

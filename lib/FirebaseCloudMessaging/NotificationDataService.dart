@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -169,6 +171,7 @@ class NotificationDataService with ChangeNotifier {
 
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
+      counter = 0;
       counter++;
       print(event.notification.body);
       print(event.notification.title);
@@ -181,6 +184,12 @@ class NotificationDataService with ChangeNotifier {
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context)
             .then((value) => print('login successs'));
+      } else if (event.data["category"] == "reloadData") {
+        print("recieved reloadData");
+        await Provider.of<SiteShiftsData>(context, listen: false)
+            .getAllSitesAndShifts(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken);
       } else {
         if (counter == 1) {
           if (event.data["category"] == "attend") {

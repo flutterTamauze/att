@@ -42,8 +42,9 @@ import 'package:qr_users/constants.dart';
 class ShiftsScreen extends StatefulWidget {
   final siteId;
   final isFromSites;
+  final siteIndex;
 
-  ShiftsScreen(this.siteId, this.isFromSites);
+  ShiftsScreen(this.siteId, this.isFromSites, this.siteIndex);
 
   @override
   _ShiftsScreenState createState() => _ShiftsScreenState();
@@ -54,6 +55,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
   @override
   void initState() {
     // x
+    print(widget.siteIndex);
     super.initState();
     print("init state");
     siteId = widget.siteId;
@@ -85,6 +87,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     // monitor network fetch
     print("refresh");
     // if failed,use refreshFailed()
+    print(siteId);
     setState(() {
       isLoading = true;
     });
@@ -359,7 +362,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                             value.shiftsList[index],
                                                                             index,
                                                                             true,
-                                                                            siteId),
+                                                                            siteId,
+                                                                            widget.siteIndex),
                                                                       ),
                                                                     );
                                                                   },

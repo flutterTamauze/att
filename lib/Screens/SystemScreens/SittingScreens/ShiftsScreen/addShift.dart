@@ -36,7 +36,8 @@ class AddShiftScreen extends StatefulWidget {
   final int id;
   final isEdit;
   final siteId;
-  AddShiftScreen(this.shift, this.id, this.isEdit, this.siteId);
+  final siteIndex;
+  AddShiftScreen(this.shift, this.id, this.isEdit, this.siteId, this.siteIndex);
 
   @override
   _AddShiftScreenState createState() => _AddShiftScreenState();
@@ -48,6 +49,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.siteIndex);
     loadDaysOff = false;
     fillTextField();
   }
@@ -968,7 +970,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    ShiftsScreen(widget.siteId, -1)),
+                                    ShiftsScreen(widget.siteId, -1, siteId)),
                             (Route<dynamic> route) => false);
                       },
                     ),
@@ -1040,7 +1042,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           ),
           widget.id,
           user.userToken,
-          context);
+          context,
+          widget.siteIndex);
 
       if (msg == "Success") {
         setState(() {
@@ -1055,7 +1058,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 textColor: Colors.white,
                 fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
             .then((value) => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => ShiftsScreen(0, -1)),
+                MaterialPageRoute(
+                    builder: (context) => ShiftsScreen(0, -1, siteId)),
                 (Route<dynamic> route) => false));
       } else if (msg == "exists") {
         Fluttertoast.showToast(
@@ -1151,7 +1155,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
               shiftStartTime: int.parse(startString.replaceAll(":", "")),
               shiftEndTime: int.parse(endString.replaceAll(":", ""))),
           user.userToken,
-          context);
+          context,
+          widget.siteIndex);
       Navigator.pop(context);
 
       if (msg == "Success") {
@@ -1165,7 +1170,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ShiftsScreen(siteId, -1)),
+            MaterialPageRoute(
+                builder: (context) => ShiftsScreen(siteId, -1, siteId)),
             (Route<dynamic> route) => false);
       } else if (msg == "exists") {
         Fluttertoast.showToast(
@@ -1233,7 +1239,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     print("back");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (context) => ShiftsScreen(widget.siteId, -1)),
+            builder: (context) => ShiftsScreen(widget.siteId, -1, siteId)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

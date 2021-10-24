@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -42,10 +43,23 @@ class DaysOffData with ChangeNotifier {
   setSiteAndShift(
       int index, String sitename, String shiftname, int shiftID, int siteID) {
     print("setting att $index $shiftID");
-    reallocateUsers[index].sitename = sitename;
-    reallocateUsers[index].shiftname = shiftname;
-    reallocateUsers[index].shiftID = shiftID;
-    reallocateUsers[index].siteID = siteID;
+    if (shiftID != -100 && shiftID != 0) {
+      reallocateUsers[index].sitename = sitename;
+      reallocateUsers[index].shiftname = shiftname;
+      reallocateUsers[index].shiftID = shiftID;
+      reallocateUsers[index].siteID = siteID;
+    }
+    if (shiftID == 0) {
+      Fluttertoast.showToast(
+          msg: "لا يوجد مناوبات فى هذا الموقع",
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER);
+    } else if (shiftID == -100) {
+      Fluttertoast.showToast(
+          msg: "برجاء اختيار مناوبة",
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER);
+    }
 
     notifyListeners();
   }

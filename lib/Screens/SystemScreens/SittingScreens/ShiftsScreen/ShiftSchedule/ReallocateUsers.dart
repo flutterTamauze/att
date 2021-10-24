@@ -8,6 +8,8 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
+import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
@@ -89,8 +91,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   TextEditingController _dateController = TextEditingController();
 
   int getShiftid(String shiftName) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    List<Shift> currentShift =
+    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
+    List<Shifts> currentShift =
         list.where((element) => element.shiftName == shiftName).toList();
     return currentShift[0].shiftId;
   }
@@ -348,13 +350,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                   children: [
                                                                                     Directionality(
                                                                                       textDirection: ui.TextDirection.rtl,
-                                                                                      child: Consumer<ShiftsData>(
+                                                                                      child: Consumer<SiteShiftsData>(
                                                                                         builder: (context, value, child) {
                                                                                           return DropdownButton(
                                                                                               isExpanded: true,
                                                                                               underline: SizedBox(),
                                                                                               elevation: 5,
-                                                                                              items: value.shiftsBySite
+                                                                                              items: value.shifts
                                                                                                   .map(
                                                                                                     (value) => DropdownMenuItem(
                                                                                                         child: Container(
@@ -373,7 +375,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                 if (selectedVal != "كل المواقع") {
                                                                                                   List<String> x = [];
 
-                                                                                                  value.shiftsBySite.forEach((element) {
+                                                                                                  value.shifts.forEach((element) {
                                                                                                     x.add(element.shiftName);
                                                                                                   });
 
@@ -386,7 +388,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                   print("dropdown site index ${holder}");
                                                                                                 }
                                                                                               },
-                                                                                              value: value.shiftsBySite[prov.dropDownShiftIndex].shiftName
+                                                                                              value: value.shifts[prov.dropDownShiftIndex].shiftName
 
                                                                                               // value
                                                                                               );
@@ -452,8 +454,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                                                               prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
 
-                                                                                              await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
-
+                                                                                              // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
+                                                                                              Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName, false);
                                                                                               prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].id);
 
                                                                                               prov.setSiteValue(v);
@@ -500,10 +502,10 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                         onPressed: () async {
                                                                           String
                                                                               shiftName =
-                                                                              Provider.of<ShiftsData>(context, listen: false).shiftsBySite[prov.dropDownShiftIndex].shiftName;
+                                                                              Provider.of<SiteShiftsData>(context, listen: false).shifts[prov.dropDownShiftIndex].shiftName;
                                                                           String
                                                                               siteName =
-                                                                              Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].name;
+                                                                              Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName;
                                                                           if (widget
                                                                               .isEdit)
                                                                             Provider.of<ShiftsData>(context, listen: false).setScheduleSiteAndShift(
@@ -521,9 +523,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                                           prov.setDropDownIndex(
                                                                               0);
-                                                                          await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-                                                                              Provider.of<SiteData>(context, listen: false).sitesList[Provider.of<SiteData>(context, listen: false).dropDownSitesIndex].id,
+                                                                          Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+                                                                              Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName,
                                                                               false);
+
+                                                                          // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
+                                                                          //     Provider.of<SiteData>(context, listen: false).sitesList[Provider.of<SiteData>(context, listen: false).dropDownSitesIndex].id,
+                                                                          //     false);
                                                                           Navigator.pop(
                                                                               context);
                                                                         }),
@@ -695,8 +701,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   widget.member.shiftId,
                                                   _fromDate,
                                                   _toDate,
-                                                  getsiteIDbyShiftId(
-                                                      widget.member.shiftId));
+                                                  widget.member.siteId);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(
                                                 msg: "تمت اضافة الجدولة بنجاح",

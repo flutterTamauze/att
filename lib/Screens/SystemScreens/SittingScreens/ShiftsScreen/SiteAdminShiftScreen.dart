@@ -338,6 +338,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                                                               index],
                                                           index,
                                                           true,
+                                                          siteId,
                                                           siteId),
                                                 ),
                                               );
@@ -405,8 +406,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                AddShiftScreen(Shift(), 0, false, siteId)),
+                            builder: (context) => AddShiftScreen(
+                                Shift(), 0, false, siteId, siteId)),
                       );
                     },
                   )
