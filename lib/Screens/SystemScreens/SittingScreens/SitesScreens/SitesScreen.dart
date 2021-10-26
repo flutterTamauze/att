@@ -627,11 +627,15 @@ class _LocationTileState extends State<LocationTile> {
                               print("selected index = ${widget.index}");
 
                               Provider.of<SiteData>(context, listen: false)
-                                  .setDropDownShift(1);
+                                  .setDropDownShift(0);
+                              log(Provider.of<SiteShiftsData>(context,
+                                      listen: false)
+                                  .siteShiftList[widget.index]
+                                  .siteName);
                               Navigator.of(context).push(
                                 new MaterialPageRoute(
                                   builder: (context) =>
-                                      UsersScreen(widget.index + 1, false, ""),
+                                      UsersScreen(widget.index, false, ""),
                                 ),
                               );
                             },

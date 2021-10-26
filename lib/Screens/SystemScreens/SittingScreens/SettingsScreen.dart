@@ -162,16 +162,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         true);
                                 siteProv.setDropDownShift(
                                     0); //الموقع علي حسب ال اندكس اللي
-                                siteProv.setSiteValue(Provider.of<ShiftsData>(
-                                        context,
-                                        listen: false)
-                                    .shiftsBySite[0]
-                                    .shiftName);
-                                siteProv.fillCurrentShiftID(
-                                    Provider.of<ShiftsData>(context,
-                                            listen: false)
-                                        .shiftsBySite[0]
-                                        .shiftId);
+                                // siteProv.setSiteValue(Provider.of<ShiftsData>(
+                                //         context,
+                                //         listen: false)
+                                //     .shiftsBySite[0]
+                                //     .shiftName);
+                                // siteProv.fillCurrentShiftID(
+                                //     Provider.of<ShiftsData>(context,
+                                //             listen: false)
+                                //         .shiftsBySite[0]
+                                //         .shiftId);
                                 siteProv.setDropDownShift(0);
                                 siteProv.setDropDownIndex(
                                     userDataProvider.user.userSiteId);
@@ -220,26 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       print("Got Sites");
                                     });
                                   }
-                                  // await Provider.of<ShiftsData>(context,
-                                  //         listen: false)
-                                  //     .findMatchingShifts(
-                                  //         Provider.of<SiteData>(context,
-                                  //                 listen: false)
-                                  //             .sitesList[Provider.of<SiteData>(
-                                  //                     context,
-                                  //                     listen: false)
-                                  //                 .dropDownSitesIndex]
-                                  //             .id,
-                                  //         false);
-                                  // Provider.of<SiteData>(context, listen: false)
-                                  //     .fillCurrentShiftID(
-                                  //         Provider.of<ShiftsData>(context,
-                                  //                 listen: false)
-                                  //             .shiftsBySite[
-                                  //                 Provider.of<SiteData>(context,
-                                  //                         listen: false)
-                                  //                     .dropDownSitesIndex]
-                                  //             .shiftId);
+
                                   Navigator.of(context).push(
                                     new MaterialPageRoute(
                                       builder: (context) =>

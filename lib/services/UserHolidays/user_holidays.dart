@@ -12,12 +12,7 @@ import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class UserHolidays {
-  String userId,
-      fcmToken,
-      userName,
-      holidayDescription,
-      adminResponse,
-      approvedByUserId;
+  String userId, fcmToken, userName, holidayDescription, adminResponse;
   int holidayNumber,
       holidayStatus, //1=>accept , //2 refused , //3 waiting..
       holidayType,
@@ -35,7 +30,6 @@ class UserHolidays {
       this.userName,
       this.osType,
       this.userId,
-      this.approvedByUserId,
       this.approvedDate,
       this.createdOnDate});
   factory UserHolidays.fromJson(dynamic json) {
@@ -52,7 +46,6 @@ class UserHolidays {
         holidayDescription: json["desc"],
         approvedDate: DateTime.tryParse(json["approvedDate"]),
         osType: json["mobileOS"],
-        approvedByUserId: json["aprrovedbyUserId"],
         createdOnDate: DateTime.tryParse(json["createdOn"]));
   }
 }

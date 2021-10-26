@@ -105,7 +105,7 @@ class DailyReportUnit {
       timeOut: amPmChanger(json['leavingTime']),
       timeOutIcon: amOrPm(json['leavingTime']),
       lateTime: getTimeToString(json['late'] as int),
-      attendType: int.parse(json['userAttendType'] ?? "0"),
+      attendType: (json['userAttendType']),
       userAttendPictureURL: json['userAttendPicture'] ?? "",
       userLeavePictureURL: json['userLeavePicture'] ?? "",
     );

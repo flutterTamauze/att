@@ -102,12 +102,17 @@ class UserPermessionsData with ChangeNotifier {
     print(response.body);
     var decodedResp = json.decode(response.body);
     if (response.statusCode == 200) {
-      pendingCompanyPermessions
-          .removeWhere((element) => element.permessionId == permID);
+      if (decodedResp["message"] == "Success : User Updated!") {
+        pendingCompanyPermessions
+            .removeWhere((element) => element.permessionId == permID);
 
-      print(decodedResp["message"]);
-      notifyListeners();
-      return decodedResp["message"];
+        print(decodedResp["message"]);
+        notifyListeners();
+        return decodedResp["message"];
+      } else {
+        print(decodedResp["message"]);
+        return decodedResp["message"];
+      }
     }
     return "fail";
   }
@@ -126,6 +131,7 @@ class UserPermessionsData with ChangeNotifier {
     var decodedResp = json.decode(response.body);
     if (decodedResp["message"] == "Success") {
       var permessionsObj = jsonDecode(response.body)['data'] as List;
+
       pendingCompanyPermessions =
           permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
       pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();

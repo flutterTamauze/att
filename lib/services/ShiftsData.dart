@@ -247,7 +247,7 @@ class ShiftsData with ChangeNotifier {
     notifyListeners();
     var response = await http.post(
         Uri.parse(
-          "$localURL/api/ShiftSchedule/Add",
+          "$baseURL/api/ShiftSchedule/Add",
         ),
         headers: {
           'Content-type': 'application/json',
@@ -331,6 +331,12 @@ class ShiftsData with ChangeNotifier {
                     siteID: 0)
               ];
             }
+            await sendFcmMessage(
+                category: "reloadData",
+                message: "data",
+                title: "data incoming",
+                topicName:
+                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             deleteFromAllShiftsList(shiftId);
             notifyListeners();
             return "Success";
@@ -660,7 +666,7 @@ class ShiftsData with ChangeNotifier {
           var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
 
           shiftsList[shiftsListIndex] = newShift;
-          shiftsBySite[id] = newShift;
+
           for (int i = 0;
               i <
                   Provider.of<SiteShiftsData>(context, listen: false)
@@ -683,6 +689,12 @@ class ShiftsData with ChangeNotifier {
                   .shiftId = newShift.shiftId;
             }
           }
+          await sendFcmMessage(
+              category: "reloadData",
+              message: "data",
+              title: "data incoming",
+              topicName:
+                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
           notifyListeners();
 
           return "Success";

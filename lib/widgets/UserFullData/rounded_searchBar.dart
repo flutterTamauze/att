@@ -127,6 +127,12 @@ class RoundedSearchBar extends StatelessWidget {
                                                 }
                                                 Provider.of<MemberData>(context,
                                                         listen: false)
+                                                    .byShiftPageIndex = 0;
+                                                Provider.of<MemberData>(context,
+                                                        listen: false)
+                                                    .keepRetriving = true;
+                                                Provider.of<MemberData>(context,
+                                                        listen: false)
                                                     .getAllCompanyMember(
                                                         Provider.of<SiteShiftsData>(
                                                                 context,

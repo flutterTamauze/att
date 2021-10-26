@@ -129,8 +129,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
   void initState() {
     Provider.of<NotificationDataService>(context, listen: false)
         .notificationPermessions();
-    Provider.of<NotificationDataService>(context, listen: false)
-        .firebaseMessagingConfig(context);
+    // Provider.of<NotificationDataService>(context, listen: false)
+    //     .firebaseMessagingConfig(context);
     super.initState();
     _startUp();
     firstget();

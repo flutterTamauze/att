@@ -95,8 +95,8 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    Provider.of<NotificationDataService>(context, listen: false)
-        .firebaseMessagingConfig(context);
+    // Provider.of<NotificationDataService>(context, listen: false)
+    //     .firebaseMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)
         .huaweiMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)

@@ -168,102 +168,99 @@ class ShiftApi with ChangeNotifier {
     //3shan low my3radsh el code low bara el location : low bara we 3ala nafs el screen hyasht3'al 3adi...
     // if (shiftsListProvider.isEmpty) {
     print(id);
-    try {
-      if (await isConnectedToInternet()) {
-        isConnected = true;
-        List<Shift> shiftsList;
-        HuaweiServices _huawi = HuaweiServices();
-        bool isHawawi = await _huawi.isHuaweiDevice();
-        int isMoc;
-        if (isHawawi) {
-          isMoc = 0;
-        } else {
-          isMoc = await getCurrentLocation();
-        }
-        print("IS MOC RESULT : $isMoc");
-        print(id);
-        if (isMoc == 0) {
-          final response = await http.post(
-              Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
-              headers: {
-                'Content-type': 'application/json',
-                'Authorization': "Bearer $userToken"
-              },
-              body: json.encode(
-                {
-                  "ID": id,
-                  "Latitude": isHawawi
-                      ? currentHuaweiLocation.latitude.toString().trim()
-                      : currentPosition.latitude.toString().trim(),
-                  "Longitude": isHawawi
-                      ? currentHuaweiLocation.longitude.toString().trim()
-                      : currentPosition.longitude.toString().trim()
-                },
-              ));
-          log(response.body);
-          if (jsonDecode(response.body)["message"] == "Success") {
-            var shiftObjJson = jsonDecode(response.body)['data'] as List;
-            shiftsList = shiftObjJson
-                .map((shiftJson) => Shift.fromJsonQR(shiftJson))
-                .toList();
-            currentShiftSTtime = [
-              jsonDecode(response.body)['data'][0]["shiftSttime"],
-              jsonDecode(response.body)['data'][0]["shiftEntime"]
-            ];
-            currentShiftEndTime = [
-              jsonDecode(response.body)['data'][1]["shiftSttime"],
-              jsonDecode(response.body)['data'][1]["shiftEntime"]
-            ];
-            shiftsListProvider = shiftsList;
-            var now = DateTime.now();
-            var formater = DateFormat("Hm");
-            int currentTime =
-                int.parse(formater.format(now).replaceAll(":", ""));
-            searchForCurrentShift(currentTime);
-            isOnLocation = true;
-            permissionOff = true;
-            isLocationServiceOn = 1;
-            notifyListeners();
-            return true;
-          } else {
-            print("isNotInLocation");
-            isOnLocation = false;
-            isLocationServiceOn = 1;
-            permissionOff = true;
-
-            notifyListeners();
-            return false;
-          }
-        } else if (isMoc == 1) {
-          print("Mock location");
-          isOnLocation = false;
-          isLocationServiceOn = 2;
-          permissionOff = true;
-          notifyListeners();
-          return false;
-        } else if (isMoc == 3) {
-          permissionOff = false;
-          isLocationServiceOn = 0;
-          isOnLocation = false;
-          notifyListeners();
-          return false;
-        } else {
-          print("location off");
-          isLocationServiceOn = 0;
-          isOnLocation = false;
-          notifyListeners();
-          return false;
-        }
+    if (await isConnectedToInternet()) {
+      isConnected = true;
+      List<Shift> shiftsList;
+      HuaweiServices _huawi = HuaweiServices();
+      bool isHawawi = await _huawi.isHuaweiDevice();
+      int isMoc;
+      if (isHawawi) {
+        isMoc = 0;
       } else {
-        isConnected = false;
+        isMoc = await getCurrentLocation();
+      }
+      print("IS MOC RESULT : $isMoc");
+      print(id);
+      if (isMoc == 0) {
+        final response = await http.post(
+            Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
+            headers: {
+              'Content-type': 'application/json',
+              'Authorization': "Bearer $userToken"
+            },
+            body: json.encode(
+              {
+                "ID": id,
+                "Latitude": isHawawi
+                    ? currentHuaweiLocation.latitude.toString().trim()
+                    : currentPosition.latitude.toString().trim(),
+                "Longitude": isHawawi
+                    ? currentHuaweiLocation.longitude.toString().trim()
+                    : currentPosition.longitude.toString().trim()
+              },
+            ));
+        print(response.statusCode);
+        log(response.body);
+        if (jsonDecode(response.body)["message"] == "Success") {
+          var shiftObjJson = jsonDecode(response.body)['data'] as List;
+          shiftsList = shiftObjJson
+              .map((shiftJson) => Shift.fromJsonQR(shiftJson))
+              .toList();
+          currentShiftSTtime = [
+            jsonDecode(response.body)['data'][0]["shiftSttime"],
+            jsonDecode(response.body)['data'][0]["shiftEntime"]
+          ];
+          currentShiftEndTime = [
+            jsonDecode(response.body)['data'][1]["shiftSttime"],
+            jsonDecode(response.body)['data'][1]["shiftEntime"]
+          ];
+          shiftsListProvider = shiftsList;
+          var now = DateTime.now();
+          var formater = DateFormat("Hm");
+          int currentTime = int.parse(formater.format(now).replaceAll(":", ""));
+          searchForCurrentShift(currentTime);
+          isOnLocation = true;
+          permissionOff = true;
+          isLocationServiceOn = 1;
+          notifyListeners();
+          return true;
+        } else {
+          print("isNotInLocation");
+          isOnLocation = false;
+          isLocationServiceOn = 1;
+          permissionOff = true;
+
+          notifyListeners();
+          return false;
+        }
+      } else if (isMoc == 1) {
+        print("Mock location");
+        isOnLocation = false;
+        isLocationServiceOn = 2;
+        permissionOff = true;
+        notifyListeners();
+        return false;
+      } else if (isMoc == 3) {
+        permissionOff = false;
+        isLocationServiceOn = 0;
+        isOnLocation = false;
+        notifyListeners();
+        return false;
+      } else {
+        print("location off");
         isLocationServiceOn = 0;
         isOnLocation = false;
         notifyListeners();
         return false;
       }
-    } catch (e) {
-      print(e);
+    } else {
+      isConnected = false;
+      isLocationServiceOn = 0;
+      isOnLocation = false;
+      notifyListeners();
+      return false;
     }
+
     return null;
   }
 

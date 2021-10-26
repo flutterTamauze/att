@@ -27,7 +27,7 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 19);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 25);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 19);
 Future<bool> onWillPop() {

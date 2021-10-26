@@ -138,6 +138,13 @@ class PendingCompanyPermessions extends StatelessWidget {
                                                                 "تم الرفض بنجاح",
                                                             backgroundColor:
                                                                 Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail: Permission out of date!") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى الرفض : انتهى وقت الطلب",
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: "خطأ في الرفض",
@@ -215,6 +222,13 @@ class PendingCompanyPermessions extends StatelessWidget {
                                                                 "تم الموافقة بنجاح",
                                                             backgroundColor:
                                                                 Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail: Permission out of date!") {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "خطأ فى الرفض : انتهى وقت الطلب",
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg:

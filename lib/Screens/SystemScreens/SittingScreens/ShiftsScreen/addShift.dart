@@ -320,9 +320,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             print(vlaue);
                                           },
                                           selectedvalue:
-                                              Provider.of<SiteData>(context)
-                                                  .sitesList[siteId]
-                                                  .name,
+                                              Provider.of<SiteShiftsData>(
+                                                      context)
+                                                  .siteShiftList[siteId]
+                                                  .siteName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -1137,9 +1138,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       msg = await Provider.of<ShiftsData>(context, listen: false).addShift(
           Shift(
               shiftName: _title.text,
-              siteID: Provider.of<SiteData>(context, listen: false)
-                  .sitesList[siteId]
-                  .id,
+              siteID: Provider.of<SiteShiftsData>(context, listen: false)
+                  .siteShiftList[siteId]
+                  .siteId,
               fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
               fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
               monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),

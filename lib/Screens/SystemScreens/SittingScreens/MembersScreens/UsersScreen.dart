@@ -74,6 +74,7 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   void didChangeDependencies() {
     Provider.of<MemberData>(context, listen: false).allPageIndex = 0;
+    Provider.of<MemberData>(context, listen: false).byShiftPageIndex = 0;
     Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
     Provider.of<MemberData>(context, listen: false).keepRetriving = true;
 
@@ -93,16 +94,36 @@ class _UsersScreenState extends State<UsersScreen> {
         if (goMaxScroll) {
           if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
             print("entered");
-
-            await Provider.of<MemberData>(context, listen: false)
-                .getAllCompanyMember(
-                    Provider.of<SiteData>(context, listen: false)
-                        .dropDownSitesList[siteIndex]
-                        .id,
-                    comProvier.com.id,
-                    userProvider.user.userToken,
-                    context,
-                    -1);
+            if (siteIndex == 0) {
+              await Provider.of<MemberData>(context, listen: false)
+                  .getAllCompanyMember(-1, comProvier.com.id,
+                      userProvider.user.userToken, context, -1);
+            } else if (Provider.of<SiteData>(context, listen: false)
+                    .dropDownShiftIndex !=
+                0) {
+              await Provider.of<MemberData>(context, listen: false)
+                  .getAllCompanyMember(
+                      Provider.of<SiteShiftsData>(context, listen: false)
+                          .siteShiftList[siteIndex]
+                          .siteId,
+                      comProvier.com.id,
+                      userProvider.user.userToken,
+                      context,
+                      Provider.of<SiteShiftsData>(context, listen: false)
+                          .shifts[Provider.of<SiteData>(context, listen: false)
+                              .dropDownShiftIndex]
+                          .shiftId);
+            } else {
+              await Provider.of<MemberData>(context, listen: false)
+                  .getAllCompanyMember(
+                      Provider.of<SiteShiftsData>(context, listen: false)
+                          .siteShiftList[siteIndex - 1]
+                          .siteId,
+                      comProvier.com.id,
+                      userProvider.user.userToken,
+                      context,
+                      -1);
+            }
           }
         }
         goMaxScroll = true;
@@ -135,9 +156,9 @@ class _UsersScreenState extends State<UsersScreen> {
         );
         await Provider.of<MemberData>(context, listen: false)
             .getAllCompanyMember(
-                Provider.of<SiteData>(context, listen: false)
-                    .dropDownSitesList[siteIndex]
-                    .id,
+                Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[siteIndex]
+                    .siteId,
                 comProvier.com.id,
                 userProvider.user.userToken,
                 context,
@@ -150,9 +171,9 @@ class _UsersScreenState extends State<UsersScreen> {
           "eeeE  ${Provider.of<SiteData>(context, listen: false).dropDownSitesList[siteIndex].id}",
         );
         Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
-            Provider.of<SiteData>(context, listen: false)
-                .dropDownSitesList[siteIndex]
-                .id,
+            Provider.of<SiteShiftsData>(context, listen: false)
+                .siteShiftList[siteIndex]
+                .siteId,
             comProvier.com.id,
             userProvider.user.userToken,
             context,
@@ -227,6 +248,10 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
+            print(Provider.of<SiteShiftsData>(context)
+                .shifts[Provider.of<SiteData>(context, listen: false)
+                    .currentShiftIndex]
+                .shiftName);
             setState(() {
               _nameController.text = "";
             });
@@ -351,11 +376,12 @@ class _UsersScreenState extends State<UsersScreen> {
 
                                                     if (siteindex != -1) {
                                                       siteiD = Provider.of<
-                                                                  SiteData>(
+                                                                  SiteShiftsData>(
                                                               context,
                                                               listen: false)
-                                                          .sitesList[siteindex]
-                                                          .id;
+                                                          .siteShiftList[
+                                                              siteindex]
+                                                          .siteId;
                                                     }
 
                                                     searchInList(
@@ -413,7 +439,10 @@ class _UsersScreenState extends State<UsersScreen> {
                                                               context,
                                                               listen: false)
                                                           .getAllCompanyMember(
-                                                              siteProv
+                                                              Provider.of<SiteData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
                                                                   .dropDownSitesList[
                                                                       siteIndex]
                                                                   .id,
@@ -605,6 +634,9 @@ class _UsersScreenState extends State<UsersScreen> {
                   Provider.of<UserData>(context, listen: false).user.userType ==
                           4
                       ? MultipleFloatingButtons(
+                          shiftIndex:
+                              Provider.of<SiteData>(context, listen: false)
+                                  .currentShiftIndex,
                           comingFromShifts: widget.comingFromShifts,
                           shiftName: widget.comingShiftName == ""
                               ? Provider.of<SiteData>(context).siteValue

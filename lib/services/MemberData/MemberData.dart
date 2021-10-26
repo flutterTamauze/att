@@ -117,6 +117,7 @@ class MemberData with ChangeNotifier {
   Member singleMember = Member();
   Future futureListener;
   int allPageIndex = 0;
+  int byShiftPageIndex = 0;
   int bySitePageIndex = 0;
   bool keepRetriving = true;
   bool loadingSearch = false;
@@ -191,7 +192,7 @@ class MemberData with ChangeNotifier {
     try {
       var response = await http.get(
           Uri.parse(
-            "$localURL/api/Users/GetUser/$id",
+            "$baseURL/api/Users/GetUser/$id",
           ),
           headers: {
             'Content-type': 'application/json',
@@ -227,12 +228,17 @@ class MemberData with ChangeNotifier {
     String url = "";
     isLoading = true;
     if (shiftId != -1) {
+      byShiftPageIndex++;
       loadingShifts = true;
-      membersList = [];
-      memberNewList = [];
-      membersListScreenDropDownSearch = [];
+      if (byShiftPageIndex == 1) {
+        membersList = [];
+        memberNewList = [];
+        membersListScreenDropDownSearch = [];
+        copyMemberList = [];
+        keepRetriving = true;
+      }
       url =
-          "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$allPageIndex&pageSize=7";
+          "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
       notifyListeners();
     } else {
       if (siteId == -1) {
@@ -287,6 +293,7 @@ class MemberData with ChangeNotifier {
       try {
         print(("printing the page index $allPageIndex"));
         print(("printing the page index $bySitePageIndex"));
+        print(("printing the page by shift index $byShiftPageIndex"));
         final response = await http.get(Uri.parse(url), headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
@@ -299,13 +306,10 @@ class MemberData with ChangeNotifier {
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
             if (memberObjJson.isEmpty) {
-              if (!loadingShifts) {
-                keepRetriving = false;
-              }
-
+              keepRetriving = false;
               notifyListeners();
             }
-            if (shiftId != -1) {
+            if (keepRetriving) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
                   .toSet()
@@ -313,16 +317,6 @@ class MemberData with ChangeNotifier {
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;
-            } else {
-              if (keepRetriving) {
-                memberNewList.addAll(memberObjJson
-                    .map((memberJson) => Member.fromJson(memberJson))
-                    .toSet()
-                    .toList());
-
-                membersList = memberNewList;
-                membersListScreenDropDownSearch = memberNewList;
-              }
             }
 
             log(membersList.length.toString());
@@ -506,10 +500,8 @@ class MemberData with ChangeNotifier {
           print(response.body);
 
           if (decodedRes["message"] == "Success : User Deleted Successfully") {
-            var membersListId = findMemberInMembersList(id);
             membersListScreenDropDownSearch.removeAt(listIndex);
-            membersList.removeAt(membersListId);
-            copyMemberList = membersList;
+
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==
@@ -621,14 +613,11 @@ class MemberData with ChangeNotifier {
           print(member.salary);
           if (decodedRes["message"] == "Success : User Updated Successfully ") {
             membersList[id] = member;
-            print(
-                "Shift id ${membersList[id].shiftId} , userType id ${membersList[id].userType}  , memid : ${membersList[id].id}");
 
             var membersListId = findMemberInMembersList(member.id);
 
             membersList[membersListId] = member;
             membersListScreenDropDownSearch = [...membersList];
-            copyMemberList[membersListId] = member;
 
             notifyListeners();
             return "Success";

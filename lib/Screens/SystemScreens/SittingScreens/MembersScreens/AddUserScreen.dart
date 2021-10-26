@@ -20,6 +20,7 @@ import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
@@ -82,6 +83,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   @override
   void initState() {
     super.initState();
+
     log(widget.shiftNameIncoming);
     print(widget.comingFromShifts);
     if (widget.comingFromShifts) {
@@ -97,7 +99,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
         phoneNumber: widget.member.phoneNumber);
     fillTextField();
     if (widget.isEdit) {
-      siteId = 0;
+      siteId =
+          (Provider.of<SiteData>(context, listen: false).dropDownSitesIndex);
     } else {
       if (Provider.of<SiteData>(context, listen: false)
               .dropDownSitesList
@@ -196,12 +199,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
-                print(Provider.of<SiteData>(context, listen: false)
-                    .currentShiftIndex);
-                print(shiftIndex);
-                print(Provider.of<ShiftsData>(context, listen: false)
-                    .shiftsBySite[shiftIndex]
+                print(Provider.of<SiteShiftsData>(context, listen: false)
+                    .shifts[Provider.of<SiteData>(context, listen: false)
+                        .currentShiftIndex]
                     .shiftName);
+                print(shiftIndex);
               },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
@@ -706,22 +708,28 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                     listen: false)
                                                 .setDropDownShift(0);
                                             shiftIndex = getShiftid(value);
+
                                             print(
                                                 "shiftid..... =    $shiftIndex");
                                           },
-                                          selectedvalue: Provider.of<
-                                                      SiteShiftsData>(context)
-                                                  .shifts
-                                                  .isEmpty
-                                              ? null
+                                          selectedvalue: !widget.isEdit
+                                              ? Provider.of<SiteShiftsData>(
+                                                      context)
+                                                  .shifts[Provider.of<SiteData>(
+                                                          context,
+                                                          listen: false)
+                                                      .dropDownShiftIndex]
+                                                  .shiftName
                                               : Provider.of<SiteShiftsData>(
                                                           context)
-                                                      .shifts[getShiftIndex()]
-                                                      .shiftName ??
-                                                  Provider.of<SiteShiftsData>(
-                                                          context)
-                                                      .shifts[0]
-                                                      .shiftName,
+                                                      .shifts
+                                                      .isEmpty
+                                                  ? null
+                                                  : widget.member.shiftName ??
+                                                      Provider.of<SiteShiftsData>(
+                                                              context)
+                                                          .shifts[0]
+                                                          .shiftName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -737,11 +745,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   // setStateThePhone(_phoneController.text);
                                   if (!widget.isEdit) {
                                     if (_formKey.currentState.validate()) {
-                                      if (Provider.of<ShiftsData>(context,
-                                                  listen: false)
-                                              .shiftsBySite[shiftIndex]
-                                              .shiftStartTime ==
-                                          -1) {
+                                      if (shiftIndex == -1 ||
+                                          Provider.of<SiteShiftsData>(context,
+                                                      listen: false)
+                                                  .shifts[shiftIndex]
+                                                  .shiftName ==
+                                              "كل المناوبات") {
                                         Fluttertoast.showToast(
                                             msg: "برجاء اختيار مناوبة",
                                             gravity: ToastGravity.CENTER,
@@ -776,11 +785,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 Member(
                                                     userType: userType,
                                                     shiftId:
-                                                        Provider.of<ShiftsData>(
+                                                        Provider.of<SiteShiftsData>(
                                                                 context,
                                                                 listen: false)
-                                                            .shiftsBySite[
-                                                                shiftIndex]
+                                                            .shifts[shiftIndex]
                                                             .shiftId,
                                                     jobTitle: _titleController
                                                         .text
@@ -804,6 +812,17 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 getRoleName(userRole));
                                         Navigator.pop(context);
                                         if (msg == "Success") {
+                                          Provider.of<SiteData>(context,
+                                                  listen: false)
+                                              .setSiteValue("كل المواقع");
+
+                                          await Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UsersScreen(-1, false, ""),
+                                              ));
+
                                           Fluttertoast.showToast(
                                               msg: "تم اضافة المستخدم بنجاح",
                                               toastLength: Toast.LENGTH_SHORT,
@@ -812,18 +831,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.green,
                                               textColor: Colors.white,
                                               fontSize: 16.0);
-                                          Provider.of<SiteData>(context,
-                                                  listen: false)
-                                              .setSiteValue("كل المواقع");
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                              UsersScreen(-1,
-                                                                  false, "")),
-                                                  (Route<dynamic> route) =>
-                                                      false);
                                         } else if (msg == "exists") {
                                           Fluttertoast.showToast(
                                               msg:
@@ -878,22 +885,17 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   } else {
                                     if (edit) {
                                       if (_formKey.currentState.validate()) {
-                                        if (Provider.of<ShiftsData>(context,
-                                                    listen: false)
-                                                .shiftsBySite[shiftIndex]
-                                                .shiftStartTime ==
-                                            -1) {
+                                        if (shiftIndex == -1 ||
+                                            Provider.of<SiteShiftsData>(context,
+                                                        listen: false)
+                                                    .shifts[shiftIndex]
+                                                    .shiftName ==
+                                                "كل المناوبات") {
                                           Fluttertoast.showToast(
                                               msg: "برجاء اختيار مناوبة",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
-                                              gravity: ToastGravity.CENTER,
-                                              textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              gravity: ToastGravity.CENTER);
                                         } else {
-                                          // setStateThePhone(
-                                          //     _phoneController.text);
                                           showModalBottomSheet(
                                             context: context,
                                             isScrollControlled: true,
@@ -943,8 +945,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           .id,
                                                                       userType:
                                                                           userType,
-                                                                      shiftId: Provider.of<ShiftsData>(context, listen: false)
-                                                                          .shiftsBySite[
+                                                                      shiftId: Provider.of<SiteShiftsData>(context, listen: false)
+                                                                          .shifts[
                                                                               shiftIndex]
                                                                           .shiftId,
                                                                       phoneNumber: editNumber
@@ -1109,6 +1111,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           );
                                         }
                                       }
+                                      // }
                                     } else {
                                       setState(() {
                                         edit = true;
@@ -1266,7 +1269,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   // }
 
   int getShiftListIndex(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsBySite;
+    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
     int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftId == list[i].shiftId) {

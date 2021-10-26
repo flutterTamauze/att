@@ -10,9 +10,11 @@ import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -37,11 +39,26 @@ class _VacationAndPermessionsReportState
     super.initState();
   }
 
+  searchInList(String value, int siteId, int companyId) async {
+    if (value.isNotEmpty) {
+      print(companyId);
+      await Provider.of<MemberData>(context, listen: false).searchUsersList(
+          value,
+          Provider.of<UserData>(context, listen: false).user.userToken,
+          siteId,
+          companyId);
+      focusNode.requestFocus();
+    } else {
+      Provider.of<MemberData>(context, listen: false).resetUsers();
+    }
+  }
+
+  final focusNode = FocusNode();
   Future getPerm;
   Future getMission;
   Future getHoliday;
   var userId;
-  GlobalKey<AutoCompleteTextFieldState<Member>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<SearchMember>> key = new GlobalKey();
   AutoCompleteTextField searchTextField;
   @override
   Widget build(BuildContext context) {
@@ -76,116 +93,168 @@ class _VacationAndPermessionsReportState
                 width: 330.w,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
-                  child: searchTextField = AutoCompleteTextField<Member>(
-                    key: key,
-                    clearOnSubmit: false,
-                    controller: _nameController,
-                    suggestions: Provider.of<MemberData>(context, listen: true)
-                        .membersList,
-                    style: TextStyle(
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500),
-                    decoration: kTextFieldDecorationFromTO.copyWith(
-                        hintStyle: TextStyle(
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.w500),
-                        hintText: 'اسم المستخدم',
-                        prefixIcon: Icon(
-                          Icons.person,
+                  child: Provider.of<MemberData>(context).loadingSearch
+                      ? Center(
+                          child: CircularProgressIndicator(
                           color: Colors.orange,
-                        )),
-                    itemFilter: (item, query) {
-                      return item.name
-                          .toLowerCase()
-                          .contains(query.toLowerCase());
-                    },
-                    itemSorter: (a, b) {
-                      return a.name.compareTo(b.name);
-                    },
-                    itemSubmitted: (item) async {
-                      print("user id");
-                      print(item.id);
-                      userId = item.id;
-                      var userProvider =
-                          Provider.of<UserData>(context, listen: false);
-                      getPerm = Provider.of<UserPermessionsData>(context,
-                              listen: false)
-                          .getSingleUserPermession(
-                              item.id,
-                              Provider.of<UserData>(context, listen: false)
-                                  .user
-                                  .userToken);
-                      getMission =
-                          Provider.of<MissionsData>(context, listen: false)
-                              .getSingleUserMissions(
-                                  item.id, userProvider.user.userToken);
-                      getHoliday =
-                          Provider.of<UserHolidaysData>(context, listen: false)
-                              .getSingleUserHoliday(
-                                  item.id, userProvider.user.userToken);
-
-                      List<int> indexes = [];
-
-                      print(comMissionProv.userNames.length);
-                      for (int i = 0;
-                          i < comMissionProv.userNames.length;
-                          i++) {
-                        if (comMissionProv.userNames[i] == item.name) {
-                          indexes.add(i);
-                        }
-                      }
-                      if (_nameController.text != item.name) {
-                        setState(() {
-                          print(item.name);
-                          searchTextField.textField.controller.text = item.name;
-
-                          Provider.of<MissionsData>(context, listen: false)
-                              .setCopyByIndex(indexes);
-                          // isVacationselected = true;
-                        });
-                      }
-                    },
-                    itemBuilder: (context, item) {
-                      // ui for the autocompelete row
-                      return Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 10,
-                            bottom: 5,
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Container(
-                                height: 20,
-                                child: AutoSizeText(
-                                  item.name,
-                                  maxLines: 1,
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
+                        ))
+                      : searchTextField = AutoCompleteTextField<SearchMember>(
+                          key: key,
+                          clearOnSubmit: false,
+                          focusNode: focusNode,
+                          controller: _nameController,
+                          suggestions:
+                              Provider.of<MemberData>(context).userSearchMember,
+                          style: TextStyle(
+                              fontSize: ScreenUtil()
+                                  .setSp(16, allowFontScalingSelf: true),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500),
+                          decoration: kTextFieldDecorationFromTO.copyWith(
+                              hintStyle: TextStyle(
+                                  fontSize: ScreenUtil()
+                                      .setSp(16, allowFontScalingSelf: true),
+                                  color: Colors.grey.shade700,
+                                  fontWeight: FontWeight.w500),
+                              hintText: 'الأسم',
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    searchInList(
+                                        _nameController.text,
+                                        -1,
+                                        Provider.of<CompanyData>(context,
+                                                listen: false)
+                                            .com
+                                            .id);
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.orange,
                                 ),
                               ),
-                              Divider(
-                                color: Colors.grey,
-                                thickness: 1,
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Colors.orange,
+                              )),
+                          itemFilter: (item, query) {
+                            return item.username
+                                .toLowerCase()
+                                .contains(query.toLowerCase());
+                          },
+                          itemSorter: (a, b) {
+                            return a.username.compareTo(b.username);
+                          },
+                          itemSubmitted: (item) async {
+                            if (_nameController.text != item.username) {
+                              setState(() {
+                                searchTextField.textField.controller.text =
+                                    item.username;
+                              });
+                              print("user id");
+                              print(item.id);
+                              userId = item.id;
+                              var userProvider =
+                                  Provider.of<UserData>(context, listen: false);
+                              getPerm = Provider.of<UserPermessionsData>(
+                                      context,
+                                      listen: false)
+                                  .getSingleUserPermession(
+                                      item.id,
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken);
+                              getMission = Provider.of<MissionsData>(context,
+                                      listen: false)
+                                  .getSingleUserMissions(
+                                      item.id, userProvider.user.userToken);
+                              getHoliday = Provider.of<UserHolidaysData>(
+                                      context,
+                                      listen: false)
+                                  .getSingleUserHoliday(
+                                      item.id, userProvider.user.userToken);
+
+                              List<int> indexes = [];
+
+                              print(comMissionProv.userNames.length);
+                              for (int i = 0;
+                                  i < comMissionProv.userNames.length;
+                                  i++) {
+                                if (comMissionProv.userNames[i] ==
+                                    item.username) {
+                                  indexes.add(i);
+                                }
+                              }
+                              if (_nameController.text != item.username) {
+                                setState(() {
+                                  print(item.username);
+                                  searchTextField.textField.controller.text =
+                                      item.username;
+
+                                  Provider.of<MissionsData>(context,
+                                          listen: false)
+                                      .setCopyByIndex(indexes);
+                                  // isVacationselected = true;
+                                });
+                              }
+                              // selectedId = item.id;
+
+                              // await Provider.of<ReportsData>(context,
+                              //         listen: false)
+                              //     .getUserReportUnits(
+                              //         Provider.of<UserData>(context,
+                              //                 listen: false)
+                              //             .user
+                              //             .userToken,
+                              //         item.id,
+                              //         dateFromString,
+                              //         dateToString,
+                              //         context);
+                            }
+                          },
+                          itemBuilder: (context, item) {
+                            // ui for the autocompelete row
+                            return Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 10,
+                                  bottom: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Container(
+                                          height: 20,
+                                          child: AutoSizeText(
+                                            item.username,
+                                            maxLines: 1,
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                      thickness: 1,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ),
               Padding(

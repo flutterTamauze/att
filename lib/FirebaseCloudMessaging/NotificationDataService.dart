@@ -169,13 +169,11 @@ class NotificationDataService with ChangeNotifier {
     });
   }
 
+  SiteShiftsData siteShiftsData = SiteShiftsData();
+
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
-      counter = 0;
       counter++;
-      print(event.notification.body);
-      print(event.notification.title);
-      print(event.data["category"]);
       print(counter);
       if (event.data["category"] == "internalMission") {
         print("revieved internalMission ");
@@ -186,10 +184,13 @@ class NotificationDataService with ChangeNotifier {
             .then((value) => print('login successs'));
       } else if (event.data["category"] == "reloadData") {
         print("recieved reloadData");
-        await Provider.of<SiteShiftsData>(context, listen: false)
-            .getAllSitesAndShifts(
-                Provider.of<CompanyData>(context, listen: false).com.id,
-                Provider.of<UserData>(context, listen: false).user.userToken);
+        siteShiftsData.getAllSitesAndShifts(
+            Provider.of<CompanyData>(context, listen: false).com.id,
+            Provider.of<UserData>(context, listen: false).user.userToken);
+        // await Provider.of<SiteShiftsData>(context, listen: false)
+        //     .getAllSitesAndShifts(
+        //         Provider.of<CompanyData>(context, listen: false).com.id,
+        //         Provider.of<UserData>(context, listen: false).user.userToken);
       } else {
         if (counter == 1) {
           if (event.data["category"] == "attend") {

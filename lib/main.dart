@@ -88,19 +88,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print("current shared pref status :");
     print(prefs.getString("notifiCategory"));
     prefs.setStringList("bgNotifyList", []);
-
-    if (prefs.getString('notifCategory') == "" ||
-        prefs.getString('notifCategory') == null) {
-      print("setting please wait ..");
-      prefs.setString("notifCategory", message.data["category"]);
+    if (message.data["category"] != "reloadData") {
+      if (prefs.getString('notifCategory') == "" ||
+          prefs.getString('notifCategory') == null) {
+        print("setting please wait ..");
+        prefs.setString("notifCategory", message.data["category"]);
+      }
+      await prefs.setStringList("bgNotifyList", [
+        message.data["category"],
+        DateTime.now().toString().substring(0, 11),
+        message.data["body"],
+        message.data["title"],
+        DateFormat('kk:mm:a').format(DateTime.now())
+      ]).whenComplete(() => print("background notification is set !!!"));
     }
-    await prefs.setStringList("bgNotifyList", [
-      message.data["category"],
-      DateTime.now().toString().substring(0, 11),
-      message.data["body"],
-      message.data["title"],
-      DateFormat('kk:mm:a').format(DateTime.now())
-    ]).whenComplete(() => print("background notification is set !!!"));
   } catch (e) {
     print(e);
   }
@@ -126,6 +127,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     if (Platform.isAndroid) huaweiHandler();
+
     super.initState();
   }
 
