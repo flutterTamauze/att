@@ -12,6 +12,7 @@ final androidDownloadLink =
     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
 final iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 final baseURL = "https://Chilangoback.tamauzeds.com";
+final imageUrl = "$baseURL/Resources/images/";
 final localURL = "http://192.168.0.114:8010";
 final huaweiAppId = "104665933";
 final huaweiSecret =
@@ -27,7 +28,7 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 25);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 10, 27);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 10, 19);
 Future<bool> onWillPop() {
@@ -115,35 +116,45 @@ int kCalcDateDifferance(String strtDate, String endDate) {
 
 class DetialsTextField extends StatelessWidget {
   final TextEditingController commentController;
-  DetialsTextField(this.commentController);
+  DetialsTextField(
+    this.commentController,
+  );
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Directionality(
-        textDirection: ui.TextDirection.rtl,
-        child: TextField(
-          controller: commentController,
-          cursorColor: Colors.orange,
-          maxLines: null,
-          decoration: InputDecoration(
-            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange),
+    return Form(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Directionality(
+          textDirection: ui.TextDirection.rtl,
+          child: TextFormField(
+            validator: (value) {
+              if (value.length == 0) {
+                return "test";
+              }
+              return null;
+            },
+            controller: commentController,
+            cursorColor: Colors.orange,
+            maxLines: null,
+            decoration: InputDecoration(
+              errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(width: 2, color: Colors.orange),
+              ),
+              disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 4)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.grey, width: 0)),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.grey, width: 0)),
+              hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+              hintText: "قم بأدخال التفاصيل هنا",
             ),
-            disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 4)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            hintText: "قم بأدخال التفاصيل هنا",
+            textAlign: TextAlign.right,
           ),
-          textAlign: TextAlign.right,
         ),
       ),
     );

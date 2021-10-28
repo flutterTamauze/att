@@ -350,7 +350,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    DetialsTextField(commentController),
+                                    DetialsTextField(
+                                      commentController,
+                                    ),
                                     SizedBox(
                                       height: 50.h,
                                     ),
@@ -667,7 +669,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 )),
                                               ),
                                             ),
-                                            DetialsTextField(commentController)
+                                            DetialsTextField(
+                                              commentController,
+                                            )
                                           ],
                                         ),
                                       ),

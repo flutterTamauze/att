@@ -337,6 +337,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         validator: (text) {
                                           if (text.length == 0) {
                                             return 'مطلوب';
+                                          } else if (text.length > 25) {
+                                            return "يجب ان لا يزيد اسم المناوبة عن 25 حرف";
                                           }
                                           return null;
                                         },
@@ -1037,9 +1039,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             shiftEndTime: int.parse(endString.replaceAll(":", "")),
             shiftName: _title.text,
             shiftId: widget.shift.shiftId,
-            siteID: Provider.of<SiteData>(context, listen: false)
-                .sitesList[siteId]
-                .id,
+            siteID: Provider.of<SiteShiftsData>(context, listen: false)
+                .siteShiftList[siteId]
+                .siteId,
           ),
           widget.id,
           user.userToken,

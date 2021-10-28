@@ -99,7 +99,7 @@ class CompanyData extends ChangeNotifier {
             com.id = decodedRes["data"]["id"];
             com.nameAr = decodedRes["data"]["nameAr"];
             com.nameEn = decodedRes["data"]["nameEn"];
-            com.logo = "$baseURL/${decodedRes["data"]["logo"]}";
+            com.logo = "$imageUrl${decodedRes["data"]["logo"]}";
             com.email = decodedRes["data"]["companyEmail"] ?? "";
             com.companyUsers = decodedRes["data"]["companyUsers"];
             com.companySites = decodedRes["data"]["companySites"];

@@ -255,7 +255,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               width: 1, color: Colors.orange),
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                "$baseURL/${widget.member.userImageURL}",
+                                                "$imageUrl${widget.member.userImageURL}",
                                               ),
                                               fit: BoxFit.fill)),
                                     )
@@ -278,6 +278,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         validator: (text) {
                                           if (text.length == 0) {
                                             return 'مطلوب';
+                                          } else if (text.length > 70) {
+                                            return "يجب ان لا يتخطي اسم المستخدم عن 70 حرف";
                                           }
                                           return null;
                                         },

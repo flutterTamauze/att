@@ -204,7 +204,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                     image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image: NetworkImage(
-                                        '$baseURL/${userData.userImageURL}',
+                                        '$imageUrl${userData.userImageURL}',
                                       ),
                                     ),
                                     shape: BoxShape.circle,

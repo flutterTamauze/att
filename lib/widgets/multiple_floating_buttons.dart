@@ -98,7 +98,6 @@ class MultipleFloatingButtons extends StatelessWidget {
                               builder: (context) => AddShiftScreen(
                                   Shift(), 0, false, siteId, siteId)));
                       break;
-                      ;
                   }
                 },
                 label: mainTitle,

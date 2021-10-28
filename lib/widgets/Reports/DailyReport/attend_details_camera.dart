@@ -75,7 +75,7 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$baseURL/$userAttendPictureURL',
+                                                    '$imageUrl$userAttendPictureURL',
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
                                                             context,
@@ -154,7 +154,7 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$baseURL/$userLeavePictureURL',
+                                                    '$imageUrl$userLeavePictureURL',
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
                                                             context,

@@ -188,7 +188,7 @@ class UserData with ChangeNotifier {
               user.isAllowedToAttend =
                   decodedRes["userData"]["isAllowtoAttend"];
               user.userImage =
-                  "$baseURL/${decodedRes["userData"]["userImage"]}";
+                  "$imageUrl${decodedRes["userData"]["userImage"]}";
               changedPassword =
                   decodedRes["userData"]["changedPassword"] as bool;
               siteName = decodedRes["companyData"]["siteName"];
@@ -202,7 +202,7 @@ class UserData with ChangeNotifier {
                 print("ana get b success");
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 String comImageFilePath =
-                    "$baseURL/${decodedRes["companyData"]["logo"]}";
+                    "$imageUrl${decodedRes["companyData"]["logo"]}";
 
                 String userImage = user.userImage;
                 var comProv = Provider.of<CompanyData>(context, listen: false);
@@ -381,13 +381,14 @@ class UserData with ChangeNotifier {
     bool isHawawi = await _huawei.isHuaweiDevice();
     print(image.lengthSync());
     String msg;
-    print("uploading image......$cardCode...${cardCode.length}...");
+    print("card code $cardCode");
+    print("qr code : $qrCode");
     if (await isConnectedToInternet("www.google.com")) {
       int locationService = await getCurrentLocation();
       if (locationService == 0) {
         var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
         var length = await image.length();
-        var uri = Uri.parse("$baseURL/api/AttendLogin");
+        var uri = Uri.parse("$localURL/api/AttendLogin");
 
         var request = new http.MultipartRequest("POST", uri);
         Map<String, String> headers = {

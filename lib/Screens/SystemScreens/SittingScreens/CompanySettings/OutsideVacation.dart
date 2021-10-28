@@ -81,6 +81,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
+    Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
     isPicked = false;
     userMission = getSingleUserMission();
     userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
@@ -779,10 +780,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 .fcmToken,
                                                             widget
                                                                 .member.osType,
-                                                            sitesData
-                                                                .sitesList[sitesData
-                                                                    .dropDownSitesIndex]
-                                                                .name,
+                                                            shiftsData
+                                                                .siteShiftList[
+                                                                    sitesData
+                                                                        .dropDownSitesIndex]
+                                                                .siteName,
                                                             shiftsData
                                                                 .shifts[sitesData
                                                                     .dropDownShiftIndex]

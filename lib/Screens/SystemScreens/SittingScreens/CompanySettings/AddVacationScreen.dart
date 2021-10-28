@@ -261,6 +261,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                     validator: (text) {
                                       if (text.length == 0) {
                                         return 'مطلوب';
+                                      } else if (text.length > 40) {
+                                        return "يجب ان لا يتخطي الأسم عن 40 حرف";
                                       }
                                       return null;
                                     },
@@ -326,46 +328,36 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                 backgroundColor: Colors.red);
                                           }
                                         } else {
-                                          if (_nameController.text.isEmpty) {
-                                            Fluttertoast.showToast(
-                                                msg: "برجاء إدخال اسم العطلة",
-                                                backgroundColor: Colors.red);
+                                          if (!_formKey.currentState
+                                              .validate()) {
+                                            return;
                                           } else {
-                                            if (!_formKey.currentState
-                                                .validate()) {
-                                              return;
+                                            String msg =
+                                                await vactionProv.addVacation(
+                                                    Vacation(
+                                                      vacationDate:
+                                                          selectedDate,
+                                                      vacationName:
+                                                          _nameController.text,
+                                                    ),
+                                                    userProvider.user.userToken,
+                                                    companyProvider.com.id,
+                                                    int.parse(
+                                                        _textEditingController
+                                                            .text));
+                                            if (msg == "Success") {
+                                              Fluttertoast.showToast(
+                                                  msg: "تم اضافة العطلة بنجاح",
+                                                  backgroundColor:
+                                                      Colors.green);
+
+                                              Navigator.pop(context);
                                             } else {
-                                              String msg =
-                                                  await vactionProv.addVacation(
-                                                      Vacation(
-                                                        vacationDate:
-                                                            selectedDate,
-                                                        vacationName:
-                                                            _nameController
-                                                                .text,
-                                                      ),
-                                                      userProvider
-                                                          .user.userToken,
-                                                      companyProvider.com.id,
-                                                      int.parse(
-                                                          _textEditingController
-                                                              .text));
-                                              if (msg == "Success") {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "تم اضافة العطلة بنجاح",
-                                                    backgroundColor:
-                                                        Colors.green);
+                                              Fluttertoast.showToast(
+                                                  msg: "خطأ فى اضافة العطلة",
+                                                  backgroundColor: Colors.red);
 
-                                                Navigator.pop(context);
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                    msg: "خطأ فى اضافة العطلة",
-                                                    backgroundColor:
-                                                        Colors.red);
-
-                                                Navigator.pop(context);
-                                              }
+                                              Navigator.pop(context);
                                             }
                                           }
                                         }

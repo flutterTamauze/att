@@ -814,7 +814,7 @@ class _MemberTileState extends State<MemberTile> {
                                   },
                                   fit: BoxFit.fill,
                                   image: NetworkImage(
-                                    '$baseURL/${widget.user.userImageURL}',
+                                    '$imageUrl${widget.user.userImageURL}',
                                   ),
                                 ),
                               ),
@@ -884,7 +884,7 @@ class _MemberTileState extends State<MemberTile> {
                                       image: DecorationImage(
                                         fit: BoxFit.fill,
                                         image: NetworkImage(
-                                          '$baseURL/${widget.user.userImageURL}',
+                                          '$imageUrl${widget.user.userImageURL}',
                                         ),
                                       ),
                                       shape: BoxShape.circle,

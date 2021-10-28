@@ -110,6 +110,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       validator: (text) {
                                         if (text.length == 0) {
                                           return 'مطلوب';
+                                        } else if (text.length > 35) {
+                                          return "يجب ان لا يزيد اسم الموقع عن 35 حرف";
                                         }
                                         return null;
                                       },
