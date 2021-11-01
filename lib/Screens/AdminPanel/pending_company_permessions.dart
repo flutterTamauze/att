@@ -110,28 +110,28 @@ class PendingCompanyPermessions extends StatelessWidget {
 
                                                       if (msg ==
                                                           "Success : User Updated!") {
-                                                        HuaweiServices _huawei =
-                                                            HuaweiServices();
-                                                        if (pending.osType ==
-                                                            3) {
-                                                          await _huawei
-                                                              .huaweiPostNotification(
-                                                                  pending
-                                                                      .fcmToken,
-                                                                  "طلب اذن",
-                                                                  "تم رفض طلب الأذن",
-                                                                  "permession");
-                                                        } else {
-                                                          await sendFcmMessage(
-                                                              category:
-                                                                  "permession",
-                                                              topicName: "",
-                                                              userToken: pending
-                                                                  .fcmToken,
-                                                              title: "طلب اذن",
-                                                              message:
-                                                                  "تم رفض طلب الأذن");
-                                                        }
+                                                        // HuaweiServices _huawei =
+                                                        //     HuaweiServices();
+                                                        // if (pending.osType ==
+                                                        //     3) {
+                                                        //   await _huawei
+                                                        //       .huaweiPostNotification(
+                                                        //           pending
+                                                        //               .fcmToken,
+                                                        //           "طلب اذن",
+                                                        //           "تم رفض طلب الأذن",
+                                                        //           "permession");
+                                                        // }
+
+                                                        await sendFcmMessage(
+                                                            category:
+                                                                "permession",
+                                                            topicName: "",
+                                                            userToken: pending
+                                                                .fcmToken,
+                                                            title: "طلب اذن",
+                                                            message:
+                                                                "تم رفض طلب الأذن");
 
                                                         Fluttertoast.showToast(
                                                             msg:

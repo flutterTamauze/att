@@ -65,7 +65,6 @@ dependencies:
   flutter_screenutil: ^4.0.3+3  
   fluttercontactpicker: ^4.2.1
   device_info: ^0.4.0+4
-  get_mac: ^0.0.1
   flutter_secure_storage:
   auto_size_text: ^2.1.0
   flutter_jailbreak_detection: ^1.4.0
@@ -77,7 +76,6 @@ dependencies:
   animations: ^2.0.1
   # firebase_ml_vision: ^0.9.2+1
   google_ml_vision: ^0.0.7
-  meta: ^1.1.8
   flutter_udid:
   tflite_flutter: 
   tflite_flutter_helper:

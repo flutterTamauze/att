@@ -70,9 +70,14 @@ class _UserAttendanceReportScreenState
 
   @override
   void initState() {
+    print(Provider.of<ReportsData>(context, listen: false)
+        .userAttendanceReport
+        .isDayOff);
     DateTime companyDate =
         Provider.of<CompanyData>(context, listen: false).com.createdOn;
-
+    siteId = Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[0]
+        .siteId;
     super.initState();
     print("id $widget.id");
     var now = DateTime.now();
@@ -83,6 +88,10 @@ class _UserAttendanceReportScreenState
     Provider.of<MemberData>(context, listen: false).loadingSearch = false;
     if (fromDate.isBefore(companyDate)) {
       fromDate = companyDate;
+    }
+    if (toDate.isBefore(fromDate)) {
+      fromDate = DateTime(now.year, now.month - 1,
+          Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     }
     if (widget.userFromDate != null && widget.userToDate != null) {
       fromDate = widget.userFromDate;
@@ -116,7 +125,8 @@ class _UserAttendanceReportScreenState
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
           siteId,
-          companyId);
+          companyId,
+          context);
       focusNode.requestFocus();
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();
@@ -243,12 +253,17 @@ class _UserAttendanceReportScreenState
                                                     day: _dateController.text,
                                                     userName:
                                                         _nameController.text,
-                                                    site: Provider.of<
-                                                                SiteShiftsData>(
-                                                            context)
-                                                        .siteShiftList[
-                                                            siteIdIndex]
-                                                        .siteName,
+                                                    site: userDataProvider.user
+                                                                .userType ==
+                                                            2
+                                                        ? userDataProvider
+                                                            .siteName
+                                                        : Provider.of<
+                                                                    SiteShiftsData>(
+                                                                context)
+                                                            .siteShiftList[
+                                                                siteIdIndex]
+                                                            .siteName,
                                                   )
                                                 : Container();
 
@@ -394,15 +409,15 @@ class _UserAttendanceReportScreenState
                                               .siteShiftList[siteIdIndex]
                                               .siteId;
 
-                                          Provider.of<MemberData>(context,
-                                                  listen: false)
-                                              .getAllSiteMembers(
-                                                  siteId,
-                                                  Provider.of<UserData>(context,
-                                                          listen: false)
-                                                      .user
-                                                      .userToken,
-                                                  context);
+                                          // Provider.of<MemberData>(context,
+                                          //         listen: false)
+                                          //     .getAllSiteMembers(
+                                          //         siteId,
+                                          //         Provider.of<UserData>(context,
+                                          //                 listen: false)
+                                          //             .user
+                                          //             .userToken,
+                                          //         context);
                                           setState(() {});
                                         }
                                         print(value);
@@ -456,7 +471,11 @@ class _UserAttendanceReportScreenState
                                                     setState(() {
                                                       searchInList(
                                                           _nameController.text,
-                                                          siteId,
+                                                          userDataProvider.user
+                                                                      .userType ==
+                                                                  2
+                                                              ? -1
+                                                              : siteId,
                                                           Provider.of<CompanyData>(
                                                                   context,
                                                                   listen: false)

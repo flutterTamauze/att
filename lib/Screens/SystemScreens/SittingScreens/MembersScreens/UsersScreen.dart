@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +50,7 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   TextEditingController _nameController = TextEditingController();
-  // AutoCompleteTextField searchTextField;
+  AutoCompleteTextField searchTextField;
   final ScrollController _scrollController = ScrollController();
   String currentShiftName;
   void _onRefresh() async {
@@ -187,10 +188,10 @@ class _UsersScreenState extends State<UsersScreen> {
         print("Got members");
       });
     }
-
-    widget.selectedValue = Provider.of<SiteData>(context, listen: false)
-        .dropDownSitesList[siteIndex]
-        .name;
+    if (mounted)
+      widget.selectedValue = Provider.of<SiteData>(context, listen: false)
+          .dropDownSitesList[siteIndex]
+          .name;
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
@@ -212,7 +213,8 @@ class _UsersScreenState extends State<UsersScreen> {
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
           siteId,
-          companyId);
+          companyId,
+          context);
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();
     }
@@ -248,10 +250,6 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
-            print(Provider.of<SiteShiftsData>(context)
-                .shifts[Provider.of<SiteData>(context, listen: false)
-                    .currentShiftIndex]
-                .shiftName);
             setState(() {
               _nameController.text = "";
             });
@@ -267,7 +265,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       children: [
                         Header(
                           nav: false,
-                          goUserHomeFromMenu: false,
+                          goUserHomeFromMenu: true,
                           goUserMenu: false,
                         ),
                         Directionality(
@@ -472,59 +470,63 @@ class _UsersScreenState extends State<UsersScreen> {
                                                       ? Consumer<MemberData>(
                                                           builder: (context,
                                                               value, child) {
-                                                            return Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topCenter,
-                                                                width: double
-                                                                    .infinity,
-                                                                child: ListView
-                                                                    .builder(
-                                                                        itemCount: value
-                                                                            .userSearchMember
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (BuildContext context,
-                                                                                int index) {
-                                                                          return Directionality(
-                                                                            textDirection:
-                                                                                TextDirection.rtl,
-                                                                            child:
-                                                                                InkWell(
-                                                                              onTap: () {
-                                                                                Navigator.push(
-                                                                                    context,
-                                                                                    MaterialPageRoute(
-                                                                                      builder: (context) => UserFullDataScreen(
-                                                                                        index: index,
-                                                                                        onResetMac: () {
-                                                                                          settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                        },
-                                                                                        onTapDelete: () {
-                                                                                          settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                        },
-                                                                                        siteIndex: siteIndex,
-                                                                                        userId: value.userSearchMember[index].id,
+                                                            return value
+                                                                    .loadingSearch
+                                                                ? Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    ),
+                                                                  )
+                                                                : Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topCenter,
+                                                                    width: double
+                                                                        .infinity,
+                                                                    child: ListView
+                                                                        .builder(
+                                                                            itemCount:
+                                                                                value.userSearchMember.length,
+                                                                            itemBuilder: (BuildContext context, int index) {
+                                                                              return Directionality(
+                                                                                textDirection: TextDirection.rtl,
+                                                                                child: InkWell(
+                                                                                  onTap: () {
+                                                                                    Navigator.push(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                          builder: (context) => UserFullDataScreen(
+                                                                                            index: index,
+                                                                                            onResetMac: () {
+                                                                                              settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                            },
+                                                                                            onTapDelete: () {
+                                                                                              settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                            },
+                                                                                            siteIndex: siteIndex,
+                                                                                            userId: value.userSearchMember[index].id,
+                                                                                          ),
+                                                                                        ));
+                                                                                  },
+                                                                                  child: Card(
+                                                                                    elevation: 2,
+                                                                                    child: Container(
+                                                                                      alignment: Alignment.centerRight,
+                                                                                      width: double.infinity,
+                                                                                      height: 50.h,
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.all(10.0),
+                                                                                        child: Text(
+                                                                                          value.userSearchMember[index].username,
+                                                                                        ),
                                                                                       ),
-                                                                                    ));
-                                                                              },
-                                                                              child: Card(
-                                                                                elevation: 2,
-                                                                                child: Container(
-                                                                                  alignment: Alignment.centerRight,
-                                                                                  width: double.infinity,
-                                                                                  height: 50.h,
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.all(10.0),
-                                                                                    child: Text(
-                                                                                      value.userSearchMember[index].username,
                                                                                     ),
                                                                                   ),
                                                                                 ),
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        }));
+                                                                              );
+                                                                            }));
                                                           },
                                                         )
                                                       : memberData.membersList
@@ -644,7 +646,15 @@ class _UsersScreenState extends State<UsersScreen> {
                           mainTitle: 'إضافة مستخدم',
                           mainIconData: Icons.person_add,
                         )
-                      : Container()),
+                      : MultipleFloatingButtons(
+                          shiftIndex:
+                              Provider.of<SiteData>(context, listen: false)
+                                  .currentShiftIndex,
+                          comingFromShifts: widget.comingFromShifts,
+                          shiftName: "",
+                          mainTitle: "",
+                          mainIconData: Icons.person_add,
+                        )),
         ),
       );
     });

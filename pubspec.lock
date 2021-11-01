@@ -450,13 +450,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
-  get_mac:
-    dependency: "direct main"
-    description:
-      name: get_mac
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   getwidget:
     dependency: "direct main"
     description:
@@ -598,7 +591,7 @@ packages:
     source: hosted
     version: "0.12.10"
   meta:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"

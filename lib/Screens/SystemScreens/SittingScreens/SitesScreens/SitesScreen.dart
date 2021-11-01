@@ -434,7 +434,12 @@ class _SitesScreenState extends State<SitesScreen> {
                           comingFromShifts: false,
                           mainIconData: Icons.add_location_alt,
                         )
-                      : Container()));
+                      : MultipleFloatingButtons(
+                          mainTitle: "",
+                          shiftName: "",
+                          comingFromShifts: false,
+                          mainIconData: Icons.add_location_alt,
+                        )));
     });
   }
 

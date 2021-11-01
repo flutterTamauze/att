@@ -47,6 +47,11 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
+    if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
+      var notificationProv =
+          Provider.of<NotificationDataService>(context, listen: false);
+      notificationProv.firebaseMessagingConfig(context);
+    }
     //Check for updates
     if (Platform.isAndroid) {
       if (showApk) {

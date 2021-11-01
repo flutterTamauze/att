@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,7 +79,7 @@ class _DataTableRowState extends State<DataTableRow> {
                     builder: (BuildContext context) {
                       return RoundedLoadingIndicator();
                     });
-                getMembersData();
+                // getMembersData();
                 DateTime companyDate =
                     Provider.of<CompanyData>(context, listen: false)
                         .com
@@ -110,6 +111,12 @@ class _DataTableRowState extends State<DataTableRow> {
                         ),
                       ),
                     );
+                  } else if (value == "failed") {
+                    Fluttertoast.showToast(
+                        msg: 'حدث خطأ',
+                        backgroundColor: Colors.red,
+                        gravity: ToastGravity.CENTER);
+                    Navigator.pop(context);
                   }
                 });
               },

@@ -259,20 +259,6 @@ class RoundedSearchBar extends StatelessWidget {
                                             prov.setDropDownIndex(0);
                                           }
 
-                                          // await Provider.of<ShiftsData>(context,
-                                          //         listen: false)
-                                          //     .findMatchingShifts(
-                                          //         Provider.of<SiteData>(context,
-                                          //                 listen: false)
-                                          //             .sitesList[
-                                          //                 prov.dropDownSitesIndex]
-                                          //             .id,
-                                          //         true);
-
-                                          // prov.fillCurrentShiftID(
-                                          //     list[prov.dropDownSitesIndex + 1]
-                                          //         .id);
-
                                           prov.setSiteValue(v);
                                           print(prov.dropDownSitesStrings);
                                         },

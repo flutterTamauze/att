@@ -46,7 +46,8 @@ class _VacationAndPermessionsReportState
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
           siteId,
-          companyId);
+          companyId,
+          context);
       focusNode.requestFocus();
     } else {
       Provider.of<MemberData>(context, listen: false).resetUsers();

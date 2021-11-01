@@ -217,8 +217,11 @@ class UserData with ChangeNotifier {
                       .toList();
                   superCompaniesList.addAll(tempComp);
                 }
-                Provider.of<SiteShiftsData>(context, listen: false)
-                    .getAllSitesAndShifts(companyId, user.userToken);
+                if (user.userType == 4 || user.userType == 3) {
+                  Provider.of<SiteShiftsData>(context, listen: false)
+                      .getAllSitesAndShifts(companyId, user.userToken);
+                }
+
                 List<String> userData = [
                   user.name,
                   user.userJob,

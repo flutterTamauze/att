@@ -150,16 +150,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               if (userProvider.user.userType == 2) {
                                 var siteProv = Provider.of<SiteData>(context,
                                     listen: false);
-                                var shiftProv = Provider.of<ShiftsData>(context,
+                                var shiftProv = Provider.of<SiteShiftsData>(
+                                    context,
                                     listen: false);
-                                Provider.of<SiteShiftsData>(context,
-                                        listen: false)
-                                    .getShiftsList(
-                                        Provider.of<SiteShiftsData>(context,
-                                                listen: false)
-                                            .siteShiftList[0]
-                                            .siteName,
-                                        true);
+                                if (userProvider.user.userType == 4 ||
+                                    userProvider.user.userType == 3) {
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .getShiftsList(
+                                          Provider.of<SiteShiftsData>(context,
+                                                  listen: false)
+                                              .siteShiftList[0]
+                                              .siteName,
+                                          true);
+                                  siteProv.fillCurrentShiftID(
+                                      Provider.of<ShiftsData>(context,
+                                              listen: false)
+                                          .shiftsBySite[0]
+                                          .shiftId);
+                                }
+
                                 siteProv.setDropDownShift(
                                     0); //الموقع علي حسب ال اندكس اللي
                                 // siteProv.setSiteValue(Provider.of<ShiftsData>(
@@ -175,11 +185,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 siteProv.setDropDownShift(0);
                                 siteProv.setDropDownIndex(
                                     userDataProvider.user.userSiteId);
-                                siteProv.fillCurrentShiftID(
-                                    Provider.of<ShiftsData>(context,
-                                            listen: false)
-                                        .shiftsBySite[0]
-                                        .shiftId);
 
                                 // await Provider.of<ShiftsData>(context,
                                 //         listen: false)
@@ -189,14 +194,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 //             .user
                                 //             .userSiteId,
                                 //         false);
-                                Navigator.of(context).push(
-                                  new MaterialPageRoute(
-                                    builder: (context) => SiteAdminUserScreen(
-                                        userProvider.user.userSiteId + 1,
-                                        true,
-                                        shiftProv.shiftsBySite[0].shiftName),
-                                  ),
-                                );
+                                if (userDataProvider.user.userType == 4 ||
+                                    userDataProvider.user.userType == 3) {
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) => SiteAdminUserScreen(
+                                          userProvider.user.userSiteId + 1,
+                                          true,
+                                          shiftProv.shifts[0].shiftName ?? 0),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) => SiteAdminUserScreen(
+                                          userProvider.user.userSiteId + 1,
+                                          true,
+                                          ""),
+                                    ),
+                                  );
+                                }
                               } else {
                                 var bool = await userDataProvider
                                     .isConnectedToInternet("www.google.com");

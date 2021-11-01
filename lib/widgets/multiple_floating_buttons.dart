@@ -42,71 +42,77 @@ class MultipleFloatingButtons extends StatelessWidget {
           curve: Curves.bounceIn,
           children: [
             // FAB 1
-            SpeedDialChild(
-                child: Icon(
-                  mainIconData,
-                ),
-                backgroundColor: Colors.orange[600],
-                onTap: () {
-                  switch (mainTitle) {
-                    case "إضافة مستخدم":
-                      if (Provider.of<SiteShiftsData>(context, listen: false)
-                              .shifts
-                              .isEmpty &&
-                          Provider.of<SiteData>(context, listen: false)
-                                  .siteValue !=
-                              "كل المواقع") {
-                        Fluttertoast.showToast(
-                            backgroundColor: Colors.red,
-                            msg:
-                                "لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا",
-                            gravity: ToastGravity.CENTER);
-                      } else {
-                        Navigator.push(
+            mainTitle == ""
+                ? SpeedDialChild(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    labelBackgroundColor: Colors.white)
+                : SpeedDialChild(
+                    child: Icon(
+                      mainIconData,
+                    ),
+                    backgroundColor: Colors.orange[600],
+                    onTap: () {
+                      switch (mainTitle) {
+                        case "إضافة مستخدم":
+                          if (Provider.of<SiteShiftsData>(context,
+                                      listen: false)
+                                  .shifts
+                                  .isEmpty &&
+                              Provider.of<SiteData>(context, listen: false)
+                                      .siteValue !=
+                                  "كل المواقع") {
+                            Fluttertoast.showToast(
+                                backgroundColor: Colors.red,
+                                msg:
+                                    "لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا",
+                                gravity: ToastGravity.CENTER);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddUserScreen(
+                                          Member(),
+                                          0,
+                                          false,
+                                          "",
+                                          "",
+                                          comingFromShifts,
+                                          shiftName,
+                                        )));
+                          }
+
+                          break;
+
+                        case "إضافة موقع":
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddUserScreen(
-                                      Member(),
-                                      0,
-                                      false,
-                                      "",
-                                      "",
-                                      comingFromShifts,
-                                      shiftName,
-                                    )));
+                                builder: (context) => AddLocationMapScreen(
+                                    Site(
+                                      lat: 0.0,
+                                      long: 0.0,
+                                      name: "",
+                                    ),
+                                    0)),
+                          );
+                          break;
+                        case "إضافة مناوبة":
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddShiftScreen(
+                                      Shift(), 0, false, siteId, siteId)));
+                          break;
                       }
-
-                      break;
-
-                    case "إضافة موقع":
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddLocationMapScreen(
-                                Site(
-                                  lat: 0.0,
-                                  long: 0.0,
-                                  name: "",
-                                ),
-                                0)),
-                      );
-                      break;
-                    case "إضافة مناوبة":
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddShiftScreen(
-                                  Shift(), 0, false, siteId, siteId)));
-                      break;
-                  }
-                },
-                label: mainTitle,
-                elevation: 5,
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    fontSize: 16.0),
-                labelBackgroundColor: Colors.black),
+                    },
+                    label: mainTitle,
+                    elevation: 5,
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 16.0),
+                    labelBackgroundColor: Colors.black),
             // FAB 2
 
             SpeedDialChild(

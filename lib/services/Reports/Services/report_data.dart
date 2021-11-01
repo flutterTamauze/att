@@ -433,8 +433,7 @@ class ReportsData with ChangeNotifier {
         var decodedRes = json.decode(response.body);
         isLoading = false;
         print(response.body);
-        print("asdnklsfanlsfa0");
-        print(decodedRes['data']['totalLateDay']);
+
         if (decodedRes["message"] == "Success") {
           userAttendanceReport.totalOfficialVacation =
               decodedRes["data"]["totalOffcialVacation"];
@@ -482,7 +481,7 @@ class ReportsData with ChangeNotifier {
           return "wrong";
         }
       }
-
+      print(response.statusCode);
       return "failed";
     } else {
       return 'noInternet';
@@ -509,7 +508,7 @@ class ReportsData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
-
+        print(response.statusCode);
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =

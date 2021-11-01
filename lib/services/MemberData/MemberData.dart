@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -129,8 +130,8 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  searchUsersList(
-      String filter, String userToken, siteId, int companyId) async {
+  searchUsersList(String filter, String userToken, siteId, int companyId,
+      BuildContext context) async {
     if (siteId == -1) {
       siteId = "";
     }
@@ -150,6 +151,12 @@ class MemberData with ChangeNotifier {
       print(response.body);
       if (decodedRes["message"] == "Success") {
         var memberObjJson = jsonDecode(response.body)['data'] as List;
+        if (membersList.isEmpty) {
+          Provider.of<ReportsData>(context, listen: false)
+              .userAttendanceReport
+              .userAttendListUnits
+              .length = 0;
+        }
         if (memberObjJson != null) {
           userSearchMember = memberObjJson
               .map((memberJson) => SearchMember.fromJson(memberJson))

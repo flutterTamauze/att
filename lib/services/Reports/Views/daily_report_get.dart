@@ -11,13 +11,16 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
   int siteID;
   var userProvider = Provider.of<UserData>(context, listen: false);
   var comProvider = Provider.of<CompanyData>(context, listen: false);
+  print("company id ${comProvider.com.id}");
   if (userProvider.user.userType == 2) {
     if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
       await Provider.of<SiteData>(context, listen: false).getSpecificSite(
           userProvider.user.userSiteId, userProvider.user.userToken, context);
     }
   } else {
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
+    if (Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList
+        .isEmpty) {
       await Provider.of<SiteData>(context, listen: false)
           .getSitesByCompanyId(
         comProvider.com.id,
@@ -25,9 +28,9 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
         context,
       )
           .then((value) {
-        siteID = Provider.of<SiteData>(context, listen: false)
-            .sitesList[siteIndex]
-            .id;
+        siteID = Provider.of<SiteShiftsData>(context, listen: false)
+            .siteShiftList[siteIndex]
+            .siteId;
         print("SiteIndex $siteIndex");
       });
     } else {

@@ -38,7 +38,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   ScrollController _scrollController = ScrollController();
   TextEditingController _dateController = TextEditingController();
   int selectedDuration;
-  var toDate;
+  DateTime toDate;
   DateTime fromDate;
   DateTime yesterday;
   Site siteData;
@@ -48,12 +48,14 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   void initState() {
     super.initState();
     var now = DateTime.now();
-
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     toDate = DateTime(now.year, now.month, now.day - 1);
     yesterday = DateTime(now.year, now.month, now.day - 1);
-
+    if (toDate.isBefore(fromDate)) {
+      fromDate = DateTime(now.year, now.month - 1,
+          Provider.of<CompanyData>(context, listen: false).com.legalComDate);
+    }
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
 
@@ -86,25 +88,26 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
         isLoading = false;
       });
     } else {
-      if (memProv.membersList.isEmpty) {
-        await memProv.getAllCompanyMember(siteId, comProvider.com.id,
-            userProvider.user.userToken, context, -1);
-      }
-      if (siteProv.sitesList.isEmpty) {
-        await siteProv
-            .getSitesByCompanyId(
-          comProvider.com.id,
-          userProvider.user.userToken,
-          context,
-        )
-            .then((value) {
-          siteID = siteProv.sitesList[siteIndex].id;
-        });
-      } else {
-        siteID = Provider.of<SiteShiftsData>(context, listen: false)
-            .siteShiftList[siteIndex]
-            .siteId;
-      }
+      // if (memProv.membersList.isEmpty) {
+      //   await memProv.getAllCompanyMember(siteId, comProvider.com.id,
+      //       userProvider.user.userToken, context, -1);
+      // }
+      // if (siteProv.sitesList.isEmpty) {
+      //   await siteProv
+      //       .getSitesByCompanyId(
+      //     comProvider.com.id,
+      //     userProvider.user.userToken,
+      //     context,
+      //   )
+      //       .then((value) {
+      //     siteID = siteProv.sitesList[siteIndex].id;
+      //   });
+      // }
+      // else {
+      siteID = Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[siteIndex]
+          .siteId;
+      // }
     }
     await Provider.of<ReportsData>(context, listen: false).getLateAbsenceReport(
         userProvider.user.userToken,

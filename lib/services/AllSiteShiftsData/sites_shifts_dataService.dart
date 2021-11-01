@@ -58,6 +58,7 @@ class SiteShiftsData with ChangeNotifier {
       "Accept": "application/json"
     });
     log(response.body);
+    print(response.statusCode);
     var decodedResponse = json.decode(response.body);
     if (response.statusCode == 200) {
       if (decodedResponse["message"] == "Success") {

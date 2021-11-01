@@ -192,7 +192,30 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                           ),
                                                         )
                                                       : Container()
-                                                  : Container(),
+                                                  : widget.status == 1
+                                                      ? widget.adminComment ==
+                                                                  "" ||
+                                                              widget.adminComment ==
+                                                                  null
+                                                          ? Container()
+                                                          : Container(
+                                                              child: Text(
+                                                                "تعليق الأدمن : ${widget.adminComment}",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .right,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .green,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            )
+                                                      : Container(),
                                             ],
                                           )
                                         : Container(

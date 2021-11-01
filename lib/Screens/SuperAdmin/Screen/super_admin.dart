@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/widgets/SuperAdminTile.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -97,7 +98,11 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                         });
                                     await getCompanyData(userData
                                         .superCompaniesList[index].companyId);
-
+                                    await Provider.of<SiteShiftsData>(context,
+                                            listen: false)
+                                        .getAllSitesAndShifts(
+                                            comProvider.com.id,
+                                            userData.user.userToken);
                                     await memProv.getAllCompanyMember(
                                         0,
                                         comProvider.com.id,

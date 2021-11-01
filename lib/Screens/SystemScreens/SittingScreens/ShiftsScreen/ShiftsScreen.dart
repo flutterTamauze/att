@@ -434,7 +434,12 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                           siteId: siteId,
                           comingFromShifts: false,
                           mainIconData: Icons.alarm_add_sharp)
-                      : Container()),
+                      : MultipleFloatingButtons(
+                          mainTitle: "",
+                          shiftName: "",
+                          siteId: siteId,
+                          comingFromShifts: false,
+                          mainIconData: Icons.alarm_add_sharp)),
         ),
       );
     });

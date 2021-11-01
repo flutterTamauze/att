@@ -163,12 +163,19 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           reportType: 0,
                                                           title:
                                                               "تقرير الحضور اليومى",
-                                                          site: Provider.of<
-                                                                      SiteShiftsData>(
-                                                                  context)
-                                                              .siteShiftList[
-                                                                  siteId]
-                                                              .siteName,
+                                                          site: userType == 2
+                                                              ? Provider.of<
+                                                                          UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .siteName
+                                                              : Provider.of<
+                                                                          SiteShiftsData>(
+                                                                      context)
+                                                                  .siteShiftList[
+                                                                      siteId]
+                                                                  .siteName,
                                                           day: date,
                                                         )
                                                   : Container(),
