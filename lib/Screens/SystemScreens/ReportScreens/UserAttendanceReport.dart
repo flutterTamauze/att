@@ -90,6 +90,7 @@ class _UserAttendanceReportScreenState
       fromDate = companyDate;
     }
     if (toDate.isBefore(fromDate)) {
+      print("to date is before from date");
       fromDate = DateTime(now.year, now.month - 1,
           Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     }

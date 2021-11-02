@@ -28,7 +28,7 @@ class DataTableRow extends StatefulWidget {
 
 class _DataTableRowState extends State<DataTableRow> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
+  var now = DateTime.now();
   getMembersData() async {
     print("inside");
     var userProvider = Provider.of<UserData>(context, listen: false);
@@ -87,6 +87,15 @@ class _DataTableRowState extends State<DataTableRow> {
                 if (fromDate.isBefore(companyDate)) {
                   fromDate = companyDate;
                 }
+                if (toDate.isBefore(fromDate)) {
+                  print("to date is before from date");
+                  fromDate = DateTime(
+                      now.year,
+                      now.month - 1,
+                      Provider.of<CompanyData>(context, listen: false)
+                          .com
+                          .legalComDate);
+                }
                 await Provider.of<ReportsData>(context, listen: false)
                     .getUserReportUnits(
                         userProvider.userToken,
@@ -103,8 +112,8 @@ class _DataTableRowState extends State<DataTableRow> {
                       new MaterialPageRoute(
                         builder: (context) => UserAttendanceReportScreen(
                           name: widget.attendUnit.userName,
-
-                          userToDate: DateTime.now(),
+                          userFromDate: fromDate,
+                          userToDate: toDate,
                           id: widget.attendUnit.userId,
                           siteId: widget.siteId,
                           // siteIndex:

@@ -241,9 +241,6 @@ class NotificationDataService with ChangeNotifier {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        Future.delayed(Duration(minutes: 5), () {
-          Navigator.of(context).pop();
-        });
         return StackedNotificaitonAlert(
           notificationTitle: "اثبات حضور",
           notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
