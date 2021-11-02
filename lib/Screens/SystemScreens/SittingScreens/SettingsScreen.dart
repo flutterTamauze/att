@@ -215,9 +215,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   );
                                 }
                               } else {
-                                var bool = await userDataProvider
+                                var networkStatus = await userDataProvider
                                     .isConnectedToInternet("www.google.com");
-                                if (bool) {
+                                if (networkStatus) {
                                   Provider.of<SiteData>(context, listen: false)
                                       .setSiteValue("كل المواقع");
                                   Provider.of<SiteData>(context, listen: false)

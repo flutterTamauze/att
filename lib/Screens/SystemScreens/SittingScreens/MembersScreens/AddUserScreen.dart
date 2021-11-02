@@ -812,27 +812,31 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 token,
                                                 context,
                                                 getRoleName(userRole));
-                                        Navigator.pop(context);
+
                                         if (msg == "Success") {
                                           Provider.of<SiteData>(context,
                                                   listen: false)
                                               .setSiteValue("كل المواقع");
-
                                           await Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UsersScreen(-1, false, ""),
-                                              ));
-
-                                          Fluttertoast.showToast(
-                                              msg: "تم اضافة المستخدم بنجاح",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.CENTER,
-                                              timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.green,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UsersScreen(
+                                                            -1, false, ""),
+                                                  ))
+                                              .then((value) =>
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "تم اضافة المستخدم بنجاح",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0));
                                         } else if (msg == "exists") {
                                           Fluttertoast.showToast(
                                               msg:

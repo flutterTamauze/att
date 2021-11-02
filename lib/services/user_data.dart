@@ -391,7 +391,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
         var length = await image.length();
-        var uri = Uri.parse("$localURL/api/AttendLogin");
+        var uri = Uri.parse("$baseURL/api/AttendLogin");
 
         var request = new http.MultipartRequest("POST", uri);
         Map<String, String> headers = {
@@ -670,9 +670,9 @@ class UserData with ChangeNotifier {
   }
 
   Future<int> getCurrentLocation() async {
-    //await checkPermissions();
+    // await checkPermissions();
     HuaweiServices _huawei = HuaweiServices();
-    bool enabled;
+    bool enabled = true;
     bool isHawawi = await _huawei.isHuaweiDevice();
     if (!isHawawi) {
       enabled = await Geolocator.isLocationServiceEnabled();

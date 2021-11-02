@@ -3,33 +3,26 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
-import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/Shared/shimmer_builder.dart';
 import 'package:qr_users/widgets/UserFullData/member_tile.dart';
 import 'package:qr_users/widgets/UserFullData/rounded_searchBar.dart';
-import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
@@ -136,18 +129,6 @@ class _UsersScreenState extends State<UsersScreen> {
   getData() async {
     var userProvider = Provider.of<UserData>(context);
     var comProvier = Provider.of<CompanyData>(context);
-
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false)
-          .getSitesByCompanyId(
-        comProvier.com.id,
-        userProvider.user.userToken,
-        context,
-      )
-          .then((value) async {
-        print("Got Sites");
-      });
-    }
 
     if (widget.selectedIndex != -1) {
       siteIndex = widget.selectedIndex;
@@ -362,6 +343,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                       .dropDownSitesList,
                                                   dropdownValue:
                                                       widget.selectedValue,
+                                                  resetTextFieldFun: () {
+                                                    setState(() {
+                                                      _nameController.text = "";
+                                                    });
+                                                  },
                                                   searchFun: (value) {
                                                     int siteiD = -1;
                                                     int siteindex =
@@ -572,25 +558,51 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                         );
                                                                       }),
                                                             )
-                                                          : Center(
-                                                              child:
-                                                                  AutoSizeText(
-                                                                "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
-                                                                maxLines: 1,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: TextStyle(
-                                                                    height: 2,
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
-                                                              ),
-                                                            )),
+                                                          : widget.selectedValue ==
+                                                                      "كل المواقع" ||
+                                                                  Provider.of<SiteData>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .dropDownShiftIndex ==
+                                                                      0
+                                                              ? Center(
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
+                                                                    maxLines: 1,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        height:
+                                                                            2,
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  ),
+                                                                )
+                                                              : Center(
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
+                                                                    maxLines: 1,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        height:
+                                                                            2,
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  ),
+                                                                )),
                                             ],
                                           );
                                         default:

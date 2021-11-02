@@ -6,6 +6,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
@@ -21,9 +22,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
-class RoundedSearchBar extends StatelessWidget {
+class RoundedSearchBar extends StatefulWidget {
   final Function searchFun;
   final Function dropdownFun;
+  final Function resetTextFieldFun;
   bool iscomingFromShifts = false;
   final String dropdownValue;
   final List<Site> list;
@@ -35,7 +37,15 @@ class RoundedSearchBar extends StatelessWidget {
       this.dropdownValue,
       this.iscomingFromShifts,
       this.list,
-      this.textController});
+      this.textController,
+      this.resetTextFieldFun});
+
+  @override
+  _RoundedSearchBarState createState() => _RoundedSearchBarState();
+}
+
+class _RoundedSearchBarState extends State<RoundedSearchBar> {
+  bool showSearchButton = true;
   String plusSignPhone(String phoneNum) {
     int len = phoneNum.length;
     return "+ ${phoneNum.substring(0, len - 1)}";
@@ -222,7 +232,7 @@ class RoundedSearchBar extends StatelessWidget {
                                         isExpanded: true,
                                         underline: SizedBox(),
                                         elevation: 5,
-                                        items: list
+                                        items: widget.list
                                             .map((value) => DropdownMenuItem(
                                                   child: Container(
                                                     alignment:
@@ -249,7 +259,7 @@ class RoundedSearchBar extends StatelessWidget {
                                               .getShiftsList(v, true);
                                           prov.setDropDownShift(0);
 
-                                          dropdownFun(v);
+                                          widget.dropdownFun(v);
                                           if (v != "كل المواقع") {
                                             prov.setDropDownIndex(prov
                                                     .dropDownSitesStrings
@@ -262,7 +272,7 @@ class RoundedSearchBar extends StatelessWidget {
                                           prov.setSiteValue(v);
                                           print(prov.dropDownSitesStrings);
                                         },
-                                        value: dropdownValue,
+                                        value: widget.dropdownValue,
                                       );
                                     },
                                   ),
@@ -303,7 +313,19 @@ class RoundedSearchBar extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: textController,
+                        onChanged: (String v) {
+                          print(v);
+                          if (v.isEmpty) {
+                            widget.resetTextFieldFun();
+                          }
+                          print(showSearchButton);
+                          if (showSearchButton == false) {
+                            setState(() {
+                              showSearchButton = true;
+                            });
+                          }
+                        },
+                        controller: widget.textController,
                         style: TextStyle(
                             fontSize: ScreenUtil()
                                 .setSp(16, allowFontScalingSelf: true)),
@@ -325,13 +347,29 @@ class RoundedSearchBar extends StatelessWidget {
                               onTap: () {
                                 if (!_formkey.currentState.validate()) {
                                   return;
-                                } else
-                                  searchFun(textController.text);
+                                } else {
+                                  setState(() {
+                                    showSearchButton = false;
+                                    widget
+                                        .searchFun(widget.textController.text);
+                                  });
+                                }
                               },
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.orange,
-                              ),
+                              child: showSearchButton
+                                  ? Icon(
+                                      Icons.search,
+                                      color: Colors.orange,
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          showSearchButton = true;
+                                        });
+                                        widget.resetTextFieldFun();
+                                      },
+                                      child: Icon(FontAwesomeIcons.times,
+                                          color: Colors.orange),
+                                    ),
                             ),
                             errorMaxLines: 2),
                       ),
