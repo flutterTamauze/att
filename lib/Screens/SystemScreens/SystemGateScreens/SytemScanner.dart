@@ -122,20 +122,10 @@ class _SystemScanPageState extends State<SystemScanPage> {
   }
 
   secondPageRoute() async {
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return RoundedLoadingIndicator();
-    //     });
     print("Qr text $qrText");
-
     player.play("cap.wav");
     controller?.pauseCamera();
-    //  WidgetsFlutterBinding.ensureInitialized();
 
-    // var msg = await Provider.of<UserData>(context, listen: false).attendByCard(
-    //     qrCode: shiftQrCode, cardCode: qrText, image: File(widget.path));
-    // print(msg);
     if (shiftQrCode != null && qrText != null) {
       print(shiftQrCode);
       print(qrText);

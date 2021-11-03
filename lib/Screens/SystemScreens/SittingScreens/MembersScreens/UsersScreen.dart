@@ -46,31 +46,31 @@ class _UsersScreenState extends State<UsersScreen> {
   AutoCompleteTextField searchTextField;
   final ScrollController _scrollController = ScrollController();
   String currentShiftName;
-  void _onRefresh() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
+  // void _onRefresh() async {
+  //   var userProvider = Provider.of<UserData>(context, listen: false);
+  //   var comProvier = Provider.of<CompanyData>(context, listen: false);
 
-    // monitor network fetch
-    print("refresh");
-    // if failed,use refreshFailed()
-    await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
-        Provider.of<SiteData>(context, listen: false)
-            .dropDownSitesList[siteIndex]
-            .id,
-        comProvier.com.id,
-        userProvider.user.userToken,
-        context,
-        -1);
-    refreshController.refreshCompleted();
-  }
+  //   // monitor network fetch
+  //   print("refresh");
+  //   // if failed,use refreshFailed()
+  //   await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
+  //       Provider.of<SiteData>(context, listen: false)
+  //           .dropDownSitesList[siteIndex]
+  //           .id,
+  //       comProvier.com.id,
+  //       userProvider.user.userToken,
+  //       context,
+  //       -1);
+  //   refreshController.refreshCompleted();
+  // }
 
-  bool goMaxScroll = true;
   @override
   void didChangeDependencies() {
-    Provider.of<MemberData>(context, listen: false).allPageIndex = 0;
-    Provider.of<MemberData>(context, listen: false).byShiftPageIndex = 0;
-    Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
-    Provider.of<MemberData>(context, listen: false).keepRetriving = true;
+    var memberData = Provider.of<MemberData>(context, listen: false);
+    memberData.allPageIndex = 0;
+    memberData.byShiftPageIndex = 0;
+    memberData.bySitePageIndex = 0;
+    memberData.keepRetriving = true;
 
     var userProvider = Provider.of<UserData>(context, listen: false);
     var comProvier = Provider.of<CompanyData>(context, listen: false);
@@ -85,42 +85,40 @@ class _UsersScreenState extends State<UsersScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         log("reached end of list");
-        if (goMaxScroll) {
-          if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
-            print("entered");
-            if (siteIndex == 0) {
-              await Provider.of<MemberData>(context, listen: false)
-                  .getAllCompanyMember(-1, comProvier.com.id,
-                      userProvider.user.userToken, context, -1);
-            } else if (Provider.of<SiteData>(context, listen: false)
-                    .dropDownShiftIndex !=
-                0) {
-              await Provider.of<MemberData>(context, listen: false)
-                  .getAllCompanyMember(
-                      Provider.of<SiteShiftsData>(context, listen: false)
-                          .siteShiftList[siteIndex]
-                          .siteId,
-                      comProvier.com.id,
-                      userProvider.user.userToken,
-                      context,
-                      Provider.of<SiteShiftsData>(context, listen: false)
-                          .shifts[Provider.of<SiteData>(context, listen: false)
-                              .dropDownShiftIndex]
-                          .shiftId);
-            } else {
-              await Provider.of<MemberData>(context, listen: false)
-                  .getAllCompanyMember(
-                      Provider.of<SiteShiftsData>(context, listen: false)
-                          .siteShiftList[siteIndex - 1]
-                          .siteId,
-                      comProvier.com.id,
-                      userProvider.user.userToken,
-                      context,
-                      -1);
-            }
+
+        if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
+          print("entered");
+          if (siteIndex == 0) {
+            await Provider.of<MemberData>(context, listen: false)
+                .getAllCompanyMember(-1, comProvier.com.id,
+                    userProvider.user.userToken, context, -1);
+          } else if (Provider.of<SiteData>(context, listen: false)
+                  .dropDownShiftIndex !=
+              0) {
+            await Provider.of<MemberData>(context, listen: false)
+                .getAllCompanyMember(
+                    Provider.of<SiteShiftsData>(context, listen: false)
+                        .siteShiftList[siteIndex]
+                        .siteId,
+                    comProvier.com.id,
+                    userProvider.user.userToken,
+                    context,
+                    Provider.of<SiteShiftsData>(context, listen: false)
+                        .shifts[Provider.of<SiteData>(context, listen: false)
+                            .dropDownShiftIndex]
+                        .shiftId);
+          } else {
+            await Provider.of<MemberData>(context, listen: false)
+                .getAllCompanyMember(
+                    Provider.of<SiteShiftsData>(context, listen: false)
+                        .siteShiftList[siteIndex - 1]
+                        .siteId,
+                    comProvier.com.id,
+                    userProvider.user.userToken,
+                    context,
+                    -1);
           }
         }
-        goMaxScroll = true;
       }
     });
     super.didChangeDependencies();
@@ -231,9 +229,7 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
-            setState(() {
-              _nameController.text = "";
-            });
+            FocusScope.of(context).unfocus();
           },
           child: Scaffold(
               endDrawer: NotificationItem(),
@@ -275,353 +271,351 @@ class _UsersScreenState extends State<UsersScreen> {
                                             ),
                                     ),
                                   );
-                                }
+                                } else {
+                                  return FutureBuilder(
+                                      future: Provider.of<MemberData>(context)
+                                          .futureListener,
+                                      builder: (context, snapshot) {
+                                        if ((!snapshot.hasData ||
+                                                snapshot.connectionState ==
+                                                    ConnectionState.waiting) &&
+                                            Provider.of<MemberData>(context)
+                                                    .membersList
+                                                    .length ==
+                                                0 &&
+                                            Provider.of<MemberData>(context)
+                                                .keepRetriving) {
+                                          return Container(
+                                            color: Colors.white,
+                                            child: Center(
+                                              child: Platform.isIOS
+                                                  ? CupertinoActivityIndicator(
+                                                      radius: 20,
+                                                    )
+                                                  : CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      valueColor:
+                                                          new AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              Colors.orange),
+                                                    ),
+                                            ),
+                                          );
+                                        }
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.waiting:
 
-                                return FutureBuilder(
-                                    future: Provider.of<MemberData>(context)
-                                        .futureListener,
-                                    builder: (context, snapshot) {
-                                      if ((!snapshot.hasData ||
-                                              snapshot.connectionState ==
-                                                  ConnectionState.waiting) &&
-                                          Provider.of<MemberData>(context)
-                                                  .membersList
-                                                  .length ==
-                                              0 &&
-                                          Provider.of<MemberData>(context)
-                                              .keepRetriving) {
-                                        return Container(
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Platform.isIOS
-                                                ? CupertinoActivityIndicator(
-                                                    radius: 20,
-                                                  )
-                                                : CircularProgressIndicator(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    valueColor:
-                                                        new AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.orange),
-                                                  ),
-                                          ),
-                                        );
-                                      }
-                                      switch (snapshot.connectionState) {
-                                        case ConnectionState.waiting:
+                                          case ConnectionState.done:
+                                            if (Provider.of<MemberData>(context)
+                                                        .allPageIndex !=
+                                                    1 &&
+                                                Provider.of<MemberData>(context)
+                                                        .bySitePageIndex !=
+                                                    1 &&
+                                                _nameController.text == "" &&
+                                                Provider.of<MemberData>(context)
+                                                        .loadingShifts ==
+                                                    false) {
+                                              Timer(
+                                                Duration(milliseconds: 1),
+                                                () => _scrollController.jumpTo(
+                                                    _scrollController.position
+                                                            .maxScrollExtent -
+                                                        10),
+                                              );
+                                            }
 
-                                        case ConnectionState.done:
-                                          if (Provider.of<MemberData>(context)
-                                                      .allPageIndex !=
-                                                  1 &&
-                                              Provider.of<MemberData>(context)
-                                                      .bySitePageIndex !=
-                                                  1 &&
-                                              _nameController.text == "" &&
-                                              Provider.of<MemberData>(context)
-                                                      .loadingShifts ==
-                                                  false) {
-                                            goMaxScroll = false;
-                                            Timer(
-                                              Duration(milliseconds: 1),
-                                              () => _scrollController.jumpTo(
-                                                  _scrollController.position
-                                                      .maxScrollExtent),
-                                            );
-                                          }
-
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                height: 110.h,
-                                                width: 330.w,
-                                                child: RoundedSearchBar(
-                                                  list: Provider.of<SiteData>(
-                                                          context,
-                                                          listen: true)
-                                                      .dropDownSitesList,
-                                                  dropdownValue:
-                                                      widget.selectedValue,
-                                                  resetTextFieldFun: () {
-                                                    setState(() {
-                                                      _nameController.text = "";
-                                                    });
-                                                  },
-                                                  searchFun: (value) {
-                                                    int siteiD = -1;
-                                                    int siteindex =
-                                                        getSiteIndex(Provider
-                                                                .of<SiteData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .siteValue);
-
-                                                    if (siteindex != -1) {
-                                                      siteiD = Provider.of<
-                                                                  SiteShiftsData>(
-                                                              context,
-                                                              listen: false)
-                                                          .siteShiftList[
-                                                              siteindex]
-                                                          .siteId;
-                                                    }
-
-                                                    searchInList(
-                                                        value,
-                                                        siteiD,
-                                                        Provider.of<CompanyData>(
-                                                                context,
-                                                                listen: false)
-                                                            .com
-                                                            .id);
-                                                    setState(() {
-                                                      currentShiftName = value;
-                                                    });
-                                                    // do something with query
-                                                  },
-                                                  textController:
-                                                      _nameController,
-                                                  dropdownFun: (value) {
-                                                    setState(() {
-                                                      widget.selectedValue =
-                                                          value;
-                                                      print(
-                                                          "current : ${widget.selectedValue}");
-                                                      currentShiftName = "";
-                                                      _nameController.clear();
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .userSearchMember
-                                                          .clear();
-                                                    });
-
-                                                    var userProvider =
-                                                        Provider.of<UserData>(
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  height: 110.h,
+                                                  width: 330.w,
+                                                  child: RoundedSearchBar(
+                                                    list: Provider.of<SiteData>(
                                                             context,
-                                                            listen: false);
-                                                    var id =
-                                                        settings.getsiteIndex(
-                                                            context, value);
-                                                    if (id != siteIndex) {
-                                                      siteIndex = id;
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .allPageIndex = 0;
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .bySitePageIndex = 0;
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .keepRetriving = true;
-                                                      Provider.of<MemberData>(
-                                                              context,
-                                                              listen: false)
-                                                          .getAllCompanyMember(
-                                                              Provider.of<SiteData>(
+                                                            listen: true)
+                                                        .dropDownSitesList,
+                                                    dropdownValue:
+                                                        widget.selectedValue,
+                                                    resetTextFieldFun: () {
+                                                      setState(() {
+                                                        _nameController.text =
+                                                            "";
+                                                      });
+                                                    },
+                                                    searchFun: (value) {
+                                                      int siteiD = -1;
+                                                      int siteindex =
+                                                          getSiteIndex(Provider
+                                                                  .of<SiteData>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .dropDownSitesList[
-                                                                      siteIndex]
-                                                                  .id,
-                                                              companyProv
-                                                                  .com.id,
-                                                              userProvider.user
-                                                                  .userToken,
-                                                              context,
-                                                              -1);
+                                                              .siteValue);
+
+                                                      if (siteindex != -1) {
+                                                        siteiD = Provider.of<
+                                                                    SiteShiftsData>(
+                                                                context,
+                                                                listen: false)
+                                                            .siteShiftList[
+                                                                siteindex]
+                                                            .siteId;
+                                                      }
+
+                                                      searchInList(
+                                                          value,
+                                                          siteiD,
+                                                          Provider.of<CompanyData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .com
+                                                              .id);
+                                                      setState(() {
+                                                        currentShiftName =
+                                                            value;
+                                                      });
+                                                      // do something with query
+                                                    },
+                                                    textController:
+                                                        _nameController,
+                                                    dropdownFun: (value) {
                                                       setState(() {
                                                         widget.selectedValue =
-                                                            siteProv
-                                                                .dropDownSitesList[
-                                                                    siteIndex]
-                                                                .name;
+                                                            value;
+                                                        print(
+                                                            "current : ${widget.selectedValue}");
+                                                        currentShiftName = "";
+                                                        _nameController.clear();
+                                                        Provider.of<MemberData>(
+                                                                context,
+                                                                listen: false)
+                                                            .userSearchMember
+                                                            .clear();
                                                       });
-                                                    }
-                                                  },
+
+                                                      var userProvider =
+                                                          Provider.of<UserData>(
+                                                              context,
+                                                              listen: false);
+                                                      var id =
+                                                          settings.getsiteIndex(
+                                                              context, value);
+                                                      if (id != siteIndex) {
+                                                        siteIndex = id;
+                                                        Provider.of<MemberData>(
+                                                                context,
+                                                                listen: false)
+                                                            .allPageIndex = 0;
+                                                        Provider.of<MemberData>(
+                                                                context,
+                                                                listen: false)
+                                                            .bySitePageIndex = 0;
+                                                        Provider.of<MemberData>(
+                                                                context,
+                                                                listen: false)
+                                                            .keepRetriving = true;
+                                                        Provider.of<MemberData>(
+                                                                context,
+                                                                listen: false)
+                                                            .getAllCompanyMember(
+                                                                Provider.of<SiteData>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .dropDownSitesList[
+                                                                        siteIndex]
+                                                                    .id,
+                                                                companyProv
+                                                                    .com.id,
+                                                                userProvider
+                                                                    .user
+                                                                    .userToken,
+                                                                context,
+                                                                -1);
+                                                        setState(() {
+                                                          widget.selectedValue =
+                                                              siteProv
+                                                                  .dropDownSitesList[
+                                                                      siteIndex]
+                                                                  .name;
+                                                        });
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                  child: _nameController.text !=
-                                                              null &&
-                                                          _nameController
-                                                                  .text !=
-                                                              ""
-                                                      ? Consumer<MemberData>(
-                                                          builder: (context,
-                                                              value, child) {
-                                                            return value
-                                                                    .loadingSearch
-                                                                ? Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                    ),
-                                                                  )
-                                                                : Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topCenter,
-                                                                    width: double
-                                                                        .infinity,
-                                                                    child: ListView
-                                                                        .builder(
-                                                                            itemCount:
-                                                                                value.userSearchMember.length,
-                                                                            itemBuilder: (BuildContext context, int index) {
-                                                                              return Directionality(
-                                                                                textDirection: TextDirection.rtl,
-                                                                                child: InkWell(
-                                                                                  onTap: () {
-                                                                                    Navigator.push(
-                                                                                        context,
-                                                                                        MaterialPageRoute(
-                                                                                          builder: (context) => UserFullDataScreen(
-                                                                                            index: index,
-                                                                                            onResetMac: () {
-                                                                                              settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                            },
-                                                                                            onTapDelete: () {
-                                                                                              settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                            },
-                                                                                            siteIndex: siteIndex,
-                                                                                            userId: value.userSearchMember[index].id,
-                                                                                          ),
-                                                                                        ));
-                                                                                  },
-                                                                                  child: Card(
-                                                                                    elevation: 2,
-                                                                                    child: Container(
-                                                                                      alignment: Alignment.centerRight,
-                                                                                      width: double.infinity,
-                                                                                      height: 50.h,
-                                                                                      child: Padding(
-                                                                                        padding: const EdgeInsets.all(10.0),
-                                                                                        child: Text(
-                                                                                          value.userSearchMember[index].username,
+                                                Expanded(
+                                                    child: _nameController
+                                                                    .text !=
+                                                                null &&
+                                                            _nameController
+                                                                    .text !=
+                                                                ""
+                                                        ? Consumer<MemberData>(
+                                                            builder: (context,
+                                                                value, child) {
+                                                              return value
+                                                                      .loadingSearch
+                                                                  ? Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                      ),
+                                                                    )
+                                                                  : Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .topCenter,
+                                                                      width: double
+                                                                          .infinity,
+                                                                      child: ListView.builder(
+                                                                          itemCount: value.userSearchMember.length,
+                                                                          itemBuilder: (BuildContext context, int index) {
+                                                                            return Directionality(
+                                                                              textDirection: TextDirection.rtl,
+                                                                              child: InkWell(
+                                                                                onTap: () {
+                                                                                  Navigator.push(
+                                                                                      context,
+                                                                                      MaterialPageRoute(
+                                                                                        builder: (context) => UserFullDataScreen(
+                                                                                          index: index,
+                                                                                          onResetMac: () {
+                                                                                            settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                          },
+                                                                                          onTapDelete: () {
+                                                                                            settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                          },
+                                                                                          siteIndex: siteIndex,
+                                                                                          userId: value.userSearchMember[index].id,
                                                                                         ),
+                                                                                      ));
+                                                                                },
+                                                                                child: Card(
+                                                                                  elevation: 2,
+                                                                                  child: Container(
+                                                                                    alignment: Alignment.centerRight,
+                                                                                    width: double.infinity,
+                                                                                    height: 50.h,
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets.all(10.0),
+                                                                                      child: Text(
+                                                                                        value.userSearchMember[index].username,
                                                                                       ),
                                                                                     ),
                                                                                   ),
                                                                                 ),
-                                                                              );
-                                                                            }));
-                                                          },
-                                                        )
-                                                      : memberData.membersList
-                                                                  .length !=
-                                                              0
-                                                          ? Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topCenter,
-                                                              width: double
-                                                                  .infinity,
-                                                              child: ListView
-                                                                  .builder(
-                                                                      controller:
-                                                                          _scrollController,
-                                                                      itemCount: memberData
-                                                                          .membersListScreenDropDownSearch
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (BuildContext context,
-                                                                              int index) {
-                                                                        Member
-                                                                            user =
-                                                                            memberData.membersListScreenDropDownSearch[index];
-                                                                        return MemberTile(
-                                                                          index:
-                                                                              index,
-                                                                          user:
-                                                                              memberData.membersListScreenDropDownSearch[index],
-                                                                          onTapDelete:
-                                                                              () {
-                                                                            settings.deleteUser(
-                                                                                context,
-                                                                                user.id,
+                                                                              ),
+                                                                            );
+                                                                          }));
+                                                            },
+                                                          )
+                                                        : memberData.membersList
+                                                                    .length !=
+                                                                0
+                                                            ? Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topCenter,
+                                                                width: double
+                                                                    .infinity,
+                                                                child: ListView
+                                                                    .builder(
+                                                                        controller:
+                                                                            _scrollController,
+                                                                        itemCount: memberData
+                                                                            .membersListScreenDropDownSearch
+                                                                            .length,
+                                                                        itemBuilder:
+                                                                            (BuildContext context,
+                                                                                int index) {
+                                                                          Member
+                                                                              user =
+                                                                              memberData.membersListScreenDropDownSearch[index];
+                                                                          return MemberTile(
+                                                                            index:
                                                                                 index,
-                                                                                user.name);
-                                                                          },
-                                                                          onResetMac:
-                                                                              () {
-                                                                            settings.resetMacAddress(context,
-                                                                                user.id);
-                                                                          },
-                                                                        );
-                                                                      }),
-                                                            )
-                                                          : widget.selectedValue ==
-                                                                      "كل المواقع" ||
-                                                                  Provider.of<SiteData>(
-                                                                              context,
-                                                                              listen: false)
-                                                                          .dropDownShiftIndex ==
-                                                                      0
-                                                              ? Center(
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
-                                                                    maxLines: 1,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        height:
-                                                                            2,
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            16,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  ),
-                                                                )
-                                                              : Center(
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
-                                                                    maxLines: 1,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        height:
-                                                                            2,
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            16,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  ),
-                                                                )),
-                                            ],
-                                          );
-                                        default:
-                                          return Center(
-                                            child: Platform.isIOS
-                                                ? CupertinoActivityIndicator(
-                                                    radius: 20,
-                                                  )
-                                                : CircularProgressIndicator(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    valueColor:
-                                                        new AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.orange),
-                                                  ),
-                                          );
-                                      }
-                                    });
+                                                                            user:
+                                                                                memberData.membersListScreenDropDownSearch[index],
+                                                                            onTapDelete:
+                                                                                () {
+                                                                              settings.deleteUser(context, user.id, index, user.name);
+                                                                            },
+                                                                            onResetMac:
+                                                                                () {
+                                                                              settings.resetMacAddress(context, user.id);
+                                                                            },
+                                                                          );
+                                                                        }),
+                                                              )
+                                                            : widget.selectedValue ==
+                                                                        "كل المواقع" ||
+                                                                    Provider.of<SiteData>(context,
+                                                                                listen: false)
+                                                                            .dropDownShiftIndex ==
+                                                                        0
+                                                                ? Center(
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
+                                                                      maxLines:
+                                                                          1,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: TextStyle(
+                                                                          height:
+                                                                              2,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf:
+                                                                                  true),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  )
+                                                                : Center(
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
+                                                                      maxLines:
+                                                                          1,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: TextStyle(
+                                                                          height:
+                                                                              2,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf:
+                                                                                  true),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  )),
+                                              ],
+                                            );
+                                          default:
+                                            return Center(
+                                              child: Platform.isIOS
+                                                  ? CupertinoActivityIndicator(
+                                                      radius: 20,
+                                                    )
+                                                  : CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      valueColor:
+                                                          new AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              Colors.orange),
+                                                    ),
+                                            );
+                                        }
+                                      });
+                                }
                               }),
                         ),
                         Provider.of<MemberData>(context).membersList.length != 0

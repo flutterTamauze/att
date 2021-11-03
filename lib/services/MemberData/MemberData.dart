@@ -559,13 +559,12 @@ class MemberData with ChangeNotifier {
           print(response.body);
 
           if (decodedRes["message"] == "User created successfully!") {
-            var userId = decodedRes['data']['userId'];
-            var newMember = member;
-            newMember.id = userId;
-            membersList.add(newMember);
-            copyMemberList = membersList;
-            print(newMember.shiftId);
-            notifyListeners();
+            // var newMember = member;
+            // newMember.id = userId;
+            // membersList.add(newMember);
+            // copyMemberList = membersList;
+            // print(newMember.shiftId);
+            // notifyListeners();
             return "Success";
           } else if (decodedRes["message"] == "Fail : Email Already exists") {
             return "exists";

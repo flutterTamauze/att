@@ -331,8 +331,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             RegExp regex = new RegExp(pattern);
                                             if (!regex.hasMatch(text))
                                               return 'البريد الإلكترونى غير صحيح';
-                                          } else if (text == "") {
-                                            return "مطلوب";
                                           }
                                           return null;
                                         },
@@ -780,7 +778,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         Provider.of<SiteData>(context,
                                                 listen: false)
                                             .setDropDownShift(0);
-                                        var msg = await Provider.of<MemberData>(
+                                        String msg = await Provider.of<MemberData>(
                                                 context,
                                                 listen: false)
                                             .addMember(
@@ -807,36 +805,29 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                               r"\s+\b|\b\s"),
                                                           "",
                                                         ),
-                                                    name: _nameController.text
-                                                        .trim()),
+                                                    name: _nameController.text.trim()),
                                                 token,
                                                 context,
                                                 getRoleName(userRole));
 
                                         if (msg == "Success") {
+                                          Fluttertoast.showToast(
+                                              msg: "تم اضافة المستخدم بنجاح",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.green,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
                                           Provider.of<SiteData>(context,
                                                   listen: false)
                                               .setSiteValue("كل المواقع");
                                           await Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UsersScreen(
-                                                            -1, false, ""),
-                                                  ))
-                                              .then((value) =>
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "تم اضافة المستخدم بنجاح",
-                                                      toastLength:
-                                                          Toast.LENGTH_SHORT,
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      timeInSecForIosWeb: 1,
-                                                      backgroundColor:
-                                                          Colors.green,
-                                                      textColor: Colors.white,
-                                                      fontSize: 16.0));
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UsersScreen(-1, false, ""),
+                                              ));
                                         } else if (msg == "exists") {
                                           Fluttertoast.showToast(
                                               msg:

@@ -70,14 +70,17 @@ class _UserAttendanceReportScreenState
 
   @override
   void initState() {
-    print(Provider.of<ReportsData>(context, listen: false)
-        .userAttendanceReport
-        .isDayOff);
+    var userProv = Provider.of<UserData>(context, listen: false).user;
     DateTime companyDate =
         Provider.of<CompanyData>(context, listen: false).com.createdOn;
-    siteId = Provider.of<SiteShiftsData>(context, listen: false)
-        .siteShiftList[0]
-        .siteId;
+    if (userProv.userType == 2) {
+      siteId = userProv.userSiteId;
+    } else {
+      siteId = Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[0]
+          .siteId;
+    }
+
     super.initState();
     print("id $widget.id");
     var now = DateTime.now();

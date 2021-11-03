@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -37,10 +38,10 @@ import 'package:qr_users/widgets/roundedButton.dart';
 
 import 'UserFullData.dart';
 
-class RoundedSearchBarSiteAdmin extends StatelessWidget {
+class RoundedSearchBarSiteAdmin extends StatefulWidget {
   final Function searchFun;
   final Function dropdownFun;
-
+  final Function resetTextFieldFun;
   bool iscomingFromShifts = false;
   final String dropdownValue;
   final List<Site> list;
@@ -50,18 +51,27 @@ class RoundedSearchBarSiteAdmin extends StatelessWidget {
       {this.searchFun,
       this.dropdownFun,
       this.dropdownValue,
+      this.resetTextFieldFun,
       this.iscomingFromShifts,
       this.list,
       this.textController});
+
+  @override
+  _RoundedSearchBarSiteAdminState createState() =>
+      _RoundedSearchBarSiteAdminState();
+}
+
+class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
   String plusSignPhone(String phoneNum) {
     int len = phoneNum.length;
     return "+ ${phoneNum.substring(0, len - 1)}";
   }
 
   final _formkey = GlobalKey<FormState>();
+  bool showSearchButton = true;
+
   Widget build(BuildContext context) {
     var prov = Provider.of<SiteData>(context, listen: false);
-
     return GestureDetector(
       onTap: () => print(prov.dropDownSitesIndex),
       child: Form(
@@ -81,7 +91,19 @@ class RoundedSearchBarSiteAdmin extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: textController,
+                        onChanged: (String v) {
+                          print(v);
+                          if (v.isEmpty) {
+                            widget.resetTextFieldFun();
+                          }
+                          print(showSearchButton);
+                          if (showSearchButton == false) {
+                            setState(() {
+                              showSearchButton = true;
+                            });
+                          }
+                        },
+                        controller: widget.textController,
                         style: TextStyle(
                             fontSize: ScreenUtil()
                                 .setSp(16, allowFontScalingSelf: true)),
@@ -103,13 +125,29 @@ class RoundedSearchBarSiteAdmin extends StatelessWidget {
                               onTap: () {
                                 if (!_formkey.currentState.validate()) {
                                   return;
-                                } else
-                                  searchFun(textController.text);
+                                } else {
+                                  setState(() {
+                                    showSearchButton = false;
+                                    widget
+                                        .searchFun(widget.textController.text);
+                                  });
+                                }
                               },
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.orange,
-                              ),
+                              child: showSearchButton
+                                  ? Icon(
+                                      Icons.search,
+                                      color: Colors.orange,
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          showSearchButton = true;
+                                        });
+                                        widget.resetTextFieldFun();
+                                      },
+                                      child: Icon(FontAwesomeIcons.times,
+                                          color: Colors.orange),
+                                    ),
                             ),
                             errorMaxLines: 2),
                       ),
@@ -288,7 +326,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   //   refreshController.refreshCompleted();
   // }
   Settings settings = Settings();
-  bool goMaxScroll = true;
   @override
   void didChangeDependencies() {
     Provider.of<MemberData>(context, listen: false).allPageIndex = 0;
@@ -312,23 +349,19 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         log("reached end of list");
-        if (goMaxScroll) {
-          if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
-            await Provider.of<MemberData>(context, listen: false)
-                .getAllCompanyMember(
-                    userProvider.user.userSiteId,
-                    comProvier.com.id,
-                    userProvider.user.userToken,
-                    context,
-                    Provider.of<ShiftsData>(context, listen: false)
-                        .shiftsList[
-                            Provider.of<SiteData>(context, listen: false)
-                                .dropDownShiftIndex]
-                        .shiftId);
-          }
+        if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
+          await Provider.of<MemberData>(context, listen: false)
+              .getAllCompanyMember(
+                  userProvider.user.userSiteId,
+                  comProvier.com.id,
+                  userProvider.user.userToken,
+                  context,
+                  Provider.of<ShiftsData>(context, listen: false)
+                      .shiftsList[Provider.of<SiteData>(context, listen: false)
+                          .dropDownShiftIndex]
+                      .shiftId);
         }
       }
-      goMaxScroll = true;
     });
     super.didChangeDependencies();
   }
@@ -336,18 +369,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   getData() async {
     var userProvider = Provider.of<UserData>(context);
     var comProvier = Provider.of<CompanyData>(context);
-
-    // if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-    //   await Provider.of<SiteData>(context, listen: false)
-    //       .getSitesByCompanyId(
-    //     comProvier.com.id,
-    //     userProvider.user.userToken,
-    //     context,
-    //   )
-    //       .then((value) async {
-    //     print("Got Sites");
-    //   });
-    // }
 
     await Provider.of<ShiftsData>(context, listen: false)
         .getShifts(comProvier.com.id, userProvider.user.userToken, context,
@@ -413,9 +434,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
-            setState(() {
-              _nameController.text = "";
-            });
+            FocusScope.of(context).unfocus();
           },
           child: Scaffold(
             endDrawer: NotificationItem(),
@@ -487,12 +506,12 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                       Provider.of<MemberData>(context)
                                               .loadingShifts ==
                                           false) {
-                                    goMaxScroll = false;
                                     Timer(
                                       Duration(milliseconds: 1),
                                       () => _scrollController.jumpTo(
                                           _scrollController
-                                              .position.maxScrollExtent),
+                                                  .position.maxScrollExtent -
+                                              10),
                                     );
                                   }
                                   return Column(
@@ -521,6 +540,11 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                               currentShiftName = value;
                                             });
                                             // do something with query
+                                          },
+                                          resetTextFieldFun: () {
+                                            setState(() {
+                                              _nameController.text = "";
+                                            });
                                           },
                                           textController: _nameController,
                                           dropdownFun: (value) {

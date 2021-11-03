@@ -52,8 +52,8 @@ class TakePictureScreenState extends State<CameraPicker>
   File imagePath;
   Size imageSize;
   Classifier _classifier;
-  FaceNetService _faceNetService = FaceNetService();
-  final DataBaseService _dataBaseService = DataBaseService();
+  // FaceNetService _faceNetService = FaceNetService();
+  // final DataBaseService _dataBaseService = DataBaseService();
   double predictedUserName = 0.0;
 
   bool isWorking = false;
@@ -91,23 +91,6 @@ class TakePictureScreenState extends State<CameraPicker>
       print(e);
     }
   }
-
-  // Future signUp(context) async {
-  //   /// gets predicted data from facenet service (user face detected)
-  //   List predictedData = _faceNetService.predictedData;
-  //   String user = Provider.of<UserData>(context, listen: false).user.id;
-  //   String password = "*";
-
-  //   print(
-  //       "Output from signup : user : $user , predictedData = ${predictedData.length}");
-  //   // / creates a new user in the 'database'
-  //   await _dataBaseService
-  //       .saveData(user, password, predictedData)
-  //       .whenComplete(() => print("SAved to Database successfully"));
-
-  //   // / resets the face stored in the face net sevice
-  //   this._faceNetService.setPredictedData(null);
-  // }
 
   imglib.Image finalImage;
   List<Face> scannResult = [];
@@ -155,7 +138,6 @@ class TakePictureScreenState extends State<CameraPicker>
     final Size imageSize = Size(cameraController.value.previewSize.height,
         cameraController.value.previewSize.width);
 
-    // customPainter
     CustomPainter customPainter =
         FaceDetectorPainter(imageSize, scannResult, cameraLensDirection);
 
@@ -187,8 +169,6 @@ class TakePictureScreenState extends State<CameraPicker>
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
-    // _cameraService.cameraController.dispose();
     cameraController.dispose().then((value) => faceDetector.close());
 
     super.dispose();
@@ -348,7 +328,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                       Fluttertoast.showToast(
                                           msg: "تم التسجيل بنجاح",
                                           gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.black,
+                                          backgroundColor: Colors.orange,
                                           textColor: Colors.white);
                                     } else if (msg ==
                                         "Success : User was not proof") {
@@ -557,7 +537,6 @@ class TakePictureScreenState extends State<CameraPicker>
                     ],
                   ),
                 ),
-
                 Positioned(
                   left: 4.0,
                   top: 4.0,
@@ -574,36 +553,6 @@ class TakePictureScreenState extends State<CameraPicker>
                     ),
                   ),
                 ),
-                // Positioned(
-                //   child: AppButton(
-                //     text: "load data",
-                //     color: Colors.orange,
-                //     icon: Icon(Icons.save),
-                //     onPressed: () async {
-                //       print(faceDetected != null);
-                //       if (faceDetected != null) {
-                //         setState(() {
-                // predictedUserName = _faceNetService.predict();
-                //         });
-                //       }
-                //     },
-                //   ),
-                //   bottom: 10,
-                //   left: 10,
-                // ),
-                // Positioned(
-                //   child: AppButton(
-                //     text: "Save pic",
-                //     color: Colors.orange,
-                //     icon: Icon(Icons.save),
-                //     onPressed: () async {
-                //       // _dataBaseService.cleanDB();
-
-                //     },
-                //   ),
-                //   bottom: 10,
-                //   left: 10,
-                // )
               ]),
       ),
     );

@@ -69,45 +69,13 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   getData(int siteIndex) async {
     int siteID;
     UserData userProvider = Provider.of<UserData>(context, listen: false);
-    CompanyData comProvider = Provider.of<CompanyData>(context, listen: false);
-    var siteProv = Provider.of<SiteData>(context, listen: false);
-    var memProv = Provider.of<MemberData>(context, listen: false);
-    if (userProvider.user.userType == 2) {
-      setState(() {
-        isLoading = true;
-      });
-      siteID = userProvider.user.userSiteId;
-      siteData = await siteProv.getSpecificSite(
-          siteID, userProvider.user.userToken, context);
-      if (memProv.membersList.isEmpty) {
-        print("getting all members for site");
-        await memProv.getAllSiteMembers(
-            siteID, userProvider.user.userToken, context);
-      }
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      // if (memProv.membersList.isEmpty) {
-      //   await memProv.getAllCompanyMember(siteId, comProvider.com.id,
-      //       userProvider.user.userToken, context, -1);
-      // }
-      // if (siteProv.sitesList.isEmpty) {
-      //   await siteProv
-      //       .getSitesByCompanyId(
-      //     comProvider.com.id,
-      //     userProvider.user.userToken,
-      //     context,
-      //   )
-      //       .then((value) {
-      //     siteID = siteProv.sitesList[siteIndex].id;
-      //   });
-      // }
-      // else {
+
+    if (userProvider.user.userType != 2) {
       siteID = Provider.of<SiteShiftsData>(context, listen: false)
           .siteShiftList[siteIndex]
           .siteId;
-      // }
+    } else {
+      siteID = userProvider.user.userSiteId;
     }
     await Provider.of<ReportsData>(context, listen: false).getLateAbsenceReport(
         userProvider.user.userToken,
@@ -199,7 +167,12 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                       .user
                                                                       .userType ==
                                                                   2
-                                                              ? siteData.name
+                                                              ? Provider.of<
+                                                                          UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .siteName
                                                               : Provider.of<
                                                                           SiteShiftsData>(
                                                                       context)

@@ -51,18 +51,16 @@ class _SitesScreenState extends State<SitesScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         log("reached end of list");
-        if (goMaxScroll) {
-          var userProvider = Provider.of<UserData>(context, listen: false);
-          var comProvier = Provider.of<CompanyData>(context, listen: false);
-          if (Provider.of<SiteData>(context, listen: false).keepRetriving) {
-            await Provider.of<SiteData>(context, listen: false)
-                .getSitesByCompanyId(
-              comProvier.com.id,
-              userProvider.user.userToken,
-              context,
-            );
-          }
-          goMaxScroll = true;
+
+        var userProvider = Provider.of<UserData>(context, listen: false);
+        var comProvier = Provider.of<CompanyData>(context, listen: false);
+        if (Provider.of<SiteData>(context, listen: false).keepRetriving) {
+          await Provider.of<SiteData>(context, listen: false)
+              .getSitesByCompanyId(
+            comProvier.com.id,
+            userProvider.user.userToken,
+            context,
+          );
         }
 
         // if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
@@ -96,7 +94,6 @@ class _SitesScreenState extends State<SitesScreen> {
     );
   }
 
-  bool goMaxScroll = true;
   final ScrollController _scrollController = ScrollController();
   getData() async {
     var userProvider = Provider.of<UserData>(context);
@@ -183,12 +180,12 @@ class _SitesScreenState extends State<SitesScreen> {
                                       if (Provider.of<SiteData>(context)
                                               .pageIndex !=
                                           1) {
-                                        goMaxScroll = false;
                                         Timer(
                                           Duration(milliseconds: 1),
                                           () => _scrollController.jumpTo(
-                                              _scrollController
-                                                  .position.maxScrollExtent),
+                                              _scrollController.position
+                                                      .maxScrollExtent -
+                                                  10),
                                         );
                                       }
 

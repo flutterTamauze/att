@@ -13,10 +13,7 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
   var comProvider = Provider.of<CompanyData>(context, listen: false);
   print("company id ${comProvider.com.id}");
   if (userProvider.user.userType == 2) {
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false).getSpecificSite(
-          userProvider.user.userSiteId, userProvider.user.userToken, context);
-    }
+    siteID = userProvider.user.userSiteId;
   } else {
     if (Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList
@@ -28,22 +25,15 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
         context,
       )
           .then((value) {
-        siteID = Provider.of<SiteShiftsData>(context, listen: false)
-            .siteShiftList[siteIndex]
-            .siteId;
         print("SiteIndex $siteIndex");
       });
-    } else {
-      siteID = Provider.of<SiteShiftsData>(context, listen: false)
-          .siteShiftList[siteIndex]
-          .siteId;
     }
+    siteID = Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[siteIndex]
+        .siteId;
   }
   print(siteID);
   print(date);
-  await Provider.of<ReportsData>(context, listen: false).getDailyReportUnits(
-      userProvider.user.userToken,
-      userProvider.user.userType == 2 ? userProvider.user.userSiteId : siteID,
-      date,
-      context);
+  await Provider.of<ReportsData>(context, listen: false)
+      .getDailyReportUnits(userProvider.user.userToken, siteID, date, context);
 }

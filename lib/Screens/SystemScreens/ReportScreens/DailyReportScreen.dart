@@ -414,11 +414,8 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               ),
                                                             ),
                                                           )
-                                                        : reportsData
-                                                                    .dailyReport
-                                                                    .attendListUnits
-                                                                    .length !=
-                                                                0
+                                                        : snapshot.data !=
+                                                                "wrong"
                                                             ? Column(
                                                                 children: [
                                                                   Divider(
@@ -504,7 +501,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                   height: 20,
                                                                   child:
                                                                       AutoSizeText(
-                                                                    "لا يوجد تسجيلات بهذا الموقع",
+                                                                    "لا يوجد تسجيلات بهذا اليوم",
                                                                     maxLines: 1,
                                                                     style: TextStyle(
                                                                         fontSize: ScreenUtil().setSp(

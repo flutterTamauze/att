@@ -81,12 +81,13 @@ class Settings {
                   if (await memberData.deleteMember(
                           userId, listIndex, token, context) ==
                       "Success") {
+                    successfullDelete();
                     log("going to users screen");
                     await Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => UsersScreen(-1, false, ""),
-                        )).then((value) => successfullDelete());
+                        ));
                   } else {
                     unSuccessfullDelete();
                   }
