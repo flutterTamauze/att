@@ -49,8 +49,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.siteIndex);
-    loadDaysOff = false;
+
     fillTextField();
   }
 

@@ -103,12 +103,12 @@ class _DataTableRowState extends State<DataTableRow> {
                         formatter.format(fromDate),
                         formatter.format(toDate),
                         context)
-                    .then((value) {
+                    .then((value) async {
                   print("value $value");
                   if (value == "Success" ||
                       value == "user created after period") {
                     Navigator.pop(context);
-                    Navigator.of(context).push(
+                    await Navigator.of(context).push(
                       new MaterialPageRoute(
                         builder: (context) => UserAttendanceReportScreen(
                           name: widget.attendUnit.userName,

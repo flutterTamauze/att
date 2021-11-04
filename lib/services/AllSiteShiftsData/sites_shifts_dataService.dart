@@ -12,10 +12,10 @@ import 'package:qr_users/services/Shift.dart';
 class SiteShiftsData with ChangeNotifier {
   List<SiteShiftsModel> siteShiftList = [];
   List<Shifts> shifts = [];
-
+  List<Shifts> dropDownShifts = [];
   List<Shifts> getShiftsList(String siteName, bool addallshiftsBool) {
     shifts = [];
-
+    dropDownShifts = [];
     for (int i = 0; i < siteShiftList.length; i++) {
       if (siteShiftList[i].siteName == siteName) {
         shifts = siteShiftList[i].shifts;
@@ -28,6 +28,10 @@ class SiteShiftsData with ChangeNotifier {
                 shiftId: 0,
                 shiftStTime: "-1")
           ];
+          dropDownShifts = [...shifts];
+          if (dropDownShifts[0].shiftName == "كل المناوبات") {
+            dropDownShifts.removeAt(0);
+          }
           notifyListeners();
           return siteShiftList[i].shifts;
         } else {
@@ -43,11 +47,16 @@ class SiteShiftsData with ChangeNotifier {
             }
           }
         }
+        dropDownShifts = [...shifts];
+        if (dropDownShifts[0].shiftName == "كل المناوبات") {
+          dropDownShifts.removeAt(0);
+        }
 
         notifyListeners();
         return siteShiftList[i].shifts;
       }
     }
+
     return shifts;
   }
 

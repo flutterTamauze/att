@@ -83,3 +83,45 @@ Future<bool> sendFcmMessage(
     return false;
   }
 }
+
+Future<bool> sendFcmDataOnly(
+    {String category, String topicName, String userToken}) async {
+  try {
+    String toParams = "/topics/" + topicName;
+
+    var url = 'https://fcm.googleapis.com/fcm/send';
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": "key=$serverToken",
+    };
+    var request;
+    if (Platform.isIOS) {
+      request = {
+        "data": {
+          "category": "$category",
+        },
+        "priority": "high",
+        "to": topicName == "" ? userToken : toParams
+      };
+    } else {
+      request = {
+        "data": {
+          "category": "$category",
+        },
+        "priority": "high",
+        "to": topicName == "" ? userToken : toParams
+      };
+    }
+
+//    "to": "$toParams",
+    var client = new http.Client();
+    var response = await client.post(Uri.parse(url),
+        headers: header, body: json.encode(request));
+    print(response.body);
+    print(response.statusCode);
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}

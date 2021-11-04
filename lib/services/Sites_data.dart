@@ -132,10 +132,8 @@ class SiteData with ChangeNotifier {
             dropDownSitesList = [...sitesList];
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
-            await sendFcmMessage(
+            await sendFcmDataOnly(
                 category: "reloadData",
-                message: "data",
-                title: "data incoming",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             notifyListeners();
@@ -348,10 +346,8 @@ class SiteData with ChangeNotifier {
             sitesList.add(newSite);
             dropDownSitesList.add(newSite);
             filSitesStringsList();
-            await sendFcmMessage(
+            await sendFcmDataOnly(
                 category: "reloadData",
-                message: "data",
-                title: "data incoming",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             notifyListeners();
@@ -430,10 +426,8 @@ class SiteData with ChangeNotifier {
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
             filSitesStringsList();
-            await sendFcmMessage(
+            await sendFcmDataOnly(
                 category: "reloadData",
-                message: "data",
-                title: "data incoming",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             notifyListeners();

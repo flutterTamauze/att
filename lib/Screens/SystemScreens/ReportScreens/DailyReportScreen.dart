@@ -476,10 +476,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : DailyReportTodayTableEnd(
-                                                                                  titleHeader: "عطلة اسبوعية",
-                                                                                  title: "",
-                                                                                )
+                                                                              : snapshot.data == "user created after period"
+                                                                                  ? Container()
+                                                                                  : DailyReportTodayTableEnd(
+                                                                                      titleHeader: "عطلة اسبوعية",
+                                                                                      title: "",
+                                                                                    )
                                                                       : snapshot.data == "Success"
                                                                           ? Container()
                                                                           : snapshot.data == "Success : Official Vacation Day"
@@ -487,12 +489,14 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : snapshot.data == "Date is older than company date"
+                                                                              : snapshot.data == "user created after period"
                                                                                   ? Container()
-                                                                                  : DailyReportTodayTableEnd(
-                                                                                      titleHeader: "عطلة اسبوعية",
-                                                                                      title: "",
-                                                                                    )
+                                                                                  : snapshot.data == "Date is older than company date"
+                                                                                      ? Container()
+                                                                                      : DailyReportTodayTableEnd(
+                                                                                          titleHeader: "عطلة اسبوعية",
+                                                                                          title: "",
+                                                                                        )
                                                                 ],
                                                               )
                                                             : Center(

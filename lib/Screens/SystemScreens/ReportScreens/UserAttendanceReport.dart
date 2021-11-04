@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
@@ -777,7 +778,11 @@ class _UserAttendanceReportScreenState
 
   Future<bool> onWillPop() {
     widget.name != ""
-        ? Navigator.pop(context)
+        ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DailyReportScreen(),
+            ))
         : Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
             (Route<dynamic> route) => false);

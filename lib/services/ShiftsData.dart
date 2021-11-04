@@ -331,10 +331,8 @@ class ShiftsData with ChangeNotifier {
                     siteID: 0)
               ];
             }
-            await sendFcmMessage(
+            await sendFcmDataOnly(
                 category: "reloadData",
-                message: "data",
-                title: "data incoming",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             deleteFromAllShiftsList(shiftId);
@@ -555,10 +553,8 @@ class ShiftsData with ChangeNotifier {
                 .add(Shifts(
                     shiftName: newShift.shiftName, shiftId: newShift.shiftId));
 
-            await sendFcmMessage(
+            await sendFcmDataOnly(
                 category: "reloadData",
-                message: "data",
-                title: "data incoming",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             notifyListeners();
@@ -689,10 +685,8 @@ class ShiftsData with ChangeNotifier {
                   .shiftId = newShift.shiftId;
             }
           }
-          await sendFcmMessage(
+          await sendFcmDataOnly(
               category: "reloadData",
-              message: "data",
-              title: "data incoming",
               topicName:
                   "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
           notifyListeners();

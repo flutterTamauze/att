@@ -423,6 +423,7 @@ class ReportsData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
 
+      print(response.statusCode);
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =

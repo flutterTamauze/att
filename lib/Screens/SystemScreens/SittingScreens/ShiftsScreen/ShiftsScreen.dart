@@ -120,6 +120,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     getData(Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList[siteId]
         .siteId);
+    fillSites();
   }
 
   Future loadShift;
@@ -129,28 +130,21 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
         .getShiftsBySiteId(siteId, userProvider.user.userToken, context);
     // await fillList();
   }
-  // getData() async {
-  //   var userProvider = Provider.of<UserData>(context, listen: false);
-  //   var comProvier = Provider.of<CompanyData>(context);
 
-  //   await Provider.of<SiteData>(context, listen: false)
-  //       .getSitesByCompanyId(
-  //     comProvier.com.id,
-  //     userProvider.user.userToken,
-  //     context,
-  //   )
-  //       .then((value) async {
-  //     print("GOt Sites");
-  //   });
+  fillSites() async {
+    var userProvider = Provider.of<UserData>(context, listen: false);
+    var comProvier = Provider.of<CompanyData>(context);
 
-  //   await Provider.of<ShiftsData>(context, listen: false)
-  //       .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-  //           userProvider.user.userType, userProvider.user.userSiteId)
-  //       .then((value) async {
-  //     print("got Shifts");
-  //   });
-
-  // }
+    await Provider.of<SiteData>(context, listen: false)
+        .getSitesByCompanyId(
+      comProvier.com.id,
+      userProvider.user.userToken,
+      context,
+    )
+        .then((value) async {
+      print("GOt Sites");
+    });
+  }
 
   bool isLoading = false;
   int getSiteName(String siteName) {
