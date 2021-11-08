@@ -28,9 +28,15 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 3);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 8);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 1);
+//ERRORS
+const USER_INVALID_RESPONSE = 100;
+const NO_INTERNET = 101;
+const INVALID_FORMAT = 102;
+const UNKNOWN_ERROR = 103;
+const CONNECTION_TIMEOUT = 104;
 Future<bool> onWillPop() {
   DateTime now = DateTime.now();
 
@@ -188,7 +194,6 @@ ThemeData clockTheme1 = ThemeData.dark().copyWith(
   buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
   dialogBackgroundColor: Colors.black87,
 );
-
 const kTextFieldDecorationWhite = InputDecoration(
   isDense: true,
 
@@ -202,11 +207,6 @@ const kTextFieldDecorationWhite = InputDecoration(
     borderSide: BorderSide(color: Color(0xffD7D7D7), width: 1.0),
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
-  errorBorder: OutlineInputBorder(
-    borderSide: BorderSide(
-      color: Color(0xffD7D7D7),
-    ),
-  ),
 //  contentPadding: EdgeInsets.symmetric(),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -218,6 +218,41 @@ const kTextFieldDecorationWhite = InputDecoration(
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Color(0xff4a4a4a), width: 2.0),
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  ),
+);
+const kTextFieldDecorationForSearch = InputDecoration(
+  isDense: true,
+
+  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+  hintText: 'Enter a value',
+  hintStyle:
+      TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),
+  fillColor: Colors.white,
+  filled: true,
+  disabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xffD7D7D7), width: 1.0),
+    borderRadius: BorderRadius.only(
+        topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Color(0xffD7D7D7),
+    ),
+  ),
+//  contentPadding: EdgeInsets.symmetric(),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.only(
+        topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 1.0),
+    borderRadius: BorderRadius.only(
+        topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 2.0),
+    borderRadius: BorderRadius.only(
+        topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
   ),
 );
 const kTextFieldDecorationTime = InputDecoration(
@@ -286,14 +321,14 @@ const kTextFieldDecorationFromTO = InputDecoration(
   ),
 );
 
-  // Future<String> _fileFromImageUrl(String path, String name) async {
-  //   final response = await http.get(Uri.parse(path));
+// Future<String> _fileFromImageUrl(String path, String name) async {
+//   final response = await http.get(Uri.parse(path));
 
-  //   final documentDirectory = await getApplicationDocumentsDirectory();
+//   final documentDirectory = await getApplicationDocumentsDirectory();
 
-  //   final file = File(p.join(documentDirectory.path, '$name.png'));
+//   final file = File(p.join(documentDirectory.path, '$name.png'));
 
-  //   file.writeAsBytesSync(response.bodyBytes);
+//   file.writeAsBytesSync(response.bodyBytes);
 
-  //   return file.path;
-  // }
+//   return file.path;
+// }

@@ -144,11 +144,12 @@ class UserData with ChangeNotifier {
                 'x-api-key': _apiToken
               }).timeout(
             Duration(
-              seconds: 40,
+              seconds: 30,
             ),
           );
 
           var decodedRes = json.decode(response.body);
+          print(response.body);
           log(decodedRes["statusCode"].toString());
           if (decodedRes["statusCode"] == 200) {
             Map<String, dynamic> decodedToken =
@@ -547,7 +548,7 @@ class UserData with ChangeNotifier {
       await uploadImage(_image, user.id).then((value) async {
         if (value != "") {
           print("path :$value");
-          url = "$baseURL/$value";
+          url = "$imageUrl/$value";
           print("lunch url $url");
           user.userImage = url;
           print("success =  $value");

@@ -239,18 +239,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         ? "إضافة مستخدم"
                                         : "تعديل بيانات المستخدم"),
                               ),
-                              // DirectoriesHeader(
-                              //     Padding(
-                              //       padding: const EdgeInsets.all(10),
-                              //       child: ClipRRect(
-                              //         borderRadius: BorderRadius.circular(60.0),
-                              //         child: Lottie.asset("resources/user.json",
-                              //             repeat: false),
-                              //       ),
-                              //     ),
-                              //     (!widget.isEdit)
-                              //         ? "إضافة مستخدم"
-                              //         : "تعديل بيانات المستخدم"),
                               widget.isEdit
                                   ? Container(
                                       height: 80.h,

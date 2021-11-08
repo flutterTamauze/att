@@ -242,7 +242,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       children: [
                         Header(
                           nav: false,
-                          goUserHomeFromMenu: true,
+                          goUserHomeFromMenu: false,
                           goUserMenu: false,
                         ),
                         Directionality(
@@ -458,58 +458,69 @@ class _UsersScreenState extends State<UsersScreen> {
                                                               return value
                                                                       .loadingSearch
                                                                   ? Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      ),
+                                                                      child: Lottie.asset(
+                                                                          "resources/searching.json",
+                                                                          width: 200
+                                                                              .w,
+                                                                          height:
+                                                                              200.h),
                                                                     )
-                                                                  : Container(
-                                                                      alignment:
-                                                                          Alignment
+                                                                  : value.userSearchMember
+                                                                              .length ==
+                                                                          0
+                                                                      ? Center(
+                                                                          child:
+                                                                              Text(
+                                                                            "لا يوجد نتائج للبحث",
+                                                                            style:
+                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                                                                          ),
+                                                                        )
+                                                                      : Container(
+                                                                          alignment: Alignment
                                                                               .topCenter,
-                                                                      width: double
-                                                                          .infinity,
-                                                                      child: ListView.builder(
-                                                                          itemCount: value.userSearchMember.length,
-                                                                          itemBuilder: (BuildContext context, int index) {
-                                                                            return Directionality(
-                                                                              textDirection: TextDirection.rtl,
-                                                                              child: InkWell(
-                                                                                onTap: () {
-                                                                                  Navigator.push(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                        builder: (context) => UserFullDataScreen(
-                                                                                          index: index,
-                                                                                          onResetMac: () {
-                                                                                            settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                          },
-                                                                                          onTapDelete: () {
-                                                                                            settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                          },
-                                                                                          siteIndex: siteIndex,
-                                                                                          userId: value.userSearchMember[index].id,
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child: ListView.builder(
+                                                                              itemCount: value.userSearchMember.length,
+                                                                              itemBuilder: (BuildContext context, int index) {
+                                                                                return Directionality(
+                                                                                  textDirection: TextDirection.rtl,
+                                                                                  child: InkWell(
+                                                                                    onTap: () {
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          MaterialPageRoute(
+                                                                                            builder: (context) => UserFullDataScreen(
+                                                                                              index: index,
+                                                                                              onResetMac: () {
+                                                                                                settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                              },
+                                                                                              onTapDelete: () {
+                                                                                                settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                              },
+                                                                                              siteIndex: siteIndex,
+                                                                                              userId: value.userSearchMember[index].id,
+                                                                                            ),
+                                                                                          ));
+                                                                                    },
+                                                                                    child: Card(
+                                                                                      elevation: 2,
+                                                                                      child: Container(
+                                                                                        alignment: Alignment.centerRight,
+                                                                                        width: double.infinity,
+                                                                                        height: 50.h,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.all(10.0),
+                                                                                          child: Text(
+                                                                                            value.userSearchMember[index].username,
+                                                                                          ),
                                                                                         ),
-                                                                                      ));
-                                                                                },
-                                                                                child: Card(
-                                                                                  elevation: 2,
-                                                                                  child: Container(
-                                                                                    alignment: Alignment.centerRight,
-                                                                                    width: double.infinity,
-                                                                                    height: 50.h,
-                                                                                    child: Padding(
-                                                                                      padding: const EdgeInsets.all(10.0),
-                                                                                      child: Text(
-                                                                                        value.userSearchMember[index].username,
                                                                                       ),
                                                                                     ),
                                                                                   ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          }));
+                                                                                );
+                                                                              }));
                                                             },
                                                           )
                                                         : memberData.membersList

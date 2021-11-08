@@ -107,7 +107,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                         style: TextStyle(
                             fontSize: ScreenUtil()
                                 .setSp(16, allowFontScalingSelf: true)),
-                        decoration: kTextFieldDecorationWhite.copyWith(
+                        decoration: kTextFieldDecorationForSearch.copyWith(
                             hintText: 'اسم المستخدم',
                             hintStyle: TextStyle(
                               fontSize: ScreenUtil()

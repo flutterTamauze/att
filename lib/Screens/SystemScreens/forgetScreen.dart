@@ -792,7 +792,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
             isLoading = false;
           });
         });
-      } else if (value == -4) {
+      } else if (value == -4 || value == null) {
         return showDialog(
             context: context,
             builder: (BuildContext context) {

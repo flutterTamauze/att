@@ -66,10 +66,11 @@ class _DataTableRowState extends State<DataTableRow> {
             InkWell(
               onTap: () async {
                 var now = DateTime.now();
-
+                int legalDay = Provider.of<CompanyData>(context, listen: false)
+                    .com
+                    .legalComDate;
                 var toDate = DateTime(now.year, now.month, now.day - 1);
-                var fromDate =
-                    DateTime(toDate.year, toDate.month - 1, toDate.day + 1);
+                var fromDate = DateTime(now.year, now.month, legalDay);
 
                 var userProvider =
                     Provider.of<UserData>(context, listen: false).user;
