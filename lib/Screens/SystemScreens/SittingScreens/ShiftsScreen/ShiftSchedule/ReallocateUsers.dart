@@ -125,9 +125,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   Widget build(BuildContext context) {
     var selectedVal;
     if (userProvider.user.userType != 2) {
-      var prov = Provider.of<SiteData>(context, listen: false);
-      selectedVal = prov.dropDownSitesList[1].name;
-      var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
+      var prov = Provider.of<SiteShiftsData>(context, listen: false);
+      selectedVal = prov.sites[1].name;
+      var list = Provider.of<SiteShiftsData>(context, listen: true).sites;
     } else {
       selectedVal = "";
     }

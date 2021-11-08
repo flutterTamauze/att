@@ -292,7 +292,7 @@ class Header extends StatelessWidget {
                             ),
                             (Route<dynamic> route) => false)
                         : goUserMenu == false
-                            ? Navigator.pop(context)
+                            ? Navigator.maybePop(context)
                             : Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                   builder: (context) => NormalUserMenu(),

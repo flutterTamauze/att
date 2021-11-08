@@ -126,7 +126,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
   @override
   Widget build(BuildContext context) {
     var prov = Provider.of<SiteData>(context, listen: false);
-    var list = Provider.of<SiteData>(context, listen: true).dropDownSitesList;
+    var list = Provider.of<SiteShiftsData>(context, listen: true).sites;
     var shiftsData = Provider.of<SiteShiftsData>(context, listen: false);
     var sitesData = Provider.of<SiteData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);

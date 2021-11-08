@@ -105,6 +105,7 @@ Future<bool> sendFcmDataOnly(
       };
     } else {
       request = {
+        "notification": {},
         "data": {
           "category": "$category",
         },

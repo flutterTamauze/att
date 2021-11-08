@@ -81,77 +81,137 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
             children: [
               Directionality(
                 textDirection: ui.TextDirection.rtl,
-                child: Container(
-                    height: 44.0.h,
-                    child: Center(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.length < 3) {
-                            return "يجب ان لا يقل البحث عن 3 احرف";
-                          }
-                          return null;
-                        },
-                        onChanged: (String v) {
-                          print(v);
-                          if (v.isEmpty) {
-                            widget.resetTextFieldFun();
-                          }
-                          print(showSearchButton);
-                          if (showSearchButton == false) {
-                            setState(() {
-                              showSearchButton = true;
-                            });
-                          }
-                        },
-                        controller: widget.textController,
-                        style: TextStyle(
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true)),
-                        decoration: kTextFieldDecorationForSearch.copyWith(
-                            hintText: 'اسم المستخدم',
-                            hintStyle: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
-                              color: Colors.grey,
-                            ),
-                            fillColor: Color(0xFFE9E9E9),
-                            contentPadding: EdgeInsets.only(
-                                left: 11, right: 13, top: 20, bottom: 14),
-                            errorStyle: TextStyle(
-                              fontSize: 13,
-                              height: 0.7,
-                            ),
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                if (!_formkey.currentState.validate()) {
-                                  return;
-                                } else {
-                                  setState(() {
-                                    showSearchButton = false;
-                                    widget
-                                        .searchFun(widget.textController.text);
-                                  });
-                                }
-                              },
-                              child: showSearchButton
-                                  ? Icon(
-                                      Icons.search,
-                                      color: Colors.orange,
-                                    )
-                                  : InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          showSearchButton = true;
-                                        });
-                                        widget.resetTextFieldFun();
-                                      },
-                                      child: Icon(FontAwesomeIcons.times,
-                                          color: Colors.orange),
-                                    ),
-                            ),
-                            errorMaxLines: 2),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                            decoration: BoxDecoration(),
+                            height: 44.0.h,
+                            child: Stack(
+                              overflow: Overflow.visible,
+                              children: [
+                                TextFormField(
+                                  onFieldSubmitted: (_) async {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      showSearchButton = false;
+                                      widget.searchFun(
+                                          widget.textController.text);
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value.length < 3) {
+                                      return "يجب ان لا يقل البحث عن 3 احرف";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (String v) {
+                                    print(v);
+                                    if (v.isEmpty) {
+                                      widget.resetTextFieldFun();
+                                    }
+                                    print(showSearchButton);
+                                    if (showSearchButton == false) {
+                                      setState(() {
+                                        showSearchButton = true;
+                                      });
+                                    }
+                                  },
+                                  controller: widget.textController,
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16,
+                                          allowFontScalingSelf: true)),
+                                  decoration:
+                                      kTextFieldDecorationForSearch.copyWith(
+                                          hintText: 'اسم المستخدم',
+                                          hintStyle: TextStyle(
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.grey,
+                                          ),
+                                          fillColor: Color(0xFFE9E9E9),
+                                          contentPadding: EdgeInsets.only(
+                                              left: 11,
+                                              right: 13,
+                                              top: 20,
+                                              bottom: 14),
+                                          errorStyle: TextStyle(
+                                            fontSize: 13,
+                                            height: 0.7,
+                                          ),
+                                          errorMaxLines: 2),
+                                ),
+                                Positioned(
+                                  left: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    width: 1.3,
+                                    height: 50,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                  ),
+                                )
+                              ],
+                            )),
                       ),
-                    )),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (!_formkey.currentState.validate()) {
+                              return;
+                            } else {
+                              setState(() {
+                                showSearchButton = false;
+                                widget.searchFun(widget.textController.text);
+                              });
+                            }
+                          },
+                          child: showSearchButton
+                              ? Container(
+                                  height: 44.h,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xff4a4a4a), width: 1.0),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10)),
+                                    color: Colors.orange[500],
+                                  ),
+                                  child: Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showSearchButton = true;
+                                    });
+                                    widget.resetTextFieldFun();
+                                  },
+                                  child: Container(
+                                    height: 44.h,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Color(0xff4a4a4a), width: 1.0),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                      color: Colors.orange[500],
+                                    ),
+                                    child: Icon(FontAwesomeIcons.times,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -569,12 +629,12 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                 .loadingSearch
                                                             ? Container(
                                                                 child: Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    color: Colors
-                                                                        .orange,
-                                                                  ),
-                                                                ),
+                                                                    child: Lottie.asset(
+                                                                        "resources/searching.json",
+                                                                        width: 200
+                                                                            .w,
+                                                                        height:
+                                                                            200.h)),
                                                               )
                                                             : Container(
                                                                 alignment:

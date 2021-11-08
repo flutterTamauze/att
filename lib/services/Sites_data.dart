@@ -94,8 +94,10 @@ class SiteData with ChangeNotifier {
   }
 
   List<String> dropDownSitesStrings = [];
-  filSitesStringsList() {
-    dropDownSitesList.forEach((element) {
+  filSitesStringsList(BuildContext context) {
+    Provider.of<SiteShiftsData>(context, listen: false)
+        .sites
+        .forEach((element) {
       dropDownSitesStrings.add(element.name);
     });
   }
@@ -253,7 +255,7 @@ class SiteData with ChangeNotifier {
 
         if (decodedRes["message"] == "Success") {
           var sitesNewList = jsonDecode(response.body)['data'] as List;
-          if (decodedRes.isEmpty) {
+          if (sitesNewList.isEmpty) {
             keepRetriving = false;
             notifyListeners();
           }
@@ -262,14 +264,14 @@ class SiteData with ChangeNotifier {
                 .map((siteJson) => Site.fromJson(siteJson))
                 .toList());
             // sitesList = sitesNewList;
-            log("no problem");
+
             dropDownSitesList = [...sitesList];
           }
           isLoading = false;
           dropDownSitesList.insert(
               0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
 
-          filSitesStringsList();
+          filSitesStringsList(context);
 
           notifyListeners();
 
@@ -345,7 +347,7 @@ class SiteData with ChangeNotifier {
                     shifts: [], siteId: newSite.id, siteName: newSite.name));
             sitesList.add(newSite);
             dropDownSitesList.add(newSite);
-            filSitesStringsList();
+            filSitesStringsList(context);
             await sendFcmDataOnly(
                 category: "reloadData",
                 topicName:
@@ -425,7 +427,7 @@ class SiteData with ChangeNotifier {
             dropDownSitesList = [...sitesList];
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
-            filSitesStringsList();
+            filSitesStringsList(context);
             await sendFcmDataOnly(
                 category: "reloadData",
                 topicName:

@@ -102,9 +102,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
       siteId =
           (Provider.of<SiteData>(context, listen: false).dropDownSitesIndex);
     } else {
-      if (Provider.of<SiteData>(context, listen: false)
-              .dropDownSitesList
-              .length ==
+      if (Provider.of<SiteShiftsData>(context, listen: false).sites.length ==
           2) {
         siteId = 0;
       } else {

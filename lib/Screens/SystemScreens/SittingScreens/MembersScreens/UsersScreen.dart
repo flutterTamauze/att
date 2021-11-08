@@ -131,9 +131,6 @@ class _UsersScreenState extends State<UsersScreen> {
     if (widget.selectedIndex != -1) {
       siteIndex = widget.selectedIndex;
       if (widget.comingFromShifts) {
-        print(
-          "eeeE  ${Provider.of<SiteData>(context, listen: false).dropDownSitesList[siteIndex].id}",
-        );
         await Provider.of<MemberData>(context, listen: false)
             .getAllCompanyMember(
                 Provider.of<SiteShiftsData>(context, listen: false)
@@ -147,9 +144,6 @@ class _UsersScreenState extends State<UsersScreen> {
                         .dropDownShiftIndex]
                     .shiftId);
       } else if (!widget.comingFromShifts) {
-        print(
-          "eeeE  ${Provider.of<SiteData>(context, listen: false).dropDownSitesList[siteIndex].id}",
-        );
         Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
             Provider.of<SiteShiftsData>(context, listen: false)
                 .siteShiftList[siteIndex]
@@ -168,8 +162,8 @@ class _UsersScreenState extends State<UsersScreen> {
       });
     }
     if (mounted)
-      widget.selectedValue = Provider.of<SiteData>(context, listen: false)
-          .dropDownSitesList[siteIndex]
+      widget.selectedValue = Provider.of<SiteShiftsData>(context, listen: false)
+          .sites[siteIndex]
           .name;
   }
 
@@ -221,14 +215,14 @@ class _UsersScreenState extends State<UsersScreen> {
 
   Widget build(BuildContext context) {
     var companyProv = Provider.of<CompanyData>(context, listen: false);
-    var siteProv = Provider.of<SiteData>(context, listen: false);
+    var siteProv = Provider.of<SiteShiftsData>(context, listen: false);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Consumer<MemberData>(builder: (context, memberData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             FocusScope.of(context).unfocus();
           },
           child: Scaffold(
@@ -332,10 +326,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                   height: 110.h,
                                                   width: 330.w,
                                                   child: RoundedSearchBar(
-                                                    list: Provider.of<SiteData>(
+                                                    list: Provider.of<
+                                                                SiteShiftsData>(
                                                             context,
                                                             listen: true)
-                                                        .dropDownSitesList,
+                                                        .sites,
                                                     dropdownValue:
                                                         widget.selectedValue,
                                                     resetTextFieldFun: () {
@@ -420,11 +415,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                 context,
                                                                 listen: false)
                                                             .getAllCompanyMember(
-                                                                Provider.of<SiteData>(
+                                                                Provider.of<SiteShiftsData>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                    .dropDownSitesList[
+                                                                    .sites[
                                                                         siteIndex]
                                                                     .id,
                                                                 companyProv
@@ -437,7 +432,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                         setState(() {
                                                           widget.selectedValue =
                                                               siteProv
-                                                                  .dropDownSitesList[
+                                                                  .sites[
                                                                       siteIndex]
                                                                   .name;
                                                         });

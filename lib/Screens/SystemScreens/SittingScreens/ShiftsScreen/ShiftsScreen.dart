@@ -57,6 +57,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     // x
     print(widget.siteIndex);
     super.initState();
+    Provider.of<SiteData>(context, listen: false).pageIndex = 0;
     print("init state");
     siteId = widget.siteId;
     Provider.of<SiteData>(context, listen: false).setCurrentSiteName(
