@@ -42,6 +42,18 @@ class Company {
     this.companyUsers,
     this.adminPhoneNumber,
   });
+  factory Company.fromJson(decodedRes) {
+    return Company(
+        id: decodedRes["data"]["id"],
+        nameAr: decodedRes["data"]["nameAr"],
+        nameEn: decodedRes["data"]["nameEn"],
+        logo: "$imageUrl${decodedRes["data"]["logo"]}",
+        email: decodedRes["data"]["companyEmail"] ?? "",
+        companyUsers: decodedRes["data"]["companyUsers"],
+        companySites: decodedRes["data"]["companySites"],
+        createdOn: DateTime.tryParse(decodedRes["data"]["createdOn"]),
+        legalComDate: decodedRes["data"]["monthStartDate"]);
+  }
 }
 
 class CompanyData extends ChangeNotifier {
@@ -96,16 +108,7 @@ class CompanyData extends ChangeNotifier {
           print("COMPANY MSG }");
           print(decodedRes["message"]);
           if (decodedRes["message"] == "Success") {
-            com.id = decodedRes["data"]["id"];
-            com.nameAr = decodedRes["data"]["nameAr"];
-            com.nameEn = decodedRes["data"]["nameEn"];
-            com.logo = "$imageUrl${decodedRes["data"]["logo"]}";
-            com.email = decodedRes["data"]["companyEmail"] ?? "";
-            com.companyUsers = decodedRes["data"]["companyUsers"];
-            com.companySites = decodedRes["data"]["companySites"];
-            com.createdOn = DateTime.tryParse(decodedRes["data"]["createdOn"]);
-            com.legalComDate = decodedRes["data"]["monthStartDate"];
-            print("company created on ${com.createdOn}");
+            com = Company.fromJson(decodedRes);
 
             notifyListeners();
             return "Success";

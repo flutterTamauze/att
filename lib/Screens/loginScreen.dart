@@ -289,7 +289,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ));
       } else {
-        if (value == 0) {
+        if (value == null)
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundedAlertOkOnly(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    title: 'خطأ في التسجيل',
+                    content:
+                        "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق ");
+              }).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+          });
+        else if (value == 0) {
           prefs.setStringList(
               'userData', [_uniIdController.text, _passwordController.text]);
 

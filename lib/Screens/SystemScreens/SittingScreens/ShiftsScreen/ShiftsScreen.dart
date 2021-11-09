@@ -531,12 +531,11 @@ class _ShiftTileState extends State<ShiftTile> {
                                   width: 20.w,
                                 ),
                                 Container(
-                                  height: 20,
                                   child: AutoSizeText(
                                     widget.shift.shiftName,
                                     maxLines: 1,
                                     style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16,
+                                        fontSize: ScreenUtil().setSp(15,
                                             allowFontScalingSelf: true),
                                         fontWeight: FontWeight.w600),
                                   ),

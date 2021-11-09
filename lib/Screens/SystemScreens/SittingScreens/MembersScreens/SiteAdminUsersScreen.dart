@@ -67,111 +67,126 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
     return "+ ${phoneNum.substring(0, len - 1)}";
   }
 
-  final _formkey = GlobalKey<FormState>();
   bool showSearchButton = true;
 
   Widget build(BuildContext context) {
     var prov = Provider.of<SiteData>(context, listen: false);
     return GestureDetector(
       onTap: () => print(prov.dropDownSitesIndex),
-      child: Form(
-        key: _formkey,
-        child: Container(
-          child: Column(
-            children: [
-              Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                            decoration: BoxDecoration(),
-                            height: 44.0.h,
-                            child: Stack(
-                              overflow: Overflow.visible,
-                              children: [
-                                TextFormField(
-                                  onFieldSubmitted: (_) async {
-                                    FocusScope.of(context).unfocus();
+      child: Container(
+        child: Column(
+          children: [
+            Directionality(
+              textDirection: ui.TextDirection.rtl,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                          decoration: BoxDecoration(),
+                          height: 44.0.h,
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: [
+                              TextFormField(
+                                onFieldSubmitted: (_) async {
+                                  FocusScope.of(context).unfocus();
+                                  setState(() {
+                                    showSearchButton = false;
+                                    widget
+                                        .searchFun(widget.textController.text);
+                                  });
+                                },
+                                onChanged: (String v) {
+                                  print(v);
+                                  if (v.isEmpty) {
+                                    widget.resetTextFieldFun();
+                                  }
+                                  print(showSearchButton);
+                                  if (showSearchButton == false) {
                                     setState(() {
-                                      showSearchButton = false;
-                                      widget.searchFun(
-                                          widget.textController.text);
+                                      showSearchButton = true;
                                     });
-                                  },
-                                  validator: (value) {
-                                    if (value.length < 3) {
-                                      return "يجب ان لا يقل البحث عن 3 احرف";
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (String v) {
-                                    print(v);
-                                    if (v.isEmpty) {
-                                      widget.resetTextFieldFun();
-                                    }
-                                    print(showSearchButton);
-                                    if (showSearchButton == false) {
-                                      setState(() {
-                                        showSearchButton = true;
-                                      });
-                                    }
-                                  },
-                                  controller: widget.textController,
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true)),
-                                  decoration:
-                                      kTextFieldDecorationForSearch.copyWith(
-                                          hintText: 'اسم المستخدم',
-                                          hintStyle: TextStyle(
-                                            fontSize: ScreenUtil().setSp(16,
-                                                allowFontScalingSelf: true),
-                                            color: Colors.grey,
-                                          ),
-                                          fillColor: Color(0xFFE9E9E9),
-                                          contentPadding: EdgeInsets.only(
-                                              left: 11,
-                                              right: 13,
-                                              top: 20,
-                                              bottom: 14),
-                                          errorStyle: TextStyle(
-                                            fontSize: 13,
-                                            height: 0.7,
-                                          ),
-                                          errorMaxLines: 2),
+                                  }
+                                },
+                                controller: widget.textController,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(16, allowFontScalingSelf: true)),
+                                decoration:
+                                    kTextFieldDecorationForSearch.copyWith(
+                                        hintText: 'اسم المستخدم',
+                                        hintStyle: TextStyle(
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                        fillColor: Color(0xFFE9E9E9),
+                                        contentPadding: EdgeInsets.only(
+                                            left: 11,
+                                            right: 13,
+                                            top: 20,
+                                            bottom: 14),
+                                        errorStyle: TextStyle(
+                                          fontSize: 13,
+                                          height: 0.7,
+                                        ),
+                                        errorMaxLines: 4),
+                              ),
+                              Positioned(
+                                left: 0,
+                                bottom: 0,
+                                child: Container(
+                                  width: 1.3,
+                                  height: 50,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                 ),
-                                Positioned(
-                                  left: 0,
-                                  bottom: 0,
-                                  child: Container(
-                                    width: 1.3,
-                                    height: 50,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (!_formkey.currentState.validate()) {
-                              return;
-                            } else {
-                              setState(() {
-                                showSearchButton = false;
-                                widget.searchFun(widget.textController.text);
-                              });
-                            }
-                          },
-                          child: showSearchButton
-                              ? Container(
+                              )
+                            ],
+                          )),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (widget.textController.text.length < 3) {
+                            Fluttertoast.showToast(
+                                msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                backgroundColor: Colors.red,
+                                gravity: ToastGravity.CENTER);
+                          } else {
+                            setState(() {
+                              showSearchButton = false;
+                              widget.searchFun(widget.textController.text);
+                            });
+                          }
+                        },
+                        child: showSearchButton
+                            ? Container(
+                                height: 44.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color(0xff4a4a4a), width: 1.0),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10)),
+                                  color: Colors.orange[500],
+                                ),
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    showSearchButton = true;
+                                  });
+                                  widget.resetTextFieldFun();
+                                },
+                                child: Container(
                                   height: 44.h,
                                   decoration: BoxDecoration(
                                     border: Border.all(
@@ -181,175 +196,147 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                         bottomLeft: Radius.circular(10)),
                                     color: Colors.orange[500],
                                   ),
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showSearchButton = true;
-                                    });
-                                    widget.resetTextFieldFun();
-                                  },
-                                  child: Container(
-                                    height: 44.h,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Color(0xff4a4a4a), width: 1.0),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10)),
-                                      color: Colors.orange[500],
-                                    ),
-                                    child: Icon(FontAwesomeIcons.times,
-                                        color: Colors.white),
-                                  ),
+                                  child: Icon(FontAwesomeIcons.times,
+                                      color: Colors.white),
                                 ),
-                        ),
-                      )
-                    ],
-                  ),
+                              ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: Flexible(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Directionality(
-                                  textDirection: ui.TextDirection.rtl,
-                                  child: Consumer<ShiftsData>(
-                                    builder: (context, value, child) {
-                                      return DropdownButton(
-                                          isExpanded: true,
-                                          underline: SizedBox(),
-                                          elevation: 5,
-                                          items: value.shiftsList
-                                              .map(
-                                                (value) => DropdownMenuItem(
-                                                    child: Container(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        height: 20.h,
-                                                        child: AutoSizeText(
-                                                          value.shiftName,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(12,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        )),
-                                                    value: value.shiftName),
-                                              )
-                                              .toList(),
-                                          onChanged: (v) async {
-                                            int holder;
-                                            print(v);
-                                            prov.setShiftValue(v);
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              child: Flexible(
+                child: Row(
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Consumer<ShiftsData>(
+                                  builder: (context, value, child) {
+                                    return DropdownButton(
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        elevation: 5,
+                                        items: value.shiftsList
+                                            .map(
+                                              (value) => DropdownMenuItem(
+                                                  child: Container(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      height: 20.h,
+                                                      child: AutoSizeText(
+                                                        value.shiftName,
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(12,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      )),
+                                                  value: value.shiftName),
+                                            )
+                                            .toList(),
+                                        onChanged: (v) async {
+                                          int holder;
+                                          print(v);
+                                          prov.setShiftValue(v);
 
-                                            List<String> x = [];
+                                          List<String> x = [];
 
-                                            value.shiftsList.forEach((element) {
-                                              x.add(element.shiftName);
-                                            });
+                                          value.shiftsList.forEach((element) {
+                                            x.add(element.shiftName);
+                                          });
 
-                                            holder = x.indexOf(v);
-                                            print(value
-                                                .shiftsList[holder].shiftId);
-                                            if (value.shiftsList[holder]
-                                                    .shiftId ==
-                                                -100) {
-                                              Provider.of<MemberData>(context,
-                                                      listen: false)
-                                                  .bySitePageIndex = 0;
-                                              Provider.of<MemberData>(context,
-                                                      listen: false)
-                                                  .keepRetriving = true;
-                                            }
+                                          holder = x.indexOf(v);
+                                          print(
+                                              value.shiftsList[holder].shiftId);
+                                          if (value
+                                                  .shiftsList[holder].shiftId ==
+                                              -100) {
                                             Provider.of<MemberData>(context,
                                                     listen: false)
-                                                .byShiftPageIndex = 0;
+                                                .bySitePageIndex = 0;
                                             Provider.of<MemberData>(context,
                                                     listen: false)
                                                 .keepRetriving = true;
-                                            Provider.of<MemberData>(context,
-                                                    listen: false)
-                                                .getAllCompanyMember(
-                                                    Provider.of<UserData>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .userSiteId,
-                                                    Provider.of<CompanyData>(
-                                                            context,
-                                                            listen: false)
-                                                        .com
-                                                        .id,
-                                                    Provider.of<UserData>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .userToken,
-                                                    context,
-                                                    value.shiftsList[holder]
-                                                                .shiftId ==
-                                                            -100
-                                                        ? -1
-                                                        : value
-                                                            .shiftsList[holder]
-                                                            .shiftId);
-                                            print(holder);
-                                            prov.setDropDownShift(holder);
-                                          },
-                                          hint: Text("كل المناوبات"),
-                                          value: value
-                                              .shiftsList[
-                                                  prov.dropDownShiftIndex]
-                                              .shiftName
+                                          }
+                                          Provider.of<MemberData>(context,
+                                                  listen: false)
+                                              .byShiftPageIndex = 0;
+                                          Provider.of<MemberData>(context,
+                                                  listen: false)
+                                              .keepRetriving = true;
+                                          Provider.of<MemberData>(context,
+                                                  listen: false)
+                                              .getAllCompanyMember(
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userSiteId,
+                                                  Provider.of<CompanyData>(
+                                                          context,
+                                                          listen: false)
+                                                      .com
+                                                      .id,
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userToken,
+                                                  context,
+                                                  value.shiftsList[holder]
+                                                              .shiftId ==
+                                                          -100
+                                                      ? -1
+                                                      : value.shiftsList[holder]
+                                                          .shiftId);
+                                          print(holder);
+                                          prov.setDropDownShift(holder);
+                                        },
+                                        hint: Text("كل المناوبات"),
+                                        value: value
+                                            .shiftsList[prov.dropDownShiftIndex]
+                                            .shiftName
 
-                                          // value
-                                          );
-                                    },
-                                  ),
+                                        // value
+                                        );
+                                  },
                                 ),
-                                Divider(
-                                  height: 1,
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                )
-                              ],
-                            ),
+                              ),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.grey,
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.alarm,
-                        color: Colors.orange[600],
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      Icons.alarm,
+                      color: Colors.orange[600],
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

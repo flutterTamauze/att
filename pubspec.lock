@@ -307,6 +307,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_analog_clock:
+    dependency: "direct main"
+    description:
+      name: flutter_analog_clock
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -952,6 +959,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  timer_builder:
+    dependency: "direct main"
+    description:
+      name: timer_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   trust_location:
     dependency: "direct main"
     description:

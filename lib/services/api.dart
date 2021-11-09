@@ -21,9 +21,10 @@ class ShiftApi with ChangeNotifier {
   List<Shift> shiftsListProvider = [];
   Position currentPosition;
   Location currentHuaweiLocation;
-  DateTime currentBackPressTime;
+  DateTime currentBackPressTime, currentCountryDate;
   bool isOnShift = true;
   List<String> currentShiftSTtime, currentShiftEndTime;
+
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
@@ -206,6 +207,8 @@ class ShiftApi with ChangeNotifier {
           shiftsList = shiftObjJson
               .map((shiftJson) => Shift.fromJsonQR(shiftJson))
               .toList();
+          currentCountryDate = DateTime.tryParse(
+              jsonDecode(response.body)['data'][2]["currentTime"]);
           currentShiftSTtime = [
             jsonDecode(response.body)['data'][0]["shiftSttime"],
             jsonDecode(response.body)['data'][0]["shiftEntime"]

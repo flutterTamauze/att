@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_analog_clock/flutter_analog_clock.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -31,7 +32,49 @@ class QrAttendDisplay extends StatelessWidget {
                                     ? Column(
                                         children: <Widget>[
                                           Container(
-                                            height: 250.h,
+                                            child: Column(
+                                              children: [
+                                                FlutterAnalogClock(
+                                                  dateTime: shiftApiConsumer
+                                                      .currentCountryDate,
+                                                  dialPlateColor: Colors.white,
+                                                  hourHandColor: Colors.orange,
+                                                  minuteHandColor:
+                                                      Colors.orange,
+                                                  secondHandColor: Colors.black,
+                                                  numberColor: Colors.black,
+                                                  borderColor: Colors.black,
+                                                  centerPointColor:
+                                                      Colors.black,
+                                                  showMinuteHand: true,
+                                                  showSecondHand: true,
+                                                  showNumber: true,
+                                                  borderWidth: 4.0,
+                                                  isLive: true,
+                                                  width: 120.0,
+                                                  height: 120.0,
+                                                  decoration:
+                                                      const BoxDecoration(),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  DateTime.now()
+                                                      .toString()
+                                                      .substring(0, 11),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 210.h,
                                             child: Center(
                                               child: Container(
                                                 decoration: BoxDecoration(

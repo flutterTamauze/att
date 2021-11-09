@@ -437,7 +437,6 @@ class _ShiftTileState extends State<ShiftTile> {
                                   width: 20.w,
                                 ),
                                 Container(
-                                  height: 20,
                                   child: AutoSizeText(
                                     widget.shift.shiftName,
                                     maxLines: 1,

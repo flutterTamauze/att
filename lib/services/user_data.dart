@@ -149,51 +149,28 @@ class UserData with ChangeNotifier {
           );
 
           var decodedRes = json.decode(response.body);
-          print(response.body);
+          // print(response.body);
           log(decodedRes["statusCode"].toString());
           if (decodedRes["statusCode"] == 200) {
             Map<String, dynamic> decodedToken =
                 JwtDecoder.decode(decodedRes["token"]);
-            print(decodedToken);
+            // print(decodedToken);
 
-            print(decodedToken[
-                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
+            // print(decodedToken[
+            //     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
             isSuperAdmin = decodedToken[
                     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
                 .toString()
                 .contains("[");
-            print("is super admin ? $isSuperAdmin");
+            // print("is super admin ? $isSuperAdmin");
             log(response.body);
-            log(response.statusCode.toString());
+            // log(response.statusCode.toString());
             print("token is :${decodedRes["token"]}");
             if (decodedRes["message"] == "Success : ") {
-              user.userToken = decodedRes["token"];
-              user.id = decodedRes["userData"]["id"];
-              user.userID = decodedRes["userData"]["userName"];
-              user.name = decodedRes["userData"]["userName1"];
-              user.userJob = decodedRes["userData"]["userJob"];
-              user.email = decodedRes["userData"]["email"];
-              user.phoneNum = decodedRes["userData"]["phoneNumber"];
-              user.userType = decodedRes["userData"]["userType"];
-              user.fcmToken = decodedRes["userData"]["fcmToken"];
-              user.osType = decodedRes["userData"]["mobileOS"];
-              user.salary = decodedRes["userData"]["salary"];
-              user.createdOn =
-                  DateTime.tryParse(decodedRes["userData"]["createdOn"]);
-              user.apkDate =
-                  DateTime.tryParse(decodedRes["apkDate"]["apkDate"]);
-              user.iosBundleDate =
-                  DateTime.tryParse(decodedRes["apkDate"]["ios"]);
-              user.userSiteId = decodedRes["companyData"]["siteId"] as int;
-              user.userShiftId = decodedRes["userData"]["shiftId"];
-              user.isAllowedToAttend =
-                  decodedRes["userData"]["isAllowtoAttend"];
-              user.userImage =
-                  "$imageUrl${decodedRes["userData"]["userImage"]}";
               changedPassword =
                   decodedRes["userData"]["changedPassword"] as bool;
               siteName = decodedRes["companyData"]["siteName"];
-
+              user = User.fromJson(decodedRes);
               var companyId = decodedRes["companyData"]["id"];
               print('com id :$companyId');
               var msg = await Provider.of<CompanyData>(context, listen: false)
@@ -231,8 +208,7 @@ class UserData with ChangeNotifier {
                   comImageFilePath
                 ];
                 prefs.setStringList("allUserData", userData);
-                print(userData[2]);
-                print(userData[4]);
+
                 loggedIn = true;
                 final List<String> notifyList =
                     prefs.getStringList('bgNotifyList');
@@ -773,4 +749,27 @@ class User {
       this.osType,
       this.apkDate,
       this.iosBundleDate});
+
+  factory User.fromJson(dynamic json) {
+    return User(
+      userToken: json["token"],
+      id: json["userData"]["id"],
+      userID: json["userData"]["userName"],
+      name: json["userData"]["userName1"],
+      userJob: json["userData"]["userJob"],
+      email: json["userData"]["email"],
+      phoneNum: json["userData"]["phoneNumber"],
+      userType: json["userData"]["userType"],
+      fcmToken: json["userData"]["fcmToken"],
+      osType: json["userData"]["mobileOS"],
+      salary: json["userData"]["salary"],
+      createdOn: DateTime.tryParse(json["userData"]["createdOn"]),
+      apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),
+      iosBundleDate: DateTime.tryParse(json["apkDate"]["ios"]),
+      userSiteId: json["companyData"]["siteId"] as int,
+      userShiftId: json["userData"]["shiftId"],
+      isAllowedToAttend: json["userData"]["isAllowtoAttend"],
+      userImage: "$imageUrl${json["userData"]["userImage"]}",
+    );
+  }
 }

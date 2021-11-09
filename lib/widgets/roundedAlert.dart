@@ -659,7 +659,7 @@ class RoundedAlertOkOnly extends StatelessWidget {
                       ),
                       Center(
                         child: Container(
-                          height: 20.h,
+                          height: 40.h,
                           child: AutoSizeText(
                             content,
                             maxLines: 1,
