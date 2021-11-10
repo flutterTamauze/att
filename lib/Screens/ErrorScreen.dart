@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
+import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -141,11 +142,18 @@ class _ErrorScreenState extends State<ErrorScreen> {
           .catchError(((e) {
         print(e);
       })).then((value) {
-        if (value == -4 || value == -3 || value == null) {
+        print(value);
+        if (value == -4 || value == USER_INVALID_RESPONSE) {
           setState(() {
             isLoading = false;
             message =
                 "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج";
+          });
+        } else if (value == NO_INTERNET) {
+          print("mfeeesh net");
+          setState(() {
+            isLoading = false;
+            message = "لا يوجد اتصال بالانترنت\nبرجاء المحاولة مرة اخرى";
           });
         } else if (value > 0) {
           print("laaa");
@@ -160,21 +168,9 @@ class _ErrorScreenState extends State<ErrorScreen> {
               MaterialPageRoute(
                 builder: (context) => HomePage(),
               ));
-        } else if (value == -1) {
-          print("mfeh");
-          setState(() {
-            isLoading = false;
-            message = "لا يوجد اتصال بالانترنت";
-          });
         } else if (value == -2) {
           Navigator.of(context).pushReplacement(
               new MaterialPageRoute(builder: (context) => LoginScreen()));
-        } else if (value == -5) {
-          print("mfeeesh net");
-          setState(() {
-            isLoading = false;
-            message = "لا يوجد اتصال بالانترنت\nبرجاء المحاولة مرة اخرى";
-          });
         } else {
           Navigator.of(context).pushReplacement(
               new MaterialPageRoute(builder: (context) => LoginScreen()));

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_analog_clock/flutter_analog_clock.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -12,7 +15,40 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class QrAttendDisplay extends StatelessWidget {
+class QrAttendDisplay extends StatefulWidget {
+  @override
+  _QrAttendDisplayState createState() => _QrAttendDisplayState();
+}
+
+Timer _timer;
+
+class _QrAttendDisplayState extends State<QrAttendDisplay> {
+  DateTime countryDate;
+  getTimeZone() {
+    if (mounted) {
+      _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+        setState(() {
+          countryDate = countryDate.add(Duration(seconds: 1));
+          print(DateFormat.jms().format(countryDate));
+        });
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    countryDate =
+        Provider.of<ShiftApi>(context, listen: false).currentCountryDate;
+    super.initState();
+    getTimeZone();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     var shiftApiConsumer = Provider.of<ShiftApi>(context);
@@ -34,38 +70,28 @@ class QrAttendDisplay extends StatelessWidget {
                                           Container(
                                             child: Column(
                                               children: [
-                                                FlutterAnalogClock(
-                                                  dateTime: shiftApiConsumer
-                                                      .currentCountryDate,
-                                                  dialPlateColor: Colors.white,
-                                                  hourHandColor: Colors.orange,
-                                                  minuteHandColor:
-                                                      Colors.orange,
-                                                  secondHandColor: Colors.black,
-                                                  numberColor: Colors.black,
-                                                  borderColor: Colors.black,
-                                                  centerPointColor:
-                                                      Colors.black,
-                                                  showMinuteHand: true,
-                                                  showSecondHand: true,
-                                                  showNumber: true,
-                                                  borderWidth: 4.0,
-                                                  isLive: true,
-                                                  width: 120.0,
-                                                  height: 120.0,
-                                                  decoration:
-                                                      const BoxDecoration(),
+                                                Text(
+                                                  DateFormat.jms()
+                                                      .format(countryDate),
+                                                  style: TextStyle(
+                                                      letterSpacing: 4,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 21),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  DateTime.now()
+                                                  shiftApiConsumer
+                                                      .currentCountryDate
                                                       .toString()
                                                       .substring(0, 11),
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w600),
+                                                          FontWeight.w600,
+                                                      letterSpacing: 2,
+                                                      fontSize: 17),
                                                 ),
                                               ],
                                             ),

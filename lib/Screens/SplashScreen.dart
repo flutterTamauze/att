@@ -31,6 +31,8 @@ import 'package:path/path.dart' as p;
 import '../Screens/intro.dart';
 import 'package:http/http.dart' as http;
 
+import '../constants.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -139,19 +141,26 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ));
           } else {
-            if (value == -4 || value == -3 || value == null) {
+            print(value);
+            if (value == -4 ||
+                value == USER_INVALID_RESPONSE ||
+                value == UNKNOWN_ERROR) {
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
                       "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج",
                       true)));
+            } else if (value == NO_INTERNET) {
+              await getUserData();
+              Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                  builder: (context) => ErrorScreen(
+                      "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
             } else if (value > 0 && value < 6) {
               print(" usertype $value");
 
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return NavScreenTwo(0);
-                // return SuperAdminScreen();
               }));
 
               getUserData();
@@ -171,16 +180,6 @@ class _SplashScreenState extends State<SplashScreen>
                             : HomePage()),
                   ));
               getUserData();
-            } else if (value == -1) {
-              await getUserData();
-              Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (context) =>
-                      ErrorScreen("لا يوجد اتصال بالانترنت", true)));
-            } else if (value == -5) {
-              await getUserData();
-              Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (context) => ErrorScreen(
-                      "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
             } else if (value == -2) {
               Navigator.of(context).pushReplacement(
                   new MaterialPageRoute(builder: (context) => LoginScreen()));

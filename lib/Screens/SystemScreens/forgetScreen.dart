@@ -723,46 +723,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
             MaterialPageRoute(
               builder: (context) => HomePage(),
             ));
-      } else if (value > 0) {
-        prefs.setStringList(
-            'userData', [widget.userName, _passwordController.text]);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NavScreenTwo(0),
-            ));
-      } else if (value == -1) {
-        return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return RoundedAlertOkOnly(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  title: 'خطأ في التسجيل',
-                  content: "لا يوجد اتصال بالانترنت");
-            }).then((value) {
-          setState(() {
-            isLoading = false;
-          });
-        });
-      } else if (value == -2) {
-        return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return RoundedAlertOkOnly(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  title: 'خطأ في التسجيل',
-                  content:
-                      "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى");
-            }).then((value) {
-          setState(() {
-            isLoading = false;
-          });
-        });
-      } else if (value == -5) {
+      } else if (value == NO_INTERNET) {
         return showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -777,7 +738,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
             isLoading = false;
           });
         });
-      } else if (value == -3) {
+      } else if (value == USER_INVALID_RESPONSE) {
         return showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -787,6 +748,30 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                   },
                   title: 'خطأ فى البيانات الحساب',
                   content: "من فضلك راجع مدير النظام");
+            }).then((value) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+      } else if (value > 0) {
+        prefs.setStringList(
+            'userData', [widget.userName, _passwordController.text]);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NavScreenTwo(0),
+            ));
+      } else if (value == -2) {
+        return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return RoundedAlertOkOnly(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  title: 'خطأ في التسجيل',
+                  content:
+                      "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى");
             }).then((value) {
           setState(() {
             isLoading = false;

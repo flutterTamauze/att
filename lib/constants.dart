@@ -8,17 +8,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 //http://192.168.0.119:8010
 //https://Chilangoback.tamauzeds.com
-final androidDownloadLink =
+const androidDownloadLink =
     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
-final iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
-final baseURL = "https://Chilangoback.tamauzeds.com";
-final imageUrl = "$baseURL/Resources/images/";
-final localURL = "http://192.168.0.114:8010";
-final huaweiAppId = "104665933";
-final huaweiSecret =
+const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
+const baseURL = "https://Chilangoback.tamauzeds.com";
+const imageUrl = "$baseURL/Resources/images/";
+const localURL = "http://192.168.0.114:8010";
+const huaweiAppId = "104665933";
+const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
+
 // final baseURL = "http://192.168.1.38:45456";
-final apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
+const apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 List<String> weekDays = [
   "السبت",
   "الأحد",
@@ -28,15 +29,15 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 8);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 9);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 1);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
-const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 const CONNECTION_TIMEOUT = 104;
+const UN_AUTHORIZED = 401;
 Future<bool> onWillPop() {
   DateTime now = DateTime.now();
 

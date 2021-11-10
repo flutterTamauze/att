@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:qr_users/NetworkApi/NetworkException.dart';
 import 'package:qr_users/constants.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -9,11 +8,12 @@ import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 
+import 'ApiStatus.dart';
+
 class NetworkApi {
   final timeOutDuration = Duration(seconds: 20);
-  final defaultErrorMessage = "حدث خطأ ما";
-  final defaultNetworkMessage = "لا يوجد اتصال بالأنترنت";
-  Future<dynamic> request(String endPoint, RequestType requestType,
+
+  Future<Object> request(String endPoint, RequestType requestType,
       Map<String, String> headers, body) async {
     http.Response res;
     try {
@@ -34,39 +34,41 @@ class NetworkApi {
       }
       DateTime postTime = DateTime.now();
       log("Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
-      final result = json.decode(res.body);
-      if (result["message"] != null) {
-        return res;
-      } else {
-        throw NetworkException(defaultErrorMessage);
+      print(res.statusCode);
+      if (res.statusCode == 200) {
+        return res.body;
+      } else if (res.statusCode == 400 || res.statusCode == 500) {
+        return Faliure(
+            code: USER_INVALID_RESPONSE, errorResponse: "Invalid Response");
+      } else if (res.statusCode == 403 || res.statusCode == 401) {
+        return Faliure(code: 401, errorResponse: UN_AUTHORIZED);
       }
     } on SocketException catch (_) {
-      throw NetworkException(defaultNetworkMessage);
-    } on HandshakeException catch (_) {
-      throw NetworkException(defaultNetworkMessage);
+      return Faliure(code: NO_INTERNET, errorResponse: "No Internet");
     } on TimeoutException catch (_) {
-      throw NetworkException("Connection timeout");
+      throw Faliure(
+          code: CONNECTION_TIMEOUT, errorResponse: "Connection timeout");
     } catch (e) {
-      throw NetworkException(e.toString());
+      return Faliure(code: UNKNOWN_ERROR, errorResponse: "Unknown Error");
     }
   }
 
   Future<http.Response> _get(endPoint, headers) async {
     return await http
-        .get(Uri.parse(baseURL + endPoint), headers: headers)
+        .get(Uri.parse(endPoint), headers: headers)
         .timeout(timeOutDuration);
   }
 
   // ignore: unused_element
   Future<http.Response> _post(endPoint, headers, {body}) async {
     return await http
-        .post(Uri.parse(baseURL + endPoint), headers: headers, body: body)
+        .post(Uri.parse(endPoint), headers: headers, body: body)
         .timeout(timeOutDuration);
   }
 
   Future<http.Response> _put(endPoint, headers, {body}) async {
     return await http
-        .put(Uri.parse(baseURL + endPoint), headers: headers, body: body)
+        .put(Uri.parse(endPoint), headers: headers, body: body)
         .timeout(timeOutDuration);
   }
 
@@ -76,7 +78,7 @@ class NetworkApi {
   ) async {
     return await http
         .delete(
-          Uri.parse(baseURL + endPoint),
+          Uri.parse(endPoint),
           headers: headers,
         )
         .timeout(timeOutDuration);

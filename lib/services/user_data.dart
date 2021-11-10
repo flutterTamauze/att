@@ -22,10 +22,12 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/NetworkApi/ApiStatus.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
+import 'package:qr_users/services/MemberData/Repo/MembersRepo.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
@@ -64,7 +66,6 @@ class UserData with ChangeNotifier {
     notifyListeners();
   }
 
-  final _apiToken = 'ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM';
   bool loggedIn = false;
   Future<bool> isConnectedToInternet(String url) async {
     try {
@@ -94,188 +95,129 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-
-    print("i am in login now ");
-    print(connectivityResult);
+    int userType;
+    var decodedRes;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       var token;
       bool isHuawei = false;
-      if (connectivityResult != ConnectivityResult.none) {
-        HuaweiServices _huawei = HuaweiServices();
-        if (await _huawei.isHuaweiDevice()) {
-          log("huawei detected");
-          token = hawawiToken;
-          isHuawei = true;
-        } else {
-          print("i am not huawei");
-          bool isError = false;
-          String isnull = await firebaseMessaging.getToken().catchError((e) {
-            token = "null";
-            isError = true;
-          });
 
-          if (isError == false) {
-            token = await firebaseMessaging.getToken();
-          }
-        }
-
-        print("token fcm :$token");
-        var stability = await isConnectedToInternet("www.google.com");
-        print(stability);
-        if (stability) {
-          print("going to login");
-          final response = await http.post(
-              Uri.parse("$baseURL/api/Authenticate/login"),
-              body: json.encode(
-                {
-                  "Username": username,
-                  "Password": password,
-                  "FCMToken": token,
-                  "MobileOS": isHuawei
-                      ? 3
-                      : Platform.isIOS
-                          ? 2
-                          : 1
-                },
-              ),
-              headers: {
-                'Content-type': 'application/json',
-                'x-api-key': _apiToken
-              }).timeout(
-            Duration(
-              seconds: 30,
-            ),
-          );
-
-          var decodedRes = json.decode(response.body);
-          // print(response.body);
-          log(decodedRes["statusCode"].toString());
-          if (decodedRes["statusCode"] == 200) {
-            Map<String, dynamic> decodedToken =
-                JwtDecoder.decode(decodedRes["token"]);
-            // print(decodedToken);
-
-            // print(decodedToken[
-            //     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
-            isSuperAdmin = decodedToken[
-                    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-                .toString()
-                .contains("[");
-            // print("is super admin ? $isSuperAdmin");
-            log(response.body);
-            // log(response.statusCode.toString());
-            print("token is :${decodedRes["token"]}");
-            if (decodedRes["message"] == "Success : ") {
-              changedPassword =
-                  decodedRes["userData"]["changedPassword"] as bool;
-              siteName = decodedRes["companyData"]["siteName"];
-              user = User.fromJson(decodedRes);
-              var companyId = decodedRes["companyData"]["id"];
-              print('com id :$companyId');
-              var msg = await Provider.of<CompanyData>(context, listen: false)
-                  .getCompanyProfileApi(companyId, user.userToken, context);
-              print(msg);
-              if (msg == "Success") {
-                print("ana get b success");
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                String comImageFilePath =
-                    "$imageUrl${decodedRes["companyData"]["logo"]}";
-
-                String userImage = user.userImage;
-                var comProv = Provider.of<CompanyData>(context, listen: false);
-                if (isSuperAdmin) {
-                  print(decodedRes['superAdminCompanies']);
-                  var obJson = decodedRes['superAdminCompanies'] as List;
-                  superCompaniesList.add(SuperCompaniesModel(
-                      companyId: comProv.com.id,
-                      companyName: comProv.com.nameAr));
-                  List<SuperCompaniesModel> tempComp = obJson
-                      .map((json) => SuperCompaniesModel.fromJson(json))
-                      .toList();
-                  superCompaniesList.addAll(tempComp);
-                }
-                if (user.userType == 4 || user.userType == 3) {
-                  Provider.of<SiteShiftsData>(context, listen: false)
-                      .getAllSitesAndShifts(companyId, user.userToken);
-                }
-
-                List<String> userData = [
-                  user.name,
-                  user.userJob,
-                  userImage,
-                  decodedRes["companyData"]["nameAr"],
-                  comImageFilePath
-                ];
-                prefs.setStringList("allUserData", userData);
-
-                loggedIn = true;
-                final List<String> notifyList =
-                    prefs.getStringList('bgNotifyList');
-                print("notifi status :$notifyList ");
-                if (notifyList != null && notifyList.length != 0) {
-                  await db.insertNotification(
-                      NotificationMessage(
-                          category: notifyList[0],
-                          dateTime: notifyList[1],
-                          message: notifyList[2],
-                          messageSeen: 0,
-                          timeOfMessage: notifyList[4],
-                          title: notifyList[3]),
-                      context);
-                }
-                await initializeNotification(context);
-                int userType = user.userType;
-                if (isSuperAdmin) {
-                  return 6;
-                } else if (userType != 2 && userType != 0) {
-                  await Provider.of<ShiftsData>(context, listen: false)
-                      .getShifts(
-                          Provider.of<CompanyData>(context, listen: false)
-                              .com
-                              .id,
-                          Provider.of<UserData>(context, listen: false)
-                              .user
-                              .userToken,
-                          context,
-                          userType,
-                          0);
-                } else if (userType == 2) {
-                  print("get site admin shifts");
-                  Provider.of<ShiftsData>(context, listen: false).getShifts(
-                      Provider.of<UserData>(context, listen: false)
-                          .user
-                          .userSiteId,
-                      Provider.of<UserData>(context, listen: false)
-                          .user
-                          .userToken,
-                      context,
-                      userType,
-                      Provider.of<UserData>(context, listen: false)
-                          .user
-                          .userSiteId);
-                }
-                notifyListeners();
-                prefs.setStringList(('bgNotifyList'), []);
-                return user.userType;
-              }
-            }
-          } else if (decodedRes["statusCode"] == 400) {
-            return -3;
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return -2;
-          } else if (decodedRes["message"] ==
-              "Fail : This Company is suspended") {
-            return -4;
-          }
-        } else if (!stability) {
-          return -5;
-        }
-
-        return -3;
+      HuaweiServices _huawei = HuaweiServices();
+      if (await _huawei.isHuaweiDevice()) {
+        token = hawawiToken;
+        isHuawei = true;
       } else {
-        return -1;
+        bool isError = false;
+        String isnull = await firebaseMessaging.getToken().catchError((e) {
+          token = "null";
+          isError = true;
+        });
+
+        if (isError == false) {
+          token = await firebaseMessaging.getToken();
+        }
+      }
+
+      final response =
+          await MemberRepo().getMemberData(username, password, token, isHuawei);
+      if (response is Faliure) {
+        print(response.errorResponse);
+        return response.code;
+      } else {
+        decodedRes = json.decode(response);
+        Map<String, dynamic> decodedToken =
+            JwtDecoder.decode(decodedRes["token"]);
+        isSuperAdmin = decodedToken[
+                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            .toString()
+            .contains("[");
+        log(response);
+        if (decodedRes["message"] == "Success : ") {
+          changedPassword = decodedRes["userData"]["changedPassword"] as bool;
+          siteName = decodedRes["companyData"]["siteName"];
+          user = User.fromJson(decodedRes);
+          var companyId = decodedRes["companyData"]["id"];
+          print('com id :$companyId');
+          var msg = await Provider.of<CompanyData>(context, listen: false)
+              .getCompanyProfileApi(companyId, user.userToken, context);
+          print(msg);
+          if (msg == "Success") {
+            String comImageFilePath =
+                "$imageUrl${decodedRes["companyData"]["logo"]}";
+
+            String userImage = user.userImage;
+            var comProv = Provider.of<CompanyData>(context, listen: false);
+            if (isSuperAdmin) {
+              print(decodedRes['superAdminCompanies']);
+              var obJson = decodedRes['superAdminCompanies'] as List;
+              superCompaniesList.add(SuperCompaniesModel(
+                  companyId: comProv.com.id, companyName: comProv.com.nameAr));
+              List<SuperCompaniesModel> tempComp = obJson
+                  .map((json) => SuperCompaniesModel.fromJson(json))
+                  .toList();
+              superCompaniesList.addAll(tempComp);
+            }
+            if (user.userType == 4 || user.userType == 3) {
+              Provider.of<SiteShiftsData>(context, listen: false)
+                  .getAllSitesAndShifts(companyId, user.userToken);
+            }
+
+            List<String> userData = [
+              user.name,
+              user.userJob,
+              userImage,
+              decodedRes["companyData"]["nameAr"],
+              comImageFilePath
+            ];
+            prefs.setStringList("allUserData", userData);
+
+            loggedIn = true;
+            final List<String> notifyList = prefs.getStringList('bgNotifyList');
+            print("notifi status :$notifyList ");
+            if (notifyList != null && notifyList.length != 0) {
+              await db.insertNotification(
+                  NotificationMessage(
+                      category: notifyList[0],
+                      dateTime: notifyList[1],
+                      message: notifyList[2],
+                      messageSeen: 0,
+                      timeOfMessage: notifyList[4],
+                      title: notifyList[3]),
+                  context);
+            }
+            await initializeNotification(context);
+            userType = user.userType;
+            if (decodedRes["message"] ==
+                "Failed : user name and password not match ") {
+              return -2;
+            } else if (decodedRes["message"] ==
+                "Fail : This Company is suspended") {
+              return -4;
+            }
+          }
+
+          if (isSuperAdmin) {
+            return 6;
+          } else if (userType != 2 && userType != 0) {
+            await Provider.of<ShiftsData>(context, listen: false).getShifts(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken,
+                context,
+                userType,
+                0);
+          } else if (userType == 2) {
+            print("get site admin shifts");
+            Provider.of<ShiftsData>(context, listen: false).getShifts(
+                Provider.of<UserData>(context, listen: false).user.userSiteId,
+                Provider.of<UserData>(context, listen: false).user.userToken,
+                context,
+                userType,
+                Provider.of<UserData>(context, listen: false).user.userSiteId);
+          }
+          notifyListeners();
+          prefs.setStringList(('bgNotifyList'), []);
+          return user.userType;
+        }
       }
     } catch (e) {
       print(e);
@@ -297,10 +239,7 @@ class UserData with ChangeNotifier {
             body: json.encode(
               {"UserName": username, "Email": email.trim()},
             ),
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': _apiToken
-            });
+            headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
         print(response.body);
         var decodedRes = json.decode(response.body);
 
@@ -332,10 +271,7 @@ class UserData with ChangeNotifier {
                 "NewPassword": password,
               },
             ),
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': _apiToken
-            });
+            headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
 
         var decodedRes = json.decode(response.body);
         print(decodedRes["message"]);

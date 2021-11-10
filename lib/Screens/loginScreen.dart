@@ -289,7 +289,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ));
       } else {
-        if (value == null)
+        if (value == NO_INTERNET) {
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundedAlertOkOnly(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    title: "لا يوجد اتصال بالانترنت",
+                    content: "برجاء اعادة المحاولة مرة اخرى");
+              }).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+          });
+        } else if (value == USER_INVALID_RESPONSE ||
+            value == CONNECTION_TIMEOUT) {
           return showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -305,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
               isLoading = false;
             });
           });
-        else if (value == 0) {
+        } else if (value == 0) {
           prefs.setStringList(
               'userData', [_uniIdController.text, _passwordController.text]);
 
@@ -323,21 +339,6 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (value == 6) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => SuperAdminScreen()));
-        } else if (value == -1) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: 'خطأ في التسجيل',
-                    content: "لا يوجد اتصال بالانترنت");
-              }).then((value) {
-            setState(() {
-              isLoading = false;
-            });
-          });
         } else if (value == -2) {
           return showDialog(
               context: context,
@@ -349,36 +350,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     title: 'خطأ في التسجيل',
                     content:
                         "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى");
-              }).then((value) {
-            setState(() {
-              isLoading = false;
-            });
-          });
-        } else if (value == -5) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: "لا يوجد اتصال بالانترنت",
-                    content: "برجاء اعادة المحاولة مرة اخرى");
-              }).then((value) {
-            setState(() {
-              isLoading = false;
-            });
-          });
-        } else if (value == -3) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: 'خطأ فى البيانات الحساب',
-                    content: "من فضلك راجع مدير النظام");
               }).then((value) {
             setState(() {
               isLoading = false;

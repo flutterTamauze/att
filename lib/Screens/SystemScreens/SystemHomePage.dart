@@ -121,6 +121,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
     });
   }
 
+  Timer timer;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -132,8 +133,24 @@ class _SystemHomePageState extends State<SystemHomePage> {
     // Provider.of<NotificationDataService>(context, listen: false)
     //     .firebaseMessagingConfig(context);
     super.initState();
+    // getTimeZone();
     _startUp();
     firstget();
+  }
+
+  getTimeZone() {
+    if (mounted) {
+      setState(() {
+        timer = Timer.periodic(Duration(minutes: 1), (Timer t) {
+          Provider.of<ShiftApi>(context, listen: false).currentCountryDate =
+              Provider.of<ShiftApi>(context, listen: false)
+                  .currentCountryDate
+                  .add(Duration(minutes: 1));
+          print(
+              Provider.of<ShiftApi>(context, listen: false).currentCountryDate);
+        });
+      });
+    }
   }
 
   getData() async {
