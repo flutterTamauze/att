@@ -289,6 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ));
       } else {
+        print(value);
         if (value == NO_INTERNET) {
           return showDialog(
               context: context,
@@ -305,7 +306,8 @@ class _LoginScreenState extends State<LoginScreen> {
             });
           });
         } else if (value == USER_INVALID_RESPONSE ||
-            value == CONNECTION_TIMEOUT) {
+            value == CONNECTION_TIMEOUT ||
+            value == null) {
           return showDialog(
               context: context,
               builder: (BuildContext context) {

@@ -90,7 +90,6 @@ dependencies:
   progress_dialog: ^1.2.4
   jwt_decoder: ^2.0.1
   flutter_speed_dial: ^3.0.5
-  flutter_analog_clock: ^0.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

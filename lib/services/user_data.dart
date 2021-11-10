@@ -120,11 +120,19 @@ class UserData with ChangeNotifier {
 
       final response =
           await MemberRepo().getMemberData(username, password, token, isHuawei);
+      log(response);
       if (response is Faliure) {
         print(response.errorResponse);
         return response.code;
       } else {
         decodedRes = json.decode(response);
+        if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return -2;
+        } else if (decodedRes["message"] ==
+            "Fail : This Company is suspended") {
+          return -4;
+        }
         Map<String, dynamic> decodedToken =
             JwtDecoder.decode(decodedRes["token"]);
         isSuperAdmin = decodedToken[
@@ -187,13 +195,6 @@ class UserData with ChangeNotifier {
             }
             await initializeNotification(context);
             userType = user.userType;
-            if (decodedRes["message"] ==
-                "Failed : user name and password not match ") {
-              return -2;
-            } else if (decodedRes["message"] ==
-                "Fail : This Company is suspended") {
-              return -4;
-            }
           }
 
           if (isSuperAdmin) {
