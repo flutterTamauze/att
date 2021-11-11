@@ -122,11 +122,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      final userDataProvider = Provider.of<UserData>(context, listen: false);
-      if (userDataProvider.user.userType == 0) {
-        if (mounted) {
-          CompanySettingsService _companyService = CompanySettingsService();
+      if (mounted) {
+        final userDataProvider = Provider.of<UserData>(context, listen: false);
+        CompanySettingsService _companyService = CompanySettingsService();
 
+        if (userDataProvider.user.userType == 0) {
           _companyService
               .isCompanySuspended(
                   Provider.of<CompanyData>(context, listen: false).com.id,

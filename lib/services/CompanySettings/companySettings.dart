@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:qr_users/NetworkApi/ApiStatus.dart';
 import 'package:qr_users/NetworkApi/Network.dart';
 import 'package:qr_users/enums/request_type.dart';
 import 'dart:convert';
@@ -49,7 +50,9 @@ class CompanySettingsService {
       },
     );
     print(response);
-
+    if (response is Faliure) {
+      return false;
+    }
     var decodedRes = json.decode(response);
     if (decodedRes["message"] == "Success") {
       this.suspentionTime =
