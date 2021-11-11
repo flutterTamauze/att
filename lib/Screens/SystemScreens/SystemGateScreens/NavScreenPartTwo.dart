@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,11 +15,16 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dar
 import 'package:qr_users/Screens/SystemScreens/SystemHomePage.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Shared/Subscribtion_end_dialog.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/roundedButton.dart';
 
 class NavScreenTwo extends StatefulWidget {
   final int index;
@@ -28,7 +35,8 @@ class NavScreenTwo extends StatefulWidget {
   _NavScreenTwoState createState() => _NavScreenTwoState(index);
 }
 
-class _NavScreenTwoState extends State<NavScreenTwo> {
+class _NavScreenTwoState extends State<NavScreenTwo>
+    with WidgetsBindingObserver {
   _NavScreenTwoState(this.getIndex);
 
   final getIndex;
@@ -87,6 +95,7 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
 
     checkForegroundNotification();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   // void _onNotificationOpenedApp(RemoteMessage remoteMessage) {
@@ -104,6 +113,33 @@ class _NavScreenTwoState extends State<NavScreenTwo> {
         ),
         context);
     // player.play("notification.mp3");
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (mounted) {
+        CompanySettingsService _companyService = CompanySettingsService();
+        final userDataProvider = Provider.of<UserData>(context, listen: false);
+        _companyService
+            .isCompanySuspended(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                userDataProvider.user.userToken)
+            .then((value) {
+          log(value.toString());
+          if (value == true) {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return DisplaySubscrtibitionEndDialog(
+                    companyService: _companyService);
+              },
+            );
+          }
+        });
+      }
+    }
   }
 
   NotificationDataService _notifService = NotificationDataService();

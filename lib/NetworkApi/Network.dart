@@ -13,8 +13,9 @@ import 'ApiStatus.dart';
 class NetworkApi {
   final timeOutDuration = Duration(seconds: 20);
 
-  Future<Object> request(String endPoint, RequestType requestType,
-      Map<String, String> headers, body) async {
+  Future<Object> request(
+      String endPoint, RequestType requestType, Map<String, String> headers,
+      [body]) async {
     http.Response res;
     try {
       DateTime preTime = DateTime.now();

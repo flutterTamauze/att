@@ -1,41 +1,20 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:animate_do/animate_do.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
-import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
-import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
-import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
-import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart'
-    as intlPhone;
-import 'package:qr_users/widgets/multiple_floating_buttons.dart';
-import 'package:qr_users/widgets/roundedButton.dart';
-import 'package:shimmer/shimmer.dart';
 
 class UserPropertiesMenu extends StatefulWidget {
   final Member user;
@@ -54,13 +33,13 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
         textDirection: TextDirection.rtl,
         child: AlertDialog(
           insetPadding: EdgeInsets.symmetric(
-            horizontal: 95.0.w,
-            vertical: 90.0.h,
+            horizontal: userDataProvider.userType != 2 ? 95.0.w : 20.0.w,
+            vertical: userDataProvider.userType != 2 ? 90.0.h : 20.h,
           ),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
-            height: 200.h,
+            height: userDataProvider.userType != 2 ? 200.h : 50.h,
             child: StatefulBuilder(
               builder: (context, setState) {
                 return Column(
@@ -94,9 +73,9 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         OutsideVacation(widget.user, 1)),
-                              ))
+                              )),
+                      Divider(),
                     ],
-                    Divider(),
                     AssignTaskToUser(
                         taskName: "اثبات حضور",
                         iconData: FontAwesomeIcons.checkCircle,

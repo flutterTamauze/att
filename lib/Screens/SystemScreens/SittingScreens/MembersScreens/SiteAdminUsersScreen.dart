@@ -29,6 +29,7 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/Shared/shimmer_builder.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
+import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
@@ -977,6 +978,18 @@ class _MemberTileState extends State<MemberTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: InkWell(
+        onLongPress: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: UserPropertiesMenu(
+                  user: widget.user,
+                ),
+              );
+            },
+          );
+        },
         onTap: () {
           shiftId = getShiftListIndex(widget.user.shiftId);
           Navigator.push(

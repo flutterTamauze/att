@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:animate_do/animate_do.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,9 +23,15 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
+import 'package:qr_users/services/ShiftsData.dart';
+import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Shared/Subscribtion_end_dialog.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -44,7 +52,7 @@ final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
 bool showApk = true;
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
@@ -108,6 +116,37 @@ class _HomePageState extends State<HomePage> {
         .notificationPermessions();
 
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      final userDataProvider = Provider.of<UserData>(context, listen: false);
+      if (userDataProvider.user.userType == 0) {
+        if (mounted) {
+          CompanySettingsService _companyService = CompanySettingsService();
+
+          _companyService
+              .isCompanySuspended(
+                  Provider.of<CompanyData>(context, listen: false).com.id,
+                  userDataProvider.user.userToken)
+              .then((value) {
+            log(value.toString());
+            if (value == true) {
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return DisplaySubscrtibitionEndDialog(
+                      companyService: _companyService);
+                },
+              );
+            }
+          });
+        }
+      }
+    }
   }
 
   static Future<String> getDeviceUUID() async {
