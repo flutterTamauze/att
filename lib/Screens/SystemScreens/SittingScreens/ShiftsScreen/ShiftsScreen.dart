@@ -83,8 +83,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
     // monitor network fetch
     print("refresh");
     // if failed,use refreshFailed()
@@ -95,21 +93,11 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     await getData(Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList[siteId]
         .siteId);
-    // await Provider.of<ShiftsData>(context, listen: false)
-    //     .getShifts(comProvier.com.id, userProvider.user.userToken, context,
-    //         userProvider.user.userType, userProvider.user.userSiteId)
-    //     .then((value) async {
-    //   print("got Shifts");
-    // });
+
     setState(() {
       isLoading = false;
     });
 
-    // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(
-    //     Provider.of<SiteShiftsData>(context, listen: false)
-    //         .siteShiftList[siteId]
-    //         .siteId,
-    //     false);
     refreshController.refreshCompleted();
   }
 

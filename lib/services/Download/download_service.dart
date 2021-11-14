@@ -7,8 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_users/constants.dart';
 import 'package:open_file/open_file.dart' as open_file;
+import 'package:qr_users/widgets/roundedAlert.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../user_data.dart';
 
 class DownloadService {
   Dio dio;
@@ -16,6 +21,56 @@ class DownloadService {
   String _filePath;
   bool _isLoading = false;
   String progress;
+
+  checkReleaseDate(bool showApk, BuildContext context) {
+    if (Platform.isAndroid) {
+      if (showApk) {
+        showApk = false;
+
+        if (kAndroidReleaseDate.isBefore(
+            Provider.of<UserData>(context, listen: false).user.apkDate)) {
+          Future.delayed(Duration.zero, () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  DownloadService downloadService = DownloadService();
+
+                  return RoundedAlert(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        downloadService.downloadApkFromUrl(
+                            "ChilangoV3.apk", context);
+                      },
+                      title: 'تحديث التطبيق لأخر اصدار ؟',
+                      content: "");
+                });
+          });
+        }
+      }
+    } else {
+      if (showApk) {
+        showApk = false;
+
+        if (kiosReleaseDate.isBefore(
+            Provider.of<UserData>(context, listen: false).user.iosBundleDate)) {
+          Future.delayed(Duration.zero, () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedAlert(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        launch(iosDownloadLink);
+                      },
+                      title: 'تحديث التطبيق لأخر اصدار ؟',
+                      content: "");
+                });
+          });
+        }
+      }
+    }
+  }
+
   Future downloadApkFromUrl(filename, BuildContext context) async {
     dio = Dio();
     var status = await Permission.storage.status;

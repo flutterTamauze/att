@@ -1,9 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +22,9 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableRow.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/Shared/Single_day_datePicker.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/XlsxExportButton.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,7 +96,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   bool isToday(DateTime selectedDay) {
     print(selectedDate.toString());
     if (selectedDay.difference(today).inDays == 0) {
-      print("asdsad ${selectedDay.difference(today).inDays}");
       return true;
     } else {
       return false;
@@ -194,21 +193,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-                                  return Container(
-                                    color: Colors.white,
-                                    child: Center(
-                                      child: Platform.isIOS
-                                          ? CupertinoActivityIndicator(
-                                              radius: 20,
-                                            )
-                                          : CircularProgressIndicator(
-                                              backgroundColor: Colors.white,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
-                                            ),
-                                    ),
-                                  );
+                                  return LoadingIndicator();
                                 case ConnectionState.done:
                                   log(snapshot.data);
                                   return Column(
@@ -396,43 +381,17 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                       )
                                                     : snapshot.data ==
                                                             "No records found holiday"
-                                                        ? Center(
-                                                            child: Container(
-                                                              height: 20,
-                                                              child:
-                                                                  AutoSizeText(
+                                                        ? CenterMessageText(
+                                                            message:
                                                                 "لا يوجد تسجيلات: عطلة اسبوعية",
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
-                                                              ),
-                                                            ),
                                                           )
                                                         : snapshot.data !=
                                                                 "wrong"
                                                             ? Column(
                                                                 children: [
-                                                                  Divider(
-                                                                    thickness:
-                                                                        1,
-                                                                    color: Colors
-                                                                            .orange[
-                                                                        600],
-                                                                  ),
+                                                                  orangeDivider,
                                                                   DataTableHeader(),
-                                                                  Divider(
-                                                                    thickness:
-                                                                        1,
-                                                                    color: Colors
-                                                                            .orange[
-                                                                        600],
-                                                                  ),
+                                                                  orangeDivider,
                                                                   Expanded(
                                                                       child:
                                                                           SmartRefresher(
@@ -450,12 +409,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                     ),
                                                                     child: snapshot.data ==
                                                                             "Date is older than company date"
-                                                                        ? Center(
-                                                                            child:
-                                                                                Text(
-                                                                              "التاريخ قبل إنشاء الشركة",
-                                                                              style: TextStyle(fontWeight: FontWeight.bold),
-                                                                            ),
+                                                                        ? CenterMessageText(
+                                                                            message:
+                                                                                "التاريخ قبل إنشاء الشركة",
                                                                           )
                                                                         : ListView.builder(
                                                                             physics: AlwaysScrollableScrollPhysics(),
@@ -499,23 +455,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                         )
                                                                 ],
                                                               )
-                                                            : Center(
-                                                                child:
-                                                                    Container(
-                                                                  height: 20,
-                                                                  child:
-                                                                      AutoSizeText(
+                                                            : CenterMessageText(
+                                                                message:
                                                                     "لا يوجد تسجيلات بهذا اليوم",
-                                                                    maxLines: 1,
-                                                                    style: TextStyle(
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            16,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  ),
-                                                                ),
                                                               )),
                                           ),
                                         ),
@@ -523,18 +465,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                     ],
                                   );
                                 default:
-                                  return Center(
-                                    child: Platform.isIOS
-                                        ? CupertinoActivityIndicator(
-                                            radius: 20,
-                                          )
-                                        : CircularProgressIndicator(
-                                            backgroundColor: Colors.white,
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
-                                          ),
-                                  );
+                                  return Center(child: LoadingIndicator());
                               }
                             }),
                       ),

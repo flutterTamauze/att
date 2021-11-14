@@ -12,7 +12,7 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/ReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemHomePage.dart';
+import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/SystemHomePage.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';

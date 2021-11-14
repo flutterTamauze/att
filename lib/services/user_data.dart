@@ -223,6 +223,7 @@ class UserData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return -3;
   }
 
   initializeNotification(BuildContext context) async {

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:provider/provider.dart';
 
@@ -443,6 +444,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
               ),
             ),
+            Positioned(
+                child: InkWell(
+              onTap: () {
+                Navigator.maybePop(context);
+              },
+              child: Icon(
+                Icons.chevron_left,
+                color: Colors.orange,
+                size: 40,
+              ),
+            ))
           ],
         ),
       );

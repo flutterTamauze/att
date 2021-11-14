@@ -1014,7 +1014,25 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                               "exists") {
                                                             Fluttertoast.showToast(
                                                                 msg:
-                                                                    "خطأ في اضافة المستخدم:البريد الإلكتروني مستخدم مسبقا",
+                                                                    "خطأ في تعديل المستخدم:البريد الإلكتروني مستخدم مسبقا",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                timeInSecForIosWeb:
+                                                                    1,
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                                textColor:
+                                                                    Colors
+                                                                        .black,
+                                                                fontSize: 16.0);
+                                                          } else if (msg ==
+                                                              "not exist") {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ في تعديل المستخدم:المستخدم غير موجود",
                                                                 toastLength: Toast
                                                                     .LENGTH_SHORT,
                                                                 gravity:

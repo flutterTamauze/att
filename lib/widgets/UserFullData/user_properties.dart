@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/SiteAdminOutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftSchedule/ReallocateUsers.dart';
 import 'package:qr_users/constants.dart';
@@ -118,17 +119,24 @@ class _UserPropertiesState extends State<UserProperties> {
             builder: (context, setState) {
               return Column(
                 children: [
-                  userDataProvider.userType != 2
-                      ? AssignTaskToUser(
-                          taskName: "تسجيل  مأموريات / اذونات / اجازات",
-                          iconData: FontAwesomeIcons.calendarCheck,
-                          function: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        OutsideVacation(widget.user, 2)),
+                  AssignTaskToUser(
+                      taskName: userDataProvider.userType != 2
+                          ? "تسجيل  مأموريات / اذونات / اجازات"
+                          : " تسجيل اذونات / اجازات",
+                      iconData: FontAwesomeIcons.calendarCheck,
+                      function: () => userDataProvider.userType == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SiteAdminOutsideVacation(widget.user, 3),
                               ))
-                      : Container(),
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OutsideVacation(widget.user, 2)),
+                            )),
                   Divider(),
                   userDataProvider.userType == 4
                       ? AssignTaskToUser(

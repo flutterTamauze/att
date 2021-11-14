@@ -60,9 +60,12 @@ Future<bool> onWillPop() {
   }
 }
 
+const orangeDivider = Divider(
+  thickness: 1,
+  color: Colors.orange,
+);
 int kBeforeStartShift = 100;
-// int kAfterStartShift = 200;
-// int kAfterEndShift = 600;
+
 successfullDelete() {
   Fluttertoast.showToast(
     msg: "تم الحذف بنجاح",

@@ -628,6 +628,8 @@ class MemberData with ChangeNotifier {
             return "Success";
           } else if (decodedRes["message"] == "Failed : Email Already Exist") {
             return "exists";
+          } else if (decodedRes["message"] == "Failed : User Not Exist") {
+            return "not exist";
           }
         }
       } catch (e) {

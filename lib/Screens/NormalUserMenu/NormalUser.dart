@@ -89,10 +89,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
 
             await Provider.of<ShiftApi>(context, listen: false)
                 .getShiftByShiftId(user.userShiftId, user.userToken);
-            await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
-                Provider.of<CompanyData>(context, listen: false).com.id,
-                Provider.of<UserData>(context, listen: false).user.userToken,
-                context);
+
             Navigator.pop(context);
             Navigator.of(context).push(
               new MaterialPageRoute(
