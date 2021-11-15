@@ -20,6 +20,7 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/widgets/OfficialVacations/DataTableVacationHeader.dart';
 
 import 'package:qr_users/widgets/OfficialVacations/DataTableVacationRow.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
 import 'package:qr_users/widgets/roundedAlert.dart';
 
@@ -62,24 +63,13 @@ class _OfficialVacationState extends State<OfficialVacation> {
   String selectedId = "";
   Site siteData;
   DateTime yesterday;
-  // calculateTotalVacation() {
-  //   int sum = 0;
-  //   var vactionProv = Provider.of<VacationData>(context, listen: true);
-  //   for (int i = 0; i < vactionProv.vactionList.length; i++) {
-  //     sum += vactionProv.vactionList[i].toDate
-  //             .difference(vactionProv.vactionList[i].fromDate)
-  //             .inDays +
-  //         1;
-  //   }
-  //   return sum;
-  // }
 
   @override
   void initState() {
     super.initState();
 
     var now = DateTime.now();
-
+    Provider.of<VacationData>(context, listen: false).isLoading = false;
     toDate = DateTime(now.year, DateTime.december, 30);
     fromDate = DateTime(toDate.year, DateTime.january, 1);
 
@@ -104,58 +94,22 @@ class _OfficialVacationState extends State<OfficialVacation> {
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
-          // vacation.fromDate.isAfter(filterFromDate) &&
-          //     vacation.toDate.isBefore(filterToDate)
         },
         child: Scaffold(
             endDrawer: NotificationItem(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startFloat,
-            floatingActionButton: Provider.of<UserData>(context)
-                            .user
-                            .userType ==
-                        4 ||
-                    Provider.of<UserData>(context).user.userType == 3
-                ? Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 4,
-                          color: Colors.white,
-                        ),
-                        shape: BoxShape.circle),
-                    child: FloatingActionButton(
-                      elevation: 3,
-                      tooltip: "اضافة عطلة",
-                      backgroundColor: Colors.orange[600],
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddVacationScreen(
-                                edit: false,
-                              ),
-                            )).then((value) => setState(() {
-                              Provider.of<VacationData>(context, listen: false)
-                                  .getOfficialVacations(
-                                      Provider.of<CompanyData>(context,
-                                              listen: false)
-                                          .com
-                                          .id,
-                                      Provider.of<UserData>(context,
-                                              listen: false)
-                                          .user
-                                          .userToken);
-                            }));
-                      },
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.black,
-                        size:
-                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                      ),
-                    ),
-                  )
-                : Container(),
+            floatingActionButton:
+                Provider.of<UserData>(context).user.userType == 4 ||
+                        Provider.of<UserData>(context).user.userType == 3
+                    ? MultipleFloatingButtons(
+                        shiftIndex:
+                            Provider.of<SiteData>(context, listen: false)
+                                .currentShiftIndex,
+                        comingFromShifts: false,
+                        shiftName: "",
+                        mainTitle: 'إضافة عطلة',
+                        mainIconData: Icons.person_add,
+                      )
+                    : Container(),
             body: Container(
               child: Column(children: [
                 Header(

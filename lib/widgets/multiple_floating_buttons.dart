@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/AddVacationScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
@@ -12,6 +13,9 @@ import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/VacationData.dart';
+import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/user_data.dart';
 
 class MultipleFloatingButtons extends StatelessWidget {
   final bool comingFromShifts;
@@ -83,7 +87,26 @@ class MultipleFloatingButtons extends StatelessWidget {
                           }
 
                           break;
+                        case "إضافة عطلة":
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddVacationScreen(
+                                  edit: false,
+                                ),
+                              )).then((value) => Provider.of<VacationData>(
+                                  context,
+                                  listen: false)
+                              .getOfficialVacations(
+                                  Provider.of<CompanyData>(context,
+                                          listen: false)
+                                      .com
+                                      .id,
+                                  Provider.of<UserData>(context, listen: false)
+                                      .user
+                                      .userToken));
 
+                          break;
                         case "إضافة موقع":
                           Navigator.push(
                             context,

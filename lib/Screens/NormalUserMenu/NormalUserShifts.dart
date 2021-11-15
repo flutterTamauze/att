@@ -115,182 +115,169 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var shiftDate =
         Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
-    return GestureDetector(
-      onTap: () {
-        print(shiftDate.id);
-      },
-      child: Scaffold(
-          endDrawer: NotificationItem(),
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Header(
-                    goUserHomeFromMenu: false,
-                    nav: false,
-                    goUserMenu: false,
+    return Scaffold(
+        endDrawer: NotificationItem(),
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Header(
+                  goUserHomeFromMenu: false,
+                  nav: false,
+                  goUserMenu: false,
+                ),
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SmallDirectoriesHeader(
+                          Lottie.asset("resources/shifts.json", repeat: false),
+                          "مناوباتى"),
+                    ],
                   ),
-                  Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SmallDirectoriesHeader(
-                            Lottie.asset("resources/shifts.json",
-                                repeat: false),
-                            "مناوباتى"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ExpansionUserShiftTile(
-                    title: "مناوباتى الأساسية",
-                    isShedcule: false,
-                  ),
-                  shiftDate == null
-                      ? Container()
-                      : Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Card(
-                              elevation: 5,
-                              child: ExpansionTile(
-                                title: Row(
-                                  children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.clock,
-                                      color: Colors.orange[600],
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "مناوباتى المجدولة",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ExpansionUserShiftTile(
+                  title: "مناوباتى الأساسية",
+                  isShedcule: false,
+                ),
+                shiftDate == null
+                    ? Container()
+                    : Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Card(
+                            elevation: 5,
+                            child: ExpansionTile(
+                              title: Row(
                                 children: [
-                                  SlideInUp(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              "من",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.orange[600]),
-                                            ),
-                                            Text(shiftDate.scheduleFromTime
-                                                .toString()
-                                                .substring(0, 11)),
-                                            Text(
-                                              "الى",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.orange[600]),
-                                            ),
-                                            Text(shiftDate.scheduleToTime
-                                                .toString()
-                                                .substring(0, 11)),
-                                          ],
-                                        ),
-                                        Divider(),
-                                        FeatureScheduleShiftCard(
-                                            currentIndex: 0,
-                                            startTime:
-                                                shiftDate.satShift.startTime,
-                                            endTime: shiftDate.satShift.endTime,
-                                            shiftname:
-                                                shiftDate.satShift.shiftName,
-                                            sitename:
-                                                shiftDate.satShift.siteName,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.sunShift.startTime,
-                                            endTime: shiftDate.sunShift.endTime,
-                                            currentIndex: 1,
-                                            shiftname:
-                                                shiftDate.sunShift.shiftName,
-                                            sitename:
-                                                shiftDate.sunShift.siteName,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.monShift.startTime,
-                                            endTime: shiftDate.monShift.endTime,
-                                            currentIndex: 2,
-                                            shiftname:
-                                                shiftDate.monShift.shiftName,
-                                            sitename:
-                                                shiftDate.monShift.siteName,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.tuesShift.startTime,
-                                            endTime:
-                                                shiftDate.tuesShift.endTime,
-                                            currentIndex: 3,
-                                            shiftname:
-                                                shiftDate.tuesShift.shiftName,
-                                            sitename:
-                                                shiftDate.tuesShift.siteName,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.wednShift.startTime,
-                                            endTime:
-                                                shiftDate.wednShift.endTime,
-                                            currentIndex: 4,
-                                            shiftname:
-                                                shiftDate.wednShift.shiftName,
-                                            sitename:
-                                                shiftDate.wednShift.siteName,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.thurShift.startTime,
-                                            endTime:
-                                                shiftDate.thurShift.endTime,
-                                            shiftname:
-                                                shiftDate.thurShift.shiftName,
-                                            sitename:
-                                                shiftDate.thurShift.siteName,
-                                            currentIndex: 5,
-                                            shiftDate: shiftDate),
-                                        FeatureScheduleShiftCard(
-                                            startTime:
-                                                shiftDate.friShift.startTime,
-                                            endTime: shiftDate.friShift.endTime,
-                                            currentIndex: 6,
-                                            shiftname:
-                                                shiftDate.friShift.shiftName,
-                                            sitename:
-                                                shiftDate.friShift.siteName,
-                                            shiftDate: shiftDate),
-                                      ],
-                                    ),
-                                  )
+                                  FaIcon(
+                                    FontAwesomeIcons.clock,
+                                    color: Colors.orange[600],
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "مناوباتى المجدولة",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
                                 ],
                               ),
+                              children: [
+                                SlideInUp(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "من",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.orange[600]),
+                                          ),
+                                          Text(shiftDate.scheduleFromTime
+                                              .toString()
+                                              .substring(0, 11)),
+                                          Text(
+                                            "الى",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.orange[600]),
+                                          ),
+                                          Text(shiftDate.scheduleToTime
+                                              .toString()
+                                              .substring(0, 11)),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      FeatureScheduleShiftCard(
+                                          currentIndex: 0,
+                                          startTime:
+                                              shiftDate.satShift.startTime,
+                                          endTime: shiftDate.satShift.endTime,
+                                          shiftname:
+                                              shiftDate.satShift.shiftName,
+                                          sitename: shiftDate.satShift.siteName,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.sunShift.startTime,
+                                          endTime: shiftDate.sunShift.endTime,
+                                          currentIndex: 1,
+                                          shiftname:
+                                              shiftDate.sunShift.shiftName,
+                                          sitename: shiftDate.sunShift.siteName,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.monShift.startTime,
+                                          endTime: shiftDate.monShift.endTime,
+                                          currentIndex: 2,
+                                          shiftname:
+                                              shiftDate.monShift.shiftName,
+                                          sitename: shiftDate.monShift.siteName,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.tuesShift.startTime,
+                                          endTime: shiftDate.tuesShift.endTime,
+                                          currentIndex: 3,
+                                          shiftname:
+                                              shiftDate.tuesShift.shiftName,
+                                          sitename:
+                                              shiftDate.tuesShift.siteName,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.wednShift.startTime,
+                                          endTime: shiftDate.wednShift.endTime,
+                                          currentIndex: 4,
+                                          shiftname:
+                                              shiftDate.wednShift.shiftName,
+                                          sitename:
+                                              shiftDate.wednShift.siteName,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.thurShift.startTime,
+                                          endTime: shiftDate.thurShift.endTime,
+                                          shiftname:
+                                              shiftDate.thurShift.shiftName,
+                                          sitename:
+                                              shiftDate.thurShift.siteName,
+                                          currentIndex: 5,
+                                          shiftDate: shiftDate),
+                                      FeatureScheduleShiftCard(
+                                          startTime:
+                                              shiftDate.friShift.startTime,
+                                          endTime: shiftDate.friShift.endTime,
+                                          currentIndex: 6,
+                                          shiftname:
+                                              shiftDate.friShift.shiftName,
+                                          sitename: shiftDate.friShift.siteName,
+                                          shiftDate: shiftDate),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                        )
-                ],
-              ),
+                        ),
+                      )
+              ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 }
 

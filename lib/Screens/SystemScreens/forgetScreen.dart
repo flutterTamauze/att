@@ -360,7 +360,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                                       return null;
                                     }
                                   } else {
-                                    return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
+                                    return "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12";
                                   }
                                 },
                                 keyboardType: TextInputType.text,

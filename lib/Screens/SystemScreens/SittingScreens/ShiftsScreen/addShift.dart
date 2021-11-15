@@ -1296,36 +1296,40 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                       builder: (context) {
                         return InkWell(
                             onTap: () async {
-                              var from = await showTimePicker(
-                                context: context,
-                                initialTime: widget.fromPickedWeek,
-                                builder: (BuildContext context, Widget child) {
-                                  return MediaQuery(
-                                    data: MediaQuery.of(context)
-                                        .copyWith(alwaysUse24HourFormat: false),
-                                    child: child,
-                                  );
-                                },
-                              );
-                              MaterialLocalizations localizations =
-                                  MaterialLocalizations.of(context);
-                              String formattedTime =
-                                  localizations.formatTimeOfDay(from,
-                                      alwaysUse24HourFormat: false);
+                              var from;
+                              if (widget.isShiftsScreen) {
+                                from = await showTimePicker(
+                                  context: context,
+                                  initialTime: widget.fromPickedWeek,
+                                  builder:
+                                      (BuildContext context, Widget child) {
+                                    return MediaQuery(
+                                      data: MediaQuery.of(context).copyWith(
+                                          alwaysUse24HourFormat: false),
+                                      child: child,
+                                    );
+                                  },
+                                );
+                                MaterialLocalizations localizations =
+                                    MaterialLocalizations.of(context);
+                                String formattedTime =
+                                    localizations.formatTimeOfDay(from,
+                                        alwaysUse24HourFormat: false);
 
-                              if (from != null) {
-                                print(from);
-                                widget.fromPickedWeek = from;
-                                widget.callBackfunFrom(from);
-                                setState(() {
-                                  if (Platform.isIOS) {
-                                    widget.timeInController.text =
-                                        formattedTime;
-                                  } else {
-                                    widget.timeInController.text =
-                                        "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
-                                  }
-                                });
+                                if (from != null) {
+                                  print(from);
+                                  widget.fromPickedWeek = from;
+                                  widget.callBackfunFrom(from);
+                                  setState(() {
+                                    if (Platform.isIOS) {
+                                      widget.timeInController.text =
+                                          formattedTime;
+                                    } else {
+                                      widget.timeInController.text =
+                                          "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
+                                    }
+                                  });
+                                }
                               }
                             },
                             child: Directionality(
@@ -1366,34 +1370,39 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                       builder: (context) {
                         return InkWell(
                             onTap: () async {
-                              var to = await showTimePicker(
-                                context: context,
-                                initialTime: widget.toPickedWeek,
-                                builder: (BuildContext context, Widget child) {
-                                  return MediaQuery(
-                                    data: MediaQuery.of(context)
-                                        .copyWith(alwaysUse24HourFormat: false),
-                                    child: child,
-                                  );
-                                },
-                              );
-                              MaterialLocalizations localizations =
-                                  MaterialLocalizations.of(context);
-                              String formattedTime2 =
-                                  localizations.formatTimeOfDay(to,
-                                      alwaysUse24HourFormat: false);
-                              if (to != null) {
-                                widget.toPickedWeek = to;
-                                widget.callBackfunTo(to);
-                                setState(() {
-                                  if (Platform.isIOS) {
-                                    widget.timeOutController.text =
-                                        formattedTime2;
-                                  } else {
-                                    widget.timeOutController.text =
-                                        "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
-                                  }
-                                });
+                              var to;
+
+                              if (widget.isShiftsScreen) {
+                                to = await showTimePicker(
+                                  context: context,
+                                  initialTime: widget.toPickedWeek,
+                                  builder:
+                                      (BuildContext context, Widget child) {
+                                    return MediaQuery(
+                                      data: MediaQuery.of(context).copyWith(
+                                          alwaysUse24HourFormat: false),
+                                      child: child,
+                                    );
+                                  },
+                                );
+                                MaterialLocalizations localizations =
+                                    MaterialLocalizations.of(context);
+                                String formattedTime2 =
+                                    localizations.formatTimeOfDay(to,
+                                        alwaysUse24HourFormat: false);
+                                if (to != null) {
+                                  widget.toPickedWeek = to;
+                                  widget.callBackfunTo(to);
+                                  setState(() {
+                                    if (Platform.isIOS) {
+                                      widget.timeOutController.text =
+                                          formattedTime2;
+                                    } else {
+                                      widget.timeOutController.text =
+                                          "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
+                                    }
+                                  });
+                                }
                               }
                             },
                             child: Directionality(

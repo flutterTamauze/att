@@ -8,7 +8,7 @@ import '../../constants.dart';
 
 class CompanySettingsService {
   DateTime suspentionTime;
-  int lateAllowance, attendClearance, leaveClearance, settingsID, workingDays;
+  int lateAllowance, attendClearance, leaveClearance, settingsID;
   // DateTime get getSuspentionTime {
   //   return suspentionTime;
   // }
@@ -17,11 +17,11 @@ class CompanySettingsService {
   //   suspentionTime = date;
   // }
 
-  CompanySettingsService(
-      {this.attendClearance,
-      this.lateAllowance,
-      this.leaveClearance,
-      this.workingDays});
+  CompanySettingsService({
+    this.attendClearance,
+    this.lateAllowance,
+    this.leaveClearance,
+  });
   getCompanySettingsTime(int comID, String userToken) async {
     var response = await http
         .get(Uri.parse("$baseURL/api/Settings?CompanyId=$comID"), headers: {
@@ -36,7 +36,6 @@ class CompanySettingsService {
       this.leaveClearance = decodedResponse["data"]["leaveClearance"];
 
       this.settingsID = decodedResponse["data"]["id"];
-      this.workingDays = decodedResponse["data"]["workingDays"];
     }
   }
 
@@ -69,9 +68,7 @@ class CompanySettingsService {
     int attendClearance,
     int leaveClearance,
     String userToken,
-    int workingDays,
   ) async {
-    print(workingDays);
     print(lateAllow);
     print(attendClearance);
     print(leaveClearance);
@@ -87,7 +84,6 @@ class CompanySettingsService {
               "lateAllowance": lateAllow,
               "attendClearance": attendClearance,
               "leaveClearance": leaveClearance,
-              "workingDays": workingDays,
               "companyId": comID,
             }));
     print(response.statusCode);

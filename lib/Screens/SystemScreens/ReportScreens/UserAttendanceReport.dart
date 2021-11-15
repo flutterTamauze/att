@@ -803,6 +803,7 @@ List<Vacation> listAfterFilter(
 
 bool isDateBetweenTheRange(
     Vacation vacation, DateTime filterFromDate, DateTime filterToDate) {
+  print(vacation.vacationDate);
   return ((filterFromDate.isBefore(vacation.vacationDate) ||
           (vacation.vacationDate.year == filterFromDate.year &&
               vacation.vacationDate.day == filterFromDate.day &&

@@ -55,10 +55,10 @@ class _SplashScreenState extends State<SplashScreen>
       var value = await login(userName: userData[0], password: userData[1]);
 
       print("VALUE OF USER $value");
-      await Provider.of<DaysOffData>(context, listen: false).getDaysOff(
-          Provider.of<CompanyData>(context, listen: false).com.id,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context);
+      //  Provider.of<DaysOffData>(context, listen: false).getDaysOff(
+      //       Provider.of<CompanyData>(context, listen: false).com.id,
+      //       Provider.of<UserData>(context, listen: false).user.userToken,
+      //       context);
       if (value == 4) {
         //subscribe admin channel
         bool isError = false;

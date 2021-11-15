@@ -558,14 +558,9 @@ class MemberData with ChangeNotifier {
           print(response.body);
 
           if (decodedRes["message"] == "User created successfully!") {
-            // var newMember = member;
-            // newMember.id = userId;
-            // membersList.add(newMember);
-            // copyMemberList = membersList;
-            // print(newMember.shiftId);
-            // notifyListeners();
             return "Success";
-          } else if (decodedRes["message"] == "Fail : Email Already exists") {
+          } else if (decodedRes["message"] ==
+              "Fail : The same Company Phone No already exists") {
             return "exists";
           } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
             return "Limit Reached";

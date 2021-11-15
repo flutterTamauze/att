@@ -140,12 +140,12 @@ class _CompanySettingsState extends State<CompanySettings> {
                     Navigator.pop(context);
                     controller.text = companySettings.lateAllowance.toString();
                     showAttendanceSettings(
-                        companySettings.attendClearance.toString(),
-                        companySettings.lateAllowance.toString(),
-                        companySettings.leaveClearance.toString(),
-                        companySettings.settingsID,
-                        comProvider.com.id,
-                        companySettings.workingDays);
+                      companySettings.attendClearance.toString(),
+                      companySettings.lateAllowance.toString(),
+                      companySettings.leaveClearance.toString(),
+                      companySettings.settingsID,
+                      comProvider.com.id,
+                    );
                   })
               : Container(),
         ],
@@ -154,12 +154,12 @@ class _CompanySettingsState extends State<CompanySettings> {
   }
 
   showAttendanceSettings(
-      String attendClearance,
-      String lateAlowance,
-      String leaveClearance,
-      int settingsID,
-      int companyId,
-      int workingDays) async {
+    String attendClearance,
+    String lateAlowance,
+    String leaveClearance,
+    int settingsID,
+    int companyId,
+  ) async {
     bool isLoading = false;
     return showDialog(
 
@@ -436,17 +436,16 @@ class _CompanySettingsState extends State<CompanySettings> {
                                             });
                                             await companySettings
                                                 .updateCompanySettingsTime(
-                                                    settingsID,
-                                                    companyId,
-                                                    int.parse(controller.text),
-                                                    int.parse(attendClearance),
-                                                    int.parse(leaveClearance),
-                                                    Provider.of<UserData>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .userToken,
-                                                    workingDays)
+                                              settingsID,
+                                              companyId,
+                                              int.parse(controller.text),
+                                              int.parse(attendClearance),
+                                              int.parse(leaveClearance),
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken,
+                                            )
                                                 .then((value) {
                                               if (value) {
                                                 successfulSaved();

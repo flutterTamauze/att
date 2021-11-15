@@ -119,6 +119,8 @@ class VacationData with ChangeNotifier {
 
       notifyListeners();
     }
+
+    notifyListeners();
   }
 }
 

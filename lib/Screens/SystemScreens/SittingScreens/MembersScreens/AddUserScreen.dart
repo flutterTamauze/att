@@ -814,7 +814,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         } else if (msg == "exists") {
                                           Fluttertoast.showToast(
                                               msg:
-                                                  "خطأ في اضافة المستخدم:البريد الإلكتروني مستخدم مسبقا",
+                                                  "خطأ في اضافة المستخدم:رقم الهاتف  مستخدم مسبقا",
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,

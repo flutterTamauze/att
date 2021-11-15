@@ -125,7 +125,9 @@ class UserData with ChangeNotifier {
         print(response.errorResponse);
         return response.code;
       } else {
+        print("not faliure");
         decodedRes = json.decode(response);
+
         if (decodedRes["message"] ==
             "Failed : user name and password not match ") {
           return -2;
