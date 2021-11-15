@@ -560,7 +560,7 @@ class MemberData with ChangeNotifier {
           if (decodedRes["message"] == "User created successfully!") {
             return "Success";
           } else if (decodedRes["message"] ==
-              "Fail : The same Company Phone No already exists") {
+              "Fail : Phone No Already exists") {
             return "exists";
           } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
             return "Limit Reached";

@@ -38,7 +38,9 @@ class NetworkApi {
       print(res.statusCode);
       if (res.statusCode == 200) {
         return res.body;
-      } else if (res.statusCode == 400 || res.statusCode == 500) {
+      } else if (res.statusCode == 400 ||
+          res.statusCode == 500 ||
+          res.statusCode == 404) {
         return Faliure(
             code: USER_INVALID_RESPONSE, errorResponse: "Invalid Response");
       } else if (res.statusCode == 403 || res.statusCode == 401) {

@@ -102,8 +102,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
     tomorrow = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-    fromDate = tomorrow;
-    _selectedDateString = tomorrow.toString();
+    fromDate = widget.radioValue == 3 ? now : tomorrow;
+    _selectedDateString =
+        widget.radioValue == 3 ? now.toString() : tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
     _today = DateTime.now();
     sleectedMember =
@@ -192,6 +193,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   title: "أذن",
                                   onchannge: (value) {
                                     setState(() {
+                                      _today = DateTime.now();
                                       widget.radioValue = value;
                                     });
                                   },
@@ -202,6 +204,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   title: "اجازة",
                                   onchannge: (value) {
                                     setState(() {
+                                      fromDate = widget.radioValue == 3
+                                          ? DateTime.now()
+                                          : tomorrow;
                                       widget.radioValue = value;
                                     });
                                   },
@@ -942,8 +947,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           type:
                                                               DateTimePickerType
                                                                   .date,
-                                                          initialDate: fromDate,
-                                                          firstDate: tomorrow,
+                                                          initialDate: _today,
+                                                          firstDate: _today,
                                                           lastDate: DateTime(
                                                               DateTime.now()
                                                                   .year,

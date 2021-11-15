@@ -493,10 +493,16 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                   selectedDateString);
                                                         });
                                                       },
-                                                      initialDate: _tomorow,
+                                                      initialDate:
+                                                          widget.radioVal == 3
+                                                              ? _today
+                                                              : _tomorow,
                                                       type: DateTimePickerType
                                                           .date,
-                                                      firstDate: _tomorow,
+                                                      firstDate:
+                                                          widget.radioVal == 3
+                                                              ? _today
+                                                              : _tomorow,
                                                       lastDate: DateTime(
                                                           DateTime.now().year,
                                                           DateTime.december,

@@ -264,7 +264,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           return null;
                                         }
                                       } else {
-                                        return "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12";
+                                        return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
                                       }
                                     },
                                     controller: _passwordController,
@@ -320,10 +320,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       color: Colors.black,
                                     ),
                                     validator: (text) {
-                                      if (text != _passwordController.text) {
-                                        return 'كلمة المرور غير متماثلتين';
+                                      if (text.length >= 8 &&
+                                          text.length <= 12) {
+                                        Pattern pattern =
+                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                                        RegExp regex = new RegExp(pattern);
+                                        if (!regex.hasMatch(text)) {
+                                          return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                        } else if (text !=
+                                            _passwordController.text) {
+                                          return 'كلمة المرور غير متماثلتين';
+                                        } else if (text == null ||
+                                            text.isEmpty) {
+                                          return 'مطلوب';
+                                        } else {
+                                          return null;
+                                        }
+                                      } else {
+                                        return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
                                       }
-                                      return null;
                                     },
                                     obscureText: _repasswordVisible,
                                     decoration:

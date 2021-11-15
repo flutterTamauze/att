@@ -307,7 +307,8 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         } else if (value == USER_INVALID_RESPONSE ||
             value == CONNECTION_TIMEOUT ||
-            value == null) {
+            value == null ||
+            value == -3) {
           return showDialog(
               context: context,
               builder: (BuildContext context) {

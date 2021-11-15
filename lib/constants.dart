@@ -36,6 +36,7 @@ DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 1);
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
 const UNKNOWN_ERROR = 103;
+const NOT_FOUND = 404;
 const CONNECTION_TIMEOUT = 104;
 const UN_AUTHORIZED = 401;
 Future<bool> onWillPop() {
