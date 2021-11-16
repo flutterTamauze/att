@@ -50,11 +50,14 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   void initState() {
     super.initState();
 
+    siteName = Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[widget.siteId ?? 0]
+        .siteName;
     fillTextField();
   }
 
   final _formKey = GlobalKey<FormState>();
-
+  String siteName;
   TextEditingController _title = TextEditingController();
   bool intializeFromControllers = true;
   bool intializeToControllers = true;
@@ -318,11 +321,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             siteId = getSiteId(vlaue);
                                             print(vlaue);
                                           },
-                                          selectedvalue:
-                                              Provider.of<SiteShiftsData>(
-                                                      context)
-                                                  .siteShiftList[siteId]
-                                                  .siteName,
+                                          selectedvalue: siteName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -1123,7 +1122,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           user.userToken,
           context,
           widget.siteIndex);
-      Navigator.pop(context);
+      // Navigator.pop(context);
 
       if (msg == "Success") {
         Fluttertoast.showToast(
@@ -1135,7 +1134,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             textColor: Colors.white,
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
 
-        Navigator.of(context).pushAndRemoveUntil(
+        await Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => ShiftsScreen(siteId, -1, siteId)),
             (Route<dynamic> route) => false);

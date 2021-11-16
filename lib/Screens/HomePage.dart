@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
 import 'package:qr_users/services/company.dart';
@@ -106,7 +107,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () async {},
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,

@@ -120,12 +120,12 @@ class UserData with ChangeNotifier {
 
       final response =
           await MemberRepo().getMemberData(username, password, token, isHuawei);
-      log(response);
       if (response is Faliure) {
-        print(response.errorResponse);
+        print("faliure occured");
         return response.code;
       } else {
         print("not faliure");
+        log(response);
         decodedRes = json.decode(response);
 
         if (decodedRes["message"] ==
@@ -235,13 +235,14 @@ class UserData with ChangeNotifier {
     }
   }
 
-  Future<String> forgetPassword(String username, String email) async {
+  Future<String> forgetPassword(String username, String phone) async {
     if (await isConnectedToInternet("www.google.com")) {
       try {
+        log(phone);
         final response = await http.put(
             Uri.parse("$baseURL/api/Users/ForgetPassword"),
             body: json.encode(
-              {"UserName": username, "Email": email.trim()},
+              {"UserName": username, "PhoneNo": phone.trim()},
             ),
             headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
         print(response.body);

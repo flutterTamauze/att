@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataTableEnd extends StatelessWidget {
   final lateRatio;
   final absenceRatio;
-  DataTableEnd({this.absenceRatio, this.lateRatio});
+  final double totalDeduction;
+  DataTableEnd(
+      {this.absenceRatio, this.lateRatio, @required this.totalDeduction});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class DataTableEnd extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                                .setSp(13, allowFontScalingSelf: true),
                             color: Colors.orange[600]),
                       ),
                     ),
@@ -46,7 +48,7 @@ class DataTableEnd extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                                .setSp(13, allowFontScalingSelf: true),
                             color: Colors.orange[600]),
                       ),
                     ),
@@ -62,7 +64,7 @@ class DataTableEnd extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                                .setSp(13, allowFontScalingSelf: true),
                             color: Colors.orange[600]),
                       ),
                     ),
@@ -70,12 +72,41 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        absenceRatio,
+                        absenceRatio.toString().split(".")[0],
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                                .setSp(13, allowFontScalingSelf: true),
+                            color: Colors.orange[600]),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      height: 20,
+                      child: AutoSizeText(
+                        'مجموع الخصومات:',
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil()
+                                .setSp(13, allowFontScalingSelf: true),
+                            color: Colors.orange[600]),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Container(
+                      height: 20,
+                      child: AutoSizeText(
+                        totalDeduction.toStringAsFixed(3),
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil()
+                                .setSp(13, allowFontScalingSelf: true),
                             color: Colors.orange[600]),
                       ),
                     ),

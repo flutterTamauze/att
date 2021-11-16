@@ -65,8 +65,8 @@ class SiteShiftsData with ChangeNotifier {
   }
 
   getAllSitesAndShifts(int companyId, String userToken) async {
-    siteShiftList = [];
-    sites = [];
+    siteShiftList.clear();
+    sites.clear();
     var response = await http
         .get(Uri.parse(("$baseURL/api/Company/$companyId")), headers: {
       'Authorization': "Bearer $userToken",
@@ -79,18 +79,21 @@ class SiteShiftsData with ChangeNotifier {
       if (decodedResponse["message"] == "Success") {
         var responseObj = jsonDecode(response.body)['data'] as List;
 
-        siteShiftList =
-            responseObj.map((json) => SiteShiftsModel.fromJson(json)).toList();
+        siteShiftList = [
+          ...responseObj.map((json) => SiteShiftsModel.fromJson(json)).toList()
+        ];
         log("got all the needed data successfully !! ${siteShiftList.length}");
         print(siteShiftList.length);
-        for (int i = 0; i < siteShiftList.length; i++) {
-          sites.add(Site(
-              id: siteShiftList[i].siteId, name: siteShiftList[i].siteName));
+        if (sites.isEmpty) {
+          for (int i = 0; i < siteShiftList.length; i++) {
+            sites.add(Site(
+                id: siteShiftList[i].siteId, name: siteShiftList[i].siteName));
+          }
+          sites.insert(
+            0,
+            Site(id: -1, name: "كل المواقع", lat: 0, long: 0),
+          );
         }
-        sites.insert(
-          0,
-          Site(id: -1, name: "كل المواقع", lat: 0, long: 0),
-        );
 
         print(sites.length);
         notifyListeners();

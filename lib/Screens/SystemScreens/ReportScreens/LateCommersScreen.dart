@@ -477,6 +477,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                         reportsData
                                                                             .lateAbsenceReport
                                                                             .absentRatio,
+                                                                    totalDeduction:
+                                                                        reportsData
+                                                                            .lateAbsenceReport
+                                                                            .totalDecutionForAllUsers,
                                                                   ))
                                                             ],
                                                           )

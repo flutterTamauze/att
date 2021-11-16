@@ -335,6 +335,13 @@ class ShiftsData with ChangeNotifier {
                 category: "reloadData",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+
+            await Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
             deleteFromAllShiftsList(shiftId);
             notifyListeners();
             return "Success";
@@ -380,15 +387,13 @@ class ShiftsData with ChangeNotifier {
     print(siteId);
     List<Shift> shiftsNewList = [];
     if (await isConnectedToInternet()) {
-      try {} catch (e) {
-        print(e);
-      }
       final response = await http.get(
           Uri.parse("$baseURL/api/Shifts/GetAllShiftInSite?siteId=$siteId"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
+      print("GetAllShiftInSite");
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 401) {
@@ -546,18 +551,25 @@ class ShiftsData with ChangeNotifier {
                 shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
                 siteID: decodedRes['data']['siteId'] as int);
 
-            shiftsList.add(newShift);
-            Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList[index]
-                .shifts
-                .add(Shifts(
-                    shiftName: newShift.shiftName, shiftId: newShift.shiftId));
+            // shiftsList.add(newShift);
+            // Provider.of<SiteShiftsData>(context, listen: false)
+            //     .siteShiftList[index]
+            //     .shifts
+            //     .add(Shifts(
+            //         shiftName: newShift.shiftName, shiftId: newShift.shiftId));
 
             await sendFcmDataOnly(
                 category: "reloadData",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-            notifyListeners();
+
+            await Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
+
             return "Success";
           } else if (decodedRes["message"] ==
               "Fail : The same shift name already exists in site") {
@@ -659,36 +671,43 @@ class ShiftsData with ChangeNotifier {
               shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
               shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
               siteID: decodedRes['data']['siteId'] as int);
-          var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
+          // var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
 
-          shiftsList[shiftsListIndex] = newShift;
+          // shiftsList[shiftsListIndex] = newShift;
 
-          for (int i = 0;
-              i <
-                  Provider.of<SiteShiftsData>(context, listen: false)
-                      .siteShiftList[index]
-                      .shifts
-                      .length;
-              i++) {
-            if (shift.shiftName ==
-                Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[index]
-                    .shifts[i]
-                    .shiftName) {
-              Provider.of<SiteShiftsData>(context, listen: false)
-                  .siteShiftList[index]
-                  .shifts[i]
-                  .shiftName = newShift.shiftName;
-              Provider.of<SiteShiftsData>(context, listen: false)
-                  .siteShiftList[index]
-                  .shifts[i]
-                  .shiftId = newShift.shiftId;
-            }
-          }
+          // for (int i = 0;
+          //     i <
+          //         Provider.of<SiteShiftsData>(context, listen: false)
+          //             .siteShiftList[index]
+          //             .shifts
+          //             .length;
+          //     i++) {
+          //   if (shift.shiftName ==
+          //       Provider.of<SiteShiftsData>(context, listen: false)
+          //           .siteShiftList[index]
+          //           .shifts[i]
+          //           .shiftName) {
+          //     Provider.of<SiteShiftsData>(context, listen: false)
+          //         .siteShiftList[index]
+          //         .shifts[i]
+          //         .shiftName = newShift.shiftName;
+          //     Provider.of<SiteShiftsData>(context, listen: false)
+          //         .siteShiftList[index]
+          //         .shifts[i]
+          //         .shiftId = newShift.shiftId;
+          //   }
+
+          // }
           await sendFcmDataOnly(
               category: "reloadData",
               topicName:
                   "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+
+          await Provider.of<SiteShiftsData>(context, listen: false)
+              .getAllSitesAndShifts(
+                  Provider.of<CompanyData>(context, listen: false).com.id,
+                  Provider.of<UserData>(context, listen: false).user.userToken);
+
           notifyListeners();
 
           return "Success";

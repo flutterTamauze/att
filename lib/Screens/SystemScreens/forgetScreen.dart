@@ -2,13 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-
+import 'package:intl_phone_number_input/intl_phone_number_input.dart'
+    as intlPhone;
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -25,7 +27,9 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final _forgetFormKey = GlobalKey<FormState>();
-
+  TextEditingController _phoneController = TextEditingController();
+  intlPhone.PhoneNumber number =
+      intlPhone.PhoneNumber(dialCode: "+20", isoCode: "EG");
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   var isLoading = false;
@@ -78,7 +82,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: ScreenUtil()
-                                        .setSp(17, allowFontScalingSelf: true),
+                                        .setSp(15, allowFontScalingSelf: true),
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.right,
                                 decoration: kTextFieldDecorationWhite.copyWith(
@@ -89,38 +93,87 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     )),
                               ),
                               SizedBox(height: 10.0.h),
-                              TextFormField(
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (_) {
-                                  forgetFunction();
-                                },
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'مطلوب';
-                                  } else {
-                                    Pattern pattern =
-                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+\.[a-zA-Z]+";
-                                    RegExp regex = new RegExp(pattern);
-                                    if (!regex.hasMatch(text))
-                                      return 'البريد الإلكترونى غير صحيح';
-                                    else
-                                      return null;
-                                  }
-                                },
-                                keyboardType: TextInputType.emailAddress,
-                                controller: _emailController,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: ScreenUtil()
-                                        .setSp(17, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.right,
-                                decoration: kTextFieldDecorationWhite.copyWith(
-                                    hintText: 'البريد الالكترونى',
-                                    suffixIcon: Icon(
-                                      Icons.email,
-                                      color: Colors.orange,
-                                    )),
+                              Container(
+                                child: InternationalPhoneNumberInput(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                  isEnabled: true,
+                                  locale: "ar",
+                                  countries: [
+                                    "EG",
+                                    "SA",
+                                    "BH",
+                                    "KW",
+                                    "IQ",
+                                    "JO",
+                                    "LB",
+                                    "QA",
+                                    "SY",
+                                    "AE",
+                                    "YE",
+                                    "OM",
+                                    "MA",
+                                    "LY",
+                                  ],
+                                  onSubmit: () {},
+                                  errorMessage: _phoneController.text.isEmpty
+                                      ? "مطلوب"
+                                      : "رقم خاطئ",
+                                  textAlign: TextAlign.right,
+                                  inputDecoration:
+                                      kTextFieldDecorationWhite.copyWith(
+                                          hintText: "رقم الهاتف",
+                                          suffixIcon: Icon(
+                                            Icons.phone,
+                                            color: Colors.orange,
+                                          )),
+                                  onInputChanged:
+                                      (intlPhone.PhoneNumber number2) {
+                                    print(_phoneController.text);
+                                    number = number2;
+                                  },
+                                  onInputValidated: (bool value) async {
+                                    if (value) {}
+                                  },
+                                  spaceBetweenSelectorAndTextField: 0,
+                                  selectorConfig: SelectorConfig(
+                                    showFlags: true,
+                                    useEmoji: true,
+                                    setSelectorButtonAsPrefixIcon: true,
+                                    selectorType: PhoneInputSelectorType.DIALOG,
+                                  ),
+                                  cursorColor: Colors.grey,
+                                  autoValidateMode: AutovalidateMode.disabled,
+                                  searchBoxDecoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey, width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                      prefixIcon: Icon(
+                                        Icons.search,
+                                        color: Colors.grey,
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700),
+                                      hintText:
+                                          "اختر بأسم البلد او الرقم الدولى",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0))),
+                                  initialValue: number,
+                                  textFieldController: _phoneController,
+                                  formatInput: true,
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
+                                  inputBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  onSaved: (intlPhone.PhoneNumber number) {},
+                                ),
                               ),
                               SizedBox(
                                 height: 30.0.h,
@@ -176,14 +229,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       setState(() {
         isLoading = true;
       });
+      print(_usernameController.text);
+      print(number.toString());
       await Provider.of<UserData>(context, listen: false)
-          .forgetPassword(_usernameController.text, _emailController.text)
+          .forgetPassword(_usernameController.text, number.toString().trim())
           .catchError(((e) {
         print(e);
       })).then((value) {
         if (value == "success") {
           Fluttertoast.showToast(
-              msg: "تم ارسال رمز التفعيل بنجاح على البريد الالكترونى الخاص بكم",
+              msg: "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم",
               gravity: ToastGravity.CENTER,
               backgroundColor: Colors.black,
               textColor: Colors.orange);
@@ -476,7 +531,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                                   child: AutoSizeText(
                                     (!reSend)
                                         ? "اعادة ارسال رمز التفعيل"
-                                        : "برجاء مراجعة البريد الالكترونى الخاص بكم",
+                                        : "برجاء مراجعة رسائل الهاتف الخاص بكم",
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -541,7 +596,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
         });
 
         Fluttertoast.showToast(
-            msg: "تم ارسال رمز التفعيل بنجاح على البريد الالكترونى الخاص بكم",
+            msg: "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم",
             gravity: ToastGravity.CENTER,
             backgroundColor: Colors.black,
             textColor: Colors.orange);

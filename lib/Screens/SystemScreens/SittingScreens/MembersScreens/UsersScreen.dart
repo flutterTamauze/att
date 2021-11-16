@@ -146,7 +146,7 @@ class _UsersScreenState extends State<UsersScreen> {
       } else if (!widget.comingFromShifts) {
         Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
             Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList[siteIndex]
+                .siteShiftList[siteIndex - 1]
                 .siteId,
             comProvier.com.id,
             userProvider.user.userToken,
@@ -223,6 +223,11 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () async {
+            for (int i = 0; i < siteProv.sites.length; i++) {
+              print(siteProv.sites[i].name);
+            }
+            print(siteProv.sites.length);
+
             FocusScope.of(context).unfocus();
           },
           child: Scaffold(
@@ -651,7 +656,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           shiftIndex:
                               Provider.of<SiteData>(context, listen: false)
                                   .currentShiftIndex,
-                          comingFromShifts: widget.comingFromShifts,
+                          comingFromShifts: widget.comingFromShifts ?? false,
                           shiftName: widget.comingShiftName == ""
                               ? Provider.of<SiteData>(context).siteValue
                               : widget.comingShiftName,

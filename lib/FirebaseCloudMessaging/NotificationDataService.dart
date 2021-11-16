@@ -168,8 +168,6 @@ class NotificationDataService with ChangeNotifier {
     });
   }
 
-  SiteShiftsData siteShiftsData = SiteShiftsData();
-
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
       counter++;
@@ -183,9 +181,10 @@ class NotificationDataService with ChangeNotifier {
             .then((value) => print('login successs'));
       } else if (event.data["category"] == "reloadData") {
         print("recieved reloadData");
-        siteShiftsData.getAllSitesAndShifts(
-            Provider.of<CompanyData>(context, listen: false).com.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
+        Provider.of<SiteShiftsData>(context, listen: false)
+            .getAllSitesAndShifts(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken);
         // await Provider.of<SiteShiftsData>(context, listen: false)
         //     .getAllSitesAndShifts(
         //         Provider.of<CompanyData>(context, listen: false).com.id,

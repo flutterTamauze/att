@@ -138,6 +138,13 @@ class SiteData with ChangeNotifier {
                 category: "reloadData",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+
+            await Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==
@@ -352,6 +359,12 @@ class SiteData with ChangeNotifier {
                 category: "reloadData",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+            await Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==
@@ -432,6 +445,13 @@ class SiteData with ChangeNotifier {
                 category: "reloadData",
                 topicName:
                     "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+
+            await Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(
+                    Provider.of<CompanyData>(context, listen: false).com.id,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==

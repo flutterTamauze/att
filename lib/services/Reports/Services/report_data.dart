@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -149,9 +150,10 @@ class LateAbsenceReport {
   bool isDayOff;
   String lateRatio;
   String absentRatio;
+  double totalDecutionForAllUsers;
 
   LateAbsenceReport(this.lateAbsenceReportUnitList, this.lateRatio,
-      this.absentRatio, this.isDayOff);
+      this.absentRatio, this.isDayOff, this.totalDecutionForAllUsers);
 }
 
 class LateAbsenceReportUnit {
@@ -288,7 +290,8 @@ class ReportsData with ChangeNotifier {
   UserAttendanceReport userAttendanceReport =
       UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0, 0);
 
-  LateAbsenceReport lateAbsenceReport = LateAbsenceReport([], "0%", "0%", true);
+  LateAbsenceReport lateAbsenceReport =
+      LateAbsenceReport([], "0%", "0%", true, 0.0);
 
   Future<bool> isConnectedToInternet() async {
     try {
@@ -518,11 +521,13 @@ class ReportsData with ChangeNotifier {
               userToken, siteId, dateFrom, dateTo, context);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
-          print(response.body);
+          log(response.body);
 
           if (decodedRes["message"] == "Success") {
             lateAbsenceReport.absentRatio = decodedRes['data']['absentRatio'];
             lateAbsenceReport.lateRatio = decodedRes['data']['lateRatio'];
+            lateAbsenceReport.totalDecutionForAllUsers =
+                decodedRes["data"]["totalDeductionForAllUsers"] + 0.0 as double;
             if (lateAbsenceReport.absentRatio == "%NaN" &&
                 lateAbsenceReport.lateRatio == "%0") {
               lateAbsenceReport.isDayOff = true;

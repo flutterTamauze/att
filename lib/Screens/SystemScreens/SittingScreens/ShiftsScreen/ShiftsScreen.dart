@@ -60,10 +60,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     Provider.of<SiteData>(context, listen: false).pageIndex = 0;
     print("init state");
     siteId = widget.siteId;
-    Provider.of<SiteData>(context, listen: false).setCurrentSiteName(
-        Provider.of<SiteShiftsData>(context, listen: false)
-            .siteShiftList[0]
-            .siteName);
   }
 
   // String getTimeToString(int time) {
@@ -101,14 +97,19 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     refreshController.refreshCompleted();
   }
 
+  String siteName;
   void didChangeDependencies() async {
     isLoading = false;
     print("start state");
     super.didChangeDependencies();
     // await getData();
-    getData(Provider.of<SiteShiftsData>(context, listen: false)
+    if (mounted)
+      getData(Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[siteId]
+          .siteId);
+    siteName = Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList[siteId]
-        .siteId);
+        .siteName;
     fillSites();
   }
 
@@ -158,6 +159,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () {
+            print(siteId);
             print(Provider.of<SiteData>(context, listen: false)
                 .dropDownShiftIndex);
           },
@@ -208,7 +210,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                             edit: true,
                                             list: Provider.of<SiteShiftsData>(
                                                     context,
-                                                    listen: true)
+                                                    listen: false)
                                                 .siteShiftList,
                                             colour: Colors.white,
                                             icon: Icons.location_on,
@@ -219,6 +221,12 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                               // print()
 
                                               siteId = getSiteName(value);
+                                              siteName =
+                                                  Provider.of<SiteShiftsData>(
+                                                          context,
+                                                          listen: false)
+                                                      .siteShiftList[siteId]
+                                                      .siteName;
                                               _onRefresh();
                                               Provider.of<SiteData>(context,
                                                       listen: false)
@@ -240,11 +248,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                               //             .siteId,
                                               //         false);
                                             },
-                                            selectedvalue:
-                                                Provider.of<SiteShiftsData>(
-                                                        context)
-                                                    .siteShiftList[siteId]
-                                                    .siteName,
+                                            selectedvalue: siteName,
                                             textColor: Colors.orange,
                                           ),
                                         ),
@@ -333,7 +337,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                             },
                                                                             onTapEdit:
                                                                                 () {
-                                                                              print("aaaaaaaaa :${value.shiftsList[index].shiftId}");
                                                                               Navigator.of(context).push(
                                                                                 new MaterialPageRoute(
                                                                                   builder: (context) => AddShiftScreen(value.shiftsList[index], index, true, siteId, widget.siteIndex),
@@ -533,15 +536,16 @@ class _ShiftTileState extends State<ShiftTile> {
                           ),
                           InkWell(
                             onTap: () async {
-                              siteProv.setDropDownShift(
-                                  widget.index); //الموقع علي حسب ال اندكس اللي
+                              // siteProv.setDropDownShift(
+                              //     widget.index); //الموقع علي حسب ال اندكس اللي
                               siteProv.setSiteValue(widget.siteName);
                               siteProv.fillCurrentShiftID(widget.shift.shiftId);
                               siteProv.setDropDownIndex(widget.siteIndex);
                               siteProv.fillCurrentShiftID(widget.shift.shiftId);
+                              print(widget.index);
 
                               print("finding matching shifts");
-
+                              print(siteProv.currentSiteName);
                               var index = getSiteName(siteProv.currentSiteName);
 
                               Provider.of<SiteShiftsData>(context,
@@ -556,8 +560,6 @@ class _ShiftTileState extends State<ShiftTile> {
                               siteProv.setDropDownShift(
                                   widget.index + 1); //+1 lw feh all shifts
 
-                              // print(siteProv.sitesList[index].name);
-                              // shiftProv.findMatchingShifts(siteProv.sitesList[0].name, ddallshiftsBool)
                               Navigator.of(context).push(
                                 new MaterialPageRoute(
                                   builder: (context) => UsersScreen(
@@ -668,10 +670,11 @@ class _ShiftTileState extends State<ShiftTile> {
                                     children: [
                                       UserDataField(
                                         icon: Icons.location_on,
-                                        text:
-                                            Provider.of<SiteShiftsData>(context)
-                                                .siteShiftList[widget.siteIndex]
-                                                .siteName,
+                                        text: Provider.of<SiteShiftsData>(
+                                                context,
+                                                listen: false)
+                                            .siteShiftList[widget.siteIndex]
+                                            .siteName,
                                       ),
                                       SizedBox(
                                         height: 10.0.h,

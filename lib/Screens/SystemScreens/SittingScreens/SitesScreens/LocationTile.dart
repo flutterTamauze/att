@@ -160,6 +160,12 @@ class _LocationTileState extends State<LocationTile> {
                           CircularIconButtonn(
                             icon: Icons.alarm,
                             onTap: () {
+                              Provider.of<SiteData>(context, listen: false)
+                                  .setCurrentSiteName(
+                                      Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .siteShiftList[widget.index]
+                                          .siteName);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -184,9 +190,14 @@ class _LocationTileState extends State<LocationTile> {
                                       true);
 
                               Provider.of<SiteData>(context, listen: false)
-                                  .setDropDownIndex(widget.index);
+                                  .setDropDownIndex(widget.index + 1);
                               print("selected index = ${widget.index}");
-
+                              Provider.of<SiteData>(context, listen: false)
+                                  .setCurrentSiteName(
+                                      Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .siteShiftList[widget.index]
+                                          .siteName);
                               Provider.of<SiteData>(context, listen: false)
                                   .setDropDownShift(0);
                               log(Provider.of<SiteShiftsData>(context,
@@ -196,7 +207,7 @@ class _LocationTileState extends State<LocationTile> {
                               Navigator.of(context).push(
                                 new MaterialPageRoute(
                                   builder: (context) =>
-                                      UsersScreen(widget.index, false, ""),
+                                      UsersScreen(widget.index + 1, false, ""),
                                 ),
                               );
                             },

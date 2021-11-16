@@ -91,7 +91,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
       shiftIndex = getShiftid(widget.shiftNameIncoming);
     } else {
       shiftIndex =
-          Provider.of<SiteData>(context, listen: false).currentShiftIndex;
+          Provider.of<SiteData>(context, listen: false).dropDownShiftIndex;
+      print("current shift index $shiftIndex");
     }
     editNumber = intlPhone.PhoneNumber(
         isoCode: widget.editableUserPhone,
@@ -148,11 +149,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
   fillTextField() async {
     if (widget.isEdit) {
       print("edit screen");
+      print(widget.member.siteName);
       edit = true;
       Provider.of<SiteShiftsData>(context, listen: false)
           .getShiftsList(widget.member.siteName, false);
 
       shiftIndex = getShiftListIndex(widget.member.shiftId);
+      Provider.of<SiteData>(context, listen: false)
+          .setDropDownShift(shiftIndex);
+      print("shift index $shiftIndex");
       // siteId = getSiteListIndex(shiftIndex);
       _nameController.text = widget.member.name;
       _emailController.text = widget.member.email;
@@ -199,16 +204,31 @@ class _AddUserScreenState extends State<AddUserScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
+                print(shiftIndex);
+                for (int i = 0;
+                    i <
+                        Provider.of<SiteShiftsData>(context, listen: false)
+                            .dropDownShifts
+                            .length;
+                    i++) {
+                  print(Provider.of<SiteShiftsData>(context, listen: false)
+                      .dropDownShifts[i]
+                      .shiftName);
+                }
+                // print(Provider.of<SiteShiftsData>(context, listen: false)
+                //     .dropDownShifts
+                //     .length);
                 print(Provider.of<SiteData>(context, listen: false)
                     .dropDownShiftIndex);
-                print(Provider.of<SiteShiftsData>(context, listen: false)
-                    .dropDownShifts[shiftIndex]
-                    .shiftId);
-                print(Provider.of<SiteShiftsData>(context, listen: false)
-                    .dropDownShifts[
-                        Provider.of<SiteData>(context, listen: false)
-                            .currentShiftIndex]
-                    .shiftName);
+                // print(Provider.of<SiteShiftsData>(context, listen: false)
+                //     .dropDownShifts[shiftIndex]
+                //     .shiftId);
+                // print(Provider.of<SiteShiftsData>(context, listen: false)
+                //     .dropDownShifts[
+                //         Provider.of<SiteData>(context, listen: false)
+                //             .currentShiftIndex]
+
+                //     .shiftName);
               },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
@@ -685,6 +705,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             Provider.of<SiteData>(context,
                                                     listen: false)
                                                 .setDropDownIndex(0);
+
                                             Provider.of<SiteData>(context,
                                                     listen: false)
                                                 .setDropDownShift(0);
@@ -734,7 +755,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               .shifts[Provider.of<SiteData>(
                                                       context,
                                                       listen: false)
-                                                  .currentShiftIndex]
+                                                  .dropDownShiftIndex]
                                               .shiftName ==
                                           "لا يوجد مناوبات بهذا الموقع") {
                                         Fluttertoast.showToast(
@@ -771,27 +792,29 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                 context,
                                                                 listen: false)
                                                             .dropDownShifts[
-                                                                shiftIndex]
+                                                                shiftIndex == 0
+                                                                    ? 0
+                                                                    : shiftIndex -
+                                                                        1]
                                                             .shiftId,
-                                                    jobTitle: _titleController.text
+                                                    jobTitle: _titleController
+                                                        .text
                                                         .trim(),
                                                     email: _emailController.text
                                                         .trim(),
                                                     salary: double.parse(
                                                         _salaryController.text),
-                                                    phoneNumber:
-                                                        number.dialCode +
-                                                            _phoneController.text
-                                                                .replaceAll(
-                                                              new RegExp(
-                                                                  r"\s+\b|\b\s"),
-                                                              "",
-                                                            ),
-                                                    name: _nameController.text
-                                                        .trim()),
+                                                    phoneNumber: number.dialCode +
+                                                        _phoneController.text.replaceAll(
+                                                          new RegExp(
+                                                              r"\s+\b|\b\s"),
+                                                          "",
+                                                        ),
+                                                    name: _nameController.text.trim()),
                                                 token,
                                                 context,
                                                 getRoleName(userRole));
+                                        Navigator.pop(context);
 
                                         if (msg == "Success") {
                                           Fluttertoast.showToast(
@@ -852,16 +875,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else {
                                           Fluttertoast.showToast(
-                                                  msg: "خطأ في اضافة المستخدم",
-                                                  toastLength:
-                                                      Toast.LENGTH_LONG,
-                                                  timeInSecForIosWeb: 1,
-                                                  gravity: ToastGravity.CENTER,
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.black,
-                                                  fontSize: 16.0)
-                                              .then((value) =>
-                                                  Navigator.pop(context));
+                                              msg: "خطأ في اضافة المستخدم",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              timeInSecForIosWeb: 1,
+                                              gravity: ToastGravity.CENTER,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.black,
+                                              fontSize: 16.0);
                                         }
                                       }
                                     }
@@ -873,7 +893,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 .shifts[Provider.of<SiteData>(
                                                         context,
                                                         listen: false)
-                                                    .currentShiftIndex]
+                                                    .dropDownShiftIndex]
                                                 .shiftName ==
                                             "لا يوجد مناوبات بهذا الموقع") {
                                           Fluttertoast.showToast(
@@ -931,20 +951,20 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           .id,
                                                                       userType:
                                                                           userType,
-                                                                      shiftId: Provider.of<SiteShiftsData>(context, listen: false)
-                                                                          .dropDownShifts[
-                                                                              shiftIndex]
+                                                                      shiftId: Provider.of<SiteShiftsData>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .dropDownShifts[shiftIndex == 0
+                                                                              ? 0
+                                                                              : shiftIndex - 1]
                                                                           .shiftId,
-                                                                      phoneNumber: editNumber
-                                                                              .dialCode +
-                                                                          _phoneController
-                                                                              .text
-                                                                              .replaceAll(
+                                                                      phoneNumber: editNumber.dialCode +
+                                                                          _phoneController.text.replaceAll(
                                                                             new RegExp(r"\s+\b|\b\s"),
                                                                             "",
                                                                           ),
-                                                                      salary: double.parse(
-                                                                          _salaryController.text),
+                                                                      salary: double.parse(_salaryController.text),
                                                                       jobTitle: _titleController.text,
                                                                       email: _emailController.text.trim(),
                                                                       name: _nameController.text),
