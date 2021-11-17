@@ -834,10 +834,20 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 builder: (context) =>
                                                     UsersScreen(-1, false, ""),
                                               ));
-                                        } else if (msg == "exists") {
+                                        } else if (msg == "phone exists") {
                                           Fluttertoast.showToast(
                                               msg:
-                                                  "خطأ في اضافة المستخدم:رقم الهاتف  مستخدم مسبقا",
+                                                  "خطأ في اضافة المستخدم : رقم الهاتف  مستخدم مسبقا",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              gravity: ToastGravity.CENTER,
+                                              textColor: Colors.black,
+                                              fontSize: 16.0);
+                                        } else if (msg == "user exists") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "خطأ في اضافة المستخدم : المستخدم موجود بالفعل",
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,

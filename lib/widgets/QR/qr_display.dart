@@ -25,12 +25,16 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   DateTime countryDate;
   getTimeZone() {
     if (mounted) {
-      _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-        setState(() {
-          countryDate = countryDate.add(Duration(seconds: 1));
-          print(DateFormat.jms().format(countryDate));
+      print("countrycode");
+      print(countryDate);
+      if (countryDate != null) {
+        _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+          setState(() {
+            countryDate = countryDate.add(Duration(seconds: 1));
+            print(DateFormat.jms().format(countryDate));
+          });
         });
-      });
+      }
     }
   }
 
@@ -254,7 +258,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                       Container(
                                         height: 100,
                                         child: AutoSizeText(
-                                          "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
+                                          "برجاء التواجد بالموقع المخصص لك\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
                                           textAlign: TextAlign.center,
                                           maxLines: 4,
                                           style: TextStyle(
