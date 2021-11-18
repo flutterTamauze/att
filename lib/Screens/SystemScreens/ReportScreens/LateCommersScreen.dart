@@ -56,6 +56,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       fromDate = DateTime(now.year, now.month - 1,
           Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     }
+    var comProv = Provider.of<CompanyData>(context, listen: false);
+    if (fromDate.isBefore(comProv.com.createdOn)) {
+      fromDate = comProv.com.createdOn;
+    }
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
 
@@ -114,6 +118,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
           backgroundColor: Colors.white,
           body: Container(
             child: GestureDetector(
+              onTap: () {
+                print(comProv.com.createdOn);
+                print(fromDate);
+                print(comProv.com.legalComDate);
+              },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();

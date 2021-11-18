@@ -47,6 +47,49 @@ class DataTableHeader extends StatelessWidget {
   }
 }
 
+class AttendProovTableHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                DataTableHeaderTitles("التوقيت", Colors.orange[600]),
+                DataTableHeaderTitles("حالة الإثبات", Colors.orange[600]),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: 50.h,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+              width: 160.w,
+              child: Center(
+                  child: Container(
+                height: 20,
+                child: AutoSizeText(
+                  'الاسم',
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize:
+                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      color: Colors.orange[600]),
+                ),
+              ))),
+        ],
+      ),
+    ));
+  }
+}
+
 class DataTableHeaderTitles extends StatelessWidget {
   final String title;
   final Color color;

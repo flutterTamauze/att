@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -115,6 +116,7 @@ class DailyReportUnit {
 
 class DailyReport {
   List<DailyReportUnit> attendListUnits;
+
   bool isHoliday;
   String officialHoliday;
   int totalAttend;
@@ -285,6 +287,7 @@ class UserAttendanceReportUnit {
 class ReportsData with ChangeNotifier {
   Future futureListener;
   bool isLoading = false;
+  List<AttendProofModel> attendProofList = [];
   DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
   UserAttendanceReport userAttendanceReport =
@@ -305,6 +308,72 @@ class ReportsData with ChangeNotifier {
       return false;
     }
     return false;
+  }
+
+  deleteAttendProofFromReport(
+      String token, int id, int attendProofIndex) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.delete(
+      Uri.parse("$baseURL/api/AttendProof/DeleteAttendProof?id=$id"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $token"
+      },
+    );
+    isLoading = false;
+    print(response.body);
+    attendProofList.removeAt(attendProofIndex);
+
+    print(response.statusCode);
+    print(response.body);
+    notifyListeners();
+    return jsonDecode(response.body)["message"];
+  }
+
+  getDailyAttendProofReport(
+      String userToken, String userId, String date, BuildContext context) {
+    futureListener = getDailyAttendProofApi(userToken, userId, date, context);
+    return futureListener;
+  }
+
+  Future<String> getDailyAttendProofApi(String userToken, String userId,
+      String date, BuildContext context) async {
+    if (await isConnectedToInternet()) {
+      print(date);
+      final response = await http.get(
+          Uri.parse(
+              "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$userId/$date"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getDailyAttendProofApi(userToken, userId, date, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
+        print(response.body);
+        if (decodedRes["message"] == "Success") {
+          var reportObjJson = jsonDecode(response.body)['data'] as List;
+
+          attendProofList = reportObjJson
+              .map((reportJson) => AttendProofModel.fromJson(reportJson))
+              .toList();
+
+          notifyListeners();
+          return decodedRes["message"];
+        } else if (decodedRes["message"] == "No AttendProofs was found!") {
+          attendProofList.clear();
+        }
+      }
+    }
+
+    return 'noInternet';
   }
 
   getDailyReportUnits(

@@ -319,7 +319,8 @@ class MemberData with ChangeNotifier {
             if (keepRetriving) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
-                  .toList());
+                  .toList()
+                  .toSet());
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;
