@@ -318,7 +318,8 @@ class MemberData with ChangeNotifier {
             if (keepRetriving) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
-                  .toList());
+                  .toList()
+                  .toSet());
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;
@@ -560,9 +561,11 @@ class MemberData with ChangeNotifier {
             return "Success";
           } else if (decodedRes["message"] ==
               "Fail : Phone No Already exists") {
-            return "exists";
+            return "phone exists";
           } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
             return "Limit Reached";
+          } else if (decodedRes["message"] == "Fail : User Exists") {
+            return "user exists";
           }
         }
       } catch (e) {

@@ -16,6 +16,7 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
+import 'AttendProovReport.dart';
 import 'DisplayPermessionAndVacations.dart';
 
 class ReportsScreen extends StatefulWidget {
@@ -26,7 +27,6 @@ class ReportsScreen extends StatefulWidget {
 class _ReportsScreenState extends State<ReportsScreen> {
   @override
   Widget build(BuildContext context) {
-    // final userDataProvider = Provider.of<UserData>(context, listen: false);
     List<ReportTile> reports = [
       ReportTile(
           title: "الحضور اليومى",
@@ -51,7 +51,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 builder: (context) => LateAbsenceScreen(),
               ),
             );
-            print("الموظفين");
           }),
       ReportTile(
           title: "حضور مستخدم",
@@ -65,7 +64,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 ),
               ),
             );
-            print("الموظفين");
           }),
       ReportTile(
           title: "الأجازات و المأموريات",

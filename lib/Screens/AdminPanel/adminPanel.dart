@@ -8,6 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/ReportScreens/AttendProovReport.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
@@ -131,7 +132,19 @@ class _AdminPanelState extends State<AdminPanel> {
                                         ));
                                   });
                             },
-                          )
+                          ),
+                          AdminPanelTile(
+                              requestsCount: null,
+                              title: "إثباتات الحضور",
+                              subTitle: "تقرير إثباتات الحضور",
+                              icon: Icons.check,
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  new MaterialPageRoute(
+                                    builder: (context) => AttendProofReport(),
+                                  ),
+                                );
+                              }),
                         ]),
                       ))
                     ],
@@ -233,20 +246,25 @@ class AdminPanelTile extends StatelessWidget {
               textAlign: TextAlign.right,
             ),
           ),
-          leading: Container(
-            width: 30,
-            height: 30,
-            child: Center(
-              child: Text(
-                requestsCount,
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.orange[600], width: 3)),
-          )),
+          leading: requestsCount == null
+              ? Container(
+                  width: 30,
+                  height: 30,
+                )
+              : Container(
+                  width: 30,
+                  height: 30,
+                  child: Center(
+                    child: Text(
+                      requestsCount,
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.orange[600], width: 3)),
+                )),
     );
   }
 }

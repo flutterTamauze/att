@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dart:ui' as ui;
-import 'package:getwidget/components/animation/gf_animation.dart';
-import 'package:getwidget/types/gf_animation_type.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
@@ -203,27 +202,17 @@ class NotificationsData extends StatefulWidget {
   _NotificationsDataState createState() => _NotificationsDataState();
 }
 
-AnimationController controller;
-Animation<double> animation;
-
 class _NotificationsDataState extends State<NotificationsData>
     with TickerProviderStateMixin {
   @override
   void initState() {
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-    animation = new CurvedAnimation(parent: controller, curve: Curves.linear);
-    controller.repeat();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: GFAnimation(
-        scaleAnimation: animation,
-        controller: controller,
-        type: GFAnimationType.scaleTransition,
+      child: FadeInUp(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 70.h,

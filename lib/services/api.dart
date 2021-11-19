@@ -24,7 +24,7 @@ class ShiftApi with ChangeNotifier {
   DateTime currentBackPressTime, currentCountryDate;
   bool isOnShift = true;
   List<String> currentShiftSTtime, currentShiftEndTime;
-
+  String siteName;
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
@@ -213,6 +213,7 @@ class ShiftApi with ChangeNotifier {
             jsonDecode(response.body)['data'][0]["shiftSttime"],
             jsonDecode(response.body)['data'][0]["shiftEntime"]
           ];
+          siteName = jsonDecode(response.body)['data'][2]["siteName"];
           currentShiftEndTime = [
             jsonDecode(response.body)['data'][1]["shiftSttime"],
             jsonDecode(response.body)['data'][1]["shiftEntime"]
@@ -229,6 +230,7 @@ class ShiftApi with ChangeNotifier {
           return true;
         } else {
           print("isNotInLocation");
+          siteName = jsonDecode(response.body)['data'][2]["siteName"];
           isOnLocation = false;
           isLocationServiceOn = 1;
           permissionOff = true;
@@ -263,8 +265,6 @@ class ShiftApi with ChangeNotifier {
       notifyListeners();
       return false;
     }
-
-    return null;
   }
 
   bool searchForCurrentShift(int currentTime) {
