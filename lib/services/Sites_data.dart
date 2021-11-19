@@ -48,7 +48,6 @@ class SiteData with ChangeNotifier {
   bool isLoading = false;
   setSiteValue(String v) {
     siteValue = v;
-    notifyListeners();
   }
 
   setShiftValue(String v) {

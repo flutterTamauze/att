@@ -246,7 +246,6 @@ class MemberData with ChangeNotifier {
       }
       url =
           "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
-      notifyListeners();
     } else {
       if (siteId == -1) {
         loadingShifts = false;
