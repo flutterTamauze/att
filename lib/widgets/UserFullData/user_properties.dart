@@ -458,90 +458,91 @@ class _UserPropertiesState extends State<UserProperties> {
                           })
                       : Container(),
                   Divider(),
-                  AssignTaskToUser(
-                      taskName: " إرسال اثبات حضور",
-                      iconData: FontAwesomeIcons.checkCircle,
-                      function: () async {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return RoundedLoadingIndicator();
-                            });
-                        await attendObj
-                            .sendAttendProof(
-                                Provider.of<UserData>(context, listen: false)
-                                    .user
-                                    .userToken,
-                                widget.user.id,
-                                widget.user.fcmToken)
-                            .then((value) {
-                          print("VAlue $value");
-                          switch (value) {
-                            case "success":
-                              HuaweiServices _huawei = HuaweiServices();
-                              if (widget.user.osType == 3) {
-                                _huawei.huaweiPostNotification(
+                  userDataProvider.userType != 2
+                      ? AssignTaskToUser(
+                          taskName: " إرسال اثبات حضور",
+                          iconData: FontAwesomeIcons.checkCircle,
+                          function: () async {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return RoundedLoadingIndicator();
+                                });
+                            await attendObj
+                                .sendAttendProof(
+                                    userDataProvider.userToken,
+                                    widget.user.id,
                                     widget.user.fcmToken,
-                                    "اثبات حضور",
-                                    "برجاء اثبات حضورك الأن",
-                                    "attend");
-                                Fluttertoast.showToast(
-                                    msg: "تم الأرسال بنجاح",
-                                    backgroundColor: Colors.green,
-                                    gravity: ToastGravity.CENTER);
-                              } else
-                                sendFcmMessage(
-                                        topicName: "",
-                                        userToken: widget.user.fcmToken,
-                                        title: "اثبات حضور",
-                                        category: "attend",
-                                        message: "برجاء اثبات حضورك الأن")
-                                    .then((value) {
-                                  if (value) {
+                                    userDataProvider.id)
+                                .then((value) {
+                              print("VAlue $value");
+                              switch (value) {
+                                case "success":
+                                  HuaweiServices _huawei = HuaweiServices();
+                                  if (widget.user.osType == 3) {
+                                    _huawei.huaweiPostNotification(
+                                        widget.user.fcmToken,
+                                        "اثبات حضور",
+                                        "برجاء اثبات حضورك الأن",
+                                        "attend");
                                     Fluttertoast.showToast(
                                         msg: "تم الأرسال بنجاح",
                                         backgroundColor: Colors.green,
                                         gravity: ToastGravity.CENTER);
-                                  } else {
-                                    if (value) {
-                                      Fluttertoast.showToast(
-                                          msg: "خطأ فى الأرسال ",
-                                          backgroundColor: Colors.red,
-                                          gravity: ToastGravity.CENTER);
-                                    }
-                                  }
-                                });
-                              break;
+                                  } else
+                                    sendFcmMessage(
+                                            topicName: "",
+                                            userToken: widget.user.fcmToken,
+                                            title: "اثبات حضور",
+                                            category: "attend",
+                                            message: "برجاء اثبات حضورك الأن")
+                                        .then((value) {
+                                      if (value) {
+                                        Fluttertoast.showToast(
+                                            msg: "تم الأرسال بنجاح",
+                                            backgroundColor: Colors.green,
+                                            gravity: ToastGravity.CENTER);
+                                      } else {
+                                        if (value) {
+                                          Fluttertoast.showToast(
+                                              msg: "خطأ فى الأرسال ",
+                                              backgroundColor: Colors.red,
+                                              gravity: ToastGravity.CENTER);
+                                        }
+                                      }
+                                    });
+                                  break;
 
-                            case "fail shift":
-                              Fluttertoast.showToast(
-                                  msg:
-                                      "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
-                                  backgroundColor: Colors.red,
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER);
-                              break;
-                            case "null":
-                              Fluttertoast.showToast(
-                                  msg:
-                                      "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
-                                  backgroundColor: Colors.red,
-                                  gravity: ToastGravity.CENTER);
-                              break;
-                            case "fail present":
-                              Fluttertoast.showToast(
-                                  msg: "لم يتم تسجيل حضور هذا المتسخدم",
-                                  backgroundColor: Colors.red,
-                                  gravity: ToastGravity.CENTER);
-                              break;
-                            case "fail":
-                              errorToast();
-                              break;
-                            default:
-                              errorToast();
-                          }
-                        }).then((value) => Navigator.pop(context));
-                      })
+                                case "fail shift":
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
+                                      backgroundColor: Colors.red,
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER);
+                                  break;
+                                case "null":
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
+                                      backgroundColor: Colors.red,
+                                      gravity: ToastGravity.CENTER);
+                                  break;
+                                case "fail present":
+                                  Fluttertoast.showToast(
+                                      msg: "لم يتم تسجيل حضور هذا المتسخدم",
+                                      backgroundColor: Colors.red,
+                                      gravity: ToastGravity.CENTER);
+                                  break;
+                                case "fail":
+                                  errorToast();
+                                  break;
+                                default:
+                                  errorToast();
+                              }
+                            }).then((value) => Navigator.pop(context));
+                          })
+                      : Container()
                 ],
               );
             },

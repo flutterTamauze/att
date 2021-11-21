@@ -346,50 +346,6 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                 ),
                               ),
                             ),
-                            userType == 4
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: RounderButton("تعديل",
-                                                () async {
-                                          var phone = await getPhoneInEdit(
-                                              userData.phoneNumber[0] != "+"
-                                                  ? "+${userData.phoneNumber}"
-                                                  : userData.phoneNumber);
-                                          Navigator.of(context).push(
-                                            new MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddUserScreen(
-                                                userData,
-                                                widget.index,
-                                                true,
-                                                phone[0],
-                                                phone[1],
-                                                false,
-                                                "",
-                                              ),
-                                            ),
-                                          );
-                                        })),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        Provider.of<UserData>(context,
-                                                        listen: false)
-                                                    .user
-                                                    .id ==
-                                                userData.id
-                                            ? Container()
-                                            : Expanded(
-                                                child: RounderButton(
-                                                    "حذف", widget.onTapDelete))
-                                      ],
-                                    ),
-                                  )
-                                : Container()
                           ],
                         ),
                       ),

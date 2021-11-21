@@ -246,7 +246,7 @@ class MemberData with ChangeNotifier {
       }
       url =
           "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
-      notifyListeners();
+      // notifyListeners();
     } else {
       if (siteId == -1) {
         loadingShifts = false;
@@ -308,7 +308,7 @@ class MemberData with ChangeNotifier {
         print(response.statusCode);
         if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
-          print(response.body);
+          log(response.body);
 
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;
@@ -319,8 +319,7 @@ class MemberData with ChangeNotifier {
             if (keepRetriving) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
-                  .toList()
-                  .toSet());
+                  .toList());
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;

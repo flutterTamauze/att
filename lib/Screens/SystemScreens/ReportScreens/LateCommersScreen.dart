@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +26,7 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableHeader.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableRow.dart';
+import 'package:qr_users/widgets/Shared/PieChart.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -119,6 +123,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
           body: Container(
             child: GestureDetector(
               onTap: () {
+                print(reportsData.lateAbsenceReport.lateRatio);
                 print(comProv.com.createdOn);
                 print(fromDate);
                 print(comProv.com.legalComDate);
@@ -166,28 +171,106 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                       0
                                                   ? isLoading
                                                       ? Container()
-                                                      : XlsxExportButton(
-                                                          reportType: 1,
-                                                          title:
-                                                              "تقرير التأخير و الغياب",
-                                                          day: _dateController
-                                                              .text,
-                                                          site: userDataProvider
-                                                                      .user
-                                                                      .userType ==
-                                                                  2
-                                                              ? Provider.of<
-                                                                          UserData>(
+                                                      : Row(
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context:
                                                                       context,
-                                                                      listen:
-                                                                          false)
-                                                                  .siteName
-                                                              : Provider.of<
-                                                                          SiteShiftsData>(
-                                                                      context)
-                                                                  .siteShiftList[
-                                                                      siteIdIndex]
-                                                                  .siteName,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return FadeInUp(
+                                                                      child:
+                                                                          Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0)),
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              300.h,
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              FadeInRight(
+                                                                            child: Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: PieChartSample()
+                                                                                //  PieChart(
+                                                                                //   dataMap: {
+                                                                                //     "نسبة التأخير": double.parse(reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
+                                                                                //     "نسبة الغياب": double.parse(reportsData.lateAbsenceReport.absentRatio.replaceAll("%", "")),
+                                                                                //   },
+                                                                                //   animationDuration: Duration(milliseconds: 800),
+                                                                                //   chartLegendSpacing: 22,
+                                                                                //   chartRadius: MediaQuery.of(context).size.width / 3.2,
+                                                                                //   colorList: [
+                                                                                //     Colors.red,
+                                                                                //     Colors.blue,
+                                                                                //     Colors.orange,
+                                                                                //   ],
+                                                                                //   initialAngleInDegree: 0,
+                                                                                //   chartType: ChartType.ring,
+                                                                                //   ringStrokeWidth: 22,
+                                                                                //   legendOptions: LegendOptions(
+                                                                                //     showLegendsInRow: false,
+                                                                                //     legendPosition: LegendPosition.right,
+                                                                                //     showLegends: true,
+                                                                                //     legendTextStyle: TextStyle(
+                                                                                //       fontWeight: FontWeight.bold,
+                                                                                //     ),
+                                                                                //   ),
+                                                                                //   chartValuesOptions: ChartValuesOptions(
+                                                                                //     showChartValueBackground: true,
+                                                                                //     showChartValues: true,
+                                                                                //     showChartValuesInPercentage: false,
+                                                                                //     showChartValuesOutside: false,
+                                                                                //     decimalPlaces: 1,
+                                                                                //   ),
+                                                                                //   // gradientList: ---To add gradient colors---
+                                                                                //   // emptyColorGradient: ---Empty Color gradient---
+                                                                                // ),
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Icon(
+                                                                FontAwesomeIcons
+                                                                    .chartBar,
+                                                                color: Colors
+                                                                    .orange,
+                                                              ),
+                                                            ),
+                                                            XlsxExportButton(
+                                                              reportType: 1,
+                                                              title:
+                                                                  "تقرير التأخير و الغياب",
+                                                              day:
+                                                                  _dateController
+                                                                      .text,
+                                                              site: userDataProvider
+                                                                          .user
+                                                                          .userType ==
+                                                                      2
+                                                                  ? Provider.of<
+                                                                              UserData>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .siteName
+                                                                  : Provider.of<
+                                                                              SiteShiftsData>(
+                                                                          context)
+                                                                      .siteShiftList[
+                                                                          siteIdIndex]
+                                                                      .siteName,
+                                                            ),
+                                                          ],
                                                         )
                                                   : Container()
                                               : Container();

@@ -93,12 +93,10 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                 });
                             await attendObj
                                 .sendAttendProof(
-                                    Provider.of<UserData>(context,
-                                            listen: false)
-                                        .user
-                                        .userToken,
+                                    userDataProvider.userToken,
                                     widget.user.id,
-                                    widget.user.fcmToken)
+                                    widget.user.fcmToken,
+                                    userDataProvider.id)
                                 .then((value) {
                               print("VAlue $value");
                               switch (value) {

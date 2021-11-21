@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
@@ -19,6 +21,7 @@ class LocationTile extends StatefulWidget {
   final String title;
   final Site site;
   final int index;
+  final SlidableController slidableController;
   final Function onTapLocation;
   final Function onTapEdit;
   final Function onTapDelete;
@@ -27,6 +30,7 @@ class LocationTile extends StatefulWidget {
       this.onTapEdit,
       this.onTapDelete,
       this.onTapLocation,
+      this.slidableController,
       this.site,
       this.index});
 
@@ -110,116 +114,165 @@ class _LocationTileState extends State<LocationTile> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-      child: Card(
-          elevation: 3,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Container(
-                width: double.infinity.w,
-                height: 60.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          showShiftDetails(widget.site);
-                        },
+      child: Slidable(
+        actionExtentRatio: 0.10,
+        closeOnScroll: true,
+        controller: widget.slidableController,
+        actionPane: SlidableDrawerActionPane(),
+        secondaryActions: [
+          ZoomIn(
+              child: InkWell(
+            child: Container(
+              padding: EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.orange)),
+              child: Icon(
+                Icons.edit,
+                size: 18,
+                color: Colors.orange,
+              ),
+            ),
+            onTap: () async {
+              widget.onTapEdit();
+              // showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return RoundedLoadingIndicator();
+              //     });
+            },
+          )),
+          ZoomIn(
+              child: InkWell(
+            child: Container(
+              padding: EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.red)),
+              child: Icon(
+                Icons.delete,
+                size: 18,
+                color: Colors.red,
+              ),
+            ),
+            onTap: () {
+              widget.onTapDelete();
+            },
+          )),
+        ],
+        child: Card(
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Container(
+                  width: double.infinity.w,
+                  height: 60.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            showShiftDetails(widget.site);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: ScreenUtil()
+                                    .setSp(35, allowFontScalingSelf: true),
+                                color: Colors.orange,
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Container(
+                                height: 27.h,
+                                child: AutoSizeText(
+                                  widget.title,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16,
+                                          allowFontScalingSelf: true),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, left: 5),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              size: ScreenUtil()
-                                  .setSp(35, allowFontScalingSelf: true),
-                              color: Colors.orange,
+                            CircularIconButtonn(
+                              icon: Icons.alarm,
+                              onTap: () {
+                                Provider.of<SiteData>(context, listen: false)
+                                    .setCurrentSiteName(
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[widget.index]
+                                            .siteName);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShiftsScreen(
+                                          widget.index, 0, widget.index)),
+                                );
+                              },
                             ),
                             SizedBox(
-                              width: 20.w,
+                              width: 5.w,
                             ),
-                            Container(
-                              height: 27.h,
-                              child: AutoSizeText(
-                                widget.title,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: ScreenUtil()
-                                        .setSp(16, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.w600),
-                              ),
+                            CircularIconButtonn(
+                              icon: Icons.person,
+                              onTap: () async {
+                                Provider.of<SiteShiftsData>(context,
+                                        listen: false)
+                                    .getShiftsList(
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[widget.index]
+                                            .siteName,
+                                        true);
+
+                                Provider.of<SiteData>(context, listen: false)
+                                    .setDropDownIndex(widget.index + 1);
+                                print("selected index = ${widget.index}");
+                                Provider.of<SiteData>(context, listen: false)
+                                    .setCurrentSiteName(
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[widget.index]
+                                            .siteName);
+                                Provider.of<SiteData>(context, listen: false)
+                                    .setDropDownShift(0);
+                                log(Provider.of<SiteShiftsData>(context,
+                                        listen: false)
+                                    .siteShiftList[widget.index]
+                                    .siteName);
+                                Navigator.of(context).push(
+                                  new MaterialPageRoute(
+                                    builder: (context) => UsersScreen(
+                                        widget.index + 1, false, ""),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20, left: 5),
-                      child: Row(
-                        children: [
-                          CircularIconButtonn(
-                            icon: Icons.alarm,
-                            onTap: () {
-                              Provider.of<SiteData>(context, listen: false)
-                                  .setCurrentSiteName(
-                                      Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .siteShiftList[widget.index]
-                                          .siteName);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ShiftsScreen(
-                                        widget.index, 0, widget.index)),
-                              );
-                            },
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          CircularIconButtonn(
-                            icon: Icons.person,
-                            onTap: () async {
-                              Provider.of<SiteShiftsData>(context,
-                                      listen: false)
-                                  .getShiftsList(
-                                      Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .siteShiftList[widget.index]
-                                          .siteName,
-                                      true);
-
-                              Provider.of<SiteData>(context, listen: false)
-                                  .setDropDownIndex(widget.index + 1);
-                              print("selected index = ${widget.index}");
-                              Provider.of<SiteData>(context, listen: false)
-                                  .setCurrentSiteName(
-                                      Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .siteShiftList[widget.index]
-                                          .siteName);
-                              Provider.of<SiteData>(context, listen: false)
-                                  .setDropDownShift(0);
-                              log(Provider.of<SiteShiftsData>(context,
-                                      listen: false)
-                                  .siteShiftList[widget.index]
-                                  .siteName);
-                              Navigator.of(context).push(
-                                new MaterialPageRoute(
-                                  builder: (context) =>
-                                      UsersScreen(widget.index + 1, false, ""),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 }

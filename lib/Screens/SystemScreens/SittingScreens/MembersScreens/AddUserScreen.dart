@@ -102,6 +102,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
     if (widget.isEdit) {
       siteId =
           (Provider.of<SiteData>(context, listen: false).dropDownSitesIndex);
+      print(siteId);
     } else {
       if (Provider.of<SiteShiftsData>(context, listen: false).sites.length ==
           2) {
@@ -291,8 +292,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         validator: (text) {
                                           if (text.length == 0) {
                                             return 'مطلوب';
-                                          } else if (text.length > 70) {
-                                            return "يجب ان لا يتخطي اسم المستخدم عن 70 حرف";
+                                          } else if (text.length > 80) {
+                                            return "يجب ان لا يتخطي اسم المستخدم عن 80 حرف";
                                           }
                                           return null;
                                         },
@@ -346,6 +347,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               return 'البريد الإلكترونى غير صحيح';
                                           } else if (text.length == 0) {
                                             return "مطلوب";
+                                          } else if (text.length > 80) {
+                                            return "يجب ان لا يتخطي البريد الإلكترةني عن 80 حرف";
                                           }
                                           return null;
                                         },

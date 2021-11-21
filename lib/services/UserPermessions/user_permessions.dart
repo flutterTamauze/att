@@ -39,24 +39,28 @@ class UserPermessions {
         fcmToken: json["fcmToken"] ?? "null",
         userID: json['userId'] ?? "",
         permessionId: json["id"],
-        osType: json["mobileOS"],
+        osType: json["mobileOS"] ?? 1,
         permessionDescription: json["desc"] ?? "",
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
-        approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
-        createdOn: DateTime.tryParse(json["createdOn"]),
-        approvedDate: DateTime.tryParse(
-          json["approvedDate"],
-        ),
+        // approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
+        createdOn:
+            DateTime.tryParse(json["createdOn"] ?? json["createdonDate"]),
+        // approvedDate: DateTime.tryParse(
+        //   json["approvedDate"] ?? "",
+        // ),
         user: json["userName"]);
   }
 }
 
 class UserPermessionsData with ChangeNotifier {
   bool isLoading = false;
+  bool permessionDetailLoading = false;
   List<UserPermessions> permessionsList = [];
   List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
+  UserPermessions singlePermessionDetail;
+
   List<UserPermessions> pendingCompanyPermessions = [];
   int earlyLeaversCount = 0;
   int lateAbesenceCount = 0;
@@ -139,17 +143,73 @@ class UserPermessionsData with ChangeNotifier {
     }
   }
 
+  Future<void> getPermessionDetailsByID(
+      int permessionId, String userToken) async {
+    print(permessionId);
+    var permessions = singleUserPermessions
+        .where((element) => element.permessionId == permessionId)
+        .toList();
+
+    int permessionyIndex = singleUserPermessions.indexOf(permessions[0]);
+    if (singleUserPermessions[permessionyIndex].adminResponse == null ||
+        singleUserPermessions[permessionyIndex].permessionDescription == null) {
+      permessionDetailLoading = true;
+      notifyListeners();
+
+      var response = await http.get(
+        Uri.parse("$baseURL/api/Permissions/$permessionId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+      );
+      log(response.body);
+      print(response.statusCode);
+
+      permessionDetailLoading = false;
+      notifyListeners();
+      var decodedResponse = json.decode(response.body);
+      if (decodedResponse["message"] == "Success") {
+        singlePermessionDetail =
+            UserPermessions.fromJson(decodedResponse['data']);
+        var permessions = singleUserPermessions
+            .where((element) => element.permessionId == permessionId)
+            .toList();
+
+        int permIndex = singleUserPermessions.indexOf(permessions[0]);
+        singleUserPermessions[permIndex].adminResponse =
+            singlePermessionDetail.adminResponse;
+        singleUserPermessions[permIndex].permessionDescription =
+            singlePermessionDetail.permessionDescription;
+      }
+
+      notifyListeners();
+    } else {
+      print("not null");
+    }
+  }
+
   Future<List<UserPermessions>> getSingleUserPermession(
       String userId, String userToken) async {
     lateAbesenceCount = 0;
     earlyLeaversCount = 0;
+    String startTime = DateTime(
+      DateTime.now().year,
+      1,
+      1,
+    ).toIso8601String();
+    String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
     var response = await http.get(
-      Uri.parse("$baseURL/api/Permissions/GetPermissionbyUser/$userId"),
+      Uri.parse(
+          "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
       },
     );
+    print("response");
+    log(response.body);
+    log(response.statusCode.toString());
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       var permessionsObj =

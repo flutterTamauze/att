@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'dart:ui' as ui;
 
@@ -14,6 +16,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/Screens/Notifications/NotificationOnTapDialog.dart';
+import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/UserProfileImageWidget.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 //  enum CategoriesNavigation {
@@ -79,7 +82,6 @@ class NotificationItem extends StatelessWidget {
                         margin: EdgeInsets.symmetric(vertical: 3),
                         child: InkWell(
                           onTap: () async {
-                            print("d");
                             await db.readMessage(1, notifiyProv.id);
                             value.readMessage(index);
                             switch (notifiyProv.category) {
@@ -108,6 +110,41 @@ class NotificationItem extends StatelessWidget {
                                         ),
                                       ));
                                 }
+                                return;
+                              case "attend":
+                                {
+                                  print(
+                                      "msg ${value.notification[index].messageSeen}");
+                                  DateTime notifiTime = DateTime.parse(
+                                      value.notification[index].dateTime);
+                                  int differenceBetweenDates = notifiTime
+                                      .difference(DateTime.now())
+                                      .inDays;
+
+                                  if (differenceBetweenDates == 0) {
+                                    return showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return StackedNotificaitonAlert(
+                                          notificationTitle: "اثبات حضور",
+                                          notificationContent:
+                                              "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
+                                          roundedButtonTitle: "اثبات",
+                                          lottieAsset:
+                                              "resources/notificationalarm.json",
+                                          notificationToast:
+                                              "تم اثبات الحضور بنجاح",
+                                          showToast: true,
+                                          popWidget: false,
+                                          isFromBackground: false,
+                                          repeatAnimation: true,
+                                        );
+                                      },
+                                    );
+                                  }
+                                }
+                                return;
                             }
                           },
                           child: NotificationsData(
@@ -146,7 +183,7 @@ class NotificationItem extends StatelessWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return Directionality(
-                                      textDirection: TextDirection.rtl,
+                                      textDirection: ui.TextDirection.rtl,
                                       child: RoundedAlert(
                                           onPressed: () async {
                                             Navigator.pop(context);

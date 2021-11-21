@@ -21,69 +21,66 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  animate_do: ^2.0.0
+  audioplayers: null
+  auto_size_text: ^2.1.0
+  autocomplete_textfield: ^1.7.3
+  cached_network_image: ^3.0.0
+  camera: null
+  connectivity_plus: ^1.1.0
+  cron: ^0.2.4
+  cupertino_icons: ^1.0.0
+  curved_navigation_bar: ^0.3.4
+  date_range_picker: ^1.0.7
+  date_time_picker: ^2.0.0
+  device_info: ^0.4.0+4
+  dio: ^4.0.0
+  ext_storage: ^1.0.3
+  firebase_messaging: ^10.0.0
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  lottie: ^1.0.0
   flutter_custom_clippers: ^1.1.2
-  path_provider: ^2.0.0
-  qr_flutter: ^3.2.0
-  qr_code_scanner: ^0.1.0
-  provider: ^4.3.2+2
-  cached_network_image: ^3.0.0
-  http: ^0.13.0
-  intl: ^0.17.0
-  flutter_launcher_icons: ^0.9.0
-  geolocator: ^7.0.0
-  fluttertoast: ^7.1.6
-  camera:
-  cron: ^0.2.4
-  audioplayers: 
-  permission_handler: ^6.0.0
-  trust_location: ^2.0.11
-  shared_preferences: ^2.0.0
-  url_launcher: ^6.0.0
   flutter_image_compress: ^0.7.0
-  curved_navigation_bar: ^0.3.4
-  image_pickers: ^1.0.8+7
-  date_time_picker: ^2.0.0
-  google_maps_flutter: ^2.0.0
-  date_range_picker: ^1.0.7
-  autocomplete_textfield: ^1.7.3
-  typicons_flutter: ^0.3.1
-  font_awesome_flutter: ^8.10.0
-  syncfusion_flutter_xlsio: ^19.1.54-beta
-  ext_storage: ^1.0.3
-  open_file: ^3.0.3
-  pull_to_refresh: 1.6.5
-  share: ^0.6.5+4
-  intl_phone_number_input: ^0.7.0
-  flutter_screenutil: ^4.0.3+3  
-  fluttercontactpicker: ^4.2.1
-  device_info: ^0.4.0+4
-  flutter_secure_storage:
-  auto_size_text: ^2.1.0
   flutter_jailbreak_detection: ^1.4.0
-  connectivity_plus: ^1.1.0
-  animate_do: ^2.0.0
-  google_ml_vision: ^0.0.7
-  flutter_udid:
-  tflite_flutter: 
-  tflite_flutter_helper:
-  firebase_messaging: ^10.0.0
-  sqflite: ^2.0.0+3
-  flutter_slidable: ^0.6.0
-  huawei_push: ^5.0.2+301
+  flutter_launcher_icons: ^0.9.0
   flutter_phoenix: ^1.0.0
-  huawei_location: ^5.1.0+303
-  dio: ^4.0.0
-  progress_dialog: ^1.2.4
-  jwt_decoder: ^2.0.1
+  flutter_screenutil: ^4.0.3+3
+  flutter_secure_storage: null
+  flutter_slidable: ^0.6.0
   flutter_speed_dial: ^3.0.5
+  flutter_udid: null
+  fluttercontactpicker: ^4.2.1
+  fluttertoast: ^7.1.6
+  font_awesome_flutter: ^8.10.0
+  geolocator: ^7.0.0
+  google_maps_flutter: ^2.0.0
+  google_ml_vision: ^0.0.7
+  http: ^0.13.0
+  huawei_location: ^5.1.0+303
+  huawei_push: ^5.0.2+301
+  image_pickers: ^1.0.8+7
+  intl: ^0.17.0
+  intl_phone_number_input: ^0.7.0
+  jwt_decoder: ^2.0.1
+  lottie: ^1.0.0
+  open_file: ^3.0.3
+  path_provider: ^2.0.0
+  permission_handler: ^6.0.0
+  fl_chart: ^0.40.2
+  progress_dialog: ^1.2.4
+  provider: ^4.3.2+2
+  pull_to_refresh: 1.6.5
+  qr_code_scanner: ^0.1.0
+  qr_flutter: ^3.2.0
+  share: ^0.6.5+4
+  shared_preferences: ^2.0.0
+  sqflite: ^2.0.0+3
+  syncfusion_flutter_xlsio: ^19.1.54-beta
+  tflite_flutter: null
+  tflite_flutter_helper: null
+  trust_location: ^2.0.11
+  typicons_flutter: ^0.3.1
+  url_launcher: ^6.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -95,7 +92,6 @@ flutter_icons:
   remove_alpha_ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -110,13 +106,10 @@ flutter:
     - assets/
     - resources/fonts/
 
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -126,8 +119,5 @@ flutter:
     - family: Almarai-Regular
       fonts:
         - asset: resources/fonts/Almarai-Regular.ttf
-      
-   
-  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

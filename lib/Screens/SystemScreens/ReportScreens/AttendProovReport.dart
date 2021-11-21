@@ -209,25 +209,28 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                                         InkWell(
                                                                   child:
                                                                       Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10.h),
                                                                     padding:
                                                                         EdgeInsets
                                                                             .all(7),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                      color: Colors
-                                                                          .red,
-                                                                    ),
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10.h),
+                                                                    decoration: BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        border: Border.all(
+                                                                            width:
+                                                                                2,
+                                                                            color:
+                                                                                Colors.red)),
                                                                     child: Icon(
                                                                       Icons
                                                                           .delete,
                                                                       size: 18,
                                                                       color: Colors
-                                                                          .white,
+                                                                          .red,
                                                                     ),
                                                                   ),
                                                                   onTap: () {

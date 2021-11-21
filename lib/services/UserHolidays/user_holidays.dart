@@ -44,7 +44,7 @@ class UserHolidays {
         holidayNumber: json["id"],
         fcmToken: json["fcmToken"],
         holidayDescription: json["desc"],
-        approvedDate: DateTime.tryParse(json["approvedDate"]),
+        // approvedDate: DateTime.tryParse(json["approvedDate"]) ?? DateTime.now(),
         osType: json["mobileOS"],
         createdOnDate: DateTime.tryParse(json["createdOn"]));
   }
@@ -52,7 +52,9 @@ class UserHolidays {
 
 class UserHolidaysData with ChangeNotifier {
   bool isLoading = false;
+  bool loadingHolidaysDetails = false;
   List<UserHolidays> holidaysList = [];
+  UserHolidays holidaysSingleDetail;
   List<UserHolidays> singleUserHoliday = [];
   List<UserHolidays> copyHolidaysList = [];
   List<UserHolidays> pendingCompanyHolidays = [];
@@ -169,47 +171,94 @@ class UserHolidaysData with ChangeNotifier {
     return "fail";
   }
 
-  Future<List<UserHolidays>> getSingleUserHoliday(
-      String userId, String userToken) async {
-    try {
-      sickVacationCount = 0;
-      suddenVacationCount = 0;
-      vacationCreditCount = 0;
+  Future<void> getHolidayDetailsByID(int holidayId, String userToken) async {
+    var holidays = singleUserHoliday
+        .where((element) => element.holidayNumber == holidayId)
+        .toList();
+
+    int holidayIndex = singleUserHoliday.indexOf(holidays[0]);
+    if (singleUserHoliday[holidayIndex].adminResponse == null &&
+        singleUserHoliday[holidayIndex].holidayDescription == null) {
+      loadingHolidaysDetails = true;
+      notifyListeners();
+      print("holiday id $holidayId");
       var response = await http.get(
-        Uri.parse("$baseURL/api/Holiday/GetHolidaybyUser/$userId"),
+        Uri.parse("$baseURL/api/Holiday/$holidayId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         },
       );
-      print(response.body);
+      print(response.statusCode);
+
+      log(response.body);
+      loadingHolidaysDetails = false;
+      notifyListeners();
       var decodedResponse = json.decode(response.body);
       if (decodedResponse["message"] == "Success") {
-        var permessionsObj = jsonDecode(response.body)['data'] as List;
-        singleUserHoliday =
-            permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
-        singleUserHoliday = singleUserHoliday.reversed.toList();
-        if (singleUserHoliday.length > 0) {
-          for (int i = 0; i < singleUserHoliday.length; i++) {
-            if (singleUserHoliday[i].holidayType == 1 &&
-                singleUserHoliday[i].holidayStatus == 1) {
-              suddenVacationCount++;
-            } else if (singleUserHoliday[i].holidayType == 2 &&
-                singleUserHoliday[i].holidayStatus == 1) {
-              sickVacationCount++;
-            } else {
-              if (singleUserHoliday[i].holidayStatus == 1)
-                vacationCreditCount++;
-            }
+        holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+        var holidays = singleUserHoliday
+            .where((element) => element.holidayNumber == holidayId)
+            .toList();
+
+        int holidayIndex = singleUserHoliday.indexOf(holidays[0]);
+        singleUserHoliday[holidayIndex].adminResponse =
+            holidaysSingleDetail.adminResponse;
+        singleUserHoliday[holidayIndex].holidayDescription =
+            holidaysSingleDetail.holidayDescription;
+      }
+
+      notifyListeners();
+    }
+  }
+
+  Future<List<UserHolidays>> getSingleUserHoliday(
+      String userId, String userToken) async {
+    sickVacationCount = 0;
+    suddenVacationCount = 0;
+    vacationCreditCount = 0;
+    String startTime = DateTime(
+      DateTime.now().year,
+      1,
+      1,
+    ).toIso8601String();
+    String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
+    var response = await http.get(
+      Uri.parse(
+          "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    print(response.statusCode);
+
+    log(response.body);
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      var permessionsObj =
+          jsonDecode(response.body)['data']["Holidays"] as List;
+      singleUserHoliday =
+          permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
+
+      singleUserHoliday = singleUserHoliday.reversed.toList();
+      if (singleUserHoliday.length > 0) {
+        for (int i = 0; i < singleUserHoliday.length; i++) {
+          if (singleUserHoliday[i].holidayType == 1 &&
+              singleUserHoliday[i].holidayStatus == 1) {
+            suddenVacationCount++;
+          } else if (singleUserHoliday[i].holidayType == 2 &&
+              singleUserHoliday[i].holidayStatus == 1) {
+            sickVacationCount++;
+          } else {
+            if (singleUserHoliday[i].holidayStatus == 1) vacationCreditCount++;
           }
         }
-
-        notifyListeners();
-
-        return singleUserHoliday;
       }
-    } catch (e) {
-      print(e);
+
+      notifyListeners();
+
+      return singleUserHoliday;
     }
   }
 

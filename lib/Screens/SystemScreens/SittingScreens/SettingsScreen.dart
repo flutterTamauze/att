@@ -119,12 +119,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               var bool = await userDataProvider
                                   .isConnectedToInternet("www.google.com");
                               if (bool) {
-                                Provider.of<SiteData>(context, listen: false)
-                                    .setCurrentSiteName(
-                                        Provider.of<SiteShiftsData>(context,
-                                                listen: false)
-                                            .siteShiftList[0]
-                                            .siteName);
+                                if (userProvider.user.userType != 2) {
+                                  Provider.of<SiteData>(context, listen: false)
+                                      .setCurrentSiteName(
+                                          Provider.of<SiteShiftsData>(context,
+                                                  listen: false)
+                                              .siteShiftList[0]
+                                              .siteName);
+                                }
+
                                 userProvider.user.userType == 2
                                     ? Navigator.of(context).push(
                                         new MaterialPageRoute(
