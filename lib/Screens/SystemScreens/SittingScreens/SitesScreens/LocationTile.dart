@@ -60,28 +60,6 @@ class _LocationTileState extends State<LocationTile> {
                             Expanded(
                                 child: ShowLocationMap(
                                     site.lat, site.long, site.name)),
-                            Provider.of<UserData>(context, listen: false)
-                                        .user
-                                        .userType !=
-                                    3
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: RounderButton(
-                                                "تعديل", widget.onTapEdit)),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        Expanded(
-                                            child: RounderButton(
-                                                "حذف", widget.onTapDelete))
-                                      ],
-                                    ),
-                                  )
-                                : Container()
                           ],
                         ),
                       ),

@@ -31,15 +31,13 @@ class DownloadService {
             Provider.of<UserData>(context, listen: false).user.apkDate)) {
           Future.delayed(Duration.zero, () {
             showDialog(
+                barrierDismissible: true,
                 context: context,
                 builder: (BuildContext context) {
-                  DownloadService downloadService = DownloadService();
-
                   return RoundedAlert(
                       onPressed: () async {
                         Navigator.pop(context);
-                        downloadService.downloadApkFromUrl(
-                            "ChilangoV3.apk", context);
+                        downloadApkFromUrl("ChilangoV3.apk", context);
                       },
                       title: 'تحديث التطبيق لأخر اصدار ؟',
                       content: "");

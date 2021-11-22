@@ -26,7 +26,7 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableHeader.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableRow.dart';
-import 'package:qr_users/widgets/Shared/PieChart.dart';
+import 'package:qr_users/widgets/Shared/Charts/PieChart.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -194,44 +194,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                               double.infinity,
                                                                           child:
                                                                               FadeInRight(
-                                                                            child: Padding(
-                                                                                padding: const EdgeInsets.all(8.0),
-                                                                                child: PieChartSample()
-                                                                                //  PieChart(
-                                                                                //   dataMap: {
-                                                                                //     "نسبة التأخير": double.parse(reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
-                                                                                //     "نسبة الغياب": double.parse(reportsData.lateAbsenceReport.absentRatio.replaceAll("%", "")),
-                                                                                //   },
-                                                                                //   animationDuration: Duration(milliseconds: 800),
-                                                                                //   chartLegendSpacing: 22,
-                                                                                //   chartRadius: MediaQuery.of(context).size.width / 3.2,
-                                                                                //   colorList: [
-                                                                                //     Colors.red,
-                                                                                //     Colors.blue,
-                                                                                //     Colors.orange,
-                                                                                //   ],
-                                                                                //   initialAngleInDegree: 0,
-                                                                                //   chartType: ChartType.ring,
-                                                                                //   ringStrokeWidth: 22,
-                                                                                //   legendOptions: LegendOptions(
-                                                                                //     showLegendsInRow: false,
-                                                                                //     legendPosition: LegendPosition.right,
-                                                                                //     showLegends: true,
-                                                                                //     legendTextStyle: TextStyle(
-                                                                                //       fontWeight: FontWeight.bold,
-                                                                                //     ),
-                                                                                //   ),
-                                                                                //   chartValuesOptions: ChartValuesOptions(
-                                                                                //     showChartValueBackground: true,
-                                                                                //     showChartValues: true,
-                                                                                //     showChartValuesInPercentage: false,
-                                                                                //     showChartValuesOutside: false,
-                                                                                //     decimalPlaces: 1,
-                                                                                //   ),
-                                                                                //   // gradientList: ---To add gradient colors---
-                                                                                //   // emptyColorGradient: ---Empty Color gradient---
-                                                                                // ),
-                                                                                ),
+                                                                            child:
+                                                                                Padding(padding: const EdgeInsets.all(8.0), child: PieChartSample()),
                                                                           ),
                                                                         ),
                                                                       ),

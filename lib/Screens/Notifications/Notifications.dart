@@ -113,39 +113,37 @@ class NotificationItem extends StatelessWidget {
                                 return;
                               case "attend":
                                 {
-                                  print(
-                                      "msg ${value.notification[index].messageSeen}");
-                                  DateTime notifiTime = DateTime.parse(
-                                      value.notification[index].dateTime);
-                                  int differenceBetweenDates = notifiTime
-                                      .difference(DateTime.now())
-                                      .inDays;
+                                  // DateTime notifiTime = DateTime.parse(
+                                  //     value.notification[index].dateTime);
+                                  // int differenceBetweenDates = notifiTime
+                                  //     .difference(DateTime.now())
+                                  //     .inDays;
 
-                                  if (differenceBetweenDates == 0) {
-                                    return showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) {
-                                        return StackedNotificaitonAlert(
-                                          notificationTitle: "اثبات حضور",
-                                          notificationContent:
-                                              "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
-                                          roundedButtonTitle: "اثبات",
-                                          lottieAsset:
-                                              "resources/notificationalarm.json",
-                                          notificationToast:
-                                              "تم اثبات الحضور بنجاح",
-                                          showToast: true,
-                                          popWidget: false,
-                                          isFromBackground: false,
-                                          repeatAnimation: true,
-                                        );
-                                      },
-                                    );
-                                  }
+                                  // if (differenceBetweenDates == 0) {
+                                  return showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return StackedNotificaitonAlert(
+                                        notificationTitle: "اثبات حضور",
+                                        notificationContent:
+                                            "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
+                                        roundedButtonTitle: "اثبات",
+                                        lottieAsset:
+                                            "resources/notificationalarm.json",
+                                        notificationToast:
+                                            "تم اثبات الحضور بنجاح",
+                                        showToast: true,
+                                        popWidget: false,
+                                        isFromBackground: false,
+                                        repeatAnimation: true,
+                                      );
+                                    },
+                                  );
                                 }
-                                return;
                             }
+                            return;
+                            // }
                           },
                           child: NotificationsData(
                             notificationTitle: notifiyProv.title,
