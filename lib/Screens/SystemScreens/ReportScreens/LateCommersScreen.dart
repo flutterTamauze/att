@@ -195,7 +195,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                           child:
                                                                               FadeInRight(
                                                                             child:
-                                                                                Padding(padding: const EdgeInsets.all(8.0), child: PieChartSample()),
+                                                                                Padding(padding: const EdgeInsets.all(8.0), child: LateReportPieChart()),
                                                                           ),
                                                                         ),
                                                                       ),

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
-class LateReportPieChart extends StatefulWidget {
+class UserReportPieChart extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => LateReportPieChartState();
+  State<StatefulWidget> createState() => UserReportPieChartState();
 }
 
-class LateReportPieChartState extends State {
+class UserReportPieChartState extends State {
   int touchedIndex = -1;
 
   @override
@@ -79,12 +79,12 @@ class LateReportPieChartState extends State {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: Colors.orange)),
                     Text(
-                      " التأخير",
+                      "التأخير",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Row(
@@ -95,7 +95,7 @@ class LateReportPieChartState extends State {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: Colors.green[600])),
                     Text(
-                      "الأنتظام",
+                      "الأنتظام ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
@@ -124,11 +124,14 @@ class LateReportPieChartState extends State {
         case 0:
           return PieChartSectionData(
             color: Colors.orange,
-            value: double.parse(
-                reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
-            title: reportsData.lateAbsenceReport.lateRatio
-                .toString()
-                .replaceAll("%", ""),
+            value: reportsData.userAttendanceReport.totalLateDay /
+                (reportsData.userAttendanceReport.userAttendListUnits.length) *
+                100,
+            title: (reportsData.userAttendanceReport.totalLateDay /
+                    (reportsData
+                        .userAttendanceReport.userAttendListUnits.length) *
+                    100)
+                .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -137,43 +140,41 @@ class LateReportPieChartState extends State {
           );
         case 1:
           return PieChartSectionData(
-            color: Colors.red,
-            value: double.parse(
-                reportsData.lateAbsenceReport.absentRatio.replaceAll("%", "")),
-            title: reportsData.lateAbsenceReport.absentRatio
-                .toString()
-                .replaceAll("%", ""),
+            color: Colors.red[600],
+            value: (reportsData.userAttendanceReport.totalAbsentDay /
+                (reportsData.userAttendanceReport.userAttendListUnits.length) *
+                100),
+            title: (reportsData.userAttendanceReport.totalAbsentDay /
+                    (reportsData
+                        .userAttendanceReport.userAttendListUnits.length) *
+                    100)
+                .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
+
         case 2:
           return PieChartSectionData(
-            color: Colors.green,
-            value: 100 -
-                (double.parse(reportsData.lateAbsenceReport.lateRatio
-                        .replaceAll("%", "")) +
-                    double.parse(reportsData.lateAbsenceReport.absentRatio
-                        .replaceAll("%", ""))),
-            title: (100 -
-                    (double.parse(reportsData.lateAbsenceReport.lateRatio
-                            .replaceAll("%", "")) +
-                        double.parse(reportsData.lateAbsenceReport.absentRatio
-                            .replaceAll("%", ""))))
-                .toString(),
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
+            color: Colors.green[600],
+            value: ((reportsData
+                            .userAttendanceReport.userAttendListUnits.length -
+                        (reportsData.userAttendanceReport.totalAbsentDay +
+                            reportsData.userAttendanceReport.totalLateDay)) /
+                    reportsData
+                        .userAttendanceReport.userAttendListUnits.length) *
+                100,
+            title: (((reportsData.userAttendanceReport.userAttendListUnits
+                                .length -
+                            (reportsData.userAttendanceReport.totalAbsentDay +
+                                reportsData
+                                    .userAttendanceReport.totalLateDay)) /
+                        reportsData
+                            .userAttendanceReport.userAttendListUnits.length) *
+                    100)
+                .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
