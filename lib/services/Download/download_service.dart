@@ -27,20 +27,23 @@ class DownloadService {
       if (showApk) {
         showApk = false;
 
-        if (kAndroidReleaseDate.isBefore(
+        if (kAndroidReleaseDate.isAfter(
             Provider.of<UserData>(context, listen: false).user.apkDate)) {
           Future.delayed(Duration.zero, () {
             showDialog(
-                barrierDismissible: true,
+                // barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
-                  return RoundedAlert(
+                  return RoundAlertUpgrade(
                       onPressed: () async {
-                        Navigator.pop(context);
-                        downloadApkFromUrl("ChilangoV3.apk", context);
+                        // Navigator.pop(context);
+                        // downloadApkFromUrl("ChilangoV3.apk", context);
+                        launch(
+                            "https://play.google.com/store/apps/details?id=com.tds.chilango");
                       },
-                      title: 'تحديث التطبيق لأخر اصدار ؟',
-                      content: "");
+                      title: "اصدار جديد",
+                      content:
+                          'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام');
                 });
           });
         }

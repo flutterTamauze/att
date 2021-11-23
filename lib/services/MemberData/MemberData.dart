@@ -130,12 +130,15 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  searchUsersList(String filter, String userToken, siteId, int companyId,
-      BuildContext context) async {
+  searchUsersList(String filter, String userToken, dynamic siteId,
+      int companyId, BuildContext context) async {
+    print(siteId);
     if (siteId == -1) {
       siteId = "";
     }
-    print(siteId);
+
+    print(
+        "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId");
     loadingSearch = true;
     var response = await http.get(
         Uri.parse(

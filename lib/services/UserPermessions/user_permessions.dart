@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -121,26 +122,48 @@ class UserPermessionsData with ChangeNotifier {
     return "fail";
   }
 
-  getPendingCompanyPermessions(int companyId, String userToken) async {
-    pendingCompanyPermessions = [];
-    var response = await http.get(
-        Uri.parse(
-            "$baseURL/api/Permissions/GetAllPermissionPending/$companyId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
-    print("permessions");
-    print(response.body);
-    var decodedResp = json.decode(response.body);
-    if (decodedResp["message"] == "Success") {
-      var permessionsObj = jsonDecode(response.body)['data'] as List;
-
-      pendingCompanyPermessions =
-          permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
-      pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();
-      notifyListeners();
+  Future<bool> isConnectedToInternet(String url) async {
+    try {
+      final result = await InternetAddress.lookup(url);
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        return true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      return false;
     }
+    return false;
+  }
+
+  Future<String> getPendingCompanyPermessions(
+      int companyId, String userToken) async {
+    if (await isConnectedToInternet("www.google.com")) {
+      pendingCompanyPermessions = [];
+      var response = await http.get(
+          Uri.parse(
+              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print("permessions");
+      print(response.body);
+      var decodedResp = json.decode(response.body);
+      if (decodedResp["message"] == "Success") {
+        var permessionsObj = jsonDecode(response.body)['data'] as List;
+
+        pendingCompanyPermessions = permessionsObj
+            .map((json) => UserPermessions.fromJson(json))
+            .toList();
+        pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();
+        notifyListeners();
+        return "Success";
+      }
+    } else {
+      return "noInternet";
+    }
+    return "Success";
   }
 
   Future<void> getPermessionDetailsByID(

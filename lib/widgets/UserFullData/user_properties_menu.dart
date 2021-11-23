@@ -135,7 +135,14 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                       }
                                     });
                                   break;
-
+                                case "limit exceed":
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "خطأ : لقد تجاوزت العدد المسموح بة لهذا المستخدم",
+                                      backgroundColor: Colors.red,
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER);
+                                  break;
                                 case "fail shift":
                                   Fluttertoast.showToast(
                                       msg:
@@ -144,6 +151,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                       toastLength: Toast.LENGTH_LONG,
                                       gravity: ToastGravity.CENTER);
                                   break;
+
                                 case "null":
                                   Fluttertoast.showToast(
                                       msg:

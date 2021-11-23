@@ -21,6 +21,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/UserFullData/member_tile.dart';
 import 'package:qr_users/widgets/UserFullData/rounded_searchBar.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -129,12 +130,14 @@ class _UsersScreenState extends State<UsersScreen> {
     var comProvier = Provider.of<CompanyData>(context);
 
     if (widget.selectedIndex != -1) {
+      print("widget index");
+      print(widget.selectedIndex);
       siteIndex = widget.selectedIndex;
       if (widget.comingFromShifts) {
         await Provider.of<MemberData>(context, listen: false)
             .getAllCompanyMember(
                 Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[siteIndex]
+                    .siteShiftList[siteIndex == 0 ? 0 : siteIndex - 1]
                     .siteId,
                 comProvier.com.id,
                 userProvider.user.userToken,
@@ -523,25 +526,24 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                               }));
                                                             },
                                                           )
-                                                        : memberData.membersList
-                                                                    .length !=
-                                                                0
-                                                            ? Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topCenter,
-                                                                width: double
-                                                                    .infinity,
-                                                                child: ListView
-                                                                    .builder(
-                                                                        controller:
-                                                                            _scrollController,
-                                                                        itemCount: memberData
-                                                                            .membersListScreenDropDownSearch
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (BuildContext context,
-                                                                                int index) {
+                                                        : snapshot.data ==
+                                                                "noInternet"
+                                                            ? CenterMessageText(
+                                                                message:
+                                                                    "لا يوجد اتصال بالأنترنت")
+                                                            : memberData.membersList
+                                                                        .length !=
+                                                                    0
+                                                                ? Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topCenter,
+                                                                    width: double
+                                                                        .infinity,
+                                                                    child: ListView.builder(
+                                                                        controller: _scrollController,
+                                                                        itemCount: memberData.membersListScreenDropDownSearch.length,
+                                                                        itemBuilder: (BuildContext context, int index) {
                                                                           Member
                                                                               user =
                                                                               memberData.membersListScreenDropDownSearch[index];
@@ -560,53 +562,39 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                             },
                                                                           );
                                                                         }),
-                                                              )
-                                                            : widget.selectedValue ==
-                                                                        "كل المواقع" ||
-                                                                    Provider.of<SiteData>(context,
-                                                                                listen: false)
-                                                                            .dropDownShiftIndex ==
-                                                                        0
-                                                                ? Center(
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
-                                                                      maxLines:
-                                                                          1,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: TextStyle(
-                                                                          height:
-                                                                              2,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf:
-                                                                                  true),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
                                                                   )
-                                                                : Center(
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
-                                                                      maxLines:
-                                                                          1,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: TextStyle(
-                                                                          height:
-                                                                              2,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf:
-                                                                                  true),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  )),
+                                                                : widget.selectedValue ==
+                                                                            "كل المواقع" ||
+                                                                        Provider.of<SiteData>(context, listen: false).dropDownShiftIndex ==
+                                                                            0
+                                                                    ? Center(
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
+                                                                          maxLines:
+                                                                              1,
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              height: 2,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                              fontWeight: FontWeight.w700),
+                                                                        ),
+                                                                      )
+                                                                    : Center(
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
+                                                                          maxLines:
+                                                                              1,
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              height: 2,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                              fontWeight: FontWeight.w700),
+                                                                        ),
+                                                                      )),
                                               ],
                                             );
                                           default:

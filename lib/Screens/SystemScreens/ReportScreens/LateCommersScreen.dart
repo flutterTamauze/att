@@ -180,23 +180,21 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                       context,
                                                                   builder:
                                                                       (context) {
-                                                                    return FadeInUp(
+                                                                    return Dialog(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10.0)),
                                                                       child:
-                                                                          Dialog(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10.0)),
+                                                                          Container(
+                                                                        height:
+                                                                            300.h,
+                                                                        width: double
+                                                                            .infinity,
                                                                         child:
-                                                                            Container(
-                                                                          height:
-                                                                              300.h,
-                                                                          width:
-                                                                              double.infinity,
-                                                                          child:
-                                                                              FadeInRight(
-                                                                            child:
-                                                                                Padding(padding: const EdgeInsets.all(8.0), child: LateReportPieChart()),
-                                                                          ),
+                                                                            FadeInRight(
+                                                                          child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: ZoomIn(child: LateReportPieChart())),
                                                                         ),
                                                                       ),
                                                                     );

@@ -111,15 +111,15 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                         -1);
                                     print(
                                         "got company members for super admin");
-                                    await siteProv
-                                        .getSitesByCompanyId(
-                                      comProvider.com.id,
-                                      userProvider.user.userToken,
-                                      context,
-                                    )
-                                        .then((value) {
-                                      print("got sites for super admin");
-                                    });
+                                    // await siteProv
+                                    //     .getSitesByCompanyId(
+                                    //   comProvider.com.id,
+                                    //   userProvider.user.userToken,
+                                    //   context,
+                                    // )
+                                    //     .then((value) {
+                                    //   print("got sites for super admin");
+                                    // });
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

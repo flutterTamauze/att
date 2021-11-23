@@ -29,9 +29,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 21);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 22);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 21);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 22);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -95,6 +95,18 @@ successfulSaved() {
       backgroundColor: Colors.green,
       textColor: Colors.white,
       fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+}
+
+noInternetConnectionToast() {
+  Fluttertoast.showToast(
+    msg: "لا يوجد اتصال بالأنترنت",
+    gravity: ToastGravity.CENTER,
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
+    textColor: Colors.black,
+    fontSize: 16.0,
+  );
 }
 
 unSuccessfullDelete() {

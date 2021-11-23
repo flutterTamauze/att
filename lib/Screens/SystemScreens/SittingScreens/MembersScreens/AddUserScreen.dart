@@ -130,16 +130,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   var phoneLoading = false;
-  getSiteIdByShiftId(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftId == list[i].shiftId) {
-        return list[i].siteID;
-      }
-    }
-    return -1;
-  }
 
   @override
   void dispose() {

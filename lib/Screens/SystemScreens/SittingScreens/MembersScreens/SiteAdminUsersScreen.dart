@@ -465,7 +465,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
       Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
-          -1,
+          Provider.of<UserData>(context, listen: false).user.userSiteId,
           companyId,
           context);
     } else {

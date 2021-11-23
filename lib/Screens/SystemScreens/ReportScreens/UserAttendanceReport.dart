@@ -268,26 +268,27 @@ class _UserAttendanceReportScreenState
                                                           showDialog(
                                                             context: context,
                                                             builder: (context) {
-                                                              return FadeInUp(
-                                                                child: Dialog(
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10.0)),
+                                                              return Dialog(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10.0)),
+                                                                child:
+                                                                    Container(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  height: 300.h,
+                                                                  width: double
+                                                                      .infinity,
                                                                   child:
-                                                                      Container(
-                                                                    height:
-                                                                        300.h,
-                                                                    width: double
-                                                                        .infinity,
-                                                                    child:
-                                                                        FadeInRight(
-                                                                      child: Padding(
-                                                                          padding: const EdgeInsets.all(
-                                                                              8.0),
-                                                                          child:
-                                                                              UserReportPieChart()),
-                                                                    ),
+                                                                      FadeInRight(
+                                                                    child: Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(
+                                                                                8.0),
+                                                                        child: ZoomIn(
+                                                                            child:
+                                                                                UserReportPieChart())),
                                                                   ),
                                                                 ),
                                                               );
@@ -533,8 +534,10 @@ class _UserAttendanceReportScreenState
                                                           userDataProvider.user
                                                                       .userType ==
                                                                   2
-                                                              ? -1
-                                                              : siteId,
+                                                              ? userDataProvider
+                                                                  .user
+                                                                  .userSiteId
+                                                              : -1,
                                                           Provider.of<CompanyData>(
                                                                   context,
                                                                   listen: false)

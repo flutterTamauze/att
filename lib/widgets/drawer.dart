@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/AboutAppScreen.dart';
@@ -29,6 +30,8 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../constants.dart';
 
 class DrawerI extends StatelessWidget {
   var connectivityResult;
@@ -169,7 +172,14 @@ class DrawerI extends StatelessWidget {
                                             context,
                                             listen: false)
                                         .getPendingCompanyPermessions(
-                                            comId, token);
+                                            comId, token)
+                                        .then((value) {
+                                      if (value == "noInternet") {
+                                        noInternetConnectionToast();
+                                        Navigator.pop(context);
+                                      }
+                                    });
+
                                     await Provider.of<UserHolidaysData>(context,
                                             listen: false)
                                         .getPendingCompanyHolidays(

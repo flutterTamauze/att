@@ -33,6 +33,9 @@ class AttendProof {
         return "fail present";
       } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
         return "fail shift";
+      } else if (decodedResponse["message"] ==
+          "Failed : You have exceeded proofs limits!") {
+        return "limit exceed";
       }
     } else {
       return "fail";

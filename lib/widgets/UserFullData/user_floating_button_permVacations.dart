@@ -40,7 +40,6 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                 var permessionsList = Provider.of<UserPermessionsData>(
                   context,
                 ).singleUserPermessions;
-                print(provList[0].holidayType);
                 return FlipInY(
                   child: Dialog(
                     child: Stack(

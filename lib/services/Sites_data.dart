@@ -90,7 +90,7 @@ class SiteData with ChangeNotifier {
   setDropDownShift(int newValue) {
     print("new index is $newValue");
     dropDownShiftIndex = newValue;
-    notifyListeners();
+    // notifyListeners();
   }
 
   List<String> dropDownSitesStrings = [];
