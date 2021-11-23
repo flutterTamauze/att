@@ -27,7 +27,7 @@ class DownloadService {
       if (showApk) {
         showApk = false;
 
-        if (kAndroidReleaseDate.isAfter(
+        if (kAndroidReleaseDate.isBefore(
             Provider.of<UserData>(context, listen: false).user.apkDate)) {
           Future.delayed(Duration.zero, () {
             showDialog(
