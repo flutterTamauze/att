@@ -59,11 +59,6 @@ class DrawerI extends StatelessWidget {
           children: [
             Column(
               children: [
-                Platform.isIOS
-                    ? Container(
-                        height: 40.h,
-                      )
-                    : Container(),
                 Card(
                   color: Colors.black,
                   elevation: 1,
@@ -87,10 +82,11 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                Text(
+                AutoSizeText(
                   "V3.0.0",
                   style: TextStyle(
                       color: Colors.orange[600],
+                      fontSize: ScreenUtil().setSp(15),
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.italic),
                 ),
@@ -372,7 +368,6 @@ class MenuItem extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       child: SizedBox(
-                        height: 22,
                         child: Padding(
                           padding: EdgeInsets.only(top: 5.h),
                           child: AutoSizeText(
@@ -381,7 +376,7 @@ class MenuItem extends StatelessWidget {
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
+                                  .setSp(15, allowFontScalingSelf: true),
                               color: Colors.white,
                             ),
                           ),

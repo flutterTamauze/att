@@ -1,22 +1,22 @@
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
+import 'dart:async';
 
-// import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
-// import 'package:qr_users/constants.dart';
+import 'package:qr_users/NetworkApi/ApiStatus.dart';
+import 'package:qr_users/NetworkApi/Network.dart';
+import 'package:qr_users/enums/request_type.dart';
 
-// class SuperCompaniesRepo {
-//   Future<List<SuperCompaniesModel>> getSuperCompanies(String userToken,String adminId) async {
-//     var response = await http.get(Uri.parse("$baseURL/api/Users/GetCompaniesforSuperAdmin/"), headers: {
-//       'Authorization': "Bearer $userToken",
-//       "Accept": "application/json"
-//     });
-//     if (response.statusCode == 200) {
-//       List<SuperCompaniesModel> superComList = [];
-//       var obJson = jsonDecode(response.body)['data'] as List;
-//       superComList =
-//           obJson.map((json) => SuperCompaniesModel.fromJson(json)).toList();
-//       return superComList;
-//     }
-//     return [];
-//   }
-// }
+import '../../../constants.dart';
+
+class SuperCompaniesChartRepo {
+  Future<Object> getSuperCharts(String token, int companyID) async {
+    try {
+      return NetworkApi().request(
+        "$baseURL/api/Reports/GetDailyReport_BIO?companyId=$companyID",
+        RequestType.GET,
+        {'Content-type': 'application/json', 'Authorization': "Bearer $token"},
+      );
+    } catch (e) {
+      print(e);
+    }
+    return Faliure();
+  }
+}

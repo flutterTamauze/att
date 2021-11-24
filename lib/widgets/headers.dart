@@ -134,7 +134,7 @@ class Header extends StatelessWidget {
                         },
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 35.w,
+                          radius: MediaQuery.of(context).size.height / 25,
                           child: Container(
                             height: 75.h,
                             width: 70.w,
@@ -143,10 +143,6 @@ class Header extends StatelessWidget {
                                 width: 1,
                                 color: Color(0xffFF7E00),
                               ),
-                              // image: DecorationImage(
-                              //   image: headerImage,
-                              //   fit: BoxFit.fill,
-                              // ),
                               shape: BoxShape.circle,
                             ),
                             child: ClipRRect(
@@ -236,7 +232,7 @@ class Header extends StatelessWidget {
             )),
         Positioned(
           top: getkDeviceHeightFactor(context, 50),
-          left: 40,
+          left: 40.w,
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -250,7 +246,8 @@ class Header extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius:
+                    BorderRadius.circular(MediaQuery.of(context).size.height),
                 child: Container(
                   decoration: BoxDecoration(color: Colors.black),
                   child: CachedNetworkImage(
@@ -273,8 +270,8 @@ class Header extends StatelessWidget {
                   ),
                 )),
           ),
-          width: getkDeviceWidthFactor(context, 60),
-          height: getkDeviceWidthFactor(context, 60),
+          width: MediaQuery.of(context).size.height / 12,
+          height: MediaQuery.of(context).size.height / 12,
         ),
         Positioned(
           top: 5,
@@ -306,7 +303,7 @@ class Header extends StatelessWidget {
                     : EdgeInsets.only(top: 0),
                 child: Icon(
                   nav ? Icons.menu : Icons.keyboard_arrow_left,
-                  size: nav ? 23 : 40,
+                  size: nav ? 23.w : 40.w,
                   color: Colors.orange,
                 ),
               ),

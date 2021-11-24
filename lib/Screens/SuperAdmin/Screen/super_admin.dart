@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/NetworkApi/ApiStatus.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
 import 'package:qr_users/Screens/SuperAdmin/widgets/SuperAdminTile.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
@@ -103,28 +105,36 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                         .getAllSitesAndShifts(
                                             comProvider.com.id,
                                             userData.user.userToken);
-                                    await memProv.getAllCompanyMember(
-                                        0,
-                                        comProvider.com.id,
-                                        userProvider.user.userToken,
-                                        context,
-                                        -1);
-                                    print(
-                                        "got company members for super admin");
-                                    // await siteProv
-                                    //     .getSitesByCompanyId(
-                                    //   comProvider.com.id,
-                                    //   userProvider.user.userToken,
-                                    //   context,
-                                    // )
-                                    //     .then((value) {
-                                    //   print("got sites for super admin");
-                                    // });
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => NavScreenTwo(0),
-                                        ));
+                                    // await memProv.getAllCompanyMember(
+                                    //     0,
+                                    //     comProvider.com.id,
+                                    //     userProvider.user.userToken,
+                                    //     context,
+                                    //     -1);
+
+                                    // print(
+                                    //     "got company members for super admin");
+                                    var chartResponse =
+                                        await userData.getSuperCompanyChart(
+                                            userData.user.userToken,
+                                            comProvider.com.id);
+                                    print(chartResponse);
+                                    if (chartResponse is Faliure) {
+                                      Navigator.pop(context);
+                                      if (chartResponse.code == NO_INTERNET) {
+                                        return noInternetConnectionToast();
+                                      } else {
+                                        return errorToast();
+                                      }
+                                    } else {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SuperCompanyPieChart(),
+                                          ));
+                                    }
+                                    //here we add the PIE CHART SCREEN//
                                   });
                             }))
                   ],

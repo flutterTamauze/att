@@ -20,6 +20,9 @@ import 'package:trust_location/trust_location.dart';
 class ShiftApi with ChangeNotifier {
   List<Shift> shiftsListProvider = [];
   Position currentPosition;
+  double currentSitePositionLat;
+  double currentSitePositionLong;
+
   Location currentHuaweiLocation;
   DateTime currentBackPressTime, currentCountryDate;
   bool isOnShift = true;
@@ -214,6 +217,7 @@ class ShiftApi with ChangeNotifier {
             jsonDecode(response.body)['data'][0]["shiftEntime"]
           ];
           siteName = jsonDecode(response.body)['data'][2]["siteName"];
+
           currentShiftEndTime = [
             jsonDecode(response.body)['data'][1]["shiftSttime"],
             jsonDecode(response.body)['data'][1]["shiftEntime"]
@@ -230,6 +234,11 @@ class ShiftApi with ChangeNotifier {
           return true;
         } else {
           print("isNotInLocation");
+
+          currentSitePositionLat =
+              jsonDecode(response.body)["data"][2]["latitude"] as double;
+          currentSitePositionLong =
+              jsonDecode(response.body)["data"][2]["longitude"] as double;
           siteName = jsonDecode(response.body)['data'][2]["siteName"];
           isOnLocation = false;
           isLocationServiceOn = 1;

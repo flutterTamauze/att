@@ -275,11 +275,14 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: ShowSateliteMap(
-                                            shiftApiConsumer
-                                                .currentPosition.latitude,
-                                            shiftApiConsumer
-                                                .currentPosition.longitude,
-                                          ),
+                                              shiftApiConsumer
+                                                  .currentPosition.latitude,
+                                              shiftApiConsumer
+                                                  .currentPosition.longitude,
+                                              shiftApiConsumer
+                                                  .currentSitePositionLat,
+                                              shiftApiConsumer
+                                                  .currentSitePositionLong),
                                         ),
                                       ),
                                     ],

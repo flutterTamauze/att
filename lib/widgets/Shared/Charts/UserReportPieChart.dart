@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
@@ -25,11 +27,11 @@ class UserReportPieChartState extends State {
               aspectRatio: 1,
               child: Column(
                 children: [
-                  Text(
+                  AutoSizeText(
                     "تحليل بيانات الموظف",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: ScreenUtil().setSp(16),
                         color: Colors.orange[600]),
                   ),
                   Expanded(

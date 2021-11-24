@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowLocationMap extends StatefulWidget {
   final double lat;
@@ -96,11 +99,9 @@ class _ShowLocationMapState extends State<ShowLocationMap> {
 class ShowSateliteMap extends StatefulWidget {
   final double lat;
   final double long;
-
-  ShowSateliteMap(
-    this.lat,
-    this.long,
-  );
+  final double siteLat;
+  final double siteLong;
+  ShowSateliteMap(this.lat, this.long, this.siteLat, this.siteLong);
 
   @override
   _ShowSateliteMapState createState() => _ShowSateliteMapState();
@@ -109,18 +110,32 @@ class ShowSateliteMap extends StatefulWidget {
 class _ShowSateliteMapState extends State<ShowSateliteMap> {
   GoogleMapController mapController;
   List<Marker> allMarkers = [];
-
+  BitmapDescriptor customIcon;
   @override
   void initState() {
     super.initState();
-
-    addMarker();
+    print(widget.siteLat);
+    print(widget.siteLong);
+// make sure to initialize before map loading
+    BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(12, 12)),
+      'resources/marker.png',
+    ).then((d) {
+      customIcon = d;
+    }).whenComplete(() => addMarker());
   }
 
   addMarker() {
     setState(() {
       allMarkers.add(Marker(
           markerId: MarkerId('myMarker'),
+          onTap: () {
+            print('Marker Tapped');
+          },
+          position: LatLng(widget.siteLat, widget.siteLong)));
+      allMarkers.add(Marker(
+          markerId: MarkerId('userMarker'),
+          icon: customIcon,
           onTap: () {
             print('Marker Tapped');
           },
@@ -137,13 +152,29 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
         bottomRight: Radius.circular(15),
         bottomLeft: Radius.circular(15),
       ),
-      child: GoogleMap(
-        initialCameraPosition:
-            CameraPosition(target: LatLng(widget.lat, widget.long), zoom: 16.0),
-        onMapCreated: onMapCreated,
-        buildingsEnabled: true,
-        markers: Set.from(allMarkers),
-        mapType: MapType.hybrid,
+      child: Stack(
+        children: [
+          GoogleMap(
+            mapToolbarEnabled: true,
+            circles: Set.from(
+              [
+                Circle(
+                  circleId: CircleId('currentCircle'),
+                  center: LatLng(widget.siteLat, widget.siteLong),
+                  radius: 100,
+                  fillColor: Colors.blue.shade100.withOpacity(0.5),
+                  strokeColor: Colors.blue.shade100.withOpacity(0.1),
+                ),
+              ],
+            ),
+            initialCameraPosition: CameraPosition(
+                target: LatLng(widget.siteLat, widget.siteLong), zoom: 15.0),
+            onMapCreated: onMapCreated,
+            buildingsEnabled: true,
+            markers: Set.from(allMarkers),
+            mapType: MapType.hybrid,
+          ),
+        ],
       ),
     );
   }

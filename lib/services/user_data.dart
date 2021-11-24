@@ -24,6 +24,7 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/NetworkApi/ApiStatus.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
+import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesRepo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -41,6 +42,7 @@ class UserData with ChangeNotifier {
 // var companyDataArname="";
   String siteName;
   List<SuperCompaniesModel> superCompaniesList = [];
+  SuperCompaniesChartModel superCompaniesChartModel;
   String hawawiToken = "";
   Position _currentPosition;
   Location _currentHawawiLocation;
@@ -427,6 +429,32 @@ class UserData with ChangeNotifier {
     }
 
     return msg;
+  }
+
+  Future getSuperCompanyChart(String token, int comID) async {
+    if (await isConnectedToInternet("www.google.com")) {
+      var response =
+          await SuperCompaniesChartRepo().getSuperCharts(token, comID);
+
+      if (response is Faliure) {
+        return response.code;
+      } else {
+        final decodedRes = json.decode(response);
+        if (decodedRes["message"] == "Success") {
+          superCompaniesChartModel =
+              SuperCompaniesChartModel.fromJson(decodedRes["data"]);
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] == "Success : No data") {
+          return "No data";
+        } else {
+          return "fail";
+        }
+      }
+    }
+    {
+      return "noInternet";
+    }
   }
 
   Future<String> uploadImage(File _image, String id) async {
