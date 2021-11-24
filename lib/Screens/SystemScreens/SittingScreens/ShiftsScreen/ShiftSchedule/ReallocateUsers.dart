@@ -104,23 +104,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     return currentSite[0].id;
   }
 
-  String getSiteNameById(
-    int id,
-  ) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    print(list.length);
-
-    List<Site> currentSite = list.where((element) => element.id == id).toList();
-    return currentSite[0].name;
-  }
-
-  int getsiteIDbyShiftId(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    List<Shift> currentSite =
-        list.where((element) => element.shiftId == shiftId).toList();
-    return currentSite[0].siteID;
-  }
-
   @override
   Widget build(BuildContext context) {
     var selectedVal;
@@ -131,7 +114,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     } else {
       selectedVal = "";
     }
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list = Provider.of<SiteData>(context, listen: true).sitesList;
     var prov = Provider.of<SiteData>(context, listen: false);
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var scheduleList =
@@ -143,6 +126,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
+          for (int i = 0; i < list.length; i++) {
+            print(list[i].name);
+          }
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -446,7 +432,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                       ),
                                                                                                       value: value.name,
                                                                                                     ))
-                                                                                                .where((element) => element.value != "كل المواقع")
                                                                                                 .toList(),
                                                                                             onChanged: (v) async {
                                                                                               print(v);
@@ -665,8 +650,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   widget.member.shiftId,
                                                   _fromDate,
                                                   _toDate,
-                                                  getsiteIDbyShiftId(
-                                                      widget.member.shiftId),
+                                                  widget.member.siteId,
                                                   scheduleList.id);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(

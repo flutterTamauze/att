@@ -287,22 +287,6 @@ class _AttendProofReportState extends State<AttendProofReport> {
                       ),
                     ],
                   ),
-                  Positioned(
-                    left: 5.0.w,
-                    top: 5.0.h,
-                    child: Container(
-                      width: 50.w,
-                      height: 50.h,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => NavScreenTwo(2)),
-                              (Route<dynamic> route) => false);
-                        },
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

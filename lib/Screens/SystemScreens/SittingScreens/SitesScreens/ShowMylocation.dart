@@ -92,3 +92,63 @@ class _ShowLocationMapState extends State<ShowLocationMap> {
     mapController = controller;
   }
 }
+
+class ShowSateliteMap extends StatefulWidget {
+  final double lat;
+  final double long;
+
+  ShowSateliteMap(
+    this.lat,
+    this.long,
+  );
+
+  @override
+  _ShowSateliteMapState createState() => _ShowSateliteMapState();
+}
+
+class _ShowSateliteMapState extends State<ShowSateliteMap> {
+  GoogleMapController mapController;
+  List<Marker> allMarkers = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    addMarker();
+  }
+
+  addMarker() {
+    setState(() {
+      allMarkers.add(Marker(
+          markerId: MarkerId('myMarker'),
+          onTap: () {
+            print('Marker Tapped');
+          },
+          position: LatLng(widget.lat, widget.long)));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(15),
+        topRight: Radius.circular(15),
+        bottomRight: Radius.circular(15),
+        bottomLeft: Radius.circular(15),
+      ),
+      child: GoogleMap(
+        initialCameraPosition:
+            CameraPosition(target: LatLng(widget.lat, widget.long), zoom: 16.0),
+        onMapCreated: onMapCreated,
+        buildingsEnabled: true,
+        markers: Set.from(allMarkers),
+        mapType: MapType.hybrid,
+      ),
+    );
+  }
+
+  void onMapCreated(controller) {
+    mapController = controller;
+  }
+}

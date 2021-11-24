@@ -139,7 +139,8 @@ class _AdminPanelState extends State<AdminPanel> {
                               subTitle: "تقرير إثباتات الحضور",
                               icon: Icons.check,
                               onTap: () {
-                                Navigator.of(context).push(
+                                Navigator.push(
+                                  context,
                                   new MaterialPageRoute(
                                     builder: (context) => AttendProofReport(),
                                   ),

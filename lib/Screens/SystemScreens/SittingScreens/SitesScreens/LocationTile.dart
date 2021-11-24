@@ -59,7 +59,10 @@ class _LocationTileState extends State<LocationTile> {
                           children: [
                             Expanded(
                                 child: ShowLocationMap(
-                                    site.lat, site.long, site.name)),
+                              site.lat,
+                              site.long,
+                              site.name,
+                            )),
                           ],
                         ),
                       ),

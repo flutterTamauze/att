@@ -650,7 +650,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // print()
-                                            log(value);
                                             siteId = getSiteId(value);
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
@@ -665,11 +664,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             print(siteId);
                                             print(value);
                                           },
-                                          selectedvalue:
-                                              Provider.of<SiteShiftsData>(
-                                                      context)
-                                                  .siteShiftList[siteId]
-                                                  .siteName,
+                                          selectedvalue: Provider.of<
+                                                  SiteShiftsData>(context)
+                                              .siteShiftList[
+                                                  siteId == 0 ? 0 : siteId - 1]
+                                              .siteName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
