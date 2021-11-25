@@ -15,6 +15,12 @@ class UserDataField extends StatelessWidget {
   UserDataField({this.icon, this.text});
 
   Widget build(BuildContext context) {
+    var phone = {
+      Provider.of<MemberData>(context, listen: false)
+          .singleMember
+          .phoneNumber
+          .replaceAll("+", "")
+    };
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -64,7 +70,7 @@ class UserDataField extends StatelessWidget {
                   tooltip: "Open WhatsApp",
                   onPressed: () {
                     launch(
-                        "https://api.whatsapp.com/send?${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber.replaceAll("+", "")}=201112601113text=Write%20Your%20Message%20Here");
+                        "https://api.whatsapp.com/send?phone=${phone}text=Write%20Your%20Message%20Here");
                   },
                   color: Colors.green[600],
                 ),
