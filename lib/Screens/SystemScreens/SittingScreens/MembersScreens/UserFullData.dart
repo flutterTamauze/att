@@ -85,9 +85,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
 
   void initState() {
     super.initState();
-    // if (instance != null) {
-    //   instance.stop();
-    // }
+
     getSingleUserData();
     levelClock = 300;
 

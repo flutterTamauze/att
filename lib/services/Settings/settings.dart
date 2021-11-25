@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -101,7 +102,7 @@ class Settings {
   }
 
   int getsiteIndex(BuildContext context, String sitename) {
-    var list = Provider.of<SiteData>(context, listen: false).dropDownSitesList;
+    var list = Provider.of<SiteShiftsData>(context, listen: false).sites;
     int index = list.length;
     for (int i = 0; i < index; i++) {
       if (sitename == list[i].name) {

@@ -458,27 +458,48 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       sheet.getRangeByName('F${lastIndex + 2}').cellStyle.bold = true;
 
       final Range range7 =
-          sheet.getRangeByName('C${lastIndex + 1}:D${lastIndex + 1}');
+          sheet.getRangeByName('D${lastIndex + 1}:E${lastIndex + 1}');
 
       range7.merge();
       range7.cellStyle.hAlign = HAlignType.right;
 
-      sheet.getRangeByName('C${lastIndex + 1}').setText('نسبة الغياب');
-      sheet.getRangeByName('C${lastIndex + 1}').cellStyle.fontSize = 12;
-      sheet.getRangeByName('C${lastIndex + 1}').cellStyle.bold = true;
+      sheet.getRangeByName('D${lastIndex + 1}').setText('نسبة الغياب');
+      sheet.getRangeByName('D${lastIndex + 1}').cellStyle.fontSize = 12;
+      sheet.getRangeByName('D${lastIndex + 1}').cellStyle.bold = true;
 
       final Range range9 =
-          sheet.getRangeByName('C${lastIndex + 2}:D${lastIndex + 2}');
+          sheet.getRangeByName('D${lastIndex + 2}:E${lastIndex + 2}');
 
       range9.merge();
       range9.cellStyle.hAlign = HAlignType.right;
 
       sheet
-          .getRangeByName('C${lastIndex + 2}')
+          .getRangeByName('D${lastIndex + 2}')
           .setText(reportProvider.absentRatio);
-      sheet.getRangeByName('C${lastIndex + 2}').cellStyle.fontSize = 12;
-      sheet.getRangeByName('C${lastIndex + 2}').cellStyle.bold = true;
+      sheet.getRangeByName('D${lastIndex + 2}').cellStyle.fontSize = 12;
+      sheet.getRangeByName('D${lastIndex + 2}').cellStyle.bold = true;
 
+      final Range range11 =
+          sheet.getRangeByName('B${lastIndex + 1}:C${lastIndex + 1}');
+
+      range6.merge();
+      range6.cellStyle.hAlign = HAlignType.right;
+
+      sheet.getRangeByName('B${lastIndex + 1}').setText('اجمالى الخصومات');
+      sheet.getRangeByName('B${lastIndex + 1}').cellStyle.fontSize = 12;
+      sheet.getRangeByName('B${lastIndex + 1}').cellStyle.bold = true;
+
+      final Range range12 =
+          sheet.getRangeByName('B${lastIndex + 2}:C${lastIndex + 2}');
+
+      range8.merge();
+      range8.cellStyle.hAlign = HAlignType.right;
+
+      sheet
+          .getRangeByName('B${lastIndex + 2}')
+          .setText(reportProvider.totalDecutionForAllUsers.toString());
+      sheet.getRangeByName('B${lastIndex + 2}').cellStyle.fontSize = 12;
+      sheet.getRangeByName('B${lastIndex + 2}').cellStyle.bold = true;
       sheet.getRangeByIndex((lastIndex + 4), 1).text =
           'Copyright 2020 - 2025 Tamauze Digital Solutions . All rights reserved';
 

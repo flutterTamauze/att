@@ -114,7 +114,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     } else {
       selectedVal = "";
     }
-    var list = Provider.of<SiteData>(context, listen: true).sitesList;
+    var list = Provider.of<SiteShiftsData>(context, listen: true).siteShiftList;
     var prov = Provider.of<SiteData>(context, listen: false);
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var scheduleList =
@@ -127,7 +127,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     return GestureDetector(
         onTap: () {
           for (int i = 0; i < list.length; i++) {
-            print(list[i].name);
+            print(list[i].siteName);
           }
           FocusScope.of(context).unfocus();
         },
@@ -426,11 +426,11 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                         alignment: Alignment.topRight,
                                                                                                         height: 40.h,
                                                                                                         child: AutoSizeText(
-                                                                                                          value.name,
+                                                                                                          value.siteName,
                                                                                                           style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
                                                                                                         ),
                                                                                                       ),
-                                                                                                      value: value.name,
+                                                                                                      value: value.siteName,
                                                                                                     ))
                                                                                                 .toList(),
                                                                                             onChanged: (v) async {
@@ -441,7 +441,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                                                               // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
                                                                                               Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName, false);
-                                                                                              prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].id);
+                                                                                              prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].siteId);
 
                                                                                               prov.setSiteValue(v);
                                                                                               setState(() {

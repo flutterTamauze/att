@@ -29,7 +29,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class UserProperties extends StatefulWidget {
   final Member user;
   final int siteIndex;
-  UserProperties({this.user, this.siteIndex});
+  UserProperties({
+    this.user,
+    this.siteIndex,
+  });
 
   @override
   _UserPropertiesState createState() => _UserPropertiesState();
@@ -205,6 +208,8 @@ class _UserPropertiesState extends State<UserProperties> {
                               children: [
                                 Text(
                                   "السماح للمستخدم بالتسجيل بالبطاقة",
+                                  style: TextStyle(
+                                      fontSize: setResponsiveFontSize(13)),
                                 ),
                                 Container(
                                   width: 20.w,
@@ -250,6 +255,8 @@ class _UserPropertiesState extends State<UserProperties> {
                               children: [
                                 Text(
                                   "عدم الظهور في التقرير",
+                                  style: TextStyle(
+                                      fontSize: setResponsiveFontSize(13)),
                                 ),
                                 Container(
                                   width: 20.w,

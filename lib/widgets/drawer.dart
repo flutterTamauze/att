@@ -370,14 +370,17 @@ class MenuItem extends StatelessWidget {
                       child: SizedBox(
                         child: Padding(
                           padding: EdgeInsets.only(top: 5.h),
-                          child: AutoSizeText(
-                            title,
-                            maxLines: 1,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(15, allowFontScalingSelf: true),
-                              color: Colors.white,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: AutoSizeText(
+                              title,
+                              maxLines: 1,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(15, allowFontScalingSelf: true),
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

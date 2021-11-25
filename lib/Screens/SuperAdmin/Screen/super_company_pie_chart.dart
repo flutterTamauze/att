@@ -95,13 +95,61 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  width: 190.w,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25.w,
+                                            height: 25.h,
+                                            child: Center(
+                                              child: Text(
+                                                userData
+                                                    .superCompaniesChartModel
+                                                    .totalEmp
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blueAccent),
+                                              ),
+                                            ),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Colors.blueAccent)),
+                                          ),
+                                          Expanded(
+                                            child: Container(),
+                                          ),
+                                          AutoSizeText(
+                                            "القوة",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    setResponsiveFontSize(15),
+                                                color: Colors.blueAccent),
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Row(
                                 children: [
                                   SinglePieChartItem(
-                                    title: "الأجازة",
-                                    color: Colors.orange[600],
+                                    title: "الموجود",
+                                    color: Colors.green[600],
                                     count: userData
-                                        .superCompaniesChartModel.totalHolidays
+                                        .superCompaniesChartModel.totalAttend
                                         .toString(),
                                   ),
                                 ],
@@ -110,23 +158,13 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 height: 5,
                               ),
                               SinglePieChartItem(
-                                title: "الموجود",
-                                color: Colors.green[600],
+                                title: "الأجازة",
+                                color: Colors.orange[600],
                                 count: userData
-                                    .superCompaniesChartModel.totalAttend
+                                    .superCompaniesChartModel.totalHolidays
                                     .toString(),
                               ),
                               SizedBox(
-                                height: 5,
-                              ),
-                              SinglePieChartItem(
-                                title: "الباقى",
-                                color: Colors.red[600],
-                                count: userData
-                                    .superCompaniesChartModel.totalAbsent
-                                    .toString(),
-                              ),
-                              const SizedBox(
                                 height: 5,
                               ),
                               SinglePieChartItem(
@@ -135,6 +173,16 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                     .toString(),
                                 title: "المأموريات الخارجية",
                                 color: Colors.purple[600],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SinglePieChartItem(
+                                title: "الباقى",
+                                color: Colors.red[600],
+                                count: userData
+                                    .superCompaniesChartModel.totalAbsent
+                                    .toString(),
                               ),
                             ],
                           ),
@@ -177,48 +225,6 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                               ),
                               AutoSizeText(
                                 "إذن تأخير عن الحضور",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 180.w,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 20.w,
-                                height: 20.h,
-                                child: Center(
-                                  child: Text(
-                                    userData.superCompaniesChartModel.totalEmp
-                                        .toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        width: 1, color: Colors.black)),
-                              ),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              AutoSizeText(
-                                "القوة",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                 ),

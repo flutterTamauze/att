@@ -156,6 +156,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         body: Stack(
           children: [
             GestureDetector(
+              onTap: () {
+                print(Provider.of<UserData>(context, listen: false)
+                    .user
+                    .userImage);
+              },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();

@@ -63,10 +63,12 @@ class _AttendProofReportState extends State<AttendProofReport> {
 
   getReportData(date) async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-
+    int apiId = userProvider.user.userType == 3
+        ? userProvider.user.id
+        : Provider.of<CompanyData>(context, listen: false).com.id;
     await Provider.of<ReportsData>(context, listen: false)
-        .getDailyAttendProofReport(
-            userProvider.user.userToken, userProvider.user.id, date, context);
+        .getDailyAttendProofReport(userProvider.user.userToken, apiId, date,
+            context, userProvider.user.userType);
   }
 
   final SlidableController slidableController = SlidableController();

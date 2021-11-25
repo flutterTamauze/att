@@ -130,7 +130,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
       allMarkers.add(Marker(
           markerId: MarkerId('myMarker'),
           onTap: () {
-            print('Marker Tapped');
+            launch("google.navigation:q=${widget.siteLat},${widget.siteLong}");
           },
           position: LatLng(widget.siteLat, widget.siteLong)));
       allMarkers.add(Marker(

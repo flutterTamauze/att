@@ -50,7 +50,6 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   @override
   void dispose() {
     super.dispose();
-    _timer.cancel();
   }
 
   @override

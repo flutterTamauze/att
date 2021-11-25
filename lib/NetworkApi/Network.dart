@@ -16,7 +16,7 @@ class NetworkApi {
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
       [body]) async {
-    http.Response res;
+    var res;
     try {
       DateTime preTime = DateTime.now();
       switch (requestType) {
@@ -34,9 +34,10 @@ class NetworkApi {
           break;
       }
       DateTime postTime = DateTime.now();
-      log("Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
-      print(res.statusCode);
+      print(
+          "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
       if (res.statusCode == 200) {
+        print("not faliure");
         return res.body;
       } else if (res.statusCode == 400 ||
           res.statusCode == 500 ||

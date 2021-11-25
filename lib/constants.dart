@@ -66,6 +66,9 @@ const orangeDivider = Divider(
   color: Colors.orange,
 );
 int kBeforeStartShift = 100;
+setResponsiveFontSize(size) {
+  return ScreenUtil().setSp(size);
+}
 
 successfullDelete() {
   Fluttertoast.showToast(

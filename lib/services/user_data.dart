@@ -439,6 +439,7 @@ class UserData with ChangeNotifier {
       if (response is Faliure) {
         return response.code;
       } else {
+        print(response);
         final decodedRes = json.decode(response);
         if (decodedRes["message"] == "Success") {
           superCompaniesChartModel =

@@ -120,6 +120,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                             comProvider.com.id);
                                     print(chartResponse);
                                     if (chartResponse is Faliure) {
+                                      print("faliure occured");
                                       Navigator.pop(context);
                                       if (chartResponse.code == NO_INTERNET) {
                                         return noInternetConnectionToast();
