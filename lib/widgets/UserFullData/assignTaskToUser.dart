@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_users/constants.dart';
 
 class AssignTaskToUser extends StatelessWidget {
   final String taskName;
@@ -25,7 +26,8 @@ class AssignTaskToUser extends StatelessWidget {
             children: [
               Text(
                 taskName,
-                style: TextStyle(height: 1.5.h),
+                style: TextStyle(
+                    height: 1.5.h, fontSize: setResponsiveFontSize(15)),
               ),
               Container(
                 width: 25.w,

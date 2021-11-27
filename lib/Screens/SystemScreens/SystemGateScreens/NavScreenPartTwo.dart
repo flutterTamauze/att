@@ -183,7 +183,6 @@ class _NavScreenTwoState extends State<NavScreenTwo>
             endDrawer: NotificationItem(),
             bottomNavigationBar: CurvedNavigationBar(
               color: Colors.black,
-              height: 60.h,
               index: current,
               backgroundColor: Colors.white,
               onTap: (value) {

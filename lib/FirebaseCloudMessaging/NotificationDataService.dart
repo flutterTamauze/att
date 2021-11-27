@@ -138,7 +138,6 @@ class NotificationDataService with ChangeNotifier {
       // NotificationDataService dataService = NotificationDataService();
       // dataService.showAttendanceCheckDialog(context);
       String data = _onMessageReceived.data;
-      log(data);
 
       var decodedResponse = json.decode(data);
       print(decodedResponse["pushbody"]);

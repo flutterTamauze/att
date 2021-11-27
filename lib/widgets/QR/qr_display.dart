@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -49,7 +50,6 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   @override
   void dispose() {
     super.dispose();
-    _timer.cancel();
   }
 
   @override
@@ -256,7 +256,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                           width: 120.w,
                                           height: 120.h),
                                       Container(
-                                        height: 100,
+                                        height: 100.h,
                                         child: AutoSizeText(
                                           "برجاء التواجد بالموقع المخصص لك\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
                                           textAlign: TextAlign.center,
@@ -268,12 +268,28 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                   allowFontScalingSelf: true)),
                                         ),
                                       ),
+                                      Container(
+                                        height: 350.h,
+                                        width: double.infinity.w,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: ShowSateliteMap(
+                                              shiftApiConsumer
+                                                  .currentPosition.latitude,
+                                              shiftApiConsumer
+                                                  .currentPosition.longitude,
+                                              shiftApiConsumer
+                                                  .currentSitePositionLat,
+                                              shiftApiConsumer
+                                                  .currentSitePositionLong),
+                                        ),
+                                      ),
                                     ],
                                   )
                             : Column(
                                 children: [
                                   Container(
-                                    height: 100,
+                                    height: 100.h,
                                     child: AutoSizeText(
                                       "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
                                       textAlign: TextAlign.center,

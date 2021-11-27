@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -89,6 +90,7 @@ class _SitesScreenState extends State<SitesScreen> {
     );
   }
 
+  final SlidableController slidableController = SlidableController();
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
@@ -171,6 +173,8 @@ class _SitesScreenState extends State<SitesScreen> {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return LocationTile(
+                                              slidableController:
+                                                  slidableController,
                                               index: index,
                                               site: siteData.sitesList[index],
                                               title: siteData
@@ -209,8 +213,8 @@ class _SitesScreenState extends State<SitesScreen> {
                                                                     context);
                                                             if (msg ==
                                                                 "Success") {
-                                                              Navigator.pop(
-                                                                  context);
+                                                              // Navigator.pop(
+                                                              //     context);
                                                               successfullDelete();
                                                             } else if (msg ==
                                                                 "hasData") {

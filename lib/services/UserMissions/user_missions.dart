@@ -75,38 +75,42 @@ class MissionsData with ChangeNotifier {
       1,
     ).toIso8601String();
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
-    var response = await http.get(
-        Uri.parse(
-            "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
 
-    var decodedResp = json.decode(response.body);
-    if (decodedResp["message"] == "Success") {
-      var missionsObj =
-          jsonDecode(response.body)['data']["ExternalMissions"] as List;
-      var internalObj =
-          jsonDecode(response.body)['data']["InternalMissions"] as List;
+      var decodedResp = json.decode(response.body);
+      if (decodedResp["message"] == "Success") {
+        var missionsObj =
+            jsonDecode(response.body)['data']["ExternalMissions"] as List;
+        var internalObj =
+            jsonDecode(response.body)['data']["InternalMissions"] as List;
 
-      List<CompanyMissions> externalMissions =
-          missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();
-      List<CompanyMissions> internalMissions =
-          internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
-      singleUserMissionsList =
-          [...externalMissions, ...internalMissions].toSet().toList();
-      if (singleUserMissionsList.length > 0) {
-        for (int i = 0; i < singleUserMissionsList.length; i++) {
-          if (singleUserMissionsList[i].typeId == 4) {
-            externalMissionsCount++;
-          } else {
-            internalMissionsCount++;
+        List<CompanyMissions> externalMissions =
+            missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();
+        List<CompanyMissions> internalMissions =
+            internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
+        singleUserMissionsList =
+            [...externalMissions, ...internalMissions].toSet().toList();
+        if (singleUserMissionsList.length > 0) {
+          for (int i = 0; i < singleUserMissionsList.length; i++) {
+            if (singleUserMissionsList[i].typeId == 4) {
+              externalMissionsCount++;
+            } else {
+              internalMissionsCount++;
+            }
           }
         }
       }
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
-    notifyListeners();
   }
 
   addUserMission(

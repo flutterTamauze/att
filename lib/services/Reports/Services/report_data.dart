@@ -331,31 +331,41 @@ class ReportsData with ChangeNotifier {
     return jsonDecode(response.body)["message"];
   }
 
-  getDailyAttendProofReport(
-      String userToken, String userId, String date, BuildContext context) {
-    futureListener = getDailyAttendProofApi(userToken, userId, date, context);
+  getDailyAttendProofReport(String userToken, int apiId, String date,
+      BuildContext context, int userType) {
+    futureListener = getDailyAttendProofApi(
+      userToken,
+      apiId,
+      userType,
+      date,
+      context,
+    );
     return futureListener;
   }
 
-  Future<String> getDailyAttendProofApi(String userToken, String userId,
-      String date, BuildContext context) async {
+  Future<String> getDailyAttendProofApi(String userToken, int apiId,
+      int userType, String date, BuildContext context) async {
     if (await isConnectedToInternet()) {
       print(date);
+      String url;
+      if (userType == 3) {
+        url = "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$apiId/$date";
+      } else {
+        url =
+            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date";
+      }
+      print(url);
       final response = await http.get(
           Uri.parse(
-              "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$userId/$date"),
+            url,
+          ),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
       print(response.statusCode);
       print(response.body);
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getDailyAttendProofApi(userToken, userId, date, context);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
@@ -395,7 +405,7 @@ class ReportsData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
       print(response.statusCode);
-      print(response.body);
+      log(response.body);
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =

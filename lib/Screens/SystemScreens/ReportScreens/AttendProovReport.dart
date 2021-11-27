@@ -63,10 +63,12 @@ class _AttendProofReportState extends State<AttendProofReport> {
 
   getReportData(date) async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-
+    int apiId = userProvider.user.userType == 3
+        ? userProvider.user.id
+        : Provider.of<CompanyData>(context, listen: false).com.id;
     await Provider.of<ReportsData>(context, listen: false)
-        .getDailyAttendProofReport(
-            userProvider.user.userToken, userProvider.user.id, date, context);
+        .getDailyAttendProofReport(userProvider.user.userToken, apiId, date,
+            context, userProvider.user.userType);
   }
 
   final SlidableController slidableController = SlidableController();
@@ -160,7 +162,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                     0
                                                 ? CenterMessageText(
                                                     message:
-                                                        "لا يوجد اثياتات حضور فى هذا اليوم")
+                                                        "لا يوجد إثباتات حضور فى هذا اليوم")
                                                 : reportsData.isLoading
                                                     ? Center(
                                                         child:
@@ -209,25 +211,28 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                                         InkWell(
                                                                   child:
                                                                       Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10.h),
                                                                     padding:
                                                                         EdgeInsets
                                                                             .all(7),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                      color: Colors
-                                                                          .red,
-                                                                    ),
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10.h),
+                                                                    decoration: BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        border: Border.all(
+                                                                            width:
+                                                                                2,
+                                                                            color:
+                                                                                Colors.red)),
                                                                     child: Icon(
                                                                       Icons
                                                                           .delete,
                                                                       size: 18,
                                                                       color: Colors
-                                                                          .white,
+                                                                          .red,
                                                                     ),
                                                                   ),
                                                                   onTap: () {
@@ -283,22 +288,6 @@ class _AttendProofReportState extends State<AttendProofReport> {
                             }),
                       ),
                     ],
-                  ),
-                  Positioned(
-                    left: 5.0.w,
-                    top: 5.0.h,
-                    child: Container(
-                      width: 50.w,
-                      height: 50.h,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => NavScreenTwo(2)),
-                              (Route<dynamic> route) => false);
-                        },
-                      ),
-                    ),
                   ),
                 ],
               ),

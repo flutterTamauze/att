@@ -8,7 +8,7 @@ import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 
-import 'ApiStatus.dart';
+import 'NetworkFaliure.dart';
 
 class NetworkApi {
   final timeOutDuration = Duration(seconds: 20);
@@ -16,7 +16,7 @@ class NetworkApi {
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
       [body]) async {
-    http.Response res;
+    var res;
     try {
       DateTime preTime = DateTime.now();
       switch (requestType) {
@@ -34,9 +34,10 @@ class NetworkApi {
           break;
       }
       DateTime postTime = DateTime.now();
-      log("Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
-      print(res.statusCode);
+      print(
+          "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
       if (res.statusCode == 200) {
+        print("not faliure");
         return res.body;
       } else if (res.statusCode == 400 ||
           res.statusCode == 500 ||
@@ -60,6 +61,20 @@ class NetworkApi {
     return await http
         .get(Uri.parse(endPoint), headers: headers)
         .timeout(timeOutDuration);
+  }
+
+  Future<bool> isConnectedToInternet(String url) async {
+    try {
+      final result = await InternetAddress.lookup(url);
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        return true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      return false;
+    }
+    return false;
   }
 
   // ignore: unused_element

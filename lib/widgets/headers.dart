@@ -14,6 +14,8 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Shared/RoundBorderImage.dart';
+
 class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -132,47 +134,13 @@ class Header extends StatelessWidget {
                         onTap: () {
                           Scaffold.of(context).openEndDrawer();
                         },
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 35.w,
-                          child: Container(
-                            height: 75.h,
-                            width: 70.w,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color(0xffFF7E00),
-                              ),
-                              // image: DecorationImage(
-                              //   image: headerImage,
-                              //   fit: BoxFit.fill,
-                              // ),
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(75.0),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    Provider.of<UserData>(context, listen: true)
-                                        .user
-                                        .userImage,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Platform.isIOS
-                                    ? CupertinoActivityIndicator(
-                                        radius: 20,
-                                      )
-                                    : CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.orange),
-                                      ),
-                                errorWidget: (context, url, error) =>
-                                    Provider.of<UserData>(context, listen: true)
-                                        .changedWidget,
-                              ),
-                            ),
-                          ),
+                        child: RoundBorderedImage(
+                          radius: 25,
+                          width: 70,
+                          height: 75,
+                          imageUrl: Provider.of<UserData>(context, listen: true)
+                              .user
+                              .userImage,
                         ),
                       ),
                     ],
@@ -236,7 +204,7 @@ class Header extends StatelessWidget {
             )),
         Positioned(
           top: getkDeviceHeightFactor(context, 50),
-          left: 40,
+          left: 40.w,
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -250,7 +218,8 @@ class Header extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius:
+                    BorderRadius.circular(MediaQuery.of(context).size.height),
                 child: Container(
                   decoration: BoxDecoration(color: Colors.black),
                   child: CachedNetworkImage(
@@ -273,8 +242,8 @@ class Header extends StatelessWidget {
                   ),
                 )),
           ),
-          width: getkDeviceWidthFactor(context, 60),
-          height: getkDeviceWidthFactor(context, 60),
+          width: MediaQuery.of(context).size.height / 12,
+          height: MediaQuery.of(context).size.height / 12,
         ),
         Positioned(
           top: 5,
@@ -306,7 +275,7 @@ class Header extends StatelessWidget {
                     : EdgeInsets.only(top: 0),
                 child: Icon(
                   nav ? Icons.menu : Icons.keyboard_arrow_left,
-                  size: nav ? 23 : 40,
+                  size: nav ? 23.w : 40.w,
                   color: Colors.orange,
                 ),
               ),

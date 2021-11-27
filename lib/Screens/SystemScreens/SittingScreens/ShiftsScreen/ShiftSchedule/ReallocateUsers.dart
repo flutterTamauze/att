@@ -104,23 +104,6 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     return currentSite[0].id;
   }
 
-  String getSiteNameById(
-    int id,
-  ) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    print(list.length);
-
-    List<Site> currentSite = list.where((element) => element.id == id).toList();
-    return currentSite[0].name;
-  }
-
-  int getsiteIDbyShiftId(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    List<Shift> currentSite =
-        list.where((element) => element.shiftId == shiftId).toList();
-    return currentSite[0].siteID;
-  }
-
   @override
   Widget build(BuildContext context) {
     var selectedVal;
@@ -131,7 +114,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     } else {
       selectedVal = "";
     }
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list = Provider.of<SiteShiftsData>(context, listen: true).siteShiftList;
     var prov = Provider.of<SiteData>(context, listen: false);
     var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     var scheduleList =
@@ -143,6 +126,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
+          for (int i = 0; i < list.length; i++) {
+            print(list[i].siteName);
+          }
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
@@ -440,13 +426,12 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                         alignment: Alignment.topRight,
                                                                                                         height: 40.h,
                                                                                                         child: AutoSizeText(
-                                                                                                          value.name,
+                                                                                                          value.siteName,
                                                                                                           style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
                                                                                                         ),
                                                                                                       ),
-                                                                                                      value: value.name,
+                                                                                                      value: value.siteName,
                                                                                                     ))
-                                                                                                .where((element) => element.value != "كل المواقع")
                                                                                                 .toList(),
                                                                                             onChanged: (v) async {
                                                                                               print(v);
@@ -456,7 +441,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                                                               // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
                                                                                               Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName, false);
-                                                                                              prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].id);
+                                                                                              prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].siteId);
 
                                                                                               prov.setSiteValue(v);
                                                                                               setState(() {
@@ -665,8 +650,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   widget.member.shiftId,
                                                   _fromDate,
                                                   _toDate,
-                                                  getsiteIDbyShiftId(
-                                                      widget.member.shiftId),
+                                                  widget.member.siteId,
                                                   scheduleList.id);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(

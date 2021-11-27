@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/HomePage.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/constants.dart';
@@ -99,7 +100,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                         child: Container(
                           padding: EdgeInsets.all(10),
                           // height: 100,
-                          width: 260,
+                          width: 260.w,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.orange),
@@ -155,6 +156,12 @@ class _ErrorScreenState extends State<ErrorScreen> {
             isLoading = false;
             message = "لا يوجد اتصال بالانترنت\nبرجاء المحاولة مرة اخرى";
           });
+        } else if (value == 6) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SuperAdminScreen(),
+              ));
         } else if (value > 0) {
           print("laaa");
           Navigator.pushReplacement(

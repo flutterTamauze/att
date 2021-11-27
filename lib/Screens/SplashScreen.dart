@@ -226,7 +226,6 @@ class _SplashScreenState extends State<SplashScreen>
     var code = await hawawi.Push.getAAID();
     await hawawi.Push.getToken(code);
     hawawi.Push.getTokenStream.listen(_onTokenEvent).onData((data) {
-      log(data);
       Provider.of<UserData>(context, listen: false).hawawiToken = data;
     });
   }

@@ -2,15 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/CompanyMissionsDisplay.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -36,6 +35,7 @@ class _VacationAndPermessionsReportState
     extends State<VacationAndPermessionsReport> {
   @override
   void initState() {
+    Provider.of<MemberData>(context, listen: false).loadingSearch = false;
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _VacationAndPermessionsReportState
   @override
   Widget build(BuildContext context) {
     var comMissionProv = Provider.of<MissionsData>(context, listen: false);
-
+    var userProv = Provider.of<UserData>(context, listen: false);
     return GestureDetector(
       onTap: () {
         print(_nameController.text);
@@ -121,13 +121,30 @@ class _VacationAndPermessionsReportState
                               suffixIcon: InkWell(
                                 onTap: () {
                                   setState(() {
-                                    searchInList(
-                                        _nameController.text,
-                                        -1,
-                                        Provider.of<CompanyData>(context,
-                                                listen: false)
-                                            .com
-                                            .id);
+                                    if (_nameController.text.length >= 3) {
+                                      if (userProv.user.userType == 2) {
+                                        searchInList(
+                                            _nameController.text,
+                                            userProv.user.userSiteId,
+                                            Provider.of<CompanyData>(context,
+                                                    listen: false)
+                                                .com
+                                                .id);
+                                      } else {
+                                        searchInList(
+                                            _nameController.text,
+                                            -1,
+                                            Provider.of<CompanyData>(context,
+                                                    listen: false)
+                                                .com
+                                                .id);
+                                      }
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                          backgroundColor: Colors.red,
+                                          gravity: ToastGravity.CENTER);
+                                    }
                                   });
                                 },
                                 child: Icon(

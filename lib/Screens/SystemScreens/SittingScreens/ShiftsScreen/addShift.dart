@@ -854,54 +854,36 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   } else {
                                     if (edit) {
                                       if (_formKey.currentState.validate()) {
-                                        showModalBottomSheet(
+                                        showDialog(
                                           context: context,
-                                          isScrollControlled: true,
-                                          builder: (context) => Container(
-                                            padding: EdgeInsets.only(
-                                                bottom: MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                              ),
-                                              height: 200.h,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  RoundedButton(
-                                                    onPressed: () async {
-                                                      if (startInt > endInt) {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return RoundedAlert(
-                                                              onPressed:
-                                                                  () async {
-                                                                await editShiftFun();
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              title:
-                                                                  "تعديل مناوبة",
-                                                              content:
-                                                                  " برجاء العلم ان مواعيد المناوبة من $startString \n إلي $endString",
-                                                            );
+                                          builder: (context) {
+                                            return RoundedAlert(
+                                                onPressed: () async {
+                                                  if (startInt > endInt) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return RoundedAlert(
+                                                          onPressed: () async {
+                                                            await editShiftFun();
+                                                            Navigator.pop(
+                                                                context);
                                                           },
+                                                          title: "تعديل مناوبة",
+                                                          content:
+                                                              " برجاء العلم ان مواعيد المناوبة من $startString \n إلي $endString",
                                                         );
-                                                      } else {
-                                                        editShiftFun();
-                                                      }
-                                                    },
-                                                    title: "حفظ ؟",
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                                      },
+                                                    );
+                                                  } else {
+                                                    editShiftFun();
+                                                  }
+                                                },
+                                                title: 'حفظ التعديل',
+                                                content:
+                                                    "هل تريد حفظ التعديل ؟");
+                                          },
                                         );
                                       }
                                     } else {

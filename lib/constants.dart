@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'dart:ui' as ui;
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 //http://192.168.0.119:8010
 //https://Chilangoback.tamauzeds.com
@@ -29,9 +30,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 18);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 25);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 18);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 22);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -66,6 +67,9 @@ const orangeDivider = Divider(
   color: Colors.orange,
 );
 int kBeforeStartShift = 100;
+setResponsiveFontSize(size) {
+  return ScreenUtil().setSp(size);
+}
 
 successfullDelete() {
   Fluttertoast.showToast(
@@ -95,6 +99,32 @@ successfulSaved() {
       backgroundColor: Colors.green,
       textColor: Colors.white,
       fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+}
+
+noInternetConnectionToast() {
+  Fluttertoast.showToast(
+    msg: "لا يوجد اتصال بالأنترنت",
+    gravity: ToastGravity.CENTER,
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
+    textColor: Colors.black,
+    fontSize: 16.0,
+  );
+}
+
+noInternetConnectionAlert(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: 'حدث خطأ',
+            content:
+                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى");
+      });
 }
 
 unSuccessfullDelete() {

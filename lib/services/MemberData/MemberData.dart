@@ -131,12 +131,15 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  searchUsersList(String filter, String userToken, siteId, int companyId,
-      BuildContext context) async {
+  searchUsersList(String filter, String userToken, dynamic siteId,
+      int companyId, BuildContext context) async {
+    print(siteId);
     if (siteId == -1) {
       siteId = "";
     }
-    print(siteId);
+
+    print(
+        "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId");
     loadingSearch = true;
     var response = await http.get(
         Uri.parse(
@@ -206,7 +209,8 @@ class MemberData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-
+      isLoading = true;
+      notifyListeners();
       if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
 
@@ -248,6 +252,7 @@ class MemberData with ChangeNotifier {
 
       url =
           "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
+      // notifyListeners();
     } else {
       if (siteId == -1) {
         loadingShifts = false;
@@ -309,7 +314,7 @@ class MemberData with ChangeNotifier {
         print(response.statusCode);
         if (response.statusCode == 200 || response.statusCode == 201) {
           var decodedRes = json.decode(response.body);
-          print(response.body);
+          log(response.body);
 
           if (decodedRes["message"] == "Success") {
             var memberObjJson = jsonDecode(response.body)['data'] as List;

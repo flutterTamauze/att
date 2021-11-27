@@ -70,6 +70,7 @@ class PendingCompanyPermessions extends StatelessWidget {
                                         date: pending.date
                                             .toString()
                                             .substring(0, 11),
+                                        userId: pending.userID,
                                         id: pending.permessionId,
                                         desc: pending.permessionDescription,
                                         permessionType: pending.permessionType,

@@ -56,7 +56,7 @@ class SiteShiftsData with ChangeNotifier {
           dropDownShifts.removeAt(0);
         }
 
-        notifyListeners();
+        // notifyListeners();
         return siteShiftList[i].shifts;
       }
     }

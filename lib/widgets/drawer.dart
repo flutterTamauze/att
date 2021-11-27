@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/AboutAppScreen.dart';
@@ -29,6 +30,8 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../constants.dart';
 
 class DrawerI extends StatelessWidget {
   var connectivityResult;
@@ -56,11 +59,6 @@ class DrawerI extends StatelessWidget {
           children: [
             Column(
               children: [
-                Platform.isIOS
-                    ? Container(
-                        height: 40.h,
-                      )
-                    : Container(),
                 Card(
                   color: Colors.black,
                   elevation: 1,
@@ -84,10 +82,11 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                Text(
+                AutoSizeText(
                   "V3.0.0",
                   style: TextStyle(
                       color: Colors.orange[600],
+                      fontSize: ScreenUtil().setSp(15),
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.italic),
                 ),
@@ -169,7 +168,14 @@ class DrawerI extends StatelessWidget {
                                             context,
                                             listen: false)
                                         .getPendingCompanyPermessions(
-                                            comId, token);
+                                            comId, token)
+                                        .then((value) {
+                                      if (value == "noInternet") {
+                                        noInternetConnectionToast();
+                                        Navigator.pop(context);
+                                      }
+                                    });
+
                                     await Provider.of<UserHolidaysData>(context,
                                             listen: false)
                                         .getPendingCompanyHolidays(
@@ -362,17 +368,19 @@ class MenuItem extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       child: SizedBox(
-                        height: 22,
                         child: Padding(
                           padding: EdgeInsets.only(top: 5.h),
-                          child: AutoSizeText(
-                            title,
-                            maxLines: 1,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
-                              color: Colors.white,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: AutoSizeText(
+                              title,
+                              maxLines: 1,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(15, allowFontScalingSelf: true),
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

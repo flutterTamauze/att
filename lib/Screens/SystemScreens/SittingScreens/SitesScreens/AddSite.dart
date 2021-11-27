@@ -302,191 +302,150 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                   } else {
                                     if (edit) {
                                       if (_formKey.currentState.validate()) {
-                                        showModalBottomSheet(
+                                        showDialog(
                                           context: context,
-                                          isScrollControlled: true,
-                                          builder: (context) =>
-                                              SingleChildScrollView(
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery.of(context)
-                                                      .viewInsets
-                                                      .bottom),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                ),
-                                                height: 200.h,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    RoundedButton(
-                                                      onPressed: () async {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return RoundedLoadingIndicator();
-                                                            });
+                                          builder: (context) {
+                                            return RoundedAlert(
+                                                onPressed: () async {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return RoundedLoadingIndicator();
+                                                      });
 
-                                                        Company com = Provider.of<
-                                                                    CompanyData>(
-                                                                context,
-                                                                listen: false)
-                                                            .com;
-                                                        var userToken = Provider
-                                                                .of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .user
-                                                            .userToken;
-                                                        var msg = await Provider.of<
-                                                                    SiteData>(
-                                                                context,
-                                                                listen: false)
-                                                            .editSite(
-                                                                Site(
-                                                                    id: widget
-                                                                        .site
-                                                                        .id,
-                                                                    name: _title
-                                                                        .text,
-                                                                    long: widget
-                                                                        .site
-                                                                        .long,
-                                                                    lat: widget
-                                                                        .site
-                                                                        .lat),
-                                                                com.id,
-                                                                userToken,
-                                                                widget.id,
-                                                                context);
+                                                  Company com =
+                                                      Provider.of<CompanyData>(
+                                                              context,
+                                                              listen: false)
+                                                          .com;
+                                                  var userToken =
+                                                      Provider.of<UserData>(
+                                                              context,
+                                                              listen: false)
+                                                          .user
+                                                          .userToken;
+                                                  var msg = await Provider.of<
+                                                              SiteData>(context,
+                                                          listen: false)
+                                                      .editSite(
+                                                          Site(
+                                                              id: widget
+                                                                  .site.id,
+                                                              name: _title.text,
+                                                              long: widget
+                                                                  .site.long,
+                                                              lat: widget
+                                                                  .site.lat),
+                                                          com.id,
+                                                          userToken,
+                                                          widget.id,
+                                                          context);
 
-                                                        if (msg == "Success") {
-                                                          Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم تعديل الموقع بنجاح",
-                                                                  toastLength: Toast
-                                                                      .LENGTH_SHORT,
-                                                                  timeInSecForIosWeb:
-                                                                      1,
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .CENTER,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green,
-                                                                  textColor: Colors
-                                                                      .white,
-                                                                  fontSize: ScreenUtil()
-                                                                      .setSp(16,
-                                                                          allowFontScalingSelf:
-                                                                              true))
-                                                              .then((value) => Navigator.of(
-                                                                      context)
-                                                                  .pushAndRemoveUntil(
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              SitesScreen()),
-                                                                      (Route<dynamic> route) =>
-                                                                          false));
+                                                  if (msg == "Success") {
+                                                    Fluttertoast.showToast(
+                                                            msg:
+                                                                "تم تعديل الموقع بنجاح",
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            timeInSecForIosWeb:
+                                                                1,
+                                                            gravity: ToastGravity
+                                                                .CENTER,
+                                                            backgroundColor:
+                                                                Colors.green,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(16,
+                                                                    allowFontScalingSelf:
+                                                                        true))
+                                                        .then((value) => Navigator.of(context)
+                                                            .pushAndRemoveUntil(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            SitesScreen()),
+                                                                (Route<dynamic>
+                                                                        route) =>
+                                                                    false));
 
-                                                          setState(() {
-                                                            edit = false;
-                                                          });
-                                                        } else if (msg ==
-                                                            "exists") {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "خطأ في تعديل الموقع: اسم الموقع مضاف مسبقا",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              timeInSecForIosWeb:
-                                                                  1,
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              textColor:
-                                                                  Colors.black,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true));
-                                                        } else if (msg ==
-                                                            "failed") {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "خطأ في تعديل الموقع",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              timeInSecForIosWeb:
-                                                                  1,
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              textColor:
-                                                                  Colors.black,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true));
-                                                        } else if (msg ==
-                                                            "noInternet") {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "خطأ في تعديل الموقع:لايوجد اتصال بالانترنت",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              timeInSecForIosWeb:
-                                                                  1,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              textColor:
-                                                                  Colors.black,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true));
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg:
-                                                                  "خطأ في تعديل الموقع",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              timeInSecForIosWeb:
-                                                                  1,
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              textColor:
-                                                                  Colors.black,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(16,
-                                                                      allowFontScalingSelf:
-                                                                          true));
-                                                        }
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      title: "حفظ ؟",
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                                    setState(() {
+                                                      edit = false;
+                                                    });
+                                                  } else if (msg == "exists") {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ في تعديل الموقع: اسم الموقع مضاف مسبقا",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 1,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(16,
+                                                                allowFontScalingSelf:
+                                                                    true));
+                                                  } else if (msg == "failed") {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ في تعديل الموقع",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 1,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(16,
+                                                                allowFontScalingSelf:
+                                                                    true));
+                                                  } else if (msg ==
+                                                      "noInternet") {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ في تعديل الموقع:لايوجد اتصال بالانترنت",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        timeInSecForIosWeb: 1,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(16,
+                                                                allowFontScalingSelf:
+                                                                    true));
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ في تعديل الموقع",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 1,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(16,
+                                                                allowFontScalingSelf:
+                                                                    true));
+                                                  }
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                },
+                                                title: 'حفظ التعديل',
+                                                content:
+                                                    "هل تريد حفظ التعديل ؟");
+                                          },
                                         );
                                       }
                                     } else {}

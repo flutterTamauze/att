@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
@@ -14,6 +15,7 @@ import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:trust_location/trust_location.dart';
 
 import '../constants.dart';

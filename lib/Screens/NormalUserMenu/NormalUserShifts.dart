@@ -299,88 +299,76 @@ class FeatureScheduleShiftCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var daysofflist = Provider.of<DaysOffData>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          daysofflist.reallocateUsers[currentIndex].isDayOff
-              ? Card(
-                  child: Container(
-                    width: 250.w,
-                    padding: EdgeInsets.all(10),
-                    child: Text("يوم عطلة",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 15),
-                        textAlign: TextAlign.center),
-                  ),
-                )
-              : Card(
-                  child: Column(
+          Card(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text(
+                        weekDays[currentIndex],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: Colors.orange[600]),
+                      ),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              weekDays[currentIndex],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  color: Colors.orange[600]),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                sitename,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Text(
-                              shiftname,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
+                        alignment: Alignment.center,
+                        child: Text(
+                          sitename,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: dateDataField(
-                                controller: TextEditingController(
-                                    text: amPmChanger(int.parse(startTime))),
-                                icon: Icons.alarm,
-                                labelText: "من"),
-                          ),
-                          SizedBox(
-                            width: 5.0.w,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: dateDataField(
-                                controller: TextEditingController(
-                                    text: amPmChanger(int.parse(endTime))),
-                                icon: Icons.alarm,
-                                labelText: "الى"),
-                          ),
-                        ],
+                      Text(
+                        shiftname,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
                       ),
-                      SizedBox(
-                        height: 5.h,
-                      )
                     ],
                   ),
                 ),
+                Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: dateDataField(
+                          controller: TextEditingController(
+                              text: amPmChanger(int.parse(startTime))),
+                          icon: Icons.alarm,
+                          labelText: "من"),
+                    ),
+                    SizedBox(
+                      width: 5.0.w,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: dateDataField(
+                          controller: TextEditingController(
+                              text: amPmChanger(int.parse(endTime))),
+                          icon: Icons.alarm,
+                          labelText: "الى"),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                )
+              ],
+            ),
+          ),
           Divider()
         ],
       ),

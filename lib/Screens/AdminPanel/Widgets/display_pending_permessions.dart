@@ -6,9 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
-  final String desc, userName, adminComment, duration;
+  final String desc, userName, adminComment, duration, userId;
   final int id;
   Function onAccept;
   Function onRefused;
@@ -28,6 +29,7 @@ class ExpandedPendingPermessions extends StatefulWidget {
     this.desc,
     this.date,
     this.createdOn,
+    this.userId,
     Key key,
   }) : super(key: key);
 
@@ -77,86 +79,99 @@ class _ExpandedPendingPermessionsState
                   widget.userName,
                 ),
                 children: [
-                  SlideInDown(
-                    child: Card(
-                      elevation: 5,
-                      child: Container(
-                        width: 300.w,
-                        margin: EdgeInsets.all(15),
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            widget.desc == "" ? Container() : Divider(),
-                            widget.desc != null
-                                ? widget.desc == ""
-                                    ? Container()
-                                    : Text(
-                                        "تفاصيل الطلب : ${widget.desc}",
-                                        textAlign: TextAlign.right,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      )
-                                : Container(),
-                            widget.desc != null
-                                ? widget.desc == ""
-                                    ? Container()
-                                    : Divider()
-                                : Container(),
-                            Text(
-                                "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
-                            Divider(),
-                            Text(widget.permessionType == 1
-                                ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
-                                : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
-                            widget.desc != null ? Divider() : Container(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
+                  Stack(
+                    children: [
+                      SlideInDown(
+                        child: Card(
+                          elevation: 5,
+                          child: Container(
+                            width: 300.w,
+                            margin: EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "قرارك",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
+                                widget.desc == "" ? Container() : Divider(),
+                                widget.desc != null
+                                    ? widget.desc == ""
+                                        ? Container()
+                                        : Text(
+                                            "تفاصيل الطلب : ${widget.desc}",
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                    : Container(),
+                                widget.desc != null
+                                    ? widget.desc == ""
+                                        ? Container()
+                                        : Divider()
+                                    : Container(),
+                                Text(
+                                    "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
                                 Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () => widget.onAccept(),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.check,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    InkWell(
-                                      onTap: () => widget.onRefused(),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.times,
-                                        color: Colors.red,
-                                      ),
-                                    )
-                                  ],
+                                Text(widget.permessionType == 1
+                                    ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
+                                    : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
+                                widget.desc != null ? Divider() : Container(),
+                                SizedBox(
+                                  height: 10,
                                 ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "قرارك",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () => widget.onAccept(),
+                                          child: FaIcon(
+                                            FontAwesomeIcons.check,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        InkWell(
+                                          onTap: () => widget.onRefused(),
+                                          child: FaIcon(
+                                            FontAwesomeIcons.times,
+                                            color: Colors.red,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Positioned(
+                          bottom: 15.h,
+                          left: 10.w,
+                          child: FadeInVacPermFloatingButton(
+                              radioVal2: 0,
+                              comingFromAdminPanel: true,
+                              memberId: widget.userId))
+                    ],
                   )
                 ],
               ),

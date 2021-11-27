@@ -48,6 +48,7 @@ class SiteData with ChangeNotifier {
   bool isLoading = false;
   setSiteValue(String v) {
     siteValue = v;
+    // notifyListeners();
   }
 
   setShiftValue(String v) {
@@ -89,7 +90,7 @@ class SiteData with ChangeNotifier {
   setDropDownShift(int newValue) {
     print("new index is $newValue");
     dropDownShiftIndex = newValue;
-    notifyListeners();
+    // notifyListeners();
   }
 
   List<String> dropDownSitesStrings = [];

@@ -340,6 +340,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => NavScreenTwo(0),
               ));
         } else if (value == 6) {
+          prefs.setStringList(
+              'userData', [_uniIdController.text, _passwordController.text]);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => SuperAdminScreen()));
         } else if (value == -2) {

@@ -6,31 +6,63 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/DataTablePermessionHeader.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 class FadeInVacPermFloatingButton extends StatelessWidget {
   const FadeInVacPermFloatingButton(
-      {Key key, @required this.radioVal2, this.memberId})
+      {Key key,
+      @required this.radioVal2,
+      this.memberId,
+      @required this.comingFromAdminPanel})
       : super(key: key);
 
   final int radioVal2;
   final String memberId;
+  final bool comingFromAdminPanel;
 
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
       child: Container(
-        width: 50.w,
-        height: 50.h,
+        width: comingFromAdminPanel ? 35.w : 50.w,
+        height: comingFromAdminPanel ? 35.h : 50.h,
         child: FloatingActionButton(
           elevation: 4,
-          onPressed: () {
+          onPressed: () async {
+            if (comingFromAdminPanel) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return RoundedLoadingIndicator();
+                  });
+              if (radioVal2 == 1) {
+                await Provider.of<UserHolidaysData>(context, listen: false)
+                    .getSingleUserHoliday(
+                        memberId,
+                        Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userToken);
+              } else {
+                await Provider.of<UserPermessionsData>(context, listen: false)
+                    .getSingleUserPermession(
+                        memberId,
+                        Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userToken);
+              }
+
+              Navigator.pop(context);
+            }
+
             showDialog(
               context: context,
               builder: (context) {
@@ -243,7 +275,8 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
           child: Icon(
             FontAwesomeIcons.info,
             color: Colors.black,
-            size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+            size: ScreenUtil().setSp(comingFromAdminPanel ? 15 : 30,
+                allowFontScalingSelf: true),
           ),
         ),
       ),

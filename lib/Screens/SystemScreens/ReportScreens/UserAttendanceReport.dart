@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
@@ -8,6 +9,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
@@ -26,6 +28,8 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets//XlsxExportButton.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
+import 'package:qr_users/widgets/Shared/Charts/PieChart.dart';
+import 'package:qr_users/widgets/Shared/Charts/UserReportPieChart.dart';
 
 import 'package:qr_users/widgets/UserReport/UserReportDataTable.dart';
 import 'package:qr_users/widgets/UserReport/UserReportDataTableEnd.dart';
@@ -200,10 +204,15 @@ class _UserAttendanceReportScreenState
           onWillPop: onWillPop,
           child: GestureDetector(
             onTap: () {
-              print(_nameController.text);
-              print(Provider.of<MemberData>(context, listen: false)
-                  .userSearchMember[0]
-                  .username);
+              print(reportsData.userAttendanceReport.totalLateDay);
+              print(reportsData.userAttendanceReport.totalLateDay /
+                  (reportsData.userAttendanceReport.userAttendListUnits.length *
+                      100));
+
+              print(
+                  reportsData.userAttendanceReport.userAttendListUnits.length *
+                      100);
+
               _nameController.text == ""
                   ? FocusScope.of(context).unfocus()
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -252,23 +261,69 @@ class _UserAttendanceReportScreenState
                                                             .userAttendListUnits
                                                             .length !=
                                                         0
-                                                ? XlsxExportButton(
-                                                    reportType: 2,
-                                                    title: "تقرير حضور مستخدم",
-                                                    day: _dateController.text,
-                                                    userName:
-                                                        _nameController.text,
-                                                    site: userDataProvider.user
-                                                                .userType ==
-                                                            2
-                                                        ? userDataProvider
-                                                            .siteName
-                                                        : Provider.of<
-                                                                    SiteShiftsData>(
-                                                                context)
-                                                            .siteShiftList[
-                                                                siteIdIndex]
-                                                            .siteName,
+                                                ? Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Dialog(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10.0)),
+                                                                child:
+                                                                    Container(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  height: 300.h,
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child:
+                                                                      FadeInRight(
+                                                                    child: Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(
+                                                                                8.0),
+                                                                        child: ZoomIn(
+                                                                            child:
+                                                                                UserReportPieChart())),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        child: Icon(
+                                                          FontAwesomeIcons
+                                                              .chartBar,
+                                                          color: Colors.orange,
+                                                        ),
+                                                      ),
+                                                      XlsxExportButton(
+                                                        reportType: 2,
+                                                        title:
+                                                            "تقرير حضور مستخدم",
+                                                        day: _dateController
+                                                            .text,
+                                                        userName:
+                                                            _nameController
+                                                                .text,
+                                                        site: userDataProvider
+                                                                    .user
+                                                                    .userType ==
+                                                                2
+                                                            ? userDataProvider
+                                                                .siteName
+                                                            : Provider.of<
+                                                                        SiteShiftsData>(
+                                                                    context)
+                                                                .siteShiftList[
+                                                                    siteIdIndex]
+                                                                .siteName,
+                                                      ),
+                                                    ],
                                                   )
                                                 : Container();
 
@@ -479,8 +534,10 @@ class _UserAttendanceReportScreenState
                                                           userDataProvider.user
                                                                       .userType ==
                                                                   2
-                                                              ? -1
-                                                              : siteId,
+                                                              ? userDataProvider
+                                                                  .user
+                                                                  .userSiteId
+                                                              : -1,
                                                           Provider.of<CompanyData>(
                                                                   context,
                                                                   listen: false)

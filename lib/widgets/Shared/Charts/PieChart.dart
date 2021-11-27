@@ -1,0 +1,201 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
+
+class LateReportPieChart extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => LateReportPieChartState();
+}
+
+class LateReportPieChartState extends State {
+  int touchedIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: Row(
+        children: <Widget>[
+          const SizedBox(
+            height: 18,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  child: Text(
+                    "تحليل بيانات الموظفين عن فترة",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange[600],
+                        fontSize: 16),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                          pieTouchData: PieTouchData(touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse
+                                  .touchedSection.touchedSectionIndex;
+                            });
+                          }),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 30,
+                          sections: showingSections()),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: [
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.red[600]),
+                  ),
+                  Text(
+                    " الغياب",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: [
+                  Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.orange)),
+                  Text(
+                    " التأخير",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: [
+                  Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.green[600])),
+                  Text(
+                    "الأنتظام",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 18,
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 28,
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<PieChartSectionData> showingSections() {
+    var reportsData = Provider.of<ReportsData>(context);
+    return List.generate(3, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.orange,
+            value: double.parse(
+                reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
+            title: reportsData.lateAbsenceReport.lateRatio
+                .toString()
+                .replaceAll("%", ""),
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.red,
+            value: double.parse(
+                reportsData.lateAbsenceReport.absentRatio.replaceAll("%", "")),
+            title: reportsData.lateAbsenceReport.absentRatio
+                .toString()
+                .replaceAll("%", ""),
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: Colors.green,
+            value: 100 -
+                (double.parse(reportsData.lateAbsenceReport.lateRatio
+                        .replaceAll("%", "")) +
+                    double.parse(reportsData.lateAbsenceReport.absentRatio
+                        .replaceAll("%", ""))),
+            title: (100 -
+                    (double.parse(reportsData.lateAbsenceReport.lateRatio
+                            .replaceAll("%", "")) +
+                        double.parse(reportsData.lateAbsenceReport.absentRatio
+                            .replaceAll("%", ""))))
+                .toString(),
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: const Color(0xff13d38e),
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        default:
+          throw Error();
+      }
+    });
+  }
+}

@@ -5,7 +5,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -13,12 +16,15 @@ import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/user_data.dart';
-
+import 'package:intl_phone_number_input/intl_phone_number_input.dart'
+    as intlPhone;
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 
 import 'package:qr_users/widgets/roundedButton.dart';
+
+import '../roundedAlert.dart';
 
 class MemberTile extends StatefulWidget {
   final Member user;
@@ -37,6 +43,8 @@ class MemberTile extends StatefulWidget {
   @override
   _MemberTileState createState() => _MemberTileState();
 }
+
+final SlidableController slidableController = SlidableController();
 
 class _MemberTileState extends State<MemberTile> {
   String plusSignPhone(String phoneNum) {
@@ -72,6 +80,13 @@ class _MemberTileState extends State<MemberTile> {
       }
     }
     return "";
+  }
+
+  Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
+    intlPhone.PhoneNumber result =
+        await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
+            phoneNumberEdit);
+    return [result.isoCode, result.dialCode];
   }
 
   int getShiftListIndex(int shiftId) {
@@ -110,9 +125,6 @@ class _MemberTileState extends State<MemberTile> {
           print(widget.user.id);
           print(widget.user.name);
 
-          // shiftId = getShiftListIndex(widget.user.shiftId);
-          // print(shiftId);
-          // siteIndex = getSiteListIndex(shiftId);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -127,87 +139,170 @@ class _MemberTileState extends State<MemberTile> {
               ));
           // showUserDetails(widget.user);
         },
-        child: Card(
-            elevation: 3,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Container(
-                  width: double.infinity,
-                  height: 65.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                border:
-                                    Border.all(width: 2, color: Colors.orange)),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Container(
-                                  child: Image(
-                                    width: 90.w,
-                                    height: 90.h,
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Container(
-                                        width: 55.w,
-                                        height: 55.h,
-                                        child: Center(
-                                            child: CircularProgressIndicator(
-                                          backgroundColor: Colors.white,
-                                          valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  Colors.orange),
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes
-                                              : null,
-                                        )),
-                                      );
-                                    },
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                      '$imageUrl${widget.user.userImageURL}',
+        child: Slidable(
+          actionExtentRatio: 0.10,
+          closeOnScroll: true,
+          controller: slidableController,
+          actionPane: SlidableDrawerActionPane(),
+          secondaryActions: [
+            ZoomIn(
+                child: InkWell(
+              child: Container(
+                padding: EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    border: Border.all(width: 2, color: Colors.orange)),
+                child: Icon(
+                  Icons.edit,
+                  size: 18,
+                  color: Colors.orange,
+                ),
+              ),
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return RoundedLoadingIndicator();
+                    });
+                await Provider.of<MemberData>(context, listen: false)
+                    .getUserById(
+                        widget.user.id,
+                        Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userToken);
+                var phone = await getPhoneInEdit(Provider.of<MemberData>(
+                                context,
+                                listen: false)
+                            .singleMember
+                            .phoneNumber[0] !=
+                        "+"
+                    ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}"
+                    : Provider.of<MemberData>(context, listen: false)
+                        .singleMember
+                        .phoneNumber);
+
+                Navigator.of(context).push(
+                  new MaterialPageRoute(
+                    builder: (context) => AddUserScreen(
+                      Provider.of<MemberData>(context, listen: false)
+                          .singleMember,
+                      widget.index,
+                      true,
+                      phone[0],
+                      phone[1],
+                      false,
+                      "",
+                    ),
+                  ),
+                );
+              },
+            )),
+            Provider.of<UserData>(context, listen: false).user.id ==
+                    widget.user.id
+                ? Container()
+                : ZoomIn(
+                    child: InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(width: 2, color: Colors.red)),
+                      child: Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                    onTap: () {
+                      widget.onTapDelete();
+                    },
+                  )),
+          ],
+          child: Card(
+              elevation: 3,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Container(
+                    width: double.infinity,
+                    height: 65.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  border: Border.all(
+                                      width: 2, color: Colors.orange)),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child: Container(
+                                    child: Image(
+                                      width: 90.w,
+                                      height: 90.h,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Container(
+                                          width: 55.w,
+                                          height: 55.h,
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            backgroundColor: Colors.white,
+                                            valueColor:
+                                                new AlwaysStoppedAnimation<
+                                                    Color>(Colors.orange),
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes
+                                                : null,
+                                          )),
+                                        );
+                                      },
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        '$imageUrl${widget.user.userImageURL}',
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Container(
-                            height: 30.h,
-                            child: AutoSizeText(
-                              widget.user.name,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(15, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.w600),
+                            SizedBox(
+                              width: 10.w,
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Container(
+                              height: 30.h,
+                              child: AutoSizeText(
+                                widget.user.name,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(15, allowFontScalingSelf: true),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )),
+              )),
+        ),
       ),
     );
   }

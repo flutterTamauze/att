@@ -7,7 +7,7 @@ import '../../constants.dart';
 
 class AttendProof {
   Future<String> sendAttendProof(
-      String userToken, String userId, String fcmToken) async {
+      String userToken, String userId, String fcmToken, String senderID) async {
     var response = await http.post(
         Uri.parse("$baseURL/api/AttendProof/AddAttendProof"),
         headers: {
@@ -15,7 +15,12 @@ class AttendProof {
           'Authorization': "Bearer $userToken"
         },
         body: json.encode(
-            {"userId": userId, "startTime": DateTime.now().toIso8601String()}));
+          {
+            "userId": userId,
+            "startTime": DateTime.now().toIso8601String(),
+            "CreatedByUserId": senderID
+          },
+        ));
     print(response.body);
     print("status code : ${response.statusCode}");
     var decodedResponse = jsonDecode(response.body);
@@ -28,6 +33,9 @@ class AttendProof {
         return "fail present";
       } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
         return "fail shift";
+      } else if (decodedResponse["message"] ==
+          "Failed : You have exceeded proofs limits!") {
+        return "limit exceed";
       }
     } else {
       return "fail";

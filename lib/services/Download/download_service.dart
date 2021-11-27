@@ -31,18 +31,19 @@ class DownloadService {
             Provider.of<UserData>(context, listen: false).user.apkDate)) {
           Future.delayed(Duration.zero, () {
             showDialog(
+                // barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
-                  DownloadService downloadService = DownloadService();
-
-                  return RoundedAlert(
+                  return RoundAlertUpgrade(
                       onPressed: () async {
-                        Navigator.pop(context);
-                        downloadService.downloadApkFromUrl(
-                            "ChilangoV3.apk", context);
+                        // Navigator.pop(context);
+                        // downloadApkFromUrl("ChilangoV3.apk", context);
+                        launch(
+                            "https://play.google.com/store/apps/details?id=com.tds.chilango");
                       },
-                      title: 'تحديث التطبيق لأخر اصدار ؟',
-                      content: "");
+                      title: "اصدار جديد",
+                      content:
+                          'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام');
                 });
           });
         }

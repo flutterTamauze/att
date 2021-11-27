@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -149,6 +150,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     return -1;
   }
 
+  final SlidableController slidableController = SlidableController();
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
@@ -293,6 +295,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                             (BuildContext context,
                                                                                 int index) {
                                                                           return ShiftTile(
+                                                                            slidableController:
+                                                                                slidableController,
                                                                             siteName:
                                                                                 value.shiftsList[index].shiftName,
                                                                             siteIndex:
@@ -317,7 +321,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                                           var msg = await shiftsData.deleteShift(value.shiftsList[index].shiftId, token, index, context);
 
                                                                                           if (msg == "Success") {
-                                                                                            Navigator.pop(context);
+                                                                                            // Navigator.pop(context);
                                                                                             Fluttertoast.showToast(msg: "تم الحذف بنجاح", toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.green, gravity: ToastGravity.CENTER, textColor: Colors.white, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                           } else if (msg == "hasData") {
                                                                                             Fluttertoast.showToast(msg: "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
@@ -447,7 +451,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 class ShiftTile extends StatefulWidget {
   final Shift shift;
   var index;
-
+  final SlidableController slidableController;
   final String siteName;
   final siteIndex;
   final Function onTapEdit;
@@ -458,6 +462,7 @@ class ShiftTile extends StatefulWidget {
       this.siteName,
       this.shift,
       this.onTapEdit,
+      this.slidableController,
       this.onTapDelete});
 
   @override
@@ -496,107 +501,159 @@ class _ShiftTileState extends State<ShiftTile> {
         },
         child: widget.shift.shiftId == -100
             ? Container()
-            : Card(
-                elevation: 3,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+            : Slidable(
+                actionExtentRatio: 0.10,
+                closeOnScroll: true,
+                controller: widget.slidableController,
+                actionPane: SlidableDrawerActionPane(),
+                secondaryActions: [
+                  ZoomIn(
+                      child: InkWell(
                     child: Container(
-                      width: double.infinity.w,
-                      height: 60.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: ScreenUtil()
-                                      .setSp(35, allowFontScalingSelf: true),
-                                  color: Colors.orange,
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Container(
-                                  child: AutoSizeText(
-                                    widget.shift.shiftName,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(15,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              // siteProv.setDropDownShift(
-                              //     widget.index); //الموقع علي حسب ال اندكس اللي
-                              siteProv.setSiteValue(widget.siteName);
-                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
-                              siteProv.setDropDownIndex(widget.siteIndex);
-                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
-                              print(widget.index);
-
-                              print("finding matching shifts");
-                              print(siteProv.currentSiteName);
-                              var index = getSiteName(siteProv.currentSiteName);
-
-                              Provider.of<SiteShiftsData>(context,
-                                      listen: false)
-                                  .getShiftsList(
-                                      Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .siteShiftList[index]
-                                          .siteName,
-                                      true);
-
-                              siteProv.setDropDownShift(
-                                  widget.index + 1); //+1 lw feh all shifts
-
-                              Navigator.of(context).push(
-                                new MaterialPageRoute(
-                                  builder: (context) => UsersScreen(
-                                      widget.siteIndex + 1,
-                                      true,
-                                      widget.shift.shiftName),
-                                ),
-                              );
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.orange, width: 1)),
-                                padding: EdgeInsets.all(9),
-                                child: Icon(
-                                  Icons.person,
-                                  size: 18,
-                                  color: Colors.orange,
-                                )),
-                          )
-                          // CircularIconButton(
-                          //     icon: Icons.person,
-                          //     onTap: () {
-                          //       Navigator.of(context).push(
-                          //         new MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               UsersScreen(widget.index + 1),
-                          //         ),
-                          //       );
-                          //     },
-                          //   ),
-                        ],
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(width: 2, color: Colors.orange)),
+                      child: Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.orange,
                       ),
                     ),
-                  ),
-                )),
+                    onTap: () async {
+                      widget.onTapEdit();
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return RoundedLoadingIndicator();
+                      //     });
+                    },
+                  )),
+                  ZoomIn(
+                      child: InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(width: 2, color: Colors.red)),
+                      child: Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                    onTap: () {
+                      widget.onTapDelete();
+                    },
+                  )),
+                ],
+                child: Card(
+                    elevation: 3,
+                    child: Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Container(
+                          width: double.infinity.w,
+                          height: 60.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today_rounded,
+                                      size: ScreenUtil().setSp(35,
+                                          allowFontScalingSelf: true),
+                                      color: Colors.orange,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Container(
+                                      child: AutoSizeText(
+                                        widget.shift.shiftName,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(15,
+                                                allowFontScalingSelf: true),
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  // siteProv.setDropDownShift(
+                                  //     widget.index); //الموقع علي حسب ال اندكس اللي
+                                  siteProv.setSiteValue(widget.siteName);
+                                  siteProv
+                                      .fillCurrentShiftID(widget.shift.shiftId);
+                                  siteProv.setDropDownIndex(widget.siteIndex);
+                                  siteProv
+                                      .fillCurrentShiftID(widget.shift.shiftId);
+                                  print(widget.index);
+
+                                  print("finding matching shifts");
+                                  print(siteProv.currentSiteName);
+                                  var index =
+                                      getSiteName(siteProv.currentSiteName);
+
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .getShiftsList(
+                                          Provider.of<SiteShiftsData>(context,
+                                                  listen: false)
+                                              .siteShiftList[index]
+                                              .siteName,
+                                          true);
+
+                                  siteProv.setDropDownShift(
+                                      widget.index + 1); //+1 lw feh all shifts
+
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) => UsersScreen(
+                                          widget.siteIndex + 1,
+                                          true,
+                                          widget.shift.shiftName),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Colors.orange, width: 1)),
+                                    padding: EdgeInsets.all(9),
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 18,
+                                      color: Colors.orange,
+                                    )),
+                              )
+                              // CircularIconButton(
+                              //     icon: Icons.person,
+                              //     onTap: () {
+                              //       Navigator.of(context).push(
+                              //         new MaterialPageRoute(
+                              //           builder: (context) =>
+                              //               UsersScreen(widget.index + 1),
+                              //         ),
+                              //       );
+                              //     },
+                              //   ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
+              ),
       ),
     );
   }
@@ -717,28 +774,6 @@ class _ShiftTileState extends State<ShiftTile> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            Provider.of<UserData>(context, listen: false)
-                                        .user
-                                        .userType !=
-                                    3
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: RounderButton(
-                                                "تعديل", widget.onTapEdit)),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        Expanded(
-                                            child: RounderButton(
-                                                "حذف", widget.onTapDelete))
-                                      ],
-                                    ),
-                                  )
-                                : Container()
                           ],
                         ),
                       ),

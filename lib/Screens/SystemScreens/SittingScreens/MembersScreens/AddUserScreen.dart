@@ -24,6 +24,7 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
+import 'package:qr_users/widgets/UserFullData/editUser.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -80,6 +81,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
     }
   }
 
+  getSiteIndex(siteId) {
+    var sites = Provider.of<SiteShiftsData>(context, listen: false).sites;
+    for (int i = 0; i < sites.length; i++) {
+      if (siteId == sites[i].id) {
+        return i - 1;
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,8 +110,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
         phoneNumber: widget.member.phoneNumber);
     fillTextField();
     if (widget.isEdit) {
-      siteId =
-          (Provider.of<SiteData>(context, listen: false).dropDownSitesIndex);
+      siteId = getSiteIndex(widget.member.siteId);
+      print(siteId);
     } else {
       if (Provider.of<SiteShiftsData>(context, listen: false).sites.length ==
           2) {
@@ -129,16 +139,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   var phoneLoading = false;
-  getSiteIdByShiftId(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (shiftId == list[i].shiftId) {
-        return list[i].siteID;
-      }
-    }
-    return -1;
-  }
 
   @override
   void dispose() {
@@ -291,8 +291,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         validator: (text) {
                                           if (text.length == 0) {
                                             return 'مطلوب';
-                                          } else if (text.length > 70) {
-                                            return "يجب ان لا يتخطي اسم المستخدم عن 70 حرف";
+                                          } else if (text.length > 80) {
+                                            return "يجب ان لا يتخطي اسم المستخدم عن 80 حرف";
                                           }
                                           return null;
                                         },
@@ -346,6 +346,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               return 'البريد الإلكترونى غير صحيح';
                                           } else if (text.length == 0) {
                                             return "مطلوب";
+                                          } else if (text.length > 80) {
+                                            return "يجب ان لا يتخطي البريد الإلكترةني عن 80 حرف";
                                           }
                                           return null;
                                         },
@@ -657,7 +659,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // print()
-                                            log(value);
                                             siteId = getSiteId(value);
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
@@ -912,237 +913,28 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER);
                                         } else {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            builder: (context) =>
-                                                SingleChildScrollView(
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    bottom:
-                                                        MediaQuery.of(context)
-                                                            .viewInsets
-                                                            .bottom),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                  ),
-                                                  height: 200,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      RoundedButton(
-                                                        onPressed: () async {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return RoundedLoadingIndicator();
-                                                              });
-
-                                                          var token = Provider
-                                                                  .of<UserData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .user
-                                                              .userToken;
-                                                          var msg = await Provider.of<
-                                                                      MemberData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .editMember(
-                                                                  Member(
-                                                                      id: widget
-                                                                          .member
-                                                                          .id,
-                                                                      userType:
-                                                                          userType,
-                                                                      shiftId: Provider.of<SiteShiftsData>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .dropDownShifts[shiftIndex == 0
-                                                                              ? 0
-                                                                              : shiftIndex - 1]
-                                                                          .shiftId,
-                                                                      phoneNumber: editNumber.dialCode +
-                                                                          _phoneController.text.replaceAll(
-                                                                            new RegExp(r"\s+\b|\b\s"),
-                                                                            "",
-                                                                          ),
-                                                                      salary: double.parse(_salaryController.text),
-                                                                      jobTitle: _titleController.text,
-                                                                      email: _emailController.text.trim(),
-                                                                      name: _nameController.text),
-                                                                  widget.id,
-                                                                  token,
-                                                                  context,
-                                                                  getRoleName(userRole));
-
-                                                          if (msg ==
-                                                              "Success") {
-                                                            Fluttertoast.showToast(
-                                                                    msg:
-                                                                        "تم تعديل المستخدم بنجاح",
-                                                                    toastLength:
-                                                                        Toast
-                                                                            .LENGTH_SHORT,
-                                                                    gravity: ToastGravity
-                                                                        .CENTER,
-                                                                    timeInSecForIosWeb:
-                                                                        1,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .green,
-                                                                    textColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    fontSize:
-                                                                        16.0)
-                                                                .then((value) {
-                                                              if (Provider.of<UserData>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .user
-                                                                      .id ==
-                                                                  widget.member
-                                                                      .id) {
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .siteName = Provider.of<
-                                                                            SiteData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .sitesList[
-                                                                        siteId]
-                                                                    .name;
-                                                              }
-                                                            }).then((value) =>
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(
-                                                                      new MaterialPageRoute(
-                                                                        builder: (context) => UsersScreen(
-                                                                            -1,
-                                                                            false,
-                                                                            ""),
-                                                                      ),
-                                                                    ));
-
-                                                            setState(() {
-                                                              edit = false;
-                                                            });
-                                                          } else if (msg ==
-                                                              "exists") {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في تعديل المستخدم:البريد الإلكتروني مستخدم مسبقا",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                textColor:
-                                                                    Colors
-                                                                        .black,
-                                                                fontSize: 16.0);
-                                                          } else if (msg ==
-                                                              "not exist") {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في تعديل المستخدم:المستخدم غير موجود",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                textColor:
-                                                                    Colors
-                                                                        .black,
-                                                                fontSize: 16.0);
-                                                          } else if (msg ==
-                                                              "failed") {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في تعديل المستخدم",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                textColor:
-                                                                    Colors
-                                                                        .black,
-                                                                fontSize: 16.0);
-                                                          } else if (msg ==
-                                                              "noInternet") {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في تعديل المستخدم:لايوجد اتصال بالانترنت",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                textColor:
-                                                                    Colors
-                                                                        .black,
-                                                                fontSize: 16.0);
-                                                          } else {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في تعديل المستخدم",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                textColor:
-                                                                    Colors
-                                                                        .black,
-                                                                fontSize: 16.0);
-                                                          }
-                                                          Navigator.pop(
-                                                              context);
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        title: "حفظ ؟",
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                          return showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return EditMember(
+                                                  editNumber: editNumber,
+                                                  emailController:
+                                                      _emailController,
+                                                  id: widget.id,
+                                                  member: widget.member,
+                                                  nameController:
+                                                      _nameController,
+                                                  salaryController:
+                                                      _salaryController,
+                                                  phoneController:
+                                                      _phoneController,
+                                                  shiftIndex: shiftIndex,
+                                                  siteId: siteId,
+                                                  titleController:
+                                                      _titleController,
+                                                  userRole: userRole,
+                                                );
+                                              });
                                         }
                                       }
                                       // }

@@ -620,6 +620,92 @@ class _PermissionState extends State<PermissionWidget> {
   }
 }
 
+class RoundAlertUpgrade extends StatelessWidget {
+  final String title;
+  final String content;
+  final Function onPressed;
+
+  RoundAlertUpgrade({this.title, this.content, @required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)), //this right here
+        child: Container(
+          height: 180.h,
+          width: 250.w,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Center(
+                          child: Container(
+                        height: 20.h,
+                        child: AutoSizeText(
+                          title,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      )),
+                      Divider(),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Center(
+                        child: Container(
+                          height: 40.h,
+                          width: 200.w,
+                          child: AutoSizeText(
+                            content,
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                height: 1.5,
+                                fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Material(
+                    elevation: 5.0,
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: MaterialButton(
+                      onPressed: () {
+                        onPressed();
+                      },
+                      minWidth: 130,
+                      height: 30,
+                      child: Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          "تحديث",
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+          ),
+        ));
+  }
+}
+
 class RoundedAlertOkOnly extends StatelessWidget {
   final String title;
   final String content;
@@ -662,10 +748,11 @@ class RoundedAlertOkOnly extends StatelessWidget {
                           height: 40.h,
                           child: AutoSizeText(
                             content,
-                            maxLines: 1,
+                            maxLines: 2,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: setResponsiveFontSize(14),
+                                height: 1.5,
                                 fontWeight: FontWeight.w600),
                             textAlign: TextAlign.center,
                           ),
