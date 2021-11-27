@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -244,6 +245,7 @@ class MemberData with ChangeNotifier {
         copyMemberList = [];
         keepRetriving = true;
       }
+
       url =
           "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
     } else {
@@ -318,8 +320,7 @@ class MemberData with ChangeNotifier {
             if (keepRetriving) {
               memberNewList.addAll(memberObjJson
                   .map((memberJson) => Member.fromJson(memberJson))
-                  .toList()
-                  .toSet());
+                  .toList());
 
               membersList = memberNewList;
               membersListScreenDropDownSearch = memberNewList;
@@ -561,11 +562,9 @@ class MemberData with ChangeNotifier {
             return "Success";
           } else if (decodedRes["message"] ==
               "Fail : Phone No Already exists") {
-            return "phone exists";
+            return "exists";
           } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
             return "Limit Reached";
-          } else if (decodedRes["message"] == "Fail : User Exists") {
-            return "user exists";
           }
         }
       } catch (e) {
