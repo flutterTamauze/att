@@ -92,53 +92,46 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Container(
-                                  width: 190.w,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 25.w,
-                                            height: 25.h,
-                                            child: Center(
-                                              child: Text(
-                                                userData
-                                                    .superCompaniesChartModel
-                                                    .totalEmp
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.blueAccent),
-                                              ),
-                                            ),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    width: 2,
-                                                    color: Colors.blueAccent)),
-                                          ),
-                                          Expanded(
-                                            child: Container(),
-                                          ),
-                                          AutoSizeText(
-                                            "القوة",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    setResponsiveFontSize(15),
-                                                color: Colors.blueAccent),
-                                            textAlign: TextAlign.right,
-                                          ),
-                                        ],
+                              Container(
+                                padding: EdgeInsets.only(right: 10.w),
+                                width: 190.w,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 25.w,
+                                      height: 25.h,
+                                      child: Center(
+                                        child: Text(
+                                          userData
+                                              .superCompaniesChartModel.totalEmp
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.blueAccent),
+                                        ),
                                       ),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              width: 2,
+                                              color: Colors.blueAccent)),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Container(),
+                                    ),
+                                    AutoSizeText(
+                                      "القوة",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: setResponsiveFontSize(15),
+                                          color: Colors.blueAccent),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ],
                                 ),
+                              ),
+                              SizedBox(
+                                height: 5.h,
                               ),
                               Row(
                                 children: [
@@ -175,7 +168,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 height: 5,
                               ),
                               SinglePieChartItem(
-                                title: "الباقى",
+                                title: "الغياب",
                                 color: Colors.red[600],
                                 count: userData
                                     .superCompaniesChartModel.totalAbsent
@@ -193,43 +186,37 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      width: 180.w,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 20.w,
-                                height: 20.h,
-                                child: Center(
-                                  child: Text(
-                                    userData.superCompaniesChartModel
-                                        .totalPermessions
-                                        .toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        width: 1, color: Colors.black)),
+                      padding: EdgeInsets.only(right: 10.w),
+                      width: 190.w,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 25.w,
+                            height: 25.h,
+                            child: Center(
+                              child: Text(
+                                userData
+                                    .superCompaniesChartModel.totalPermessions
+                                    .toString(),
+                                style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              AutoSizeText(
-                                "إذن تأخير عن الحضور",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
+                            ),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(width: 1, color: Colors.black)),
                           ),
-                        ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          AutoSizeText(
+                            "مجموع الأذنات",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -662,8 +662,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       },
                                                       type: DateTimePickerType
                                                           .date,
-                                                      initialDate: fromDate,
-                                                      firstDate: tomorrow,
+                                                      initialDate: _today,
+                                                      firstDate: _today,
                                                       lastDate: DateTime(
                                                           DateTime.now().year,
                                                           DateTime.december,

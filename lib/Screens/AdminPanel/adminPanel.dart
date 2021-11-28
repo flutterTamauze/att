@@ -21,6 +21,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -53,6 +54,12 @@ class _AdminPanelState extends State<AdminPanel> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
+          floatingActionButton: MultipleFloatingButtons(
+            mainTitle: "",
+            shiftName: "",
+            comingFromShifts: false,
+            mainIconData: Icons.add_location_alt,
+          ),
           endDrawer: NotificationItem(),
           body: Container(
             width: double.infinity,

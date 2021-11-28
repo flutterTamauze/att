@@ -9,7 +9,9 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/forgetScreen.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -19,6 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Notifications/Notifications.dart';
 import 'SuperAdmin/Screen/super_admin.dart';
+import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -268,15 +271,15 @@ class _LoginScreenState extends State<LoginScreen> {
     Provider.of<UserData>(context, listen: false).getCurrentLocation();
     Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted)
+      setState(() {
+        isLoading = true;
+      });
     await Provider.of<UserData>(context, listen: false)
         .loginPost(_uniIdController.text, _passwordController.text, context)
         .catchError(((e) {
       print(e);
-    })).then((value) {
+    })).then((value) async {
       if (Provider.of<UserData>(context, listen: false).changedPassword ==
           false) {
         Navigator.pushReplacement(
@@ -289,6 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ));
       } else {
+        print("VALUE OF USER");
         print(value);
         if (value == NO_INTERNET) {
           return showDialog(
@@ -330,6 +334,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
+        } else if (value == 4 || value == 3) {
+          prefs.setStringList(
+              'userData', [_uniIdController.text, _passwordController.text]);
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SuperCompanyPieChart(),
+              ));
         } else if (value > 0 && value < 5) {
           prefs.setStringList(
               'userData', [_uniIdController.text, _passwordController.text]);

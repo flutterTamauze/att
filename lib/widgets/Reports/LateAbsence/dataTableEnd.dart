@@ -28,9 +28,9 @@ class DataTableEnd extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      height: 20,
+                      height: 20.h,
                       child: AutoSizeText(
-                        'نسبة التأخير:',
+                        'التأخير:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        'نسبة الغياب:',
+                        'الغياب:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        'مجموع الخصومات:',
+                        'الخصومات:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

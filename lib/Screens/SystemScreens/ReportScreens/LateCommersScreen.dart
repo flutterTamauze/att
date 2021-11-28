@@ -29,6 +29,7 @@ import 'package:qr_users/widgets/Reports/LateAbsence/dataTableRow.dart';
 import 'package:qr_users/widgets/Shared/Charts/PieChart.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
 class LateAbsenceScreen extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   DateTime fromDate;
   DateTime yesterday;
   Site siteData;
+
   String diff;
   var isLoading = false;
 
@@ -502,21 +504,42 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                               Expanded(
                                                                   child:
                                                                       Container(
-                                                                child: ListView
-                                                                    .builder(
-                                                                        itemCount: reportsData
-                                                                            .lateAbsenceReport
-                                                                            .lateAbsenceReportUnitList
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (BuildContext context,
-                                                                                int index) {
+                                                                child: Stack(
+                                                                  children: [
+                                                                    ListView.builder(
+                                                                        itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
+                                                                        itemBuilder: (BuildContext context, int index) {
                                                                           return DataTableRow(
                                                                               reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index],
                                                                               siteIdIndex,
                                                                               fromDate,
                                                                               toDate);
                                                                         }),
+                                                                    Positioned(
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              110,
+                                                                          height:
+                                                                              101,
+                                                                          child:
+                                                                              MultipleFloatingButtons(
+                                                                            mainTitle:
+                                                                                "",
+                                                                            shiftName:
+                                                                                "",
+                                                                            comingFromShifts:
+                                                                                false,
+                                                                            mainIconData:
+                                                                                Icons.add_location_alt,
+                                                                          ),
+                                                                        ),
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            0),
+                                                                  ],
+                                                                ),
                                                               )),
                                                               Directionality(
                                                                   textDirection:

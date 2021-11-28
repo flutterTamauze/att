@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:animate_do/animate_do.dart';
 import 'package:open_file/open_file.dart' as open_file;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -11,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
@@ -233,16 +235,113 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 15.h,
+                                    height: 200.h,
                                   ),
-                                  // Platform.isAndroid
-                                  //     ? TextButton(
-                                  //         onPressed: () {
-                                  //           downloadFromUrl("ChilangoV3.apk");
-                                  //         },
-                                  //         child:
-                                  //             Text("تحميل اخر نسخة من التطبيق"))
-                                  //     : Container(),
+                                  InkWell(
+                                    onTap: () {
+                                      showModalBottomSheet<dynamic>(
+                                          context: context,
+                                          backgroundColor: Colors.black,
+                                          isScrollControlled: false,
+                                          builder: (context) => FadeInUp(
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  height: 80.h,
+                                                  color: Colors.black,
+                                                  child: InkWell(
+                                                    onTap: () async {
+                                                      if (Platform.isAndroid) {
+                                                        launch(
+                                                            "https://api.whatsapp.com/send?phone=+201112601115text=Write%20Your%20Message%20Here");
+                                                      } else {
+                                                        final url =
+                                                            "https://api.whatsapp.com/send?phone=+201112601115&text=";
+
+                                                        final uri =
+                                                            Uri.encodeFull(url);
+
+                                                        if (await canLaunch(
+                                                            uri)) {
+                                                          await launch(uri);
+                                                        } else {
+                                                          throw 'Could not launch $url';
+                                                        }
+                                                        // launch(whatsappUrl);
+                                                      }
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .whatsapp,
+                                                          size: 30,
+                                                          color:
+                                                              Colors.green[700],
+                                                        ),
+                                                        Container(
+                                                          width: 340.w,
+                                                          child: Container(
+                                                            height: 30,
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                launch(
+                                                                    "tel:021112601115");
+                                                              },
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "01112601115",
+                                                                maxLines: 2,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                            .orange[
+                                                                        600],
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    letterSpacing:
+                                                                        1,
+                                                                    height: 2,
+                                                                    fontSize:
+                                                                        setResponsiveFontSize(
+                                                                            16)),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .right,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ));
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.quick_contacts_dialer_outlined,
+                                          color: Colors.orange,
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Text(
+                                          "خدمة العملاء",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.orange,
+                                              fontSize:
+                                                  setResponsiveFontSize(15)),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),

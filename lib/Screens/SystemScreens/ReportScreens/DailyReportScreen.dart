@@ -28,6 +28,7 @@ import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/XlsxExportButton.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
 class DailyReportScreen extends StatefulWidget {
   DailyReportScreen();
@@ -111,6 +112,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
+          floatingActionButton: MultipleFloatingButtons(
+            mainTitle: "",
+            shiftName: "",
+            comingFromShifts: false,
+            mainIconData: Icons.add_location_alt,
+          ),
           endDrawer: NotificationItem(),
           backgroundColor: Colors.white,
           body: Container(

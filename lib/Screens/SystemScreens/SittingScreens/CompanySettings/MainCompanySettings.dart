@@ -19,6 +19,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import '../SettingsScreen.dart';
@@ -72,6 +73,12 @@ class _CompanySettingsState extends State<CompanySettings> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
+      floatingActionButton: MultipleFloatingButtons(
+        mainTitle: "",
+        shiftName: "",
+        comingFromShifts: false,
+        mainIconData: Icons.add_location_alt,
+      ),
       endDrawer: NotificationItem(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

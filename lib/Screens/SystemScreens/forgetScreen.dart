@@ -7,12 +7,14 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
 import 'package:qr_users/Screens/SystemScreens/NavSceen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -769,7 +771,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
         .loginPost(widget.userName, _passwordController.text, context)
         .catchError(((e) {
       print(e);
-    })).then((value) {
+    })).then((value) async {
       if (value == 0) {
         prefs.setStringList(
             'userData', [widget.userName, _passwordController.text]);
@@ -808,6 +810,18 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
             isLoading = false;
           });
         });
+      } else if (value == 4 || value == 3) {
+        prefs.setStringList(
+            'userData', [widget.userName, _passwordController.text]);
+        await Provider.of<UserData>(context, listen: false)
+            .getSuperCompanyChart(
+                Provider.of<UserData>(context, listen: false).user.userToken,
+                Provider.of<CompanyData>(context, listen: false).com.id);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SuperCompanyPieChart(),
+            ));
       } else if (value > 0) {
         prefs.setStringList(
             'userData', [widget.userName, _passwordController.text]);

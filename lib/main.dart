@@ -185,7 +185,7 @@ class _MyAppState extends State<MyApp> {
                   ConnectivityService().connectionStatusController.stream,
               builder: (context, snapshot) {
                 return MaterialApp(
-                    title: "Chilango v3",
+                    title: "Chilango",
                     debugShowCheckedModeBanner: false,
                     theme: ThemeData(fontFamily: "Almarai-Regular"),
                     home: SplashScreen());

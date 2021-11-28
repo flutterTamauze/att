@@ -32,6 +32,7 @@ import '../Screens/intro.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants.dart';
+import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -156,6 +157,18 @@ class _SplashScreenState extends State<SplashScreen>
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
                       "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
+            } else if (value == 4 || value == 3) {
+              await Provider.of<UserData>(context, listen: false)
+                  .getSuperCompanyChart(
+                      Provider.of<UserData>(context, listen: false)
+                          .user
+                          .userToken,
+                      Provider.of<CompanyData>(context, listen: false).com.id);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SuperCompanyPieChart(),
+                  ));
             } else if (value > 0 && value < 6) {
               print(" usertype $value");
 

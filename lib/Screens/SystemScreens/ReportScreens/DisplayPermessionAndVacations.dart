@@ -19,6 +19,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import '../../../constants.dart';
 import 'RadioButtonWidget.dart';
 
@@ -74,6 +75,12 @@ class _VacationAndPermessionsReportState
       },
       child: Scaffold(
           endDrawer: NotificationItem(),
+          floatingActionButton: MultipleFloatingButtons(
+            mainTitle: "",
+            shiftName: "",
+            comingFromShifts: false,
+            mainIconData: Icons.add_location_alt,
+          ),
           backgroundColor: Colors.white,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,

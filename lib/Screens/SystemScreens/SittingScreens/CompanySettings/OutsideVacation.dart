@@ -82,6 +82,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
   @override
   void initState() {
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
+    Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
     isPicked = false;
     userMission = getSingleUserMission();
     userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
@@ -534,7 +535,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
                                                         msg:
-                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية",
+                                                            "لا يمكن وضع الاجازة : يوجد مأمورية داخلية",
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:

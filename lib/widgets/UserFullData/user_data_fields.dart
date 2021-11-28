@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/user_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserDataField extends StatelessWidget {
@@ -101,10 +100,18 @@ class UserDataFieldInReport extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 3.h),
-              child: Icon(
-                icon,
-                color: Colors.orange,
-                size: 19,
+              child: InkWell(
+                onTap: () {
+                  if (icon == Icons.phone) {
+                    launch(
+                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber.replaceAll("+", "")}");
+                  }
+                },
+                child: Icon(
+                  icon,
+                  color: Colors.orange,
+                  size: 19,
+                ),
               ),
             ),
             SizedBox(

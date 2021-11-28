@@ -28,9 +28,13 @@ class AttendProof {
       if (fcmToken == null) {
         return "null";
       }
+
       if (decodedResponse["message"] ==
           "Failed : User was not present today!") {
         return "fail present";
+      } else if (decodedResponse["message"] ==
+          "Success : AttendProof Created!") {
+        return "success";
       } else if (decodedResponse["message"] == "Failed : Shift Time Out!") {
         return "fail shift";
       } else if (decodedResponse["message"] ==

@@ -224,8 +224,14 @@ class UserData with ChangeNotifier {
                       .user
                       .userSiteId);
             }
-            notifyListeners();
+
             prefs.setStringList(('bgNotifyList'), []);
+            log("user type ${(user.userType)}");
+            if (user.userType == 4 || user.userType == 3) {
+              await Provider.of<UserData>(context, listen: false)
+                  .getSuperCompanyChart(user.userToken, companyId);
+            }
+            notifyListeners();
             return user.userType;
           }
         }

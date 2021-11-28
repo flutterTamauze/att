@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
+import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/constants.dart';
@@ -161,6 +162,12 @@ class _ErrorScreenState extends State<ErrorScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => SuperAdminScreen(),
+              ));
+        } else if (value == 4 || value == 3) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SuperCompanyPieChart(),
               ));
         } else if (value > 0) {
           print("laaa");

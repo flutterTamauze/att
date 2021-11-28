@@ -10,6 +10,7 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'Widgets/display_pending_vacations.dart';
@@ -23,6 +24,12 @@ class PendingCompanyVacations extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
+        floatingActionButton: MultipleFloatingButtons(
+          mainTitle: "",
+          shiftName: "",
+          comingFromShifts: false,
+          mainIconData: Icons.add_location_alt,
+        ),
         endDrawer: NotificationItem(),
         body: Container(
           width: MediaQuery.of(context).size.width,

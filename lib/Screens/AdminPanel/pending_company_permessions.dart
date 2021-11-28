@@ -9,6 +9,7 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 import 'Widgets/display_pending_permessions.dart';
@@ -25,6 +26,12 @@ class PendingCompanyPermessions extends StatelessWidget {
         print(textEditingController.text);
       },
       child: Scaffold(
+        floatingActionButton: MultipleFloatingButtons(
+          mainTitle: "",
+          shiftName: "",
+          comingFromShifts: false,
+          mainIconData: Icons.add_location_alt,
+        ),
         endDrawer: NotificationItem(),
         body: Container(
           width: MediaQuery.of(context).size.width,
