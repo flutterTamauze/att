@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   var isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +256,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => ForgetSetPassword(
-                    _usernameController.text, _emailController.text),
+                    _usernameController.text, number.toString().trim()),
               ));
         } else if (value == "noInternet") {
           return showDialog(
@@ -337,7 +345,8 @@ class ForgetSetPassword extends StatefulWidget {
   _ForgetSetPasswordState createState() => _ForgetSetPasswordState();
 }
 
-class _ForgetSetPasswordState extends State<ForgetSetPassword> {
+class _ForgetSetPasswordState extends State<ForgetSetPassword>
+    with TickerProviderStateMixin {
   final _setPasswordFormKey = GlobalKey<FormState>();
   DateTime currentBackPressTime = DateTime.now();
   TextEditingController _pinCodeController = TextEditingController();
@@ -346,6 +355,39 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
   var isLoading = false;
   var reSend = false;
   var _passwordVisible = true;
+  int _counter = 0;
+  AnimationController _controller;
+  int levelClock = 180;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  final int timerMaxSeconds = 60;
+
+  int currentSeconds = 0;
+  final interval = const Duration(seconds: 1);
+  String get timerText =>
+      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+
+  startTimeout([int milliseconds]) {
+    var duration = interval;
+    Timer.periodic(duration, (timer) {
+      setState(() {
+        print(timer.tick);
+        currentSeconds = timer.tick;
+        if (timer.tick >= timerMaxSeconds) {
+          timer.cancel();
+          setState(() {
+            reSend = !reSend;
+          });
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -519,8 +561,13 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                               SizedBox(
                                 height: 5.h,
                               ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
                               InkWell(
                                 onTap: () async {
+                                  startTimeout();
+
                                   if (!reSend) {
                                     await textChanger();
                                     setState(() {
@@ -533,7 +580,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                                   child: AutoSizeText(
                                     (!reSend)
                                         ? "اعادة ارسال رمز التفعيل"
-                                        : "برجاء مراجعة رسائل الهاتف الخاص بكم",
+                                        : "برجاء الأنتظار قبل اعادة الأرسال",
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -547,7 +594,18 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
                                             : Colors.black),
                                   ),
                                 ),
-                              )
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              reSend
+                                  ? Text(
+                                      timerText,
+                                      style: TextStyle(
+                                          fontSize: setResponsiveFontSize(17),
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Container()
                             ],
                           ),
                         ),
@@ -879,5 +937,32 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword> {
         });
       }
     });
+  }
+}
+
+class Countdown extends AnimatedWidget {
+  Countdown({Key key, this.animation}) : super(key: key, listenable: animation);
+  Animation<int> animation;
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation.value);
+
+    String timerText =
+        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    print('animation.value  ${animation.value} ');
+    print('inMinutes ${clockTimer.inMinutes.toString()}');
+    print('inSeconds ${clockTimer.inSeconds.toString()}');
+    print(
+        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+
+    return Text(
+      "$timerText",
+      style: TextStyle(
+        fontSize: 110,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
   }
 }

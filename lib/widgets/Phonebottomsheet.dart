@@ -20,7 +20,7 @@ class PhoneBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           InkWell(
-            onTap: () => launch("tel:0223521011"),
+            onTap: () => launch("tel:+0223521011"),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

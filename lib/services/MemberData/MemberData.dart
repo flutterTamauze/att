@@ -584,7 +584,7 @@ class MemberData with ChangeNotifier {
   editMember(Member member, int id, String userToken, BuildContext context,
       String roleName) async {
     print(
-        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, roleName $roleName}");
+        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, roleName $roleName} userType ${member.userType}");
 
     if (await isConnectedToInternet()) {
       try {

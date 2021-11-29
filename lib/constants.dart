@@ -30,7 +30,7 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 25);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 11, 29);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 11, 22);
 //ERRORS

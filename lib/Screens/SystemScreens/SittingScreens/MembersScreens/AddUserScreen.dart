@@ -922,6 +922,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                       _emailController,
                                                   id: widget.id,
                                                   member: widget.member,
+                                                  userType: userType,
                                                   nameController:
                                                       _nameController,
                                                   salaryController:

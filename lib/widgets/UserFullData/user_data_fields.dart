@@ -35,7 +35,7 @@ class UserDataField extends StatelessWidget {
                 onTap: () {
                   if (icon == Icons.phone) {
                     launch(
-                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber.replaceAll("+", "")}");
+                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}");
                   }
                 },
                 child: Icon(
@@ -104,7 +104,7 @@ class UserDataFieldInReport extends StatelessWidget {
                 onTap: () {
                   if (icon == Icons.phone) {
                     launch(
-                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber.replaceAll("+", "")}");
+                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}");
                   }
                 },
                 child: Icon(

@@ -443,6 +443,7 @@ class UserData with ChangeNotifier {
           await SuperCompaniesChartRepo().getSuperCharts(token, comID);
 
       if (response is Faliure) {
+        print("faliure occured");
         return response.code;
       } else {
         print(response);

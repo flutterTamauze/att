@@ -25,11 +25,12 @@ class EditMember extends StatefulWidget {
       this.id,
       this.userRole,
       this.emailController,
+      this.userType,
       this.nameController,
       this.siteId})
       : super(key: key);
   final Member member;
-  final int shiftIndex, id, siteId;
+  final int shiftIndex, id, siteId, userType;
   final intlPhone.PhoneNumber editNumber;
   final TextEditingController phoneController,
       salaryController,
@@ -44,7 +45,6 @@ class EditMember extends StatefulWidget {
 class _EditMemberState extends State<EditMember> {
   @override
   Widget build(BuildContext context) {
-    var userType = Provider.of<UserData>(context, listen: false).user.userType;
     return RoundedAlert(
         onPressed: () async {
           showDialog(
@@ -59,7 +59,7 @@ class _EditMemberState extends State<EditMember> {
               .editMember(
                   Member(
                       id: widget.member.id,
-                      userType: userType,
+                      userType: widget.userType,
                       shiftId:
                           Provider.of<SiteShiftsData>(context, listen: false)
                               .dropDownShifts[widget.shiftIndex == 0

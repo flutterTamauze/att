@@ -168,6 +168,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                   ? Container()
                                                   : Divider()
                                               : Container(),
+
                                           Text(
                                               "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
                                           Divider(),
