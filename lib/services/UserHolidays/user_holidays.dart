@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/constants.dart';
+import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class UserHolidays {
@@ -319,18 +320,16 @@ class UserHolidaysData with ChangeNotifier {
     print(fromDate);
     print(toDate);
     if (fromDate != null && toDate != null) {
-      String msg = await Provider.of<UserHolidaysData>(context, listen: false)
-          .addHoliday(
-              UserHolidays(
-                  createdOnDate: DateTime.now(),
-                  userId: memId,
-                  holidayType: 4,
+      String msg = await Provider.of<MissionsData>(context, listen: false)
+          .addUserExternalMission(
+              UserMissions(
+                  description: desc,
                   fromDate: fromDate,
                   toDate: toDate,
-                  holidayDescription: desc),
-              Provider.of<UserData>(context, listen: false).user.userToken,
-              memId);
-      if (msg == "Success : Holiday Created!") {
+                  userId: memId),
+              Provider.of<UserData>(context, listen: false).user.userToken);
+
+      if (msg == "Success : External Missions Created!") {
         Fluttertoast.showToast(
             msg: "تمت اضافة المأمورية بنجاح",
             backgroundColor: Colors.green,
@@ -343,13 +342,13 @@ class UserHolidaysData with ChangeNotifier {
           topicName: "",
           title: "تم تكليفك بمأمورية",
         ).then((value) => Navigator.pop(context));
-      } else if (msg ==
-          "Failed : Another Holiday not approved for this user!") {
+      } else if (msg == "Failed : There are external mission in this period!") {
         Fluttertoast.showToast(
-            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
+            msg: "تم وضع مأمورية خارجية لهذا المستخدم من قبل",
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
-      } else if (msg == "Failed : You can't request a holiday from today!") {
+      } else if (msg ==
+          "Failed : You can't request an external mission from today!") {
         Fluttertoast.showToast(
             msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
             backgroundColor: Colors.red,
@@ -358,17 +357,6 @@ class UserHolidaysData with ChangeNotifier {
           "Failed : There are an internal Mission in this period!") {
         Fluttertoast.showToast(
             msg: "يوجد مأمورية داخلية فى هذا التاريخ",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else if (msg == "Failed : There are external mission in this period!") {
-        Fluttertoast.showToast(
-            msg: "يوجد مأمورية خارجية فى هذا التاريخ",
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
-      } else if (msg ==
-          "Failed : There are an holiday approved in this period!") {
-        Fluttertoast.showToast(
-            msg: "يوجد اجازة موافق عليها فى هذة الفترة",
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else {

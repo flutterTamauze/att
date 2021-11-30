@@ -521,7 +521,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                           width:
                                                                               110,
                                                                           height:
-                                                                              101,
+                                                                              1000,
                                                                           child:
                                                                               MultipleFloatingButtons(
                                                                             mainTitle:

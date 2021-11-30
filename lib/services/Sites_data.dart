@@ -407,6 +407,7 @@ class SiteData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
         print(response.body);
+        print(response.statusCode);
         if (response.statusCode == 401) {
           await inherit.login(context);
           userToken =

@@ -265,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 5.h,
                           ),
-                          UserDataField(
+                          UserDataFieldInReport(
                               icon: Icons.phone,
                               text: plusSignPhone(userProv.phoneNum)
                                   .replaceAll(new RegExp(r"\s+\b|\b\s"), "")),

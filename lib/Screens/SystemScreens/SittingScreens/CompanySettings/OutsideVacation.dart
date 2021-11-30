@@ -108,8 +108,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
         widget.radioValue == 3 ? now.toString() : tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
     _today = DateTime.now();
-    sleectedMember =
-        Provider.of<MemberData>(context, listen: false).membersList[0].name;
+
     super.initState();
   }
 

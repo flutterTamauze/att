@@ -210,7 +210,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                             child: Container(),
                           ),
                           AutoSizeText(
-                            "مجموع الأذنات",
+                            "مجموع الأذونات",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                             ),

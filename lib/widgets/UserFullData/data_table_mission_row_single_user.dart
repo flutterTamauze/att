@@ -9,6 +9,12 @@ class DataTableMissionSingleUser extends StatelessWidget {
   final CompanyMissions _holidays;
 
   DataTableMissionSingleUser(this._holidays);
+  bool isExternal() {
+    if (_holidays.sitename == "" || _holidays.sitename == null) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class DataTableMissionSingleUser extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         height: 30.h,
                         child: AutoSizeText(
-                          _holidays.typeId == 4 ? "خارجية" : "داخلية",
+                          isExternal() ? "خارجية" : "داخلية",
                           maxLines: 2,
                           style: TextStyle(
                             fontSize: ScreenUtil()

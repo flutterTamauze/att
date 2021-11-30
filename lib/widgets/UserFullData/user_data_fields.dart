@@ -15,10 +15,7 @@ class UserDataField extends StatelessWidget {
 
   Widget build(BuildContext context) {
     var phone = {
-      Provider.of<MemberData>(context, listen: false)
-          .singleMember
-          .phoneNumber
-          .replaceAll("+", "")
+      Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber
     };
     return Container(
       decoration: BoxDecoration(

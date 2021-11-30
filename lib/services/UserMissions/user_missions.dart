@@ -83,6 +83,7 @@ class MissionsData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
+      log(response.body);
 
       var decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
@@ -91,15 +92,18 @@ class MissionsData with ChangeNotifier {
         var internalObj =
             jsonDecode(response.body)['data']["InternalMissions"] as List;
 
-        List<CompanyMissions> externalMissions =
-            missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();
-        List<CompanyMissions> internalMissions =
-            internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
+        List<CompanyMissions> externalMissions = missionsObj
+            .map((json) => CompanyMissions.fromJsonExternal(json))
+            .toList();
+        List<CompanyMissions> internalMissions = internalObj
+            .map((json) => CompanyMissions.fromJsonInternal(json))
+            .toList();
         singleUserMissionsList =
             [...externalMissions, ...internalMissions].toSet().toList();
         if (singleUserMissionsList.length > 0) {
           for (int i = 0; i < singleUserMissionsList.length; i++) {
-            if (singleUserMissionsList[i].typeId == 4) {
+            if (singleUserMissionsList[i].sitename == "" ||
+                singleUserMissionsList[i].sitename == null) {
               externalMissionsCount++;
             } else {
               internalMissionsCount++;
@@ -113,7 +117,30 @@ class MissionsData with ChangeNotifier {
     }
   }
 
-  addUserMission(
+  addUserExternalMission(UserMissions userMissions, String userToken) async {
+    isLoading = true;
+    notifyListeners();
+    var response = await http.post(
+        Uri.parse("$baseURL/api/externalMissions/Add"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+        body: json.encode({
+          "fromdate": userMissions.fromDate.toIso8601String(),
+          "shiftId": userMissions.shiftId,
+          "toDate": userMissions.toDate.toIso8601String(),
+          "userId": userMissions.userId,
+          "desc": userMissions.description,
+          "adminResponse": ""
+        }));
+    isLoading = false;
+    notifyListeners();
+    print(response.body);
+    return json.decode(response.body)["message"];
+  }
+
+  addUserInternalMission(
     UserMissions userMissions,
     String userToken,
   ) async {
@@ -131,7 +158,7 @@ class MissionsData with ChangeNotifier {
           "shiftId": userMissions.shiftId,
           "toDate": userMissions.toDate.toIso8601String(),
           "userId": userMissions.userId,
-          "desc": userMissions.description
+          "desc": userMissions.description,
         }));
 
     isLoading = false;
@@ -158,7 +185,7 @@ class MissionsData with ChangeNotifier {
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER);
     } else {
-      String msg = await addUserMission(
+      String msg = await addUserInternalMission(
         UserMissions(
             description: description ?? "لا يوجد تفاصيل",
             fromDate: fromDate,

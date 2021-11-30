@@ -580,12 +580,13 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                   child: AutoSizeText(
                                     (!reSend)
                                         ? "اعادة ارسال رمز التفعيل"
-                                        : "برجاء الأنتظار قبل اعادة الأرسال",
+                                        : "لم يصلك رمز التفعيل ؟ برجاء الأنتظار لإعادة الإرسال",
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(15,
+                                        fontSize: ScreenUtil().setSp(13,
                                             allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.w600,
                                         decoration: (!reSend)
                                             ? TextDecoration.underline
                                             : TextDecoration.none,

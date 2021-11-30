@@ -11,15 +11,16 @@ class SuperCompaniesModel {
 
 class SuperCompaniesChartModel {
   int totalEmp,
-      totalAttendRatio,
-      totalAbsentRatio,
-      totalExternalMissionRatio,
       totalPermessions,
       totalHolidays,
       totalAttend,
       totalAbsent,
-      totalExternalMissions,
-      totalHolidaysRatio;
+      totalExternalMissions;
+
+  double totalAttendRatio,
+      totalAbsentRatio,
+      totalHolidaysRatio,
+      totalExternalMissionRatio;
   SuperCompaniesChartModel(
       {this.totalAbsentRatio,
       this.totalAttendRatio,
@@ -33,14 +34,15 @@ class SuperCompaniesChartModel {
       this.totalHolidaysRatio});
   factory SuperCompaniesChartModel.fromJson(json) {
     return SuperCompaniesChartModel(
-        totalAbsentRatio: json["totalAbsentRatio"],
-        totalAttendRatio: json["totalAttendRatio"],
-        totalExternalMissionRatio: json["totalExternalMissionsRatio"],
+        totalAbsentRatio: json["totalAbsentRatio"] + 0.0 as double,
+        totalAttendRatio: json["totalAttendRatio"] + 0.0 as double,
+        totalExternalMissionRatio:
+            json["totalExternalMissionsRatio"] + 0.0 as double,
         totalHolidays: json["totalHolidays"],
         totalAbsent: json["totalAbsent"],
         totalAttend: json["totalAttend"],
         totalExternalMissions: json["totalExternalMissions"],
-        totalHolidaysRatio: json["totalHolidaysRatio"],
+        totalHolidaysRatio: json["totalHolidaysRatio"] + 0.0 as double,
         totalPermessions: json["totalPermissions"],
         totalEmp: json["totalEmployee"]);
   }
