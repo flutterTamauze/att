@@ -627,7 +627,8 @@ class MemberData with ChangeNotifier {
 
             notifyListeners();
             return "Success";
-          } else if (decodedRes["message"] == "Failed : Email Already Exist") {
+          } else if (decodedRes["message"] ==
+              "Fail : Phone no already exist!") {
             return "exists";
           } else if (decodedRes["message"] == "Failed : User Not Exist") {
             return "not exist";

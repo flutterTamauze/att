@@ -27,6 +27,7 @@ import 'package:qr_users/widgets/Reports/LateAbsence/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableHeader.dart';
 import 'package:qr_users/widgets/Reports/LateAbsence/dataTableRow.dart';
 import 'package:qr_users/widgets/Shared/Charts/PieChart.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
@@ -275,21 +276,24 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             builder: (context) {
                                               return InkWell(
                                                   onTap: () async {
-                                                    final List<
-                                                            DateTime> picked =
-                                                        await DateRagePicker
-                                                            .showDatePicker(
-                                                                context:
-                                                                    context,
-                                                                initialFirstDate:
-                                                                    fromDate,
-                                                                initialLastDate:
-                                                                    toDate,
-                                                                firstDate: comProv
-                                                                    .com
-                                                                    .createdOn,
-                                                                lastDate:
-                                                                    yesterday);
+                                                    final List<DateTime>
+                                                        picked =
+                                                        await DateRagePicker.showDatePicker(
+                                                            context: context,
+                                                            initialFirstDate:
+                                                                fromDate,
+                                                            initialLastDate:
+                                                                toDate,
+                                                            firstDate: DateTime(
+                                                                comProv
+                                                                        .com
+                                                                        .createdOn
+                                                                        .year -
+                                                                    1,
+                                                                1,
+                                                                1),
+                                                            lastDate:
+                                                                yesterday);
                                                     var newString = "";
                                                     setState(() {
                                                       fromDate = picked.first;
@@ -472,132 +476,128 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                         SizedBox(
                                           height: 10.h,
                                         ),
-                                        Expanded(
-                                          child: Container(
-                                            color: Colors.white,
-                                            child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: !reportsData
-                                                        .lateAbsenceReport
-                                                        .isDayOff
-                                                    ? reportsData
-                                                                .lateAbsenceReport
-                                                                .lateAbsenceReportUnitList
-                                                                .length !=
-                                                            0
-                                                        ? Column(
-                                                            children: [
-                                                              Divider(
-                                                                thickness: 1,
-                                                                color: Colors
-                                                                        .orange[
-                                                                    600],
-                                                              ),
-                                                              DataTableHeader(),
-                                                              Divider(
-                                                                thickness: 1,
-                                                                color: Colors
-                                                                        .orange[
-                                                                    600],
-                                                              ),
-                                                              Expanded(
-                                                                  child:
-                                                                      Container(
-                                                                child: Stack(
+                                        snapshot.data ==
+                                                "Date is older than company date"
+                                            ? Expanded(
+                                                child: CenterMessageText(
+                                                    message:
+                                                        "التاريخ قبل إنشاء الشركة"),
+                                              )
+                                            : Expanded(
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Directionality(
+                                                      textDirection:
+                                                          ui.TextDirection.rtl,
+                                                      child: !reportsData
+                                                              .lateAbsenceReport
+                                                              .isDayOff
+                                                          ? reportsData
+                                                                      .lateAbsenceReport
+                                                                      .lateAbsenceReportUnitList
+                                                                      .length !=
+                                                                  0
+                                                              ? Column(
                                                                   children: [
-                                                                    ListView.builder(
-                                                                        itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
-                                                                        itemBuilder: (BuildContext context, int index) {
-                                                                          return DataTableRow(
-                                                                              reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index],
-                                                                              siteIdIndex,
-                                                                              fromDate,
-                                                                              toDate);
-                                                                        }),
-                                                                    Positioned(
+                                                                    Divider(
+                                                                      thickness:
+                                                                          1,
+                                                                      color: Colors
+                                                                              .orange[
+                                                                          600],
+                                                                    ),
+                                                                    DataTableHeader(),
+                                                                    Divider(
+                                                                      thickness:
+                                                                          1,
+                                                                      color: Colors
+                                                                              .orange[
+                                                                          600],
+                                                                    ),
+                                                                    Expanded(
                                                                         child:
                                                                             Container(
-                                                                          width:
-                                                                              110,
-                                                                          height:
-                                                                              1000,
-                                                                          child:
-                                                                              MultipleFloatingButtons(
-                                                                            mainTitle:
-                                                                                "",
-                                                                            shiftName:
-                                                                                "",
-                                                                            comingFromShifts:
-                                                                                false,
-                                                                            mainIconData:
-                                                                                Icons.add_location_alt,
-                                                                          ),
-                                                                        ),
-                                                                        bottom:
-                                                                            0,
-                                                                        left:
-                                                                            0),
+                                                                      child:
+                                                                          Stack(
+                                                                        children: [
+                                                                          ListView.builder(
+                                                                              itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
+                                                                              itemBuilder: (BuildContext context, int index) {
+                                                                                return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
+                                                                              }),
+                                                                          Positioned(
+                                                                              child: Container(
+                                                                                width: 110,
+                                                                                height: 1000,
+                                                                                child: MultipleFloatingButtons(
+                                                                                  mainTitle: "",
+                                                                                  shiftName: "",
+                                                                                  comingFromShifts: false,
+                                                                                  mainIconData: Icons.add_location_alt,
+                                                                                ),
+                                                                              ),
+                                                                              bottom: 0,
+                                                                              left: 0),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    Directionality(
+                                                                        textDirection: ui
+                                                                            .TextDirection
+                                                                            .rtl,
+                                                                        child:
+                                                                            DataTableEnd(
+                                                                          lateRatio: reportsData
+                                                                              .lateAbsenceReport
+                                                                              .lateRatio,
+                                                                          absenceRatio: reportsData
+                                                                              .lateAbsenceReport
+                                                                              .absentRatio,
+                                                                          totalDeduction: reportsData
+                                                                              .lateAbsenceReport
+                                                                              .totalDecutionForAllUsers,
+                                                                        ))
                                                                   ],
-                                                                ),
-                                                              )),
-                                                              Directionality(
-                                                                  textDirection:
-                                                                      ui.TextDirection
-                                                                          .rtl,
+                                                                )
+                                                              : Center(
                                                                   child:
-                                                                      DataTableEnd(
-                                                                    lateRatio: reportsData
-                                                                        .lateAbsenceReport
-                                                                        .lateRatio,
-                                                                    absenceRatio:
-                                                                        reportsData
-                                                                            .lateAbsenceReport
-                                                                            .absentRatio,
-                                                                    totalDeduction:
-                                                                        reportsData
-                                                                            .lateAbsenceReport
-                                                                            .totalDecutionForAllUsers,
-                                                                  ))
-                                                            ],
-                                                          )
-                                                        : Center(
-                                                            child: Container(
-                                                              height: 20,
-                                                              child:
-                                                                  AutoSizeText(
-                                                                "لا يوجد تسجيلات بهذا الموقع",
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
+                                                                      Container(
+                                                                    height: 20,
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "لا يوجد تسجيلات بهذا الموقع",
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: TextStyle(
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf:
+                                                                                  true),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                          : Center(
+                                                              child: Container(
+                                                                height: 20,
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  "لا يوجد تسجيلات: يوم اجازة",
+                                                                  maxLines: 1,
+                                                                  style: TextStyle(
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          16,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
-                                                    : Center(
-                                                        child: Container(
-                                                          height: 20,
-                                                          child: AutoSizeText(
-                                                            "لا يوجد تسجيلات: يوم اجازة",
-                                                            maxLines: 1,
-                                                            style: TextStyle(
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
-                                                          ),
-                                                        ),
-                                                      )),
-                                          ),
-                                        )
+                                                            )),
+                                                ),
+                                              )
                                       ],
                                     );
                                   default:

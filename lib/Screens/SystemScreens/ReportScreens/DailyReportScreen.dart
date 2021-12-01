@@ -266,9 +266,14 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                     clockTheme,
                                                                 child:
                                                                     SingleDayDatePicker(
-                                                                  firstDate: comDate
-                                                                      .com
-                                                                      .createdOn,
+                                                                  firstDate: DateTime(
+                                                                      comDate
+                                                                              .com
+                                                                              .createdOn
+                                                                              .year -
+                                                                          1,
+                                                                      1,
+                                                                      1),
                                                                   lastDate:
                                                                       DateTime
                                                                           .now(),
@@ -439,7 +444,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : snapshot.data == "user created after period"
+                                                                              : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date"
                                                                                   ? Container()
                                                                                   : DailyReportTodayTableEnd(
                                                                                       titleHeader: "عطلة اسبوعية",
@@ -459,7 +464,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                       : DailyReportTodayTableEnd(
                                                                                           titleHeader: "عطلة اسبوعية",
                                                                                           title: "",
-                                                                                        )
+                                                                                        ),
                                                                 ],
                                                               )
                                                             : CenterMessageText(

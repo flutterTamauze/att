@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -29,6 +31,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
+
+import 'AddUserScreen.dart';
 
 class UsersScreen extends StatefulWidget {
   final selectedIndex;
@@ -507,16 +512,76 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                             ),
                                                                                           ));
                                                                                     },
-                                                                                    child: Card(
-                                                                                      elevation: 2,
-                                                                                      child: Container(
-                                                                                        alignment: Alignment.centerRight,
-                                                                                        width: double.infinity,
-                                                                                        height: 50.h,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(10.0),
-                                                                                          child: Text(
-                                                                                            value.userSearchMember[index].username,
+                                                                                    child: Slidable(
+                                                                                      actionExtentRatio: 0.10,
+                                                                                      closeOnScroll: true,
+                                                                                      controller: slidableController,
+                                                                                      actionPane: SlidableDrawerActionPane(),
+                                                                                      secondaryActions: [
+                                                                                        ZoomIn(
+                                                                                            child: InkWell(
+                                                                                          child: Container(
+                                                                                            padding: EdgeInsets.all(7),
+                                                                                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.orange)),
+                                                                                            child: Icon(
+                                                                                              Icons.edit,
+                                                                                              size: 18,
+                                                                                              color: Colors.orange,
+                                                                                            ),
+                                                                                          ),
+                                                                                          onTap: () async {
+                                                                                            showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return RoundedLoadingIndicator();
+                                                                                                });
+                                                                                            await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
+                                                                                            var phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
+
+                                                                                            Navigator.of(context).push(
+                                                                                              new MaterialPageRoute(
+                                                                                                builder: (context) => AddUserScreen(
+                                                                                                  Provider.of<MemberData>(context, listen: false).singleMember,
+                                                                                                  index,
+                                                                                                  true,
+                                                                                                  phone[0],
+                                                                                                  phone[1],
+                                                                                                  false,
+                                                                                                  "",
+                                                                                                ),
+                                                                                              ),
+                                                                                            );
+                                                                                          },
+                                                                                        )),
+                                                                                        Provider.of<UserData>(context, listen: false).user.id == value.userSearchMember[index].id
+                                                                                            ? Container()
+                                                                                            : ZoomIn(
+                                                                                                child: InkWell(
+                                                                                                child: Container(
+                                                                                                  padding: EdgeInsets.all(7),
+                                                                                                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.red)),
+                                                                                                  child: Icon(
+                                                                                                    Icons.delete,
+                                                                                                    size: 18,
+                                                                                                    color: Colors.red,
+                                                                                                  ),
+                                                                                                ),
+                                                                                                onTap: () {
+                                                                                                  settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                                },
+                                                                                              )),
+                                                                                      ],
+                                                                                      child: Card(
+                                                                                        elevation: 2,
+                                                                                        child: Container(
+                                                                                          alignment: Alignment.centerRight,
+                                                                                          width: double.infinity,
+                                                                                          height: 50.h,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(10.0),
+                                                                                            child: Text(
+                                                                                              value.userSearchMember[index].username,
+                                                                                            ),
                                                                                           ),
                                                                                         ),
                                                                                       ),

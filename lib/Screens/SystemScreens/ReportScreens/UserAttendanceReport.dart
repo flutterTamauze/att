@@ -348,19 +348,22 @@ class _UserAttendanceReportScreenState
                                       return InkWell(
                                           onTap: () async {
                                             final List<DateTime> picked =
-                                                await DateRagePicker
-                                                    .showDatePicker(
-                                                        context: context,
-                                                        initialFirstDate:
-                                                            fromDate,
-                                                        initialLastDate: toDate,
-                                                        firstDate: Provider.of<
-                                                                    CompanyData>(
-                                                                context,
-                                                                listen: false)
-                                                            .com
-                                                            .createdOn,
-                                                        lastDate: yesterday);
+                                                await DateRagePicker.showDatePicker(
+                                                    context: context,
+                                                    initialFirstDate: fromDate,
+                                                    initialLastDate: toDate,
+                                                    firstDate: DateTime(
+                                                        Provider.of<CompanyData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .com
+                                                                .createdOn
+                                                                .year -
+                                                            1,
+                                                        1,
+                                                        1),
+                                                    lastDate: yesterday);
                                             var newString = "";
                                             setState(() {
                                               fromDate = picked.first;
@@ -706,9 +709,12 @@ class _UserAttendanceReportScreenState
                                                                                   itemBuilder: (BuildContext context, int index) {
                                                                                     return UserReportDataTableRow(reportsData.userAttendanceReport.userAttendListUnits[index]);
                                                                                   }))),
-                                                                  UserReprotDataTableEnd(
-                                                                      reportsData
-                                                                          .userAttendanceReport)
+                                                                  snapshot.data ==
+                                                                          "user created after period"
+                                                                      ? Container()
+                                                                      : UserReprotDataTableEnd(
+                                                                          reportsData
+                                                                              .userAttendanceReport)
                                                                 ],
                                                               )),
                                                         )

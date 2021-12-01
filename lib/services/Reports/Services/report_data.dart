@@ -628,6 +628,9 @@ class ReportsData with ChangeNotifier {
           } else if (decodedRes["message"] ==
               "Failed : user name and password not match ") {
             return "wrong";
+          } else if (decodedRes["message"] ==
+              "Success: Date is older than company date") {
+            return "Date is older than company date";
           }
         }
       } catch (e) {

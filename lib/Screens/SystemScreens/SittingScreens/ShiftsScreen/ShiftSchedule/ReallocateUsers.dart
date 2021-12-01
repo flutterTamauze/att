@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
@@ -687,6 +688,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   _toDate,
                                                   widget.member.siteId);
                                           if (msg == "Success") {
+                                            await sendFcmMessage(
+                                              topicName: "",
+                                              title: "جدولة مناوبة",
+                                              category: "schedule",
+                                              userToken: widget.member.fcmToken,
+                                              message:
+                                                  "تم وضع جدولة مناوبات لك ",
+                                            );
+
                                             Fluttertoast.showToast(
                                                 msg: "تمت اضافة الجدولة بنجاح",
                                                 gravity: ToastGravity.CENTER,

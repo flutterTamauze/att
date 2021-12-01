@@ -108,7 +108,7 @@ class _EditMemberState extends State<EditMember> {
             // });
           } else if (msg == "exists") {
             Fluttertoast.showToast(
-                msg: "خطأ في تعديل المستخدم:البريد الإلكتروني مستخدم مسبقا",
+                msg: "خطأ في تعديل المستخدم: رقم الهاتف مستخدم مسبقا",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 1,
