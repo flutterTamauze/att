@@ -835,7 +835,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 builder: (context) =>
                                                     UsersScreen(-1, false, ""),
                                               ));
-                                        } else if (msg == "phone exists") {
+                                        } else if (msg == "exists") {
                                           Fluttertoast.showToast(
                                               msg:
                                                   "خطأ في اضافة المستخدم : رقم الهاتف  مستخدم مسبقا",

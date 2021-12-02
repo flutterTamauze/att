@@ -82,15 +82,8 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                       } else {
                         return widget._nameController.text == ""
                             ? Container()
-                            : holidayProv.singleUserHoliday.isEmpty
-                                ? Center(
-                                    child: Text(
-                                    "لا يوجد اجازات لهذا المستخدم",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                : ListView.builder(
+                            : holidayProv.singleUserHoliday.isNotEmpty
+                                ? ListView.builder(
                                     itemCount:
                                         holidayProv.singleUserHoliday.length,
                                     itemBuilder:
@@ -109,7 +102,29 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                               ],
                                             )
                                           : Container();
-                                    });
+                                    })
+                                : Center(
+                                    child: Provider.of<MemberData>(context)
+                                            .loadingSearch
+                                        ? Container()
+                                        : Provider.of<MemberData>(context)
+                                                .userSearchMember
+                                                .isEmpty
+                                            ? Text(
+                                                "لا يوجد نتائج للبحث",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "لا يوجد اجازات لهذا المستخدم",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ));
+                        ;
                       }
                     })),
           ),

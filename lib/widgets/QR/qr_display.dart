@@ -10,6 +10,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
+import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -54,6 +55,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    HuaweiServices _huawei = HuaweiServices();
     var shiftApiConsumer = Provider.of<ShiftApi>(context);
     var shiftDataProvider =
         Provider.of<ShiftApi>(context, listen: true).currentShift;
@@ -268,22 +270,31 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                   allowFontScalingSelf: true)),
                                         ),
                                       ),
-                                      Container(
-                                        height: 350.h,
-                                        width: double.infinity.w,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: ShowSateliteMap(
-                                              shiftApiConsumer
-                                                  .currentPosition.latitude,
-                                              shiftApiConsumer
-                                                  .currentPosition.longitude,
-                                              shiftApiConsumer
-                                                  .currentSitePositionLat,
-                                              shiftApiConsumer
-                                                  .currentSitePositionLong),
-                                        ),
-                                      ),
+                                      Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .osType ==
+                                              3
+                                          ? Container()
+                                          : Container(
+                                              height: 350.h,
+                                              width: double.infinity.w,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: ShowSateliteMap(
+                                                    shiftApiConsumer
+                                                        .currentPosition
+                                                        .latitude,
+                                                    shiftApiConsumer
+                                                        .currentPosition
+                                                        .longitude,
+                                                    shiftApiConsumer
+                                                        .currentSitePositionLat,
+                                                    shiftApiConsumer
+                                                        .currentSitePositionLong),
+                                              ),
+                                            ),
                                     ],
                                   )
                             : Column(

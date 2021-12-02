@@ -79,15 +79,8 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                       } else {
                         return widget._nameController.text == ""
                             ? Container()
-                            : comMissionProv.singleUserMissionsList.isEmpty
-                                ? Center(
-                                    child: Text(
-                                    "لا يوجد مأموريات لهذا المستخدم",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                : ListView.builder(
+                            : comMissionProv.singleUserMissionsList.isNotEmpty
+                                ? ListView.builder(
                                     itemCount: comMissionProv
                                         .singleUserMissionsList.length,
                                     itemBuilder:
@@ -101,7 +94,28 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                                           )
                                         ],
                                       );
-                                    });
+                                    })
+                                : Center(
+                                    child: Provider.of<MemberData>(context)
+                                            .loadingSearch
+                                        ? Container()
+                                        : Provider.of<MemberData>(context)
+                                                .userSearchMember
+                                                .isEmpty
+                                            ? Text(
+                                                "لا يوجد نتائج للبحث",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "لا يوجد مأموريات لهذا المستخدم",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ));
                       }
                     })),
           ),

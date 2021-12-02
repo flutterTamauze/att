@@ -9,6 +9,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -72,6 +73,17 @@ class _UserAttendanceReportScreenState
   String selectedId = "";
   Site siteData;
   DateTime yesterday;
+  bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
+    print("val $val");
+    DateTime maxDate = currentDate.add(Duration(days: 31));
+    DateTime minDate = currentDate.subtract(Duration(days: 31));
+
+    if (val.isBefore(maxDate) && val.isAfter(minDate)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -194,7 +206,7 @@ class _UserAttendanceReportScreenState
   @override
   Widget build(BuildContext context) {
     var userToken = Provider.of<UserData>(context, listen: false);
-
+    var comData = Provider.of<CompanyData>(context, listen: false).com;
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     final userDataProvider = Provider.of<UserData>(context, listen: false);
     var siteProv = Provider.of<SiteShiftsData>(context, listen: false);
@@ -351,56 +363,73 @@ class _UserAttendanceReportScreenState
                                                 await DateRagePicker.showDatePicker(
                                                     context: context,
                                                     initialFirstDate: fromDate,
+                                                    selectableDayPredicate: (day) =>
+                                                        datePickerPeriodAvailable(
+                                                            fromDate, day),
                                                     initialLastDate: toDate,
                                                     firstDate: DateTime(
-                                                        Provider.of<CompanyData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .com
-                                                                .createdOn
-                                                                .year -
+                                                        comData.createdOn.year -
                                                             1,
-                                                        1,
-                                                        1),
+                                                        comData.createdOn.month,
+                                                        comData.createdOn.day),
                                                     lastDate: yesterday);
-                                            var newString = "";
-                                            setState(() {
-                                              fromDate = picked.first;
-                                              toDate = picked.last;
 
-                                              String fromText =
-                                                  " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                              String toText =
-                                                  " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                              newString = "$fromText $toText";
-                                            });
+                                            if (picked.last
+                                                    .difference(picked.first)
+                                                    .inDays >
+                                                31) {
+                                              print(picked.last
+                                                  .difference(picked.first)
+                                                  .inDays);
+                                              Fluttertoast.showToast(
+                                                  gravity: ToastGravity.CENTER,
+                                                  msg:
+                                                      "يجب ان يتم اختيار اقل من 32 يوم",
+                                                  backgroundColor: Colors.red);
+                                            } else {
+                                              var newString = "";
 
-                                            if (_dateController.text !=
-                                                newString) {
-                                              _dateController.text = newString;
+                                              setState(() {
+                                                fromDate = picked.first;
+                                                toDate = picked.last;
 
-                                              dateFromString =
-                                                  apiFormatter.format(fromDate);
-                                              dateToString =
-                                                  apiFormatter.format(toDate);
+                                                String fromText =
+                                                    " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                String toText =
+                                                    " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                newString = "$fromText $toText";
+                                              });
 
-                                              if (_nameController.text != "" ||
-                                                  Provider.of<UserData>(context,
-                                                              listen: false)
-                                                          .user
-                                                          .userType ==
-                                                      2) {
-                                                await Provider.of<ReportsData>(
-                                                        context,
-                                                        listen: false)
-                                                    .getUserReportUnits(
-                                                        userToken
-                                                            .user.userToken,
-                                                        selectedId,
-                                                        dateFromString,
-                                                        dateToString,
-                                                        context);
+                                              if (_dateController.text !=
+                                                  newString) {
+                                                _dateController.text =
+                                                    newString;
+
+                                                dateFromString = apiFormatter
+                                                    .format(fromDate);
+                                                dateToString =
+                                                    apiFormatter.format(toDate);
+
+                                                if (_nameController.text !=
+                                                        "" ||
+                                                    Provider.of<UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userType ==
+                                                        2) {
+                                                  await Provider.of<
+                                                              ReportsData>(
+                                                          context,
+                                                          listen: false)
+                                                      .getUserReportUnits(
+                                                          userToken
+                                                              .user.userToken,
+                                                          selectedId,
+                                                          dateFromString,
+                                                          dateToString,
+                                                          context);
+                                                }
                                               }
                                             }
                                           },

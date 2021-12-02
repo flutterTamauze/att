@@ -267,13 +267,17 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                 child:
                                                                     SingleDayDatePicker(
                                                                   firstDate: DateTime(
-                                                                      comDate
-                                                                              .com
-                                                                              .createdOn
+                                                                      comDate.com.createdOn
                                                                               .year -
                                                                           1,
-                                                                      1,
-                                                                      1),
+                                                                      comDate
+                                                                          .com
+                                                                          .createdOn
+                                                                          .month,
+                                                                      comDate
+                                                                          .com
+                                                                          .createdOn
+                                                                          .day),
                                                                   lastDate:
                                                                       DateTime
                                                                           .now(),

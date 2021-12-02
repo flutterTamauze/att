@@ -79,15 +79,8 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                       } else {
                         return widget._nameController.text == ""
                             ? Container()
-                            : permessionProv.singleUserPermessions.isEmpty
-                                ? Center(
-                                    child: Text(
-                                    "لا يوجد اذونات لهذا المستخدم",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                : ListView.builder(
+                            : permessionProv.singleUserPermessions.isNotEmpty
+                                ? ListView.builder(
                                     itemCount: permessionProv
                                         .singleUserPermessions.length,
                                     itemBuilder:
@@ -108,7 +101,28 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                               ],
                                             )
                                           : Container();
-                                    });
+                                    })
+                                : Center(
+                                    child: Provider.of<MemberData>(context)
+                                            .loadingSearch
+                                        ? Container()
+                                        : Provider.of<MemberData>(context)
+                                                .userSearchMember
+                                                .isEmpty
+                                            ? Text(
+                                                "لا يوجد نتائج للبحث",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "لا يوجد اذونات لهذا المستخدم",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ));
                       }
                     })),
           ),

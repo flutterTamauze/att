@@ -97,7 +97,7 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(
       String username, String password, BuildContext context) async {
-    if (await isConnectedToInternet("www.google.com")) {
+    if (await isConnectedToInternet("www.wikipedia.org")) {
       int userType;
       var decodedRes;
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -231,7 +231,7 @@ class UserData with ChangeNotifier {
           return user.userType;
         }
       }
-      return -3;
+      return NO_INTERNET;
     } else {
       return NO_INTERNET;
     }

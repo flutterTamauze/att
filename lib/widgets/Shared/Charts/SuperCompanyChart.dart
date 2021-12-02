@@ -25,7 +25,7 @@ class SuperCompanyChartState extends State {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: EdgeInsets.only(left: 50.w),
+                padding: EdgeInsets.only(left: 70.w),
                 child: PieChart(
                   PieChartData(
                       pieTouchData: PieTouchData(touchCallback:

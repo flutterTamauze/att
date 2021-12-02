@@ -106,6 +106,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
+              onTap: () {},
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,

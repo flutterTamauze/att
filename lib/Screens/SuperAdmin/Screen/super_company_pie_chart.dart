@@ -93,45 +93,44 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: 10.w),
                                 width: 190.w,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 25.w,
-                                      height: 25.h,
-                                      child: Center(
-                                        child: Text(
-                                          userData
-                                              .superCompaniesChartModel.totalEmp
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blueAccent),
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 5.w),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 35.w,
+                                        height: 25.h,
+                                        child: Center(
+                                          child: Text(
+                                            userData.superCompaniesChartModel
+                                                .totalEmp
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    setResponsiveFontSize(15),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.blueAccent),
+                                          ),
                                         ),
                                       ),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              width: 2,
-                                              color: Colors.blueAccent)),
-                                    ),
-                                    Expanded(
-                                      child: Container(),
-                                    ),
-                                    AutoSizeText(
-                                      "القوة",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: setResponsiveFontSize(15),
-                                          color: Colors.blueAccent),
-                                      textAlign: TextAlign.right,
-                                    ),
-                                  ],
+                                      Expanded(
+                                        child: Container(),
+                                      ),
+                                      AutoSizeText(
+                                        "عدد مستخدمين الشركة",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: setResponsiveFontSize(14),
+                                            color: Colors.blueAccent),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                height: 5.h,
+                                height: 15.h,
                               ),
                               Row(
                                 children: [
@@ -167,69 +166,75 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              SinglePieChartItem(
-                                title: "الغياب",
-                                color: Colors.red[600],
-                                count: userData
-                                    .superCompaniesChartModel.totalAbsent
-                                    .toString(),
-                              ),
+                              // SinglePieChartItem(
+                              //   title: "الغياب",
+                              //   color: Colors.red[600],
+                              //   count: userData
+                              //       .superCompaniesChartModel.totalAbsent
+                              //       .toString(),
+                              // ),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      padding: EdgeInsets.only(right: 10.w),
-                      width: 190.w,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 25.w,
-                            height: 25.h,
-                            child: Center(
-                              child: Text(
-                                userData
-                                    .superCompaniesChartModel.totalPermessions
-                                    .toString(),
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(width: 1, color: Colors.black)),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          AutoSizeText(
-                            "مجموع الأذونات",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: Container(
+                  //     padding: EdgeInsets.only(right: 10.w),
+                  //     width: 202.w,
+                  //     child: Row(
+                  //       children: [
+                  //         Container(
+                  //           width: 25.w,
+                  //           height: 25.h,
+                  //           child: Center(
+                  //             child: Text(
+                  //               userData
+                  //                   .superCompaniesChartModel.totalPermessions
+                  //                   .toString(),
+                  //               style: TextStyle(fontWeight: FontWeight.w500),
+                  //             ),
+                  //           ),
+                  //           decoration: BoxDecoration(
+                  //               shape: BoxShape.circle,
+                  //               border:
+                  //                   Border.all(width: 1, color: Colors.black)),
+                  //         ),
+                  //         Expanded(
+                  //           child: Container(),
+                  //         ),
+                  //         AutoSizeText(
+                  //           "مجموع الأذونات",
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //           textAlign: TextAlign.right,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   Spacer(),
-                  RoundedButton(
-                      title: "المتابعة",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NavScreenTwo(2),
-                            ));
-                      })
+                  InkWell(
+                    onTap: () {
+                      //  onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NavScreenTwo(2),
+                          ));
+                      // })
+                    },
+                    child: Container(
+                        width: 80.w,
+                        height: 80.w,
+                        child: Lottie.asset('resources/proceed.json')),
+                  )
+                  // RoundedButton(
+                  //     title: "متابعة",
                 ],
               ),
             ),

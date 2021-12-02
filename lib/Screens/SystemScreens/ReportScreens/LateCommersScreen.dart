@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:animate_do/animate_do.dart';
@@ -7,6 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -110,6 +112,17 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
 
   int siteIdIndex = 0;
   int siteId = 0;
+  bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
+    print("val $val");
+    DateTime maxDate = currentDate.add(Duration(days: 31));
+    DateTime minDate = currentDate.subtract(Duration(days: 31));
+
+    if (val.isBefore(maxDate) && val.isAfter(minDate)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -284,74 +297,107 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                 fromDate,
                                                             initialLastDate:
                                                                 toDate,
+                                                            selectableDayPredicate:
+                                                                (day) =>
+                                                                    datePickerPeriodAvailable(
+                                                                        fromDate,
+                                                                        day),
                                                             firstDate: DateTime(
                                                                 comProv
                                                                         .com
                                                                         .createdOn
                                                                         .year -
                                                                     1,
-                                                                1,
-                                                                1),
+                                                                comProv
+                                                                    .com
+                                                                    .createdOn
+                                                                    .month,
+                                                                comProv
+                                                                    .com
+                                                                    .createdOn
+                                                                    .day),
                                                             lastDate:
                                                                 yesterday);
-                                                    var newString = "";
-                                                    setState(() {
-                                                      fromDate = picked.first;
-                                                      toDate = picked.last;
 
-                                                      String fromText =
-                                                          " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                      String toText =
-                                                          " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                                      newString =
-                                                          "$fromText $toText";
-                                                    });
+                                                    if (picked.last
+                                                            .difference(
+                                                                picked.first)
+                                                            .inDays >
+                                                        31) {
+                                                      print(picked.last
+                                                          .difference(
+                                                              picked.first)
+                                                          .inDays);
+                                                      Fluttertoast.showToast(
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          msg:
+                                                              "يجب ان يتم اختيار اقل من 32 يوم",
+                                                          backgroundColor:
+                                                              Colors.red);
+                                                    } else {
+                                                      var newString = "";
+                                                      setState(() {
+                                                        fromDate = picked.first;
+                                                        toDate = picked.last;
 
-                                                    if (_dateController.text !=
-                                                        newString) {
-                                                      _dateController.text =
-                                                          newString;
+                                                        String fromText =
+                                                            " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                        String toText =
+                                                            " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                        newString =
+                                                            "$fromText $toText";
+                                                      });
 
-                                                      dateFromString =
-                                                          apiFormatter
-                                                              .format(fromDate);
-                                                      dateToString =
-                                                          apiFormatter
-                                                              .format(toDate);
+                                                      if (_dateController
+                                                              .text !=
+                                                          newString) {
+                                                        _dateController.text =
+                                                            newString;
 
-                                                      var user =
-                                                          Provider.of<UserData>(
+                                                        dateFromString =
+                                                            apiFormatter.format(
+                                                                fromDate);
+                                                        dateToString =
+                                                            apiFormatter
+                                                                .format(toDate);
+
+                                                        var user = Provider.of<
+                                                                    UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user;
+                                                        if (user.userType ==
+                                                            2) {
+                                                          await Provider.of<
+                                                                      ReportsData>(
                                                                   context,
                                                                   listen: false)
-                                                              .user;
-                                                      if (user.userType == 2) {
-                                                        await Provider.of<
-                                                                    ReportsData>(
-                                                                context,
-                                                                listen: false)
-                                                            .getLateAbsenceReport(
-                                                                user.userToken,
-                                                                user.userSiteId,
-                                                                dateFromString,
-                                                                dateToString,
-                                                                context);
-                                                      } else {
-                                                        await Provider.of<
-                                                                    ReportsData>(
-                                                                context,
-                                                                listen: false)
-                                                            .getLateAbsenceReport(
-                                                                user.userToken,
-                                                                Provider.of<SiteShiftsData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .siteShiftList[
-                                                                        siteIdIndex]
-                                                                    .siteId,
-                                                                dateFromString,
-                                                                dateToString,
-                                                                context);
+                                                              .getLateAbsenceReport(
+                                                                  user.userToken,
+                                                                  user.userSiteId,
+                                                                  dateFromString,
+                                                                  dateToString,
+                                                                  context);
+                                                        } else {
+                                                          await Provider.of<
+                                                                      ReportsData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getLateAbsenceReport(
+                                                                  user
+                                                                      .userToken,
+                                                                  Provider.of<SiteShiftsData>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .siteShiftList[
+                                                                          siteIdIndex]
+                                                                      .siteId,
+                                                                  dateFromString,
+                                                                  dateToString,
+                                                                  context);
+                                                        }
                                                       }
                                                     }
                                                   },

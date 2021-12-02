@@ -19,8 +19,8 @@ class UserReportPieChartState extends State {
       aspectRatio: 1.0,
       child: Row(
         children: <Widget>[
-          const SizedBox(
-            height: 18,
+          SizedBox(
+            height: 18.h,
           ),
           Expanded(
             child: AspectRatio(
@@ -71,8 +71,8 @@ class UserReportPieChartState extends State {
               Row(
                 children: [
                   Container(
-                    width: 20,
-                    height: 20,
+                    width: 20.w,
+                    height: 20.h,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red[600]),
                   ),
@@ -95,6 +95,7 @@ class UserReportPieChartState extends State {
                   Text(
                     "التأخير",
                     style: TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.right,
                   )
                 ],
               ),
@@ -109,8 +110,11 @@ class UserReportPieChartState extends State {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.green[600])),
                   Text(
-                    "الأنتظام ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    "الانتظام ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
                   )
                 ],
               ),

@@ -75,12 +75,6 @@ class _VacationAndPermessionsReportState
       },
       child: Scaffold(
           endDrawer: NotificationItem(),
-          floatingActionButton: MultipleFloatingButtons(
-            mainTitle: "",
-            shiftName: "",
-            comingFromShifts: false,
-            mainIconData: Icons.add_location_alt,
-          ),
           backgroundColor: Colors.white,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -284,59 +278,68 @@ class _VacationAndPermessionsReportState
               ),
               Padding(
                 padding: EdgeInsets.only(right: 20.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Stack(
                   children: [
-                    RadioButtonWidg(
-                      radioVal2: radioVal2,
-                      radioVal: 2,
-                      title: "المأموريات",
-                      onchannge: (value) {
-                        setState(() {
-                          radioVal2 = value;
-                          getMission = Provider.of<MissionsData>(context,
-                                  listen: false)
-                              .getSingleUserMissions(
-                                  userId,
-                                  Provider.of<UserData>(context, listen: false)
-                                      .user
-                                      .userToken);
-                        });
-                      },
-                    ),
-                    RadioButtonWidg(
-                      radioVal2: radioVal2,
-                      radioVal: 1,
-                      title: "الأجازات",
-                      onchannge: (value) {
-                        setState(() {
-                          radioVal2 = value;
-                          getHoliday = Provider.of<UserHolidaysData>(context,
-                                  listen: false)
-                              .getSingleUserHoliday(
-                                  userId,
-                                  Provider.of<UserData>(context, listen: false)
-                                      .user
-                                      .userToken);
-                        });
-                      },
-                    ),
-                    RadioButtonWidg(
-                      radioVal2: radioVal2,
-                      radioVal: 3,
-                      title: "الأذونات",
-                      onchannge: (value) {
-                        setState(() {
-                          radioVal2 = value;
-                          getPerm = Provider.of<UserPermessionsData>(context,
-                                  listen: false)
-                              .getSingleUserPermession(
-                                  userId,
-                                  Provider.of<UserData>(context, listen: false)
-                                      .user
-                                      .userToken);
-                        });
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RadioButtonWidg(
+                          radioVal2: radioVal2,
+                          radioVal: 2,
+                          title: "المأموريات",
+                          onchannge: (value) {
+                            setState(() {
+                              radioVal2 = value;
+                              getMission = Provider.of<MissionsData>(context,
+                                      listen: false)
+                                  .getSingleUserMissions(
+                                      userId,
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken);
+                            });
+                          },
+                        ),
+                        RadioButtonWidg(
+                          radioVal2: radioVal2,
+                          radioVal: 1,
+                          title: "الأجازات",
+                          onchannge: (value) {
+                            setState(() {
+                              radioVal2 = value;
+                              getHoliday = Provider.of<UserHolidaysData>(
+                                      context,
+                                      listen: false)
+                                  .getSingleUserHoliday(
+                                      userId,
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken);
+                            });
+                          },
+                        ),
+                        RadioButtonWidg(
+                          radioVal2: radioVal2,
+                          radioVal: 3,
+                          title: "الأذونات",
+                          onchannge: (value) {
+                            setState(() {
+                              radioVal2 = value;
+                              getPerm = Provider.of<UserPermessionsData>(
+                                      context,
+                                      listen: false)
+                                  .getSingleUserPermession(
+                                      userId,
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken);
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

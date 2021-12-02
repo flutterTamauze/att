@@ -26,7 +26,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
               horizontal: 10,
             ),
             child: Container(
-              height: 65.h,
+              height: 70.h,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

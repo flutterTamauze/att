@@ -333,23 +333,36 @@ class _SplashScreenState extends State<SplashScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                          height: 130.h,
-                                          child: Image.asset(
-                                            'resources/TDSlogo.png',
-                                            fit: BoxFit.fitHeight,
-                                          )),
-                                    ],
-                                  ),
+                                  Container(
+                                      height: 130.h,
+                                      child: Image.asset(
+                                        'resources/TDSlogo.png',
+                                        fit: BoxFit.fitHeight,
+                                      )),
                                 ],
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        // Positioned(
+                        //   bottom: 60.h,
+                        //   left: 0,
+                        //   right: 0,
+                        //   child: Container(
+                        //     height: 130.h,
+                        //     child: Center(
+                        //       child: Text(
+                        //         "From",
+                        //         style: TextStyle(
+                        //             color: Colors.grey.withOpacity(0.7),
+                        //             letterSpacing: 2,
+                        //             wordSpacing: 2,
+                        //             fontSize: setResponsiveFontSize(16),
+                        //             fontWeight: FontWeight.w800),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

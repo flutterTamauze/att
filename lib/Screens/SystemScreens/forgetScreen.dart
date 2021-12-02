@@ -248,8 +248,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       })).then((value) {
         if (value == "success") {
           Fluttertoast.showToast(
-              msg: "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم",
+              msg:
+                  "تم ارسال رمز التفعيل على الهاتف و البريد الإلكترونى الخاص بكم",
               gravity: ToastGravity.CENTER,
+              toastLength: Toast.LENGTH_LONG,
               backgroundColor: Colors.black,
               textColor: Colors.orange);
           Navigator.pushReplacement(
@@ -353,7 +355,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _rePasswordController = TextEditingController();
   var isLoading = false;
-  var reSend = false;
+  var reSend = true;
   var _passwordVisible = true;
   int _counter = 0;
   AnimationController _controller;
@@ -363,6 +365,12 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    startTimeout();
+    super.initState();
   }
 
   final int timerMaxSeconds = 60;
@@ -566,8 +574,6 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                               ),
                               InkWell(
                                 onTap: () async {
-                                  startTimeout();
-
                                   if (!reSend) {
                                     await textChanger();
                                     setState(() {
@@ -576,17 +582,18 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                   }
                                 },
                                 child: Container(
-                                  height: 20,
+                                  height: 50,
                                   child: AutoSizeText(
                                     (!reSend)
                                         ? "اعادة ارسال رمز التفعيل"
-                                        : "لم يصلك رمز التفعيل ؟ برجاء الأنتظار لإعادة الإرسال",
+                                        : "لم يصلك رمز التفعيل ؟\n لإعادة الإرسال برجاء الانتظار",
                                     textAlign: TextAlign.center,
-                                    maxLines: 1,
+                                    maxLines: 2,
                                     style: TextStyle(
                                         fontSize: ScreenUtil().setSp(13,
                                             allowFontScalingSelf: true),
                                         fontWeight: FontWeight.w600,
+                                        height: 2,
                                         decoration: (!reSend)
                                             ? TextDecoration.underline
                                             : TextDecoration.none,
