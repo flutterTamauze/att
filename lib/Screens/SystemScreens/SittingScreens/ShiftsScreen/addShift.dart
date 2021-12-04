@@ -993,6 +993,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           widget.siteIndex);
 
       if (msg == "Success") {
+        Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+            Provider.of<SiteShiftsData>(context, listen: false)
+                .siteShiftList[widget.siteIndex]
+                .siteName,
+            false);
         setState(() {
           edit = false;
         });

@@ -264,7 +264,8 @@ class _UsersScreenState extends State<UsersScreen> {
                               future:
                                   Provider.of<SiteData>(context).futureListener,
                               builder: (context, snapshot) {
-                                if (!snapshot.hasData) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return Container(
                                     color: Colors.white,
                                     child: Center(

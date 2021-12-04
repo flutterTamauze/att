@@ -15,6 +15,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/DaysOff.dart';
+import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -120,6 +121,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   .isConnectedToInternet("www.google.com");
                               if (bool) {
                                 if (userProvider.user.userType != 2) {
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .getShiftsList(
+                                          Provider.of<SiteShiftsData>(context,
+                                                  listen: false)
+                                              .siteShiftList[0]
+                                              .siteName,
+                                          false);
                                   Provider.of<SiteData>(context, listen: false)
                                       .setCurrentSiteName(
                                           Provider.of<SiteShiftsData>(context,

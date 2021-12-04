@@ -64,11 +64,13 @@ class _ExpandedPendingPermessionsState
                           Text(
                             widget.createdOn,
                           ),
-                          FaIcon(
-                            FontAwesomeIcons.hourglass,
-                            color: Colors.orange,
-                            size: 15,
-                          )
+                          widget.isAdmin
+                              ? Container()
+                              : FaIcon(
+                                  FontAwesomeIcons.hourglass,
+                                  color: Colors.orange,
+                                  size: 15,
+                                )
                         ],
                       ),
                       Container(width: 3, color: Colors.orange),
@@ -128,11 +130,11 @@ class _ExpandedPendingPermessionsState
                                 ),
                                 Column(
                                   children: [
-                                    Text(
-                                      "قرارك",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    // Text(
+                                    //   "قرارك",
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
                                     Divider(),
                                     Row(
                                       mainAxisAlignment:

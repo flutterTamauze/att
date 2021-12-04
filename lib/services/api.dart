@@ -157,7 +157,7 @@ class ShiftApi with ChangeNotifier {
         'Authorization': "Bearer $usertoken"
       },
     );
-    print(response.statusCode);
+    print(response.body);
     print(jsonDecode(response.body)["message"]);
     if (jsonDecode(response.body)["message"] == "Success") {
       var shiftObjJson = jsonDecode(response.body)['data'];

@@ -58,11 +58,13 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                           Text(
                             widget.createdOn.substring(0, 11),
                           ),
-                          FaIcon(
-                            FontAwesomeIcons.hourglass,
-                            color: Colors.orange,
-                            size: 15,
-                          )
+                          widget.isAdmin
+                              ? Container()
+                              : FaIcon(
+                                  FontAwesomeIcons.hourglass,
+                                  color: Colors.orange,
+                                  size: 15,
+                                )
                         ],
                       ),
                       Container(width: 3, color: Colors.orange),
@@ -130,11 +132,11 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                 ),
                                 Column(
                                   children: [
-                                    Text(
-                                      "قرارك",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    // Text(
+                                    //   "قرارك",
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
                                     Divider(),
                                     Row(
                                       mainAxisAlignment:

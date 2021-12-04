@@ -159,28 +159,6 @@ class DrawerI extends StatelessWidget {
                             children: [
                               MenuItem(
                                   onTap: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return RoundedLoadingIndicator();
-                                        });
-                                    await Provider.of<UserPermessionsData>(
-                                            context,
-                                            listen: false)
-                                        .getPendingCompanyPermessions(
-                                            comId, token)
-                                        .then((value) {
-                                      if (value == "noInternet") {
-                                        noInternetConnectionToast();
-                                        Navigator.pop(context);
-                                      }
-                                    });
-
-                                    await Provider.of<UserHolidaysData>(context,
-                                            listen: false)
-                                        .getPendingCompanyHolidays(
-                                            comId, token);
-
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

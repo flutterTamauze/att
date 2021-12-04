@@ -145,14 +145,21 @@ class AboutUsScreen extends StatelessWidget {
                                             SizedBox(
                                               height: 10.0.h,
                                             ),
-                                            InkWell(
-                                              onTap: () {},
-                                              child: MyListTile(
-                                                title: 'رقم التليفون',
-                                                icon: Icons.phone,
+                                            MyListTile(
+                                              title: 'خدمة العملاء',
+                                              icon: Icons
+                                                  .quick_contacts_dialer_outlined,
 
-                                                // link: 'tel:+0223521011',
-                                              ),
+                                              // link: 'tel:+0223521011',
+                                            ),
+                                            SizedBox(
+                                              height: 10.0.h,
+                                            ),
+                                            MyListTile(
+                                              title: 'رقم التليفون',
+                                              icon: Icons.phone,
+
+                                              // link: 'tel:+0223521011',
                                             ),
                                             SizedBox(
                                               height: 10.0.h,
@@ -270,47 +277,55 @@ class MyListTile extends StatelessWidget {
       child: ListTile(
         onTap: () {
           title == "رقم التليفون"
-              ? buildShowModalBottomSheet(context)
-              : title == "المقر الرئيسى"
-                  ? showModalBottomSheet<dynamic>(
-                      context: context,
-                      isScrollControlled: false,
-                      builder: (context) => Container(
-                            padding: EdgeInsets.all(10),
-                            height: 80.h,
-                            color: Colors.black,
-                            child: InkWell(
-                              onTap: () => launch(link),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.red[700],
-                                  ),
-                                  Container(
-                                    width: 340.w,
-                                    child: Container(
-                                      height: 30,
-                                      child: AutoSizeText(
-                                        "سيتى سنتر ، 3 مكرم عبيد ، مدينة نصر ، الدور السادس ، مكتب 604، محافظة القاهرة",
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                            color: Colors.orange[800],
-                                            fontWeight: FontWeight.w700,
-                                            letterSpacing: 1,
-                                            height: 2,
-                                            fontSize: 14),
-                                        textAlign: TextAlign.right,
+              ? buildShowModalBottomSheet(
+                  context,
+                  "0223521011",
+                  Icons.call,
+                  "0223521010",
+                )
+              : title == "خدمة العملاء"
+                  ? buildShowModalBottomSheet(context, "0223521010",
+                      FontAwesomeIcons.whatsapp, "0223521011")
+                  : title == "المقر الرئيسى"
+                      ? showModalBottomSheet<dynamic>(
+                          context: context,
+                          isScrollControlled: false,
+                          builder: (context) => Container(
+                                padding: EdgeInsets.all(10),
+                                height: 80.h,
+                                color: Colors.black,
+                                child: InkWell(
+                                  onTap: () => launch(link),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.location_on,
+                                        color: Colors.red[700],
                                       ),
-                                    ),
+                                      Container(
+                                        width: 340.w,
+                                        child: Container(
+                                          height: 30,
+                                          child: AutoSizeText(
+                                            "سيتى سنتر ، 3 مكرم عبيد ، مدينة نصر ، الدور السادس ، مكتب 604، محافظة القاهرة",
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                color: Colors.orange[800],
+                                                fontWeight: FontWeight.w700,
+                                                letterSpacing: 1,
+                                                height: 2,
+                                                fontSize: 14),
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ))
-                  : launch(link);
+                                ),
+                              ))
+                      : launch(link);
         },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -349,7 +364,8 @@ class MyListTile extends StatelessWidget {
     );
   }
 
-  Future buildShowModalBottomSheet(BuildContext context) {
+  Future buildShowModalBottomSheet(
+      BuildContext context, String phoneNum1, IconData icon, String phoneNum2) {
     return showModalBottomSheet<dynamic>(
         context: context,
         isScrollControlled: false,
@@ -362,19 +378,23 @@ class MyListTile extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      launch("tel:0223521011");
+                      if (icon == Icons.phone)
+                        launch("tel:$phoneNum1");
+                      else
+                        launch(
+                            "https://api.whatsapp.com/send?phone=${phoneNum1}text=Write%20Your%20Message%20Here");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(
-                          Icons.call,
+                          icon,
                           color: Colors.green[700],
                         ),
                         Container(
                           height: 20,
                           child: AutoSizeText(
-                            "0223521011",
+                            phoneNum1,
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.orange[700],
@@ -390,19 +410,23 @@ class MyListTile extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      launch("tel:0223521010");
+                      if (icon == Icons.phone)
+                        launch("tel:$phoneNum2");
+                      else
+                        launch(
+                            "https://api.whatsapp.com/send?phone=${phoneNum2}text=Write%20Your%20Message%20Here");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(
-                          Icons.call,
+                          icon,
                           color: Colors.green[700],
                         ),
                         Container(
                           height: 20,
                           child: AutoSizeText(
-                            "0223521010",
+                            phoneNum2,
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.orange[700],

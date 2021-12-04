@@ -176,7 +176,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
               ),
               Divider(),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextField(

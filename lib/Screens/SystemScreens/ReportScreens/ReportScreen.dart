@@ -54,7 +54,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           }),
       ReportTile(
           title: "حضور مستخدم",
-          subTitle: "تقرير حضور بالمستخدم",
+          subTitle: "تقرير حضور للمستخدم",
           icon: Icons.person,
           onTap: () {
             Navigator.of(context).push(
@@ -67,25 +67,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
           }),
       ReportTile(
           title: "الأجازات و المأموريات",
-          subTitle: "تقرير الأجازات المأموريات",
+          subTitle: "تقرير الأجازات و المأموريات و الأذونات للمستخدم",
           icon: FontAwesomeIcons.calendarCheck,
           onTap: () async {
-            var userProvider = Provider.of<UserData>(context, listen: false);
-            var comProvider = Provider.of<CompanyData>(context, listen: false);
-            if (Provider.of<MemberData>(context, listen: false)
-                .membersList
-                .isEmpty) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RoundedLoadingIndicator();
-                  });
-
-              await Provider.of<MemberData>(context, listen: false)
-                  .getAllCompanyMember(-1, comProvider.com.id,
-                      userProvider.user.userToken, context, -1);
-              Navigator.pop(context);
-            }
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => VacationAndPermessionsReport(),

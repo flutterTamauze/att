@@ -136,33 +136,32 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                               Provider.of<MemberData>(context,
                                                       listen: false)
                                                   .keepRetriving = true;
-                                              Provider.of<MemberData>(context,
-                                                      listen: false)
-                                                  .getAllCompanyMember(
-                                                      Provider.of<SiteShiftsData>(
+                                              log("ad ${prov.dropDownSitesIndex.toString()}");
+                                              Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
+                                                  shiftData.shifts[holder].shiftId ==
+                                                          -100
+                                                      ? Provider.of<SiteShiftsData>(
                                                               context,
                                                               listen: false)
                                                           .siteShiftList[prov
                                                               .dropDownSitesIndex]
-                                                          .siteId,
-                                                      Provider.of<CompanyData>(
-                                                              context,
-                                                              listen: false)
-                                                          .com
-                                                          .id,
-                                                      Provider.of<UserData>(
-                                                              context,
-                                                              listen: false)
-                                                          .user
-                                                          .userToken,
-                                                      context,
-                                                      shiftData.shifts[holder]
-                                                                  .shiftId ==
-                                                              -100
-                                                          ? -1
-                                                          : shiftData
-                                                              .shifts[holder]
-                                                              .shiftId);
+                                                          .siteId
+                                                      : -1,
+                                                  Provider.of<CompanyData>(context,
+                                                          listen: false)
+                                                      .com
+                                                      .id,
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userToken,
+                                                  context,
+                                                  shiftData.shifts[holder]
+                                                              .shiftId ==
+                                                          -100
+                                                      ? -1
+                                                      : shiftData.shifts[holder]
+                                                          .shiftId);
                                               prov.setDropDownShift(holder);
                                             }
                                           },
@@ -257,6 +256,8 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                   .dropDownSitesStrings
                                                   .indexOf(v) -
                                               1);
+
+                                          print(v);
                                         } else {
                                           prov.setDropDownIndex(0);
                                         }

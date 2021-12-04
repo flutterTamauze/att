@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,6 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import '../../../constants.dart';
 import 'RadioButtonWidget.dart';
 
@@ -37,6 +38,7 @@ class _VacationAndPermessionsReportState
   @override
   void initState() {
     Provider.of<MemberData>(context, listen: false).loadingSearch = false;
+    _nameController.clear();
     super.initState();
   }
 
@@ -176,24 +178,52 @@ class _VacationAndPermessionsReportState
                               userId = item.id;
                               var userProvider =
                                   Provider.of<UserData>(context, listen: false);
-                              getPerm = Provider.of<UserPermessionsData>(
-                                      context,
-                                      listen: false)
-                                  .getSingleUserPermession(
-                                      item.id,
-                                      Provider.of<UserData>(context,
-                                              listen: false)
-                                          .user
-                                          .userToken);
-                              getMission = Provider.of<MissionsData>(context,
-                                      listen: false)
-                                  .getSingleUserMissions(
-                                      item.id, userProvider.user.userToken);
-                              getHoliday = Provider.of<UserHolidaysData>(
-                                      context,
-                                      listen: false)
-                                  .getSingleUserHoliday(
-                                      item.id, userProvider.user.userToken);
+                              switch (radioVal2) {
+                                case 1:
+                                  Provider.of<UserHolidaysData>(context,
+                                          listen: false)
+                                      .singleUserHoliday
+                                      .clear();
+                                  getHoliday = Provider.of<UserHolidaysData>(
+                                          context,
+                                          listen: false)
+                                      .getSingleUserHoliday(
+                                          item.id, userProvider.user.userToken);
+                                  break;
+                                case 2:
+                                  Provider.of<MissionsData>(context,
+                                          listen: false)
+                                      .singleUserMissionsList
+                                      .clear();
+                                  getMission = Provider.of<MissionsData>(
+                                          context,
+                                          listen: false)
+                                      .getSingleUserMissions(
+                                          item.id, userProvider.user.userToken);
+
+                                  break;
+                                case 3:
+                                  Provider.of<UserPermessionsData>(context,
+                                          listen: false)
+                                      .singleUserPermessions
+                                      .clear();
+                                  getPerm = Provider.of<UserPermessionsData>(
+                                          context,
+                                          listen: false)
+                                      .getSingleUserPermession(
+                                          item.id,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                  break;
+                                default:
+                                  getHoliday = Provider.of<UserHolidaysData>(
+                                          context,
+                                          listen: false)
+                                      .getSingleUserHoliday(
+                                          item.id, userProvider.user.userToken);
+                              }
 
                               List<int> indexes = [];
 
@@ -218,19 +248,6 @@ class _VacationAndPermessionsReportState
                                   // isVacationselected = true;
                                 });
                               }
-                              // selectedId = item.id;
-
-                              // await Provider.of<ReportsData>(context,
-                              //         listen: false)
-                              //     .getUserReportUnits(
-                              //         Provider.of<UserData>(context,
-                              //                 listen: false)
-                              //             .user
-                              //             .userToken,
-                              //         item.id,
-                              //         dateFromString,
-                              //         dateToString,
-                              //         context);
                             }
                           },
                           itemBuilder: (context, item) {
@@ -290,14 +307,19 @@ class _VacationAndPermessionsReportState
                           onchannge: (value) {
                             setState(() {
                               radioVal2 = value;
-                              getMission = Provider.of<MissionsData>(context,
+                              if (Provider.of<MissionsData>(context,
                                       listen: false)
-                                  .getSingleUserMissions(
-                                      userId,
-                                      Provider.of<UserData>(context,
-                                              listen: false)
-                                          .user
-                                          .userToken);
+                                  .singleUserMissionsList
+                                  .isEmpty) {
+                                getMission = Provider.of<MissionsData>(context,
+                                        listen: false)
+                                    .getSingleUserMissions(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
+                              }
                             });
                           },
                         ),
@@ -308,15 +330,21 @@ class _VacationAndPermessionsReportState
                           onchannge: (value) {
                             setState(() {
                               radioVal2 = value;
-                              getHoliday = Provider.of<UserHolidaysData>(
-                                      context,
+                              log("list length ${Provider.of<UserHolidaysData>(context, listen: false).singleUserHoliday.length}");
+                              if (Provider.of<UserHolidaysData>(context,
                                       listen: false)
-                                  .getSingleUserHoliday(
-                                      userId,
-                                      Provider.of<UserData>(context,
-                                              listen: false)
-                                          .user
-                                          .userToken);
+                                  .singleUserHoliday
+                                  .isEmpty) {
+                                getHoliday = Provider.of<UserHolidaysData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserHoliday(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
+                              }
                             });
                           },
                         ),
@@ -327,15 +355,20 @@ class _VacationAndPermessionsReportState
                           onchannge: (value) {
                             setState(() {
                               radioVal2 = value;
-                              getPerm = Provider.of<UserPermessionsData>(
-                                      context,
+                              if (Provider.of<UserPermessionsData>(context,
                                       listen: false)
-                                  .getSingleUserPermession(
-                                      userId,
-                                      Provider.of<UserData>(context,
-                                              listen: false)
-                                          .user
-                                          .userToken);
+                                  .singleUserPermessions
+                                  .isEmpty) {
+                                getPerm = Provider.of<UserPermessionsData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserPermession(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
+                              }
                             });
                           },
                         ),

@@ -25,16 +25,6 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
   GlobalKey<AutoCompleteTextFieldState<Member>> key = new GlobalKey();
   AutoCompleteTextField searchTextField;
 
-  Future getAllHolidays;
-
-  @override
-  void initState() {
-    Provider.of<UserHolidaysData>(context, listen: false)
-        .singleUserHoliday
-        .clear();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     var holidayProv = Provider.of<UserHolidaysData>(context, listen: false);

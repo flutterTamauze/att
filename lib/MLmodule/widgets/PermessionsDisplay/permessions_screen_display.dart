@@ -27,11 +27,6 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
   GlobalKey<AutoCompleteTextFieldState<Member>> key = new GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var permessionProv =
         Provider.of<UserPermessionsData>(context, listen: false);

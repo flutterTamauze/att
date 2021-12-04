@@ -105,10 +105,6 @@ class _AttendProofReportState extends State<AttendProofReport> {
                         nav: false,
                         goUserMenu: false,
                       ),
-                      SmallDirectoriesHeader(
-                        Lottie.asset("resources/report.json", repeat: false),
-                        "إثباتات الحضور",
-                      ),
                       Expanded(
                         child: FutureBuilder(
                             future: reportsData.futureListener,
@@ -120,38 +116,53 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                   log(snapshot.data);
                                   return Column(
                                     children: [
-                                      Container(
-                                        width: 300.w,
-                                        height: 50.h,
-                                        child: Container(
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w),
                                             child: Container(
-                                              child: Theme(
-                                                  data: clockTheme,
-                                                  child: SingleDayDatePicker(
-                                                    firstDate:
-                                                        comDate.com.createdOn,
-                                                    lastDate: DateTime.now(),
-                                                    selectedDateString:
-                                                        selectedDateString,
-                                                    functionPicker: (value) {
-                                                      if (value != date) {
-                                                        date = value;
-                                                        selectedDateString =
-                                                            date;
-                                                        setState(() {
-                                                          getReportData(date);
-                                                          selectedDate =
-                                                              DateTime.parse(
-                                                                  selectedDateString);
-                                                        });
-                                                      }
-                                                    },
-                                                  )),
+                                              child: Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: Container(
+                                                  child: Theme(
+                                                      data: clockTheme,
+                                                      child:
+                                                          SingleDayDatePicker(
+                                                        firstDate: comDate
+                                                            .com.createdOn,
+                                                        lastDate:
+                                                            DateTime.now(),
+                                                        selectedDateString:
+                                                            selectedDateString,
+                                                        functionPicker:
+                                                            (value) {
+                                                          if (value != date) {
+                                                            date = value;
+                                                            selectedDateString =
+                                                                date;
+                                                            setState(() {
+                                                              getReportData(
+                                                                  date);
+                                                              selectedDate =
+                                                                  DateTime.parse(
+                                                                      selectedDateString);
+                                                            });
+                                                          }
+                                                        },
+                                                      )),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          SmallDirectoriesHeader(
+                                            Lottie.asset(
+                                                "resources/report.json",
+                                                repeat: false),
+                                            "إثباتات الحضور",
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(
                                         height: 10.h,
