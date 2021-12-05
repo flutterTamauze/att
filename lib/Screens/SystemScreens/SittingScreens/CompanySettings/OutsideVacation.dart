@@ -66,11 +66,6 @@ Future userMission;
 TextEditingController externalMissionController = TextEditingController();
 
 class _OutsideVacationState extends State<OutsideVacation> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
   bool isPicked = false;
 
   TextEditingController _dateController = TextEditingController();
@@ -83,14 +78,19 @@ class _OutsideVacationState extends State<OutsideVacation> {
   void initState() {
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
     Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
+    Provider.of<UserHolidaysData>(context, listen: false)
+        .loadingHolidaysDetails = false;
+    Provider.of<UserPermessionsData>(context, listen: false)
+        .permessionDetailLoading = false;
     isPicked = false;
     userMission = getSingleUserMission();
-    userHoliday = Provider.of<UserHolidaysData>(context, listen: false)
-        .getSingleUserHoliday(widget.member.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
-    userPermession = Provider.of<UserPermessionsData>(context, listen: false)
-        .getSingleUserPermession(widget.member.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
+    Provider.of<UserHolidaysData>(context, listen: false)
+        .singleUserHoliday
+        .clear();
+    Provider.of<UserPermessionsData>(context, listen: false)
+        .singleUserPermessions
+        .clear();
+
     var now = DateTime.now();
     fromText = "";
     toText = "";
@@ -112,15 +112,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   getSingleUserMission() async {
-    userMission = await Provider.of<MissionsData>(context, listen: false)
-        .getSingleUserMissions(widget.member.id,
-            Provider.of<UserData>(context, listen: false).user.userToken);
+    if (Provider.of<MissionsData>(context, listen: false)
+        .singleUserMissionsList
+        .isEmpty) {
+      userMission = await Provider.of<MissionsData>(context, listen: false)
+          .getSingleUserMissions(widget.member.id,
+              Provider.of<UserData>(context, listen: false).user.userToken);
+    }
   }
 
   var selectedVal = "كل المواقع";
@@ -193,6 +192,21 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal: 3,
                                   title: "أذن",
                                   onchannge: (value) {
+                                    if (Provider.of<UserPermessionsData>(
+                                            context,
+                                            listen: false)
+                                        .singleUserPermessions
+                                        .isEmpty) {
+                                      Provider.of<UserPermessionsData>(context,
+                                              listen: false)
+                                          .getSingleUserPermession(
+                                              widget.member.id,
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken);
+                                    }
+
                                     setState(() {
                                       _today = DateTime.now();
                                       widget.radioValue = value;
@@ -204,6 +218,20 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal: 1,
                                   title: "اجازة",
                                   onchannge: (value) {
+                                    if (Provider.of<UserHolidaysData>(context,
+                                            listen: false)
+                                        .singleUserHoliday
+                                        .isEmpty) {
+                                      Provider.of<UserHolidaysData>(context,
+                                              listen: false)
+                                          .getSingleUserHoliday(
+                                              widget.member.id,
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken);
+                                    }
+
                                     setState(() {
                                       fromDate = widget.radioValue == 3
                                           ? DateTime.now()
@@ -217,6 +245,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal2: widget.radioValue,
                                   title: "مأمورية",
                                   onchannge: (value) {
+                                    getSingleUserMission();
                                     setState(() {
                                       widget.radioValue = value;
                                     });

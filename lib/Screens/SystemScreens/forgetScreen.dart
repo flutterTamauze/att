@@ -23,6 +23,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   @override
@@ -44,6 +45,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     super.initState();
   }
 
+  String signature;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,6 +201,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     )
                                   : RoundedButton(
                                       onPressed: () async {
+                                        signature =
+                                            await SmsAutoFill().getAppSignature;
                                         forgetFunction();
                                       },
                                       title: 'متابعة',
@@ -357,6 +361,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   var isLoading = false;
   var reSend = true;
   var _passwordVisible = true;
+  var _rePasswordVisible = true;
   int _counter = 0;
   AnimationController _controller;
   int levelClock = 180;
@@ -367,8 +372,13 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
     super.dispose();
   }
 
+  void listenOtp() async {
+    await SmsAutoFill().listenForCode();
+  }
+
   @override
   void initState() {
+    listenOtp();
     startTimeout();
     super.initState();
   }
@@ -518,7 +528,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                   return null;
                                 },
                                 keyboardType: TextInputType.text,
-                                obscureText: true,
+                                obscureText: _rePasswordVisible,
                                 controller: _rePasswordController,
                                 style: TextStyle(
                                     color: Colors.black,
@@ -535,14 +545,15 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                   prefixIcon: IconButton(
                                     icon: Icon(
                                       // Based on passwordVisible state choose the icon
-                                      _passwordVisible
+                                      _rePasswordVisible
                                           ? Icons.visibility_off
                                           : Icons.visibility,
                                       color: Colors.grey,
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _passwordVisible = !_passwordVisible;
+                                        _rePasswordVisible =
+                                            !_rePasswordVisible;
                                       });
                                     },
                                   ),

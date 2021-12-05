@@ -554,6 +554,8 @@ class _ShiftTileState extends State<ShiftTile> {
               Provider.of<ShiftApi>(context, listen: false).userShift);
         },
         child: Slidable(
+          enabled:
+              Provider.of<UserData>(context, listen: false).user.userType == 4,
           actionExtentRatio: 0.10,
           closeOnScroll: true,
           controller: widget.slidableController,

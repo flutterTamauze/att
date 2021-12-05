@@ -96,6 +96,8 @@ class _LocationTileState extends State<LocationTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: Slidable(
+        enabled:
+            Provider.of<UserData>(context, listen: false).user.userType == 4,
         actionExtentRatio: 0.10,
         closeOnScroll: true,
         controller: widget.slidableController,
@@ -199,6 +201,9 @@ class _LocationTileState extends State<LocationTile> {
                                                 listen: false)
                                             .siteShiftList[widget.index]
                                             .siteName);
+                                Provider.of<SiteShiftsData>(context,
+                                        listen: false)
+                                    .getShiftsList(widget.site.name, false);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

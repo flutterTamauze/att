@@ -140,6 +140,8 @@ class _MemberTileState extends State<MemberTile> {
           // showUserDetails(widget.user);
         },
         child: Slidable(
+          enabled:
+              Provider.of<UserData>(context, listen: false).user.userType == 4,
           actionExtentRatio: 0.10,
           closeOnScroll: true,
           controller: slidableController,

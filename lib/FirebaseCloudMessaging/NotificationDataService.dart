@@ -184,10 +184,6 @@ class NotificationDataService with ChangeNotifier {
             .getAllSitesAndShifts(
                 Provider.of<CompanyData>(context, listen: false).com.id,
                 Provider.of<UserData>(context, listen: false).user.userToken);
-        // await Provider.of<SiteShiftsData>(context, listen: false)
-        //     .getAllSitesAndShifts(
-        //         Provider.of<CompanyData>(context, listen: false).com.id,
-        //         Provider.of<UserData>(context, listen: false).user.userToken);
       } else {
         if (counter == 1) {
           if (event.data["category"] == "attend") {

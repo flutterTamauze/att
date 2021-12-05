@@ -222,6 +222,8 @@ class UserPermessionsData with ChangeNotifier {
       1,
     ).toIso8601String();
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
+    permessionDetailLoading = true;
+    notifyListeners();
     var response = await http.get(
       Uri.parse(
           "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime"),
@@ -230,6 +232,7 @@ class UserPermessionsData with ChangeNotifier {
         'Authorization': "Bearer $userToken"
       },
     );
+    permessionDetailLoading = false;
     print("response");
     print(userId);
     log(response.body);

@@ -201,13 +201,13 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                   },
                                                   type: DateTimePickerType.date,
                                                   firstDate: DateTime(
-                                                    DateTime.now().year,
-                                                    DateTime.january,
-                                                  ),
+                                                      DateTime.now().year,
+                                                      DateTime.january,
+                                                      1),
                                                   lastDate: DateTime(
-                                                    DateTime.now().year,
-                                                    DateTime.december,
-                                                  ),
+                                                      DateTime.now().year,
+                                                      DateTime.december,
+                                                      31),
                                                   //controller: _endTimeController,
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(

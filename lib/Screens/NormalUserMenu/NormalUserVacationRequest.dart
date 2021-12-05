@@ -747,7 +747,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         topicName:
                                                             "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
                                                         title: "طلب أجازة",
-                                                        category: "",
+                                                        category:
+                                                            "vacationRequest",
                                                         message:
                                                             "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                       );
@@ -867,7 +868,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     topicName:
                                                         "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
                                                     title: "طلب اذن",
-                                                    category: "",
+                                                    category:
+                                                        "permessionRequest",
                                                     message:
                                                         "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                   );
