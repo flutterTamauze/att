@@ -331,6 +331,22 @@ class TakePictureScreenState extends State<CameraPicker>
                                           backgroundColor: Colors.orange,
                                           textColor: Colors.white);
                                     } else if (msg ==
+                                        "Success : already registered attend") {
+                                      Fluttertoast.showToast(
+                                          msg: "لقد تم تسجيل الحضور من قبل",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.orange);
+                                    } else if (msg ==
+                                        "Success : already registered leave") {
+                                      Fluttertoast.showToast(
+                                          msg: "لقد تم تسجيل الأنصراف من قبل",
+                                          gravity: ToastGravity.CENTER,
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.orange);
+                                    } else if (msg ==
                                         "Success : User was not proof") {
                                       Fluttertoast.showToast(
                                           msg:
