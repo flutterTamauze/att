@@ -166,6 +166,53 @@ class UserPermessionsData with ChangeNotifier {
     return "Success";
   }
 
+  Future<void> getPendingPermessionDetailsByID(
+      int permessionId, String userToken) async {
+    print(permessionId);
+    var permessions = pendingCompanyPermessions
+        .where((element) => element.permessionId == permessionId)
+        .toList();
+
+    int permessionyIndex = pendingCompanyPermessions.indexOf(permessions[0]);
+    if (pendingCompanyPermessions[permessionyIndex].adminResponse == null ||
+        pendingCompanyPermessions[permessionyIndex].permessionDescription ==
+            null) {
+      permessionDetailLoading = true;
+      notifyListeners();
+
+      var response = await http.get(
+        Uri.parse("$baseURL/api/Permissions/$permessionId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+      );
+      log(response.body);
+      print(response.statusCode);
+
+      permessionDetailLoading = false;
+      notifyListeners();
+      var decodedResponse = json.decode(response.body);
+      if (decodedResponse["message"] == "Success") {
+        singlePermessionDetail =
+            UserPermessions.fromJson(decodedResponse['data']);
+        var permessions = pendingCompanyPermessions
+            .where((element) => element.permessionId == permessionId)
+            .toList();
+
+        int permIndex = pendingCompanyPermessions.indexOf(permessions[0]);
+        pendingCompanyPermessions[permIndex].adminResponse =
+            singlePermessionDetail.adminResponse;
+        pendingCompanyPermessions[permIndex].permessionDescription =
+            singlePermessionDetail.permessionDescription;
+      }
+
+      notifyListeners();
+    } else {
+      print("not null");
+    }
+  }
+
   Future<void> getPermessionDetailsByID(
       int permessionId, String userToken) async {
     print(permessionId);

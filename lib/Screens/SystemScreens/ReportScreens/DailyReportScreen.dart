@@ -202,7 +202,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                 case ConnectionState.waiting:
                                   return LoadingIndicator();
                                 case ConnectionState.done:
-                                  log(snapshot.data);
+                                  log("data ${snapshot.data}");
                                   return Column(
                                     children: [
                                       Container(
@@ -448,7 +448,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date"
+                                                                              : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed"
                                                                                   ? Container()
                                                                                   : DailyReportTodayTableEnd(
                                                                                       titleHeader: "عطلة اسبوعية",
@@ -461,14 +461,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                   titleHeader: "عطلة رسمية :",
                                                                                   title: reportsData.dailyReport.officialHoliday,
                                                                                 )
-                                                                              : snapshot.data == "user created after period"
+                                                                              : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed"
                                                                                   ? Container()
-                                                                                  : snapshot.data == "Date is older than company date"
-                                                                                      ? Container()
-                                                                                      : DailyReportTodayTableEnd(
-                                                                                          titleHeader: "عطلة اسبوعية",
-                                                                                          title: "",
-                                                                                        ),
+                                                                                  : DailyReportTodayTableEnd(
+                                                                                      titleHeader: "عطلة اسبوعية",
+                                                                                      title: "",
+                                                                                    ),
                                                                 ],
                                                               )
                                                             : CenterMessageText(

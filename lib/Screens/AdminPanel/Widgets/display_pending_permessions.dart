@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
@@ -52,7 +54,17 @@ class _ExpandedPendingPermessionsState
             padding: const EdgeInsets.all(4.0),
             child: Container(
               child: ExpansionTile(
-                initiallyExpanded: widget.isAdmin,
+                onExpansionChanged: (value) async {
+                  if (value) {
+                    await Provider.of<UserPermessionsData>(context,
+                            listen: false)
+                        .getPendingPermessionDetailsByID(
+                            (widget.id),
+                            Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userToken);
+                  }
+                },
                 trailing: Container(
                   width: 80.w,
                   child: Row(
@@ -84,87 +96,95 @@ class _ExpandedPendingPermessionsState
                   Stack(
                     children: [
                       SlideInDown(
-                        child: Card(
-                          elevation: 5,
-                          child: Container(
-                            width: 300.w,
-                            margin: EdgeInsets.all(15),
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                        child: Provider.of<UserPermessionsData>(context)
+                                .permessionDetailLoading
+                            ? LoadingIndicator()
+                            : Card(
+                                elevation: 5,
+                                child: Container(
+                                  width: 300.w,
+                                  margin: EdgeInsets.all(15),
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      widget.desc == ""
+                                          ? Container()
+                                          : Divider(),
+                                      widget.desc != null
+                                          ? widget.desc == ""
+                                              ? Container()
+                                              : Text(
+                                                  "تفاصيل الطلب : ${widget.desc}",
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                )
+                                          : Container(),
+                                      widget.desc != null
+                                          ? widget.desc == ""
+                                              ? Container()
+                                              : Divider()
+                                          : Container(),
+                                      Text(
+                                          "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
+                                      Divider(),
+                                      Text(widget.permessionType == 1
+                                          ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
+                                          : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
+                                      widget.desc != null
+                                          ? Divider()
+                                          : Container(),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Column(
+                                        children: [
+                                          // Text(
+                                          //   "قرارك",
+                                          //   style: TextStyle(
+                                          //       fontWeight: FontWeight.bold),
+                                          // ),
+                                          Divider(),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () => widget.onAccept(),
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.check,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 20.w,
+                                              ),
+                                              InkWell(
+                                                onTap: () => widget.onRefused(),
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.times,
+                                                  color: Colors.red,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   ),
                                 ),
-                                widget.desc == "" ? Container() : Divider(),
-                                widget.desc != null
-                                    ? widget.desc == ""
-                                        ? Container()
-                                        : Text(
-                                            "تفاصيل الطلب : ${widget.desc}",
-                                            textAlign: TextAlign.right,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          )
-                                    : Container(),
-                                widget.desc != null
-                                    ? widget.desc == ""
-                                        ? Container()
-                                        : Divider()
-                                    : Container(),
-                                Text(
-                                    "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
-                                Divider(),
-                                Text(widget.permessionType == 1
-                                    ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
-                                    : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
-                                widget.desc != null ? Divider() : Container(),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    // Text(
-                                    //   "قرارك",
-                                    //   style: TextStyle(
-                                    //       fontWeight: FontWeight.bold),
-                                    // ),
-                                    Divider(),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () => widget.onAccept(),
-                                          child: FaIcon(
-                                            FontAwesomeIcons.check,
-                                            color: Colors.green,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () => widget.onRefused(),
-                                          child: FaIcon(
-                                            FontAwesomeIcons.times,
-                                            color: Colors.red,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
                       ),
                       Positioned(
                           bottom: 15.h,

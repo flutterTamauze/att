@@ -172,6 +172,40 @@ class UserHolidaysData with ChangeNotifier {
     return "fail";
   }
 
+  Future<void> getPendingHolidayDetailsByID(
+      int holidayId, String userToken) async {
+    loadingHolidaysDetails = true;
+    notifyListeners();
+    print("holiday id $holidayId");
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Holiday/$holidayId"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    print(response.statusCode);
+
+    log(response.body);
+    loadingHolidaysDetails = false;
+    notifyListeners();
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+      var holidays = pendingCompanyHolidays
+          .where((element) => element.holidayNumber == holidayId)
+          .toList();
+
+      int holidayIndex = pendingCompanyHolidays.indexOf(holidays[0]);
+      pendingCompanyHolidays[holidayIndex].adminResponse =
+          holidaysSingleDetail.adminResponse;
+      pendingCompanyHolidays[holidayIndex].holidayDescription =
+          holidaysSingleDetail.holidayDescription;
+
+      notifyListeners();
+    }
+  }
+
   Future<void> getHolidayDetailsByID(int holidayId, String userToken) async {
     var holidays = singleUserHoliday
         .where((element) => element.holidayNumber == holidayId)

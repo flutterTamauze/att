@@ -115,6 +115,8 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                             child: Column(
                                               children: [
                                                 ExpandedPendingVacation(
+                                                  holidayId:
+                                                      pending.holidayNumber,
                                                   isAdmin: true,
                                                   createdOn: pending
                                                       .createdOnDate
