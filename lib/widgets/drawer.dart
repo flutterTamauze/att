@@ -6,8 +6,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/AboutAppScreen.dart';
 import 'package:qr_users/Screens/AboutCompany.dart';
@@ -16,14 +14,12 @@ import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/intro.dart';
-import 'package:qr_users/enums/connectivity_status.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/UserHolidays/user_holidays.dart';
-import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -82,14 +78,7 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                AutoSizeText(
-                  "V3.0.0",
-                  style: TextStyle(
-                      color: Colors.orange[600],
-                      fontSize: ScreenUtil().setSp(15),
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic),
-                ),
+
                 // Center(
                 //   child: Container(
                 //     height: 20,

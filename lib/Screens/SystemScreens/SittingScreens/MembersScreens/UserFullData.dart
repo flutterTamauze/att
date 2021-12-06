@@ -1,7 +1,7 @@
 import 'dart:async';
 
 // import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -52,9 +52,9 @@ TimeOfDay intToTimeOfDay(int time) {
 }
 
 String date;
-AudioCache player = AudioCache();
+// AudioCache player = AudioCache();
 AttendProof attendObj = AttendProof();
-AudioPlayer instance;
+// AudioPlayer instance;
 TextEditingController timeInController = TextEditingController();
 TextEditingController timeOutController = TextEditingController();
 String selectedDateString;

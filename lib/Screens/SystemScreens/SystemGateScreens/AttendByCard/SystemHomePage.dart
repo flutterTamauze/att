@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
   CameraDescription cameraDescription;
   DateTime currentBackPressTime;
   Future futureShift;
-  AudioCache player = AudioCache();
+  // AudioCache player = AudioCache();
   CroneScheduler _croneScheduler = CroneScheduler();
   _startUp() async {
     List<CameraDescription> cameras = await availableCameras();

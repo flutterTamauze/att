@@ -344,25 +344,6 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                           ),
                         ),
-                        // Positioned(
-                        //   bottom: 60.h,
-                        //   left: 0,
-                        //   right: 0,
-                        //   child: Container(
-                        //     height: 130.h,
-                        //     child: Center(
-                        //       child: Text(
-                        //         "From",
-                        //         style: TextStyle(
-                        //             color: Colors.grey.withOpacity(0.7),
-                        //             letterSpacing: 2,
-                        //             wordSpacing: 2,
-                        //             fontSize: setResponsiveFontSize(16),
-                        //             fontWeight: FontWeight.w800),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

@@ -20,6 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:open_file/open_file.dart' as open_file;
 import 'Notifications/Notifications.dart';
+import 'SystemScreens/AppHelp.dart';
 
 class ContactUsScreen extends StatefulWidget {
   @override
@@ -87,11 +88,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                 ),
                                               ),
                                               child: CircleAvatar(
-                                                backgroundColor: Colors.white,
                                                 radius: 60,
                                                 child: Container(
                                                   width: 200.w,
                                                   decoration: BoxDecoration(
+                                                    color: Colors.black,
                                                     // image: DecorationImage(
                                                     //   image: headerImage,
                                                     //   fit: BoxFit.fill,
@@ -145,20 +146,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Container(
-                                          height: 20,
-                                          child: AutoSizeText("Version 3.0.0",
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                color: Color(0xFF3b3c40),
-                                                fontSize: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf: true),
-                                              )),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
                                         AboutUsCard(
                                           child: ListTile(
                                             onTap: () {
@@ -231,6 +218,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                           icon: Icons.email,
                                           link: 'mailto:info@tamauzeds.com',
                                         ),
+                                        // MyListTile(
+                                        //   rotated: true,
+                                        //   title: 'دليل الأستخدام',
+                                        //   icon: Icons.help,
+                                        //   link: 'help',
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -304,7 +297,14 @@ class MyListTile extends StatelessWidget {
       color: Colors.white,
       child: ListTile(
         onTap: () {
-          launch(link);
+          if (link == "help") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AppHelpPage(),
+                ));
+          } else
+            launch(link);
         },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

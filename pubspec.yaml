@@ -22,7 +22,6 @@ environment:
 
 dependencies:
   animate_do: ^2.0.0
-  audioplayers: null
   auto_size_text: ^2.1.0
   autocomplete_textfield: ^1.7.3
   cached_network_image: ^3.0.0
@@ -116,6 +115,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+ 
   fonts:
     - family: Almarai-Regular
       fonts:
