@@ -81,7 +81,7 @@ dependencies:
   trust_location: ^2.0.11
   typicons_flutter: ^0.3.1
   url_launcher: ^6.0.0
-  youtube_player_flutter: ^8.0.0
+  webview_flutter:
 dev_dependencies:
   flutter_test:
     sdk: flutter

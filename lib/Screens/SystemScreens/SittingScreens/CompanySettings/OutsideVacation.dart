@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -24,6 +26,7 @@ import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/UserFullData/floating_button_missions.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
@@ -83,12 +86,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
     Provider.of<UserPermessionsData>(context, listen: false)
         .permessionDetailLoading = false;
     isPicked = false;
-    userMission = getSingleUserMission();
+    // userMission = getSingleUserMission();
     Provider.of<UserHolidaysData>(context, listen: false)
         .singleUserHoliday
         .clear();
     Provider.of<UserPermessionsData>(context, listen: false)
         .singleUserPermessions
+        .clear();
+    Provider.of<MissionsData>(context, listen: false)
+        .singleUserMissionsList
         .clear();
 
     var now = DateTime.now();
@@ -112,15 +118,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
     super.initState();
   }
 
-  getSingleUserMission() async {
-    if (Provider.of<MissionsData>(context, listen: false)
-        .singleUserMissionsList
-        .isEmpty) {
-      userMission = await Provider.of<MissionsData>(context, listen: false)
-          .getSingleUserMissions(widget.member.id,
-              Provider.of<UserData>(context, listen: false).user.userToken);
-    }
-  }
+  // getSingleUserMission() async {
+  //   if (Provider.of<MissionsData>(context, listen: false)
+  //       .singleUserMissionsList
+  //       .isEmpty) {
+  //     userMission = await Provider.of<MissionsData>(context, listen: false)
+  //         .getSingleUserMissions(widget.member.id,
+  //             Provider.of<UserData>(context, listen: false).user.userToken);
+  //   }
+  // }
 
   var selectedVal = "كل المواقع";
   @override
@@ -140,7 +146,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
           floatingActionButton: widget.radioValue == 2
-              ? FadeInMissionsFAbutton()
+              ? FadeInMissionsFAbutton(
+                  memberId: widget.member.id,
+                )
               : FadeInVacPermFloatingButton(
                   radioVal2: widget.radioValue,
                   comingFromAdminPanel: false,
@@ -192,21 +200,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal: 3,
                                   title: "أذن",
                                   onchannge: (value) {
-                                    if (Provider.of<UserPermessionsData>(
-                                            context,
-                                            listen: false)
-                                        .singleUserPermessions
-                                        .isEmpty) {
-                                      Provider.of<UserPermessionsData>(context,
-                                              listen: false)
-                                          .getSingleUserPermession(
-                                              widget.member.id,
-                                              Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userToken);
-                                    }
-
                                     setState(() {
                                       _today = DateTime.now();
                                       widget.radioValue = value;
@@ -218,20 +211,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal: 1,
                                   title: "اجازة",
                                   onchannge: (value) {
-                                    if (Provider.of<UserHolidaysData>(context,
-                                            listen: false)
-                                        .singleUserHoliday
-                                        .isEmpty) {
-                                      Provider.of<UserHolidaysData>(context,
-                                              listen: false)
-                                          .getSingleUserHoliday(
-                                              widget.member.id,
-                                              Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userToken);
-                                    }
-
                                     setState(() {
                                       fromDate = widget.radioValue == 3
                                           ? DateTime.now()
@@ -245,7 +224,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   radioVal2: widget.radioValue,
                                   title: "مأمورية",
                                   onchannge: (value) {
-                                    getSingleUserMission();
+                                    // getSingleUserMission();
                                     setState(() {
                                       widget.radioValue = value;
                                     });
@@ -1385,13 +1364,19 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                           value.shifts.forEach((element) {
                                             x.add(element.shiftName);
                                           });
+                                          setState(() {
+                                            print("on changed $v");
+                                            holder = x.indexOf(v);
 
-                                          print("on changed $v");
-                                          holder = x.indexOf(v);
+                                            Provider.of<SiteData>(context,
+                                                    listen: false)
+                                                .setDropDownShift(holder);
+                                            print(
+                                                "x ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
 
-                                          widget.prov.setDropDownShift(holder);
-                                          shiftId =
-                                              value.shifts[holder].shiftId;
+                                            shiftId =
+                                                value.shifts[holder].shiftId;
+                                          });
                                         }
                                       },
                                       hint: Text("كل المناوبات"),
@@ -1399,8 +1384,10 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                           widget.prov.siteValue == "كل المواقع"
                                               ? null
                                               : value
-                                                  .shifts[widget
-                                                      .prov.dropDownShiftIndex]
+                                                  .shifts[Provider.of<SiteData>(
+                                                          context,
+                                                          listen: true)
+                                                      .dropDownShiftIndex]
                                                   .shiftName
 
                                       // value

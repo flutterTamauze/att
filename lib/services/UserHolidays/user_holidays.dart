@@ -258,7 +258,7 @@ class UserHolidaysData with ChangeNotifier {
       1,
     ).toIso8601String();
     loadingHolidaysDetails = true;
-    notifyListeners();
+    // notifyListeners();
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
     var response = await http.get(
       Uri.parse(

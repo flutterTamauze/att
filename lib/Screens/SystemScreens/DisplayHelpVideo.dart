@@ -10,6 +10,12 @@
 // class _DisplayHelpVideoState extends State<DisplayHelpVideo> {
 //   YoutubePlayerController _controller;
 //   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
+
+//   @override
 //   void initState() {
 //     // TODO: implement initState
 //     super.initState();
@@ -25,17 +31,21 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       backgroundColor: Colors.black,
-//       body: Container(
-//         width: MediaQuery.of(context).size.width,
-//         height: MediaQuery.of(context).size.height,
-//         child: Center(
-//           child: Container(
-//               child: YoutubePlayer(
-//             showVideoProgressIndicator: true,
-//             progressIndicatorColor: Colors.yellow[800],
-//             controller: _controller,
-//           )),
-//         ),
+//       body: Stack(
+//         children: [
+//           Container(
+//             width: MediaQuery.of(context).size.width,
+//             height: MediaQuery.of(context).size.height,
+//             child: Center(
+//               child: Container(
+//                   child: YoutubePlayer(
+//                 showVideoProgressIndicator: true,
+//                 progressIndicatorColor: Colors.yellow[800],
+//                 controller: _controller,
+//               )),
+//             ),
+//           ),
+//         ],
 //       ),
 //     );
 //   }

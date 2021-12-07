@@ -42,6 +42,7 @@ class MissionsData with ChangeNotifier {
   List<CompanyMissions> companyMissionsList = [];
   List<CompanyMissions> singleUserMissionsList = [];
   bool isLoading = false;
+  bool missionsLoading = false;
   List<String> userNames = [];
   List<CompanyMissions> copyMissionsList = [];
   int internalMissionsCount = 0, externalMissionsCount = 0;
@@ -76,6 +77,8 @@ class MissionsData with ChangeNotifier {
     ).toIso8601String();
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
     try {
+      missionsLoading = true;
+      notifyListeners();
       var response = await http.get(
           Uri.parse(
               "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
@@ -84,7 +87,7 @@ class MissionsData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
       log(response.body);
-
+      missionsLoading = false;
       var decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
         var missionsObj =

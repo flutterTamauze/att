@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class AboutUsScreen extends StatelessWidget {
                                 clipper: MyClipper(),
                                 child: Container(
                                   height: (MediaQuery.of(context).size.height) /
-                                      2.75,
+                                      2.95,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Colors.orange,
@@ -42,8 +43,8 @@ class AboutUsScreen extends StatelessWidget {
                               ClipPath(
                                 clipper: MyClipper(),
                                 child: Container(
-                                  height: (MediaQuery.of(context).size.height) /
-                                      2.8,
+                                  height:
+                                      (MediaQuery.of(context).size.height) / 3,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Colors.black,
@@ -176,6 +177,15 @@ class AboutUsScreen extends StatelessWidget {
                                               title: "الموقع الإلكترونى",
                                               icon: FontAwesomeIcons.globe,
                                               link: 'https://tamauzeds.com/',
+                                            ),
+                                            MyListTile(
+                                              title: "اعمالنا على المتجر",
+                                              icon: Platform.isAndroid
+                                                  ? FontAwesomeIcons.googlePlay
+                                                  : FontAwesomeIcons.appStore,
+                                              link: Platform.isAndroid
+                                                  ? "https://play.google.com/store/apps/dev?id=6238642369026075010"
+                                                  : "https://apps.apple.com/eg/developer/tamauze-for-digital-solutions/id1568070593",
                                             ),
                                           ],
                                         ),

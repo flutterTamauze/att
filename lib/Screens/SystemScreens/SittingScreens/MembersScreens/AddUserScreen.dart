@@ -150,6 +150,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
     if (widget.isEdit) {
       print("edit screen");
       print(widget.member.siteName);
+      print(widget.member.shiftName);
+      print(widget.member.shiftId);
       edit = true;
       Provider.of<SiteShiftsData>(context, listen: false)
           .getShiftsList(widget.member.siteName, false);
@@ -157,7 +159,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
       shiftIndex = getShiftListIndex(widget.member.shiftId);
       Provider.of<SiteData>(context, listen: false)
           .setDropDownShift(shiftIndex);
+
       print("shift index $shiftIndex");
+      log("shift index displayed ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
       // siteId = getSiteListIndex(shiftIndex);
       _nameController.text = widget.member.name;
       _emailController.text = widget.member.email;
@@ -733,8 +737,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                       .shiftName
                                                   : siteShiftData
                                                       .dropDownShifts[siteData
-                                                              .dropDownShiftIndex -
-                                                          1]
+                                                          .dropDownShiftIndex]
                                                       .shiftName,
                                           textColor: Colors.orange,
                                         ),

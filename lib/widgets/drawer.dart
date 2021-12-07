@@ -40,8 +40,7 @@ class DrawerI extends StatelessWidget {
     checkNetwork();
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     int userType = Provider.of<UserData>(context, listen: true).user.userType;
-    var comId = Provider.of<CompanyData>(context, listen: false).com.id;
-    String token = Provider.of<UserData>(context, listen: false).user.userToken;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -74,25 +73,9 @@ class DrawerI extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   height: 5.h,
                 ),
-
-                // Center(
-                //   child: Container(
-                //     height: 20,
-                //     child: AutoSizeText(
-                //       "Chilango",
-                //       maxLines: 1,
-                //       style: TextStyle(
-                //         color: Colors.orange,
-                //         fontSize:
-                //             ScreenUtil().setSp(20, allowFontScalingSelf: true),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -136,7 +119,7 @@ class DrawerI extends StatelessWidget {
                         icon: FontAwesomeIcons.building,
                       ),
                       Divider(
-                        height: 30.h,
+                        height: 31.h,
                         thickness: 0.5,
                         color: Colors.white.withOpacity(0.3),
                         indent: 50,
@@ -157,7 +140,7 @@ class DrawerI extends StatelessWidget {
                                   title: "لوحة التحكم",
                                   icon: Icons.admin_panel_settings),
                               Divider(
-                                height: 30.h,
+                                height: 31.h,
                                 thickness: 0.5,
                                 color: Colors.white.withOpacity(0.3),
                                 indent: 50,
@@ -181,7 +164,7 @@ class DrawerI extends StatelessWidget {
                                 icon: Icons.apartment,
                               ),
                               Divider(
-                                height: 30.h,
+                                height: 31.h,
                                 thickness: 0.5,
                                 color: Colors.white.withOpacity(0.3),
                                 indent: 50,

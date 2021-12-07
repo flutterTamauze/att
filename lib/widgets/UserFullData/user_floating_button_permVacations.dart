@@ -62,7 +62,29 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
 
               Navigator.pop(context);
             }
-
+            if (radioVal2 == 3) {
+              if (Provider.of<UserPermessionsData>(context, listen: false)
+                  .singleUserPermessions
+                  .isEmpty) {
+                Provider.of<UserPermessionsData>(context, listen: false)
+                    .getSingleUserPermession(
+                        memberId,
+                        Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userToken);
+              }
+            } else if (radioVal2 == 1) {
+              if (Provider.of<UserHolidaysData>(context, listen: false)
+                  .singleUserHoliday
+                  .isEmpty) {
+                Provider.of<UserHolidaysData>(context, listen: false)
+                    .getSingleUserHoliday(
+                        memberId,
+                        Provider.of<UserData>(context, listen: false)
+                            .user
+                            .userToken);
+              }
+            }
             showDialog(
               context: context,
               builder: (context) {

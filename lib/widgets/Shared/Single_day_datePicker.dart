@@ -1,6 +1,7 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants.dart';
@@ -18,6 +19,7 @@ class SingleDayDatePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 200.w,
+      padding: EdgeInsets.symmetric(horizontal: 5),
       child: DateTimePicker(
         style: TextStyle(
             color: Colors.black, fontWeight: FontWeight.w500, fontSize: 13),

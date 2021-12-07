@@ -101,10 +101,11 @@ class VacationData with ChangeNotifier {
   getOfficialVacations(int companyId, String token) async {
     vactionList = [];
     isLoading = true;
+    print(DateTime.now().year);
     notifyListeners();
     var response = await http.get(
         Uri.parse(
-            "$baseURL/api/OfficialVacations/GetAllVacationsByCompanyId/$companyId"),
+            "$baseURL/api/OfficialVacations/GetAllVacationsByCompanyId/$companyId/${DateTime.now().year}"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $token"

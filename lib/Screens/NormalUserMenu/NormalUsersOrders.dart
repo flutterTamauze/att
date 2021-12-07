@@ -37,9 +37,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
   @override
   void initState() {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    userPermessions = Provider.of<UserPermessionsData>(context, listen: false)
-        .getSingleUserPermession(
-            userProvider.user.id, userProvider.user.userToken);
+
     userHolidays = Provider.of<UserHolidaysData>(context, listen: false)
         .getSingleUserHoliday(
             userProvider.user.id, userProvider.user.userToken);
@@ -152,6 +150,24 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                       ));
                                 }).toList(),
                                 onChanged: (value) {
+                                  if (value == "الأذونات") {
+                                    var userProvider = Provider.of<UserData>(
+                                        context,
+                                        listen: false);
+                                    if (Provider.of<UserPermessionsData>(
+                                            context,
+                                            listen: false)
+                                        .singleUserPermessions
+                                        .isEmpty) {
+                                      userPermessions =
+                                          Provider.of<UserPermessionsData>(
+                                                  context,
+                                                  listen: false)
+                                              .getSingleUserPermession(
+                                                  userProvider.user.id,
+                                                  userProvider.user.userToken);
+                                    }
+                                  }
                                   setState(() {
                                     widget.selectedOrder = value;
                                   });

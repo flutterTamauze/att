@@ -12,6 +12,8 @@ import 'package:qr_users/services/DaysOff.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -65,6 +67,12 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           subTitle: "متابعة حالة الطلبات ",
           icon: FontAwesomeIcons.clipboardList,
           onTap: () {
+            Provider.of<UserHolidaysData>(context, listen: false)
+                .singleUserHoliday
+                .clear();
+            Provider.of<UserPermessionsData>(context, listen: false)
+                .singleUserPermessions
+                .clear();
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => UserOrdersView(

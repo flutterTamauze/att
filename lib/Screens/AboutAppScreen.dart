@@ -218,12 +218,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                           icon: Icons.email,
                                           link: 'mailto:info@tamauzeds.com',
                                         ),
-                                        // MyListTile(
-                                        //   rotated: true,
-                                        //   title: 'دليل الأستخدام',
-                                        //   icon: Icons.help,
-                                        //   link: 'help',
-                                        // ),
+                                        MyListTile(
+                                          rotated: true,
+                                          title: 'دليل الأستخدام',
+                                          icon: Icons.help,
+                                          link: 'help',
+                                        ),
                                       ],
                                     ),
                                   ),

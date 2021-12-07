@@ -42,6 +42,7 @@ class _VacationAndPermessionsReportState
     super.initState();
   }
 
+  String userName;
   searchInList(String value, int siteId, int companyId) async {
     if (value.isNotEmpty) {
       print(companyId);
@@ -170,6 +171,7 @@ class _VacationAndPermessionsReportState
                           itemSubmitted: (item) async {
                             if (_nameController.text != item.username) {
                               setState(() {
+                                userName = item.username;
                                 searchTextField.textField.controller.text =
                                     item.username;
                               });
@@ -239,6 +241,8 @@ class _VacationAndPermessionsReportState
                               if (_nameController.text != item.username) {
                                 setState(() {
                                   print(item.username);
+
+                                  userName = item.username;
                                   searchTextField.textField.controller.text =
                                       item.username;
 
@@ -306,6 +310,8 @@ class _VacationAndPermessionsReportState
                           title: "المأموريات",
                           onchannge: (value) {
                             setState(() {
+                              searchTextField.textField.controller.text =
+                                  userName;
                               radioVal2 = value;
                               if (Provider.of<MissionsData>(context,
                                       listen: false)
@@ -329,6 +335,8 @@ class _VacationAndPermessionsReportState
                           title: "الأجازات",
                           onchannge: (value) {
                             setState(() {
+                              searchTextField.textField.controller.text =
+                                  userName;
                               radioVal2 = value;
                               log("list length ${Provider.of<UserHolidaysData>(context, listen: false).singleUserHoliday.length}");
                               if (Provider.of<UserHolidaysData>(context,
@@ -354,6 +362,9 @@ class _VacationAndPermessionsReportState
                           title: "الأذونات",
                           onchannge: (value) {
                             setState(() {
+                              print(userName);
+                              searchTextField.textField.controller.text =
+                                  userName;
                               radioVal2 = value;
                               if (Provider.of<UserPermessionsData>(context,
                                       listen: false)
