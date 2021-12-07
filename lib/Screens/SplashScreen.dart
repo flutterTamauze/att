@@ -309,8 +309,8 @@ class _SplashScreenState extends State<SplashScreen>
                               fit: BoxFit.fill,
                             ),
                           ),
-                          height: 150,
-                          width: 150,
+                          height: 150.h,
+                          width: 150.w,
                         )),
                         Center(
                           child: Padding(
