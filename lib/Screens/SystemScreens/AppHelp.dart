@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
+import 'package:qr_users/constants.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AppHelpPage extends StatefulWidget {
@@ -14,31 +17,25 @@ class AppHelpPage extends StatefulWidget {
 class _AppHelpPageState extends State<AppHelpPage> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
+    isLoading = true;
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }
   }
 
+  int currentProgress = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Align(
-          alignment: Alignment.bottomLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: FloatingActionButton(
-              onPressed: () => Navigator.pop(context),
-              child: Icon(
-                Icons.chevron_left,
-                color: Colors.black,
-              ),
-              backgroundColor: Colors.orange[600],
-            ),
-          ),
+        floatingActionButton: MultipleFloatingButtons(
+          mainTitle: "",
+          shiftName: "",
+          comingFromShifts: false,
+          mainIconData: Icons.add_location_alt,
         ),
         body: SingleChildScrollView(
           child: Stack(
@@ -47,6 +44,12 @@ class _AppHelpPageState extends State<AppHelpPage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: WebView(
+                  onProgress: (int progress) {
+                    setState(() {
+                      currentProgress = progress;
+                    });
+                    print('WebView is loading (progress : $progress%)');
+                  },
                   initialUrl:
                       "https://chilango.tamauzeds.com/#/sdfhs2340_wsdASDA_SDADASD_A",
                   javascriptMode: JavascriptMode.unrestricted,
@@ -57,6 +60,28 @@ class _AppHelpPageState extends State<AppHelpPage> {
                   },
                 ),
               ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height / 2,
+                  right: MediaQuery.of(context).size.width / 3.4,
+                  child: currentProgress != 100
+                      ? Column(
+                          children: [
+                            Text(
+                              "جارى تحميل الصفحة %$currentProgress",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: setResponsiveFontSize(17)),
+                              textAlign: TextAlign.center,
+                            ),
+                            Container(
+                              height: 10,
+                            ),
+                            CircularProgressIndicator(
+                              backgroundColor: Colors.orange,
+                            )
+                          ],
+                        )
+                      : Container())
             ],
           ),
         ));

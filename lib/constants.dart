@@ -30,7 +30,7 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 6);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 7);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 1);
 //ERRORS
@@ -41,7 +41,7 @@ const NOT_FOUND = 404;
 const CONNECTION_TIMEOUT = 104;
 const UN_AUTHORIZED = 401;
 Future<bool> onWillPop() {
-  DateTime now = DateTime.now();
+  final DateTime now = DateTime.now();
 
   if (_currentBackPressTime == null ||
       now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
@@ -148,8 +148,8 @@ double getkDeviceHeightFactor(BuildContext context, double widgetHeight) {
 }
 
 int kCalcDateDifferance(String strtDate, String endDate) {
-  DateTime startDate = DateTime.parse(strtDate);
-  DateTime endingDate = DateTime.parse(endDate);
+  final DateTime startDate = DateTime.parse(strtDate);
+  final DateTime endingDate = DateTime.parse(endDate);
 
   final differancee = endingDate.difference(startDate).inDays;
   return differancee;

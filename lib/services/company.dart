@@ -56,6 +56,14 @@ class Company {
         createdOn: DateTime.tryParse(decodedRes["data"]["createdOn"]),
         legalComDate: decodedRes["data"]["monthStartDate"]);
   }
+  factory Company.fromLogin(decodedRes) {
+    return Company(
+        id: decodedRes["companyData"]["id"],
+        nameAr: decodedRes["companyData"]["nameAr"],
+        logo: "$imageUrl${decodedRes["companyData"]["logo"]}",
+        createdOn: DateTime.tryParse(decodedRes["companyData"]["createdOn"]),
+        legalComDate: decodedRes["companyData"]["monthStartDate"]);
+  }
 }
 
 class CompanyData extends ChangeNotifier {
@@ -88,6 +96,12 @@ class CompanyData extends ChangeNotifier {
     return false;
   }
 
+  getCompanyDataFromLogin(decodedRes) {
+    com = Company.fromLogin(decodedRes);
+
+    notifyListeners();
+  }
+
   getCompanyProfileApi(
       int companyId, String userToken, BuildContext context) async {
     if (await isConnectedToInternet()) {
@@ -100,13 +114,8 @@ class CompanyData extends ChangeNotifier {
             });
         print(response.statusCode);
         print(response.body);
-        if (response.statusCode == 401) {
-          await inheritDefault.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getCompanyProfileApi(companyId, userToken, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          final decodedRes = json.decode(response.body);
           print("COMPANY MSG }");
           print(decodedRes["message"]);
           if (decodedRes["message"] == "Success") {

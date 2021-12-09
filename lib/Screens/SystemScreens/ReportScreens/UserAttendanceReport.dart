@@ -326,8 +326,13 @@ class _UserAttendanceReportScreenState
                                                                     .user
                                                                     .userType ==
                                                                 2
-                                                            ? userDataProvider
-                                                                .siteName
+                                                            ? ""
+                                                            //  Provider.of<
+                                                            //             UserData>(
+                                                            //         context,
+                                                            //         listen:
+                                                            //             false)
+                                                            //     .siteName
                                                             : Provider.of<
                                                                         SiteShiftsData>(
                                                                     context)

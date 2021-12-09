@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/company.dart';
@@ -64,7 +63,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
 
   getReportData(date) async {
     var userProvider = Provider.of<UserData>(context, listen: false);
-    int apiId = userProvider.user.userType == 3
+    var apiId = userProvider.user.userType == 3
         ? userProvider.user.id
         : Provider.of<CompanyData>(context, listen: false).com.id;
     await Provider.of<ReportsData>(context, listen: false)

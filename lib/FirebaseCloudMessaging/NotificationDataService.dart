@@ -174,7 +174,7 @@ class NotificationDataService with ChangeNotifier {
       if (event.data["category"] == "internalMission") {
         print("revieved internalMission ");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        List<String> userData = (prefs.getStringList('userData') ?? null);
+        final List<String> userData = (prefs.getStringList('userData') ?? null);
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context)
             .then((value) => print('login successs'));

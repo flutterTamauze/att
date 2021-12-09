@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
@@ -251,7 +250,7 @@ class MemberData with ChangeNotifier {
       }
 
       url =
-          "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=7";
+          "$baseURL/api/Users/GetAllEmployeeInShift?shiftId=$shiftId&pageNumber=$byShiftPageIndex&pageSize=8";
       // notifyListeners();
     } else {
       if (siteId == -1) {
@@ -276,7 +275,7 @@ class MemberData with ChangeNotifier {
           keepRetriving = true;
         }
         url =
-            "$baseURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=7";
+            "$baseURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=8";
       } else {
         print("by site");
         if (bySitePageIndex == 1) {
@@ -288,7 +287,7 @@ class MemberData with ChangeNotifier {
         }
 
         url =
-            "$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId&pageNumber=$bySitePageIndex&pageSize=7";
+            "$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId&pageNumber=$bySitePageIndex&pageSize=8";
       }
     }
 

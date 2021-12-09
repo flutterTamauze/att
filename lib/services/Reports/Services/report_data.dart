@@ -331,7 +331,7 @@ class ReportsData with ChangeNotifier {
     return jsonDecode(response.body)["message"];
   }
 
-  getDailyAttendProofReport(String userToken, int apiId, String date,
+  getDailyAttendProofReport(String userToken, var apiId, String date,
       BuildContext context, int userType) {
     futureListener = getDailyAttendProofApi(
       userToken,
@@ -343,7 +343,7 @@ class ReportsData with ChangeNotifier {
     return futureListener;
   }
 
-  Future<String> getDailyAttendProofApi(String userToken, int apiId,
+  Future<String> getDailyAttendProofApi(String userToken, var apiId,
       int userType, String date, BuildContext context) async {
     if (await isConnectedToInternet()) {
       print(date);

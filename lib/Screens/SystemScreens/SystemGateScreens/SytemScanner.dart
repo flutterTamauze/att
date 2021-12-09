@@ -112,9 +112,8 @@ class _SystemScanPageState extends State<SystemScanPage> {
       qrText = scanData;
       if (!isScanned) {
         isScanned = true;
-        shiftQrCode = Provider.of<ShiftApi>(context, listen: false)
-            .currentShift
-            .shiftQrCode;
+        shiftQrCode =
+            Provider.of<ShiftApi>(context, listen: false).qrShift.shiftQrCode;
         print("qrcode : $shiftQrCode");
         secondPageRoute();
       }

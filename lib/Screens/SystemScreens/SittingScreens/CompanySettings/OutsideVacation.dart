@@ -109,32 +109,23 @@ class _OutsideVacationState extends State<OutsideVacation> {
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
     tomorrow = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-    fromDate = widget.radioValue == 3 ? now : tomorrow;
-    _selectedDateString =
-        widget.radioValue == 3 ? now.toString() : tomorrow.toString();
+    fromDate = now;
+    _selectedDateString = now.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
-    _today = DateTime.now();
+    _today = now;
 
     super.initState();
   }
 
-  // getSingleUserMission() async {
-  //   if (Provider.of<MissionsData>(context, listen: false)
-  //       .singleUserMissionsList
-  //       .isEmpty) {
-  //     userMission = await Provider.of<MissionsData>(context, listen: false)
-  //         .getSingleUserMissions(widget.member.id,
-  //             Provider.of<UserData>(context, listen: false).user.userToken);
-  //   }
-  // }
-
   var selectedVal = "كل المواقع";
   @override
   Widget build(BuildContext context) {
-    var prov = Provider.of<SiteData>(context, listen: false);
-    var list = Provider.of<SiteShiftsData>(context, listen: true).sites;
-    var shiftsData = Provider.of<SiteShiftsData>(context, listen: false);
-    var sitesData = Provider.of<SiteData>(context, listen: false);
+    final SiteData prov = Provider.of<SiteData>(context, listen: false);
+    final List<Site> list =
+        Provider.of<SiteShiftsData>(context, listen: true).sites;
+    final SiteShiftsData shiftsData =
+        Provider.of<SiteShiftsData>(context, listen: false);
+    final sitesData = Provider.of<SiteData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
         onTap: () {
@@ -669,7 +660,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 fromDate,
                                                             initialLastDate:
                                                                 toDate,
-                                                            firstDate: tomorrow,
+                                                            firstDate: DateTime(
+                                                                DateTime.now()
+                                                                    .year,
+                                                                DateTime.now()
+                                                                    .month,
+                                                                DateTime.now()
+                                                                    .day),
                                                             lastDate:
                                                                 yesterday);
                                                     var newString = "";

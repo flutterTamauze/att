@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
-
 class Shift {
-  String shiftName;
+  String shiftName,
+      shiftFromStartTime,
+      shiftFromEndTime,
+      shiftToStartTime,
+      shiftToEndTime;
   int shiftStartTime;
   int shiftEndTime;
   int sunShiftstTime,
@@ -17,6 +19,7 @@ class Shift {
       fridayShiftstTime,
       fridayShiftenTime;
   bool shiftType;
+
   String shiftQrCode;
   int siteID;
   int shiftId;
@@ -40,17 +43,20 @@ class Shift {
       this.tuesdayShiftenTime,
       this.tuesdayShiftstTime,
       this.wednesDayShiftenTime,
-      this.wednesDayShiftstTime});
+      this.wednesDayShiftstTime,
+      this.shiftFromEndTime,
+      this.shiftFromStartTime,
+      this.shiftToEndTime,
+      this.shiftToStartTime});
 
   factory Shift.fromJsonQR(dynamic json) {
     return Shift(
         shiftName: json['shiftName'],
-        shiftStartTime: int.parse(json['shiftSttime']),
-        shiftEndTime: int.parse(json['shiftEntime']),
-        shiftQrCode: json['shiftQrcode'],
-        shiftId: json['id'] as int,
-        shiftType: json['type'] as bool,
-        siteID: json['siteId'] as int);
+        shiftQrCode: json['shiftQRCode'],
+        shiftFromStartTime: json["shiftFromStartTime"],
+        shiftToStartTime: json["shiftToStartTime"],
+        shiftToEndTime: json["shiftToEndTime"],
+        shiftFromEndTime: json["shiftFromEndTime"]);
   }
   factory Shift.fromJson(dynamic json) {
     return Shift(

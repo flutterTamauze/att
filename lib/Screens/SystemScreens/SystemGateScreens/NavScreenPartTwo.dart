@@ -15,16 +15,13 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dar
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/SystemHomePage.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
-import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
-import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/Subscribtion_end_dialog.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/widgets/roundedButton.dart';
 
 class NavScreenTwo extends StatefulWidget {
   final int index;

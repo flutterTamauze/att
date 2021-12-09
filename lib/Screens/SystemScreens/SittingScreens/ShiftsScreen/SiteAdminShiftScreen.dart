@@ -81,8 +81,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
     if (mounted) {}
 
     super.didChangeDependencies();
-    Provider.of<SiteData>(context, listen: false).setCurrentSiteName(
-        Provider.of<UserData>(context, listen: false).siteName);
+    // Provider.of<SiteData>(context, listen: false).setCurrentSiteName(
+    //     Provider.of<UserData>(context, listen: false).siteName);
     await getData(
         Provider.of<UserData>(context, listen: false).user.userSiteId);
   }

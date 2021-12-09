@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class SuperCompanyChart extends StatefulWidget {

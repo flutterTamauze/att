@@ -13,14 +13,11 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
@@ -157,6 +154,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
           .getShiftsList(widget.member.siteName, false);
 
       shiftIndex = getShiftListIndex(widget.member.shiftId);
+      print(shiftIndex);
+
       Provider.of<SiteData>(context, listen: false)
           .setDropDownShift(shiftIndex);
 
@@ -1099,7 +1098,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
   // }
 
   int getShiftListIndex(int shiftId) {
-    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
+    var list =
+        Provider.of<SiteShiftsData>(context, listen: false).dropDownShifts;
     int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftId == list[i].shiftId) {

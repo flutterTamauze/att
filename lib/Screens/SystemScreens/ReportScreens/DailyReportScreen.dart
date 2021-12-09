@@ -170,12 +170,13 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           title:
                                                               "تقرير الحضور اليومى",
                                                           site: userType == 2
-                                                              ? Provider.of<
-                                                                          UserData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .siteName
+                                                              ? ""
+                                                              //  Provider.of<
+                                                              //             UserData>(
+                                                              //         context,
+                                                              //         listen:
+                                                              //             false)
+                                                              //     .siteName
                                                               : Provider.of<
                                                                           SiteShiftsData>(
                                                                       context)

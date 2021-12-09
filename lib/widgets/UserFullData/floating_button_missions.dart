@@ -35,7 +35,7 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                     .singleUserMissionsList
                     .isEmpty) {
                   userMission =
-                      await Provider.of<MissionsData>(context, listen: false)
+                      Provider.of<MissionsData>(context, listen: false)
                           .getSingleUserMissions(
                               memberId,
                               Provider.of<UserData>(context, listen: false)
@@ -91,12 +91,10 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                                         ConnectionState
                                                             .waiting) {
                                                       return Center(
-                                                        child: Expanded(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            backgroundColor:
-                                                                Colors.orange,
-                                                          ),
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              Colors.orange,
                                                         ),
                                                       );
                                                     } else {

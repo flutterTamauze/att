@@ -21,6 +21,8 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../constants.dart';
+
 var cron1;
 var cron2;
 
@@ -106,7 +108,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                print(userDataProvider.user.userType);
+              },
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,

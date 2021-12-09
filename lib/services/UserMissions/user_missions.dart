@@ -78,7 +78,7 @@ class MissionsData with ChangeNotifier {
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
     try {
       missionsLoading = true;
-      notifyListeners();
+      // notifyListeners();
       var response = await http.get(
           Uri.parse(
               "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
@@ -104,14 +104,10 @@ class MissionsData with ChangeNotifier {
         singleUserMissionsList =
             [...externalMissions, ...internalMissions].toSet().toList();
         if (singleUserMissionsList.length > 0) {
-          for (int i = 0; i < singleUserMissionsList.length; i++) {
-            if (singleUserMissionsList[i].sitename == "" ||
-                singleUserMissionsList[i].sitename == null) {
-              externalMissionsCount++;
-            } else {
-              internalMissionsCount++;
-            }
-          }
+          externalMissionsCount =
+              jsonDecode(response.body)['data']["TotalExternalMission"];
+          internalMissionsCount =
+              jsonDecode(response.body)['data']["TotalInternal"];
         }
       }
       notifyListeners();

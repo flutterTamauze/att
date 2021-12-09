@@ -172,7 +172,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
             onMapCreated: onMapCreated,
             buildingsEnabled: true,
             markers: Set.from(allMarkers),
-            mapType: MapType.hybrid,
+            mapType: MapType.normal,
           ),
         ],
       ),

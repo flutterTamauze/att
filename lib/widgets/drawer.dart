@@ -7,8 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Screens/AboutAppScreen.dart';
-import 'package:qr_users/Screens/AboutCompany.dart';
+import 'package:qr_users/Screens/AboutApp/AboutAppScreen.dart';
+import 'package:qr_users/Screens/AboutCompany/AboutCompany.dart';
 import 'package:qr_users/Screens/AboutUsScreen.dart';
 import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
@@ -106,7 +106,11 @@ class DrawerI extends StatelessWidget {
                       endIndent: 50,
                     ),
                     if (Provider.of<UserData>(context, listen: false)
-                        .isSuperAdmin) ...[
+                            .isSuperAdmin ||
+                        (Provider.of<UserData>(context, listen: false)
+                                .isTdsAdmin ||
+                            Provider.of<UserData>(context, listen: false)
+                                .isTechnicalSupport)) ...[
                       MenuItem(
                         onTap: () {
                           Navigator.pushReplacement(

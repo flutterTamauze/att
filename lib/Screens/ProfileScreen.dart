@@ -8,9 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_pickers/image_pickers.dart';
 
 import 'package:provider/provider.dart';
@@ -20,7 +18,6 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:ui' as ui;
 import 'SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 
 class ProfileScreen extends StatefulWidget {

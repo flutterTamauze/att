@@ -22,11 +22,11 @@ class ShiftApi with ChangeNotifier {
   Position currentPosition;
   double currentSitePositionLat;
   double currentSitePositionLong;
-
+  Shift qrShift = Shift();
   Location currentHuaweiLocation;
   DateTime currentBackPressTime, currentCountryDate;
   bool isOnShift = true;
-  List<String> currentShiftSTtime, currentShiftEndTime;
+
   String siteName;
   bool isOnLocation = false;
   int isLocationServiceOn = 0;
@@ -129,12 +129,12 @@ class ShiftApi with ChangeNotifier {
     ///check if he pressed back twich in the 2 seconds duration
   }
 
-  Shift currentShift = Shift(
-      shiftName: "",
-      shiftStartTime: 0,
-      shiftEndTime: 0,
-      shiftQrCode: "",
-      siteID: 0);
+  // Shift currentShift = Shift(
+  //     shiftName: "",
+  //     shiftStartTime: 0,
+  //     shiftEndTime: 0,
+  //     shiftQrCode: "",
+  //     siteID: 0);
   Future<bool> isConnectedToInternet() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -175,6 +175,7 @@ class ShiftApi with ChangeNotifier {
     if (await isConnectedToInternet()) {
       isConnected = true;
       List<Shift> shiftsList;
+
       HuaweiServices _huawi = HuaweiServices();
       bool isHawawi = await _huawi.isHuaweiDevice();
       int isMoc;
@@ -205,44 +206,37 @@ class ShiftApi with ChangeNotifier {
             ));
         log(response.body);
         if (jsonDecode(response.body)["message"] == "Success") {
-          var shiftObjJson = jsonDecode(response.body)['data'] as List;
-          shiftsList = shiftObjJson
-              .map((shiftJson) => Shift.fromJsonQR(shiftJson))
-              .toList();
+          final shiftObjJson = jsonDecode(response.body)['data'];
+          qrShift = Shift.fromJsonQR(shiftObjJson);
           currentCountryDate = DateTime.tryParse(
-              jsonDecode(response.body)['data'][2]["currentTime"]);
-          currentShiftSTtime = [
-            jsonDecode(response.body)['data'][0]["shiftSttime"],
-            jsonDecode(response.body)['data'][0]["shiftEntime"]
-          ];
-          siteName = jsonDecode(response.body)['data'][2]["siteName"];
+              jsonDecode(response.body)['data']["currentTime"]);
 
-          currentShiftEndTime = [
-            jsonDecode(response.body)['data'][1]["shiftSttime"],
-            jsonDecode(response.body)['data'][1]["shiftEntime"]
-          ];
           shiftsListProvider = shiftsList;
-          var now = DateTime.now();
-          var formater = DateFormat("Hm");
-          int currentTime = int.parse(formater.format(now).replaceAll(":", ""));
-          searchForCurrentShift(currentTime);
+
           isOnLocation = true;
           permissionOff = true;
           isLocationServiceOn = 1;
           notifyListeners();
           return true;
-        } else {
+        } else if (jsonDecode(response.body)["message"] ==
+            "Faild : Location not found ") {
           print("isNotInLocation");
 
           currentSitePositionLat =
-              jsonDecode(response.body)["data"][2]["latitude"] as double;
+              jsonDecode(response.body)["data"]["siteLatitue"] as double;
           currentSitePositionLong =
-              jsonDecode(response.body)["data"][2]["longitude"] as double;
-          siteName = jsonDecode(response.body)['data'][2]["siteName"];
+              jsonDecode(response.body)["data"]["siteLongitude"] as double;
+          siteName = jsonDecode(response.body)['data']["siteName"];
           isOnLocation = false;
           isLocationServiceOn = 1;
           permissionOff = true;
 
+          notifyListeners();
+          return false;
+        } else {
+          isConnected = false;
+          isLocationServiceOn = 0;
+          isOnLocation = false;
           notifyListeners();
           return false;
         }
@@ -275,30 +269,30 @@ class ShiftApi with ChangeNotifier {
     }
   }
 
-  bool searchForCurrentShift(int currentTime) {
-    for (int i = 0; i < shiftsListProvider.length; i++) {
-      var shiftStart = shiftsListProvider[i].shiftStartTime;
-      var shiftEnd = shiftsListProvider[i].shiftEndTime;
+  // bool searchForCurrentShift(int currentTime) {
+  //   for (int i = 0; i < shiftsListProvider.length; i++) {
+  //     var shiftStart = shiftsListProvider[i].shiftStartTime;
+  //     var shiftEnd = shiftsListProvider[i].shiftEndTime;
 
-      print(
-          "---$currentTime-${shiftsListProvider[i].siteID} : ${shiftsListProvider[i].shiftStartTime}");
-      if (currentTime < shiftsListProvider[i].shiftStartTime &&
-          currentTime < (shiftsListProvider[i].shiftEndTime % 2400)) {
-        currentTime += 2400;
-        print(currentTime);
-      }
-      if (shiftsListProvider[i].shiftStartTime + kBeforeStartShift >= 2400) {
-        shiftEnd += 2400;
-      }
+  //     print(
+  //         "---$currentTime-${shiftsListProvider[i].siteID} : ${shiftsListProvider[i].shiftStartTime}");
+  //     if (currentTime < shiftsListProvider[i].shiftStartTime &&
+  //         currentTime < (shiftsListProvider[i].shiftEndTime % 2400)) {
+  //       currentTime += 2400;
+  //       print(currentTime);
+  //     }
+  //     if (shiftsListProvider[i].shiftStartTime + kBeforeStartShift >= 2400) {
+  //       shiftEnd += 2400;
+  //     }
 
-      print(
-          "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
-      currentShift = shiftsListProvider[i];
-      // changeFlag(true);
-      return true;
-    }
+  //     print(
+  //         "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
+  //     currentShift = shiftsListProvider[i];
+  //     // changeFlag(true);
+  //     return true;
+  //   }
 
-    // changeFlag(false);
-    return false;
-  }
+  //   // changeFlag(false);
+  //   return false;
+  // }
 }

@@ -32,210 +32,222 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
 
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Consumer<UserData>(builder: (context, userData, child) {
-      return Scaffold(
-        endDrawer: NotificationItem(),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Header(
-                    goUserHomeFromMenu: false,
-                    goUserMenu: false,
-                    nav: false,
-                  ),
-                  FadeIn(
-                      child: RoundBorderedImage(
-                    radius: 13,
-                    width: 200,
-                    height: 200,
-                    imageUrl: comData.com.logo,
-                  )),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: AutoSizeText(
-                        "تمام شركة ${comData.com.nameAr}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: ScreenUtil().setSp(16)),
-                      )),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  AutoSizeText(
-                    DateTime.now().toString().substring(0, 11),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: ScreenUtil().setSp(16)),
-                  ),
-                  SizedBox(
-                    height: 90.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: FadeInRight(child: SuperCompanyChart())),
-                        Expanded(child: Container()),
-                        FadeInLeft(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: 190.w,
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 5.w),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 35.w,
-                                        height: 25.h,
-                                        child: Center(
-                                          child: Text(
-                                            userData.superCompaniesChartModel
-                                                .totalEmp
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize:
-                                                    setResponsiveFontSize(15),
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blueAccent),
+      return GestureDetector(
+        onTap: () {
+          print(userData.user.userType);
+        },
+        child: Scaffold(
+          endDrawer: NotificationItem(),
+          body: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Header(
+                      goUserHomeFromMenu: false,
+                      goUserMenu: false,
+                      nav: false,
+                    ),
+                    FadeIn(
+                        child: RoundBorderedImage(
+                      radius: 13,
+                      width: 200,
+                      height: 200,
+                      imageUrl: comData.com.logo,
+                    )),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: AutoSizeText(
+                          "تمام شركة ${comData.com.nameAr}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: ScreenUtil().setSp(16)),
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    AutoSizeText(
+                      DateTime.now().toString().substring(0, 11),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: ScreenUtil().setSp(16)),
+                    ),
+                    SizedBox(
+                      height: 90.h,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: FadeInRight(child: SuperCompanyChart())),
+                          Expanded(child: Container()),
+                          FadeInLeft(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: 190.w,
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 35.w,
+                                          height: 25.h,
+                                          child: Center(
+                                            child: Text(
+                                              userData.superCompaniesChartModel
+                                                  .totalEmp
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      setResponsiveFontSize(15),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blueAccent),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        child: Container(),
-                                      ),
-                                      AutoSizeText(
-                                        "عدد مستخدمين الشركة",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: setResponsiveFontSize(14),
-                                            color: Colors.blueAccent),
-                                        textAlign: TextAlign.right,
-                                      ),
-                                    ],
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        AutoSizeText(
+                                          "عدد مستخدمين الشركة",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                                  setResponsiveFontSize(14),
+                                              color: Colors.blueAccent),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Row(
-                                children: [
-                                  SinglePieChartItem(
-                                    title: "الموجود",
-                                    color: Colors.green[600],
-                                    count: userData
-                                        .superCompaniesChartModel.totalAttend
-                                        .toString(),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              SinglePieChartItem(
-                                title: "الأجازة",
-                                color: Colors.orange[600],
-                                count: userData
-                                    .superCompaniesChartModel.totalHolidays
-                                    .toString(),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              SinglePieChartItem(
-                                count: userData.superCompaniesChartModel
-                                    .totalExternalMissions
-                                    .toString(),
-                                title: "المأموريات الخارجية",
-                                color: Colors.purple[600],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              // SinglePieChartItem(
-                              //   title: "الغياب",
-                              //   color: Colors.red[600],
-                              //   count: userData
-                              //       .superCompaniesChartModel.totalAbsent
-                              //       .toString(),
-                              // ),
-                            ],
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                Row(
+                                  children: [
+                                    SinglePieChartItem(
+                                      title: "الموجود",
+                                      color: Colors.green[600],
+                                      count: userData
+                                          .superCompaniesChartModel.totalAttend
+                                          .toString(),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SinglePieChartItem(
+                                  title: "الأجازة",
+                                  color: Colors.orange[600],
+                                  count: userData
+                                      .superCompaniesChartModel.totalHolidays
+                                      .toString(),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SinglePieChartItem(
+                                  count: userData.superCompaniesChartModel
+                                      .totalExternalMissions
+                                      .toString(),
+                                  title: "المأموريات الخارجية",
+                                  color: Colors.purple[600],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                // SinglePieChartItem(
+                                //   title: "الغياب",
+                                //   color: Colors.red[600],
+                                //   count: userData
+                                //       .superCompaniesChartModel.totalAbsent
+                                //       .toString(),
+                                // ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: Container(
-                  //     padding: EdgeInsets.only(right: 10.w),
-                  //     width: 202.w,
-                  //     child: Row(
-                  //       children: [
-                  //         Container(
-                  //           width: 25.w,
-                  //           height: 25.h,
-                  //           child: Center(
-                  //             child: Text(
-                  //               userData
-                  //                   .superCompaniesChartModel.totalPermessions
-                  //                   .toString(),
-                  //               style: TextStyle(fontWeight: FontWeight.w500),
-                  //             ),
-                  //           ),
-                  //           decoration: BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               border:
-                  //                   Border.all(width: 1, color: Colors.black)),
-                  //         ),
-                  //         Expanded(
-                  //           child: Container(),
-                  //         ),
-                  //         AutoSizeText(
-                  //           "مجموع الأذونات",
-                  //           style: TextStyle(
-                  //             fontWeight: FontWeight.w600,
-                  //           ),
-                  //           textAlign: TextAlign.right,
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      //  onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NavScreenTwo(2),
-                          ));
-                      // })
-                    },
-                    child: Container(
-                        width: 80.w,
-                        height: 80.w,
-                        child: Lottie.asset('resources/proceed.json')),
-                  )
-                  // RoundedButton(
-                  //     title: "متابعة",
-                ],
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: Container(
+                    //     padding: EdgeInsets.only(right: 10.w),
+                    //     width: 202.w,
+                    //     child: Row(
+                    //       children: [
+                    //         Container(
+                    //           width: 25.w,
+                    //           height: 25.h,
+                    //           child: Center(
+                    //             child: Text(
+                    //               userData
+                    //                   .superCompaniesChartModel.totalPermessions
+                    //                   .toString(),
+                    //               style: TextStyle(fontWeight: FontWeight.w500),
+                    //             ),
+                    //           ),
+                    //           decoration: BoxDecoration(
+                    //               shape: BoxShape.circle,
+                    //               border:
+                    //                   Border.all(width: 1, color: Colors.black)),
+                    //         ),
+                    //         Expanded(
+                    //           child: Container(),
+                    //         ),
+                    //         AutoSizeText(
+                    //           "مجموع الأذونات",
+                    //           style: TextStyle(
+                    //             fontWeight: FontWeight.w600,
+                    //           ),
+                    //           textAlign: TextAlign.right,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        if (userData.isTechnicalSupport) {
+                          print("overiding tech supporrt rule from 4 to 3");
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userType = 3;
+                        }
+                        //  onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NavScreenTwo(2),
+                            ));
+                        // })
+                      },
+                      child: Container(
+                          width: 80.w,
+                          height: 80.w,
+                          child: Lottie.asset('resources/proceed.json')),
+                    )
+                    // RoundedButton(
+                    //     title: "متابعة",
+                  ],
+                ),
               ),
             ),
           ),

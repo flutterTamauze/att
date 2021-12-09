@@ -92,10 +92,10 @@ class _EditMemberState extends State<EditMember> {
                 .then((value) {
               if (Provider.of<UserData>(context, listen: false).user.id ==
                   widget.member.id) {
-                Provider.of<UserData>(context, listen: false).siteName =
-                    Provider.of<SiteData>(context, listen: false)
-                        .sitesList[widget.siteId]
-                        .name;
+                // Provider.of<UserData>(context, listen: false).siteName =
+                //     Provider.of<SiteData>(context, listen: false)
+                //         .sitesList[widget.siteId]
+                //         .name;
               }
             }).then((value) => Navigator.of(context).push(
                       new MaterialPageRoute(

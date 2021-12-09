@@ -124,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
   AnimationController animationController;
   reverse(String userName, value) {
     //Reverse animation Function
-    var userData = Provider.of<UserData>(context, listen: false);
+    final UserData userData = Provider.of<UserData>(context, listen: false);
 
     setState(() {
       animationController.reverse();
@@ -158,12 +158,7 @@ class _SplashScreenState extends State<SplashScreen>
                   builder: (context) => ErrorScreen(
                       "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
             } else if (value == 4 || value == 3) {
-              await Provider.of<UserData>(context, listen: false)
-                  .getSuperCompanyChart(
-                      Provider.of<UserData>(context, listen: false)
-                          .user
-                          .userToken,
-                      Provider.of<CompanyData>(context, listen: false).com.id);
+        
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

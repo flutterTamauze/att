@@ -50,7 +50,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
       IntroContent(
         imageUrl: "resources/intro1.json",
         title:
-            "تقدر تسجل حضور و انصراف بمنهى السهولة عن طريق الكود / البطاقة .",
+            "تقدر تسجل حضور و انصراف بمنتهى السهولة عن طريق الكود / البطاقة .",
       ),
       IntroContent(
         title:

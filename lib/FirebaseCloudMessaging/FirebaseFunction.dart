@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 final String serverToken =
+    // ignore: lines_longer_than_80_chars
     'AAAAn_TIyyQ:APA91bFfj4S4VEA7ZU3zegTqeNwEODrGePKF7Wh-OsOeJCSb326VxWZ0OER7gV3irug0BJB4IXr_MNgkNtwpjeU58vVmQNByntX_hQDxD8bzFDC94txSITHBzXt22cTkRaq5B4VsrRmX';
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -16,13 +17,13 @@ Future<bool> sendFcmMessage(
     String topicName,
     String userToken}) async {
   try {
-    String toParams = "/topics/" + topicName;
+    final String toParams = "/topics/" + topicName;
     print(userToken);
     // print(await firebaseMessaging.getToken());
     // firebaseMessaging.unsubscribeFromTopic("nekaba");
     // print(toParams);
-    var url = 'https://fcm.googleapis.com/fcm/send';
-    var header = {
+    const url = 'https://fcm.googleapis.com/fcm/send';
+    final header = {
       "Content-Type": "application/json",
       "Authorization": "key=$serverToken",
     };
@@ -72,8 +73,8 @@ Future<bool> sendFcmMessage(
     }
 
 //    "to": "$toParams",
-    var client = new http.Client();
-    var response = await client.post(Uri.parse(url),
+    final client = new http.Client();
+    final response = await client.post(Uri.parse(url),
         headers: header, body: json.encode(request));
     print(response.body);
     print(response.statusCode);
@@ -87,7 +88,7 @@ Future<bool> sendFcmMessage(
 Future<bool> sendFcmDataOnly(
     {String category, String topicName, String userToken}) async {
   try {
-    String toParams = "/topics/" + topicName;
+    final String toParams = "/topics/" + topicName;
 
     var url = 'https://fcm.googleapis.com/fcm/send';
     var header = {

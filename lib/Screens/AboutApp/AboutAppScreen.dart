@@ -1,26 +1,17 @@
-import 'dart:developer';
-import 'dart:io';
 import 'dart:math' as math;
-import 'package:animate_do/animate_do.dart';
-import 'package:open_file/open_file.dart' as open_file;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:open_file/open_file.dart' as open_file;
-import 'Notifications/Notifications.dart';
-import 'SystemScreens/AppHelp.dart';
+import '../Notifications/Notifications.dart';
+import '../SystemScreens/AppHelp.dart';
 
 class ContactUsScreen extends StatefulWidget {
   @override

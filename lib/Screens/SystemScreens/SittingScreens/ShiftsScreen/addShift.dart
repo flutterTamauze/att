@@ -2,9 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:animate_do/animate_do.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +14,6 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/Shift
 
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
-import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';

@@ -1,10 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +15,6 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
-import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
@@ -235,12 +232,13 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                           .user
                                                                           .userType ==
                                                                       2
-                                                                  ? Provider.of<
-                                                                              UserData>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .siteName
+                                                                  ? ""
+                                                                  //  Provider.of<
+                                                                  //             UserData>(
+                                                                  //         context,
+                                                                  //         listen:
+                                                                  //             false)
+                                                                  //     .siteName
                                                                   : Provider.of<
                                                                               SiteShiftsData>(
                                                                           context)

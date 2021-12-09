@@ -50,7 +50,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                           color: Colors.orange[600],
                           fontSize: 15),
                     )
-                  : DataTableholidayHeader()),
+                  : DataTableMissionHeader()),
           widget._nameController.text == ""
               ? Container()
               : Divider(

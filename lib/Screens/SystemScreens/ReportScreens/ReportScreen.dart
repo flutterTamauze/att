@@ -10,13 +10,9 @@ import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceRepor
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/widgets/roundedAlert.dart';
 
-import 'AttendProovReport.dart';
 import 'DisplayPermessionAndVacations.dart';
 
 class ReportsScreen extends StatefulWidget {

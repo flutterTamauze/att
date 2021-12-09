@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:device_info/device_info.dart';
 import 'package:huawei_location/location/location.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
@@ -40,7 +38,7 @@ class UserData with ChangeNotifier {
   // Company com = Company(id: 0, logo: "", nameAr: "", nameEn: "");
 //   var cacheValCompanyIcon = "";
 // var companyDataArname="";
-  String siteName;
+  // String siteName;
   List<SuperCompaniesModel> superCompaniesList = [];
   SuperCompaniesChartModel superCompaniesChartModel;
   String hawawiToken = "";
@@ -49,6 +47,8 @@ class UserData with ChangeNotifier {
   bool changedPassword;
   bool isLoading = false;
   bool isSuperAdmin = false;
+  bool isTdsAdmin = false;
+  bool isTechnicalSupport = false;
   User user = User(
     userSiteId: 0,
     isAllowedToAttend: false,
@@ -100,12 +100,12 @@ class UserData with ChangeNotifier {
     if (await isConnectedToInternet("www.wikipedia.org")) {
       int userType;
       var decodedRes;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var token;
       bool isHuawei = false;
 
-      HuaweiServices _huawei = HuaweiServices();
+      final HuaweiServices _huawei = HuaweiServices();
       if (await _huawei.isHuaweiDevice()) {
         token = hawawiToken;
         isHuawei = true;
@@ -120,7 +120,8 @@ class UserData with ChangeNotifier {
           token = await firebaseMessaging.getToken();
         }
       }
-
+      const rolesConstUrl =
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
       final response =
           await MemberRepo().getMemberData(username, password, token, isHuawei);
       if (response is Faliure) {
@@ -128,7 +129,7 @@ class UserData with ChangeNotifier {
         return response.code;
       } else {
         print("not faliure");
-        log(response);
+        // log(response);
         decodedRes = json.decode(response);
 
         if (decodedRes["message"] ==
@@ -138,79 +139,136 @@ class UserData with ChangeNotifier {
             "Fail : This Company is suspended") {
           return -4;
         }
-        Map<String, dynamic> decodedToken =
+        final Map<String, dynamic> decodedToken =
             JwtDecoder.decode(decodedRes["token"]);
-        isSuperAdmin = decodedToken[
+        isSuperAdmin =
+            decodedToken[rolesConstUrl].toString().contains("SuperAdmin");
+        isTdsAdmin =
+            decodedToken[rolesConstUrl].toString().contains("TDS_Admin");
+        isTechnicalSupport =
+            decodedToken[rolesConstUrl].toString().contains("TDSTechSupport");
+        print(decodedToken[
                 "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
             .toString()
-            .contains("[");
-        log(response);
+            .contains("SuperAdmin"));
+        print(decodedToken[
+                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            .toString());
+        print("login response $response");
         if (decodedRes["message"] == "Success : ") {
           changedPassword = decodedRes["userData"]["changedPassword"] as bool;
-          siteName = decodedRes["companyData"]["siteName"];
+          // siteName = decodedRes["companyData"]["siteName"];
           user = User.fromJson(decodedRes);
-          var companyId = decodedRes["companyData"]["id"];
+          final companyId = decodedRes["companyData"]["id"];
           print('com id :$companyId');
-          var msg = await Provider.of<CompanyData>(context, listen: false)
-              .getCompanyProfileApi(companyId, user.userToken, context);
-          print(msg);
-          if (msg == "Success") {
-            String comImageFilePath =
-                "$imageUrl${decodedRes["companyData"]["logo"]}";
+          // final msg = await Provider.of<CompanyData>(context, listen: false)
+          //     .getCompanyProfileApi(companyId, user.userToken, context);
+          await Provider.of<CompanyData>(context, listen: false)
+              .getCompanyDataFromLogin(decodedRes);
+          final String comImageFilePath =
+              "$imageUrl${decodedRes["companyData"]["logo"]}";
 
-            String userImage = user.userImage;
-            var comProv = Provider.of<CompanyData>(context, listen: false);
-            if (isSuperAdmin) {
-              print(decodedRes['superAdminCompanies']);
-              var obJson = decodedRes['superAdminCompanies'] as List;
-              superCompaniesList.add(SuperCompaniesModel(
-                  companyId: comProv.com.id, companyName: comProv.com.nameAr));
-              List<SuperCompaniesModel> tempComp = obJson
-                  .map((json) => SuperCompaniesModel.fromJson(json))
-                  .toList();
-              superCompaniesList.addAll(tempComp);
-            }
-            if (user.userType == 4 || user.userType == 3) {
-              Provider.of<SiteShiftsData>(context, listen: false)
-                  .getAllSitesAndShifts(companyId, user.userToken);
-            }
+          final String userImage = user.userImage;
+          final CompanyData comProv =
+              Provider.of<CompanyData>(context, listen: false);
+          if (isSuperAdmin) {
+            print(decodedRes['superAdminCompanies']);
+            var obJson = decodedRes['superAdminCompanies'] as List;
+            superCompaniesList.add(SuperCompaniesModel(
+                companyId: comProv.com.id, companyName: comProv.com.nameAr));
+            final List<SuperCompaniesModel> tempComp = obJson
+                .map((json) => SuperCompaniesModel.fromJson(json))
+                .toList();
+            superCompaniesList.addAll(tempComp);
+          } else if (isTdsAdmin || isTechnicalSupport) {
+            print(decodedRes['tdsadminCompanies']);
+            var obJson = decodedRes['tdsadminCompanies'] as List;
 
-            List<String> userData = [
-              user.name,
-              user.userJob,
-              userImage,
-              decodedRes["companyData"]["nameAr"],
-              comImageFilePath
-            ];
-            prefs.setStringList("allUserData", userData);
-
-            loggedIn = true;
-            final List<String> notifyList = prefs.getStringList('bgNotifyList');
-            print("notifi status :$notifyList ");
-            if (notifyList != null && notifyList.length != 0) {
-              await db.insertNotification(
-                  NotificationMessage(
-                      category: notifyList[0],
-                      dateTime: notifyList[1],
-                      message: notifyList[2],
-                      messageSeen: 0,
-                      timeOfMessage: notifyList[4],
-                      title: notifyList[3]),
-                  context);
-            }
-            await initializeNotification(context);
-            userType = user.userType;
+            superCompaniesList = obJson
+                .map((json) => SuperCompaniesModel.fromJson(json))
+                .toList();
+          } else if (user.userType == 4 || user.userType == 3) {
+            Provider.of<SiteShiftsData>(context, listen: false)
+                .getAllSitesAndShifts(companyId, user.userToken);
           }
 
-          if (isSuperAdmin) {
+          final List<String> userData = [
+            user.name,
+            user.userJob,
+            userImage,
+            decodedRes["companyData"]["nameAr"],
+            comImageFilePath
+          ];
+          prefs.setStringList("allUserData", userData);
+
+          loggedIn = true;
+          final List<String> notifyList = prefs.getStringList('bgNotifyList');
+          print("notifi status :$notifyList ");
+          if (notifyList != null && notifyList.length != 0) {
+            await db.insertNotification(
+                NotificationMessage(
+                    category: notifyList[0],
+                    dateTime: notifyList[1],
+                    message: notifyList[2],
+                    messageSeen: 0,
+                    timeOfMessage: notifyList[4],
+                    title: notifyList[3]),
+                context);
+          }
+          await initializeNotification(context);
+          userType = user.userType;
+          // print(msg);
+          // if (msg == "Success") {
+          //   final String comImageFilePath =
+          //       "$imageUrl${decodedRes["companyData"]["logo"]}";
+
+          //   final String userImage = user.userImage;
+          //   final CompanyData comProv =
+          //       Provider.of<CompanyData>(context, listen: false);
+          //   if (isSuperAdmin) {
+          //     print(decodedRes['superAdminCompanies']);
+          //     var obJson = decodedRes['superAdminCompanies'] as List;
+          //     superCompaniesList.add(SuperCompaniesModel(
+          //         companyId: comProv.com.id, companyName: comProv.com.nameAr));
+          //     final List<SuperCompaniesModel> tempComp = obJson
+          //         .map((json) => SuperCompaniesModel.fromJson(json))
+          //         .toList();
+          //     superCompaniesList.addAll(tempComp);
+          //   }
+          //   if (user.userType == 4 || user.userType == 3) {
+          //     Provider.of<SiteShiftsData>(context, listen: false)
+          //         .getAllSitesAndShifts(companyId, user.userToken);
+          //   }
+
+          //   final List<String> userData = [
+          //     user.name,
+          //     user.userJob,
+          //     userImage,
+          //     decodedRes["companyData"]["nameAr"],
+          //     comImageFilePath
+          //   ];
+          //   prefs.setStringList("allUserData", userData);
+
+          //   loggedIn = true;
+          //   final List<String> notifyList = prefs.getStringList('bgNotifyList');
+          //   print("notifi status :$notifyList ");
+          //   if (notifyList != null && notifyList.length != 0) {
+          //     await db.insertNotification(
+          //         NotificationMessage(
+          //             category: notifyList[0],
+          //             dateTime: notifyList[1],
+          //             message: notifyList[2],
+          //             messageSeen: 0,
+          //             timeOfMessage: notifyList[4],
+          //             title: notifyList[3]),
+          //         context);
+          //   }
+          //   await initializeNotification(context);
+          //   userType = user.userType;
+          // }
+
+          if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
             return 6;
-          } else if (userType != 2 && userType != 0) {
-            await Provider.of<ShiftsData>(context, listen: false).getShifts(
-                Provider.of<CompanyData>(context, listen: false).com.id,
-                Provider.of<UserData>(context, listen: false).user.userToken,
-                context,
-                userType,
-                0);
           } else if (userType == 2) {
             print("get site admin shifts");
             Provider.of<ShiftsData>(context, listen: false).getShifts(
@@ -307,25 +365,26 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
-    HuaweiServices _huawei = HuaweiServices();
-    bool isHawawi = await _huawei.isHuaweiDevice();
+    final HuaweiServices _huawei = HuaweiServices();
+    final bool isHawawi = await _huawei.isHuaweiDevice();
     print(image.lengthSync());
     String msg;
     print("card code $cardCode");
     print("qr code : $qrCode");
     if (await isConnectedToInternet("www.google.com")) {
-      int locationService = await getCurrentLocation();
+      final int locationService = await getCurrentLocation();
       if (locationService == 0) {
-        var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
-        var length = await image.length();
-        var uri = Uri.parse("$baseURL/api/AttendLogin");
+        final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+        final length = await image.length();
+        final uri = Uri.parse("$baseURL/api/AttendLogin");
 
-        var request = new http.MultipartRequest("POST", uri);
+        final request = new http.MultipartRequest("POST", uri);
         Map<String, String> headers = {
           'Authorization': "Bearer ${user.userToken}"
         };
         request.headers.addAll(headers);
-        var multipartFile = new http.MultipartFile('UserImage', stream, length,
+        final multipartFile = new http.MultipartFile(
+            'UserImage', stream, length,
             filename: basename(image.path));
         request.files.add(multipartFile);
         request.fields['Userid'] = "0";
@@ -379,52 +438,56 @@ class UserData with ChangeNotifier {
   }
 
   Future<String> attend({String qrCode}) async {
-    print("attend --${user.userID}----$qrCode");
+    print("attend --${user.id}----$qrCode");
     String msg;
-    if (await isConnectedToInternet("www.google.com")) {
-      int locationService = await getCurrentLocation();
-      HuaweiServices _huawei = HuaweiServices();
-      bool isHawawi = await _huawei.isHuaweiDevice();
-      if (locationService == 0) {
-        String imei = await getDeviceUUID();
-        print("imei is : $imei");
-        final uri = '$baseURL/api/AttendLogin';
+    try {
+      if (await isConnectedToInternet("www.google.com")) {
+        final int locationService = await getCurrentLocation();
+        final HuaweiServices _huawei = HuaweiServices();
+        final bool isHawawi = await _huawei.isHuaweiDevice();
+        if (locationService == 0) {
+          final String imei = await getDeviceUUID();
+          print("imei is : $imei");
+          final uri = '$baseURL/api/AttendLogin';
 
-        final headers = {
-          'Authorization': "Bearer ${user.userToken}",
-          "Accept": "application/json"
-        };
+          final headers = {
+            'Authorization': "Bearer ${user.userToken}",
+            "Accept": "application/json"
+          };
 
-        http.Response response = await http.post(
-          Uri.parse(uri),
-          headers: headers,
-          body: {
-            'Userid': user.id,
-            'Qrcode': qrCode,
-            'Longitude': isHawawi
-                ? _currentHawawiLocation.longitude.toString()
-                : _currentPosition.longitude.toString(),
-            'Latitude': isHawawi
-                ? _currentHawawiLocation.latitude.toString()
-                : _currentPosition.latitude.toString(),
-            'userLogintype': "0",
-            'UserMac': imei,
-          },
-        );
-        String responseBody = response.body;
-        print(response.body);
-        msg = jsonDecode(responseBody)['message'];
-        print(
-            "-----------------------------${jsonDecode(responseBody)}-----------------------");
-        print("imei after attend is : $imei");
-        print("msg after attend is :$msg");
-      } else if (locationService == 1) {
-        msg = 'mock';
+          final http.Response response = await http.post(
+            Uri.parse(uri),
+            headers: headers,
+            body: {
+              'Userid': user.id,
+              'Qrcode': qrCode,
+              'Longitude': isHawawi
+                  ? _currentHawawiLocation.longitude.toString()
+                  : _currentPosition.longitude.toString(),
+              'Latitude': isHawawi
+                  ? _currentHawawiLocation.latitude.toString()
+                  : _currentPosition.latitude.toString(),
+              'userLogintype': "0",
+              'UserMac': imei,
+            },
+          );
+          final String responseBody = response.body;
+          print(response.body);
+          msg = jsonDecode(responseBody)['message'];
+          print(
+              "-----------------------------${jsonDecode(responseBody)}-----------------------");
+          print("imei after attend is : $imei");
+          print("msg after attend is :$msg");
+        } else if (locationService == 1) {
+          msg = 'mock';
+        } else {
+          msg = 'off';
+        }
       } else {
-        msg = 'off';
+        msg = 'noInternet';
       }
-    } else {
-      msg = 'noInternet';
+    } catch (e) {
+      print(e);
     }
 
     return msg;
@@ -732,21 +795,21 @@ class User {
     return User(
       userToken: json["token"],
       id: json["userData"]["id"],
-      userID: json["userData"]["userName"],
+      // userID: json["userData"]["userName"],
       name: json["userData"]["userName1"],
       userJob: json["userData"]["userJob"],
       email: json["userData"]["email"],
       phoneNum: json["userData"]["phoneNumber"],
       userType: json["userData"]["userType"],
-      fcmToken: json["userData"]["fcmToken"],
-      osType: json["userData"]["mobileOS"],
+      // fcmToken: json["userData"]["fcmToken"],
+      // osType: json["userData"]["mobileOS"],
       salary: json["userData"]["salary"],
       createdOn: DateTime.tryParse(json["userData"]["createdOn"]),
       apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),
       iosBundleDate: DateTime.tryParse(json["apkDate"]["ios"]),
       userSiteId: json["companyData"]["siteId"] as int,
       userShiftId: json["userData"]["shiftId"],
-      isAllowedToAttend: json["userData"]["isAllowtoAttend"],
+      // isAllowedToAttend: json["userData"]["isAllowtoAttend"],
       userImage: "$imageUrl${json["userData"]["userImage"]}",
     );
   }

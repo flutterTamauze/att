@@ -5,7 +5,6 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image/image.dart' as imglib;
@@ -13,16 +12,13 @@ import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/recognition_services/FaceDetectorPainter.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:qr_users/MLmodule/recognition_services/UtilsScanner.dart';
 import 'package:qr_users/MLmodule/recognition_services/classifier.dart';
-import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
 import 'package:qr_users/MLmodule/recognition_services/quant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -201,6 +197,7 @@ class TakePictureScreenState extends State<CameraPicker>
         width: size.width,
         height: size.height,
         child: buildResult()));
+    // ignore: cascade_invocations
     stackWidgetChildren.add(Positioned(
         top: size.height - 250.h,
         left: 0,

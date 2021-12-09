@@ -2,14 +2,12 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:animate_do/animate_do.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -19,11 +17,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/attend_details_camera.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/userDetailsInReport.dart';
-import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
-import 'package:qr_users/widgets/UserFullData/user_properties.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
-
-import '../../../constants.dart';
 
 class DataTableRow extends StatefulWidget {
   final DailyReportUnit attendUnit;

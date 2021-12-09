@@ -58,8 +58,8 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   Widget build(BuildContext context) {
     HuaweiServices _huawei = HuaweiServices();
     var shiftApiConsumer = Provider.of<ShiftApi>(context);
-    var shiftDataProvider =
-        Provider.of<ShiftApi>(context, listen: true).currentShift;
+    // var shiftDataProvider =
+    //     Provider.of<ShiftApi>(context, listen: true).currentShift;
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,8 +120,8 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                     backgroundColor:
                                                         Colors.white,
                                                     //plce where the QR Image will be shown
-                                                    data: shiftDataProvider
-                                                        .shiftQrCode,
+                                                    data: shiftApiConsumer
+                                                        .qrShift.shiftQrCode,
                                                   ),
                                                 ),
                                               ),
@@ -144,8 +144,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             children: [
                                               Text(
                                                 shiftApiConsumer
-                                                    .shiftsListProvider[0]
-                                                    .shiftName,
+                                                    .qrShift.shiftName,
                                                 style: TextStyle(
                                                     color: Colors.orange,
                                                     fontWeight:
@@ -158,7 +157,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                 textDirection:
                                                     ui.TextDirection.rtl,
                                                 child: AutoSizeText(
-                                                  " تسجيل الحضور من ${amPmChanger(int.parse(shiftApiConsumer.currentShiftSTtime[0]))} الى ${amPmChanger(int.parse(shiftApiConsumer.currentShiftSTtime[1]))} \n تسجيل الانصراف من ${amPmChanger(int.parse(shiftApiConsumer.currentShiftEndTime[0]))} الى ${amPmChanger(int.parse(shiftApiConsumer.currentShiftEndTime[1]) % 2400)}",
+                                                  " تسجيل الحضور من ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromStartTime))} الى ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromEndTime))} \n تسجيل الانصراف من ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToStartTime))} الى ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToEndTime) % 2400)}",
                                                   maxLines: 3,
                                                   style: TextStyle(
                                                       color: Colors.black,
@@ -303,7 +302,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                   Container(
                                     height: 100.h,
                                     child: AutoSizeText(
-                                      "برجاء التواجد بالموقع المخصص لك\n${Provider.of<UserData>(context, listen: true).siteName}",
+                                      "برجاء التواجد بالموقع المخصص لك\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
                                       textAlign: TextAlign.center,
                                       maxLines: 4,
                                       style: TextStyle(
