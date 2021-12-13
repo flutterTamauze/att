@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +10,9 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/DaysOff.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
+import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -19,6 +21,9 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
+import 'package:qr_users/widgets/UserReport/TodayUserReport.dart';
+import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
@@ -36,11 +41,36 @@ class NormalUserMenu extends StatefulWidget {
 class _NormalUserMenuState extends State<NormalUserMenu> {
   @override
   Widget build(BuildContext context) {
-    // final userDataProvider = Provider.of<UserData>(context, listen: false);
     List<ReportTile> reports = [
       ReportTile(
-          title: "التقرير",
-          subTitle: "تقرير الحضور ",
+          title: "تقرير اليوم",
+          subTitle: "تقرير الحضور / الأنصراف عن اليوم ",
+          icon: Icons.calendar_today_rounded,
+          onTap: () async {
+            final reportData = Provider.of<ReportsData>(context, listen: false);
+            final userDataProvider =
+                Provider.of<UserData>(context, listen: false);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedLoadingIndicator();
+                });
+            final String msg = await reportData.getTodayUserReport(
+                userDataProvider.user.userToken, userDataProvider.user.id);
+            Navigator.pop(context);
+
+            return showDialog(
+              context: context,
+              builder: (context) {
+                return TodayUserReport(
+                  apiStatus: msg,
+                );
+              },
+            );
+          }),
+      ReportTile(
+          title: "تقرير عن فترة",
+          subTitle: "تقرير الحضور / الأنصراف عن فترة ",
           icon: Icons.calendar_today_rounded,
           onTap: () {
             Navigator.of(context).push(
@@ -48,8 +78,6 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 builder: (context) => NormalUserReport(),
               ),
             );
-
-            print("الموظفين");
           }),
       ReportTile(
           title: "الطلبات",

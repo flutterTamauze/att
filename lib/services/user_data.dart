@@ -151,7 +151,7 @@ class UserData with ChangeNotifier {
         print(decodedToken[
                 "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
             .toString());
-        print("login response $response");
+        log("login response $response");
         if (decodedRes["message"] == "Success : ") {
           changedPassword = decodedRes["userData"]["changedPassword"] as bool;
           user = User.fromJson(decodedRes);
@@ -444,7 +444,7 @@ class UserData with ChangeNotifier {
 
       if (response is Faliure) {
         print("faliure occured");
-        return response.code;
+        return response;
       } else {
         print(response);
         final decodedRes = json.decode(response);

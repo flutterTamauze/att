@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
+import 'package:qr_users/services/Reports/Services/todays_user_Report_model.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -329,6 +330,25 @@ class ReportsData with ChangeNotifier {
     print(response.body);
     notifyListeners();
     return jsonDecode(response.body)["message"];
+  }
+
+  TodayUserReport todayUserReport = TodayUserReport();
+  Future<String> getTodayUserReport(String userToken, String userId) async {
+    final response = await http.get(
+        Uri.parse("$baseURL/api/AttendLogin/todayAttend/$userId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.body);
+    final decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      todayUserReport = TodayUserReport.fromJson(decodedResponse["data"]);
+      print(todayUserReport.attend);
+      notifyListeners();
+      return "Success";
+    }
+    return "fail";
   }
 
   getDailyAttendProofReport(String userToken, var apiId, String date,

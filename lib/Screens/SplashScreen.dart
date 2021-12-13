@@ -264,7 +264,7 @@ class _SplashScreenState extends State<SplashScreen>
     //start Animation
     animationController.forward();
 
-    new Timer(new Duration(milliseconds: 3000), () async {
+    new Timer(new Duration(milliseconds: 1), () async {
       await checkSharedUserData();
       await checkAttendProovStatus();
     });

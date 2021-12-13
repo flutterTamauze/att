@@ -110,7 +110,6 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                           await userData.getSuperCompanyChart(
                                               userData.user.userToken,
                                               comProvider.com.id);
-                                      print(chartResponse);
                                       if (chartResponse is Faliure) {
                                         print("faliure occured");
                                         Navigator.pop(context);

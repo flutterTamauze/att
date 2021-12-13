@@ -50,7 +50,7 @@ class NetworkApi {
     } on SocketException catch (_) {
       return Faliure(code: NO_INTERNET, errorResponse: "No Internet");
     } on TimeoutException catch (_) {
-      throw Faliure(
+      return Faliure(
           code: CONNECTION_TIMEOUT, errorResponse: "Connection timeout");
     } catch (e) {
       return Faliure(code: UNKNOWN_ERROR, errorResponse: "Unknown Error");
