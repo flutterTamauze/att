@@ -172,350 +172,421 @@ class TakePictureScreenState extends State<CameraPicker>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> stackWidgetChildren = [];
-    size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
-    if (cameraController != null) {
-      stackWidgetChildren.add(Positioned(
-          left: 0,
-          width: size.width,
-          height: size.height,
-          child: Container(
-            child: (cameraController.value.isInitialized)
-                ? AspectRatio(
-                    aspectRatio: cameraController.value.aspectRatio,
-                    child: Stack(
-                      children: [
-                        CameraPreview(cameraController),
-                      ],
-                    ))
-                : Container(),
-          )));
-    }
-    stackWidgetChildren.add(Positioned(
-        left: 0.0,
-        width: size.width,
-        height: size.height,
-        child: buildResult()));
     // ignore: cascade_invocations
-    stackWidgetChildren.add(Positioned(
-        top: size.height - 250.h,
-        left: 0,
-        width: size.width,
-        height: 450.h,
-        child: scannResult.length == 1
-            ? scannResult[0].headEulerAngleY > 10 ||
-                    scannResult[0].headEulerAngleY < -10
-                ? Container()
-                : Container(
-                    margin: EdgeInsets.only(bottom: 80),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        InkWell(
-                            child: Container(
-                              width: 70.w,
-                              height: 70.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image(
-                                  image: AssetImage("resources/imageface.jpeg"),
-                                ),
-                              ),
-                            ),
-                            onTap: () async {
-                              final path = join(
-                                (await getTemporaryDirectory().catchError((e) {
-                                  print("directory error $e");
-                                }))
-                                    .path,
-                                '${DateTime.now()}.jpg',
-                              );
-                              try {
-                                // await _faceNetService.setCurrentPrediction(
-                                //     currentCameraImage, scannResult[0]);
-                              } catch (e) {
-                                print(e);
-                              }
-                              await Future.delayed(Duration(milliseconds: 500));
-                              await cameraController.stopImageStream();
-                              await Future.delayed(Duration(milliseconds: 200));
-                              await cameraController.takePicture(path);
 
-                              File img = File(path);
-
-                              // if (widget.fromScreen == "register") {
-                              //   // await signUp(context);
-                              // }
-
-                              // await applyModelOnImage(img);
-
-                              try {
-                                if (mounted) {
-                                  setState(() {
-                                    numberOfFacesDetected = scannResult.length;
-                                    imagePath = File(img.path);
-                                  });
-
-                                  _predict();
-                                }
-                              } catch (e) {
-                                print(e);
-                              }
-
-                              final newPath = join(
-                                (await getTemporaryDirectory()).path,
-                                '${DateTime.now()}.jpg',
-                              );
-
-                              if (mounted)
-                                setState(() {
-                                  image = File(newPath);
-                                });
-
-                              File imgCompressed = await testCompressAndGetFile(
-                                  file: img, targetPath: newPath);
-                              // _cameraService.cameraController.dispose();
-
-                              cameraController.dispose();
-                              // _cameraService.cameraController.dispose();
-                              print("=====Compressed==========");
-                              if (widget.fromScreen != "register") {
-                                // predictedUserName = _faceNetService.predict();
-                                // print(predictedUserName);
-                              }
-
-                              if (category.label.substring(2) == "mobiles") {
-                                Fluttertoast.showToast(
-                                    msg: "خطأ : برجاء التقاط صورة حقيقية",
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_LONG);
-                                Navigator.pop(context);
-                              }
-                              // else if (predictedUserName >= 1) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "خطا : لم يتم التعرف على الوجة ",
-                              //       backgroundColor: Colors.red,
-                              //       gravity: ToastGravity.CENTER,
-                              //       toastLength: Toast.LENGTH_LONG);
-                              //   Navigator.pop(context);
-                              // }
-                              else if (numberOfFacesDetected == 1) {
-                                if (widget.fromScreen == "register") {
-                                  Navigator.pop(context, image);
-                                } else {
-                                  Future.delayed(const Duration(seconds: 3),
-                                      () async {
-                                    var msg = await Provider.of<UserData>(
-                                            context,
-                                            listen: false)
-                                        .attendByCard(
-                                            qrCode: widget.shiftQrcode,
-                                            cardCode: widget.qrText,
-                                            image: imgCompressed);
-                                    print(msg);
-                                    if (msg ==
-                                        "Success : successfully registered") {
-                                      Fluttertoast.showToast(
-                                          msg: "تم التسجيل بنجاح",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.orange,
-                                          textColor: Colors.white);
-                                    } else if (msg ==
-                                        "Success : already registered attend") {
-                                      Fluttertoast.showToast(
-                                          msg: "لقد تم تسجيل الحضور من قبل",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.black,
-                                          textColor: Colors.orange);
-                                    } else if (msg ==
-                                        "Success : already registered leave") {
-                                      Fluttertoast.showToast(
-                                          msg: "لقد تم تسجيل الأنصراف من قبل",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.black,
-                                          textColor: Colors.orange);
-                                    } else if (msg ==
-                                        "Success : User was not proof") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "you can't register now during shift!") {
-                                      Fluttertoast.showToast(
-                                          msg: "لا يمكن التسجيل بمناوبتك الأن",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Sorry : You have an external mission today!") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "لم يتم التسجيل: لديك مأمورية خارجية ",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.black,
-                                          textColor: Colors.orange);
-                                    } else if (msg ==
-                                        "Sorry : Today is an official vacation!") {
-                                      Fluttertoast.showToast(
-                                          msg: " لم يتم التسجيل : عطلة رسمية",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg == "noInternet") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Sorry : You have an holiday today!") {
-                                      Fluttertoast.showToast(
-                                          msg: " لم يتم التسجيل: اجازة شخصية",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg == "off") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg == "mock") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
-                                      await Fluttertoast.showToast(
-                                          msg: "خطأ فى التسجيل: كود غير صحيح",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Fail : Using another attend method") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : You are not allowed to sign by card! ") {
-                                      Fluttertoast.showToast(
-                                          msg: "ليس مصرح لك التسجيل بالبطاقة",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : Mac address not match") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : Location not found") {
-                                      await Fluttertoast.showToast(
-                                          msg:
-                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : User Id not valid") {
-                                      await Fluttertoast.showToast(
-                                          msg: "خطأ فى التسجيل: كود غير صحيح",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    } else if (msg ==
-                                        "Failed : Out of shift time") {
-                                      await Fluttertoast.showToast(
-                                          msg: "التسجيل غير متاح الأن",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.orange,
-                                          textColor: Colors.black);
-                                    } else {
-                                      await Fluttertoast.showToast(
-                                          msg: "خطأ فى التسجيل",
-                                          gravity: ToastGravity.CENTER,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black);
-                                    }
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NavScreenTwo(1)),
-                                        (Route<dynamic> route) => false);
-                                  });
-                                }
-                              } else if (numberOfFacesDetected > 1) {
-                                Fluttertoast.showToast(
-                                    msg: "خطا : تم التعرف علي اكثر من وجة ",
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_LONG);
-                                Navigator.pop(context);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "برجاء تصوير وجهك بوضوح",
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER,
-                                    toastLength: Toast.LENGTH_LONG);
-                                Navigator.pop(context);
-                              }
-                            })
-                      ],
-                    ),
-                  )
-            : Container()));
-
-    stackWidgetChildren.add(Positioned(
-      left: 4.0,
-      top: 4.0,
-      child: SafeArea(
-        child: IconButton(
-          icon: Icon(
-            Icons.chevron_left,
-            color: Color(0xffF89A41),
-            size: 40,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    ));
     return GestureDetector(
       child: Scaffold(
         endDrawer: NotificationItem(),
         body: image == null
-            ? Stack(
-                children: stackWidgetChildren,
-              )
+            ? Stack(children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: (cameraController.value.isInitialized)
+                      ? new AspectRatio(
+                          aspectRatio: cameraController.value.aspectRatio,
+                          child: new CameraPreview(cameraController),
+                        )
+                      : Container(),
+                ),
+                Positioned(
+                  left: 4.0,
+                  top: 4.0,
+                  child: SafeArea(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.chevron_left,
+                        color: Color(0xffF89A41),
+                        size: 40,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                    left: 0.0,
+                    width: size.width,
+                    height: size.height,
+                    child: buildResult()),
+                Positioned(
+                    top: size.height - 250.h,
+                    left: 0,
+                    width: size.width,
+                    height: 450.h,
+                    child: scannResult.length == 1
+                        ? scannResult[0].headEulerAngleY > 10 ||
+                                scannResult[0].headEulerAngleY < -10
+                            ? Container()
+                            : Container(
+                                margin: EdgeInsets.only(bottom: 80),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                        child: Container(
+                                          width: 70.w,
+                                          height: 70.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "resources/imageface.jpeg"),
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () async {
+                                          final path = join(
+                                            (await getTemporaryDirectory()
+                                                    .catchError((e) {
+                                              print("directory error $e");
+                                            }))
+                                                .path,
+                                            '${DateTime.now()}.jpg',
+                                          );
+                                          try {
+                                            // await _faceNetService.setCurrentPrediction(
+                                            //     currentCameraImage, scannResult[0]);
+                                          } catch (e) {
+                                            print(e);
+                                          }
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          await cameraController
+                                              .stopImageStream();
+                                          await Future.delayed(
+                                              Duration(milliseconds: 200));
+                                          File img;
+                                          await cameraController
+                                              .takePicture()
+                                              .then((value) =>
+                                                  value.saveTo(path));
+
+                                          img = File(path);
+                                          print(path);
+                                          // if (widget.fromScreen == "register") {
+                                          //   // await signUp(context);
+                                          // }
+
+                                          // await applyModelOnImage(img);
+
+                                          try {
+                                            if (mounted) {
+                                              setState(() {
+                                                numberOfFacesDetected =
+                                                    scannResult.length;
+                                                imagePath = File(img.path);
+                                              });
+
+                                              _predict();
+                                            }
+                                          } catch (e) {
+                                            print(e);
+                                          }
+
+                                          final newPath = join(
+                                            (await getTemporaryDirectory())
+                                                .path,
+                                            '${DateTime.now()}.jpg',
+                                          );
+
+                                          if (mounted)
+                                            setState(() {
+                                              image = File(newPath);
+                                            });
+
+                                          File imgCompressed =
+                                              await testCompressAndGetFile(
+                                                  file: img,
+                                                  targetPath: newPath);
+                                          // _cameraService.cameraController.dispose();
+
+                                          cameraController.dispose();
+                                          // _cameraService.cameraController.dispose();
+                                          print("=====Compressed==========");
+                                          if (widget.fromScreen != "register") {
+                                            // predictedUserName = _faceNetService.predict();
+                                            // print(predictedUserName);
+                                          }
+
+                                          if (category.label.substring(2) ==
+                                              "mobiles") {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطأ : برجاء التقاط صورة حقيقية",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER,
+                                                toastLength: Toast.LENGTH_LONG);
+                                            Navigator.pop(context);
+                                          }
+                                          // else if (predictedUserName >= 1) {
+                                          //   Fluttertoast.showToast(
+                                          //       msg: "خطا : لم يتم التعرف على الوجة ",
+                                          //       backgroundColor: Colors.red,
+                                          //       gravity: ToastGravity.CENTER,
+                                          //       toastLength: Toast.LENGTH_LONG);
+                                          //   Navigator.pop(context);
+                                          // }
+                                          else if (numberOfFacesDetected == 1) {
+                                            if (widget.fromScreen ==
+                                                "register") {
+                                              Navigator.pop(context, image);
+                                            } else {
+                                              Future.delayed(
+                                                  const Duration(seconds: 3),
+                                                  () async {
+                                                var msg = await Provider.of<
+                                                            UserData>(context,
+                                                        listen: false)
+                                                    .attendByCard(
+                                                        qrCode:
+                                                            widget.shiftQrcode,
+                                                        cardCode: widget.qrText,
+                                                        image: imgCompressed);
+                                                print(msg);
+                                                if (msg ==
+                                                    "Success : successfully registered") {
+                                                  Fluttertoast.showToast(
+                                                      msg: "تم التسجيل بنجاح",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                      textColor: Colors.white);
+                                                } else if (msg ==
+                                                    "Success : already registered attend") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لقد تم تسجيل الحضور من قبل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      textColor: Colors.orange);
+                                                } else if (msg ==
+                                                    "Success : already registered leave") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لقد تم تسجيل الأنصراف من قبل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      textColor: Colors.orange);
+                                                } else if (msg ==
+                                                    "Success : User was not proof") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "you can't register now during shift!") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لا يمكن التسجيل بمناوبتك الأن",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Sorry : You have an external mission today!") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لم يتم التسجيل: لديك مأمورية خارجية ",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      textColor: Colors.orange);
+                                                } else if (msg ==
+                                                    "Sorry : Today is an official vacation!") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          " لم يتم التسجيل : عطلة رسمية",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "noInternet") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Sorry : You have an holiday today!") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          " لم يتم التسجيل: اجازة شخصية",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg == "off") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg == "mock") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
+                                                  await Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: كود غير صحيح",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Fail : Using another attend method") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : You are not allowed to sign by card! ") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "ليس مصرح لك التسجيل بالبطاقة",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : Mac address not match") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : Location not found") {
+                                                  await Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : User Id not valid") {
+                                                  await Fluttertoast.showToast(
+                                                      msg:
+                                                          "خطأ فى التسجيل: كود غير صحيح",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
+                                                    "Failed : Out of shift time") {
+                                                  await Fluttertoast.showToast(
+                                                      msg:
+                                                          "التسجيل غير متاح الأن",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                      textColor: Colors.black);
+                                                } else {
+                                                  await Fluttertoast.showToast(
+                                                      msg: "خطأ فى التسجيل",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                }
+                                                Navigator.of(context)
+                                                    .pushAndRemoveUntil(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                NavScreenTwo(
+                                                                    1)),
+                                                        (Route<dynamic>
+                                                                route) =>
+                                                            false);
+                                              });
+                                            }
+                                          } else if (numberOfFacesDetected >
+                                              1) {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "خطا : تم التعرف علي اكثر من وجة ",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER,
+                                                toastLength: Toast.LENGTH_LONG);
+                                            Navigator.pop(context);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "برجاء تصوير وجهك بوضوح",
+                                                backgroundColor: Colors.red,
+                                                gravity: ToastGravity.CENTER,
+                                                toastLength: Toast.LENGTH_LONG);
+                                            Navigator.pop(context);
+                                          }
+                                        })
+                                  ],
+                                ),
+                              )
+                        : Container())
+              ])
             : Stack(children: [
                 Container(
                   width: MediaQuery.of(context).size.width,

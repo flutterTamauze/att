@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -349,7 +349,7 @@ class ReportsData with ChangeNotifier {
       print(date);
       String url;
       if (userType == 3) {
-        url = "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$apiId/$date";
+        url = "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date";
       } else {
         url =
             "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date";

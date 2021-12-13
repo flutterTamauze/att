@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -18,7 +20,6 @@ import 'package:qr_users/widgets/Shared/RoundBorderImage.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
-import '../../../constants.dart';
 
 class SuperCompanyPieChart extends StatefulWidget {
   @override
@@ -55,8 +56,8 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                     FadeIn(
                         child: RoundBorderedImage(
                       radius: 13,
-                      width: 200,
-                      height: 200,
+                      width: 200.w,
+                      height: 200.h,
                       imageUrl: comData.com.logo,
                     )),
                     SizedBox(
@@ -153,7 +154,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 ),
                                 SinglePieChartItem(
                                   title: "الأجازة",
-                                  color: Colors.orange[600],
+                                  color: ColorManager.primary,
                                   count: userData
                                       .superCompaniesChartModel.totalHolidays
                                       .toString(),
@@ -240,9 +241,12 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                         // })
                       },
                       child: Container(
-                          width: 80.w,
-                          height: 80.w,
-                          child: Lottie.asset('resources/proceed.json')),
+                        width: 80.w,
+                        height: 80.w,
+                        child: Lottie.asset(
+                          'resources/proceed.json',
+                        ),
+                      ),
                     )
                     // RoundedButton(
                     //     title: "متابعة",

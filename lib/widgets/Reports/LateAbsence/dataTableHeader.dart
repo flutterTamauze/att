@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/colorManager.dart';
 
 class DataTableHeader extends StatelessWidget {
   @override
@@ -28,7 +29,7 @@ class DataTableHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize:
                           ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                      color: Colors.orange[600]),
+                      color: ColorManager.primary),
                 ),
               ))),
           Expanded(
@@ -39,7 +40,7 @@ class DataTableHeader extends StatelessWidget {
                   child: Container(
                       child: Center(
                           child: Container(
-                    height: 20,
+                    height: 20.h,
                     child: AutoSizeText(
                       'التأخير',
                       maxLines: 1,
@@ -47,7 +48,7 @@ class DataTableHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: ScreenUtil()
                               .setSp(14, allowFontScalingSelf: true),
-                          color: Colors.orange[600]),
+                          color: ColorManager.primary),
                     ),
                   ))),
                 ),
@@ -65,7 +66,7 @@ class DataTableHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: ScreenUtil()
                               .setSp(14, allowFontScalingSelf: true),
-                          color: Colors.orange[600]),
+                          color: ColorManager.primary),
                     ),
                   ))),
                 ),
@@ -83,7 +84,7 @@ class DataTableHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: ScreenUtil()
                               .setSp(14, allowFontScalingSelf: true),
-                          color: Colors.orange[600]),
+                          color: ColorManager.primary),
                     ),
                   ))),
                 ),
@@ -100,7 +101,7 @@ class DataTableHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: ScreenUtil()
                               .setSp(13, allowFontScalingSelf: true),
-                          color: Colors.orange[600]),
+                          color: ColorManager.primary),
                     ),
                   ))),
                 ),

@@ -12,11 +12,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -327,10 +328,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                     SizedBox(
                       width: 10,
                     ),
-                    Icon(
-                      Icons.alarm,
-                      color: Colors.orange[600],
-                    ),
+                    Icon(Icons.alarm, color: ColorManager.primary),
                   ],
                 ),
               ),

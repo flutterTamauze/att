@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/colorManager.dart';
 
 class DataTableEnd extends StatelessWidget {
   final lateRatio;
@@ -18,7 +19,7 @@ class DataTableEnd extends StatelessWidget {
         children: [
           Divider(
             thickness: 1,
-            color: Colors.orange[600],
+            color: ColorManager.primary,
           ),
           Container(
             height: 50.h,
@@ -36,12 +37,12 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Container(
-                      height: 20,
+                      height: 20.h,
                       child: AutoSizeText(
                         lateRatio,
                         maxLines: 1,
@@ -49,7 +50,7 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                   ],
@@ -65,7 +66,7 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                     SizedBox(width: 10.w),
@@ -78,7 +79,7 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                   ],
@@ -94,7 +95,7 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                     SizedBox(width: 10.w),
@@ -107,7 +108,7 @@ class DataTableEnd extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: ScreenUtil()
                                 .setSp(13, allowFontScalingSelf: true),
-                            color: Colors.orange[600]),
+                            color: ColorManager.primary),
                       ),
                     ),
                   ],

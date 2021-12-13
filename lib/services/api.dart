@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:huawei_location/location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:trust_location/trust_location.dart';
@@ -81,6 +81,7 @@ class ShiftApi with ChangeNotifier {
                   });
                   return 0;
                 } else {
+                  print("Mock true");
                   if (firstCall == true) {
                     return 1;
                   }
@@ -168,7 +169,6 @@ class ShiftApi with ChangeNotifier {
   }
 
   Future<bool> getShiftData(String id, String userToken) async {
-    print(shiftsListProvider.length);
     //3shan low my3radsh el code low bara el location : low bara we 3ala nafs el screen hyasht3'al 3adi...
     // if (shiftsListProvider.isEmpty) {
     print(id);

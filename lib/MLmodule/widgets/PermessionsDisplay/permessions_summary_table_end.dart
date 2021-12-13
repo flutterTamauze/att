@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
 class PermessionsSummaryTableEnd extends StatelessWidget {
@@ -27,7 +28,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -39,7 +40,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -55,7 +56,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -67,7 +68,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -83,7 +84,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -95,7 +96,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],

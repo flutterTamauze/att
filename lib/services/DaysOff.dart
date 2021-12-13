@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 

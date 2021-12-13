@@ -17,7 +17,6 @@ import 'package:qr_users/Screens/HomePage.dart';
 
 import 'package:qr_users/Screens/intro.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 
@@ -28,6 +27,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:async';
 
+import '../Core/constants.dart';
 import 'Notifications/Notifications.dart';
 import 'SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 

@@ -17,7 +17,7 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';

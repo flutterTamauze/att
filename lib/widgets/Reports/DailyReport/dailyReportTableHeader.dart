@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/colorManager.dart';
 
 class DataTableHeader extends StatelessWidget {
   @override
@@ -23,15 +24,15 @@ class DataTableHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize:
                           ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.orange[600]),
+                      color: ColorManager.primary),
                 ),
               ))),
           Expanded(
             child: Row(
               children: [
-                DataTableHeaderTitles("التأخير", Colors.orange[600]),
-                DataTableHeaderTitles("حضور", Colors.orange[600]),
-                DataTableHeaderTitles("انصراف", Colors.orange[600]),
+                DataTableHeaderTitles("التأخير", ColorManager.primary),
+                DataTableHeaderTitles("حضور", ColorManager.primary),
+                DataTableHeaderTitles("انصراف", ColorManager.primary),
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -58,8 +59,8 @@ class AttendProovTableHeader extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                DataTableHeaderTitles("التوقيت", Colors.orange[600]),
-                DataTableHeaderTitles("حالة الإثبات", Colors.orange[600]),
+                DataTableHeaderTitles("التوقيت", ColorManager.primary),
+                DataTableHeaderTitles("حالة الإثبات", ColorManager.primary),
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -81,7 +82,7 @@ class AttendProovTableHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize:
                           ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: Colors.orange[600]),
+                      color: ColorManager.primary),
                 ),
               ))),
         ],

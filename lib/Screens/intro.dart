@@ -5,8 +5,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import "../services/user_data.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'HomePage.dart';
@@ -172,7 +173,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                             textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.orange[600]),
+                                color: ColorManager.primary),
                           ),
                         ),
                       ),
@@ -259,7 +260,8 @@ class IntroContent extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.orange[600]),
+                        border:
+                            Border.all(width: 1, color: ColorManager.primary),
                         borderRadius: BorderRadius.circular(10)),
                     child: Container(
                       padding: EdgeInsets.symmetric(

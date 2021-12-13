@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';

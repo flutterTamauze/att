@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -355,7 +355,7 @@ class MemberData with ChangeNotifier {
       var response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
           body: json.encode({
             "usersId": [userID],
-            "value": [allowValue]
+            "value": allowValue
           }),
           headers: {
             'Content-type': 'application/json',
@@ -373,7 +373,7 @@ class MemberData with ChangeNotifier {
           Uri.parse("$baseURL/api/Users/excludeFromReport"),
           body: json.encode({
             "usersId": [userID],
-            "value": [allowValue]
+            "value": allowValue
           }),
           headers: {
             'Content-type': 'application/json',

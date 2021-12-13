@@ -23,7 +23,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
         Container(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 10,
+              horizontal: 10.h,
             ),
             child: Container(
               height: 70.h,

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class SystemScanPage extends StatefulWidget {
 
 class _SystemScanPageState extends State<SystemScanPage> {
   var qrText = '';
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
   CameraDescription cameraDescription;
   _startUp() async {
     List<CameraDescription> cameras = await availableCameras();
@@ -122,7 +122,7 @@ class _SystemScanPageState extends State<SystemScanPage> {
 
   secondPageRoute() async {
     print("Qr text $qrText");
-    // player.play("cap.wav");
+    player.play("cap.wav");
     controller?.pauseCamera();
 
     if (shiftQrCode != null && qrText != null) {

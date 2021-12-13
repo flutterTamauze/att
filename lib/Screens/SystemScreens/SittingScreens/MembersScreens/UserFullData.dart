@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';

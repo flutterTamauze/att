@@ -23,7 +23,7 @@ import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/NetworkApi/NetworkFaliure.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesRepo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/Repo/MembersRepo.dart';
@@ -147,22 +147,15 @@ class UserData with ChangeNotifier {
             decodedToken[rolesConstUrl].toString().contains("TDS_Admin");
         isTechnicalSupport =
             decodedToken[rolesConstUrl].toString().contains("TDSTechSupport");
-        print(decodedToken[
-                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-            .toString()
-            .contains("SuperAdmin"));
+
         print(decodedToken[
                 "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
             .toString());
         print("login response $response");
         if (decodedRes["message"] == "Success : ") {
           changedPassword = decodedRes["userData"]["changedPassword"] as bool;
-          // siteName = decodedRes["companyData"]["siteName"];
           user = User.fromJson(decodedRes);
           final companyId = decodedRes["companyData"]["id"];
-          print('com id :$companyId');
-          // final msg = await Provider.of<CompanyData>(context, listen: false)
-          //     .getCompanyProfileApi(companyId, user.userToken, context);
           await Provider.of<CompanyData>(context, listen: false)
               .getCompanyDataFromLogin(decodedRes);
           final String comImageFilePath =
@@ -202,7 +195,8 @@ class UserData with ChangeNotifier {
           prefs.setStringList("allUserData", userData);
 
           loggedIn = true;
-          final List<String> notifyList = prefs.getStringList('bgNotifyList');
+          final List<String> notifyList =
+              await prefs.getStringList('bgNotifyList');
           print("notifi status :$notifyList ");
           if (notifyList != null && notifyList.length != 0) {
             await db.insertNotification(
@@ -217,56 +211,7 @@ class UserData with ChangeNotifier {
           }
           await initializeNotification(context);
           userType = user.userType;
-          // print(msg);
-          // if (msg == "Success") {
-          //   final String comImageFilePath =
-          //       "$imageUrl${decodedRes["companyData"]["logo"]}";
-
-          //   final String userImage = user.userImage;
-          //   final CompanyData comProv =
-          //       Provider.of<CompanyData>(context, listen: false);
-          //   if (isSuperAdmin) {
-          //     print(decodedRes['superAdminCompanies']);
-          //     var obJson = decodedRes['superAdminCompanies'] as List;
-          //     superCompaniesList.add(SuperCompaniesModel(
-          //         companyId: comProv.com.id, companyName: comProv.com.nameAr));
-          //     final List<SuperCompaniesModel> tempComp = obJson
-          //         .map((json) => SuperCompaniesModel.fromJson(json))
-          //         .toList();
-          //     superCompaniesList.addAll(tempComp);
-          //   }
-          //   if (user.userType == 4 || user.userType == 3) {
-          //     Provider.of<SiteShiftsData>(context, listen: false)
-          //         .getAllSitesAndShifts(companyId, user.userToken);
-          //   }
-
-          //   final List<String> userData = [
-          //     user.name,
-          //     user.userJob,
-          //     userImage,
-          //     decodedRes["companyData"]["nameAr"],
-          //     comImageFilePath
-          //   ];
-          //   prefs.setStringList("allUserData", userData);
-
-          //   loggedIn = true;
-          //   final List<String> notifyList = prefs.getStringList('bgNotifyList');
-          //   print("notifi status :$notifyList ");
-          //   if (notifyList != null && notifyList.length != 0) {
-          //     await db.insertNotification(
-          //         NotificationMessage(
-          //             category: notifyList[0],
-          //             dateTime: notifyList[1],
-          //             message: notifyList[2],
-          //             messageSeen: 0,
-          //             timeOfMessage: notifyList[4],
-          //             title: notifyList[3]),
-          //         context);
-          //   }
-          //   await initializeNotification(context);
-          //   userType = user.userType;
-          // }
-
+          prefs.setStringList(('bgNotifyList'), []);
           if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
             return 6;
           } else if (userType == 2) {
@@ -279,7 +224,6 @@ class UserData with ChangeNotifier {
                 Provider.of<UserData>(context, listen: false).user.userSiteId);
           }
 
-          prefs.setStringList(('bgNotifyList'), []);
           log("user type ${(user.userType)}");
           if (user.userType == 4 || user.userType == 3) {
             await Provider.of<UserData>(context, listen: false)
@@ -305,7 +249,6 @@ class UserData with ChangeNotifier {
   Future<String> forgetPassword(String username, String phone) async {
     if (await isConnectedToInternet("www.google.com")) {
       try {
-        log(phone);
         final response = await http.put(
             Uri.parse("$baseURL/api/Users/ForgetPassword"),
             body: json.encode(
@@ -368,6 +311,7 @@ class UserData with ChangeNotifier {
     final HuaweiServices _huawei = HuaweiServices();
     final bool isHawawi = await _huawei.isHuaweiDevice();
     print(image.lengthSync());
+    log("image ${image.path}");
     String msg;
     print("card code $cardCode");
     print("qr code : $qrCode");

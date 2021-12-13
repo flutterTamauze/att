@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../constants.dart';
+import '../../Core/constants.dart';
 
 class SingleDayDatePicker extends StatelessWidget {
   final String selectedDateString;
@@ -18,10 +18,11 @@ class SingleDayDatePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 200.w,
-      padding: EdgeInsets.symmetric(horizontal: 5),
       child: DateTimePicker(
         style: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.w500, fontSize: 13),
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+            fontSize: setResponsiveFontSize(13)),
         initialValue: selectedDateString,
         onChanged: (value) {
           functionPicker(value);

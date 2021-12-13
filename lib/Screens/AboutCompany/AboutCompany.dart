@@ -3,12 +3,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../Core/constants.dart';
 
 class CompanyProfileScreen extends StatefulWidget {
   @override

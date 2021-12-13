@@ -18,7 +18,7 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
-import '../../../constants.dart';
+import '../../../Core/constants.dart';
 
 class SuperAdminScreen extends StatefulWidget {
   @override

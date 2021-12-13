@@ -7,13 +7,13 @@ import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../Core/constants.dart';
 import 'Notifications/Notifications.dart';
 
 class ErrorScreen extends StatefulWidget {

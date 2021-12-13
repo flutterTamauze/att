@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 
 class NotificationDataService with ChangeNotifier {
   bool showNotificationDot = false;
-  // AudioCache player = AudioCache();
+  AudioCache player = AudioCache();
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   List<NotificationMessage> notification = [];
   // setNotificationList(List<NotificationMessage> notifyList) {
@@ -163,7 +163,7 @@ class NotificationDataService with ChangeNotifier {
               DateFormat('kk:mm:a').format(DateTime.now()),
               value));
 
-      // player.play("notification.mp3");
+      player.play("notification.mp3");
     });
   }
 
@@ -210,7 +210,7 @@ class NotificationDataService with ChangeNotifier {
                   DateFormat('kk:mm:a').format(DateTime.now()),
                   value));
 
-          // player.play("notification.mp3");
+          player.play("notification.mp3");
         }
       }
     });
@@ -226,7 +226,7 @@ class NotificationDataService with ChangeNotifier {
           title: event.notification.title,
         ),
         context);
-    // player.play("notification.mp3");
+    player.play("notification.mp3");
   }
 
   showAttendanceCheckDialog(BuildContext context) {

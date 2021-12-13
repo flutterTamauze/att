@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
@@ -137,7 +138,7 @@ class ReportTile extends StatelessWidget {
         trailing: Icon(
           icon,
           size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
-          color: Colors.orange,
+          color: ColorManager.primary,
         ),
         onTap: onTap,
         title: Container(
@@ -159,7 +160,7 @@ class ReportTile extends StatelessWidget {
         leading: Icon(
           Icons.chevron_left,
           size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
-          color: Colors.orange,
+          color: ColorManager.primary,
         ),
       ),
     );

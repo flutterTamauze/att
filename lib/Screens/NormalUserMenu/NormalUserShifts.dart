@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
@@ -18,7 +19,7 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../constants.dart';
+import '../../Core/constants.dart';
 
 class UserCurrentShifts extends StatefulWidget {
   @override
@@ -159,7 +160,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                 children: [
                                   FaIcon(
                                     FontAwesomeIcons.clock,
-                                    color: Colors.orange[600],
+                                    color: ColorManager.primary,
                                   ),
                                   SizedBox(
                                     width: 5,
@@ -179,12 +180,10 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text(
-                                            "من",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange[600]),
-                                          ),
+                                          Text("من",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorManager.primary)),
                                           Text(shiftDate.scheduleFromTime
                                               .toString()
                                               .substring(0, 11)),
@@ -192,7 +191,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                             "الى",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.orange[600]),
+                                                color: ColorManager.primary),
                                           ),
                                           Text(shiftDate.scheduleToTime
                                               .toString()
@@ -311,13 +310,11 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        weekDays[currentIndex],
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                            color: Colors.orange[600]),
-                      ),
+                      Text(weekDays[currentIndex],
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                              color: ColorManager.primary)),
                       Container(
                         alignment: Alignment.center,
                         child: Text(
@@ -398,7 +395,7 @@ class ExpansionUserShiftTile extends StatelessWidget {
                 children: [
                   FaIcon(
                     FontAwesomeIcons.clock,
-                    color: Colors.orange[600],
+                    color: ColorManager.primary,
                   ),
                   SizedBox(
                     width: 5,

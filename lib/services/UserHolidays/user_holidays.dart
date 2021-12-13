@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -18,6 +18,7 @@ class UserHolidays {
       holidayStatus, //1=>accept , //2 refused , //3 waiting..
       holidayType,
       osType;
+
   DateTime fromDate, toDate, createdOnDate, approvedDate;
   UserHolidays(
       {this.adminResponse,
@@ -262,7 +263,7 @@ class UserHolidaysData with ChangeNotifier {
     String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
     var response = await http.get(
       Uri.parse(
-          "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime"),
+          "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime?isMobile=true"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
@@ -280,20 +281,9 @@ class UserHolidaysData with ChangeNotifier {
           permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
 
       singleUserHoliday = singleUserHoliday.reversed.toList();
-      if (singleUserHoliday.length > 0) {
-        for (int i = 0; i < singleUserHoliday.length; i++) {
-          if (singleUserHoliday[i].holidayType == 1 &&
-              singleUserHoliday[i].holidayStatus == 1) {
-            suddenVacationCount++;
-          } else if (singleUserHoliday[i].holidayType == 2 &&
-              singleUserHoliday[i].holidayStatus == 1) {
-            sickVacationCount++;
-          } else {
-            if (singleUserHoliday[i].holidayStatus == 1) vacationCreditCount++;
-          }
-        }
-      }
-
+      sickVacationCount = jsonDecode(response.body)['data']["Sick"];
+      suddenVacationCount = jsonDecode(response.body)['data']["Excep"];
+      vacationCreditCount = jsonDecode(response.body)['data']["Credit"];
       notifyListeners();
 
       return singleUserHoliday;

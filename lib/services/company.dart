@@ -18,7 +18,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:trust_location/trust_location.dart';
 
-import '../constants.dart';
+import '../Core/constants.dart';
 
 class Company {
   String nameAr;

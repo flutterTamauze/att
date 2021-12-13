@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
@@ -13,9 +14,9 @@ class DataTableMissionsHeader extends StatelessWidget {
       child: Container(
           child: Row(
         children: [
-          DataTableHeaderTitles("النوع", Colors.orange[600]),
-          DataTableHeaderTitles("من", Colors.orange[600]),
-          DataTableHeaderTitles("الى", Colors.orange[600]),
+          DataTableHeaderTitles("النوع", ColorManager.primary),
+          DataTableHeaderTitles("من", ColorManager.primary),
+          DataTableHeaderTitles("الى", ColorManager.primary),
           Container(
             height: 50.h,
           ),

@@ -21,6 +21,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'Core/themeManager.dart';
 import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/api.dart';
@@ -186,7 +187,7 @@ class _MyAppState extends State<MyApp> {
                 return MaterialApp(
                     title: "Chilango",
                     debugShowCheckedModeBanner: false,
-                    theme: ThemeData(fontFamily: "Almarai-Regular"),
+                    theme: getApplicationTheme(),
                     home: SplashScreen());
               });
         },

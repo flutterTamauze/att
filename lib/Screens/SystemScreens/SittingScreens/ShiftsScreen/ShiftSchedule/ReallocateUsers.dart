@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -28,7 +29,8 @@ import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedButton.dart';
 
-import '../../../../../constants.dart';
+import '../../../../../Core/constants.dart';
+import '../../../../../Core/constants.dart';
 
 class ReAllocateUsers extends StatefulWidget {
   final Member member;
@@ -399,7 +401,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                           Icon(
                                                                             Icons.alarm,
                                                                             color:
-                                                                                Colors.orange[600],
+                                                                                ColorManager.primary,
                                                                           ),
                                                                           SizedBox(
                                                                             width:

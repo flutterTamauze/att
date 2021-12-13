@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -79,7 +80,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
             },
             tooltip:
                 widget.selectedOrder == "الأجازات" ? "طلب اجازة" : "طلب إذن",
-            backgroundColor: Colors.orange[600],
+            backgroundColor: ColorManager.primary,
             child: Icon(
               Icons.add,
               color: Colors.black,

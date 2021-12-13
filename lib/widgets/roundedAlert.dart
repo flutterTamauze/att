@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/permissions_data.dart';
 
 class RoundedAlert extends StatelessWidget {
@@ -279,8 +279,8 @@ class RoundedAlertEn extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0)), //this right here
         child: Container(
-          height: getkDeviceHeightFactor(context, 170),
-          width: getkDeviceWidthFactor(context, 330),
+          height: 170.h,
+          width: 330.w,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(

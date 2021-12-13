@@ -21,10 +21,10 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../constants.dart';
+import '../Core/constants.dart';
 
-var cron1;
-var cron2;
+// var cron1;
+// var cron2;
 
 class HomePage extends StatefulWidget {
   @override

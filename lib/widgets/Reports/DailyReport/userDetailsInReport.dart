@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/UserFullData/user_properties.dart';
 
-import '../../../constants.dart';
+import '../../../Core/constants.dart';
 
 class UserDetailsInReport extends StatelessWidget {
   const UserDetailsInReport({

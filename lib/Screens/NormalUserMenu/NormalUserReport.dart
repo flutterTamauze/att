@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:animate_do/animate_do.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
@@ -9,9 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 
@@ -24,6 +26,7 @@ import 'package:qr_users/widgets/UserReport/UserReportDataTableEnd.dart';
 import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/roundedButton.dart';
 
 class NormalUserReport extends StatefulWidget {
   final String name;
@@ -74,7 +77,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
 
     _dateController.text = "$fromText $toText";
 
-    getMembersData();
+    // getMembersData();
     Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
         new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0, 0);
     selectedId = Provider.of<UserData>(context, listen: false).user.id;
@@ -84,25 +87,6 @@ class _NormalUserReportState extends State<NormalUserReport> {
         dateFromString,
         dateToString,
         context);
-  }
-
-  getMembersData() async {
-    print("inside");
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
-
-    if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-      await Provider.of<SiteData>(context, listen: false)
-          .getSitesByCompanyId(
-        comProvider.com.id,
-        userProvider.user.userToken,
-        context,
-      )
-          .then((value) async {
-        print("Got Sites");
-      });
-    }
-    siteId = Provider.of<SiteData>(context, listen: false).sitesList[0].id;
   }
 
   int siteId = 0;
@@ -147,6 +131,98 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                     repeat: false),
                                 "تقرير الحضور ",
                               ),
+                              // Expanded(child: Container()),
+                              // Container(
+                              //   child: InkWell(
+                              //     onTap: () {
+                              //       showDialog(
+                              //         context: context,
+                              //         builder: (context) {
+                              //           return Directionality(
+                              //               textDirection: ui.TextDirection.rtl,
+                              //               child: Container(
+                              //                   child: ZoomIn(
+                              //                 child: Directionality(
+                              //                   textDirection:
+                              //                       ui.TextDirection.rtl,
+                              //                   child: AlertDialog(
+                              //                     insetPadding:
+                              //                         EdgeInsets.symmetric(
+                              //                       horizontal: 20.0.w,
+                              //                       vertical: 20.0.h,
+                              //                     ),
+                              //                     shape: RoundedRectangleBorder(
+                              //                         borderRadius:
+                              //                             BorderRadius.all(
+                              //                                 Radius.circular(
+                              //                                     15.0))),
+                              //                     content: Container(
+                              //                       height: 100.h,
+                              //                       width: 300.w,
+                              //                       child: StatefulBuilder(
+                              //                         builder:
+                              //                             (context, setState) {
+                              //                           return Column(
+                              //                             crossAxisAlignment:
+                              //                                 CrossAxisAlignment
+                              //                                     .center,
+                              //                             children: [
+                              //                               SingleUserReportTableHeader(
+                              //                                 lateTime: reportsData
+                              //                                     .userAttendanceReport
+                              //                                     .userAttendListUnits[
+                              //                                         0]
+                              //                                     .late,
+                              //                                 leaveTime: reportsData
+                              //                                     .userAttendanceReport
+                              //                                     .userAttendListUnits[
+                              //                                         0]
+                              //                                     .timeOut,
+                              //                                 attendTime: reportsData
+                              //                                     .userAttendanceReport
+                              //                                     .userAttendListUnits[
+                              //                                         0]
+                              //                                     .timeIn,
+                              //                               ),
+                              //                             ],
+                              //                           );
+                              //                         },
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 ),
+                              //               )));
+                              //         },
+                              //       );
+                              //     },
+                              //     child: Container(
+                              //       margin: EdgeInsets.symmetric(
+                              //           horizontal: 15.w, vertical: 5.h),
+                              //       width: 100.w,
+                              //       decoration: BoxDecoration(
+                              //         color: Colors.white,
+                              //         border: Border.all(
+                              //             width: 1, color: Colors.orange[600]),
+                              //         borderRadius: BorderRadius.circular(5),
+                              //       ),
+                              //       padding: EdgeInsets.all(5),
+                              //       child: Center(
+                              //         child: Container(
+                              //           height: 20.h,
+                              //           child: AutoSizeText(
+                              //             "تقرير اليوم",
+                              //             maxLines: 1,
+                              //             style: TextStyle(
+                              //                 color: Colors.orange[600],
+                              //                 fontWeight: FontWeight.bold,
+                              //                 fontSize: ScreenUtil().setSp(13.0,
+                              //                     allowFontScalingSelf: true)),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // )
                             ],
                           ),
                         ),
@@ -346,12 +422,12 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                           children: [
                                                                             Divider(
                                                                               thickness: 1,
-                                                                              color: Colors.orange[600],
+                                                                              color: ColorManager.primary,
                                                                             ),
                                                                             UserReportTableHeader(),
                                                                             Divider(
                                                                               thickness: 1,
-                                                                              color: Colors.orange[600],
+                                                                              color: ColorManager.primary,
                                                                             ),
                                                                             Expanded(
                                                                                 child: Container(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
 class HolidaySummaryTableEnd extends StatelessWidget {
@@ -29,7 +30,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -41,7 +42,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -57,7 +58,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -69,7 +70,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -85,7 +86,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -97,7 +98,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -113,7 +114,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -125,7 +126,7 @@ class HolidaySummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],

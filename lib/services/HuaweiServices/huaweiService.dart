@@ -10,7 +10,7 @@ import 'package:huawei_location/location/location_settings_request.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:http/http.dart' as http;
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
-import '../../constants.dart';
+import '../../Core/constants.dart';
 
 class HuaweiServices {
   Future<bool> isHuaweiDevice() async {

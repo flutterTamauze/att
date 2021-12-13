@@ -3,24 +3,18 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../constants.dart';
+import '../../Core/constants.dart';
 
 class AttendProof {
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
     var response = await http.post(
-        Uri.parse("$baseURL/api/AttendProof/AddAttendProof"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-        body: json.encode(
-          {
-            "userId": userId,
-            "startTime": DateTime.now().toIso8601String(),
-            "CreatedByUserId": senderID
-          },
-        ));
+      Uri.parse("$baseURL/api/AttendProof/AddAttendProof?userid=$userId"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
     print(response.body);
     print("status code : ${response.statusCode}");
     var decodedResponse = jsonDecode(response.body);
@@ -56,7 +50,7 @@ class AttendProof {
           headers: {'Authorization': "Bearer $userToken"});
       print(response.statusCode);
       print(response.body);
-      var decodedResponse = jsonDecode(response.body);
+      final decodedResponse = jsonDecode(response.body);
       print(decodedResponse["message"]);
       if (decodedResponse["message"] == "Success") {
         return decodedResponse["data"];

@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:qr_users/constants.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 
+import '../Core/constants.dart';
 import 'NetworkFaliure.dart';
 
 class NetworkApi {

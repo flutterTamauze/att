@@ -15,7 +15,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
 import 'package:qr_users/Screens/loginScreen.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';

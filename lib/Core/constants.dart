@@ -14,7 +14,7 @@ const androidDownloadLink =
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.112:8010";
+const localURL = "http://192.168.0.105:8010";
 const huaweiAppId = "104665933";
 const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
@@ -30,9 +30,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 7);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 13);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 1);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 13);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;

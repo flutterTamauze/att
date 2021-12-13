@@ -4,7 +4,7 @@ import 'package:qr_users/NetworkApi/Network.dart';
 import 'package:qr_users/enums/request_type.dart';
 import 'dart:convert';
 
-import '../../constants.dart';
+import '../../Core/constants.dart';
 
 class CompanySettingsService {
   DateTime suspentionTime;

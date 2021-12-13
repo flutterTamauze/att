@@ -27,7 +27,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../constants.dart';
+import '../Core/constants.dart';
 
 class DrawerI extends StatelessWidget {
   var connectivityResult;

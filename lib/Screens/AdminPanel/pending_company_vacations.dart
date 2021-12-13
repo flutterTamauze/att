@@ -30,8 +30,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
   String comment = "";
   Future pendingHolidays;
   Future getPendingHolidays() async {
-    var comId = Provider.of<CompanyData>(context, listen: false).com.id;
-    String token = Provider.of<UserData>(context, listen: false).user.userToken;
+    final int comId = Provider.of<CompanyData>(context, listen: false).com.id;
+    final String token =
+        Provider.of<UserData>(context, listen: false).user.userToken;
     pendingHolidays = Provider.of<UserHolidaysData>(context, listen: false)
         .getPendingCompanyHolidays(comId, token);
   }

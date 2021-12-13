@@ -8,7 +8,7 @@ import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/forgetScreen.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';

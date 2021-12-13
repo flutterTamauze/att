@@ -2,7 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/AddVacationScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
@@ -41,7 +45,7 @@ class MultipleFloatingButtons extends StatelessWidget {
           overlayOpacity: 0,
           animatedIcon: AnimatedIcons.menu_close,
           animatedIconTheme: IconThemeData(size: 22),
-          backgroundColor: Colors.orange[600],
+          backgroundColor: ColorManager.primary,
           visible: true,
           curve: Curves.bounceIn,
           children: [
@@ -55,7 +59,7 @@ class MultipleFloatingButtons extends StatelessWidget {
                     child: Icon(
                       mainIconData,
                     ),
-                    backgroundColor: Colors.orange[600],
+                    backgroundColor: ColorManager.primary,
                     onTap: () {
                       switch (mainTitle) {
                         case "إضافة مستخدم":
@@ -134,13 +138,13 @@ class MultipleFloatingButtons extends StatelessWidget {
                     labelStyle: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
-                        fontSize: 16.0),
+                        fontSize: setResponsiveFontSize(15)),
                     labelBackgroundColor: Colors.black),
             // FAB 2
 
             SpeedDialChild(
                 child: Icon(Icons.settings),
-                backgroundColor: Colors.orange[600],
+                backgroundColor: ColorManager.primary,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -152,11 +156,11 @@ class MultipleFloatingButtons extends StatelessWidget {
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 16.0),
+                    fontSize: setResponsiveFontSize(15)),
                 labelBackgroundColor: Colors.black),
             SpeedDialChild(
                 child: Icon(Icons.article_sharp),
-                backgroundColor: Colors.orange[600],
+                backgroundColor: ColorManager.primary,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -168,11 +172,11 @@ class MultipleFloatingButtons extends StatelessWidget {
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 16.0),
+                    fontSize: setResponsiveFontSize(15)),
                 labelBackgroundColor: Colors.black),
             SpeedDialChild(
                 child: Icon(Icons.qr_code),
-                backgroundColor: Colors.orange[600],
+                backgroundColor: ColorManager.primary,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -184,11 +188,11 @@ class MultipleFloatingButtons extends StatelessWidget {
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 16.0),
+                    fontSize: setResponsiveFontSize(15)),
                 labelBackgroundColor: Colors.black),
             SpeedDialChild(
                 child: Icon(Icons.home),
-                backgroundColor: Colors.orange[600],
+                backgroundColor: ColorManager.primary,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -200,7 +204,23 @@ class MultipleFloatingButtons extends StatelessWidget {
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 16.0),
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+            SpeedDialChild(
+                child: Icon(FontAwesomeIcons.user),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NormalUserMenu(),
+                      ));
+                },
+                label: 'حسابى',
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
                 labelBackgroundColor: Colors.black),
           ],
         ),

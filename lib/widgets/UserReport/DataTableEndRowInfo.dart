@@ -20,7 +20,7 @@ class DataTableEndRowInfo extends StatelessWidget {
             maxLines: 1,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true),
+                fontSize: ScreenUtil().setSp(11, allowFontScalingSelf: true),
                 color: Colors.orange[600]),
           ),
         ),
@@ -34,7 +34,7 @@ class DataTableEndRowInfo extends StatelessWidget {
             maxLines: 1,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true),
+                fontSize: ScreenUtil().setSp(11, allowFontScalingSelf: true),
                 color: Colors.orange[600]),
           ),
         ),

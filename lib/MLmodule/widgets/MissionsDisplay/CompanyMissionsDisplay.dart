@@ -2,6 +2,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
 
@@ -39,7 +40,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
               ? Container()
               : Divider(
                   thickness: 1,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
           Container(
               child: widget._nameController.text == ""
@@ -47,7 +48,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                       "برجاء اختيار اسم المستخدم",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange[600],
+                          color: ColorManager.primary,
                           fontSize: 15),
                     )
                   : DataTableMissionHeader()),
@@ -55,7 +56,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
               ? Container()
               : Divider(
                   thickness: 1,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
@@ -116,7 +117,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
               ? Container()
               : Divider(
                   thickness: 1,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
           widget._nameController.text == ""
               ? Container()

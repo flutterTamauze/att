@@ -2,6 +2,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -12,6 +13,8 @@ import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 
 import 'dart:ui' as ui;
+
+import '../../../Core/constants.dart';
 
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
@@ -39,7 +42,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
               ? Container()
               : Divider(
                   thickness: 1,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
           Container(
               child: widget._nameController.text == ""
@@ -47,15 +50,15 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                       "برجاء اختيار اسم المستخدم",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange[600],
-                          fontSize: 15),
+                          color: ColorManager.primary,
+                          fontSize: setResponsiveFontSize(15)),
                     )
                   : DataTableholidayHeader()),
           widget._nameController.text == ""
               ? Container()
               : Divider(
                   thickness: 1,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
           Directionality(
             textDirection: ui.TextDirection.rtl,
@@ -120,7 +123,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
           ),
           widget._nameController.text == ""
               ? Container()
-              : Divider(thickness: 1, color: Colors.orange[600]),
+              : Divider(thickness: 1, color: ColorManager.primary),
           widget._nameController.text == ""
               ? Container()
               : HolidaySummaryTableEnd()

@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/attendByCardRetryButton.dart';
-import 'package:qr_users/services/Crone_Scheduler/crone_schedule.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +26,6 @@ class _SystemHomePageState extends State<SystemHomePage> {
   DateTime currentBackPressTime;
   Future futureShift;
   // AudioCache player = AudioCache();
-  CroneScheduler _croneScheduler = CroneScheduler();
   _startUp() async {
     List<CameraDescription> cameras = await availableCameras();
 
@@ -142,9 +140,9 @@ class _SystemHomePageState extends State<SystemHomePage> {
                 );
               }
 
-              if (shiftApiConsumer.isOnLocation) {
-                _croneScheduler.shecdularFetching(context);
-              }
+              // if (shiftApiConsumer.isOnLocation) {
+              //   _croneScheduler.shecdularFetching(context);
+              // }
 
               return Container(
                 child: Stack(

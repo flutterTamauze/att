@@ -8,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/DaysOff.dart';

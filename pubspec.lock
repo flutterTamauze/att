@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  audioplayers:
+    dependency: "direct main"
+    description:
+      name: audioplayers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.20.1"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -63,7 +70,14 @@ packages:
       name: camera
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.8+17"
+    version: "0.9.2+2"
+  camera_platform_interface:
+    dependency: transitive
+    description:
+      name: camera_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   characters:
     dependency: transitive
     description:
@@ -148,13 +162,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.1"
-  cron:
-    dependency: "direct main"
+  cross_file:
+    dependency: transitive
     description:
-      name: cron
+      name: cross_file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.4"
+    version: "0.3.2"
   crypto:
     dependency: transitive
     description:

@@ -5,11 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/ProfileScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -605,7 +606,7 @@ class ProfileHeader extends StatelessWidget {
                                       .user
                                       .name,
                                   style: TextStyle(
-                                    color: Colors.orange[600],
+                                    color: ColorManager.primary,
                                     fontWeight: FontWeight.bold,
                                   )),
                             )

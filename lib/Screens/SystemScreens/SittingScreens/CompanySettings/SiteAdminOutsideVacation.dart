@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
@@ -26,7 +27,7 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
-import '../../../../constants.dart';
+import '../../../../Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
 
@@ -1089,7 +1090,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                 ),
                 Icon(
                   Icons.alarm,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
                 SizedBox(
                   width: 20,
@@ -1181,7 +1182,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                 ),
                 Icon(
                   Icons.location_on,
-                  color: Colors.orange[600],
+                  color: ColorManager.primary,
                 ),
               ],
             ),

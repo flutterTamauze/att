@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:qr_users/NetworkApi/Network.dart';
 import 'package:qr_users/enums/request_type.dart';
 
-import '../../../constants.dart';
+import '../../../Core/constants.dart';
 
 class MemberRepo {
   Future<Object> getMemberData(

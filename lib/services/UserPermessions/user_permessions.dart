@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 
 class UserPermessions {
   String user, permessionDescription, adminResponse, approvedByUserId;
@@ -273,7 +273,7 @@ class UserPermessionsData with ChangeNotifier {
     notifyListeners();
     var response = await http.get(
       Uri.parse(
-          "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime"),
+          "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime?isMobile=true"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
@@ -292,17 +292,8 @@ class UserPermessionsData with ChangeNotifier {
           permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
 
       singleUserPermessions = singleUserPermessions.reversed.toList();
-      if (singleUserPermessions.length > 0) {
-        for (int i = 0; i < singleUserPermessions.length; i++) {
-          if (singleUserPermessions[i].permessionType == 2 &&
-              singleUserPermessions[i].permessionStatus == 1) {
-            earlyLeaversCount++;
-          } else if (singleUserPermessions[i].permessionType == 1 &&
-              singleUserPermessions[i].permessionStatus == 1) {
-            lateAbesenceCount++;
-          }
-        }
-      }
+      lateAbesenceCount = jsonDecode(response.body)['data']['TotalLate'];
+      earlyLeaversCount = jsonDecode(response.body)['data']['TotalLeave'];
 
       notifyListeners();
 

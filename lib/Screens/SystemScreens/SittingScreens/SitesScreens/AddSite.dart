@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SitesScreen.dart';
-import 'package:qr_users/constants.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -17,6 +16,8 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../Core/constants.dart';
 
 class AddSiteScreen extends StatefulWidget {
   final Site site;

@@ -12,8 +12,9 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_pickers/image_pickers.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -321,7 +322,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Text(
                                   "تغير كلمة السر ",
                                   style: TextStyle(
-                                      color: Colors.orange[600],
+                                      color: ColorManager.primary,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline),
                                 ),

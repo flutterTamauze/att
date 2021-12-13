@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:open_file/open_file.dart' as open_file;
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:url_launcher/url_launcher.dart';

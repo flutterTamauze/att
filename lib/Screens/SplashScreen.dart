@@ -31,7 +31,7 @@ import 'package:path/path.dart' as p;
 import '../Screens/intro.dart';
 import 'package:http/http.dart' as http;
 
-import '../constants.dart';
+import '../Core/constants.dart';
 import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -158,7 +158,6 @@ class _SplashScreenState extends State<SplashScreen>
                   builder: (context) => ErrorScreen(
                       "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
             } else if (value == 4 || value == 3) {
-        
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

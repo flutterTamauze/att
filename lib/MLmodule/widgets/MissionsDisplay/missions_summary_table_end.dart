@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 
 class MissionsSummaryTableEnd extends StatelessWidget {
@@ -28,7 +29,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -40,7 +41,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -56,7 +57,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -68,7 +69,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],
@@ -84,7 +85,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
                 Container(
@@ -96,7 +97,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize:
                             ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                        color: Colors.orange[600]),
+                        color: ColorManager.primary),
                   ),
                 ),
               ],

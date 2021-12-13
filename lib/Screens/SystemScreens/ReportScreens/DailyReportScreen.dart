@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/constants.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Reports/Views/daily_report_get.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -171,12 +171,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               "تقرير الحضور اليومى",
                                                           site: userType == 2
                                                               ? ""
-                                                              //  Provider.of<
-                                                              //             UserData>(
-                                                              //         context,
-                                                              //         listen:
-                                                              //             false)
-                                                              //     .siteName
                                                               : Provider.of<
                                                                           SiteShiftsData>(
                                                                       context)
