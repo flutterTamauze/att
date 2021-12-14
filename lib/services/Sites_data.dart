@@ -127,10 +127,10 @@ class SiteData with ChangeNotifier {
           print(response.body);
 
           if (decodedRes["message"] == "Success") {
-            sitesList.removeAt(listIndex);
-            Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList
-                .removeAt(listIndex);
+            // sitesList.removeAt(listIndex);
+            // Provider.of<SiteShiftsData>(context, listen: false)
+            //     .siteShiftList
+            //     .removeAt(listIndex);
             dropDownSitesList = [...sitesList];
             dropDownSitesList.insert(
                 0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
@@ -208,6 +208,24 @@ class SiteData with ChangeNotifier {
     } else {
       return null;
     }
+  }
+
+  Future<Site> getSiteBySiteId(int siteId, String userToken) async {
+    print(siteId);
+    print(userToken);
+    final result = await http.get(Uri.parse("$baseURL/api/Sites/$siteId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(result.statusCode);
+    print(result.body);
+    final decodedResponse = json.decode(result.body);
+    if (decodedResponse["message"] == 'Success') {
+      final Site singleSiteData = Site.fromJson(decodedResponse["data"]);
+      return singleSiteData;
+    }
+    return null;
   }
 
   Future getSitesByCompanyId(

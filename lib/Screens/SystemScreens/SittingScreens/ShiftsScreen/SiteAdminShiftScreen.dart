@@ -332,12 +332,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                 ],
               ),
             ),
-            floatingActionButton: MultipleFloatingButtons(
-                mainTitle: "",
-                shiftName: "",
-                siteId: siteId,
-                comingFromShifts: false,
-                mainIconData: Icons.alarm_add_sharp),
+            floatingActionButton: MultipleFloatingButtonsNoADD(),
           ));
     });
   }

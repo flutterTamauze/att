@@ -58,12 +58,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
-        floatingActionButton: MultipleFloatingButtons(
-          mainTitle: "",
-          shiftName: "",
-          comingFromShifts: false,
-          mainIconData: Icons.add_location_alt,
-        ),
+        floatingActionButton: MultipleFloatingButtonsNoADD(),
         endDrawer: NotificationItem(),
         body: Container(
           width: MediaQuery.of(context).size.width,

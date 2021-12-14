@@ -420,7 +420,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
         .then((value) async {
       print("Got shifts");
     });
-
+    log("user site id ${userProvider.user.userSiteId}");
     await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
         userProvider.user.userSiteId,
         comProvier.com.id,

@@ -54,12 +54,7 @@ class _AdminPanelState extends State<AdminPanel> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
-          floatingActionButton: MultipleFloatingButtons(
-            mainTitle: "",
-            shiftName: "",
-            comingFromShifts: false,
-            mainIconData: Icons.add_location_alt,
-          ),
+          floatingActionButton: MultipleFloatingButtonsNoADD(),
           endDrawer: NotificationItem(),
           body: Container(
             width: double.infinity,

@@ -73,12 +73,7 @@ class _CompanySettingsState extends State<CompanySettings> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      floatingActionButton: MultipleFloatingButtons(
-        mainTitle: "",
-        shiftName: "",
-        comingFromShifts: false,
-        mainIconData: Icons.add_location_alt,
-      ),
+      floatingActionButton: MultipleFloatingButtonsNoADD(),
       endDrawer: NotificationItem(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

@@ -90,8 +90,8 @@ Future<bool> sendFcmDataOnly(
   try {
     final String toParams = "/topics/" + topicName;
 
-    var url = 'https://fcm.googleapis.com/fcm/send';
-    var header = {
+    final url = 'https://fcm.googleapis.com/fcm/send';
+    final header = {
       "Content-Type": "application/json",
       "Authorization": "key=$serverToken",
     };
@@ -116,8 +116,8 @@ Future<bool> sendFcmDataOnly(
     }
 
 //    "to": "$toParams",
-    var client = new http.Client();
-    var response = await client.post(Uri.parse(url),
+    final client = new http.Client();
+    final response = await client.post(Uri.parse(url),
         headers: header, body: json.encode(request));
     print(response.body);
     print(response.statusCode);

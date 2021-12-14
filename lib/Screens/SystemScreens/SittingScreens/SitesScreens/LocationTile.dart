@@ -13,6 +13,7 @@ import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dar
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
 import 'CircularIconButton.dart';
@@ -40,6 +41,9 @@ class LocationTile extends StatefulWidget {
 
 class _LocationTileState extends State<LocationTile> {
   showShiftDetails(Site site) {
+    print(widget.index);
+    print(site.name);
+    Navigator.pop(context);
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -159,8 +163,29 @@ class _LocationTileState extends State<LocationTile> {
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: () {
-                            showShiftDetails(widget.site);
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return RoundedLoadingIndicator();
+                              },
+                            );
+
+                            final SiteData siteData =
+                                Provider.of<SiteData>(context, listen: false);
+                            await siteData
+                                .getSiteBySiteId(
+                                    Provider.of<SiteShiftsData>(context,
+                                            listen: false)
+                                        .sites[widget.index + 1]
+                                        .id,
+                                    Provider.of<UserData>(context,
+                                            listen: false)
+                                        .user
+                                        .userToken)
+                                .then((value) => {showShiftDetails(value)});
+
+                            //
                           },
                           child: Row(
                             children: [

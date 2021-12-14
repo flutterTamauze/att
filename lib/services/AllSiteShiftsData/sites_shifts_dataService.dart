@@ -7,8 +7,6 @@ import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:qr_users/services/Shift.dart';
-
 import '../Sites_data.dart';
 
 class SiteShiftsData with ChangeNotifier {

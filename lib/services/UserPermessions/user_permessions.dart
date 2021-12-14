@@ -380,7 +380,6 @@ class UserPermessionsData with ChangeNotifier {
             "userId": userId,
             "Desc": userPermessions.permessionDescription,
             "createdonDate": userPermessions.createdOn.toIso8601String(),
-            "Status": 3
           }));
       print(response.body);
       isLoading = false;

@@ -189,7 +189,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                                 siteProv.setDropDownShift(
                                     0); //الموقع علي حسب ال اندكس اللي
-
                                 siteProv.setDropDownShift(0);
                                 siteProv.setDropDownIndex(
                                     userDataProvider.user.userSiteId);

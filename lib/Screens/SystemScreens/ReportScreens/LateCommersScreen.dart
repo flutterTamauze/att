@@ -571,16 +571,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                                 return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
                                                                               }),
                                                                           Positioned(
-                                                                              child: Container(
-                                                                                width: 110,
-                                                                                height: 1000,
-                                                                                child: MultipleFloatingButtons(
-                                                                                  mainTitle: "",
-                                                                                  shiftName: "",
-                                                                                  comingFromShifts: false,
-                                                                                  mainIconData: Icons.add_location_alt,
-                                                                                ),
-                                                                              ),
+                                                                              child: Container(width: 110, height: 1000, child: MultipleFloatingButtonsNoADD()),
                                                                               bottom: 0,
                                                                               left: 0),
                                                                         ],

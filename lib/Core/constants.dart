@@ -30,9 +30,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 13);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 14);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 13);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 14);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;

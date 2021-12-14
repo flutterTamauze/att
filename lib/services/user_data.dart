@@ -211,6 +211,7 @@ class UserData with ChangeNotifier {
           }
           await initializeNotification(context);
           userType = user.userType;
+          log("user type ISSSSS $userType");
           prefs.setStringList(('bgNotifyList'), []);
           if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
             return 6;
@@ -612,7 +613,7 @@ class UserData with ChangeNotifier {
     loggedIn = false;
     // manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     changedWidget = Image.asset("resources/personicon.png");
     prefs.setStringList('userData', []);
 
@@ -751,7 +752,7 @@ class User {
       createdOn: DateTime.tryParse(json["userData"]["createdOn"]),
       apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),
       iosBundleDate: DateTime.tryParse(json["apkDate"]["ios"]),
-      userSiteId: json["companyData"]["siteId"] as int,
+      userSiteId: json["userData"]["siteId"] as int,
       userShiftId: json["userData"]["shiftId"],
       // isAllowedToAttend: json["userData"]["isAllowtoAttend"],
       userImage: "$imageUrl${json["userData"]["userImage"]}",

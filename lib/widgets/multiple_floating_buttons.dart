@@ -228,3 +228,109 @@ class MultipleFloatingButtons extends StatelessWidget {
     );
   }
 }
+
+class MultipleFloatingButtonsNoADD extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: SpeedDial(
+          overlayOpacity: 0,
+          animatedIcon: AnimatedIcons.menu_close,
+          animatedIconTheme: IconThemeData(size: 22),
+          backgroundColor: ColorManager.primary,
+          visible: true,
+          curve: Curves.bounceIn,
+          children: [
+            // FAB 1
+
+            // FAB 2
+
+            SpeedDialChild(
+                child: Icon(Icons.settings),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavScreenTwo(3),
+                      ));
+                },
+                label: 'الاعدادات',
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+            SpeedDialChild(
+                child: Icon(Icons.article_sharp),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavScreenTwo(2),
+                      ));
+                },
+                label: "التقارير",
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+            SpeedDialChild(
+                child: Icon(Icons.qr_code),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavScreenTwo(1),
+                      ));
+                },
+                label: 'التسجيل',
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+            SpeedDialChild(
+                child: Icon(Icons.home),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavScreenTwo(0),
+                      ));
+                },
+                label: 'الرئيسية',
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+            SpeedDialChild(
+                child: Icon(FontAwesomeIcons.user),
+                backgroundColor: ColorManager.primary,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NormalUserMenu(),
+                      ));
+                },
+                label: 'حسابى',
+                labelStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: setResponsiveFontSize(15)),
+                labelBackgroundColor: Colors.black),
+          ],
+        ),
+      ),
+    );
+  }
+}

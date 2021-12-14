@@ -23,7 +23,6 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   @override
@@ -38,12 +37,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   var isLoading = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   String signature;
   @override
@@ -201,8 +194,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     )
                                   : RoundedButton(
                                       onPressed: () async {
-                                        signature =
-                                            await SmsAutoFill().getAppSignature;
                                         forgetFunction();
                                       },
                                       title: 'متابعة',
@@ -372,13 +363,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
     super.dispose();
   }
 
-  void listenOtp() async {
-    await SmsAutoFill().listenForCode();
-  }
-
   @override
   void initState() {
-    listenOtp();
     startTimeout();
     super.initState();
   }
@@ -587,6 +573,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 onTap: () async {
                                   if (!reSend) {
                                     await textChanger();
+                                    startTimeout();
                                     setState(() {
                                       isLoading = false;
                                     });

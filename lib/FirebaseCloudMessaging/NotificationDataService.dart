@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +70,8 @@ class NotificationDataService with ChangeNotifier {
         .clear();
     if (await db.checkNotificationStatus()) {
       print("getting all notifications");
-      List<NotificationMessage> dbMessages = await db.getAllNotifications();
+      final List<NotificationMessage> dbMessages =
+          await db.getAllNotifications();
       for (int i = 0; i < dbMessages.length; i++) {
         if (!Provider.of<NotificationDataService>(context, listen: false)
             .notification

@@ -31,12 +31,7 @@ class _AppHelpPageState extends State<AppHelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: MultipleFloatingButtons(
-          mainTitle: "",
-          shiftName: "",
-          comingFromShifts: false,
-          mainIconData: Icons.add_location_alt,
-        ),
+        floatingActionButton: MultipleFloatingButtonsNoADD(),
         body: SingleChildScrollView(
           child: Stack(
             children: [

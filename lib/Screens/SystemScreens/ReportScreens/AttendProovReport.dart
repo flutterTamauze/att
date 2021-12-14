@@ -78,12 +78,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
     var reprotData = Provider.of<ReportsData>(context, listen: true);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      floatingActionButton: MultipleFloatingButtons(
-        mainTitle: "",
-        shiftName: "",
-        comingFromShifts: false,
-        mainIconData: Icons.add_location_alt,
-      ),
+      floatingActionButton: MultipleFloatingButtonsNoADD(),
       endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
       body: Consumer<ReportsData>(

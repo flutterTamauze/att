@@ -718,15 +718,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           mainTitle: 'إضافة مستخدم',
                           mainIconData: Icons.person_add,
                         )
-                      : MultipleFloatingButtons(
-                          shiftIndex:
-                              Provider.of<SiteData>(context, listen: false)
-                                  .currentShiftIndex,
-                          comingFromShifts: widget.comingFromShifts,
-                          shiftName: "",
-                          mainTitle: "",
-                          mainIconData: Icons.person_add,
-                        )),
+                      : MultipleFloatingButtonsNoADD()),
         ),
       );
     });

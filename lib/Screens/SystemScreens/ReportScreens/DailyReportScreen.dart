@@ -112,12 +112,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       return WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
-          floatingActionButton: MultipleFloatingButtons(
-            mainTitle: "",
-            shiftName: "",
-            comingFromShifts: false,
-            mainIconData: Icons.add_location_alt,
-          ),
+          floatingActionButton: MultipleFloatingButtonsNoADD(),
           endDrawer: NotificationItem(),
           backgroundColor: Colors.white,
           body: Container(
