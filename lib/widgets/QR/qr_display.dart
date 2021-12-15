@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -24,18 +25,24 @@ class QrAttendDisplay extends StatefulWidget {
 Timer _timer;
 
 class _QrAttendDisplayState extends State<QrAttendDisplay> {
-  DateTime countryDate;
+  String countryDate;
+  DateTime countryDateTime;
   getTimeZone() {
+    final String dateString =
+        DateTime.now().toString().substring(0, 11) + "" + countryDate;
+    print("setting country date time");
+    countryDateTime = DateTime.parse(dateString);
+    log(countryDateTime.toString());
     if (mounted) {
       print("countrycode");
       print(countryDate);
       if (countryDate != null) {
         _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-          if (mounted)
+          if (mounted) {
             setState(() {
-              countryDate = countryDate.add(Duration(seconds: 1));
-              print(DateFormat.jms().format(countryDate));
+              countryDateTime = countryDateTime.add(Duration(seconds: 1));
             });
+          }
         });
       }
     }
@@ -78,7 +85,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                               children: [
                                                 Text(
                                                   DateFormat.jms()
-                                                      .format(countryDate),
+                                                      .format(countryDateTime),
                                                   style: TextStyle(
                                                       letterSpacing: 4,
                                                       fontWeight:
@@ -89,8 +96,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  shiftApiConsumer
-                                                      .currentCountryDate
+                                                  DateTime.now()
                                                       .toString()
                                                       .substring(0, 11),
                                                   style: TextStyle(

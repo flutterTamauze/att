@@ -251,6 +251,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                               .TextDirection
                                                               .rtl,
                                                           child: Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    6),
                                                             child: Theme(
                                                                 data:
                                                                     clockTheme,

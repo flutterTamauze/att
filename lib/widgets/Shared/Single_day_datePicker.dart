@@ -24,6 +24,7 @@ class SingleDayDatePicker extends StatelessWidget {
           : 200.w,
       child: DateTimePicker(
         style: TextStyle(
+            height: 2.5,
             color: Colors.black,
             fontWeight: FontWeight.w500,
             fontSize: setResponsiveFontSize(13)),

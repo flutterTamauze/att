@@ -24,7 +24,8 @@ class ShiftApi with ChangeNotifier {
   double currentSitePositionLong;
   Shift qrShift = Shift();
   Location currentHuaweiLocation;
-  DateTime currentBackPressTime, currentCountryDate;
+  DateTime currentBackPressTime;
+  String currentCountryDate;
   bool isOnShift = true;
 
   String siteName;
@@ -188,7 +189,7 @@ class ShiftApi with ChangeNotifier {
       print(id);
       if (isMoc == 0) {
         final response = await http.post(
-            Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
+            Uri.parse("$localURL/api/Shifts/PostSiteShift"),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
@@ -208,8 +209,7 @@ class ShiftApi with ChangeNotifier {
         if (jsonDecode(response.body)["message"] == "Success") {
           final shiftObjJson = jsonDecode(response.body)['data'];
           qrShift = Shift.fromJsonQR(shiftObjJson);
-          currentCountryDate = DateTime.tryParse(
-              jsonDecode(response.body)['data']["currentTime"]);
+          currentCountryDate = jsonDecode(response.body)['data']["currentTime"];
 
           shiftsListProvider = shiftsList;
 

@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () {
-                print(userDataProvider.user.userType);
+                // print(_startTime.hour);
               },
               child: Scaffold(
                 endDrawer: NotificationItem(),
