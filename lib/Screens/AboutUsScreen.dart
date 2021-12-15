@@ -82,7 +82,7 @@ class AboutUsScreen extends StatelessWidget {
                                                         BorderRadius.circular(
                                                             75.0),
                                                     child: Image.asset(
-                                                        "resources/TDSlogo.png"),
+                                                        "resources/TDSLogo.png"),
                                                   ),
                                                 ),
                                               ),

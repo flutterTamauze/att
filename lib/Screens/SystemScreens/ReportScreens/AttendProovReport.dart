@@ -150,11 +150,14 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                               ),
                                             ),
                                           ),
-                                          SmallDirectoriesHeader(
-                                            Lottie.asset(
-                                                "resources/report.json",
-                                                repeat: false),
-                                            "إثباتات الحضور",
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 15.h),
+                                            child: SmallDirectoriesHeader(
+                                              Lottie.asset(
+                                                  "resources/report.json",
+                                                  repeat: false),
+                                              "إثباتات الحضور",
+                                            ),
                                           ),
                                         ],
                                       ),

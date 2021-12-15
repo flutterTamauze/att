@@ -148,10 +148,6 @@ class UserData with ChangeNotifier {
         isTechnicalSupport =
             decodedToken[rolesConstUrl].toString().contains("TDSTechSupport");
 
-        print(decodedToken[
-                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-            .toString());
-        log("login response $response");
         if (decodedRes["message"] == "Success : ") {
           changedPassword = decodedRes["userData"]["changedPassword"] as bool;
           user = User.fromJson(decodedRes);
@@ -211,7 +207,6 @@ class UserData with ChangeNotifier {
           }
           await initializeNotification(context);
           userType = user.userType;
-          log("user type ISSSSS $userType");
           prefs.setStringList(('bgNotifyList'), []);
           if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
             return 6;
@@ -615,7 +610,7 @@ class UserData with ChangeNotifier {
     PaintingBinding.instance.imageCache.clear();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     changedWidget = Image.asset("resources/personicon.png");
-    prefs.setStringList('userData', []);
+    await prefs.setStringList('userData', []);
 
     // notifyListeners();
   }

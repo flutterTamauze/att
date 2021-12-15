@@ -26,7 +26,6 @@ import 'package:qr_users/widgets/UserReport/UserReportDataTableEnd.dart';
 import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/widgets/roundedButton.dart';
 
 class NormalUserReport extends StatefulWidget {
   final String name;
@@ -272,15 +271,6 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                             ),
                                           ],
                                         )),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
                                         Expanded(
                                           child: FutureBuilder(
                                               future: Provider.of<ReportsData>(

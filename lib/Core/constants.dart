@@ -302,20 +302,11 @@ const kTextFieldDecorationTime = InputDecoration(
   fillColor: Colors.white,
   filled: true,
 //  contentPadding: EdgeInsets.symmetric(),
-  disabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xffD7D7D7), width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
   ),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  focusedBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
   ),
 );
 const kTextFieldTime = InputDecoration(
@@ -343,16 +334,11 @@ const kTextFieldDecorationFromTO = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
 //  contentPadding: EdgeInsets.symmetric(),
-  border: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
   ),
-  enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  focusedBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
   ),
 );
 

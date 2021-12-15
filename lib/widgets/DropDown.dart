@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,7 +38,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(),
-      height: 48.h,
+      height: 50.h,
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 10.w,
@@ -68,7 +69,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
                                   maxLines: 1,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: setResponsiveFontSize(14),
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
                                 ),

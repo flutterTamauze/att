@@ -484,7 +484,7 @@ class _UserAttendanceReportScreenState
                                             .userType ==
                                         4
                                 ? Container(
-                                    width: 330.w,
+                                    width: 360.w,
                                     child: SiteDropdown(
                                       edit: true,
                                       list: Provider.of<SiteShiftsData>(context)
@@ -529,7 +529,7 @@ class _UserAttendanceReportScreenState
                               height: 10.h,
                             ),
                             Container(
-                              width: 330.w,
+                              width: 340.w,
                               child: Directionality(
                                 textDirection: ui.TextDirection.rtl,
                                 child: Provider.of<MemberData>(context)

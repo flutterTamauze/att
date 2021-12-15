@@ -144,7 +144,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
               ),
               _currentIndex != _pages.length - 1
                   ? Positioned(
-                      right: 20,
+                      right: 20.w,
                       top: 20.h,
                       child: GestureDetector(
                         onTap: () => Navigator.pushReplacement(
@@ -163,7 +163,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                                       : LoginScreen(),
                             )),
                         child: Container(
-                          height: 20,
+                          height: 20.h,
                           child: AutoSizeText(
                             Provider.of<UserData>(context, listen: true)
                                     .loggedIn
@@ -202,12 +202,12 @@ class IntroContent extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 50.h),
+        padding: EdgeInsets.only(bottom: 90.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 50),
+              padding: EdgeInsets.only(bottom: 50.h),
               child: Stack(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -218,15 +218,11 @@ class IntroContent extends StatelessWidget {
                         height: 50.h,
                       ),
                       Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset(
-                            'resources/image.png',
-                            fit: BoxFit.fill,
-                          ),
+                        child: Image.asset(
+                          'resources/image.png',
+                          fit: BoxFit.fill,
                         ),
-                        height: 80.h,
-                        width: 70.w,
+                        height: 70.h,
                       ),
                     ],
                   ),
@@ -234,10 +230,10 @@ class IntroContent extends StatelessWidget {
                     child: Center(
                       child: Container(
                         padding: EdgeInsets.only(right: 5, top: 5),
-                        width: 180.w,
-                        height: 45.h,
-                        child: Lottie.asset("resources/fire.json",
-                            fit: BoxFit.fitWidth),
+                        height: 170.h,
+                        child: Lottie.asset(
+                          "resources/fire.json",
+                        ),
                       ),
                     ),
                   )
@@ -246,11 +242,8 @@ class IntroContent extends StatelessWidget {
             ),
             Container(
               width: 400.w,
-              height: 400.h,
+              height: 300.h,
               child: Lottie.asset(imageUrl),
-            ),
-            SizedBox(
-              height: 10.h,
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -258,6 +251,7 @@ class IntroContent extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ZoomIn(
                   child: Container(
+                    width: 600.w,
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border:
@@ -330,7 +324,7 @@ class IntroContent extends StatelessWidget {
                                       textAlign: TextAlign.right,
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      width: 10.w,
                                     ),
                                     Container(
                                       decoration: BoxDecoration(

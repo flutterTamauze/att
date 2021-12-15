@@ -196,12 +196,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                   return Column(
                                     children: [
                                       Container(
-                                          height: 50.h,
+                                          height: 40.h,
                                           child: userType == 4 || userType == 3
                                               ? Row(
                                                   children: [
                                                     Expanded(
-                                                      flex: 11,
+                                                      flex: 10,
                                                       child: SiteDropdown(
                                                         edit: true,
                                                         list: Provider.of<
@@ -244,7 +244,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                       width: 5.w,
                                                     ),
                                                     Expanded(
-                                                      flex: 7,
+                                                      flex: 8,
                                                       child: Container(
                                                         child: Directionality(
                                                           textDirection: ui

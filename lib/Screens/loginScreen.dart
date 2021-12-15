@@ -309,9 +309,22 @@ class _LoginScreenState extends State<LoginScreen> {
               isLoading = false;
             });
           });
+        } else if (value == null) {
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundedAlertOkOnly(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  title: 'خطأ في التسجيل',
+                  content: "حدث خطأ ما ",
+                );
+              }).then((value) => setState(() {
+                isLoading = false;
+              }));
         } else if (value == USER_INVALID_RESPONSE ||
             value == CONNECTION_TIMEOUT ||
-            value == null ||
             value == -3) {
           return showDialog(
               context: context,

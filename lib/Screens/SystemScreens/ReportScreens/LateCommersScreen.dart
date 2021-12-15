@@ -456,7 +456,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             ? Container(
                                                 // width: 330,
                                                 width: getkDeviceWidthFactor(
-                                                    context, 330),
+                                                    context, 345),
                                                 child: SiteDropdown(
                                                   edit: true,
                                                   list: Provider.of<
@@ -518,9 +518,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                 ),
                                               )
                                             : Container(),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
                                         snapshot.data ==
                                                 "Date is older than company date"
                                             ? Expanded(

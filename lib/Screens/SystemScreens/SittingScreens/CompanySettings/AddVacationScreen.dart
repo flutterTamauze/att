@@ -110,9 +110,6 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                   !widget.edit ? "إضافة عطلة" : "تعديل عطلة"),
                             ),
                             Divider(),
-                            SizedBox(
-                              height: 30.h,
-                            ),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.0.w),
                               child: Column(
