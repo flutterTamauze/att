@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -14,12 +15,7 @@ import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import '../roundedAlert.dart';
 
 class ExpandedPermessionsTile extends StatefulWidget {
-  final String desc,
-      orderNum,
-      adminComment,
-      duration,
-      approvedBy,
-      vacationReason;
+  final String desc, orderNum, adminComment, duration, vacationReason;
   final IconData iconData;
   final int status, currentIndex;
   bool isAdmin = false;
@@ -40,7 +36,6 @@ class ExpandedPermessionsTile extends StatefulWidget {
     this.date,
     this.createdOn,
     this.approvedDate,
-    this.approvedBy,
     Key key,
   }) : super(key: key);
 
@@ -148,26 +143,24 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                           widget.desc == ""
                                               ? Container()
                                               : Divider(),
-                                          widget.desc != null
-                                              ? widget.desc == ""
-                                                  ? Container()
-                                                  : Text(
-                                                      "تفاصيل الطلب : ${widget.desc}",
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    )
-                                              : Container(),
-                                          widget.desc != null
-                                              ? widget.desc == ""
-                                                  ? Container()
-                                                  : Divider()
-                                              : Container(),
-
+                                          if (widget.desc != null) ...[
+                                            widget.desc == ""
+                                                ? Container()
+                                                : Text(
+                                                    "تفاصيل الطلب : ${widget.desc}",
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              14),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                            widget.desc == ""
+                                                ? Container()
+                                                : Divider()
+                                          ],
                                           Text(
                                               "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
                                           Divider(),
@@ -249,21 +242,6 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                     ),
                                                   ),
                                                 ),
-                                          // widget.status == 1
-                                          //     ? Container(
-                                          //         padding: EdgeInsets.only(
-                                          //             bottom: 10.h),
-                                          //         child: Text(
-                                          //           "تاريخ الموافقة : ${widget.approvedDate.toString().substring(0, 11)}",
-                                          //           textAlign: TextAlign.right,
-                                          //           style: TextStyle(
-                                          //             fontSize: 14,
-                                          //             fontWeight:
-                                          //                 FontWeight.w500,
-                                          //           ),
-                                          //         ),
-                                          //       )
-                                          //     : Container(),
                                         ],
                                       ),
                                       Expanded(child: Container()),
@@ -300,7 +278,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                     child: RoundedAlert(
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        String msg = await Provider.of<
+                                        final String msg = await Provider.of<
                                                     UserPermessionsData>(
                                                 context,
                                                 listen: false)

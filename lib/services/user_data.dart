@@ -128,6 +128,7 @@ class UserData with ChangeNotifier {
         print("faliure occured");
         return response.code;
       } else {
+        log(response);
         print("not faliure");
         // log(response);
         decodedRes = json.decode(response);
@@ -603,14 +604,15 @@ class UserData with ChangeNotifier {
 
   //clears all data in cache.
   logout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('userData', []);
     await db.clearNotifications();
 
     loggedIn = false;
     // manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     changedWidget = Image.asset("resources/personicon.png");
-    await prefs.setStringList('userData', []);
 
     // notifyListeners();
   }

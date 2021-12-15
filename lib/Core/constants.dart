@@ -30,9 +30,9 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 14);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 15);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 14);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 15);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -334,11 +334,16 @@ const kTextFieldDecorationFromTO = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
 //  contentPadding: EdgeInsets.symmetric(),
-  enabledBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey),
+  border: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
-  focusedBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xff4a4a4a), width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(15.0)),
   ),
 );
 

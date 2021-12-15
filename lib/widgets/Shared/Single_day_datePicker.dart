@@ -2,6 +2,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_users/services/user_data.dart';
 
 import '../../Core/constants.dart';
 
@@ -17,7 +19,9 @@ class SingleDayDatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200.w,
+      width: Provider.of<UserData>(context, listen: false).user.userType == 2
+          ? 300.w
+          : 200.w,
       child: DateTimePicker(
         style: TextStyle(
             color: Colors.black,

@@ -11,6 +11,9 @@ import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceRepor
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/UserMissions/user_missions.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -67,6 +70,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
           subTitle: "تقرير الأجازات و المأموريات و الأذونات للمستخدم",
           icon: FontAwesomeIcons.calendarCheck,
           onTap: () async {
+            Provider.of<UserHolidaysData>(context, listen: false)
+                .singleUserHoliday
+                .clear();
+            Provider.of<UserPermessionsData>(context, listen: false)
+                .singleUserPermessions
+                .clear();
+            Provider.of<MissionsData>(context, listen: false)
+                .singleUserMissionsList
+                .clear();
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => VacationAndPermessionsReport(),

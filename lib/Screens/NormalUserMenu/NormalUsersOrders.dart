@@ -37,10 +37,10 @@ List<UserPermessions> filteredPermessions = [];
 class _UserOrdersViewState extends State<UserOrdersView> {
   @override
   void initState() {
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final UserData userProvider = Provider.of<UserData>(context, listen: false);
 
     userHolidays = Provider.of<UserHolidaysData>(context, listen: false)
-        .getSingleUserHoliday(
+        .getFutureSingleUserHoliday(
             userProvider.user.id, userProvider.user.userToken);
     super.initState();
   }
@@ -164,7 +164,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                           Provider.of<UserPermessionsData>(
                                                   context,
                                                   listen: false)
-                                              .getSingleUserPermession(
+                                              .getFutureSinglePermession(
                                                   userProvider.user.id,
                                                   userProvider.user.userToken);
                                     }

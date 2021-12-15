@@ -259,6 +259,37 @@ class UserPermessionsData with ChangeNotifier {
     }
   }
 
+  Future<List<UserPermessions>> getFutureSinglePermession(
+      String userId, String userToken) async {
+    permessionDetailLoading = true;
+    notifyListeners();
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Permissions/infuture/$userId"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    permessionDetailLoading = false;
+    print("response");
+    print(userId);
+    log(response.body);
+    log(response.statusCode.toString());
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      var permessionsObj = jsonDecode(response.body)['data'] as List;
+      singleUserPermessions =
+          permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
+
+      singleUserPermessions = singleUserPermessions.reversed.toList();
+
+      notifyListeners();
+
+      return singleUserPermessions;
+    }
+    return singleUserPermessions;
+  }
+
   Future<List<UserPermessions>> getSingleUserPermession(
       String userId, String userToken) async {
     lateAbesenceCount = 0;

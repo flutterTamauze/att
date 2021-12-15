@@ -248,6 +248,41 @@ class UserHolidaysData with ChangeNotifier {
     }
   }
 
+  Future<List<UserHolidays>> getFutureSingleUserHoliday(
+      String userId, String userToken) async {
+    sickVacationCount = 0;
+    suddenVacationCount = 0;
+    vacationCreditCount = 0;
+
+    loadingHolidaysDetails = true;
+    // notifyListeners();
+    var response = await http.get(
+      Uri.parse("$baseURL/api/Holiday/infuture/$userId"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    loadingHolidaysDetails = false;
+    print(response.statusCode);
+
+    log(response.body);
+    var decodedResponse = json.decode(response.body);
+    if (decodedResponse["message"] == "Success") {
+      var holidaysObj = jsonDecode(response.body)['data'] as List;
+      singleUserHoliday =
+          holidaysObj.map((json) => UserHolidays.fromJson(json)).toList();
+
+      singleUserHoliday = singleUserHoliday.reversed.toList();
+      // sickVacationCount = jsonDecode(response.body)['data']["Sick"];
+      // suddenVacationCount = jsonDecode(response.body)['data']["Excep"];
+      // vacationCreditCount = jsonDecode(response.body)['data']["Credit"];
+      notifyListeners();
+
+      return singleUserHoliday;
+    }
+  }
+
   Future<List<UserHolidays>> getSingleUserHoliday(
       String userId, String userToken) async {
     sickVacationCount = 0;

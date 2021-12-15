@@ -49,7 +49,6 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                 return Column(
                   children: [
                     ExpandedPermessionsTile(
-                      approvedBy: permList.approvedByUserId,
                       approvedDate: permList.approvedDate,
                       isAdmin: false,
                       currentIndex: index,
@@ -91,7 +90,6 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                         return Column(
                           children: [
                             ExpandedPermessionsTile(
-                              approvedBy: permList.approvedByUserId,
                               approvedDate: permList.approvedDate,
                               currentIndex: index,
                               isAdmin: widget.memberId == "" ? false : true,

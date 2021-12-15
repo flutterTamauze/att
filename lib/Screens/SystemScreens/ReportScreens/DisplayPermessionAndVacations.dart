@@ -271,7 +271,7 @@ class _VacationAndPermessionsReportState
                                           width: 10.w,
                                         ),
                                         Container(
-                                          height: 20,
+                                          height: 20.h,
                                           child: AutoSizeText(
                                             item.username,
                                             maxLines: 1,
