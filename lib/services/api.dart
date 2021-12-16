@@ -189,7 +189,7 @@ class ShiftApi with ChangeNotifier {
       print(id);
       if (isMoc == 0) {
         final response = await http.post(
-            Uri.parse("$localURL/api/Shifts/PostSiteShift"),
+            Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
             headers: {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"

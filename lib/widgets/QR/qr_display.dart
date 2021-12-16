@@ -28,15 +28,12 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   String countryDate;
   DateTime countryDateTime;
   getTimeZone() {
-    final String dateString =
-        DateTime.now().toString().substring(0, 11) + "" + countryDate;
-    print("setting country date time");
-    countryDateTime = DateTime.parse(dateString);
-    log(countryDateTime.toString());
-    if (mounted) {
-      print("countrycode");
-      print(countryDate);
-      if (countryDate != null) {
+    if (countryDate != null) {
+      final String dateString =
+          DateTime.now().toString().substring(0, 11) + "" + countryDate;
+      countryDateTime = DateTime.parse(dateString);
+      log(countryDateTime.toString());
+      if (mounted) {
         _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
           if (mounted) {
             setState(() {

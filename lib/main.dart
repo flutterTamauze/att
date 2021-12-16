@@ -11,6 +11,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localization.dart';
 import 'package:qr_users/Screens/SplashScreen.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
@@ -32,6 +33,7 @@ import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'enums/connectivity_status.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 List<CameraDescription> cameras;
 const MethodChannel _channel = MethodChannel('tdsChilango.com/channel_test');
@@ -115,6 +117,11 @@ huaweiHandler() async {
 }
 
 class MyApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    state.setLocale(newLocale);
+  }
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -126,6 +133,23 @@ class _MyAppState extends State<MyApp> {
 
     super.initState();
   }
+
+  Locale _locale;
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   getLocale().then((locale) {
+  //     setState(() {
+  //       this._locale = locale;
+  //     });
+  //   });
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -185,9 +209,27 @@ class _MyAppState extends State<MyApp> {
                   ConnectivityService().connectionStatusController.stream,
               builder: (context, snapshot) {
                 return MaterialApp(
+                    locale: _locale,
                     title: "Chilango",
                     debugShowCheckedModeBanner: false,
                     theme: getApplicationTheme(),
+                    supportedLocales: [Locale('en', 'US'), Locale('ar', 'SA')],
+                    localizationsDelegates: [
+                      DemoLocalization.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    localeResolutionCallback: (locale, supportedLocales) {
+                      for (var supportedLocale in supportedLocales) {
+                        if (supportedLocale.languageCode ==
+                                locale.languageCode &&
+                            supportedLocale.countryCode == locale.countryCode) {
+                          return supportedLocale;
+                        }
+                      }
+                      return supportedLocales.first;
+                    },
                     home: SplashScreen());
               });
         },

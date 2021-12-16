@@ -1,8 +1,11 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localization.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens//MembersScreens/UsersScreen.dart';
@@ -23,6 +26,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/widgets/Settings/ChangeLanguage.dart';
 
 import 'CompanySettings/MainCompanySettings.dart';
 
@@ -68,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           repeat: false),
                     ),
                   ),
-                  "الاعدادات"),
+                  getTranslated(context, "الاعدادات")),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,
               //   children: [
@@ -90,8 +94,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         userProvider.user.userType == 2
                             ? Container()
                             : ServiceTile(
-                                title: "المواقع",
-                                subTitle: "ادارة المواقع",
+                                title: getTranslated(context, "المواقع"),
+                                subTitle:
+                                    getTranslated(context, "ادارة المواقع"),
                                 icon: Icons.location_on,
                                 onTap: () async {
                                   var bool = await userDataProvider
@@ -113,8 +118,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   print("المواقع");
                                 }),
                         ServiceTile(
-                            title: "المناوبات",
-                            subTitle: "ادارة المناوبات",
+                            title: getTranslated(context, "المناوبات"),
+                            subTitle: getTranslated(context, "ادارة المناوبات"),
                             icon: Icons.alarm,
                             onTap: () async {
                               var bool = await userDataProvider
@@ -161,8 +166,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               print("المناوبات");
                             }),
                         ServiceTile(
-                            title: "المستخدمين",
-                            subTitle: "ادارة المستخدمين",
+                            title: getTranslated(context, "المستخدمين"),
+                            subTitle:
+                                getTranslated(context, "ادارة المستخدمين"),
                             icon: Icons.person,
                             onTap: () async {
                               if (userProvider.user.userType == 2) {
@@ -240,14 +246,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   );
                                 }
                               }
-
-                              print("الموظفين");
                             }),
                         userProvider.user.userType == 2
                             ? Container()
                             : ServiceTile(
-                                title: "اعدادات الشركة",
-                                subTitle: "ادارة اعدادات الشركة",
+                                title: getTranslated(context, "اعدادات الشركة"),
+                                subTitle: getTranslated(
+                                    context, "ادارة اعدادات الشركة"),
                                 icon: Icons.settings,
                                 onTap: () async {
                                   var bool = await userDataProvider
@@ -267,8 +272,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       ),
                                     );
                                   }
-                                  print("الموظفين");
                                 }),
+                        ServiceTile(
+                            title: getTranslated(context, "اعدادات اللغة"),
+                            subTitle:
+                                getTranslated(context, "ضبط اعدادات اللغة"),
+                            icon: Icons.language,
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ChangeLanguage();
+                                },
+                              );
+                            }),
                       ],
                     ),
                   ),
