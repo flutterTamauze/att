@@ -118,16 +118,16 @@ class NotificationDataService with ChangeNotifier {
       sound: true,
     );
 
-    NotificationSettings settings = await firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    print("User granted permession ${settings.authorizationStatus}");
+    // NotificationSettings settings = await firebaseMessaging.requestPermission(
+    //   alert: true,
+    //   announcement: false,
+    //   badge: true,
+    //   carPlay: false,
+    //   criticalAlert: false,
+    //   provisional: false,
+    //   sound: true,
+    // );
+    // print("User granted permession ${settings.authorizationStatus}");
   }
 
   bool finshed = false;
@@ -169,8 +169,6 @@ class NotificationDataService with ChangeNotifier {
 
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
-      counter++;
-      print(counter);
       if (event.data["category"] == "internalMission") {
         print("revieved internalMission ");
         SharedPreferences prefs = await SharedPreferences.getInstance();

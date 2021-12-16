@@ -94,13 +94,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                 )
                               : pendingList.pendingCompanyPermessions.length ==
                                       0
-                                  ? Center(
-                                      child: Text(
-                                      "لا يوجد اذونات لم يتم الرد عليها",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ))
+                                  ? CenterMessageText(
+                                      message:
+                                          "لا يوجد اجازات لم يتم الرد عليها",
+                                    )
                                   : SmartRefresher(
                                       onRefresh: _onRefresh,
                                       controller: refreshController,
@@ -339,8 +336,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                       ),
                                     ));
                     }
-                    return CenterMessageText(
-                        message: 'حدث خطأ فى عرض البيانات');
+                    return Expanded(
+                      child:
+                          CenterMessageText(message: 'حدث خطأ فى عرض البيانات'),
+                    );
                   })
             ],
           ),

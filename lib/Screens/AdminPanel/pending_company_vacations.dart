@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -12,6 +13,7 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -88,13 +90,10 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                   ),
                                 )
                               : pendingList.pendingCompanyHolidays.length == 0
-                                  ? Center(
-                                      child: Text(
-                                      "لا يوجد اجازات لم يتم الرد عليها",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ))
+                                  ? CenterMessageText(
+                                      message:
+                                          "لا يوجد اجازات لم يتم الرد عليها",
+                                    )
                                   : SmartRefresher(
                                       onRefresh: _onRefresh,
                                       controller: refreshController,

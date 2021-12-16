@@ -136,13 +136,20 @@ class UserPermessionsData with ChangeNotifier {
     return false;
   }
 
+  bool keepRetriving = true;
+  int pageIndex = 0;
   Future<String> getPendingCompanyPermessions(
       int companyId, String userToken) async {
     if (await isConnectedToInternet("www.google.com")) {
-      pendingCompanyPermessions = [];
+      if (pageIndex == 0) {
+        pendingCompanyPermessions = [];
+      }
+      pageIndex++;
+      isLoading = true;
+      notifyListeners();
       var response = await http.get(
           Uri.parse(
-              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId"),
+              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?$pageIndex&pageSize=8"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
@@ -152,12 +159,21 @@ class UserPermessionsData with ChangeNotifier {
       var decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
         var permessionsObj = jsonDecode(response.body)['data'] as List;
-
-        pendingCompanyPermessions = permessionsObj
-            .map((json) => UserPermessions.fromJson(json))
-            .toList();
-        pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();
+        if (permessionsObj.isEmpty) {
+          keepRetriving = false;
+          notifyListeners();
+        }
+        if (keepRetriving) {
+          // sitesList = sitesNewList;
+          pendingCompanyPermessions.addAll(permessionsObj
+              .map((json) => UserPermessions.fromJson(json))
+              .toList());
+          pendingCompanyPermessions =
+              pendingCompanyPermessions.reversed.toList();
+        }
+        isLoading = false;
         notifyListeners();
+
         return "Success";
       }
     } else {
