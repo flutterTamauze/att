@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -35,6 +37,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
     pendingPermessions =
         Provider.of<UserPermessionsData>(context, listen: false)
             .getPendingCompanyPermessions(comId, token);
+    Provider.of<UserPermessionsData>(context, listen: false).pageIndex = 0;
+    Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
+    Provider.of<UserPermessionsData>(context, listen: false).keepRetriving =
+        true;
   }
 
   String comment;
@@ -44,9 +50,22 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
     getPendingPermessions();
   }
 
+  final ScrollController _scrollController = ScrollController();
   void _onRefresh() async {
     setState(() {
       getPendingPermessions();
+      // getData();
+      _scrollController.addListener(() async {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          log("reached end of list");
+
+          if (Provider.of<UserPermessionsData>(context, listen: false)
+              .keepRetriving) {
+            await getPendingPermessions();
+          }
+        }
+      });
     });
   }
 
@@ -96,7 +115,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                       0
                                   ? CenterMessageText(
                                       message:
-                                          "لا يوجد اجازات لم يتم الرد عليها",
+                                          "لا يوجد اذونات لم يتم الرد عليها",
                                     )
                                   : SmartRefresher(
                                       onRefresh: _onRefresh,
@@ -106,6 +125,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                         backgroundColor: Colors.orange,
                                       ),
                                       child: ListView.builder(
+                                        controller: _scrollController,
                                         itemBuilder: (context, index) {
                                           var pending = pendingList
                                               .pendingCompanyPermessions[index];

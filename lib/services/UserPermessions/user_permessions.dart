@@ -149,25 +149,21 @@ class UserPermessionsData with ChangeNotifier {
       notifyListeners();
       var response = await http.get(
           Uri.parse(
-              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?$pageIndex&pageSize=8"),
+              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?pageIndex=$pageIndex&pageSize=8"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
       print("permessions");
-      print(response.body);
+      print(response.request.url);
       var decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
         var permessionsObj = jsonDecode(response.body)['data'] as List;
-        if (permessionsObj.isEmpty) {
-          keepRetriving = false;
-          notifyListeners();
-        }
         if (keepRetriving) {
-          // sitesList = sitesNewList;
           pendingCompanyPermessions.addAll(permessionsObj
               .map((json) => UserPermessions.fromJson(json))
               .toList());
+
           pendingCompanyPermessions =
               pendingCompanyPermessions.reversed.toList();
         }
@@ -175,6 +171,10 @@ class UserPermessionsData with ChangeNotifier {
         notifyListeners();
 
         return "Success";
+      } else if (decodedResp["message"] ==
+          "No Permissions pending for this company!") {
+        keepRetriving = false;
+        notifyListeners();
       }
     } else {
       return "noInternet";

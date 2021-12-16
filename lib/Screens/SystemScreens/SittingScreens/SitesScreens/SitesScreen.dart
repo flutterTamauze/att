@@ -78,7 +78,6 @@ class _SitesScreenState extends State<SitesScreen> {
   //   );
   // }
 
-  final ScrollController _scrollController = ScrollController();
   // getData() async {
   //   var userProvider = Provider.of<UserData>(context);
   //   var companyProvider = Provider.of<CompanyData>(context, listen: false);
@@ -128,7 +127,6 @@ class _SitesScreenState extends State<SitesScreen> {
 
                           Expanded(
                             child: ListView.builder(
-                                controller: _scrollController,
                                 itemCount: _siteShift.sites.length - 1,
                                 itemBuilder: (BuildContext context, int index) {
                                   return LocationTile(
