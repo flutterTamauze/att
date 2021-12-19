@@ -54,7 +54,7 @@ class DatabaseHelper {
         .catchError((e) {
       print(e);
     });
-    print("Notification $id");
+    print("Notification added$id");
     return id;
   }
 

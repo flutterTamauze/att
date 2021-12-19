@@ -26,12 +26,12 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
 
     if (widget.memberId == "" || widget.memberId == null) {
       Provider.of<UserPermessionsData>(context, listen: false)
-          .getSingleUserPermession(
+          .getFutureSinglePermession(
               userProvider.user.id, userProvider.user.userToken);
       refreshController.refreshCompleted();
     } else {
       Provider.of<UserPermessionsData>(context, listen: false)
-          .getSingleUserPermession(
+          .getFutureSinglePermession(
               widget.memberId, userProvider.user.userToken);
       refreshController.refreshCompleted();
     }

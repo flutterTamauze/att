@@ -21,6 +21,8 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
+import 'package:qr_users/widgets/Sites/filteredSites.dart';
+import 'package:qr_users/widgets/Sites/sitesDisplay.dart';
 import 'package:qr_users/widgets/headers.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -78,7 +80,7 @@ class _SitesScreenState extends State<SitesScreen> {
   //   );
   // }
 
-  final ScrollController _scrollController = ScrollController();
+  // final ScrollController _scrollController = ScrollController();
   // getData() async {
   //   var userProvider = Provider.of<UserData>(context);
   //   var companyProvider = Provider.of<CompanyData>(context, listen: false);
@@ -89,7 +91,41 @@ class _SitesScreenState extends State<SitesScreen> {
   //     context,
   //   );
   // }
+  Timer searchOnStoppedTyping;
+  _onChangeHandler(value) {
+    setState(() {
+      search(value);
+    });
+  }
 
+  getIndexBySiteName(String name) {
+    for (int i = 1;
+        i < Provider.of<SiteShiftsData>(context, listen: false).sites.length;
+        i++) {
+      if (Provider.of<SiteShiftsData>(context, listen: false).sites[i].name ==
+          name) {
+        return i - 1;
+      }
+    }
+  }
+
+  search(text) {
+    print(text);
+    List<Site> sites = Provider.of<SiteShiftsData>(context, listen: false)
+        .sites
+        .where((element) =>
+            element.name.contains(text.toLowerCase()) ||
+            element.name.contains(text.toUpperCase()))
+        .toList();
+    if (sites.isEmpty) {
+      filteredSites.clear();
+    } else {
+      filteredSites = sites;
+    }
+  }
+
+  List<Site> filteredSites = [];
+  TextEditingController _sitesController = TextEditingController();
   final SlidableController slidableController = SlidableController();
   @override
   Widget build(BuildContext context) {
@@ -100,219 +136,121 @@ class _SitesScreenState extends State<SitesScreen> {
     return Consumer<SiteData>(builder: (context, siteData, child) {
       return WillPopScope(
           onWillPop: onWillPop,
-          child: Scaffold(
-              endDrawer: NotificationItem(),
-              backgroundColor: Colors.white,
-              body: Container(
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Header(
-                            nav: false,
-                            goUserHomeFromMenu: false,
-                            goUserMenu: false,
-                          ),
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: SmallDirectoriesHeader(
-                                Lottie.asset("resources/locaitonss.json",
-                                    repeat: false),
-                                "دليل المواقع"),
-                          ),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Scaffold(
+                endDrawer: NotificationItem(),
+                backgroundColor: Colors.white,
+                body: Container(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Header(
+                              nav: false,
+                              goUserHomeFromMenu: false,
+                              goUserMenu: false,
+                            ),
+                            Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: SmallDirectoriesHeader(
+                                  Lottie.asset("resources/locaitonss.json",
+                                      repeat: false),
+                                  "دليل المواقع"),
+                            ),
 
-                          ///List OF SITES
-
-                          Expanded(
-                            child: ListView.builder(
-                                controller: _scrollController,
-                                itemCount: _siteShift.sites.length - 1,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return LocationTile(
+                            ///List OF SITES
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w, vertical: 16.h),
+                              child: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: TextField(
+                                  onChanged: (value) {
+                                    _onChangeHandler(value);
+                                  },
+                                  controller: _sitesController,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'البحث بأسم الموقع',
+                                      focusColor: Colors.orange,
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors.orange[600])),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors.orange[600]))),
+                                ),
+                              ),
+                            ),
+                            _sitesController.text != "" &&
+                                    filteredSites.length >= 1
+                                ? FilteredSitesDisplay(
+                                    filteredSites: filteredSites,
                                     slidableController: slidableController,
-                                    index: index,
-                                    site: _siteShift.sites[index + 1],
-                                    title: _siteShift.sites[index + 1].name,
-                                    onTapDelete: () {
-                                      final token = Provider.of<UserData>(
-                                              context,
-                                              listen: false)
-                                          .user
-                                          .userToken;
-                                      return showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedAlert(
-                                                onPressed: () async {
-                                                  showDialog(
-                                                      barrierDismissible: false,
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return RoundedLoadingIndicator();
-                                                      });
-                                                  var msg =
-                                                      await siteData.deleteSite(
-                                                          _siteShift
-                                                              .sites[index + 1]
-                                                              .id,
-                                                          token,
-                                                          index,
-                                                          context);
-                                                  if (msg == "Success") {
-                                                    // Navigator.pop(
-                                                    //     context);
-                                                    successfullDelete();
-                                                  } else if (msg == "hasData") {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا.",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        timeInSecForIosWeb: 1,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        textColor: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true));
-                                                  } else if (msg == "failed") {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في اثناء الحذف.",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        timeInSecForIosWeb: 1,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        textColor: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true));
-                                                  } else if (msg ==
-                                                      "noInternet") {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في الحذف: لا يوجد اتصال بالانترنت.",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        timeInSecForIosWeb: 1,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        textColor: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true));
-                                                  } else {
-                                                    Fluttertoast.showToast(
-                                                        msg: "خطأ في الحذف.",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        timeInSecForIosWeb: 1,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        textColor: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true));
-                                                  }
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                },
-                                                title: 'إزالة موقع',
-                                                content:
-                                                    "هل تريد إزالة${_siteShift.sites[index + 1].name} ؟");
-                                          });
-                                    },
-                                    onTapEdit: () async {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedLoadingIndicator();
-                                          });
-                                      await siteData
-                                          .getSiteBySiteId(
-                                              _siteShift.sites[index + 1].id,
-                                              Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userToken)
-                                          .then((site) async {
-                                        await Navigator.of(context).push(
-                                          new MaterialPageRoute(
-                                            builder: (context) => AddSiteScreen(
-                                                site, index, true, false),
-                                          ),
-                                        );
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  );
-                                }),
-                          ),
-                          siteData.sitesList.length != 0
-                              ? Provider.of<SiteData>(context).isLoading
-                                  ? Column(
-                                      children: [
-                                        Center(
-                                            child: CupertinoActivityIndicator(
-                                          radius: 15,
-                                        )),
-                                        Container(
-                                          height: 30,
-                                        )
-                                      ],
-                                    )
-                                  : Container()
-                              : Container()
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 5.0.w,
-                      top: 5.0.h,
-                      child: Container(
-                        width: 50.w,
-                        height: 50.h,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => NavScreenTwo(3)),
-                                (Route<dynamic> route) => false);
-                          },
+                                  )
+                                : SitesDisplay(
+                                    sites: _siteShift.sites,
+                                  ),
+                            siteData.sitesList.length != 0
+                                ? Provider.of<SiteData>(context).isLoading
+                                    ? Column(
+                                        children: [
+                                          Center(
+                                              child: CupertinoActivityIndicator(
+                                            radius: 15,
+                                          )),
+                                          Container(
+                                            height: 30,
+                                          )
+                                        ],
+                                      )
+                                    : Container()
+                                : Container()
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        left: 5.0.w,
+                        top: 5.0.h,
+                        child: Container(
+                          width: 50.w,
+                          height: 50.h,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => NavScreenTwo(3)),
+                                  (Route<dynamic> route) => false);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              floatingActionButton:
-                  Provider.of<UserData>(context, listen: false).user.userType ==
-                          4
-                      ? MultipleFloatingButtons(
-                          mainTitle: "إضافة موقع",
-                          shiftName: "",
-                          comingFromShifts: false,
-                          mainIconData: Icons.add_location_alt,
-                        )
-                      : MultipleFloatingButtonsNoADD()));
+                floatingActionButton:
+                    Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userType ==
+                            4
+                        ? MultipleFloatingButtons(
+                            mainTitle: "إضافة موقع",
+                            shiftName: "",
+                            comingFromShifts: false,
+                            mainIconData: Icons.add_location_alt,
+                          )
+                        : MultipleFloatingButtonsNoADD()),
+          ));
     });
   }
 

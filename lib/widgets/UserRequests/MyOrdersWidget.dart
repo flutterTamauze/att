@@ -191,9 +191,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                   children: [
                                                     widget.status == 2
                                                         ? widget.adminComment !=
-                                                                    null ||
-                                                                widget.adminComment ==
-                                                                    ""
+                                                                ""
                                                             ? Container(
                                                                 padding: EdgeInsets
                                                                     .only(

@@ -41,7 +41,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
   String dateToString = "";
   String dateFromString = "";
-  ScrollController _scrollController = ScrollController();
   TextEditingController _dateController = TextEditingController();
   int selectedDuration;
   DateTime toDate;

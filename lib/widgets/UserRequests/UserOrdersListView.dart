@@ -27,12 +27,13 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
     var userProvider = Provider.of<UserData>(context, listen: false);
     if (widget.memberId == "" || widget.memberId == null) {
       Provider.of<UserHolidaysData>(context, listen: false)
-          .getSingleUserHoliday(
+          .getFutureSingleUserHoliday(
               userProvider.user.id, userProvider.user.userToken);
       refreshController.refreshCompleted();
     } else {
       Provider.of<UserHolidaysData>(context, listen: false)
-          .getSingleUserHoliday(widget.memberId, userProvider.user.userToken);
+          .getFutureSingleUserHoliday(
+              widget.memberId, userProvider.user.userToken);
       refreshController.refreshCompleted();
     }
   }

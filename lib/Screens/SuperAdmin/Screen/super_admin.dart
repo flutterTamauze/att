@@ -44,7 +44,6 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
     }
   }
 
-  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);

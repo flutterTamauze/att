@@ -18,7 +18,7 @@ Future<bool> sendFcmMessage(
     String userToken}) async {
   try {
     final String toParams = "/topics/" + topicName;
-    print(userToken);
+    print("user token $userToken");
     // print(await firebaseMessaging.getToken());
     // firebaseMessaging.unsubscribeFromTopic("nekaba");
     // print(toParams);

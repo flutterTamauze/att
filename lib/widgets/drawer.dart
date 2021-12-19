@@ -405,7 +405,7 @@ class AMHPoweredWidght extends StatelessWidget {
             child: Container(
                 height: 100.h,
                 child: Image.asset(
-                  'resources/TDSLogo.png',
+                  'resources/TDSlogo.png',
                   fit: BoxFit.fitHeight,
                 )),
           ),

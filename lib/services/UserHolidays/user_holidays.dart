@@ -54,6 +54,7 @@ class UserHolidays {
 
 class UserHolidaysData with ChangeNotifier {
   bool isLoading = false;
+  bool paginatedIsLoading = false;
   bool loadingHolidaysDetails = false;
   List<UserHolidays> holidaysList = [];
   UserHolidays holidaysSingleDetail;
@@ -103,23 +104,47 @@ class UserHolidaysData with ChangeNotifier {
     return decodedResp["message"];
   }
 
+  bool keepRetriving = true;
+  int pageIndex = 0;
   getPendingCompanyHolidays(int companyId, String userToken) async {
+    if (pageIndex == 0) {
+      pendingCompanyHolidays = [];
+    } else {
+      paginatedIsLoading = true;
+      notifyListeners();
+    }
+    pageIndex++;
+
     var response = await http.get(
-        Uri.parse("$baseURL/api/Holiday/GetAllHolidaysPending/$companyId"),
+        Uri.parse(
+            "$baseURL/api/Holiday/GetAllHolidaysPending/$companyId?pageindex=$pageIndex&pageSize=8"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
+    print("permessions");
+    print(response.request.url);
+    print(response.statusCode);
+    print(response.body);
     print("holidays");
     print(response.body);
     var decodedResp = json.decode(response.body);
     if (decodedResp["message"] == "Success") {
       var permessionsObj = jsonDecode(response.body)['data'] as List;
-      pendingCompanyHolidays =
-          permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
+      if (keepRetriving) {
+        pendingCompanyHolidays.addAll(
+            permessionsObj.map((json) => UserHolidays.fromJson(json)).toList());
 
-      notifyListeners();
+        pendingCompanyHolidays = pendingCompanyHolidays.reversed.toList();
+      }
+    } else if (decodedResp["message"] ==
+        "No Holidays exist for this company!") {
+      print("keep retrive is false");
+      keepRetriving = false;
     }
+    paginatedIsLoading = false;
+
+    notifyListeners();
   }
 
   Future<String> acceptOrRefusePendingVacation(
@@ -202,7 +227,10 @@ class UserHolidaysData with ChangeNotifier {
           holidaysSingleDetail.adminResponse;
       pendingCompanyHolidays[holidayIndex].holidayDescription =
           holidaysSingleDetail.holidayDescription;
-
+      pendingCompanyHolidays[holidayIndex].fcmToken =
+          holidaysSingleDetail.fcmToken;
+      pendingCompanyHolidays[holidayIndex].adminResponse =
+          pendingCompanyHolidays[holidayIndex].adminResponse;
       notifyListeners();
     }
   }

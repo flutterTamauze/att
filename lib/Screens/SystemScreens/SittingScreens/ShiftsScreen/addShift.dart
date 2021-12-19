@@ -1242,11 +1242,11 @@ class AdvancedShiftPicker extends StatefulWidget {
 
 class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
   bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
-    int startNumber = (startTime.hour * 60) + startTime.minute;
-    int endNumber = (endTime.hour * 60) + endTime.minute;
-    int difference = (endNumber - startNumber).abs();
+    final int startNumber = (startTime.hour * 60) + startTime.minute;
+    final int endNumber = (endTime.hour * 60) + endTime.minute;
+    final int difference = (endNumber - startNumber).abs();
     log(difference.toString());
-    if (difference >= 180)
+    if (difference >= 240)
       return true;
     else
       return false;
@@ -1429,7 +1429,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                             child: GestureDetector(
                               onTap: () {},
                               child: Text(
-                                "يجب ان لا تقل المدة عن 3 ساعات",
+                                "يجب ان لا تقل المدة عن 4 ساعات",
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.w600),

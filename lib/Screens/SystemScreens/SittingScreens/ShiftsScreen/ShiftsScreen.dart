@@ -220,68 +220,66 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                               Consumer<SiteShiftsData>(
                                 builder: (context, value, child) {
                                   return Expanded(
-                                      child: value.dropDownShifts.isNotEmpty
-                                          ? SmartRefresher(
-                                              onRefresh: _onRefresh,
-                                              controller: refreshController,
-                                              enablePullDown: true,
-                                              header: WaterDropMaterialHeader(
-                                                color: Colors.white,
-                                                backgroundColor: Colors.orange,
-                                              ),
-                                              child: isLoading
-                                                  ? Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        valueColor:
-                                                            new AlwaysStoppedAnimation<
-                                                                    Color>(
-                                                                Colors.orange),
-                                                      ),
-                                                    )
-                                                  : ListView.builder(
-                                                      itemCount: value
-                                                          .dropDownShifts
-                                                          .length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return ShiftTile(
-                                                          shifts: value
-                                                                  .dropDownShifts[
+                                      child:
+                                          value.dropDownShifts[0].shiftId == 0
+                                              ? Center(
+                                                  child: Container(
+                                                    height: 50.h,
+                                                    child: AutoSizeText(
+                                                      "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
+                                                      maxLines: 2,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          height: 2,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(17,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                )
+                                              : ListView.builder(
+                                                  itemCount: value
+                                                      .dropDownShifts.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return ShiftTile(
+                                                      shifts:
+                                                          value.dropDownShifts[
                                                               index],
-                                                          slidableController:
-                                                              slidableController,
-                                                          siteName: value
-                                                              .dropDownShifts[
-                                                                  index]
-                                                              .shiftName,
-                                                          siteIndex: siteId,
-                                                          index: index,
-                                                          // shift: value
-                                                          //     .shifts[index],
-                                                          onTapDelete: () {
-                                                            var token = Provider.of<
-                                                                        UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
-                                                                .userToken;
-                                                            return showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return Directionality(
-                                                                    textDirection:
-                                                                        TextDirection
-                                                                            .rtl,
-                                                                    child: RoundedAlert(
-                                                                        onPressed: () async {
+                                                      slidableController:
+                                                          slidableController,
+                                                      siteName: value
+                                                          .dropDownShifts[index]
+                                                          .shiftName,
+                                                      siteIndex: siteId,
+                                                      index: index,
+                                                      // shift: value
+                                                      //     .shifts[index],
+                                                      onTapDelete: () {
+                                                        var token = Provider.of<
+                                                                    UserData>(
+                                                                context,
+                                                                listen: false)
+                                                            .user
+                                                            .userToken;
+                                                        return showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return Directionality(
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .rtl,
+                                                                child:
+                                                                    RoundedAlert(
+                                                                        onPressed:
+                                                                            () async {
                                                                           showDialog(
                                                                               context: context,
                                                                               builder: (BuildContext context) {
@@ -351,79 +349,58 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                           Navigator.pop(
                                                                               context);
                                                                         },
-                                                                        title: 'إزالة مناوبة',
-                                                                        content: "هل تريد إزالة ${value.dropDownShifts[index].shiftName} ؟"),
-                                                                  );
-                                                                });
-                                                          },
-                                                          onTapEdit: () async {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return RoundedLoadingIndicator();
-                                                                });
-                                                            await Provider.of<
-                                                                        ShiftApi>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .getShiftByShiftId(
-                                                                    value
-                                                                        .dropDownShifts[
-                                                                            index]
-                                                                        .shiftId,
-                                                                    Provider.of<UserData>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .user
-                                                                        .userToken);
+                                                                        title:
+                                                                            'إزالة مناوبة',
+                                                                        content:
+                                                                            "هل تريد إزالة ${value.dropDownShifts[index].shiftName} ؟"),
+                                                              );
+                                                            });
+                                                      },
+                                                      onTapEdit: () async {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return RoundedLoadingIndicator();
+                                                            });
+                                                        await Provider.of<
+                                                                    ShiftApi>(
+                                                                context,
+                                                                listen: false)
+                                                            .getShiftByShiftId(
+                                                                value
+                                                                    .dropDownShifts[
+                                                                        index]
+                                                                    .shiftId,
+                                                                Provider.of<UserData>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .user
+                                                                    .userToken);
 
-                                                            Navigator.pop(
-                                                                context);
+                                                        Navigator.pop(context);
 
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(
-                                                              new MaterialPageRoute(
-                                                                builder: (context) => AddShiftScreen(
-                                                                    Provider.of<ShiftApi>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .userShift,
-                                                                    index,
-                                                                    true,
-                                                                    siteId,
-                                                                    widget
-                                                                        .siteIndex),
-                                                              ),
-                                                            );
-                                                          },
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          new MaterialPageRoute(
+                                                            builder: (context) => AddShiftScreen(
+                                                                Provider.of<ShiftApi>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .userShift,
+                                                                index,
+                                                                true,
+                                                                siteId,
+                                                                widget
+                                                                    .siteIndex),
+                                                          ),
                                                         );
-                                                      }),
-                                            )
-                                          : Center(
-                                              child: Container(
-                                                height: 50,
-                                                child: AutoSizeText(
-                                                  "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
-                                                  maxLines: 1,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      height: 2,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          16,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ),
-                                            ));
+                                                      },
+                                                    );
+                                                  }));
                                 },
                               ),
                             ],

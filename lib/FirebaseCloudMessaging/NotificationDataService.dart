@@ -131,7 +131,7 @@ class NotificationDataService with ChangeNotifier {
   }
 
   bool finshed = false;
-  int counter = 0;
+  // int counter = 0;
   huaweiMessagingConfig(BuildContext context) async {
     hawawi.Push.onMessageReceivedStream.listen((_onMessageReceived) async {
       log("huawei message recieved ");
@@ -154,8 +154,8 @@ class NotificationDataService with ChangeNotifier {
                   title: decodedResponse["pushbody"]["title"],
                   timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
               context)
-          .then((value) => counter = 0)
-          .then((value) async => await addNotification(
+          // .then((value) => counter = 0)
+          .then((value) => addNotification(
               decodedResponse["pushbody"]["title"],
               decodedResponse["pushbody"]["description"],
               DateTime.now().toString().substring(0, 10),
@@ -167,10 +167,37 @@ class NotificationDataService with ChangeNotifier {
     });
   }
 
+  static int semaphore = 0;
+  addNotificationToListAndDB(RemoteMessage event, BuildContext context) async {
+    await db
+        .insertNotification(
+            NotificationMessage(
+                category: event.data["category"],
+                dateTime: DateTime.now().toString().substring(0, 10),
+                message: event.notification.body,
+                messageSeen: 0,
+                title: event.notification.title,
+                timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
+            context)
+        // .then((value) => counter = 0)
+        .then((value) => addNotification(
+            event.notification.title,
+            event.notification.body,
+            DateTime.now().toString().substring(0, 10),
+            event.data["category"],
+            DateFormat('kk:mm:a').format(DateTime.now()),
+            value));
+  }
+
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
-      counter++;
-      print(counter);
+      if (semaphore != 0) {
+        return;
+      }
+      semaphore = 1;
+      Future.delayed(Duration(seconds: 1)).then((_) => semaphore = 0);
+      // counter++;
+      // print(counter);
       if (event.data["category"] == "internalMission") {
         print("revieved internalMission ");
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -185,31 +212,15 @@ class NotificationDataService with ChangeNotifier {
                 Provider.of<CompanyData>(context, listen: false).com.id,
                 Provider.of<UserData>(context, listen: false).user.userToken);
       } else {
-        if (counter == 1) {
-          if (event.data["category"] == "attend") {
-            showAttendanceCheckDialog(context);
-          }
-
-          await db
-              .insertNotification(
-                  NotificationMessage(
-                      category: event.data["category"],
-                      dateTime: DateTime.now().toString().substring(0, 10),
-                      message: event.notification.body,
-                      messageSeen: 0,
-                      title: event.notification.title,
-                      timeOfMessage:
-                          DateFormat('kk:mm:a').format(DateTime.now())),
-                  context)
-              .then((value) => counter = 0)
-              .then((value) async => await addNotification(
-                  event.notification.title,
-                  event.notification.body,
-                  DateTime.now().toString().substring(0, 10),
-                  event.data["category"],
-                  DateFormat('kk:mm:a').format(DateTime.now()),
-                  value));
-
+        // if (counter == 1) {
+        if (event.data["category"] == "attend") {
+          showAttendanceCheckDialog(context);
+          // }
+          addNotificationToListAndDB(event, context);
+          player.play("notification.mp3");
+        } else if (event.data["category"] == "permessionRequest" ||
+            event.data["category"] == "vacationRequest") {
+          addNotificationToListAndDB(event, context);
           player.play("notification.mp3");
         }
       }

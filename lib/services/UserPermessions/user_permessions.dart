@@ -56,6 +56,7 @@ class UserPermessions {
 
 class UserPermessionsData with ChangeNotifier {
   bool isLoading = false;
+  bool paginatedLoading = false;
   bool permessionDetailLoading = false;
   List<UserPermessions> permessionsList = [];
   List<UserPermessions> copyPermessionsList = [];
@@ -136,29 +137,48 @@ class UserPermessionsData with ChangeNotifier {
     return false;
   }
 
+  bool keepRetriving = true;
+  int pageIndex = 0;
   Future<String> getPendingCompanyPermessions(
       int companyId, String userToken) async {
     if (await isConnectedToInternet("www.google.com")) {
-      pendingCompanyPermessions = [];
+      if (pageIndex == 0) {
+        pendingCompanyPermessions = [];
+      }
+      pageIndex++;
+      paginatedLoading = true;
+      notifyListeners();
       var response = await http.get(
           Uri.parse(
-              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId"),
+              "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?pageIndex=$pageIndex&pageSize=8"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
       print("permessions");
+      print(response.request.url);
+      print(response.statusCode);
       print(response.body);
       var decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
         var permessionsObj = jsonDecode(response.body)['data'] as List;
+        if (keepRetriving) {
+          pendingCompanyPermessions.addAll(permessionsObj
+              .map((json) => UserPermessions.fromJson(json))
+              .toList());
 
-        pendingCompanyPermessions = permessionsObj
-            .map((json) => UserPermessions.fromJson(json))
-            .toList();
-        pendingCompanyPermessions = pendingCompanyPermessions.reversed.toList();
+          pendingCompanyPermessions =
+              pendingCompanyPermessions.reversed.toList();
+        }
+        paginatedLoading = false;
         notifyListeners();
+
         return "Success";
+      } else if (decodedResp["message"] ==
+          "No Permissions pending for this company!") {
+        keepRetriving = false;
+        isLoading = false;
+        notifyListeners();
       }
     } else {
       return "noInternet";
@@ -205,6 +225,10 @@ class UserPermessionsData with ChangeNotifier {
             singlePermessionDetail.adminResponse;
         pendingCompanyPermessions[permIndex].permessionDescription =
             singlePermessionDetail.permessionDescription;
+        pendingCompanyPermessions[permIndex].fcmToken =
+            singlePermessionDetail.fcmToken;
+        pendingCompanyPermessions[permIndex].adminResponse =
+            singlePermessionDetail.adminResponse;
       }
 
       notifyListeners();
@@ -433,7 +457,8 @@ class UserPermessionsData with ChangeNotifier {
       } else if (decodedMsg == "Failed : there is a holiday in this date!") {
         return "holiday";
       } else if (decodedMsg ==
-          "Failed : there is a holiday was not approved in this date!") {
+              "Failed : there is a holiday was not approved in this date!" ||
+          decodedMsg == "Failed : there is a holiday still pending!") {
         return "holiday was not approved";
       }
       notifyListeners();

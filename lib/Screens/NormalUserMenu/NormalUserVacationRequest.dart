@@ -264,7 +264,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                         .day +
                                                                     1),
                                                         lastDate: yesterday);
-                                                print(picked.length);
 
                                                 setState(() {
                                                   _today = picked.first;

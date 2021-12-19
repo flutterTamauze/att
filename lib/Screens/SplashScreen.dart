@@ -330,7 +330,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   Container(
                                       height: 130.h,
                                       child: Image.asset(
-                                        'resources/TDSLogo.png',
+                                        'resources/TDSlogo.png',
                                         fit: BoxFit.fitHeight,
                                       )),
                                 ],
