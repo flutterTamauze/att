@@ -102,7 +102,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                                         listen: false)
                                     .shifts = [];
 
-                                Phoenix.rebirth(context);
+                                // Phoenix.rebirth(context);
                               })
                         ],
                       ),

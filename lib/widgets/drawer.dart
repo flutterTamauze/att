@@ -14,6 +14,7 @@ import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/intro.dart';
+import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -268,11 +269,12 @@ class DrawerI extends StatelessWidget {
                                             listen: false)
                                         .shifts = [];
 
-                                    Phoenix.rebirth(context);
-                                    // Navigator.of(context).pushAndRemoveUntil(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => LoginScreen()),
-                                    //     (Route<dynamic> route) => false);
+                                    // await Phoenix.rebirth(context);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoginScreen()),
+                                        (Route<dynamic> route) => false);
                                   },
                                   title: 'تسجيل خروج',
                                   content: "هل تريد تسجيل الخروج ؟");

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -180,7 +181,7 @@ class NotificationDataService with ChangeNotifier {
                 timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
             context)
         // .then((value) => counter = 0)
-        .then((value) => addNotification(
+        .then((value) async => await addNotification(
             event.notification.title,
             event.notification.body,
             DateTime.now().toString().substring(0, 10),
@@ -214,12 +215,12 @@ class NotificationDataService with ChangeNotifier {
       } else {
         // if (counter == 1) {
         if (event.data["category"] == "attend") {
-          showAttendanceCheckDialog(context);
+          await showAttendanceCheckDialog(context);
           // }
           addNotificationToListAndDB(event, context);
           player.play("notification.mp3");
-        } else if (event.data["category"] == "permessionRequest" ||
-            event.data["category"] == "vacationRequest") {
+        } else {
+          print(event.data);
           addNotificationToListAndDB(event, context);
           player.play("notification.mp3");
         }

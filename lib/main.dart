@@ -33,6 +33,8 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'enums/connectivity_status.dart';
 
+final GlobalKey alertKey =
+    GlobalKey<NavigatorState>(debugLabel: 'AppNavigator');
 List<CameraDescription> cameras;
 const MethodChannel _channel = MethodChannel('tdsChilango.com/channel_test');
 Map<String, String> channelMap = {
@@ -58,7 +60,7 @@ void main() async {
     await _channel.invokeMethod('createNotificationChannel', channelMap);
   }
 
-  runApp(Phoenix(child: MyApp()));
+  runApp(MyApp());
 }
 
 void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
@@ -118,6 +120,8 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class _MyAppState extends State<MyApp> {
   @override
@@ -185,6 +189,7 @@ class _MyAppState extends State<MyApp> {
                   ConnectivityService().connectionStatusController.stream,
               builder: (context, snapshot) {
                 return MaterialApp(
+                    navigatorKey: navigatorKey,
                     title: "Chilango",
                     debugShowCheckedModeBanner: false,
                     theme: getApplicationTheme(),

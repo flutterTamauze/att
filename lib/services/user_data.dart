@@ -606,7 +606,9 @@ class UserData with ChangeNotifier {
   logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('userData', []);
-    await db.clearNotifications();
+    if (db != null) {
+      await db.clearNotifications();
+    }
 
     loggedIn = false;
     // manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));

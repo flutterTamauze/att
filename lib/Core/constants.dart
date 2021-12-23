@@ -30,9 +30,10 @@ List<String> weekDays = [
   "الخميس",
   "الجمعة"
 ];
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 19);
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 12, 23);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 19);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 12, 23);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
