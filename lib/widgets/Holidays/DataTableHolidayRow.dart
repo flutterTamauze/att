@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
 class DataTableHolidayRow extends StatelessWidget {
@@ -26,11 +27,7 @@ class DataTableHolidayRow extends StatelessWidget {
                         height: 40.h,
                         width: 50,
                         child: AutoSizeText(
-                          _holidays.holidayType == 1
-                              ? "عارضة"
-                              : _holidays.holidayType == 2
-                                  ? "مرضى"
-                                  : "رصيد اجازات",
+                          getVacationType(_holidays.holidayType),
                           maxLines: 2,
                           style: TextStyle(
                             fontSize: ScreenUtil()

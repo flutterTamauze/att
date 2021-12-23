@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -127,7 +128,8 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                   "لا يوجد اذونات لم يتم الرد عليها",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: setResponsiveFontSize(16)),
+                                  textAlign: TextAlign.center,
                                 ))
                               : SmartRefresher(
                                   onRefresh: _onRefresh,

@@ -8,8 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
+import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/api.dart';
@@ -53,7 +55,9 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
     countryDate =
         Provider.of<ShiftApi>(context, listen: false).currentCountryDate;
     super.initState();
-    getTimeZone();
+    if (countryDate != null) {
+      getTimeZone();
+    }
   }
 
   @override
@@ -65,6 +69,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
   Widget build(BuildContext context) {
     HuaweiServices _huawei = HuaweiServices();
     var shiftApiConsumer = Provider.of<ShiftApi>(context);
+
     // var shiftDataProvider =
     //     Provider.of<ShiftApi>(context, listen: true).currentShift;
     return Expanded(
@@ -84,13 +89,15 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             child: Column(
                                               children: [
                                                 Text(
-                                                  DateFormat.jms()
+                                                  DateFormat('hh:mm:s a')
                                                       .format(countryDateTime),
                                                   style: TextStyle(
                                                       letterSpacing: 4,
                                                       fontWeight:
                                                           FontWeight.w700,
-                                                      fontSize: 21),
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              24)),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
@@ -103,7 +110,9 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       letterSpacing: 2,
-                                                      fontSize: 17),
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              17)),
                                                 ),
                                               ],
                                             ),

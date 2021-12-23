@@ -14,7 +14,7 @@ const androidDownloadLink =
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.105:8010";
+const localURL = "http://192.168.0.112:8010";
 const huaweiAppId = "104665933";
 const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
@@ -153,6 +153,22 @@ int kCalcDateDifferance(String strtDate, String endDate) {
 
   final differancee = endingDate.difference(startDate).inDays;
   return differancee;
+}
+
+String getVacationType(int holidayType) {
+  switch (holidayType) {
+    case 1:
+      return "عارضة";
+      break;
+    case 2:
+      return "مرضى";
+      break;
+    case 3:
+      return "رصيد اجازات";
+      break;
+    default:
+      return "";
+  }
 }
 
 class DetialsTextField extends StatelessWidget {

@@ -270,6 +270,8 @@ class UserHolidaysData with ChangeNotifier {
             holidaysSingleDetail.adminResponse;
         singleUserHoliday[holidayIndex].holidayDescription =
             holidaysSingleDetail.holidayDescription;
+        singleUserHoliday[holidayIndex].holidayType =
+            holidaysSingleDetail.holidayType;
       }
 
       notifyListeners();

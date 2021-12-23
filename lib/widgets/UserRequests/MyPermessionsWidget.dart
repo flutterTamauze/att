@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -206,17 +207,26 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                                 widget.adminComment ==
                                                                     ""
                                                             ? Container()
-                                                            : Text(
-                                                                "تعليق الأدمن  : ${widget.adminComment}",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .right,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                            : Container(
+                                                                width: 230.w,
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  "تعليق الأدمن : ${widget.adminComment}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .justify,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        setResponsiveFontSize(
+                                                                            13),
+                                                                    color: Colors
+                                                                        .green,
+                                                                    height: 1.3,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
                                                                 ),
                                                               ),
                                                     widget.adminComment ==

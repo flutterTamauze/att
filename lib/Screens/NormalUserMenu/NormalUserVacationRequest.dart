@@ -831,8 +831,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               timeOutController.text != "") {
                                             print(selectedDate);
                                             print(timeOutController.text);
-                                            String msg = await Provider.of<
-                                                        UserPermessionsData>(
+                                            String msg = await Provider.of<UserPermessionsData>(
                                                     context,
                                                     listen: false)
                                                 .addUserPermession(
@@ -840,16 +839,16 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         createdOn:
                                                             DateTime.now(),
                                                         date: selectedDate,
-                                                        duration: formattedTime,
+                                                        duration:
+                                                            formattedTime.replaceAll(
+                                                                ":", ""),
                                                         permessionType:
                                                             selectedPermession ==
                                                                     "تأخير عن الحضور"
                                                                 ? 1
                                                                 : 2,
                                                         permessionDescription:
-                                                            commentController
-                                                                        .text ==
-                                                                    ""
+                                                            commentController.text == ""
                                                                 ? "لا يوجد تعليق"
                                                                 : commentController
                                                                     .text,

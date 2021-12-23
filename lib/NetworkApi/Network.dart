@@ -39,13 +39,6 @@ class NetworkApi {
       if (res.statusCode == 200) {
         print("not faliure");
         return res.body;
-      } else if (res.statusCode == 400 ||
-          res.statusCode == 500 ||
-          res.statusCode == 404) {
-        return Faliure(
-            code: USER_INVALID_RESPONSE, errorResponse: "Invalid Response");
-      } else if (res.statusCode == 403 || res.statusCode == 401) {
-        return Faliure(code: 401, errorResponse: UN_AUTHORIZED);
       }
     } on SocketException catch (_) {
       return Faliure(code: NO_INTERNET, errorResponse: "No Internet");

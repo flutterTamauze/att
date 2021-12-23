@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -7,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -77,6 +79,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                     .user
                                     .userToken);
                       }
+                      print(widget.holidayType);
                     },
                     initiallyExpanded: widget.isAdmin,
                     trailing: Container(
@@ -158,9 +161,10 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                 ),
                                           Divider(),
                                           Text(
-                                            "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
+                                            "نوع الأجازة : ${getVacationType(widget.holidayType)} ",
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize:
+                                                  setResponsiveFontSize(14),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
@@ -175,7 +179,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                       textAlign:
                                                           TextAlign.right,
                                                       style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                14),
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -222,17 +228,22 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                                         null
                                                                 ? Container()
                                                                 : Container(
-                                                                    child: Text(
+                                                                    width:
+                                                                        230.w,
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "تعليق الأدمن : ${widget.adminComment}",
                                                                       textAlign:
                                                                           TextAlign
-                                                                              .right,
+                                                                              .justify,
                                                                       style:
                                                                           TextStyle(
                                                                         fontSize:
-                                                                            14,
+                                                                            setResponsiveFontSize(13),
                                                                         color: Colors
                                                                             .green,
+                                                                        height:
+                                                                            1.3,
                                                                         fontWeight:
                                                                             FontWeight.bold,
                                                                       ),
