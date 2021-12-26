@@ -36,10 +36,9 @@ class NetworkApi {
       DateTime postTime = DateTime.now();
       print(
           "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
-      if (res.statusCode == 200) {
-        print("not faliure");
-        return res.body;
-      }
+
+      print("not faliure");
+      return res.body;
     } on SocketException catch (_) {
       return Faliure(code: NO_INTERNET, errorResponse: "No Internet");
     } on TimeoutException catch (_) {

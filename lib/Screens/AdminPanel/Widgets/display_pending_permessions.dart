@@ -186,13 +186,16 @@ class _ExpandedPendingPermessionsState
                                 ),
                               ),
                       ),
-                      Positioned(
-                          bottom: 15.h,
-                          left: 10.w,
-                          child: FadeInVacPermFloatingButton(
-                              radioVal2: 0,
-                              comingFromAdminPanel: true,
-                              memberId: widget.userId))
+                      Provider.of<UserPermessionsData>(context)
+                              .permessionDetailLoading
+                          ? Container()
+                          : Positioned(
+                              bottom: 15.h,
+                              left: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 0,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
                     ],
                   )
                 ],

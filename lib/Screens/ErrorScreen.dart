@@ -140,7 +140,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
     } else {
       print('not null');
       await Provider.of<UserData>(context, listen: false)
-          .loginPost(userData[0], userData[1], context)
+          .loginPost(userData[0], userData[1], context, true)
           .catchError(((e) {
         print(e);
       })).then((value) {

@@ -66,7 +66,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     _today = DateTime.now();
     _tomorow = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-
+    Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
+    Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
     timeOutController.text = "";
     toPicked = (intToTimeOfDay(0));
     selectedDateString = null;

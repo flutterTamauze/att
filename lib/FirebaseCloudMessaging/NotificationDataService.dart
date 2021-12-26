@@ -204,7 +204,7 @@ class NotificationDataService with ChangeNotifier {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final List<String> userData = (prefs.getStringList('userData') ?? null);
         await Provider.of<UserData>(context, listen: false)
-            .loginPost(userData[0], userData[1], context)
+            .loginPost(userData[0], userData[1], context, true)
             .then((value) => print('login successs'));
       } else if (event.data["category"] == "reloadData") {
         print("recieved reloadData");
@@ -243,7 +243,7 @@ class NotificationDataService with ChangeNotifier {
 
   showAttendanceCheckDialog(BuildContext context) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentState.overlay.context,
       barrierDismissible: false,
       builder: (context) {
         return StackedNotificaitonAlert(

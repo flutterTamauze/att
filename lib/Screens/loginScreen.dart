@@ -275,8 +275,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = true;
       });
+
     await Provider.of<UserData>(context, listen: false)
-        .loginPost(_uniIdController.text, _passwordController.text, context)
+        .loginPost(
+            _uniIdController.text, _passwordController.text, context, false)
         .catchError(((e) {
       print(e);
     })).then((value) async {

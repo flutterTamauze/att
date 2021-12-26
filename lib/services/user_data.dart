@@ -95,8 +95,8 @@ class UserData with ChangeNotifier {
   //   return file.path;
   // }
 
-  Future<int> loginPost(
-      String username, String password, BuildContext context) async {
+  Future<int> loginPost(String username, String password, BuildContext context,
+      bool cacheLogin) async {
     if (await isConnectedToInternet("www.wikipedia.org")) {
       int userType;
       var decodedRes;
@@ -195,6 +195,7 @@ class UserData with ChangeNotifier {
           final List<String> notifyList =
               await prefs.getStringList('bgNotifyList');
           print("notifi status :$notifyList ");
+
           if (notifyList != null && notifyList.length != 0) {
             await db.insertNotification(
                 NotificationMessage(
@@ -206,7 +207,15 @@ class UserData with ChangeNotifier {
                     title: notifyList[3]),
                 context);
           }
-          await initializeNotification(context);
+          if (cacheLogin) {
+            await initializeNotification(context);
+          } else {
+            Provider.of<NotificationDataService>(context, listen: false)
+                .notification
+                .clear();
+            await db.clearNotifications();
+          }
+
           userType = user.userType;
           prefs.setStringList(('bgNotifyList'), []);
           if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {

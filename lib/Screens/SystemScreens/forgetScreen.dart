@@ -832,7 +832,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await Provider.of<UserData>(context, listen: false)
-        .loginPost(widget.userName, _passwordController.text, context)
+        .loginPost(widget.userName, _passwordController.text, context, true)
         .catchError(((e) {
       print(e);
     })).then((value) async {

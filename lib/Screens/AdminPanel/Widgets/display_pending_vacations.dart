@@ -189,13 +189,16 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                 ),
                               ),
                       ),
-                      Positioned(
-                          bottom: 15.h,
-                          left: 10.w,
-                          child: FadeInVacPermFloatingButton(
-                              radioVal2: 1,
-                              comingFromAdminPanel: true,
-                              memberId: widget.userId))
+                      Provider.of<UserHolidaysData>(context)
+                              .loadingHolidaysDetails
+                          ? Container()
+                          : Positioned(
+                              bottom: 15.h,
+                              left: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 1,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
                     ],
                   )
                 ],

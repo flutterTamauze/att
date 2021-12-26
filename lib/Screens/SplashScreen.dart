@@ -98,11 +98,7 @@ class _SplashScreenState extends State<SplashScreen>
     Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
 
     return Provider.of<UserData>(context, listen: false)
-        .loginPost(
-      userName,
-      password,
-      context,
-    )
+        .loginPost(userName, password, context, true)
         .catchError(((e) {
       print(e);
     }));
