@@ -1159,23 +1159,20 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 DateTime.now(),
                                                             date: DateTime.parse(
                                                                 _selectedDateString),
-                                                            duration:
-                                                                formattedTime,
+                                                            duration: formattedTime
+                                                                .replaceAll(
+                                                                    ":", ""),
                                                             permessionType:
-                                                                selectedPermession ==
-                                                                        "تأخير عن الحضور"
+                                                                selectedPermession == "تأخير عن الحضور"
                                                                     ? 1
                                                                     : 2,
                                                             permessionDescription:
-                                                                commentController
-                                                                            .text ==
-                                                                        ""
+                                                                commentController.text == ""
                                                                     ? "لا يوجد تعليق"
                                                                     : commentController
                                                                         .text,
-                                                            user:
-                                                                widget
-                                                                    .member.name),
+                                                            user: widget
+                                                                .member.name),
                                                         Provider.of<UserData>(
                                                                 context,
                                                                 listen: false)

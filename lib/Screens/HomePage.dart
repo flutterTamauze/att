@@ -109,6 +109,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () {
+                String finalDate = DateTime.now().day.toString() +
+                    DateTime.now().month.toString() +
+                    DateTime.now().year.toString();
+                print(finalDate);
+                print(".jpg");
                 // print(_startTime.hour);
               },
               child: Scaffold(

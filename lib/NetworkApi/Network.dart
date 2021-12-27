@@ -17,36 +17,29 @@ class NetworkApi {
       String endPoint, RequestType requestType, Map<String, String> headers,
       [body]) async {
     var res;
-    try {
-      DateTime preTime = DateTime.now();
-      switch (requestType) {
-        case RequestType.GET:
-          res = await _get(endPoint, headers);
-          break;
-        case RequestType.PUT:
-          res = await _put(endPoint, headers);
-          break;
-        case RequestType.DELETE:
-          res = await _delete(endPoint, headers);
-          break;
-        case RequestType.POST:
-          res = await _post(endPoint, headers, body: body);
-          break;
-      }
-      DateTime postTime = DateTime.now();
-      print(
-          "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-      print("not faliure");
-      return res.body;
-    } on SocketException catch (_) {
-      return Faliure(code: NO_INTERNET, errorResponse: "No Internet");
-    } on TimeoutException catch (_) {
-      return Faliure(
-          code: CONNECTION_TIMEOUT, errorResponse: "Connection timeout");
-    } catch (e) {
-      return Faliure(code: UNKNOWN_ERROR, errorResponse: "Unknown Error");
+    DateTime preTime = DateTime.now();
+    switch (requestType) {
+      case RequestType.GET:
+        res = await _get(endPoint, headers);
+        break;
+      case RequestType.PUT:
+        res = await _put(endPoint, headers);
+        break;
+      case RequestType.DELETE:
+        res = await _delete(endPoint, headers);
+        break;
+      case RequestType.POST:
+        res = await _post(endPoint, headers, body: body);
+        break;
     }
+    DateTime postTime = DateTime.now();
+    print(
+        "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
+
+    print("not faliure");
+
+    return res.body;
   }
 
   Future<http.Response> _get(endPoint, headers) async {

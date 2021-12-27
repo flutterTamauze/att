@@ -325,14 +325,14 @@ class _DataTableRowState extends State<DataTableRow> {
                                     if (widget.attendUnit.attendType == 1) {
                                       AttendDetails attendDetails =
                                           AttendDetails();
+                                      // ignore: cascade_invocations
                                       attendDetails.showAttendByCameraDetails(
-                                          context: context,
-                                          timeIn: widget.attendUnit.timeIn,
-                                          timeOut: widget.attendUnit.timeOut,
-                                          userAttendPictureURL: widget
-                                              .attendUnit.userAttendPictureURL,
-                                          userLeavePictureURL: widget
-                                              .attendUnit.userLeavePictureURL);
+                                        normalizedName:
+                                            widget.attendUnit.normalizedName,
+                                        context: context,
+                                        timeIn: widget.attendUnit.timeIn,
+                                        timeOut: widget.attendUnit.timeOut,
+                                      );
                                     } else {
                                       print("mob");
                                     }

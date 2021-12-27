@@ -6,15 +6,18 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AttendDetails {
-  showAttendByCameraDetails(
-      {BuildContext context,
-      String timeIn,
-      String timeOut,
-      String userAttendPictureURL,
-      String userLeavePictureURL}) {
+  showAttendByCameraDetails({
+    BuildContext context,
+    String timeIn,
+    String timeOut,
+    String normalizedName,
+  }) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
+          final String imageDate = DateTime.now().day.toString() +
+              DateTime.now().month.toString() +
+              DateTime.now().year.toString();
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
@@ -75,7 +78,8 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$imageUrl$userAttendPictureURL',
+                                                    '$imageUrl$normalizedName$imageDate' +
+                                                        "A.jpg",
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
                                                             context,
@@ -154,7 +158,8 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$imageUrl$userLeavePictureURL',
+                                                    '$imageUrl$normalizedName$imageDate' +
+                                                        "L.jpg", //L for leave
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
                                                             context,

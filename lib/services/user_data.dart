@@ -232,6 +232,7 @@ class UserData with ChangeNotifier {
 
           log("user type ${(user.userType)}");
           if (user.userType == 4 || user.userType == 3) {
+            print("getting super chart");
             await Provider.of<UserData>(context, listen: false)
                 .getSuperCompanyChart(user.userToken, companyId);
           }
