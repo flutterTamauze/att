@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
@@ -14,6 +15,7 @@ import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,8 +31,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
   Widget build(BuildContext context) {
     List<ReportTile> reports = [
       ReportTile(
-          title: "الحضور اليومى",
-          subTitle: "تقرير الحضور اليومى",
+          title: getTranslated(context, "الحضور اليومى"),
+          subTitle: getTranslated(context, "تقرير الحضور اليومى"),
           icon: Icons.calendar_today_rounded,
           onTap: () {
             Navigator.of(context).push(
@@ -42,8 +44,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
             print("الموظفين");
           }),
       ReportTile(
-          title: "التأخير و الغياب",
-          subTitle: "تقرير التأخير و الغياب",
+          title: getTranslated(context, "التأخير و الغياب"),
+          subTitle: getTranslated(context, "تقرير التأخير و الغياب"),
           icon: Icons.timer,
           onTap: () {
             Navigator.of(context).push(
@@ -53,8 +55,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
             );
           }),
       ReportTile(
-          title: "حضور مستخدم",
-          subTitle: "تقرير حضور للمستخدم",
+          title: getTranslated(context, "حضور مستخدم"),
+          subTitle: getTranslated(context, "تقرير حضور المستخدم"),
           icon: Icons.person,
           onTap: () {
             Navigator.of(context).push(
@@ -66,8 +68,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             );
           }),
       ReportTile(
-          title: "الأجازات و المأموريات",
-          subTitle: "تقرير الأجازات و المأموريات و الأذونات للمستخدم",
+          title: getTranslated(context, "الأجازات و المأموريات"),
+          subTitle:
+              getTranslated(context, "تقرير الأجازات و المأموريات و الأذونات"),
           icon: FontAwesomeIcons.calendarCheck,
           onTap: () async {
             Provider.of<UserHolidaysData>(context, listen: false)
@@ -108,7 +111,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                 repeat: false),
                           ),
                         ),
-                        "التقارير"),
+                        getTranslated(context, "التقارير")),
 
                     ///List OF SITES
                     Expanded(
@@ -148,8 +151,8 @@ class ReportTile extends StatelessWidget {
       elevation: 3,
       child: ListTile(
         trailing: Icon(
-          icon,
-          size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
+          Icons.chevron_right,
+          size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
           color: ColorManager.primary,
         ),
         onTap: onTap,
@@ -158,7 +161,6 @@ class ReportTile extends StatelessWidget {
           child: AutoSizeText(
             title,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         subtitle: Container(
@@ -166,12 +168,11 @@ class ReportTile extends StatelessWidget {
           child: AutoSizeText(
             subTitle,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         leading: Icon(
-          Icons.chevron_left,
-          size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
+          icon,
+          size: ScreenUtil().setSp(30, allowFontScalingSelf: true),
           color: ColorManager.primary,
         ),
       ),

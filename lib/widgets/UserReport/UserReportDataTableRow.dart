@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
 class UserDataTableRow extends StatelessWidget {
@@ -80,7 +81,7 @@ class UserDataTableRow extends StatelessWidget {
                             ? Container(
                                 height: 20,
                                 child: AutoSizeText(
-                                  "غياب",
+                                  getTranslated(context, "غياب"),
                                   maxLines: 1,
                                   style: TextStyle(
                                       fontSize: ScreenUtil().setSp(16,
@@ -135,7 +136,7 @@ class UserDataTableRow extends StatelessWidget {
                                 : Container(
                                     height: 20,
                                     child: AutoSizeText(
-                                      "غياب",
+                                      getTranslated(context, "غياب"),
                                       maxLines: 1,
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(16,

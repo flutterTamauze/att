@@ -326,7 +326,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
         final length = await image.length();
-        final uri = Uri.parse("$baseURL/api/AttendLogin");
+        final uri = Uri.parse("$localURL/api/AttendLogin");
 
         final request = new http.MultipartRequest("POST", uri);
         Map<String, String> headers = {

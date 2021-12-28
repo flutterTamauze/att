@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 
@@ -764,7 +765,9 @@ class _UserAttendanceReportScreenState
                                                                   height: 20,
                                                                   child:
                                                                       AutoSizeText(
-                                                                    "لا يوجد تسجيلات بهذا المستخدم",
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تسجيلات بهذا المستخدم"),
                                                                     maxLines: 1,
                                                                     style: TextStyle(
                                                                         color: Colors

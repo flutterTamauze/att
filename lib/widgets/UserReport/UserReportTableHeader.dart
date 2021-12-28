@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class UserReportTableHeader extends StatelessWidget {
   @override
@@ -21,7 +22,10 @@ class UserReportTableHeader extends StatelessWidget {
                   child: Container(
                 height: 20,
                 child: AutoSizeText(
-                  'التاريخ',
+                  getTranslated(
+                    context,
+                    "التاريخ",
+                  ),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -40,7 +44,7 @@ class UserReportTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      'التأخير',
+                      getTranslated(context, "التأخير"),
                       maxLines: 1,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -57,7 +61,7 @@ class UserReportTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      'حضور',
+                      getTranslated(context, "حضور"),
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -75,7 +79,7 @@ class UserReportTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      'انصراف',
+                      getTranslated(context, "انصراف"),
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -117,7 +121,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                               child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          'التأخير',
+                          getTranslated(context, "التأخير"),
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -134,7 +138,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                               child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          'حضور',
+                          getTranslated(context, "حضور"),
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(

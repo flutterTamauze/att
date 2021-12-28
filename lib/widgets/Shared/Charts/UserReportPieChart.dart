@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
 class UserReportPieChart extends StatefulWidget {
@@ -92,8 +93,8 @@ class UserReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.orange)),
-                  Text(
-                    "التأخير",
+                  AutoSizeText(
+                    getTranslated(context, "التأخير"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   )

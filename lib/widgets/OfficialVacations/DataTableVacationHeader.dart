@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class DataTableVacationHeader extends StatelessWidget {
   @override
@@ -32,7 +33,10 @@ class DataTableVacationHeader extends StatelessWidget {
                 padding: EdgeInsets.only(right: 10.w),
                 height: 20,
                 child: AutoSizeText(
-                  'التاريخ',
+                  getTranslated(
+                    context,
+                    "التاريخ",
+                  ),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,

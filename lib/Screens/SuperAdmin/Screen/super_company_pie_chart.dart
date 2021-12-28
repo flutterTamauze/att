@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -63,14 +64,12 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: AutoSizeText(
-                          "تمام شركة ${comData.com.nameAr}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: ScreenUtil().setSp(16)),
-                        )),
+                    AutoSizeText(
+                      "${getTranslated(context, "تمام شركة")} ${comData.com.nameAr}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: ScreenUtil().setSp(16)),
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -88,9 +87,6 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                              child: FadeInRight(child: SuperCompanyChart())),
-                          Expanded(child: Container()),
                           FadeInLeft(
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -103,6 +99,18 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                     padding: EdgeInsets.only(right: 5.w),
                                     child: Row(
                                       children: [
+                                        AutoSizeText(
+                                          getTranslated(
+                                              context, "عدد مستخدمين الشركة"),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                                  setResponsiveFontSize(14),
+                                              color: Colors.blueAccent),
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
                                         Container(
                                           width: 35.w,
                                           height: 25.h,
@@ -119,18 +127,6 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                             ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Container(),
-                                        ),
-                                        AutoSizeText(
-                                          "عدد مستخدمين الشركة",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize:
-                                                  setResponsiveFontSize(14),
-                                              color: Colors.blueAccent),
-                                          textAlign: TextAlign.right,
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -141,7 +137,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 Row(
                                   children: [
                                     SinglePieChartItem(
-                                      title: "الموجود",
+                                      title: getTranslated(context, "الموجود"),
                                       color: Colors.green[600],
                                       count: userData
                                           .superCompaniesChartModel.totalAttend
@@ -153,7 +149,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                   height: 5,
                                 ),
                                 SinglePieChartItem(
-                                  title: "الأجازة",
+                                  title: getTranslated(context, "الأجازة"),
                                   color: ColorManager.primary,
                                   count: userData
                                       .superCompaniesChartModel.totalHolidays
@@ -166,7 +162,8 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                   count: userData.superCompaniesChartModel
                                       .totalExternalMissions
                                       .toString(),
-                                  title: "المأموريات الخارجية",
+                                  title: getTranslated(
+                                      context, "المأموريات الخارجية"),
                                   color: Colors.purple[600],
                                 ),
                                 const SizedBox(
@@ -182,6 +179,9 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                               ],
                             ),
                           ),
+                          Expanded(child: Container()),
+                          Expanded(
+                              child: FadeInRight(child: SuperCompanyChart())),
                         ],
                       ),
                     ),

@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/AboutApp/AboutAppScreen.dart';
 import 'package:qr_users/Screens/AboutCompany/AboutCompany.dart';
 import 'package:qr_users/Screens/AboutUsScreen.dart';
@@ -97,7 +98,7 @@ class DrawerI extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => NormalUserMenu()));
                         },
-                        title: "حسابى",
+                        title: getTranslated(context, "حسابى"),
                         icon: Icons.person),
                     Divider(
                       height: 31.h,
@@ -120,7 +121,7 @@ class DrawerI extends StatelessWidget {
                                 builder: (context) => SuperAdminScreen(),
                               ));
                         },
-                        title: "شركاتى",
+                        title: getTranslated(context, "شركاتى"),
                         icon: FontAwesomeIcons.building,
                       ),
                       Divider(
@@ -142,7 +143,7 @@ class DrawerI extends StatelessWidget {
                                           builder: (context) => AdminPanel(),
                                         ));
                                   },
-                                  title: "لوحة التحكم",
+                                  title: getTranslated(context, "لوحة التحكم"),
                                   icon: Icons.admin_panel_settings),
                               Divider(
                                 height: 31.h,
@@ -165,7 +166,7 @@ class DrawerI extends StatelessWidget {
                                           CompanyProfileScreen()));
                                 },
                                 title:
-                                    "عن ${Provider.of<CompanyData>(context, listen: true).com.nameAr}",
+                                    "${getTranslated(context, "عن")} ${Provider.of<CompanyData>(context, listen: true).com.nameAr}",
                                 icon: Icons.apartment,
                               ),
                               Divider(
@@ -184,7 +185,7 @@ class DrawerI extends StatelessWidget {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ContactUsScreen()));
                       },
-                      title: "عن التطبيق",
+                      title: getTranslated(context, "عن التطبيق"),
                       icon: Icons.info_outlined,
                     ),
                     Divider(
@@ -202,7 +203,7 @@ class DrawerI extends StatelessWidget {
                                   userType: userType == 0 ? 0 : 1,
                                 )));
                       },
-                      title: "المعرض",
+                      title: getTranslated(context, "المعرض"),
                       icon: Icons.image,
                     ),
                     Divider(
@@ -218,7 +219,7 @@ class DrawerI extends StatelessWidget {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => AboutUsScreen()));
                       },
-                      title: "من نحن",
+                      title: getTranslated(context, "من نحن"),
                       icon: FontAwesomeIcons.globe,
                     ),
                     Divider(
@@ -276,11 +277,12 @@ class DrawerI extends StatelessWidget {
                                                 LoginScreen()),
                                         (Route<dynamic> route) => false);
                                   },
-                                  title: 'تسجيل خروج',
-                                  content: "هل تريد تسجيل الخروج ؟");
+                                  title: getTranslated(context, "تسجيل خروج"),
+                                  content: getTranslated(
+                                      context, "هل تريد تسجيل الخروج؟"));
                             });
                       },
-                      title: "تسجيل خروج",
+                      title: getTranslated(context, "تسجيل خروج"),
                       icon: Icons.logout,
                     ),
                   ],
@@ -320,36 +322,32 @@ class MenuItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Icon(
+                    icon,
+                    color: Colors.orange,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 20.w,
+                  ),
                   Expanded(
                     child: Container(
                       width: double.infinity,
                       child: SizedBox(
                         child: Padding(
                           padding: EdgeInsets.only(top: 5.h),
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: AutoSizeText(
-                              title,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: ScreenUtil()
-                                    .setSp(15, allowFontScalingSelf: true),
-                                color: Colors.white,
-                              ),
+                          child: AutoSizeText(
+                            title,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: ScreenUtil()
+                                  .setSp(15, allowFontScalingSelf: true),
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Icon(
-                    icon,
-                    color: Colors.orange,
-                    size: 30,
                   ),
                 ],
               ),

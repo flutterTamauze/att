@@ -18,25 +18,23 @@ class SinglePieChartItem extends StatelessWidget {
     return Container(
       width: 180.w,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Text(count),
-          Expanded(
-            child: Container(),
-          ),
           AutoSizeText(
             title,
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(14)),
-            textAlign: TextAlign.right,
+          ),
+          Expanded(
+            child: Container(),
+          ),
+          Text(count),
+          const SizedBox(
+            width: 5,
+          ),
+          Container(
+            width: 20.w,
+            height: 20.h,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
           ),
         ],
       ),

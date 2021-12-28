@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -155,11 +156,20 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 UserOrdersView(
-                                                    selectedOrder: widget
-                                                            .notificationTitle
-                                                            .contains("الأذن")
-                                                        ? "الأذونات"
-                                                        : "الأجازات"),
+                                              selectedOrder: widget
+                                                      .notificationTitle
+                                                      .contains("الأذن")
+                                                  ? getTranslated(
+                                                      context, "الأذونات")
+                                                  : getTranslated(
+                                                      context, "الأجازات"),
+                                              ordersList: [
+                                                getTranslated(
+                                                    context, "الأجازات"),
+                                                getTranslated(
+                                                    context, "الأذونات")
+                                              ],
+                                            ),
                                           ));
                                     } else {
                                       Navigator.pop(context);

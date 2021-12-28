@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
 class LateReportPieChart extends StatefulWidget {
@@ -93,7 +94,7 @@ class LateReportPieChartState extends State {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.orange)),
                   Text(
-                    " التأخير",
+                    getTranslated(context, "التأخير"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],

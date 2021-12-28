@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class SuperCompanyChart extends StatefulWidget {
@@ -24,7 +25,10 @@ class SuperCompanyChartState extends State {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: EdgeInsets.only(left: 70.w),
+                padding: Provider.of<PermissionHan>(context, listen: false)
+                        .isEnglishLocale()
+                    ? EdgeInsets.only(right: 70.w)
+                    : EdgeInsets.only(left: 70.w),
                 child: PieChart(
                   PieChartData(
                       pieTouchData: PieTouchData(touchCallback:

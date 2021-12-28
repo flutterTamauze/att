@@ -1,9 +1,11 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
@@ -129,147 +131,130 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                   nav: false,
                   goUserMenu: false,
                 ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SmallDirectoriesHeader(
-                          Lottie.asset("resources/shifts.json", repeat: false),
-                          "مناوباتى"),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SmallDirectoriesHeader(
+                        Lottie.asset("resources/shifts.json", repeat: false),
+                        getTranslated(context, "مناوباتى")),
+                  ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 ExpansionUserShiftTile(
-                  title: "مناوباتى الأساسية",
+                  title: getTranslated(context, "مناوباتى الأساسية"),
                   isShedcule: false,
                 ),
                 shiftDate == null
                     ? Container()
-                    : Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Card(
-                            elevation: 5,
-                            child: ExpansionTile(
-                              title: Row(
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.clock,
-                                    color: ColorManager.primary,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "مناوباتى المجدولة",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Card(
+                          elevation: 5,
+                          child: ExpansionTile(
+                            title: Row(
                               children: [
-                                SlideInUp(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text("من",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorManager.primary)),
-                                          Text(shiftDate.scheduleFromTime
-                                              .toString()
-                                              .substring(0, 11)),
-                                          Text(
-                                            "الى",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: ColorManager.primary),
-                                          ),
-                                          Text(shiftDate.scheduleToTime
-                                              .toString()
-                                              .substring(0, 11)),
-                                        ],
-                                      ),
-                                      Divider(),
-                                      FeatureScheduleShiftCard(
-                                          currentIndex: 0,
-                                          startTime:
-                                              shiftDate.satShift.startTime,
-                                          endTime: shiftDate.satShift.endTime,
-                                          shiftname:
-                                              shiftDate.satShift.shiftName,
-                                          sitename: shiftDate.satShift.siteName,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.sunShift.startTime,
-                                          endTime: shiftDate.sunShift.endTime,
-                                          currentIndex: 1,
-                                          shiftname:
-                                              shiftDate.sunShift.shiftName,
-                                          sitename: shiftDate.sunShift.siteName,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.monShift.startTime,
-                                          endTime: shiftDate.monShift.endTime,
-                                          currentIndex: 2,
-                                          shiftname:
-                                              shiftDate.monShift.shiftName,
-                                          sitename: shiftDate.monShift.siteName,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.tuesShift.startTime,
-                                          endTime: shiftDate.tuesShift.endTime,
-                                          currentIndex: 3,
-                                          shiftname:
-                                              shiftDate.tuesShift.shiftName,
-                                          sitename:
-                                              shiftDate.tuesShift.siteName,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.wednShift.startTime,
-                                          endTime: shiftDate.wednShift.endTime,
-                                          currentIndex: 4,
-                                          shiftname:
-                                              shiftDate.wednShift.shiftName,
-                                          sitename:
-                                              shiftDate.wednShift.siteName,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.thurShift.startTime,
-                                          endTime: shiftDate.thurShift.endTime,
-                                          shiftname:
-                                              shiftDate.thurShift.shiftName,
-                                          sitename:
-                                              shiftDate.thurShift.siteName,
-                                          currentIndex: 5,
-                                          shiftDate: shiftDate),
-                                      FeatureScheduleShiftCard(
-                                          startTime:
-                                              shiftDate.friShift.startTime,
-                                          endTime: shiftDate.friShift.endTime,
-                                          currentIndex: 6,
-                                          shiftname:
-                                              shiftDate.friShift.shiftName,
-                                          sitename: shiftDate.friShift.siteName,
-                                          shiftDate: shiftDate),
-                                    ],
-                                  ),
-                                )
+                                FaIcon(
+                                  FontAwesomeIcons.clock,
+                                  color: ColorManager.primary,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                AutoSizeText(
+                                  getTranslated(context, "مناوباتى المجدولة"),
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
                               ],
                             ),
+                            children: [
+                              SlideInUp(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        AutoSizeText(
+                                            getTranslated(context, "من"),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: ColorManager.primary)),
+                                        AutoSizeText(shiftDate.scheduleFromTime
+                                            .toString()
+                                            .substring(0, 11)),
+                                        AutoSizeText(
+                                          getTranslated(context, "إلى"),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorManager.primary),
+                                        ),
+                                        AutoSizeText(shiftDate.scheduleToTime
+                                            .toString()
+                                            .substring(0, 11)),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    FeatureScheduleShiftCard(
+                                        currentIndex: 0,
+                                        startTime: shiftDate.satShift.startTime,
+                                        endTime: shiftDate.satShift.endTime,
+                                        shiftname: shiftDate.satShift.shiftName,
+                                        sitename: shiftDate.satShift.siteName,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime: shiftDate.sunShift.startTime,
+                                        endTime: shiftDate.sunShift.endTime,
+                                        currentIndex: 1,
+                                        shiftname: shiftDate.sunShift.shiftName,
+                                        sitename: shiftDate.sunShift.siteName,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime: shiftDate.monShift.startTime,
+                                        endTime: shiftDate.monShift.endTime,
+                                        currentIndex: 2,
+                                        shiftname: shiftDate.monShift.shiftName,
+                                        sitename: shiftDate.monShift.siteName,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime:
+                                            shiftDate.tuesShift.startTime,
+                                        endTime: shiftDate.tuesShift.endTime,
+                                        currentIndex: 3,
+                                        shiftname:
+                                            shiftDate.tuesShift.shiftName,
+                                        sitename: shiftDate.tuesShift.siteName,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime:
+                                            shiftDate.wednShift.startTime,
+                                        endTime: shiftDate.wednShift.endTime,
+                                        currentIndex: 4,
+                                        shiftname:
+                                            shiftDate.wednShift.shiftName,
+                                        sitename: shiftDate.wednShift.siteName,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime:
+                                            shiftDate.thurShift.startTime,
+                                        endTime: shiftDate.thurShift.endTime,
+                                        shiftname:
+                                            shiftDate.thurShift.shiftName,
+                                        sitename: shiftDate.thurShift.siteName,
+                                        currentIndex: 5,
+                                        shiftDate: shiftDate),
+                                    FeatureScheduleShiftCard(
+                                        startTime: shiftDate.friShift.startTime,
+                                        endTime: shiftDate.friShift.endTime,
+                                        currentIndex: 6,
+                                        shiftname: shiftDate.friShift.shiftName,
+                                        sitename: shiftDate.friShift.siteName,
+                                        shiftDate: shiftDate),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       )
@@ -310,27 +295,27 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(weekDays[currentIndex],
+                      AutoSizeText(weekDays[currentIndex],
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              fontSize: setResponsiveFontSize(15),
                               color: ColorManager.primary)),
                       Container(
                         alignment: Alignment.center,
-                        child: Text(
+                        child: AutoSizeText(
                           sitename,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 13,
+                            fontSize: setResponsiveFontSize(13),
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Text(
+                      AutoSizeText(
                         shiftname,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 13,
+                          fontSize: setResponsiveFontSize(13),
                         ),
                       ),
                     ],
@@ -345,7 +330,7 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                           controller: TextEditingController(
                               text: amPmChanger(int.parse(startTime))),
                           icon: Icons.alarm,
-                          labelText: "من"),
+                          labelText: getTranslated(context, "من")),
                     ),
                     SizedBox(
                       width: 5.0.w,
@@ -356,7 +341,7 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                           controller: TextEditingController(
                               text: amPmChanger(int.parse(endTime))),
                           icon: Icons.alarm,
-                          labelText: "الى"),
+                          labelText: getTranslated(context, "إلى")),
                     ),
                   ],
                 ),
@@ -384,81 +369,78 @@ class ExpansionUserShiftTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SlideInUp(
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Card(
-            elevation: 5,
-            child: ExpansionTile(
-              title: Row(
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.clock,
-                    color: ColorManager.primary,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    title,
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Card(
+          elevation: 5,
+          child: ExpansionTile(
+            title: Row(
               children: [
-                Container(
-                    width: 300.w,
-                    child: Container(
-                      child: Column(
-                        children: [
-                          AdvancedShiftPicker(
-                            timeInController: _timeInController,
-                            timeOutController: _timeOutController,
-                            isShiftsScreen: false,
-                            weekDay: "السبت",
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الأحد",
-                            timeInController: _sunTimeInController,
-                            timeOutController: _sunTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الأتنين",
-                            timeInController: _monTimeInController,
-                            timeOutController: _monTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الثلاثاء",
-                            timeInController: _tuesTimeInController,
-                            timeOutController: _tuesTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الأربعاء",
-                            timeInController: _wedTimeInController,
-                            timeOutController: _wedTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الخميس",
-                            timeInController: _thuTimeInController,
-                            timeOutController: _thuTimeOutController,
-                          ),
-                          AdvancedShiftPicker(
-                            isShiftsScreen: false,
-                            weekDay: "الجمعة",
-                            timeInController: _friTimeInController,
-                            timeOutController: _friTimeOutController,
-                          ),
-                        ],
-                      ),
-                    ))
+                FaIcon(
+                  FontAwesomeIcons.clock,
+                  color: ColorManager.primary,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ],
             ),
+            children: [
+              Container(
+                  width: 300.w,
+                  child: Container(
+                    child: Column(
+                      children: [
+                        AdvancedShiftPicker(
+                          timeInController: _timeInController,
+                          timeOutController: _timeOutController,
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "السبت"),
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الأحد"),
+                          timeInController: _sunTimeInController,
+                          timeOutController: _sunTimeOutController,
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الأثنين"),
+                          timeInController: _monTimeInController,
+                          timeOutController: _monTimeOutController,
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الثلاثاء"),
+                          timeInController: _tuesTimeInController,
+                          timeOutController: _tuesTimeOutController,
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الأربعاء"),
+                          timeInController: _wedTimeInController,
+                          timeOutController: _wedTimeOutController,
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الخميس"),
+                          timeInController: _thuTimeInController,
+                          timeOutController: _thuTimeOutController,
+                        ),
+                        AdvancedShiftPicker(
+                          isShiftsScreen: false,
+                          weekDay: getTranslated(context, "الجمعة"),
+                          timeInController: _friTimeInController,
+                          timeOutController: _friTimeOutController,
+                        ),
+                      ],
+                    ),
+                  ))
+            ],
           ),
         ),
       ),

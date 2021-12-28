@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
+import 'package:qr_users/services/permissions_data.dart';
 
 import 'DataTableEndRowInfo.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +17,8 @@ class UserReprotDataTableEnd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isEnglishLocale =
+        Provider.of<PermissionHan>(context, listen: false).isEnglishLocale();
     return Column(
       children: [
         Divider(
@@ -37,16 +42,22 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       children: [
                         Container(
                             child: DataTableEndRowInfo(
-                          infoTitle: 'ايام الغياب:',
+                          infoTitle: isEnglishLocale
+                              ? ' ${getTranslated(context, 'ايام الغياب')}'
+                              : '${getTranslated(context, 'ايام الغياب')} : ',
                           info: _attendanceReport.totalAbsentDay.toString(),
                         )),
                         DataTableEndRowInfo(
-                          infoTitle: 'مدة التأخير:',
+                          infoTitle: isEnglishLocale
+                              ? '${getTranslated(context, 'مدة التأخير')}'
+                              : '${getTranslated(context, 'مدة التأخير')} :',
                           info: _attendanceReport.totalLateDuration,
                         ),
                         DataTableEndRowInfo(
                             info: _attendanceReport.totalLateDay.toString(),
-                            infoTitle: "ايام التأخير:"),
+                            infoTitle: isEnglishLocale
+                                ? '${getTranslated(context, 'ايام التأخير')}'
+                                : '${getTranslated(context, 'ايام التأخير')} :'),
                       ],
                     ),
                   ),
@@ -57,17 +68,17 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       DataTableEndRowInfo(
                         info: _attendanceReport.totalDeductionAbsent
                             .toStringAsFixed(1),
-                        infoTitle: 'خصم الغياب:',
+                        infoTitle: '${getTranslated(context, 'خصم التأخير')}',
                       ),
                       DataTableEndRowInfo(
-                        info: _attendanceReport.totalLateDeduction
-                            .toStringAsFixed(1),
-                        infoTitle: ' خصم التأخير:',
-                      ),
+                          info: _attendanceReport.totalLateDeduction
+                              .toStringAsFixed(1),
+                          infoTitle:
+                              '${getTranslated(context, 'خصم التأخير')}'),
                       DataTableEndRowInfo(
                         info:
                             _attendanceReport.totalDeduction.toStringAsFixed(1),
-                        infoTitle: ' إجمالى الخصومات:',
+                        infoTitle: '${getTranslated(context, 'خصم التأخير')}',
                       )
                     ],
                   ),

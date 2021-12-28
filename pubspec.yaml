@@ -85,6 +85,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter    
 flutter_icons:
   android: "launcher_icon"
   ios: true
@@ -106,6 +108,8 @@ flutter:
     - resources/
     - assets/
     - resources/fonts/
+    - lib/Core/lang/ar.json
+    - lib/Core/lang/en.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -119,6 +123,13 @@ flutter:
   fonts:
     - family: Almarai-Regular
       fonts:
+        - asset: resources/fonts/Almarai-Bold.ttf
+          weight: 700
+        - asset: resources/fonts/Almarai-ExtraBold.ttf
+          weight: 900
         - asset: resources/fonts/Almarai-Regular.ttf
+          weight: 400
+        - asset: resources/fonts/Almarai-Light.ttf
+          weight: 300
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

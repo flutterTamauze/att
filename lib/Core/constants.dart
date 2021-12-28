@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'dart:ui' as ui;
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 //http://192.168.0.119:8010
@@ -182,36 +183,32 @@ class DetialsTextField extends StatelessWidget {
     return Form(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Directionality(
-          textDirection: ui.TextDirection.rtl,
-          child: TextFormField(
-            validator: (value) {
-              if (value.length == 0) {
-                return "test";
-              }
-              return null;
-            },
-            controller: commentController,
-            cursorColor: Colors.orange,
-            maxLines: null,
-            decoration: InputDecoration(
-              errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(width: 2, color: Colors.orange),
-              ),
-              disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 4)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.grey, width: 0)),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.grey, width: 0)),
-              hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-              hintText: "قم بأدخال التفاصيل هنا",
+        child: TextFormField(
+          validator: (value) {
+            if (value.length == 0) {
+              return "test";
+            }
+            return null;
+          },
+          controller: commentController,
+          cursorColor: Colors.orange,
+          maxLines: null,
+          decoration: InputDecoration(
+            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Colors.orange),
             ),
-            textAlign: TextAlign.right,
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 4)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey, width: 0)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey, width: 0)),
+            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            hintText: getTranslated(context, "قم بأدخال التفاصيل هنا"),
           ),
         ),
       ),

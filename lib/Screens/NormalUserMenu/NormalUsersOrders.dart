@@ -1,8 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -21,12 +24,12 @@ import 'NormalUserVacationRequest.dart';
 // ignore: must_be_immutable
 class UserOrdersView extends StatefulWidget {
   String selectedOrder;
-  UserOrdersView({@required this.selectedOrder});
+  List<String> ordersList;
+  UserOrdersView({@required this.selectedOrder, @required this.ordersList});
   @override
   _UserOrdersViewState createState() => _UserOrdersViewState();
 }
 
-List<String> ordersList = ["الأذونات", "الأجازات"];
 Future userPermessions;
 Future userHolidays;
 var isExpanded = false;
@@ -75,7 +78,14 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UserVacationRequest(
-                        widget.selectedOrder == "الأجازات" ? 1 : 3),
+                        widget.selectedOrder == "الأجازات" ? 1 : 3, [
+                      getTranslated(context, "تأخير عن الحضور"),
+                      getTranslated(context, "انصراف مبكر")
+                    ], [
+                      getTranslated(context, "عارضة"),
+                      getTranslated(context, "مرضية"),
+                      getTranslated(context, "رصيد اجازات")
+                    ]),
                   ));
             },
             tooltip:
@@ -100,16 +110,13 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                     : true,
                 goUserHomeFromMenu: false,
               ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SmallDirectoriesHeader(
-                        Lottie.asset("resources/orders.json", repeat: false),
-                        "طلباتى"),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SmallDirectoriesHeader(
+                      Lottie.asset("resources/orders.json", repeat: false),
+                      getTranslated(context, "طلباتى")),
+                ],
               ),
               Divider(),
               Container(
@@ -118,74 +125,61 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.topRight,
-                              padding: EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 1)),
-                              width: 150.w,
-                              height: 40.h,
-                              child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                elevation: 2,
-                                isExpanded: true,
-                                items: ordersList.map((String x) {
-                                  return DropdownMenuItem<String>(
-                                      value: x,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          x,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ));
-                                }).toList(),
-                                onChanged: (value) {
-                                  if (value == "الأذونات") {
-                                    var userProvider = Provider.of<UserData>(
-                                        context,
-                                        listen: false);
-                                    if (Provider.of<UserPermessionsData>(
-                                            context,
-                                            listen: false)
-                                        .singleUserPermessions
-                                        .isEmpty) {
-                                      userPermessions =
-                                          Provider.of<UserPermessionsData>(
-                                                  context,
-                                                  listen: false)
-                                              .getFutureSinglePermession(
-                                                  userProvider.user.id,
-                                                  userProvider.user.userToken);
-                                    }
-                                  }
-                                  setState(() {
-                                    widget.selectedOrder = value;
-                                  });
-                                },
-                                value: widget.selectedOrder,
-                              )),
-                            ),
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1)),
+                          width: 150.w,
+                          height: 40.h,
+                          child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                            elevation: 2,
+                            isExpanded: true,
+                            items: widget.ordersList.map((String x) {
+                              return DropdownMenuItem<String>(
+                                  value: x,
+                                  child: AutoSizeText(
+                                    x,
+                                    style: TextStyle(
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.w500),
+                                  ));
+                            }).toList(),
+                            onChanged: (value) {
+                              if (value == getTranslated(context, "الأذونات")) {
+                                var userProvider = Provider.of<UserData>(
+                                    context,
+                                    listen: false);
+                                if (Provider.of<UserPermessionsData>(context,
+                                        listen: false)
+                                    .singleUserPermessions
+                                    .isEmpty) {
+                                  userPermessions =
+                                      Provider.of<UserPermessionsData>(context,
+                                              listen: false)
+                                          .getFutureSinglePermession(
+                                              userProvider.user.id,
+                                              userProvider.user.userToken);
+                                }
+                              }
+                              setState(() {
+                                widget.selectedOrder = value;
+                              });
+                            },
+                            value: widget.selectedOrder,
+                          )),
                         ),
                       ),
-                      Text(
-                        "عرض طلبات",
+                      AutoSizeText(
+                        getTranslated(context, "عرض طلبات"),
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: setResponsiveFontSize(17),
                           fontWeight: FontWeight.w600,
                         ),
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.start,
                       ),
                     ],
                   ),
@@ -194,42 +188,39 @@ class _UserOrdersViewState extends State<UserOrdersView> {
               Divider(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: TextField(
-                    onChanged: (value) {
-                      print(value);
+                child: TextField(
+                  onChanged: (value) {
+                    print(value);
 
-                      setState(() {
-                        if (widget.selectedOrder == "الأجازات") {
-                          List<UserHolidays> order = provList
-                              .where((element) =>
-                                  element.holidayNumber.toString() ==
-                                  orderNumberController.text)
-                              .toList();
-                          filteredOrderData = order;
-                        } else {
-                          List<UserPermessions> permessions = permessionsList
-                              .where((element) =>
-                                  element.permessionId.toString() ==
-                                  orderNumberController.text)
-                              .toList();
-                          filteredPermessions = permessions;
-                        }
-                      });
-                    },
-                    controller: orderNumberController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'البحث برقم الطلب',
-                        focusColor: Colors.orange,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange[600]))),
-                  ),
+                    setState(() {
+                      if (widget.selectedOrder == "الأجازات") {
+                        List<UserHolidays> order = provList
+                            .where((element) =>
+                                element.holidayNumber.toString() ==
+                                orderNumberController.text)
+                            .toList();
+                        filteredOrderData = order;
+                      } else {
+                        List<UserPermessions> permessions = permessionsList
+                            .where((element) =>
+                                element.permessionId.toString() ==
+                                orderNumberController.text)
+                            .toList();
+                        filteredPermessions = permessions;
+                      }
+                    });
+                  },
+                  controller: orderNumberController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: getTranslated(context, "البحث برقم الطلب"),
+                      focusColor: Colors.orange,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.orange[600]))),
                 ),
               ),
-              widget.selectedOrder == "الأجازات"
+              widget.selectedOrder == getTranslated(context, "الأجازات")
                   ? FutureBuilder(
                       future: userHolidays,
                       builder: (context, snapshot) {
@@ -251,7 +242,8 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               : filteredOrderData == null ||
                                       filteredOrderData.isEmpty
                                   ? Center(
-                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                      child: AutoSizeText(getTranslated(
+                                          context, "لا يوجد طلب بهذا الرقم")),
                                     )
                                   : ExpandedOrderTile(
                                       isAdmin: false,
@@ -306,7 +298,8 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               : filteredPermessions == null ||
                                       filteredPermessions.isEmpty
                                   ? Center(
-                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                      child: AutoSizeText(getTranslated(
+                                          context, "لا يوجد طلب بهذا الرقم")),
                                     )
                                   : UserPermessionListView(
                                       permessionsList: filteredPermessions,

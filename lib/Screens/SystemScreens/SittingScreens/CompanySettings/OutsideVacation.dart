@@ -41,7 +41,10 @@ import 'dart:ui' as ui;
 class OutsideVacation extends StatefulWidget {
   final Member member;
   int radioValue;
-  OutsideVacation(this.member, this.radioValue);
+  final List<String> permessionTitles;
+  final List<String> holidayTitles;
+  OutsideVacation(
+      this.member, this.radioValue, this.permessionTitles, this.holidayTitles);
   @override
   _OutsideVacationState createState() => _OutsideVacationState();
 }
@@ -375,7 +378,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       child: DropdownButton(
                                                 elevation: 2,
                                                 isExpanded: true,
-                                                items: actions.map((String x) {
+                                                items: widget.holidayTitles
+                                                    .map((String x) {
                                                   return DropdownMenuItem<
                                                           String>(
                                                       value: x,
@@ -867,10 +871,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                     DropdownButton(
                                                           elevation: 2,
                                                           isExpanded: true,
-                                                          items:
-                                                              permessionTitles
-                                                                  .map((String
-                                                                      x) {
+                                                          items: widget
+                                                              .permessionTitles
+                                                              .map((String x) {
                                                             return DropdownMenuItem<
                                                                     String>(
                                                                 value: x,
@@ -1159,23 +1162,20 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 DateTime.now(),
                                                             date: DateTime.parse(
                                                                 _selectedDateString),
-                                                            duration:
-                                                                formattedTime,
+                                                            duration: formattedTime
+                                                                .replaceAll(
+                                                                    ":", ""),
                                                             permessionType:
-                                                                selectedPermession ==
-                                                                        "تأخير عن الحضور"
+                                                                selectedPermession == "تأخير عن الحضور"
                                                                     ? 1
                                                                     : 2,
                                                             permessionDescription:
-                                                                commentController
-                                                                            .text ==
-                                                                        ""
+                                                                commentController.text == ""
                                                                     ? "لا يوجد تعليق"
                                                                     : commentController
                                                                         .text,
-                                                            user:
-                                                                widget
-                                                                    .member.name),
+                                                            user: widget
+                                                                .member.name),
                                                         Provider.of<UserData>(
                                                                 context,
                                                                 listen: false)
@@ -1521,20 +1521,19 @@ class VacationCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Card(
-        elevation: 5,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Text(
-                header,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-              ),
-            ],
-          ),
+    return Card(
+      elevation: 5,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: [
+            AutoSizeText(
+              header,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: setResponsiveFontSize(13)),
+            ),
+          ],
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_users/Core/constants.dart';
 
 class SuperAdminTile extends StatelessWidget {
   final String title;
@@ -20,26 +21,25 @@ class SuperAdminTile extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                Icons.chevron_left,
-                size: ScreenUtil().setSp(35, allowFontScalingSelf: true),
-                color: Colors.orange,
-              ),
-              Expanded(
-                child: Container(),
-              ),
               Container(
                 height: 40,
                 alignment: Alignment.center,
                 child: AutoSizeText(
                   title,
                   maxLines: 3,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                      fontSize: setResponsiveFontSize(16),
+                      fontWeight: FontWeight.w700),
                 ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Icon(
+                Icons.chevron_right,
+                size: ScreenUtil().setSp(35, allowFontScalingSelf: true),
+                color: Colors.orange,
               ),
             ],
           ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class DataTableHeader extends StatelessWidget {
   @override
@@ -42,7 +43,7 @@ class DataTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20.h,
                     child: AutoSizeText(
-                      'التأخير',
+                      getTranslated(context, "التأخير"),
                       maxLines: 1,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -59,7 +60,7 @@ class DataTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      'ايام التأخير',
+                      getTranslated(context, "التأخير"),
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -77,7 +78,7 @@ class DataTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      'ايام الغياب',
+                      getTranslated(context, 'ايام الغياب'),
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(

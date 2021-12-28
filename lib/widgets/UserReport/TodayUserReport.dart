@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,8 +42,8 @@ class TodayUserReport extends StatelessWidget {
                               apiStatus == "fail"
                                   ? Expanded(
                                       child: CenterMessageText(
-                                          message:
-                                              "لا يوجد بيانات لهذا المستخدم اليوم"),
+                                          message: getTranslated(context,
+                                              "لا يوجد بيانات لهذا المستخدم اليوم")),
                                     )
                                   : SingleUserReportTableHeader(
                                       lateTime: value.todayUserReport.lateTime

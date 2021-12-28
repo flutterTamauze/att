@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
@@ -43,8 +44,8 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
   Widget build(BuildContext context) {
     List<ReportTile> reports = [
       ReportTile(
-          title: "تقرير اليوم",
-          subTitle: "تقرير الحضور / الأنصراف عن اليوم ",
+          title: getTranslated(context, "تقرير اليوم"),
+          subTitle: getTranslated(context, "تقرير الحضور / الأنصراف عن اليوم"),
           icon: Icons.calendar_today_rounded,
           onTap: () async {
             final reportData = Provider.of<ReportsData>(context, listen: false);
@@ -69,8 +70,8 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
             );
           }),
       ReportTile(
-          title: "تقرير عن فترة",
-          subTitle: "تقرير الحضور / الأنصراف عن فترة ",
+          title: getTranslated(context, "تقرير عن فترة"),
+          subTitle: getTranslated(context, "تقرير الحضور / الأنصراف عن فترة"),
           icon: Icons.calendar_today_rounded,
           onTap: () {
             Navigator.of(context).push(
@@ -80,19 +81,26 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
             );
           }),
       ReportTile(
-          title: "الطلبات",
-          subTitle: "طلب اذن/ اجازة",
+          title: getTranslated(context, "تقرير الحضور / الأنصراف عن فترة"),
+          subTitle: getTranslated(context, "طلب اذن / اجازة"),
           icon: Icons.person,
           onTap: () {
             Navigator.of(context).push(
               new MaterialPageRoute(
-                builder: (context) => UserVacationRequest(1),
+                builder: (context) => UserVacationRequest(1, [
+                  getTranslated(context, "تأخير عن الحضور"),
+                  getTranslated(context, "انصراف مبكر")
+                ], [
+                  getTranslated(context, "عارضة"),
+                  getTranslated(context, "مرضية"),
+                  getTranslated(context, "رصيد اجازات")
+                ]),
               ),
             );
           }),
       ReportTile(
-          title: " طلباتى ",
-          subTitle: "متابعة حالة الطلبات ",
+          title: getTranslated(context, "طلباتى"),
+          subTitle: getTranslated(context, "متابعة حالة الطلبات"),
           icon: FontAwesomeIcons.clipboardList,
           onTap: () {
             Provider.of<UserHolidaysData>(context, listen: false)
@@ -104,14 +112,18 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
             Navigator.of(context).push(
               new MaterialPageRoute(
                 builder: (context) => UserOrdersView(
-                  selectedOrder: "الأجازات",
+                  selectedOrder: getTranslated(context, "الأجازات"),
+                  ordersList: [
+                    getTranslated(context, "الأجازات"),
+                    getTranslated(context, "الأذونات")
+                  ],
                 ),
               ),
             );
           }),
       ReportTile(
-          title: "مناوباتى",
-          subTitle: "عرض مناوبات الأسبوع",
+          title: getTranslated(context, "مناوباتى"),
+          subTitle: getTranslated(context, "عرض مناوبات الأسبوع"),
           icon: FontAwesomeIcons.clock,
           onTap: () async {
             var user = Provider.of<UserData>(context, listen: false).user;
@@ -168,7 +180,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                                 repeat: false),
                           ),
                         ),
-                        "حسابى"),
+                        getTranslated(context, "حسابى")),
                     SizedBox(
                       height: 20,
                     ),

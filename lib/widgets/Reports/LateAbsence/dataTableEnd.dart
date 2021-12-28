@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class DataTableEnd extends StatelessWidget {
   final lateRatio;
@@ -31,7 +32,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20.h,
                       child: AutoSizeText(
-                        'التأخير:',
+                        '${getTranslated(context, "التأخير")}:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

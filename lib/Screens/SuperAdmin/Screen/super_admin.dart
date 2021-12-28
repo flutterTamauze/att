@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/NetworkApi/Network.dart';
 import 'package:qr_users/NetworkApi/NetworkFaliure.dart';
 
@@ -73,7 +74,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                 repeat: false),
                           ),
                         ),
-                        "شركاتى"),
+                        getTranslated(context, "شركاتى")),
                     const SizedBox(
                       height: 20,
                     ),

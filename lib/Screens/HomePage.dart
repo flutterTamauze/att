@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
@@ -43,6 +46,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           Provider.of<NotificationDataService>(context, listen: false);
       notificationProv.firebaseMessagingConfig(context);
     }
+
     //Check for updates
     DownloadService downloadService = DownloadService();
     downloadService.checkReleaseDate(showApk, context);
@@ -68,7 +72,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   Provider.of<CompanyData>(context, listen: false).com.id,
                   userDataProvider.user.userToken)
               .then((value) {
-            log(value.toString());
             if (value == true) {
               showDialog(
                 barrierDismissible: false,
@@ -108,9 +111,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () {
-                // print(_startTime.hour);
-              },
+              onTap: () {},
               child: Scaffold(
                 endDrawer: NotificationItem(),
                 backgroundColor: Colors.white,
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           ),
                                         );
                                       },
-                                      title: "سجل الأن",
+                                      title: getTranslated(context, "سجل الأن"),
                                     ),
                                   ),
                             SizedBox(

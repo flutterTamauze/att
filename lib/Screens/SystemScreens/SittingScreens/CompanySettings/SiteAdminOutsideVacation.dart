@@ -34,7 +34,10 @@ import 'dart:ui' as ui;
 class SiteAdminOutsideVacation extends StatefulWidget {
   final Member member;
   int radioValue;
-  SiteAdminOutsideVacation(this.member, this.radioValue);
+  final List<String> permessionTitles;
+  final List<String> holidayTitles;
+  SiteAdminOutsideVacation(
+      this.member, this.radioValue, this.permessionTitles, this.holidayTitles);
   @override
   _SiteAdminOutsideVacationState createState() =>
       _SiteAdminOutsideVacationState();
@@ -330,7 +333,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       child: DropdownButton(
                                                 elevation: 2,
                                                 isExpanded: true,
-                                                items: actions.map((String x) {
+                                                items: widget.holidayTitles
+                                                    .map((String x) {
                                                   return DropdownMenuItem<
                                                           String>(
                                                       value: x,
@@ -578,7 +582,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                 DropdownButton(
                                                       elevation: 2,
                                                       isExpanded: true,
-                                                      items: permessionTitles
+                                                      items: widget
+                                                          .permessionTitles
                                                           .map((String x) {
                                                         return DropdownMenuItem<
                                                                 String>(
@@ -856,23 +861,22 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             DateTime.now(),
                                                         date: DateTime.parse(
                                                             _selectedDateString),
-                                                        duration: formattedTime,
+                                                        duration: formattedTime
+                                                            .replaceAll(
+                                                                ":", ""),
                                                         permessionType:
                                                             selectedPermession ==
                                                                     "تأخير عن الحضور"
                                                                 ? 1
                                                                 : 2,
                                                         permessionDescription:
-                                                            commentController
-                                                                        .text ==
-                                                                    ""
+                                                            commentController.text == ""
                                                                 ? "لا يوجد تعليق"
                                                                 : commentController
                                                                     .text,
                                                         user:
                                                             widget.member.name),
-                                                    Provider.of<UserData>(
-                                                            context,
+                                                    Provider.of<UserData>(context,
                                                             listen: false)
                                                         .user
                                                         .userToken,

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUser.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/AddVacationScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
@@ -216,7 +217,7 @@ class MultipleFloatingButtons extends StatelessWidget {
                         builder: (context) => NormalUserMenu(),
                       ));
                 },
-                label: 'حسابى',
+                label: getTranslated(context, "حسابى"),
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
@@ -322,7 +323,7 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
                         builder: (context) => NormalUserMenu(),
                       ));
                 },
-                label: 'حسابى',
+                label: getTranslated(context, "حسابى"),
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,

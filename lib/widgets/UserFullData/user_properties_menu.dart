@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/SiteAdminOutsideVacation.dart';
@@ -51,11 +52,24 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                         function: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      userDataProvider.userType != 2
-                                          ? OutsideVacation(widget.user, 3)
-                                          : SiteAdminOutsideVacation(
-                                              widget.user, 3)),
+                                  builder: (context) => userDataProvider
+                                              .userType !=
+                                          2
+                                      ? OutsideVacation(widget.user, 3, [
+                                          getTranslated(
+                                              context, "تأخير عن الحضور"),
+                                          getTranslated(context, "انصراف مبكر")
+                                        ], [])
+                                      : SiteAdminOutsideVacation(
+                                          widget.user, 3, [
+                                          getTranslated(
+                                              context, "تأخير عن الحضور"),
+                                          getTranslated(context, "انصراف مبكر")
+                                        ], [
+                                          getTranslated(context, "عارضة"),
+                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "رصيد اجازات")
+                                        ])),
                             )),
                     Divider(),
                     AssignTaskToUser(
@@ -64,11 +78,28 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                         function: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      userDataProvider.userType != 2
-                                          ? OutsideVacation(widget.user, 1)
-                                          : SiteAdminOutsideVacation(
-                                              widget.user, 1)),
+                                  builder: (context) => userDataProvider
+                                              .userType !=
+                                          2
+                                      ? OutsideVacation(widget.user, 1, [
+                                          getTranslated(
+                                              context, "تأخير عن الحضور"),
+                                          getTranslated(context, "انصراف مبكر")
+                                        ], [
+                                          getTranslated(context, "عارضة"),
+                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "رصيد اجازات")
+                                        ])
+                                      : SiteAdminOutsideVacation(
+                                          widget.user, 1, [
+                                          getTranslated(
+                                              context, "تأخير عن الحضور"),
+                                          getTranslated(context, "انصراف مبكر")
+                                        ], [
+                                          getTranslated(context, "عارضة"),
+                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "رصيد اجازات")
+                                        ])),
                             )),
                     Divider(),
                     if (userDataProvider.userType != 2) ...[
@@ -79,7 +110,15 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        OutsideVacation(widget.user, 2)),
+                                        OutsideVacation(widget.user, 2, [
+                                          getTranslated(
+                                              context, "تأخير عن الحضور"),
+                                          getTranslated(context, "انصراف مبكر"),
+                                        ], [
+                                          getTranslated(context, "عارضة"),
+                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "رصيد اجازات")
+                                        ])),
                               )),
                       Divider(),
                       AssignTaskToUser(

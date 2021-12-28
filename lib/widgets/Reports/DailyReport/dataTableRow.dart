@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -211,7 +212,7 @@ class _DataTableRowState extends State<DataTableRow> {
                                   child: widget.attendUnit.timeIn == "-"
                                       ? Container(
                                           child: AutoSizeText(
-                                            "غياب",
+                                            getTranslated(context, "غياب"),
                                             maxLines: 1,
                                             style: TextStyle(
                                                 fontSize: ScreenUtil().setSp(14,

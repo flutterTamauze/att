@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'dart:ui' as ui;
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -278,7 +279,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                         Container(
                                           height: 100.h,
                                           child: AutoSizeText(
-                                            "برجاء التواجد بالموقع المخصص لك\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
+                                            "${getTranslated(context, "برجاء التواجد بموقع العمل")}\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
                                             textAlign: TextAlign.center,
                                             maxLines: 4,
                                             style: TextStyle(
@@ -321,7 +322,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                     Container(
                                       height: 100.h,
                                       child: AutoSizeText(
-                                        "برجاء التواجد بالموقع المخصص لك\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
+                                        "${getTranslated(context, "برجاء التواجد بموقع العمل")}\n${Provider.of<ShiftApi>(context, listen: true).siteName}",
                                         textAlign: TextAlign.center,
                                         maxLines: 4,
                                         style: TextStyle(

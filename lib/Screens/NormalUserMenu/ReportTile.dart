@@ -16,7 +16,7 @@ class ReportTile extends StatelessWidget {
       elevation: 3,
       child: ListTile(
         trailing: Icon(
-          icon,
+          Icons.chevron_right,
           size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
           color: Colors.orange,
         ),
@@ -26,7 +26,6 @@ class ReportTile extends StatelessWidget {
           child: AutoSizeText(
             title,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         subtitle: Container(
@@ -34,11 +33,10 @@ class ReportTile extends StatelessWidget {
           child: AutoSizeText(
             subTitle,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         leading: Icon(
-          Icons.chevron_left,
+          icon,
           size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
           color: Colors.orange,
         ),

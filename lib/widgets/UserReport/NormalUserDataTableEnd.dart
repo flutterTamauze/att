@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class NormalUserDataTableEnd extends StatelessWidget {
   final absentsDays;
@@ -32,7 +33,7 @@ class NormalUserDataTableEnd extends StatelessWidget {
                   Container(
                     height: 20,
                     child: AutoSizeText(
-                      'ايام الغياب:',
+                      '${getTranslated(context, 'ايام الغياب')}:',
                       maxLines: 1,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class NormalUserDataTableEnd extends StatelessWidget {
                   Container(
                     height: 20,
                     child: AutoSizeText(
-                      'مدة التأخير:',
+                      '${getTranslated(context, 'مدة التأخير')} :',
                       maxLines: 1,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,

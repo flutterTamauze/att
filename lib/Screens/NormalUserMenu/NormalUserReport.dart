@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -128,7 +129,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
                               SmallDirectoriesHeader(
                                 Lottie.asset("resources/report.json",
                                     repeat: false),
-                                "تقرير الحضور ",
+                                getTranslated(context, "تقرير الحضور"),
                               ),
                             ],
                           ),
@@ -358,7 +359,9 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                             20,
                                                                         child:
                                                                             AutoSizeText(
-                                                                          "لا يوجد تسجيلات بهذا المستخدم",
+                                                                          getTranslated(
+                                                                              context,
+                                                                              "لا يوجد تسجيلات بهذا المستخدم"),
                                                                           maxLines:
                                                                               1,
                                                                           style: TextStyle(

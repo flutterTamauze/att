@@ -12,6 +12,7 @@ class PrData {
 
 class PermissionHan with ChangeNotifier {
   bool showHome = true;
+  Locale locale = Locale("en_US");
   bool showQr = true;
   bool attendProovTriggered = false;
   bool showNotification = false;
@@ -38,6 +39,19 @@ class PermissionHan with ChangeNotifier {
 
   setDialogonStreambool(bool data) {
     currentDialogOnstream = data;
+  }
+
+  setLocale(Locale newLocale) {
+    locale = newLocale;
+    notifyListeners();
+  }
+
+  bool isEnglishLocale() {
+    if (locale.toString() == "en_US") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   triggerAttendProof() {

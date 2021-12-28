@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/SiteAdminOutsideVacation.dart';
@@ -131,14 +132,21 @@ class _UserPropertiesState extends State<UserProperties> {
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    SiteAdminOutsideVacation(widget.user, 3),
+                                builder: (context) => SiteAdminOutsideVacation(
+                                    widget.user, 3, [
+                                  getTranslated(context, "تأخير عن الحضور"),
+                                  getTranslated(context, "انصراف مبكر")
+                                ], []),
                               ))
                           : Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      OutsideVacation(widget.user, 2)),
+                                  builder: (context) => OutsideVacation(
+                                          widget.user, 2, [
+                                        getTranslated(
+                                            context, "تأخير عن الحضور"),
+                                        getTranslated(context, "انصراف مبكر")
+                                      ], [])),
                             )),
                   Divider(),
                   userDataProvider.userType == 4

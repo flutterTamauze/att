@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -1254,202 +1255,199 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 50.h,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.weekDay,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 50.h,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: AutoSizeText(
+                  widget.weekDay,
+                  style: TextStyle(
+                      fontSize: setResponsiveFontSize(14),
+                      fontWeight: FontWeight.bold),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                      child: Theme(
-                    data: clockTheme,
-                    child: Builder(
-                      builder: (context) {
-                        return InkWell(
-                            onTap: () async {
-                              var from;
-                              if (widget.isShiftsScreen) {
-                                from = await showTimePicker(
-                                  context: context,
-                                  initialTime: widget.fromPickedWeek,
-                                  builder:
-                                      (BuildContext context, Widget child) {
-                                    return MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: false),
-                                      child: child,
-                                    );
-                                  },
-                                );
-                                MaterialLocalizations localizations =
-                                    MaterialLocalizations.of(context);
-                                String formattedTime =
-                                    localizations.formatTimeOfDay(from,
-                                        alwaysUse24HourFormat: false);
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                    child: Theme(
+                  data: clockTheme,
+                  child: Builder(
+                    builder: (context) {
+                      return InkWell(
+                          onTap: () async {
+                            var from;
+                            if (widget.isShiftsScreen) {
+                              from = await showTimePicker(
+                                context: context,
+                                initialTime: widget.fromPickedWeek,
+                                builder: (BuildContext context, Widget child) {
+                                  return MediaQuery(
+                                    data: MediaQuery.of(context)
+                                        .copyWith(alwaysUse24HourFormat: false),
+                                    child: child,
+                                  );
+                                },
+                              );
+                              MaterialLocalizations localizations =
+                                  MaterialLocalizations.of(context);
+                              String formattedTime =
+                                  localizations.formatTimeOfDay(from,
+                                      alwaysUse24HourFormat: false);
 
-                                if (from != null) {
-                                  print(from);
-                                  widget.fromPickedWeek = from;
-                                  widget.callBackfunFrom(from);
-                                  setState(() {
-                                    if (Platform.isIOS) {
-                                      widget.timeInController.text =
-                                          formattedTime;
-                                    } else {
-                                      widget.timeInController.text =
-                                          "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
-                                    }
-                                  });
-                                }
+                              if (from != null) {
+                                print(from);
+                                widget.fromPickedWeek = from;
+                                widget.callBackfunFrom(from);
+                                setState(() {
+                                  if (Platform.isIOS) {
+                                    widget.timeInController.text =
+                                        formattedTime;
+                                  } else {
+                                    widget.timeInController.text =
+                                        "${widget.fromPickedWeek.format(context).replaceAll(" ", "")}";
+                                  }
+                                });
                               }
-                            },
-                            child: Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: Container(
-                                child: IgnorePointer(
-                                  child: TextFormField(
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                    textInputAction: TextInputAction.next,
-                                    controller: widget.timeInController,
-                                    decoration:
-                                        kTextFieldDecorationFromTO.copyWith(
-                                            hintText: 'من',
-                                            prefixIcon: Icon(
-                                              Icons.alarm,
-                                              color: Colors.orange,
-                                            )),
-                                  ),
+                            }
+                          },
+                          child: Directionality(
+                            textDirection: ui.TextDirection.rtl,
+                            child: Container(
+                              child: IgnorePointer(
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      fontSize: setResponsiveFontSize(14),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                  textInputAction: TextInputAction.next,
+                                  controller: widget.timeInController,
+                                  decoration:
+                                      kTextFieldDecorationFromTO.copyWith(
+                                          hintText: 'من',
+                                          prefixIcon: Icon(
+                                            Icons.alarm,
+                                            color: Colors.orange,
+                                          )),
                                 ),
-                              ),
-                            ));
-                      },
-                    ),
-                  )),
-                ),
-                SizedBox(
-                  width: 5.w,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                      child: Theme(
-                    data: clockTheme,
-                    child: Builder(
-                      builder: (context) {
-                        return InkWell(
-                            onTap: () async {
-                              var to;
-
-                              if (widget.isShiftsScreen) {
-                                to = await showTimePicker(
-                                  context: context,
-                                  initialTime: widget.toPickedWeek,
-                                  builder:
-                                      (BuildContext context, Widget child) {
-                                    return MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: false),
-                                      child: child,
-                                    );
-                                  },
-                                );
-                                MaterialLocalizations localizations =
-                                    MaterialLocalizations.of(context);
-                                String formattedTime2 =
-                                    localizations.formatTimeOfDay(to,
-                                        alwaysUse24HourFormat: false);
-                                if (to != null) {
-                                  widget.toPickedWeek = to;
-                                  widget.callBackfunTo(to);
-                                  setState(() {
-                                    if (Platform.isIOS) {
-                                      widget.timeOutController.text =
-                                          formattedTime2;
-                                    } else {
-                                      widget.timeOutController.text =
-                                          "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
-                                    }
-                                  });
-                                }
-                              }
-                            },
-                            child: Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: Container(
-                                child: IgnorePointer(
-                                  child: TextFormField(
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                    textInputAction: TextInputAction.next,
-                                    controller: widget.timeOutController,
-                                    decoration:
-                                        kTextFieldDecorationFromTO.copyWith(
-                                            hintText: 'الى',
-                                            prefixIcon: Icon(
-                                              Icons.alarm,
-                                              color: Colors.orange,
-                                            )),
-                                  ),
-                                ),
-                              ),
-                            ));
-                      },
-                    ),
-                  )),
-                ),
-              ],
-            ),
-          ),
-          widget.isShiftsScreen
-              ? widget.fromPickedWeek == intToTimeOfDay(0) &&
-                      widget.toPickedWeek == intToTimeOfDay(0)
-                  ? Container()
-                  : !compareShiftTime(
-                          widget.fromPickedWeek, widget.toPickedWeek)
-                      ? Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                "يجب ان لا تقل المدة عن 4 ساعات",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w600),
                               ),
                             ),
+                          ));
+                    },
+                  ),
+                )),
+              ),
+              SizedBox(
+                width: 5.w,
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                    child: Theme(
+                  data: clockTheme,
+                  child: Builder(
+                    builder: (context) {
+                      return InkWell(
+                          onTap: () async {
+                            var to;
+
+                            if (widget.isShiftsScreen) {
+                              to = await showTimePicker(
+                                context: context,
+                                initialTime: widget.toPickedWeek,
+                                builder: (BuildContext context, Widget child) {
+                                  return MediaQuery(
+                                    data: MediaQuery.of(context)
+                                        .copyWith(alwaysUse24HourFormat: false),
+                                    child: child,
+                                  );
+                                },
+                              );
+                              MaterialLocalizations localizations =
+                                  MaterialLocalizations.of(context);
+                              String formattedTime2 =
+                                  localizations.formatTimeOfDay(to,
+                                      alwaysUse24HourFormat: false);
+                              if (to != null) {
+                                widget.toPickedWeek = to;
+                                widget.callBackfunTo(to);
+                                setState(() {
+                                  if (Platform.isIOS) {
+                                    widget.timeOutController.text =
+                                        formattedTime2;
+                                  } else {
+                                    widget.timeOutController.text =
+                                        "${widget.toPickedWeek.format(context).replaceAll(" ", "")}";
+                                  }
+                                });
+                              }
+                            }
+                          },
+                          child: Directionality(
+                            textDirection: ui.TextDirection.rtl,
+                            child: Container(
+                              child: IgnorePointer(
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: setResponsiveFontSize(14),
+                                      fontWeight: FontWeight.w500),
+                                  textInputAction: TextInputAction.next,
+                                  controller: widget.timeOutController,
+                                  decoration:
+                                      kTextFieldDecorationFromTO.copyWith(
+                                          hintText: 'الى',
+                                          prefixIcon: Icon(
+                                            Icons.alarm,
+                                            color: Colors.orange,
+                                          )),
+                                ),
+                              ),
+                            ),
+                          ));
+                    },
+                  ),
+                )),
+              ),
+            ],
+          ),
+        ),
+        widget.isShiftsScreen
+            ? widget.fromPickedWeek == intToTimeOfDay(0) &&
+                    widget.toPickedWeek == intToTimeOfDay(0)
+                ? Container()
+                : !compareShiftTime(widget.fromPickedWeek, widget.toPickedWeek)
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              "يجب ان لا تقل المدة عن 4 ساعات",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
-                        )
-                      : Container()
-              : Container(),
-          SizedBox(
-            height: 2,
-          ),
-          Divider(
-            thickness: 1,
-          ),
-          SizedBox(
-            height: 2,
-          ),
-        ],
-      ),
+                        ),
+                      )
+                    : Container()
+            : Container(),
+        SizedBox(
+          height: 2,
+        ),
+        Divider(
+          thickness: 1,
+        ),
+        SizedBox(
+          height: 2,
+        ),
+      ],
     );
   }
 }

@@ -21,6 +21,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'Core/lang/Localization/localization.dart';
 import 'Core/themeManager.dart';
 import 'FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/VacationData.dart';
@@ -32,6 +33,7 @@ import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'enums/connectivity_status.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final GlobalKey alertKey =
     GlobalKey<NavigatorState>(debugLabel: 'AppNavigator');
@@ -109,7 +111,7 @@ huaweiHandler() async {
   HuaweiServices _huawei = HuaweiServices();
   if (await _huawei.isHuaweiDevice()) {
     await hawawi.Push.turnOnPush();
-    bool backgroundMessageHandler =
+    final bool backgroundMessageHandler =
         await hawawi.Push.registerBackgroundMessageHandler(
             backgroundMessageCallback);
     print("backgroundMessageHandler registered: $backgroundMessageHandler");
@@ -117,6 +119,12 @@ huaweiHandler() async {
 }
 
 class MyApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    // ignore: cascade_invocations
+    state.setLocale(newLocale);
+  }
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -129,6 +137,13 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid) huaweiHandler();
 
     super.initState();
+  }
+
+  Locale _locale;
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
   }
 
   @override
@@ -189,6 +204,24 @@ class _MyAppState extends State<MyApp> {
                   ConnectivityService().connectionStatusController.stream,
               builder: (context, snapshot) {
                 return MaterialApp(
+                    locale: _locale,
+                    localizationsDelegates: [
+                      DemoLocalization.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    supportedLocales: [Locale('en', 'US'), Locale('ar', 'SA')],
+                    localeResolutionCallback: (locale, supportedLocales) {
+                      for (var supportedLocale in supportedLocales) {
+                        if (supportedLocale.languageCode ==
+                                locale.languageCode &&
+                            supportedLocale.countryCode == locale.countryCode) {
+                          return supportedLocale;
+                        }
+                      }
+                      return supportedLocales.first;
+                    },
                     navigatorKey: navigatorKey,
                     title: "Chilango",
                     debugShowCheckedModeBanner: false,
