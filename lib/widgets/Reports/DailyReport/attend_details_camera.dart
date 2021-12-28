@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,14 +11,16 @@ class AttendDetails {
     BuildContext context,
     String timeIn,
     String timeOut,
+    DateTime todayDate,
     String normalizedName,
   }) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          final String imageDate = DateTime.now().day.toString() +
-              DateTime.now().month.toString() +
-              DateTime.now().year.toString();
+          final DateTime dateTime = todayDate;
+          final DateFormat imageDate = DateFormat('yy/MM/dd');
+
+          // print(outputFormat.format(dateTime).replaceAll("/", ""));
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
@@ -78,7 +81,7 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$imageUrl$normalizedName$imageDate' +
+                                                    '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
                                                         "A.jpg",
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
@@ -158,7 +161,7 @@ class AttendDetails {
                                                       BorderRadius.circular(
                                                           75.0),
                                                   child: Image.network(
-                                                    '$imageUrl$normalizedName$imageDate' +
+                                                    '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
                                                         "L.jpg", //L for leave
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
