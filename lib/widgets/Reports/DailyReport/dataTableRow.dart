@@ -23,7 +23,8 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 class DataTableRow extends StatefulWidget {
   final DailyReportUnit attendUnit;
   final int siteId;
-  DataTableRow(this.attendUnit, this.siteId);
+  final DateTime todayDate;
+  DataTableRow(this.attendUnit, this.siteId, this.todayDate);
 
   @override
   _DataTableRowState createState() => _DataTableRowState();
@@ -34,8 +35,9 @@ class _DataTableRowState extends State<DataTableRow> {
   var now = DateTime.now();
   getMembersData() async {
     print("inside");
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    final UserData userProvider = Provider.of<UserData>(context, listen: false);
+    final CompanyData comProvider =
+        Provider.of<CompanyData>(context, listen: false);
     var siteId;
     if (userProvider.user.userType == 2) {
       siteId = userProvider.user.userSiteId;
@@ -326,14 +328,15 @@ class _DataTableRowState extends State<DataTableRow> {
                                     if (widget.attendUnit.attendType == 1) {
                                       AttendDetails attendDetails =
                                           AttendDetails();
+                                      // ignore: cascade_invocations
                                       attendDetails.showAttendByCameraDetails(
-                                          context: context,
-                                          timeIn: widget.attendUnit.timeIn,
-                                          timeOut: widget.attendUnit.timeOut,
-                                          userAttendPictureURL: widget
-                                              .attendUnit.userAttendPictureURL,
-                                          userLeavePictureURL: widget
-                                              .attendUnit.userLeavePictureURL);
+                                        todayDate: widget.todayDate,
+                                        normalizedName:
+                                            widget.attendUnit.normalizedName,
+                                        context: context,
+                                        timeIn: widget.attendUnit.timeIn,
+                                        timeOut: widget.attendUnit.timeOut,
+                                      );
                                     } else {
                                       print("mob");
                                     }

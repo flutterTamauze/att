@@ -14,7 +14,7 @@ import 'package:qr_users/services/user_data.dart';
 
 class DailyReportUnit {
   String userId;
-  String userName;
+  String userName, normalizedName;
   String timeIn;
   String timeOut;
   String timeInIcon;
@@ -27,6 +27,7 @@ class DailyReportUnit {
   DailyReportUnit(
       {this.userId,
       this.userName,
+      this.normalizedName,
       this.timeIn,
       this.timeOut,
       this.lateTime,
@@ -102,14 +103,14 @@ class DailyReportUnit {
 
     return DailyReportUnit(
       userName: json['name'],
-      userId: json['id'],
+      userId: json['id'], normalizedName: json["userName"],
       timeIn: amPmChanger(json['attendTime']),
       timeInIcon: amOrPm(json['attendTime']),
       timeOut: amPmChanger(json['leavingTime']),
       timeOutIcon: amOrPm(json['leavingTime']),
       lateTime: getTimeToString(json['late'] as int),
       attendType: (json['userAttendType']),
-      userAttendPictureURL: json['userAttendPicture'] ?? "",
+      // userAttendPictureURL: json['userAttendPicture'] ?? "",
       userLeavePictureURL: json['userLeavePicture'] ?? "",
     );
   }

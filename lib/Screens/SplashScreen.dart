@@ -142,7 +142,8 @@ class _SplashScreenState extends State<SplashScreen>
             if (value == -4 ||
                 value == USER_INVALID_RESPONSE ||
                 value == UNKNOWN_ERROR ||
-                value == -3) {
+                value == -3 ||
+                value == null) {
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
