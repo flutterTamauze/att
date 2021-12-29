@@ -83,7 +83,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-    yesterday = DateTime(now.year, DateTime.december, 30);
+    yesterday = DateTime(now.year + 2, DateTime.december, 31);
 
     super.initState();
   }

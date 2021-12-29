@@ -115,7 +115,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
     fromDate = now;
     _selectedDateString = now.toString();
-    yesterday = DateTime(now.year, DateTime.december, 30);
+    yesterday = DateTime(now.year + 2, DateTime.december, 31);
     _today = now;
 
     super.initState();
@@ -961,7 +961,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           firstDate: _today,
                                                           lastDate: DateTime(
                                                               DateTime.now()
-                                                                  .year,
+                                                                      .year +
+                                                                  2,
                                                               DateTime.december,
                                                               31),
                                                           //controller: _endTimeController,
