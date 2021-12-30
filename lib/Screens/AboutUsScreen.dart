@@ -134,9 +134,7 @@ class AboutUsScreen extends StatelessWidget {
                                             //       color: Colors.orange,
                                             //       fontSize: 18,
                                             //     )),
-                                            SizedBox(
-                                              height: 5.h,
-                                            ),
+
                                             MyListTile(
                                               title: 'المقر الرئيسى',
                                               icon: Icons.location_on,
@@ -156,15 +154,7 @@ class AboutUsScreen extends StatelessWidget {
                                             SizedBox(
                                               height: 10.0.h,
                                             ),
-                                            MyListTile(
-                                              title: 'رقم التليفون',
-                                              icon: Icons.phone,
 
-                                              // link: 'tel:+0223521011',
-                                            ),
-                                            SizedBox(
-                                              height: 10.0.h,
-                                            ),
                                             MyListTile(
                                               title: 'البريد الإلكترونى',
                                               icon: Icons.email,
@@ -177,6 +167,9 @@ class AboutUsScreen extends StatelessWidget {
                                               title: "الموقع الإلكترونى",
                                               icon: FontAwesomeIcons.globe,
                                               link: 'https://tamauzeds.com/',
+                                            ),
+                                            SizedBox(
+                                              height: 10.0.h,
                                             ),
                                             MyListTile(
                                               title: "اعمالنا على المتجر",
@@ -198,7 +191,7 @@ class AboutUsScreen extends StatelessWidget {
                                             children: [
                                               CircletTile(
                                                 link:
-                                                    'https://www.facebook.com/TDS-103104271938358',
+                                                    'https://www.facebook.com/Tamauze-Digital-Solutions-102590002279383/?ref=pages_you_manage',
                                                 icon: Typicons.social_facebook,
                                               ),
                                               CircletTile(

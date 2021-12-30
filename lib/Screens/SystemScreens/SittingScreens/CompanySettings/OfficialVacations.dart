@@ -71,7 +71,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
 
     var now = DateTime.now();
     Provider.of<VacationData>(context, listen: false).isLoading = false;
-    toDate = DateTime(now.year, DateTime.december, 30);
+    toDate = DateTime(now.year, DateTime.december, 31);
     fromDate = DateTime(toDate.year, DateTime.january, 1);
 
     yesterday = DateTime(now.year, now.month, now.day - 1);

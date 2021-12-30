@@ -152,13 +152,18 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                SinglePieChartItem(
-                                  title: "الأجازة",
-                                  color: ColorManager.primary,
-                                  count: userData
-                                      .superCompaniesChartModel.totalHolidays
-                                      .toString(),
-                                ),
+                                if (!userData
+                                        .superCompaniesChartModel.isHoliday &&
+                                    !userData.superCompaniesChartModel
+                                        .isOfficialVac) ...[
+                                  SinglePieChartItem(
+                                    title: "الأجازة",
+                                    color: ColorManager.primary,
+                                    count: userData
+                                        .superCompaniesChartModel.totalHolidays
+                                        .toString(),
+                                  ),
+                                ],
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -223,6 +228,28 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                     //     ),
                     //   ),
                     // ),
+                    SizedBox(
+                      height: 60.h,
+                    ),
+                    userData.superCompaniesChartModel.isOfficialVac
+                        ? Container(
+                            child: AutoSizeText(
+                              "عطلة رسمية",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: setResponsiveFontSize(16)),
+                            ),
+                          )
+                        : userData.superCompaniesChartModel.isHoliday
+                            ? Container(
+                                child: AutoSizeText(
+                                  "عطلة اسبوعية",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: setResponsiveFontSize(16)),
+                                ),
+                              )
+                            : Container(),
                     Spacer(),
                     InkWell(
                       onTap: () {

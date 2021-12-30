@@ -58,67 +58,121 @@ class SuperCompanyChartState extends State {
   List<PieChartSectionData> showingSections(BuildContext context) {
     var ratio =
         Provider.of<UserData>(context, listen: false).superCompaniesChartModel;
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: Colors.orange,
-            value: double.parse(ratio.totalHolidaysRatio.toString()),
-            title: double.parse(ratio.totalHolidaysRatio.toString())
-                    .toStringAsFixed(0) +
-                " %",
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: Colors.red[600],
-            value: double.parse(ratio.totalAbsentRatio.toString()),
-            title: double.parse(ratio.totalAbsentRatio.toString())
-                    .toStringAsFixed(0) +
-                " %",
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
+    return (!ratio.isHoliday && !ratio.isOfficialVac)
+        ? List.generate(4, (i) {
+            final isTouched = i == touchedIndex;
+            final fontSize = isTouched ? 25.0 : 16.0;
+            final radius = isTouched ? 60.0 : 50.0;
+            switch (i) {
+              case 0:
+                return PieChartSectionData(
+                  color: Colors.orange,
+                  value: double.parse(ratio.totalHolidaysRatio.toString()),
+                  title: double.parse(ratio.totalHolidaysRatio.toString())
+                          .toStringAsFixed(0) +
+                      " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+              case 1:
+                return PieChartSectionData(
+                  color: Colors.red[600],
+                  value: double.parse(ratio.totalAbsentRatio.toString()),
+                  title: double.parse(ratio.totalAbsentRatio.toString())
+                          .toStringAsFixed(0) +
+                      " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
 
-        case 2:
-          return PieChartSectionData(
-            color: Colors.green[600],
-            value: double.parse(ratio.totalAttendRatio.toString()),
-            title: double.parse(ratio.totalAttendRatio.toString())
-                    .toStringAsFixed(0) +
-                " %",
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: Colors.purple[600],
-            value: double.parse(ratio.totalExternalMissionRatio.toString()),
-            title: double.parse(ratio.totalExternalMissionRatio.toString())
-                    .toStringAsFixed(0) +
-                " %",
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        default:
-          throw Error();
-      }
-    });
+              case 2:
+                return PieChartSectionData(
+                  color: Colors.green[600],
+                  value: double.parse(ratio.totalAttendRatio.toString()),
+                  title: double.parse(ratio.totalAttendRatio.toString())
+                          .toStringAsFixed(0) +
+                      " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+              case 3:
+                return PieChartSectionData(
+                  color: Colors.purple[600],
+                  value:
+                      double.parse(ratio.totalExternalMissionRatio.toString()),
+                  title:
+                      double.parse(ratio.totalExternalMissionRatio.toString())
+                              .toStringAsFixed(0) +
+                          " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+              default:
+                throw Error();
+            }
+          })
+        : List.generate(3, (i) {
+            final isTouched = i == touchedIndex;
+            final fontSize = isTouched ? 25.0 : 16.0;
+            final radius = isTouched ? 60.0 : 50.0;
+            switch (i) {
+              case 0:
+                return PieChartSectionData(
+                  color: Colors.red[600],
+                  value: double.parse(ratio.totalAbsentRatio.toString()),
+                  title: double.parse(ratio.totalAbsentRatio.toString())
+                          .toStringAsFixed(0) +
+                      " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+
+              case 1:
+                return PieChartSectionData(
+                  color: Colors.green[600],
+                  value: double.parse(ratio.totalAttendRatio.toString()),
+                  title: double.parse(ratio.totalAttendRatio.toString())
+                          .toStringAsFixed(0) +
+                      " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+              case 2:
+                return PieChartSectionData(
+                  color: Colors.purple[600],
+                  value:
+                      double.parse(ratio.totalExternalMissionRatio.toString()),
+                  title:
+                      double.parse(ratio.totalExternalMissionRatio.toString())
+                              .toStringAsFixed(0) +
+                          " %",
+                  radius: radius,
+                  titleStyle: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xffffffff)),
+                );
+              default:
+                throw Error();
+            }
+          });
   }
 }

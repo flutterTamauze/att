@@ -72,7 +72,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     }
     userProvider = Provider.of<UserData>(context, listen: false);
     _picked = null;
-    lastDatee = DateTime(DateTime.now().year, DateTime.december, 30);
+    lastDatee = DateTime(DateTime.now().year + 2, DateTime.december, 31);
 
     Provider.of<ShiftsData>(context, listen: false).isLoading = false;
 

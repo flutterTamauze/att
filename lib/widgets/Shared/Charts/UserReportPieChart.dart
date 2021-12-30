@@ -27,12 +27,15 @@ class UserReportPieChartState extends State {
               aspectRatio: 1,
               child: Column(
                 children: [
-                  AutoSizeText(
-                    "تحليل بيانات الموظف",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil().setSp(16),
-                        color: Colors.orange[600]),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: AutoSizeText(
+                      "تحليل بيانات الموظف",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(16),
+                          color: Colors.orange[600]),
+                    ),
                   ),
                   Expanded(
                     flex: 1,

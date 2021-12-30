@@ -430,7 +430,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       "Success : Holiday Created!") {
                                                     Fluttertoast.showToast(
                                                             msg:
-                                                                "تم وضع الأجازة بنجاح",
+                                                                "تم إضافة الأجازة بنجاح",
                                                             gravity:
                                                                 ToastGravity
                                                                     .CENTER,
@@ -879,7 +879,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 if (msg == "success") {
                                                   Fluttertoast.showToast(
                                                           msg:
-                                                              "تم وضع الأذن بنجاح",
+                                                              "تم إضافة الأذن بنجاح",
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
