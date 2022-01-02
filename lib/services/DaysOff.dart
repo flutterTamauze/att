@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -125,25 +126,25 @@ class DaysOffData with ChangeNotifier {
           var decodedRes = json.decode(response.body);
           if (decodedRes["message"] == "Success") {
             weak[0].isDayOff = decodedRes["data"]["saturDay"] as bool;
-            weak[0].dayName = "السبت";
+            weak[0].dayName = getTranslated(context, "السبت");
 
             weak[1].isDayOff = decodedRes["data"]["sunDay"] as bool;
-            weak[1].dayName = "الاحد";
+            weak[1].dayName = getTranslated(context, "الأحد");
 
             weak[2].isDayOff = decodedRes["data"]["monDay"] as bool;
-            weak[2].dayName = "الاثنين";
+            weak[2].dayName = getTranslated(context, "الأثنين");
 
             weak[3].isDayOff = decodedRes["data"]["tuesDay"] as bool;
-            weak[3].dayName = "الثلاثاء";
+            weak[3].dayName = getTranslated(context, "الثلاثاء");
 
             weak[4].isDayOff = decodedRes["data"]["wendseDay"] as bool;
-            weak[4].dayName = "الاربعاء";
+            weak[4].dayName = getTranslated(context, "الأربعاء");
 
             weak[5].isDayOff = decodedRes["data"]["thurseDay"] as bool;
-            weak[5].dayName = "الخميس";
+            weak[5].dayName = getTranslated(context, "الخميس");
 
             weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
-            weak[6].dayName = "الجمعة";
+            weak[6].dayName = getTranslated(context, "الجمعة");
             reallocateUsers = [...weak];
 
             notifyListeners();
@@ -194,25 +195,25 @@ class DaysOffData with ChangeNotifier {
 
           if (decodedRes["message"] == "Success : Update Successfully") {
             weak[0].isDayOff = decodedRes["data"]["saturDay"];
-            weak[0].dayName = "السبت";
+            weak[0].dayName = getTranslated(context, "السبت");
 
             weak[1].isDayOff = decodedRes["data"]["sunDay"];
-            weak[1].dayName = "الاحد";
+            weak[1].dayName = getTranslated(context, "الأحد");
 
             weak[2].isDayOff = decodedRes["data"]["monDay"];
-            weak[2].dayName = "الاثنين";
+            weak[2].dayName = getTranslated(context, "الأثنين");
 
             weak[3].isDayOff = decodedRes["data"]["tuesDay"];
-            weak[3].dayName = "الثلاثاء";
+            weak[3].dayName = getTranslated(context, "الثلاثاء");
 
             weak[4].isDayOff = decodedRes["data"]["wendseDay"];
-            weak[4].dayName = "الاربعاء";
+            weak[4].dayName = getTranslated(context, "الأربعاء");
 
             weak[5].isDayOff = decodedRes["data"]["thurseDay"];
-            weak[5].dayName = "الخميس";
+            weak[5].dayName = getTranslated(context, "الخميس");
 
             weak[6].isDayOff = decodedRes["data"]["friDay"];
-            weak[6].dayName = "الجمعة";
+            weak[6].dayName = getTranslated(context, "الجمعة");
             reallocateUsers = [...weak];
             notifyListeners();
             return "Success";

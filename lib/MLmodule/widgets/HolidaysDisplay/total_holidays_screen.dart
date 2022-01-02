@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -46,8 +48,8 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                 ),
           Container(
               child: widget._nameController.text == ""
-                  ? Text(
-                      "برجاء اختيار اسم المستخدم",
+                  ? AutoSizeText(
+                      getTranslated(context, "برجاء اختيار اسم مستخدم"),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: ColorManager.primary,

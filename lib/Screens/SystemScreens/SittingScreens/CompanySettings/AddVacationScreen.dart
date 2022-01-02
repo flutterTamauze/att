@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/VacationData.dart';
@@ -75,8 +76,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    var userProvider = Provider.of<UserData>(context);
-    var companyProvider = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context);
+    final companyProvider = Provider.of<CompanyData>(context, listen: false);
     return Scaffold(
       endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
@@ -102,13 +103,12 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: SmallDirectoriesHeader(
-                                  Lottie.asset("resources/shiftLottie.json",
-                                      repeat: false),
-                                  !widget.edit ? "إضافة عطلة" : "تعديل عطلة"),
-                            ),
+                            SmallDirectoriesHeader(
+                                Lottie.asset("resources/shiftLottie.json",
+                                    repeat: false),
+                                !widget.edit
+                                    ? getTranslated(context, "إضافة عطلة")
+                                    : getTranslated(context, "تعديل عطلة")),
                             Divider(),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.0.w),
@@ -124,123 +124,118 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                           ? Container()
                                           : Expanded(
                                               flex: 1,
-                                              child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  child: TextFormField(
-                                                    controller:
-                                                        _textEditingController,
-                                                    validator: (text) {
-                                                      if (text == null ||
-                                                          text.isEmpty) {
-                                                        return 'مطلوب';
-                                                      } else {
-                                                        Pattern pattern =
-                                                            "\\b([1-9]|10)\\b";
-                                                        RegExp regex =
-                                                            new RegExp(pattern);
-                                                        if (!regex
-                                                            .hasMatch(text))
-                                                          return 'يجب ان يكون العدد من 1 - 10';
-                                                        else
-                                                          return null;
-                                                      }
-                                                    },
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    decoration:
-                                                        kTextFieldDecorationTime
-                                                            .copyWith(
-                                                                hintStyle:
-                                                                    TextStyle(),
-                                                                hintText:
-                                                                    'عدد ايام العطلة',
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  FontAwesomeIcons
-                                                                      .calendar,
-                                                                  color: Colors
-                                                                      .orange,
-                                                                )),
-                                                  ),
+                                              child: Container(
+                                                child: TextFormField(
+                                                  controller:
+                                                      _textEditingController,
+                                                  validator: (text) {
+                                                    if (text == null ||
+                                                        text.isEmpty) {
+                                                      return getTranslated(
+                                                          context, 'مطلوب');
+                                                    } else {
+                                                      Pattern pattern =
+                                                          "\\b([1-9]|10)\\b";
+                                                      RegExp regex =
+                                                          new RegExp(pattern);
+                                                      if (!regex.hasMatch(text))
+                                                        return 'يجب ان يكون العدد من 1 - 10';
+                                                      else
+                                                        return null;
+                                                    }
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  decoration: kTextFieldDecorationTime
+                                                      .copyWith(
+                                                          hintStyle:
+                                                              TextStyle(),
+                                                          hintText: getTranslated(
+                                                              context,
+                                                              'عدد ايام العطلة'),
+                                                          prefixIcon: Icon(
+                                                            FontAwesomeIcons
+                                                                .calendar,
+                                                            color:
+                                                                Colors.orange,
+                                                          )),
                                                 ),
                                               )),
                                       Expanded(
                                         flex: 1,
                                         child: Container(
                                           padding: EdgeInsets.all(5),
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: Container(
-                                              child: Theme(
-                                                data: clockTheme,
-                                                child: DateTimePicker(
-                                                  initialValue:
-                                                      selectedDateString,
+                                          child: Container(
+                                            child: Theme(
+                                              data: clockTheme,
+                                              child: DateTimePicker(
+                                                initialValue:
+                                                    selectedDateString,
 
-                                                  onChanged: (value) {
-                                                    print(date);
-                                                    print(value);
-                                                    if (value != date) {
-                                                      date = value;
-                                                      selectedDateString = date;
+                                                onChanged: (value) {
+                                                  print(date);
+                                                  print(value);
+                                                  if (value != date) {
+                                                    date = value;
+                                                    selectedDateString = date;
 
-                                                      setState(() {
-                                                        selectedDate =
-                                                            DateTime.parse(
-                                                                selectedDateString);
-                                                      });
-                                                      print(selectedDate);
-                                                    }
+                                                    setState(() {
+                                                      selectedDate =
+                                                          DateTime.parse(
+                                                              selectedDateString);
+                                                    });
+                                                    print(selectedDate);
+                                                  }
 
-                                                    print(value);
-                                                  },
-                                                  type: DateTimePickerType.date,
-                                                  firstDate: DateTime(
-                                                      DateTime.now().year,
-                                                      DateTime.january,
-                                                      1),
-                                                  lastDate: DateTime(
-                                                      DateTime.now().year,
-                                                      DateTime.december,
-                                                      31),
-                                                  //controller: _endTimeController,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      fontSize: ScreenUtil().setSp(
-                                                          14,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                  print(value);
+                                                },
+                                                type: DateTimePickerType.date,
+                                                firstDate: DateTime(
+                                                    DateTime.now().year,
+                                                    DateTime.january,
+                                                    1),
+                                                lastDate: DateTime(
+                                                    DateTime.now().year,
+                                                    DateTime.december,
+                                                    31),
+                                                //controller: _endTimeController,
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        14,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w400),
 
-                                                  decoration:
-                                                      kTextFieldDecorationTime
-                                                          .copyWith(
-                                                              hintStyle:
-                                                                  TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              hintText: 'اليوم',
-                                                              prefixIcon: Icon(
-                                                                Icons
-                                                                    .access_time,
-                                                                color: Colors
-                                                                    .orange,
-                                                              )),
-                                                  validator: (val) {
-                                                    if (val.length == 0) {
-                                                      return 'مطلوب';
-                                                    }
-                                                    return null;
-                                                  },
-                                                ),
+                                                decoration:
+                                                    kTextFieldDecorationTime
+                                                        .copyWith(
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            hintText:
+                                                                getTranslated(
+                                                                    context,
+                                                                    'اليوم'),
+                                                            prefixIcon: Icon(
+                                                              Icons.access_time,
+                                                              color:
+                                                                  Colors.orange,
+                                                            )),
+                                                validator: (val) {
+                                                  if (val.length == 0) {
+                                                    return getTranslated(
+                                                        context, 'مطلوب');
+                                                  }
+                                                  return null;
+                                                },
                                               ),
                                             ),
                                           ),
@@ -257,7 +252,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                     textAlign: TextAlign.right,
                                     validator: (text) {
                                       if (text.length == 0) {
-                                        return 'مطلوب';
+                                        return getTranslated(context, 'مطلوب');
                                       } else if (text.length > 40) {
                                         return "يجب ان لا يتخطي الأسم عن 40 حرف";
                                       }
@@ -266,7 +261,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                     controller: _nameController,
                                     decoration:
                                         kTextFieldDecorationWhite.copyWith(
-                                            hintText: 'اسم العطلة',
+                                            hintText: getTranslated(
+                                                context, "أسم العطلة"),
                                             suffixIcon: Icon(
                                               Icons.title,
                                               color: Colors.orange,
@@ -288,7 +284,9 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                       ),
                                     )
                                   : RoundedButton(
-                                      title: widget.edit ? "تعديل" : "أضافة",
+                                      title: widget.edit
+                                          ? getTranslated(context, "إضافة")
+                                          : getTranslated(context, "تعديل"),
                                       onPressed: () async {
                                         var vactionProv =
                                             Provider.of<VacationData>(context,

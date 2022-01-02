@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class AttendByCardRetryButton extends StatelessWidget {
   const AttendByCardRetryButton({
@@ -20,7 +21,7 @@ class AttendByCardRetryButton extends StatelessWidget {
         child: Container(
           height: 20,
           child: AutoSizeText(
-            "اضغط للمحاولة مره اخرى",
+            getTranslated(context, "اضغط للمحاولة مره اخرى"),
             maxLines: 1,
             style: TextStyle(
                 fontWeight: FontWeight.bold,

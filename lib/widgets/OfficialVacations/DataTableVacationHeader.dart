@@ -19,7 +19,7 @@ class DataTableVacationHeader extends StatelessWidget {
                 padding: EdgeInsets.only(right: 10.w),
                 height: 20,
                 child: AutoSizeText(
-                  ' أسم العطلة',
+                  getTranslated(context, "أسم العطلة"),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,

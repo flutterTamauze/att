@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
@@ -18,6 +19,7 @@ import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -86,6 +88,12 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
+  checkLanguage() async {
+    final Locale cachedLocale = await getLocale();
+    Provider.of<PermissionHan>(context, listen: false).setLocale(cachedLocale);
+    MyApp.setLocale(context, cachedLocale);
+  }
+
   checkAttendProovStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("notifCategory") == 'attend') {
@@ -147,7 +155,8 @@ class _SplashScreenState extends State<SplashScreen>
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
-                      "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج",
+                      getTranslated(context,
+                          "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج"),
                       true)));
             } else if (value == NO_INTERNET) {
               await getUserData();
@@ -262,6 +271,7 @@ class _SplashScreenState extends State<SplashScreen>
     animationController.forward();
 
     new Timer(new Duration(milliseconds: 1), () async {
+      await checkLanguage();
       await checkSharedUserData();
       await checkAttendProovStatus();
     });

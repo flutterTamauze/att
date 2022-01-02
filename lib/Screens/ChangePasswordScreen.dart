@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/HomePage.dart';
 
@@ -257,7 +258,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   TextFormField(
                                     validator: (text) {
                                       if (text == null || text.isEmpty) {
-                                        return 'مطلوب';
+                                        return getTranslated(context, "مطلوب");
                                       } else if (text.length >= 8 &&
                                           text.length <= 12) {
                                         Pattern pattern =
@@ -337,7 +338,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           return 'كلمة المرور غير متماثلتين';
                                         } else if (text == null ||
                                             text.isEmpty) {
-                                          return 'مطلوب';
+                                          return getTranslated(
+                                              context, "مطلوب");
                                         } else {
                                           return null;
                                         }

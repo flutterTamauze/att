@@ -6,21 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/AddSite.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/Sites/filteredSites.dart';
 import 'package:qr_users/widgets/Sites/sitesDisplay.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -44,53 +39,11 @@ class _SitesScreenState extends State<SitesScreen> {
     super.didChangeDependencies();
     Provider.of<SiteData>(context, listen: false).pageIndex = 0;
     Provider.of<SiteData>(context, listen: false).keepRetriving = true;
-    // getData();
-    // _scrollController.addListener(() async {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent) {
-    //     log("reached end of list");
-
-    //     var userProvider = Provider.of<UserData>(context, listen: false);
-    //     var comProvier = Provider.of<CompanyData>(context, listen: false);
-    //     if (Provider.of<SiteData>(context, listen: false).keepRetriving) {
-    //       await Provider.of<SiteData>(context, listen: false)
-    //           .getSitesByCompanyId(
-    //         comProvier.com.id,
-    //         userProvider.user.userToken,
-    //         context,
-    //       );
-    //     }
-    //   }
-    // });
   }
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  // void _onRefresh() async {
-  //   var userProvider = Provider.of<UserData>(context, listen: false);
-  //   var companyProvider = Provider.of<CompanyData>(context, listen: false);
-  //   // monitor network fetch
-  //   print("refresh");
-  //   // if failed,use refreshFailed()
-  //   await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
-  //     companyProvider.com.id,
-  //     userProvider.user.userToken,
-  //     context,
-  //   );
-  // }
-
-  // final ScrollController _scrollController = ScrollController();
-  // getData() async {
-  //   var userProvider = Provider.of<UserData>(context);
-  //   var companyProvider = Provider.of<CompanyData>(context, listen: false);
-
-  //   await Provider.of<SiteData>(context, listen: false).getSitesByCompanyId(
-  //     companyProvider.com.id,
-  //     userProvider.user.userToken,
-  //     context,
-  //   );
-  // }
   Timer searchOnStoppedTyping;
   _onChangeHandler(value) {
     setState(() {
@@ -156,40 +109,33 @@ class _SitesScreenState extends State<SitesScreen> {
                               goUserHomeFromMenu: false,
                               goUserMenu: false,
                             ),
-                            Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: SmallDirectoriesHeader(
-                                  Lottie.asset("resources/locaitonss.json",
-                                      repeat: false),
-                                  "دليل المواقع"),
-                            ),
+                            SmallDirectoriesHeader(
+                                Lottie.asset("resources/locaitonss.json",
+                                    repeat: false),
+                                getTranslated(context, "دليل المواقع")),
 
                             ///List OF SITES
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16.w, vertical: 16.h),
-                              child: Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: TextField(
-                                  onChanged: (value) {
-                                    _onChangeHandler(value);
-                                  },
-                                  controller: _sitesController,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: 'البحث بأسم الموقع',
-                                      focusColor: Colors.orange,
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                              color: Colors.orange[600])),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide(
-                                              color: Colors.orange[600]))),
-                                ),
+                              child: TextField(
+                                onChanged: (value) {
+                                  _onChangeHandler(value);
+                                },
+                                controller: _sitesController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: getTranslated(
+                                        context, 'البحث بأسم الموقع'),
+                                    focusColor: Colors.orange,
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Colors.orange[600])),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Colors.orange[600]))),
                               ),
                             ),
                             _sitesController.text != "" &&

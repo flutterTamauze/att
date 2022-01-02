@@ -489,10 +489,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                           ? _today
                                                           : _tomorow,
                                                   lastDate: DateTime(
-                                                      DateTime.now().year,
+                                                      DateTime.now().year + 2,
                                                       DateTime.december,
                                                       31),
                                                   //controller: _endTimeController,
+                                                  textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       fontSize: ScreenUtil().setSp(
                                                           14,
@@ -525,7 +526,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                               )),
                                                   validator: (val) {
                                                     if (val.length == 0) {
-                                                      return 'مطلوب';
+                                                      return getTranslated(
+                                                          context, "مطلوب");
                                                     }
                                                     return null;
                                                   },

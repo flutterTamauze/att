@@ -78,6 +78,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                             .setLocale(_tempLocal);
                       });
                       print("current local $_tempLocal");
+                      setLocale(value == "En" ? "en" : "ar");
                       MyApp.setLocale(context, _tempLocal);
                       Navigator.pop(context);
                       Fluttertoast.showToast(

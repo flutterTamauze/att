@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
@@ -79,7 +80,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 textInputAction: TextInputAction.next,
                                 validator: (text) {
                                   if (text == null || text.isEmpty) {
-                                    return 'مطلوب';
+                                    return getTranslated(context, "مطلوب");
                                   }
                                   return null;
                                 },
@@ -425,7 +426,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 textInputAction: TextInputAction.next,
                                 validator: (text) {
                                   if (text == null || text.isEmpty) {
-                                    return 'مطلوب';
+                                    return getTranslated(context, "مطلوب");
                                   }
                                   return null;
                                 },
@@ -451,7 +452,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 textInputAction: TextInputAction.next,
                                 validator: (text) {
                                   if (text == null || text.isEmpty) {
-                                    return 'مطلوب';
+                                    return getTranslated(context, "مطلوب");
                                   } else if (text.length >= 8 &&
                                       text.length <= 12) {
                                     Pattern pattern =
@@ -507,7 +508,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 textInputAction: TextInputAction.done,
                                 validator: (text) {
                                   if (text == null || text.isEmpty) {
-                                    return 'مطلوب';
+                                    return getTranslated(context, "مطلوب");
                                   } else if (text != _passwordController.text) {
                                     return 'كلمة المرور غير متطابقتان';
                                   }

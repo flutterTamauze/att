@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Core/constants.dart';
@@ -83,19 +85,16 @@ class _CompanySettingsState extends State<CompanySettings> {
             goUserHomeFromMenu: false,
             goUserMenu: false,
           ),
-          Directionality(
-            textDirection: ui.TextDirection.rtl,
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: SmallDirectoriesHeader(
-                Lottie.asset("resources/settings1.json", repeat: false),
-                "اعدادات الشركة",
-              ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: SmallDirectoriesHeader(
+              Lottie.asset("resources/settings1.json", repeat: false),
+              getTranslated(context, "اعدادات الشركة"),
             ),
           ),
           ServiceTile(
-              title: "العطلات الأسبوعية",
-              subTitle: "ادارة العطلات الأسبوعية",
+              title: getTranslated(context, "العطلات الأسبوعية"),
+              subTitle: getTranslated(context, "ادارة العطلات الأسبوعية"),
               icon: FontAwesomeIcons.calendarWeek,
               onTap: () async {
                 showDialog(
@@ -108,8 +107,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                 showVacationsDetails();
               }),
           ServiceTile(
-              title: "العطلات الرسمية",
-              subTitle: "ادارة العطلات الرسمية",
+              title: getTranslated(context, "العطلات الرسمية"),
+              subTitle: getTranslated(context, "ادارة العطلات الرسمية"),
               icon: Icons.calendar_today_rounded,
               onTap: () async {
                 showDialog(
@@ -127,8 +126,8 @@ class _CompanySettingsState extends State<CompanySettings> {
               }),
           userProvider.user.userType == 4
               ? ServiceTile(
-                  title: "اعدادات الحضور و الأنصراف",
-                  subTitle: "ادارة الحضور و الأنصراف",
+                  title: getTranslated(context, "اعدادات الحضور و الأنصراف"),
+                  subTitle: getTranslated(context, "ادارة الحضور و الأنصراف"),
                   icon: FontAwesomeIcons.usersCog,
                   onTap: () async {
                     showDialog(
@@ -181,291 +180,272 @@ class _CompanySettingsState extends State<CompanySettings> {
                     shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(20.0)), //this right here
-                    child: Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Container(
-                        height: 300.h,
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "اعدادات الحضور و الأنصراف",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(19, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.orange),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        height: 50.h,
-                                        child: Text(
-                                          "سماحية التأخير (دقيقة)",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: ScreenUtil().setSp(15,
-                                                allowFontScalingSelf: true),
-                                          ),
+                    child: Container(
+                      height: 300.h,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            getTranslated(context, "اعدادات الحضور و الأنصراف"),
+                            style: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(19, allowFontScalingSelf: true),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      height: 50.h,
+                                      child: Text(
+                                        "سماحية التأخير (دقيقة)",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: ScreenUtil().setSp(15,
+                                              allowFontScalingSelf: true),
                                         ),
                                       ),
-                                      Container(
-                                        width: 120.w,
-                                        height: 40.h,
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          textAlignVertical:
-                                              TextAlignVertical.bottom,
-                                          textAlign: TextAlign.center,
-                                          cursorColor: Colors.orange,
-                                          style: TextStyle(
-                                            color: Colors.orange,
-                                          ),
-                                          controller: controller,
-                                          validator: (value) {
-                                            if (!RegExp(
-                                                    r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$')
-                                                .hasMatch(value)) {
-                                              return "برجاء ادخال رقم";
-                                            } else if (value.isEmpty) {
-                                              return 'برجاء تحديد المدة';
-                                            } else if (int.parse(value) > 30 ||
-                                                int.parse(value) < 0) {
-                                              return 'برجاء ادخال مدة من  0 إلى 30';
-                                            }
-                                          },
-                                          decoration: InputDecoration(
-                                              errorMaxLines: 2,
-                                              errorStyle: TextStyle(
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true)),
-                                              hintText: "0-30 دقيقة",
-                                              disabledBorder: const OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                      color: Colors.grey,
-                                                      width: 0.0),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10))),
-                                              focusedBorder: const OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                      color: Colors.grey,
-                                                      width: 0.0),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10))),
-                                              enabledBorder: const OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                      color: Colors.grey,
-                                                      width: 0.0),
-                                                  borderRadius: BorderRadius.all(Radius.circular(10)))),
+                                    ),
+                                    Container(
+                                      width: 120.w,
+                                      height: 40.h,
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        textAlignVertical:
+                                            TextAlignVertical.bottom,
+                                        textAlign: TextAlign.center,
+                                        cursorColor: Colors.orange,
+                                        style: TextStyle(
+                                          color: Colors.orange,
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("سماحية تسجيل الحضور"),
-                                Directionality(
-                                  textDirection: ui.TextDirection.rtl,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      alignment: Alignment.topRight,
-                                      padding: EdgeInsets.only(right: 10.w),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            width: 0.0, color: Colors.grey),
-                                      ),
-                                      width: 120.w,
-                                      height: 40.h,
-                                      child: DropdownButtonHideUnderline(
-                                          child: DropdownButton(
-                                        elevation: 2,
-                                        isExpanded: true,
-                                        items: attendNumbers.map((String x) {
-                                          return DropdownMenuItem<String>(
-                                              value: x,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "ساعات",
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          color: Colors.orange,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Text(
-                                                      x,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          color: Colors.orange,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ));
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          sets(() {
-                                            attendClearance = value;
-                                          });
-                                        },
-                                        value: attendClearance.toString(),
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("سماحية تسجيل الأنصراف"),
-                                Directionality(
-                                  textDirection: ui.TextDirection.rtl,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      alignment: Alignment.topRight,
-                                      padding: EdgeInsets.only(right: 10.w),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            width: 0.0, color: Colors.grey),
-                                      ),
-                                      width: 120.w,
-                                      height: 40.h,
-                                      child: DropdownButtonHideUnderline(
-                                          child: DropdownButton(
-                                        elevation: 2,
-                                        isExpanded: true,
-                                        items: leaveNumbers.map((String x) {
-                                          return DropdownMenuItem<String>(
-                                              value: x,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Row(
-                                                  children: [
-                                                    Text("ساعات",
-                                                        textAlign:
-                                                            TextAlign.right,
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.orange,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500)),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Text(
-                                                      x,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          color: Colors.orange,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ));
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          sets(() {
-                                            leaveClearance = value;
-                                          });
-                                        },
-                                        value: leaveClearance.toString(),
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            Center(
-                                child: isLoading
-                                    ? CircularProgressIndicator(
-                                        backgroundColor: Colors.orange,
-                                      )
-                                    : RoundedButton(
-                                        title: "حفظ",
-                                        onPressed: () async {
-                                          if (!_formKey.currentState
-                                              .validate()) {
-                                            return;
-                                          } else {
-                                            sets(() {
-                                              isLoading = true;
-                                            });
-                                            await companySettings
-                                                .updateCompanySettingsTime(
-                                              settingsID,
-                                              companyId,
-                                              int.parse(controller.text),
-                                              int.parse(attendClearance),
-                                              int.parse(leaveClearance),
-                                              Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userToken,
-                                            )
-                                                .then((value) {
-                                              if (value) {
-                                                successfulSaved();
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                    msg: "خطأ فى التعديل",
-                                                    backgroundColor:
-                                                        Colors.red);
-                                              }
-                                            });
-                                            sets(() {
-                                              isLoading = false;
-                                            });
-                                            Navigator.pop(context);
+                                        controller: controller,
+                                        validator: (value) {
+                                          if (!RegExp(
+                                                  r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$')
+                                              .hasMatch(value)) {
+                                            return "برجاء ادخال رقم";
+                                          } else if (value.isEmpty) {
+                                            return 'برجاء تحديد المدة';
+                                          } else if (int.parse(value) > 30 ||
+                                              int.parse(value) < 0) {
+                                            return 'برجاء ادخال مدة من  0 إلى 30';
                                           }
-                                        }))
-                          ],
-                        ),
+                                        },
+                                        decoration: InputDecoration(
+                                            errorMaxLines: 2,
+                                            errorStyle: TextStyle(
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf:
+                                                        true)),
+                                            hintText: "0-30 دقيقة",
+                                            disabledBorder: const OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 0.0),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            focusedBorder: const OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 0.0),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            enabledBorder: const OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 0.0),
+                                                borderRadius:
+                                                    BorderRadius.all(Radius.circular(10)))),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("سماحية تسجيل الحضور"),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  alignment: Alignment.topRight,
+                                  padding: EdgeInsets.only(right: 10.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        width: 0.0, color: Colors.grey),
+                                  ),
+                                  width: 120.w,
+                                  height: 40.h,
+                                  child: DropdownButtonHideUnderline(
+                                      child: DropdownButton(
+                                    elevation: 2,
+                                    isExpanded: true,
+                                    items: attendNumbers.map((String x) {
+                                      return DropdownMenuItem<String>(
+                                          value: x,
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "ساعات",
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      color: Colors.orange,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  x,
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      color: Colors.orange,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          ));
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      sets(() {
+                                        attendClearance = value;
+                                      });
+                                    },
+                                    value: attendClearance.toString(),
+                                  )),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("سماحية تسجيل الأنصراف"),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  alignment: Alignment.topRight,
+                                  padding: EdgeInsets.only(right: 10.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        width: 0.0, color: Colors.grey),
+                                  ),
+                                  width: 120.w,
+                                  height: 40.h,
+                                  child: DropdownButtonHideUnderline(
+                                      child: DropdownButton(
+                                    elevation: 2,
+                                    isExpanded: true,
+                                    items: leaveNumbers.map((String x) {
+                                      return DropdownMenuItem<String>(
+                                          value: x,
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              children: [
+                                                Text("ساعات",
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                        color: Colors.orange,
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  x,
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      color: Colors.orange,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          ));
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      sets(() {
+                                        leaveClearance = value;
+                                      });
+                                    },
+                                    value: leaveClearance.toString(),
+                                  )),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Center(
+                              child: isLoading
+                                  ? CircularProgressIndicator(
+                                      backgroundColor: Colors.orange,
+                                    )
+                                  : RoundedButton(
+                                      title: "حفظ",
+                                      onPressed: () async {
+                                        if (!_formKey.currentState.validate()) {
+                                          return;
+                                        } else {
+                                          sets(() {
+                                            isLoading = true;
+                                          });
+                                          await companySettings
+                                              .updateCompanySettingsTime(
+                                            settingsID,
+                                            companyId,
+                                            int.parse(controller.text),
+                                            int.parse(attendClearance),
+                                            int.parse(leaveClearance),
+                                            Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userToken,
+                                          )
+                                              .then((value) {
+                                            if (value) {
+                                              successfulSaved();
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: "خطأ فى التعديل",
+                                                  backgroundColor: Colors.red);
+                                            }
+                                          });
+                                          sets(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.pop(context);
+                                        }
+                                      }))
+                        ],
                       ),
                     )),
               );
@@ -481,163 +461,155 @@ class _CompanySettingsState extends State<CompanySettings> {
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 460.h,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          DirectoriesHeader(
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(40.0),
-                              child: Lottie.asset("resources/shifts.json",
-                                  repeat: false),
-                            ),
-                            "ايام العطلات للشركة",
+              child: Stack(
+                children: [
+                  Container(
+                    height: 460.h,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      children: [
+                        DirectoriesHeader(
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40.0),
+                            child: Lottie.asset("resources/shifts.json",
+                                repeat: false),
                           ),
-                          SizedBox(
-                            height: 3.h,
-                          ),
-                          Expanded(
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: ListView.builder(
-                                    itemCount: Provider.of<DaysOffData>(context,
-                                            listen: true)
-                                        .weak
-                                        .length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      print(index);
-                                      return CustomRow(
-                                          model: Provider.of<DaysOffData>(
-                                                  context,
-                                                  listen: true)
-                                              .weak[index],
-                                          onTap: () {
-                                            int i = 0;
-                                            if (Provider.of<DaysOffData>(
-                                                        context,
-                                                        listen: false)
-                                                    .weak[index]
-                                                    .isDayOff ==
-                                                true) {
-                                              Provider.of<DaysOffData>(context,
+                          getTranslated(context, "ايام العطلات للشركة"),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: ListView.builder(
+                                  itemCount: Provider.of<DaysOffData>(context,
+                                          listen: true)
+                                      .weak
+                                      .length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    print(index);
+                                    return CustomRow(
+                                        model: Provider.of<DaysOffData>(context,
+                                                listen: true)
+                                            .weak[index],
+                                        onTap: () {
+                                          int i = 0;
+                                          if (Provider.of<DaysOffData>(context,
                                                       listen: false)
-                                                  .toggleDayOff(index);
-                                            } else {
-                                              Provider.of<DaysOffData>(context,
-                                                      listen: false)
-                                                  .weak
-                                                  .forEach((element) {
-                                                if (element.isDayOff == true) {
-                                                  i++;
-                                                }
-                                              });
-
-                                              if (i < 2) {
-                                                Provider.of<DaysOffData>(
-                                                        context,
-                                                        listen: false)
-                                                    .toggleDayOn(index);
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "لا يمكن اخيار اكثر من يومين",
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    timeInSecForIosWeb: 1,
-                                                    backgroundColor: Colors.red,
-                                                    textColor: Colors.black,
-                                                    fontSize: ScreenUtil().setSp(
-                                                        16,
-                                                        allowFontScalingSelf:
-                                                            true));
+                                                  .weak[index]
+                                                  .isDayOff ==
+                                              true) {
+                                            Provider.of<DaysOffData>(context,
+                                                    listen: false)
+                                                .toggleDayOff(index);
+                                          } else {
+                                            Provider.of<DaysOffData>(context,
+                                                    listen: false)
+                                                .weak
+                                                .forEach((element) {
+                                              if (element.isDayOff == true) {
+                                                i++;
                                               }
-                                            }
-                                          });
-                                    })),
-                          ),
-                          Container(
-                            width: 100.w,
-                            child: userProvider.user.userType == 4
-                                ? RounderButton("حفظ", () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return RoundedLoadingIndicator();
-                                        });
+                                            });
 
-                                    var userProvider = Provider.of<UserData>(
-                                        context,
-                                        listen: false);
-                                    var comProvider = Provider.of<CompanyData>(
-                                        context,
-                                        listen: false);
-                                    var msg = await Provider.of<DaysOffData>(
-                                            context,
-                                            listen: false)
-                                        .editDaysOffApi(
-                                            comProvider.com.id,
-                                            userProvider.user.userToken,
-                                            context);
-                                    if (msg == "Success") {
-                                      Fluttertoast.showToast(
-                                          msg: "تم التعديل بنجاح",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.green,
-                                          textColor: Colors.white,
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true));
-                                      Navigator.pop(context);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: "خطا في التعديل",
-                                          gravity: ToastGravity.CENTER,
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.black,
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true));
-                                    }
+                                            if (i < 2) {
+                                              Provider.of<DaysOffData>(context,
+                                                      listen: false)
+                                                  .toggleDayOn(index);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: getTranslated(context,
+                                                      "لا يمكن اختيار اكثر من يومين"),
+                                                  gravity: ToastGravity.CENTER,
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.black,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true));
+                                            }
+                                          }
+                                        });
+                                  })),
+                        ),
+                        Container(
+                          width: 100.w,
+                          child: userProvider.user.userType == 4
+                              ? RounderButton(getTranslated(context, "حفظ"),
+                                  () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return RoundedLoadingIndicator();
+                                      });
+
+                                  final userProvider = Provider.of<UserData>(
+                                      context,
+                                      listen: false);
+                                  final comProvider = Provider.of<CompanyData>(
+                                      context,
+                                      listen: false);
+                                  final msg = await Provider.of<DaysOffData>(
+                                          context,
+                                          listen: false)
+                                      .editDaysOffApi(comProvider.com.id,
+                                          userProvider.user.userToken, context);
+                                  if (msg == "Success") {
+                                    Fluttertoast.showToast(
+                                        msg: "تم التعديل بنجاح",
+                                        gravity: ToastGravity.CENTER,
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true));
                                     Navigator.pop(context);
-                                  })
-                                : Container(),
-                          )
-                        ],
-                      ),
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: "خطا في التعديل",
+                                        gravity: ToastGravity.CENTER,
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.black,
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true));
+                                  }
+                                  Navigator.pop(context);
+                                })
+                              : Container(),
+                        )
+                      ],
                     ),
-                    Positioned(
-                      left: 5.0.w,
-                      top: 5.0.h,
-                      child: Container(
-                        width: 50.w,
-                        height: 50.h,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.orange,
-                            size: ScreenUtil()
-                                .setSp(25, allowFontScalingSelf: true),
-                          ),
+                  ),
+                  Positioned(
+                    left: 5.0.w,
+                    top: 5.0.h,
+                    child: Container(
+                      width: 50.w,
+                      height: 50.h,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.orange,
+                          size: ScreenUtil()
+                              .setSp(25, allowFontScalingSelf: true),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ));
         });
   }

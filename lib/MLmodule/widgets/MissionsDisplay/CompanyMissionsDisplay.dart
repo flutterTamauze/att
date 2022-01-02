@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
 
@@ -45,7 +46,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
           Container(
               child: widget._nameController.text == ""
                   ? Text(
-                      "برجاء اختيار اسم المستخدم",
+                      getTranslated(context, "برجاء اختيار اسم مستخدم"),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: ColorManager.primary,

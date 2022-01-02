@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
@@ -107,7 +108,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                               color: Colors.orange),
                           child: Center(
                             child: AutoSizeText(
-                              "اضغط للمحاولة مره اخرى",
+                              getTranslated(context, "اضغط للماحاولة مره اخرى"),
                               maxLines: 1,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -145,11 +146,11 @@ class _ErrorScreenState extends State<ErrorScreen> {
         print(e);
       })).then((value) {
         print(value);
-        if (value == -4 || value == USER_INVALID_RESPONSE) {
+        if (value == -4 || value == USER_INVALID_RESPONSE || value == null) {
           setState(() {
             isLoading = false;
-            message =
-                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج";
+            message = getTranslated(context,
+                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج");
           });
         } else if (value == NO_INTERNET) {
           print("mfeeesh net");

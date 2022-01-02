@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -366,18 +367,30 @@ class CustomRow extends StatelessWidget {
         onTap: onTap,
         child: Row(
           children: <Widget>[
-            Text(
+            AutoSizeText(
               model.dayName,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
                   fontWeight: FontWeight.w600),
             ),
+            Container(
+              child: Expanded(
+                child: Container(),
+              ),
+            ),
             this.model.isDayOff == true
-                ? Icon(
-                    Icons.radio_button_checked,
-                    color: Colors.orange,
+                ? Container(
+                    alignment: Alignment.centerRight,
+                    width: 100,
+                    child: Icon(
+                      Icons.radio_button_checked,
+                      color: Colors.orange,
+                    ),
                   )
-                : Icon(Icons.radio_button_unchecked),
+                : Container(
+                    alignment: Alignment.centerRight,
+                    width: 100,
+                    child: Icon(Icons.radio_button_unchecked)),
           ],
         ),
       ),

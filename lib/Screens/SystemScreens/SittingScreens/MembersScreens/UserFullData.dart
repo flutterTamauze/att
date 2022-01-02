@@ -177,175 +177,168 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                 }
 
                 return Expanded(
-                  child: Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Container(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 100.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 1,
-                                  color: Color(0xffFF7E00),
-                                ),
+                  child: Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 100.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 1,
+                                color: Color(0xffFF7E00),
                               ),
-                              child: Container(
-                                width: 120.w,
-                                height: 120.h,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(
-                                        '$imageUrl${userData.userImageURL}',
+                            ),
+                            child: Container(
+                              width: 120.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                      '$imageUrl${userData.userImageURL}',
+                                    ),
+                                  ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 2, color: Color(0xffFF7E00))),
+                            ),
+                          ),
+                          Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              userData.name,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: ScreenUtil()
+                                      .setSp(14, allowFontScalingSelf: true),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 5.h),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    UserDataField(
+                                      icon: Icons.email,
+                                      text: userData.email,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: UserDataField(
+                                            icon: Icons.title,
+                                            text: userData.jobTitle,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        userType == 4
+                                            ? Expanded(
+                                                flex: 1,
+                                                child: UserDataField(
+                                                  icon: Icons.person,
+                                                  text: userData.normalizedName,
+                                                ),
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: UserDataField(
+                                              icon: Icons.phone,
+                                              text: plusSignPhone(
+                                                      userData.phoneNumber)
+                                                  .replaceAll(
+                                                      new RegExp(r"\s+\b|\b\s"),
+                                                      "")),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: UserDataField(
+                                              icon: FontAwesomeIcons.moneyBill,
+                                              text:
+                                                  "${userData.salary} جنية مصرى"),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Row(
+                                      children: [
+                                        userType != 2
+                                            ? Expanded(
+                                                flex: 1,
+                                                child: UserDataField(
+                                                    icon: Icons.location_on,
+                                                    text:
+                                                        //  Provider.of<SiteData>(
+                                                        //         context,
+                                                        //         listen: true)
+                                                        //     .sitesList[
+                                                        //         widget.siteIndex]
+                                                        //     .name,
+                                                        userData.siteName),
+                                              )
+                                            : Container(),
+                                        Expanded(
+                                          flex: 1,
+                                          child: UserDataField(
+                                              icon: Icons.query_builder,
+                                              text: userData.shiftName),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 3),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "تاريخ التعيين",
+                                          ),
+                                          Text(DateFormat('yMMMd')
+                                              .format(userData.hiredDate)
+                                              .toString()),
+                                        ],
                                       ),
                                     ),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        width: 2, color: Color(0xffFF7E00))),
-                              ),
-                            ),
-                            Container(
-                              height: 20,
-                              child: AutoSizeText(
-                                userData.name,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.orange,
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 5.h),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      UserDataField(
-                                        icon: Icons.email,
-                                        text: userData.email,
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: UserDataField(
-                                              icon: Icons.title,
-                                              text: userData.jobTitle,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 3,
-                                          ),
-                                          userType == 4
-                                              ? Expanded(
-                                                  flex: 1,
-                                                  child: UserDataField(
-                                                    icon: Icons.person,
-                                                    text:
-                                                        userData.normalizedName,
-                                                  ),
-                                                )
-                                              : Container(),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: UserDataField(
-                                                icon: Icons.phone,
-                                                text: plusSignPhone(
-                                                        userData.phoneNumber)
-                                                    .replaceAll(
-                                                        new RegExp(
-                                                            r"\s+\b|\b\s"),
-                                                        "")),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: UserDataField(
-                                                icon:
-                                                    FontAwesomeIcons.moneyBill,
-                                                text:
-                                                    "${userData.salary} جنية مصرى"),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Row(
-                                        children: [
-                                          userType != 2
-                                              ? Expanded(
-                                                  flex: 1,
-                                                  child: UserDataField(
-                                                      icon: Icons.location_on,
-                                                      text:
-                                                          //  Provider.of<SiteData>(
-                                                          //         context,
-                                                          //         listen: true)
-                                                          //     .sitesList[
-                                                          //         widget.siteIndex]
-                                                          //     .name,
-                                                          userData.siteName),
-                                                )
-                                              : Container(),
-                                          Expanded(
-                                            flex: 1,
-                                            child: UserDataField(
-                                                icon: Icons.query_builder,
-                                                text: userData.shiftName),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 3),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "تاريخ التعيين",
-                                            ),
-                                            Text(DateFormat('yMMMd')
-                                                .format(userData.hiredDate)
-                                                .toString()),
-                                          ],
-                                        ),
-                                      ),
-                                      UserProperties(
-                                        siteIndex: widget.siteIndex,
-                                        user: userData,
-                                      )
-                                    ],
-                                  ),
+                                    UserProperties(
+                                      siteIndex: widget.siteIndex,
+                                      user: userData,
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

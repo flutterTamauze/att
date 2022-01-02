@@ -67,7 +67,6 @@ class _SiteDropdownState extends State<SiteDropdown> {
                                 child: AutoSizeText(
                                   x.siteName,
                                   maxLines: 1,
-                                  textAlign: TextAlign.end,
                                   style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),
                                       color: Colors.black,
@@ -159,7 +158,6 @@ class _RoundedBorderDropdownState extends State<RoundedBorderDropdown> {
                                 child: AutoSizeText(
                                   x,
                                   maxLines: 1,
-                                  textAlign: TextAlign.end,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -252,7 +250,6 @@ class _ShiftsDropDownState extends State<ShiftsDropDown> {
                                 child: AutoSizeText(
                                   x.shiftName,
                                   maxLines: 1,
-                                  textAlign: TextAlign.end,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),

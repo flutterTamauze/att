@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/CompanyMissionsDisplay.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
@@ -89,213 +90,206 @@ class _VacationAndPermessionsReportState
               ),
               SmallDirectoriesHeader(
                 Lottie.asset("resources/report.json", repeat: false),
-                "تقرير الأجازات و المأموريات",
+                getTranslated(context, "تقرير الأجازات و المأموريات"),
               ),
               SizedBox(
                 height: 20.h,
               ),
               Container(
                 width: 330.w,
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Provider.of<MemberData>(context).loadingSearch
-                      ? Center(
-                          child: CircularProgressIndicator(
-                          color: Colors.orange,
-                        ))
-                      : searchTextField = AutoCompleteTextField<SearchMember>(
-                          key: key,
-                          clearOnSubmit: false,
-                          focusNode: focusNode,
-                          controller: _nameController,
-                          suggestions:
-                              Provider.of<MemberData>(context).userSearchMember,
-                          style: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
-                          decoration: kTextFieldDecorationFromTO.copyWith(
-                              hintStyle: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true),
-                                  color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.w500),
-                              hintText: 'الأسم',
-                              suffixIcon: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (_nameController.text.length >= 3) {
-                                      if (userProv.user.userType == 2) {
-                                        searchInList(
-                                            _nameController.text,
-                                            userProv.user.userSiteId,
-                                            Provider.of<CompanyData>(context,
-                                                    listen: false)
-                                                .com
-                                                .id);
-                                      } else {
-                                        searchInList(
-                                            _nameController.text,
-                                            -1,
-                                            Provider.of<CompanyData>(context,
-                                                    listen: false)
-                                                .com
-                                                .id);
-                                      }
+                child: Provider.of<MemberData>(context).loadingSearch
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: Colors.orange,
+                      ))
+                    : searchTextField = AutoCompleteTextField<SearchMember>(
+                        key: key,
+                        clearOnSubmit: false,
+                        focusNode: focusNode,
+                        controller: _nameController,
+                        suggestions:
+                            Provider.of<MemberData>(context).userSearchMember,
+                        style: TextStyle(
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                        decoration: kTextFieldDecorationFromTO.copyWith(
+                            hintStyle: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(16, allowFontScalingSelf: true),
+                                color: Colors.grey.shade700,
+                                fontWeight: FontWeight.w500),
+                            hintText: getTranslated(context, "الأسم"),
+                            suffixIcon: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (_nameController.text.length >= 3) {
+                                    if (userProv.user.userType == 2) {
+                                      searchInList(
+                                          _nameController.text,
+                                          userProv.user.userSiteId,
+                                          Provider.of<CompanyData>(context,
+                                                  listen: false)
+                                              .com
+                                              .id);
                                     } else {
-                                      Fluttertoast.showToast(
-                                          msg: "يجب ان لا يقل البحث عن 3 احرف",
-                                          backgroundColor: Colors.red,
-                                          gravity: ToastGravity.CENTER);
+                                      searchInList(
+                                          _nameController.text,
+                                          -1,
+                                          Provider.of<CompanyData>(context,
+                                                  listen: false)
+                                              .com
+                                              .id);
                                     }
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.search,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.person,
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                        backgroundColor: Colors.red,
+                                        gravity: ToastGravity.CENTER);
+                                  }
+                                });
+                              },
+                              child: Icon(
+                                Icons.search,
                                 color: Colors.orange,
-                              )),
-                          itemFilter: (item, query) {
-                            return item.username
-                                .toLowerCase()
-                                .contains(query.toLowerCase());
-                          },
-                          itemSorter: (a, b) {
-                            return a.username.compareTo(b.username);
-                          },
-                          itemSubmitted: (item) async {
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.orange,
+                            )),
+                        itemFilter: (item, query) {
+                          return item.username
+                              .toLowerCase()
+                              .contains(query.toLowerCase());
+                        },
+                        itemSorter: (a, b) {
+                          return a.username.compareTo(b.username);
+                        },
+                        itemSubmitted: (item) async {
+                          if (_nameController.text != item.username) {
+                            setState(() {
+                              userName = item.username;
+                              searchTextField.textField.controller.text =
+                                  item.username;
+                            });
+                            print("user id");
+                            print(item.id);
+                            userId = item.id;
+                            var userProvider =
+                                Provider.of<UserData>(context, listen: false);
+                            switch (radioVal2) {
+                              case 1:
+                                Provider.of<UserHolidaysData>(context,
+                                        listen: false)
+                                    .singleUserHoliday
+                                    .clear();
+                                getHoliday = Provider.of<UserHolidaysData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserHoliday(
+                                        item.id, userProvider.user.userToken);
+                                break;
+                              case 2:
+                                Provider.of<MissionsData>(context,
+                                        listen: false)
+                                    .singleUserMissionsList
+                                    .clear();
+                                getMission = Provider.of<MissionsData>(context,
+                                        listen: false)
+                                    .getSingleUserMissions(
+                                        item.id, userProvider.user.userToken);
+
+                                break;
+                              case 3:
+                                Provider.of<UserPermessionsData>(context,
+                                        listen: false)
+                                    .singleUserPermessions
+                                    .clear();
+                                getPerm = Provider.of<UserPermessionsData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserPermession(
+                                        item.id,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
+                                break;
+                              default:
+                                getHoliday = Provider.of<UserHolidaysData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserHoliday(
+                                        item.id, userProvider.user.userToken);
+                            }
+
+                            List<int> indexes = [];
+
+                            print(comMissionProv.userNames.length);
+                            for (int i = 0;
+                                i < comMissionProv.userNames.length;
+                                i++) {
+                              if (comMissionProv.userNames[i] ==
+                                  item.username) {
+                                indexes.add(i);
+                              }
+                            }
                             if (_nameController.text != item.username) {
                               setState(() {
+                                print(item.username);
+
                                 userName = item.username;
                                 searchTextField.textField.controller.text =
                                     item.username;
+
+                                Provider.of<MissionsData>(context,
+                                        listen: false)
+                                    .setCopyByIndex(indexes);
+                                // isVacationselected = true;
                               });
-                              print("user id");
-                              print(item.id);
-                              userId = item.id;
-                              var userProvider =
-                                  Provider.of<UserData>(context, listen: false);
-                              switch (radioVal2) {
-                                case 1:
-                                  Provider.of<UserHolidaysData>(context,
-                                          listen: false)
-                                      .singleUserHoliday
-                                      .clear();
-                                  getHoliday = Provider.of<UserHolidaysData>(
-                                          context,
-                                          listen: false)
-                                      .getSingleUserHoliday(
-                                          item.id, userProvider.user.userToken);
-                                  break;
-                                case 2:
-                                  Provider.of<MissionsData>(context,
-                                          listen: false)
-                                      .singleUserMissionsList
-                                      .clear();
-                                  getMission = Provider.of<MissionsData>(
-                                          context,
-                                          listen: false)
-                                      .getSingleUserMissions(
-                                          item.id, userProvider.user.userToken);
-
-                                  break;
-                                case 3:
-                                  Provider.of<UserPermessionsData>(context,
-                                          listen: false)
-                                      .singleUserPermessions
-                                      .clear();
-                                  getPerm = Provider.of<UserPermessionsData>(
-                                          context,
-                                          listen: false)
-                                      .getSingleUserPermession(
-                                          item.id,
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .user
-                                              .userToken);
-                                  break;
-                                default:
-                                  getHoliday = Provider.of<UserHolidaysData>(
-                                          context,
-                                          listen: false)
-                                      .getSingleUserHoliday(
-                                          item.id, userProvider.user.userToken);
-                              }
-
-                              List<int> indexes = [];
-
-                              print(comMissionProv.userNames.length);
-                              for (int i = 0;
-                                  i < comMissionProv.userNames.length;
-                                  i++) {
-                                if (comMissionProv.userNames[i] ==
-                                    item.username) {
-                                  indexes.add(i);
-                                }
-                              }
-                              if (_nameController.text != item.username) {
-                                setState(() {
-                                  print(item.username);
-
-                                  userName = item.username;
-                                  searchTextField.textField.controller.text =
-                                      item.username;
-
-                                  Provider.of<MissionsData>(context,
-                                          listen: false)
-                                      .setCopyByIndex(indexes);
-                                  // isVacationselected = true;
-                                });
-                              }
                             }
-                          },
-                          itemBuilder: (context, item) {
-                            // ui for the autocompelete row
-                            return Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 10,
-                                  bottom: 5,
-                                ),
-                                child: Column(
+                          }
+                        },
+                        itemBuilder: (context, item) {
+                          // ui for the autocompelete row
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              right: 10,
+                              bottom: 5,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        Container(
-                                          height: 20.h,
-                                          child: AutoSizeText(
-                                            item.username,
-                                            maxLines: 1,
-                                            textAlign: TextAlign.right,
-                                            style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf: true),
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: 10.w,
                                     ),
-                                    Divider(
-                                      color: Colors.grey,
-                                      thickness: 1,
+                                    Container(
+                                      height: 20.h,
+                                      child: AutoSizeText(
+                                        item.username,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
+                                Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
               ),
               Padding(
                 padding: EdgeInsets.only(right: 20.w),
@@ -307,7 +301,7 @@ class _VacationAndPermessionsReportState
                         RadioButtonWidg(
                           radioVal2: radioVal2,
                           radioVal: 2,
-                          title: "المأموريات",
+                          title: getTranslated(context, "المأموريات"),
                           onchannge: (value) {
                             setState(() {
                               searchTextField.textField.controller.text =
@@ -332,7 +326,7 @@ class _VacationAndPermessionsReportState
                         RadioButtonWidg(
                           radioVal2: radioVal2,
                           radioVal: 1,
-                          title: "الأجازات",
+                          title: getTranslated(context, "الأجازات"),
                           onchannge: (value) {
                             setState(() {
                               searchTextField.textField.controller.text =
@@ -359,7 +353,7 @@ class _VacationAndPermessionsReportState
                         RadioButtonWidg(
                           radioVal2: radioVal2,
                           radioVal: 3,
-                          title: "الأذونات",
+                          title: getTranslated(context, "الأذونات"),
                           onchannge: (value) {
                             setState(() {
                               print(userName);

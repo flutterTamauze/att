@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         FocusScope.of(context).nextFocus(),
                                     validator: (text) {
                                       if (text == null || text.isEmpty) {
-                                        return 'مطلوب';
+                                        return getTranslated(context, "مطلوب");
                                       }
                                       return null;
                                     },
@@ -91,7 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.bold),
                                     decoration:
                                         kTextFieldDecorationWhite.copyWith(
-                                            hintText: "اسم المستخدم",
+                                            hintText: getTranslated(
+                                                context, "اسم المستخدم"),
                                             suffixIcon: Icon(
                                               Icons.person,
                                               color: Colors.orange,
@@ -108,7 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         textInputAction: TextInputAction.done,
                                         validator: (text) {
                                           if (text == null || text.isEmpty) {
-                                            return 'مطلوب';
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           } else if (text.length >= 8 &&
                                               text.length <= 12) {
                                             Pattern pattern =

@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
@@ -167,13 +168,10 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                         Header(nav: false),
 
                         ///Title
-                        Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: SmallDirectoriesHeader(
-                              Lottie.asset("resources/shiftLottie.json",
-                                  repeat: false),
-                              "دليل المناوبات"),
-                        ),
+                        SmallDirectoriesHeader(
+                            Lottie.asset("resources/shiftLottie.json",
+                                repeat: false),
+                            getTranslated(context, "دليل المناوبات")),
 
                         Expanded(
                           child: Column(
@@ -272,88 +270,130 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                             builder:
                                                                 (BuildContext
                                                                     context) {
-                                                              return Directionality(
-                                                                textDirection:
-                                                                    TextDirection
-                                                                        .rtl,
-                                                                child:
-                                                                    RoundedAlert(
-                                                                        onPressed:
-                                                                            () async {
-                                                                          showDialog(
-                                                                              context: context,
-                                                                              builder: (BuildContext context) {
-                                                                                return RoundedLoadingIndicator();
-                                                                              });
-                                                                          var msg = await shiftsData.deleteShift(
-                                                                              value.dropDownShifts[index].shiftId,
-                                                                              token,
-                                                                              index,
-                                                                              context);
+                                                              return RoundedAlert(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return RoundedLoadingIndicator();
+                                                                        });
+                                                                    var msg = await shiftsData.deleteShift(
+                                                                        value
+                                                                            .dropDownShifts[index]
+                                                                            .shiftId,
+                                                                        token,
+                                                                        index,
+                                                                        context);
 
-                                                                          if (msg ==
-                                                                              "Success") {
-                                                                            Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[widget.siteIndex].siteName,
-                                                                                false);
-                                                                            // Navigator.pop(context);
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "تم الحذف بنجاح",
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.green,
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                textColor: Colors.white,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                          } else if (msg ==
-                                                                              "hasData") {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.",
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.black,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                          } else if (msg ==
-                                                                              "failed") {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "خطأ في اثناء الحذف.",
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.black,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                          } else if (msg ==
-                                                                              "noInternet") {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "خطأ في الحذف: لا يوجد اتصال بالانترنت.",
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.black,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                          } else {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "خطأ في الحذف.",
-                                                                                gravity: ToastGravity.CENTER,
-                                                                                toastLength: Toast.LENGTH_SHORT,
-                                                                                timeInSecForIosWeb: 1,
-                                                                                backgroundColor: Colors.red,
-                                                                                textColor: Colors.black,
-                                                                                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-                                                                          }
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        title:
-                                                                            'إزالة مناوبة',
-                                                                        content:
-                                                                            "هل تريد إزالة ${value.dropDownShifts[index].shiftName} ؟"),
-                                                              );
+                                                                    if (msg ==
+                                                                        "Success") {
+                                                                      Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+                                                                          Provider.of<SiteShiftsData>(context, listen: false)
+                                                                              .siteShiftList[widget.siteIndex]
+                                                                              .siteName,
+                                                                          false);
+                                                                      // Navigator.pop(context);
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "تم الحذف بنجاح",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .green,
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf: true));
+                                                                    } else if (msg ==
+                                                                        "hasData") {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .black,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf: true));
+                                                                    } else if (msg ==
+                                                                        "failed") {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "خطأ في اثناء الحذف.",
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .black,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf: true));
+                                                                    } else if (msg ==
+                                                                        "noInternet") {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "خطأ في الحذف: لا يوجد اتصال بالانترنت.",
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .black,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf: true));
+                                                                    } else {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "خطأ في الحذف.",
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .black,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              16,
+                                                                              allowFontScalingSelf: true));
+                                                                    }
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  title:
+                                                                      'إزالة مناوبة',
+                                                                  content:
+                                                                      "هل تريد إزالة ${value.dropDownShifts[index].shiftName} ؟");
                                                             });
                                                       },
                                                       onTapEdit: () async {
@@ -577,102 +617,99 @@ class _ShiftTileState extends State<ShiftTile> {
           ],
           child: Card(
               elevation: 3,
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Container(
-                    width: double.infinity.w,
-                    height: 60.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.calendar_today_rounded,
-                                size: ScreenUtil()
-                                    .setSp(35, allowFontScalingSelf: true),
-                                color: Colors.orange,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Container(
+                  width: double.infinity.w,
+                  height: 60.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today_rounded,
+                              size: ScreenUtil()
+                                  .setSp(35, allowFontScalingSelf: true),
+                              color: Colors.orange,
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Container(
+                              child: AutoSizeText(
+                                widget.shifts.shiftName,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(15, allowFontScalingSelf: true),
+                                    fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Container(
-                                child: AutoSizeText(
-                                  widget.shifts.shiftName,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(15,
-                                          allowFontScalingSelf: true),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        InkWell(
-                          onTap: () async {
-                            // siteProv.setDropDownShift(
-                            //     widget.index); //الموقع علي حسب ال اندكس اللي
-                            siteProv.setSiteValue(widget.siteName);
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          // siteProv.setDropDownShift(
+                          //     widget.index); //الموقع علي حسب ال اندكس اللي
+                          siteProv.setSiteValue(widget.siteName);
 
-                            siteProv.fillCurrentShiftID(widget.shifts.shiftId);
-                            siteProv.setDropDownIndex(widget.siteIndex);
-                            siteProv.fillCurrentShiftID(widget.shifts.shiftId);
-                            print(widget.index);
+                          siteProv.fillCurrentShiftID(widget.shifts.shiftId);
+                          siteProv.setDropDownIndex(widget.siteIndex);
+                          siteProv.fillCurrentShiftID(widget.shifts.shiftId);
+                          print(widget.index);
 
-                            print("finding matching shifts");
-                            print(siteProv.currentSiteName);
-                            var index = getSiteName(siteProv.currentSiteName);
+                          print("finding matching shifts");
+                          print(siteProv.currentSiteName);
+                          var index = getSiteName(siteProv.currentSiteName);
 
-                            Provider.of<SiteShiftsData>(context, listen: false)
-                                .getShiftsList(
-                                    Provider.of<SiteShiftsData>(context,
-                                            listen: false)
-                                        .siteShiftList[index]
-                                        .siteName,
-                                    true);
+                          Provider.of<SiteShiftsData>(context, listen: false)
+                              .getShiftsList(
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .siteShiftList[index]
+                                      .siteName,
+                                  true);
 
-                            siteProv.setDropDownShift(
-                                widget.index + 1); //+1 lw feh all shifts
+                          siteProv.setDropDownShift(
+                              widget.index + 1); //+1 lw feh all shifts
 
-                            Navigator.of(context).push(
-                              new MaterialPageRoute(
-                                builder: (context) => UsersScreen(
-                                    widget.siteIndex + 1,
-                                    true,
-                                    widget.shifts.shiftName),
-                              ),
-                            );
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.orange, width: 1)),
-                              padding: EdgeInsets.all(9),
-                              child: Icon(
-                                Icons.person,
-                                size: 18,
-                                color: Colors.orange,
-                              )),
-                        )
-                        // CircularIconButton(
-                        //     icon: Icons.person,
-                        //     onTap: () {
-                        //       Navigator.of(context).push(
-                        //         new MaterialPageRoute(
-                        //           builder: (context) =>
-                        //               UsersScreen(widget.index + 1),
-                        //         ),
-                        //       );
-                        //     },
-                        //   ),
-                      ],
-                    ),
+                          Navigator.of(context).push(
+                            new MaterialPageRoute(
+                              builder: (context) => UsersScreen(
+                                  widget.siteIndex + 1,
+                                  true,
+                                  widget.shifts.shiftName),
+                            ),
+                          );
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.orange, width: 1)),
+                            padding: EdgeInsets.all(9),
+                            child: Icon(
+                              Icons.person,
+                              size: 18,
+                              color: Colors.orange,
+                            )),
+                      )
+                      // CircularIconButton(
+                      //     icon: Icons.person,
+                      //     onTap: () {
+                      //       Navigator.of(context).push(
+                      //         new MaterialPageRoute(
+                      //           builder: (context) =>
+                      //               UsersScreen(widget.index + 1),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                    ],
                   ),
                 ),
               )),
@@ -716,112 +753,107 @@ class _ShiftTileState extends State<ShiftTile> {
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 1000.h,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            DirectoriesHeader(
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(40.0),
-                                child: Lottie.asset(
-                                    "resources/shiftLottie.json",
-                                    repeat: false),
-                              ),
-                              shift.shiftName,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 1000.h,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(
+                        children: [
+                          DirectoriesHeader(
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40.0),
+                              child: Lottie.asset("resources/shiftLottie.json",
+                                  repeat: false),
                             ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      UserDataField(
-                                        icon: Icons.location_on,
-                                        text: Provider.of<SiteShiftsData>(
-                                                context,
-                                                listen: false)
-                                            .siteShiftList[widget.siteIndex]
-                                            .siteName,
-                                      ),
-                                      SizedBox(
-                                        height: 10.0.h,
-                                      ),
-                                      FromToShiftDisplay(
-                                        start: start,
-                                        end: end,
-                                        weekDay: weekDays[0],
-                                      ),
-                                      FromToShiftDisplay(
-                                        start: sunSt,
-                                        end: sunEn,
-                                        weekDay: weekDays[1],
-                                      ),
-                                      FromToShiftDisplay(
-                                          start: monSt,
-                                          end: monEn,
-                                          weekDay: weekDays[2]),
-                                      FromToShiftDisplay(
-                                          start: tuesSt,
-                                          end: tuesEnd,
-                                          weekDay: weekDays[3]),
-                                      FromToShiftDisplay(
-                                          start: wedSt,
-                                          end: wedEn,
-                                          weekDay: weekDays[4]),
-                                      FromToShiftDisplay(
-                                          start: thuSt,
-                                          end: thuEn,
-                                          weekDay: weekDays[5]),
-                                      FromToShiftDisplay(
-                                          start: friSt,
-                                          end: friEn,
-                                          weekDay: weekDays[6]),
-                                    ],
-                                  ),
+                            shift.shiftName,
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    UserDataField(
+                                      icon: Icons.location_on,
+                                      text: Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .siteShiftList[widget.siteIndex]
+                                          .siteName,
+                                    ),
+                                    SizedBox(
+                                      height: 10.0.h,
+                                    ),
+                                    FromToShiftDisplay(
+                                      start: start,
+                                      end: end,
+                                      weekDay: weekDays[0],
+                                    ),
+                                    FromToShiftDisplay(
+                                      start: sunSt,
+                                      end: sunEn,
+                                      weekDay: weekDays[1],
+                                    ),
+                                    FromToShiftDisplay(
+                                        start: monSt,
+                                        end: monEn,
+                                        weekDay: weekDays[2]),
+                                    FromToShiftDisplay(
+                                        start: tuesSt,
+                                        end: tuesEnd,
+                                        weekDay: weekDays[3]),
+                                    FromToShiftDisplay(
+                                        start: wedSt,
+                                        end: wedEn,
+                                        weekDay: weekDays[4]),
+                                    FromToShiftDisplay(
+                                        start: thuSt,
+                                        end: thuEn,
+                                        weekDay: weekDays[5]),
+                                    FromToShiftDisplay(
+                                        start: friSt,
+                                        end: friEn,
+                                        weekDay: weekDays[6]),
+                                  ],
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 5.0.w,
-                      top: 5.0.h,
-                      child: Container(
-                        width: 50.w,
-                        height: 50.h,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.orange,
-                            size: ScreenUtil()
-                                .setSp(25, allowFontScalingSelf: true),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 5.0.w,
+                    top: 5.0.h,
+                    child: Container(
+                      width: 50.w,
+                      height: 50.h,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.orange,
+                          size: ScreenUtil()
+                              .setSp(25, allowFontScalingSelf: true),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ));
         });
   }

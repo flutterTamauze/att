@@ -420,7 +420,7 @@ class ReportsData with ChangeNotifier {
     if (await isConnectedToInternet()) {
       final response = await http.get(
           Uri.parse(
-              "$localURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
+              "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
           headers: {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"

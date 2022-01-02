@@ -100,13 +100,6 @@ class Member {
 }
 
 class MemberData with ChangeNotifier {
-  List<String> rolesList = [
-    "مستخدم",
-    "مسئول تسجيل",
-    "مدير موقع",
-    "موارد بشرية",
-    "ادمن",
-  ];
   InheritDefault inherit = InheritDefault();
   List<Member> membersList = [];
   List<Member> membersListScreenDropDownSearch = [];

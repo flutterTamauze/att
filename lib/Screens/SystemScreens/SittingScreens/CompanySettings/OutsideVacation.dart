@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
@@ -1001,7 +1002,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           validator: (val) {
                                                             if (val.length ==
                                                                 0) {
-                                                              return 'مطلوب';
+                                                              return getTranslated(
+                                                                  context,
+                                                                  "مطلوب");
                                                             }
                                                             return null;
                                                           },
@@ -1010,29 +1013,24 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     ),
                                                   ),
                                                 ),
-                                                Directionality(
-                                                  textDirection:
-                                                      ui.TextDirection.rtl,
-                                                  child: Card(
-                                                    elevation: 5,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            selectedPermession ==
-                                                                    "تأخير عن الحضور"
-                                                                ? "اذن حتى الساعة"
-                                                                : "اذن من الساعة",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 13),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                Card(
+                                                  elevation: 5,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          selectedPermession ==
+                                                                  "تأخير عن الحضور"
+                                                              ? "اذن حتى الساعة"
+                                                              : "اذن من الساعة",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -1378,7 +1376,8 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                           });
                                         }
                                       },
-                                      hint: Text("كل المناوبات"),
+                                      hint: AutoSizeText(getTranslated(
+                                          context, "كل المناوبات")),
                                       value:
                                           widget.prov.siteValue == "كل المواقع"
                                               ? null

@@ -15,7 +15,7 @@ const androidDownloadLink =
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.112:8010";
+const localURL = "http://192.168.0.107:8010";
 const huaweiAppId = "104665933";
 const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
@@ -25,7 +25,7 @@ const apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
 List<String> weekDays = [
   "السبت",
   "الأحد",
-  "الأتنين",
+  "الأثنين",
   "الثلاثاء",
   "الأربعاء",
   "الخميس",
@@ -246,7 +246,7 @@ ThemeData clockTheme1 = ThemeData.dark().copyWith(
 const kTextFieldDecorationWhite = InputDecoration(
   isDense: true,
 
-  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
   hintText: 'Enter a value',
   hintStyle:
       TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),

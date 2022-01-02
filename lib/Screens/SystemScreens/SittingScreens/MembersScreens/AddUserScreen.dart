@@ -11,6 +11,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -18,6 +19,7 @@ import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dar
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
@@ -34,18 +36,13 @@ class AddUserScreen extends StatefulWidget {
   final String editableUserPhone;
   final String editiableDial;
   final isEdit;
+  String selectedRole;
 
   bool comingFromShifts = false;
   final String shiftNameIncoming;
-  AddUserScreen(
-    this.member,
-    this.id,
-    this.isEdit,
-    this.editableUserPhone,
-    this.editiableDial,
-    this.comingFromShifts,
-    this.shiftNameIncoming,
-  );
+  AddUserScreen(this.member, this.id, this.isEdit, this.editableUserPhone,
+      this.editiableDial, this.comingFromShifts, this.shiftNameIncoming,
+      [this.selectedRole]);
 
   @override
   _AddUserScreenState createState() => _AddUserScreenState();
@@ -87,11 +84,23 @@ class _AddUserScreenState extends State<AddUserScreen> {
     }
   }
 
+  List<String> rolesList = [];
+  @override
+  void didChangeDependencies() {
+    rolesList = [
+      getTranslated(context, "مستخدم"),
+      getTranslated(context, "مسئول تسجيل"),
+      getTranslated(context, "مدير موقع"),
+      getTranslated(context, "موارد بشرية"),
+      getTranslated(context, "ادمن"),
+    ];
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     super.initState();
-
-    log(widget.shiftNameIncoming);
+    print("selected role ${widget.selectedRole}");
     print(widget.comingFromShifts);
     if (widget.comingFromShifts) {
       print("shift incoming =${widget.shiftNameIncoming}");
@@ -101,6 +110,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
           Provider.of<SiteData>(context, listen: false).dropDownShiftIndex;
       print("current shift index $shiftIndex");
     }
+
     editNumber = intlPhone.PhoneNumber(
         isoCode: widget.editableUserPhone,
         dialCode: widget.editiableDial,
@@ -207,6 +217,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
+                print(getTranslated(context, rolesList[userType]));
                 print(shiftIndex);
                 for (int i = 0;
                     i <
@@ -251,15 +262,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: SmallDirectoriesHeader(
-                                    Lottie.asset("resources/user.json",
-                                        repeat: false),
-                                    (!widget.isEdit)
-                                        ? "إضافة مستخدم"
-                                        : "تعديل بيانات المستخدم"),
-                              ),
+                              SmallDirectoriesHeader(
+                                  Lottie.asset("resources/user.json",
+                                      repeat: false),
+                                  (!widget.isEdit)
+                                      ? getTranslated(context, "إضافة مستخدم")
+                                      : getTranslated(
+                                          context, "تعديل بيانات المستخدم")),
                               widget.isEdit
                                   ? Container(
                                       height: 80.h,
@@ -290,10 +299,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         enabled: edit,
                                         onFieldSubmitted: (_) {},
                                         textInputAction: TextInputAction.next,
-                                        textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text.length == 0) {
-                                            return 'مطلوب';
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           } else if (text.length > 80) {
                                             return "يجب ان لا يتخطي اسم المستخدم عن 80 حرف";
                                           }
@@ -302,7 +311,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         controller: _nameController,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                                hintText: 'اسم المستخدم',
+                                                hintText: getTranslated(
+                                                    context, 'اسم المستخدم'),
                                                 suffixIcon: Icon(
                                                   Icons.person,
                                                   color: Colors.orange,
@@ -315,10 +325,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         enabled: edit,
                                         onFieldSubmitted: (_) {},
                                         textInputAction: TextInputAction.next,
-                                        textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text.length == 0) {
-                                            return 'مطلوب';
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           }
                                           return null;
                                         },
@@ -326,7 +336,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         keyboardType: TextInputType.text,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                                hintText: 'الوظيفة',
+                                                hintText: getTranslated(
+                                                    context, 'الوظيفة'),
                                                 suffixIcon: Icon(
                                                   Icons.title,
                                                   color: Colors.orange,
@@ -338,7 +349,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       TextFormField(
                                         enabled: edit,
                                         textInputAction: TextInputAction.next,
-                                        textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text != "") {
                                             Pattern pattern =
@@ -348,7 +358,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             if (!regex.hasMatch(text))
                                               return 'البريد الإلكترونى غير صحيح';
                                           } else if (text.length == 0) {
-                                            return "مطلوب";
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           } else if (text.length > 80) {
                                             return "يجب ان لا يتخطي البريد الإلكترةني عن 80 حرف";
                                           }
@@ -357,7 +368,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         controller: _emailController,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                                hintText: 'البريد الالكترونى',
+                                                hintText: getTranslated(context,
+                                                    'البريد الالكترونى'),
                                                 suffixIcon: Icon(
                                                   Icons.email,
                                                   color: Colors.orange,
@@ -370,7 +382,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           ? Container(
                                               child:
                                                   InternationalPhoneNumberInput(
-                                                locale: "ar",
                                                 isEnabled: true,
                                                 countries: [
                                                   "EG",
@@ -396,14 +407,16 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 // },
                                                 errorMessage: _phoneController
                                                         .text.isEmpty
-                                                    ? "مطلوب"
+                                                    ? getTranslated(
+                                                        context, "مطلوب")
                                                     : "رقم خاطئ",
-                                                textAlign: TextAlign.right,
                                                 inputDecoration:
                                                     kTextFieldDecorationWhite
                                                         .copyWith(
                                                             hintText:
-                                                                "رقم الهاتف",
+                                                                getTranslated(
+                                                                    context,
+                                                                    "رقم الهاتف"),
                                                             suffixIcon: Icon(
                                                               Icons.phone,
                                                               color:
@@ -507,14 +520,16 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 onSubmit: () {},
                                                 errorMessage: _phoneController
                                                         .text.isEmpty
-                                                    ? "مطلوب"
+                                                    ? getTranslated(
+                                                        context, "مطلوب")
                                                     : "رقم خاطئ",
-                                                textAlign: TextAlign.right,
                                                 inputDecoration:
                                                     kTextFieldDecorationWhite
                                                         .copyWith(
                                                             hintText:
-                                                                "رقم الهاتف",
+                                                                getTranslated(
+                                                                    context,
+                                                                    "رقم الهاتف"),
                                                             suffixIcon: Icon(
                                                               Icons.phone,
                                                               color:
@@ -598,10 +613,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         enabled: edit,
                                         onFieldSubmitted: (_) {},
                                         textInputAction: TextInputAction.next,
-                                        textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text.length == 0) {
-                                            return 'مطلوب';
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           }
                                           return null;
                                         },
@@ -609,7 +624,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         keyboardType: TextInputType.number,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                                hintText: 'المرتب',
+                                                hintText: getTranslated(
+                                                    context, 'المرتب'),
                                                 suffixIcon: Icon(
                                                   Icons.money,
                                                   color: Colors.orange,
@@ -626,9 +642,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           edit: widget.member.userType != 4
                                               ? edit
                                               : false,
-                                          list: Provider.of<MemberData>(context,
-                                                  listen: false)
-                                              .rolesList,
+                                          list: rolesList,
                                           colour: Colors.white,
                                           icon: Icons.person,
                                           borderColor: Colors.black,
@@ -636,12 +650,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (String value) {
                                             userType = getRoleId(value);
+                                            widget.selectedRole = value;
                                             userRole = value;
                                           },
-                                          selectedvalue:
-                                              Provider.of<MemberData>(context,
-                                                      listen: false)
-                                                  .rolesList[userType],
+                                          selectedvalue: widget.selectedRole,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -949,10 +961,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   }
                                 },
                                 title: (!widget.isEdit)
-                                    ? "إضافة"
+                                    ? getTranslated(context, "إضافة")
                                     : edit
-                                        ? "حفظ"
-                                        : "تعديل",
+                                        ? getTranslated(context, "حفظ")
+                                        : getTranslated(context, "تعديل"),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(15),
@@ -970,12 +982,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                     }
                                   },
                                   child: Container(
+                                    margin: EdgeInsets.only(right: 20.w),
                                     height: 20,
                                     child: AutoSizeText(
-                                      "اضافة من جهات الاتصال",
+                                      getTranslated(
+                                          context, "إضافة من جهات الاتصال"),
                                       maxLines: 1,
                                       style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: setResponsiveFontSize(15),
                                           decoration: TextDecoration.underline,
                                           color: Colors.orange),
                                     ),
@@ -1122,7 +1136,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   int getRoleId(String role) {
-    var rolesList = Provider.of<MemberData>(context, listen: false).rolesList;
     int index = rolesList.length;
     for (int i = 0; i < index; i++) {
       if (role == rolesList[i]) {
@@ -1146,18 +1159,23 @@ class _AddUserScreenState extends State<AddUserScreen> {
 String getRoleName(String role) {
   switch (role) {
     case "مستخدم":
+    case "User":
       return "User";
       break;
     case "مسئول تسجيل":
+    case "Registry Administrator":
       return "Attend_Admin";
       break;
     case "مدير موقع":
+    case "Site Admin":
       return "Site_Admin";
       break;
     case "موارد بشرية":
+    case "HR":
       return "HR";
       break;
     case "ادمن":
+    case "Admin":
       return "Admin";
       break;
 

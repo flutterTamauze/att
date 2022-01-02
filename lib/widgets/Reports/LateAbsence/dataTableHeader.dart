@@ -24,7 +24,7 @@ class DataTableHeader extends StatelessWidget {
                   child: Container(
                 height: 20,
                 child: AutoSizeText(
-                  'الاسم',
+                  getTranslated(context, "الأسم"),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class DataTableHeader extends StatelessWidget {
                           child: Container(
                     height: 20,
                     child: AutoSizeText(
-                      getTranslated(context, "التأخير"),
+                      getTranslated(context, "ايام التأخير"),
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -95,7 +95,7 @@ class DataTableHeader extends StatelessWidget {
                       child: Center(
                           child: Container(
                     child: AutoSizeText(
-                      'مجموع الخصومات',
+                      getTranslated(context, 'مجموع الخصومات'),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: TextStyle(

@@ -295,7 +295,8 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      AutoSizeText(weekDays[currentIndex],
+                      AutoSizeText(
+                          getTranslated(context, weekDays[currentIndex]),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: setResponsiveFontSize(15),

@@ -61,7 +61,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        'الغياب:',
+                        '${getTranslated(context, "الغياب")}:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        'الخصومات:',
+                        '${getTranslated(context, "الخصومات")}:',
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

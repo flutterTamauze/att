@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -331,7 +332,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text.length == 0) {
-                                            return 'مطلوب';
+                                            return getTranslated(
+                                                context, "مطلوب");
                                           } else if (text.length > 25) {
                                             return "يجب ان لا يزيد اسم المناوبة عن 25 حرف";
                                           }
@@ -597,7 +599,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                         controller:
                                                                             _timeOutController,
                                                                         decoration: kTextFieldDecorationFromTO.copyWith(
-                                                                            hintText: 'الى',
+                                                                            hintText: getTranslated(context, "إلى"),
                                                                             prefixIcon: Icon(
                                                                               Icons.alarm,
                                                                               color: Colors.orange,
@@ -626,7 +628,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             callBackfunTo: (TimeOfDay v) {
                                               toPicked = v;
                                             },
-                                            weekDay: "السبت",
+                                            weekDay:
+                                                getTranslated(context, "السبت"),
                                             fromPickedWeek: fromPicked,
                                             timeInController: _timeInController,
                                             timeOutController:
@@ -636,7 +639,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           ),
                                           AdvancedShiftPicker(
                                             isShiftsScreen: true,
-                                            weekDay: "الأحد",
+                                            weekDay:
+                                                getTranslated(context, "الأحد"),
                                             fromPickedWeek: sunFromT,
                                             timeInController:
                                                 sunTimeInController,
@@ -651,7 +655,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             },
                                           ),
                                           AdvancedShiftPicker(
-                                            weekDay: "الأتنين",
+                                            weekDay: getTranslated(
+                                                context, "الأثنين"),
                                             isShiftsScreen: true,
                                             fromPickedWeek: monFromT,
                                             timeInController:
@@ -668,7 +673,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           ),
                                           AdvancedShiftPicker(
                                             isShiftsScreen: true,
-                                            weekDay: "الثلاثاء",
+                                            weekDay: getTranslated(
+                                                context, "الثلاثاء"),
                                             fromPickedWeek: tuesFromT,
                                             timeInController:
                                                 tuesTimeInController,
@@ -683,7 +689,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             },
                                           ),
                                           AdvancedShiftPicker(
-                                            weekDay: "الأربعاء",
+                                            weekDay: getTranslated(
+                                                context, "الأربعاء"),
                                             isShiftsScreen: true,
                                             fromPickedWeek: wedFromT,
                                             timeInController:
@@ -699,7 +706,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             },
                                           ),
                                           AdvancedShiftPicker(
-                                            weekDay: "الخميس",
+                                            weekDay: getTranslated(
+                                                context, "الخميس"),
                                             isShiftsScreen: true,
                                             fromPickedWeek: thuFromT,
                                             timeInController:
@@ -715,7 +723,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             },
                                           ),
                                           AdvancedShiftPicker(
-                                            weekDay: "الجمعة",
+                                            weekDay: getTranslated(
+                                                context, "الجمعة"),
                                             isShiftsScreen: true,
                                             fromPickedWeek: friFromT,
                                             timeInController:
@@ -1267,7 +1276,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                 child: AutoSizeText(
                   widget.weekDay,
                   style: TextStyle(
-                      fontSize: setResponsiveFontSize(14),
+                      fontSize: setResponsiveFontSize(13),
                       fontWeight: FontWeight.bold),
                 ),
               ),

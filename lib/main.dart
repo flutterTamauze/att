@@ -118,6 +118,8 @@ huaweiHandler() async {
   }
 }
 
+void _changeLangugage(Langugage) {}
+
 class MyApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();

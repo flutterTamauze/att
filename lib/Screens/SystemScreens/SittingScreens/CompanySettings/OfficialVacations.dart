@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/company.dart';
@@ -60,10 +61,20 @@ class _OfficialVacationState extends State<OfficialVacation> {
 
   String dateToString = "";
   String dateFromString = "";
-
+  String fromText;
   String selectedId = "";
   Site siteData;
+  String toText;
   DateTime yesterday;
+  @override
+  void didChangeDependencies() {
+    fromText =
+        " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
+    toText =
+        " ${getTranslated(context, "إلى")}  ${DateFormat('yMMMd').format(toDate).toString()}";
+    _dateController.text = "$fromText $toText";
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -79,8 +90,6 @@ class _OfficialVacationState extends State<OfficialVacation> {
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
 
-    String fromText = " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-    String toText = " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
     print(toDate.toString());
     print(fromDate.toString());
     _dateController.text = "$fromText $toText";
@@ -88,7 +97,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
 
   @override
   Widget build(BuildContext context) {
-    var vactionProv = Provider.of<VacationData>(context, listen: true);
+    final vactionProv = Provider.of<VacationData>(context, listen: true);
     List<DateTime> pickedRange = [fromDate, toDate];
     return GestureDetector(
         onTap: () {
@@ -107,7 +116,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                 .currentShiftIndex,
                         comingFromShifts: false,
                         shiftName: "",
-                        mainTitle: 'إضافة عطلة',
+                        mainTitle: getTranslated(context, 'إضافة عطلة'),
                         mainIconData: Icons.person_add,
                       )
                     : Container(),
@@ -118,17 +127,14 @@ class _OfficialVacationState extends State<OfficialVacation> {
                   goUserMenu: false,
                   goUserHomeFromMenu: false,
                 ),
-                Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SmallDirectoriesHeader(
-                        Lottie.asset("resources/calender.json", repeat: false),
-                        "العطلات الرسمية",
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SmallDirectoriesHeader(
+                      Lottie.asset("resources/calender.json", repeat: false),
+                      getTranslated(context, "العطلات الرسمية"),
+                    ),
+                  ],
                 ),
                 Theme(
                   data: clockTheme1,
@@ -147,10 +153,10 @@ class _OfficialVacationState extends State<OfficialVacation> {
                               fromDate = pickedRange.first;
                               toDate = pickedRange.last;
 
-                              String fromText =
-                                  " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                              String toText =
-                                  " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                              final String fromText =
+                                  " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
+                              final String toText =
+                                  " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
                               newString = "$fromText $toText";
                             });
 
@@ -177,25 +183,22 @@ class _OfficialVacationState extends State<OfficialVacation> {
                               }
                             }
                           },
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Container(
-                              width: 330.w,
-                              child: IgnorePointer(
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                  textInputAction: TextInputAction.next,
-                                  controller: _dateController,
-                                  decoration:
-                                      kTextFieldDecorationFromTO.copyWith(
-                                          hintText: 'المدة من / إلى',
-                                          prefixIcon: Icon(
-                                            Icons.calendar_today_rounded,
-                                            color: Colors.orange,
-                                          )),
-                                ),
+                          child: Container(
+                            width: 330.w,
+                            child: IgnorePointer(
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                                textInputAction: TextInputAction.next,
+                                controller: _dateController,
+                                decoration: kTextFieldDecorationFromTO.copyWith(
+                                    hintText: getTranslated(
+                                        context, 'المدة من / إلى'),
+                                    prefixIcon: Icon(
+                                      Icons.calendar_today_rounded,
+                                      color: Colors.orange,
+                                    )),
                               ),
                             ),
                           ));
@@ -207,89 +210,83 @@ class _OfficialVacationState extends State<OfficialVacation> {
                 ),
                 Container(
                   width: 330.w,
-                  child: Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: searchTextField = AutoCompleteTextField<Vacation>(
-                      key: key,
-                      clearOnSubmit: false,
-                      controller: _nameController,
-                      suggestions: vactionProv.vactionList
-                          .where((element) => isDateBetweenTheRange(
-                              element, pickedRange.first, pickedRange.last))
-                          .toList(),
-                      style: TextStyle(
-                          fontSize: ScreenUtil()
-                              .setSp(16, allowFontScalingSelf: true),
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500),
-                      decoration: kTextFieldDecorationFromTO.copyWith(
-                          hintStyle: TextStyle(
-                              fontSize: ScreenUtil()
-                                  .setSp(16, allowFontScalingSelf: true),
-                              color: Colors.grey.shade700,
-                              fontWeight: FontWeight.w500),
-                          hintText: 'اسم العطلة',
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.orange,
-                          )),
-                      itemFilter: (item, query) {
-                        return item.vacationName
-                            .toLowerCase()
-                            .contains(query.toLowerCase());
-                      },
-                      itemSorter: (a, b) {
-                        return a.vacationName.compareTo(b.vacationName);
-                      },
-                      itemSubmitted: (item) async {
-                        var index = vactionProv.vactionList.indexOf(item);
-                        if (_nameController.text != item.vacationName) {
-                          setState(() {
-                            searchTextField.textField.controller.text =
-                                item.vacationName;
+                  child: searchTextField = AutoCompleteTextField<Vacation>(
+                    key: key,
+                    clearOnSubmit: false,
+                    controller: _nameController,
+                    suggestions: vactionProv.vactionList
+                        .where((element) => isDateBetweenTheRange(
+                            element, pickedRange.first, pickedRange.last))
+                        .toList(),
+                    style: TextStyle(
+                        fontSize:
+                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
+                    decoration: kTextFieldDecorationFromTO.copyWith(
+                        hintStyle: TextStyle(
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                            color: Colors.grey.shade700,
+                            fontWeight: FontWeight.w500),
+                        hintText: getTranslated(context, "أسم العطلة"),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.orange,
+                        )),
+                    itemFilter: (item, query) {
+                      return item.vacationName
+                          .toLowerCase()
+                          .contains(query.toLowerCase());
+                    },
+                    itemSorter: (a, b) {
+                      return a.vacationName.compareTo(b.vacationName);
+                    },
+                    itemSubmitted: (item) async {
+                      var index = vactionProv.vactionList.indexOf(item);
+                      if (_nameController.text != item.vacationName) {
+                        setState(() {
+                          searchTextField.textField.controller.text =
+                              item.vacationName;
 
-                            vactionProv.setCopyByIndex(index);
-                            // isVacationselected = true;
-                          });
-                        }
-                      },
-                      itemBuilder: (context, item) {
-                        // ui for the autocompelete row
-                        return Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              right: 10,
-                              bottom: 5,
+                          vactionProv.setCopyByIndex(index);
+                          // isVacationselected = true;
+                        });
+                      }
+                    },
+                    itemBuilder: (context, item) {
+                      // ui for the autocompelete row
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10,
+                          bottom: 5,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 10.w,
                             ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Container(
-                                  height: 20,
-                                  child: AutoSizeText(
-                                    item.vacationName,
-                                    maxLines: 1,
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16,
-                                            allowFontScalingSelf: true),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                  thickness: 1,
-                                ),
-                              ],
+                            Container(
+                              height: 20,
+                              child: AutoSizeText(
+                                item.vacationName,
+                                maxLines: 1,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil()
+                                        .setSp(16, allowFontScalingSelf: true),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                            Divider(
+                              color: Colors.grey,
+                              thickness: 1,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
@@ -298,171 +295,168 @@ class _OfficialVacationState extends State<OfficialVacation> {
                 Expanded(
                     child: Container(
                   color: Colors.white,
-                  child: Directionality(
-                      textDirection: ui.TextDirection.rtl,
-                      child: Column(
-                        children: [
-                          Divider(thickness: 1, color: ColorManager.primary),
-                          DataTableVacationHeader(),
-                          Divider(thickness: 1, color: ColorManager.primary),
-                          vactionProv.isLoading
-                              ? Expanded(
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      backgroundColor: Colors.orange,
-                                    ),
-                                  ),
-                                )
-                              : Expanded(
-                                  child: Container(
-                                  child: vactionProv.vactionList.length == 0
-                                      ? Center(
-                                          child: Text(
-                                            "لا يوجد عطلات رسمية",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          itemCount: _nameController.text == ""
-                                              ? vactionProv.vactionList.length
-                                              : vactionProv
-                                                  .copyVacationList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Column(
-                                              children: [
-                                                Slidable(
-                                                  actionExtentRatio: 0.10,
-                                                  closeOnScroll: true,
-                                                  controller:
-                                                      slidableController,
-                                                  actionPane:
-                                                      SlidableDrawerActionPane(),
-                                                  secondaryActions: [
-                                                    ZoomIn(
-                                                        child: InkWell(
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(7),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Colors.green,
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.edit,
-                                                          size: 18,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  AddVacationScreen(
-                                                                edit: true,
-                                                                vacationListID:
-                                                                    index,
-                                                              ),
-                                                            ));
-                                                      },
-                                                    )),
-                                                    ZoomIn(
-                                                        child: InkWell(
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(7),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Colors.red,
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          size: 18,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      onTap: () {
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return vactionProv
-                                                                      .isLoading
-                                                                  ? Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(
-                                                                        backgroundColor:
-                                                                            Colors.orange,
-                                                                      ),
-                                                                    )
-                                                                  : RoundedAlert(
-                                                                      onPressed:
-                                                                          () async {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        String msg = await vactionProv.deleteVacationById(
-                                                                            Provider.of<UserData>(context, listen: false).user.userToken,
-                                                                            vactionProv.vactionList[index].vacationId,
-                                                                            index);
-                                                                        if (msg ==
-                                                                            "Success") {
-                                                                          Fluttertoast.showToast(
-                                                                              msg: "تم حذف العطلة بنجاح",
-                                                                              backgroundColor: Colors.green);
-                                                                        } else {
-                                                                          Fluttertoast.showToast(
-                                                                              msg: "خطأ في حذف العطلة",
-                                                                              backgroundColor: Colors.red);
-                                                                        }
-                                                                      },
-                                                                      content:
-                                                                          "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
-                                                                      onCancel:
-                                                                          () {},
-                                                                      title:
-                                                                          "حذف العطلة",
-                                                                    );
-                                                            });
-                                                      },
-                                                    )),
-                                                  ],
-                                                  child: DataTableVacationRow(
-                                                    vacation: _nameController
-                                                                .text ==
-                                                            ""
+                  child: Column(
+                    children: [
+                      Divider(thickness: 1, color: ColorManager.primary),
+                      DataTableVacationHeader(),
+                      Divider(thickness: 1, color: ColorManager.primary),
+                      vactionProv.isLoading
+                          ? Expanded(
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.orange,
+                                ),
+                              ),
+                            )
+                          : Expanded(
+                              child: Container(
+                              child: vactionProv.vactionList.length == 0
+                                  ? Center(
+                                      child: AutoSizeText(
+                                        getTranslated(
+                                            context, "لا يوجد عطلات رسمية"),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      itemCount: _nameController.text == ""
+                                          ? vactionProv.vactionList.length
+                                          : vactionProv.copyVacationList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Column(
+                                          children: [
+                                            Slidable(
+                                              actionExtentRatio: 0.10,
+                                              closeOnScroll: true,
+                                              controller: slidableController,
+                                              actionPane:
+                                                  SlidableDrawerActionPane(),
+                                              secondaryActions: [
+                                                ZoomIn(
+                                                    child: InkWell(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(7),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.green,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.edit,
+                                                      size: 18,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AddVacationScreen(
+                                                            edit: true,
+                                                            vacationListID:
+                                                                index,
+                                                          ),
+                                                        ));
+                                                  },
+                                                )),
+                                                ZoomIn(
+                                                    child: InkWell(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(7),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.red,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.delete,
+                                                      size: 18,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    return showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return vactionProv
+                                                                  .isLoading
+                                                              ? Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .orange,
+                                                                  ),
+                                                                )
+                                                              : RoundedAlert(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    String msg = await vactionProv.deleteVacationById(
+                                                                        Provider.of<UserData>(context, listen: false)
+                                                                            .user
+                                                                            .userToken,
+                                                                        vactionProv
+                                                                            .vactionList[index]
+                                                                            .vacationId,
+                                                                        index);
+                                                                    if (msg ==
+                                                                        "Success") {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "تم حذف العطلة بنجاح",
+                                                                          backgroundColor:
+                                                                              Colors.green);
+                                                                    } else {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "خطأ في حذف العطلة",
+                                                                          backgroundColor:
+                                                                              Colors.red);
+                                                                    }
+                                                                  },
+                                                                  content:
+                                                                      "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
+                                                                  onCancel:
+                                                                      () {},
+                                                                  title:
+                                                                      "حذف العطلة",
+                                                                );
+                                                        });
+                                                  },
+                                                )),
+                                              ],
+                                              child: DataTableVacationRow(
+                                                vacation:
+                                                    _nameController.text == ""
                                                         ? vactionProv
                                                             .vactionList[index]
                                                         : vactionProv
                                                             .copyVacationList
                                                             .first,
-                                                    filterFromDate:
-                                                        pickedRange.first,
-                                                    filterToDate:
-                                                        pickedRange.last,
-                                                  ),
-                                                ),
-                                                isDateBetweenTheRange(
-                                                        vactionProv
-                                                            .vactionList[index],
-                                                        pickedRange.first,
-                                                        pickedRange.last)
-                                                    ? Divider(
-                                                        thickness: 1,
-                                                      )
-                                                    : Container()
-                                              ],
-                                            );
-                                          }),
-                                )),
-                        ],
-                      )),
+                                                filterFromDate:
+                                                    pickedRange.first,
+                                                filterToDate: pickedRange.last,
+                                              ),
+                                            ),
+                                            isDateBetweenTheRange(
+                                                    vactionProv
+                                                        .vactionList[index],
+                                                    pickedRange.first,
+                                                    pickedRange.last)
+                                                ? Divider(
+                                                    thickness: 1,
+                                                  )
+                                                : Container()
+                                          ],
+                                        );
+                                      }),
+                            )),
+                    ],
+                  ),
                 ))
               ]),
             )));

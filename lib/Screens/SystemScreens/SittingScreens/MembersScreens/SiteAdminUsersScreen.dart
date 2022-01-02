@@ -13,6 +13,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
@@ -76,95 +77,114 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
       child: Container(
         child: Column(
           children: [
-            Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                          decoration: BoxDecoration(),
-                          height: 44.0.h,
-                          child: Stack(
-                            overflow: Overflow.visible,
-                            children: [
-                              TextFormField(
-                                onFieldSubmitted: (_) async {
-                                  FocusScope.of(context).unfocus();
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                        decoration: BoxDecoration(),
+                        height: 44.0.h,
+                        child: Stack(
+                          overflow: Overflow.visible,
+                          children: [
+                            TextFormField(
+                              onFieldSubmitted: (_) async {
+                                FocusScope.of(context).unfocus();
+                                setState(() {
+                                  showSearchButton = false;
+                                  widget.searchFun(widget.textController.text);
+                                });
+                              },
+                              onChanged: (String v) {
+                                print(v);
+                                if (v.isEmpty) {
+                                  widget.resetTextFieldFun();
+                                }
+                                print(showSearchButton);
+                                if (showSearchButton == false) {
                                   setState(() {
-                                    showSearchButton = false;
-                                    widget
-                                        .searchFun(widget.textController.text);
+                                    showSearchButton = true;
                                   });
-                                },
-                                onChanged: (String v) {
-                                  print(v);
-                                  if (v.isEmpty) {
-                                    widget.resetTextFieldFun();
-                                  }
-                                  print(showSearchButton);
-                                  if (showSearchButton == false) {
-                                    setState(() {
-                                      showSearchButton = true;
-                                    });
-                                  }
-                                },
-                                controller: widget.textController,
-                                style: TextStyle(
-                                    fontSize: ScreenUtil()
-                                        .setSp(16, allowFontScalingSelf: true)),
-                                decoration:
-                                    kTextFieldDecorationForSearch.copyWith(
-                                        hintText: 'اسم المستخدم',
-                                        hintStyle: TextStyle(
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true),
-                                        ),
-                                        fillColor: Color(0xFFE9E9E9),
-                                        contentPadding: EdgeInsets.only(
-                                            left: 11,
-                                            right: 13,
-                                            top: 20,
-                                            bottom: 14),
-                                        errorStyle: TextStyle(
-                                          fontSize: 13,
-                                          height: 0.7,
-                                        ),
-                                        errorMaxLines: 4),
+                                }
+                              },
+                              controller: widget.textController,
+                              style: TextStyle(
+                                  fontSize: ScreenUtil()
+                                      .setSp(16, allowFontScalingSelf: true)),
+                              decoration:
+                                  kTextFieldDecorationForSearch.copyWith(
+                                      hintText: 'اسم المستخدم',
+                                      hintStyle: TextStyle(
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                      fillColor: Color(0xFFE9E9E9),
+                                      contentPadding: EdgeInsets.only(
+                                          left: 11,
+                                          right: 13,
+                                          top: 20,
+                                          bottom: 14),
+                                      errorStyle: TextStyle(
+                                        fontSize: 13,
+                                        height: 0.7,
+                                      ),
+                                      errorMaxLines: 4),
+                            ),
+                            Positioned(
+                              left: 0,
+                              bottom: 0,
+                              child: Container(
+                                width: 1.3,
+                                height: 50,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                               ),
-                              Positioned(
-                                left: 0,
-                                bottom: 0,
-                                child: Container(
-                                  width: 1.3,
-                                  height: 50,
-                                  color:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                ),
-                              )
-                            ],
-                          )),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (widget.textController.text.length < 3) {
-                            Fluttertoast.showToast(
-                                msg: "يجب ان لا يقل البحث عن 3 احرف",
-                                backgroundColor: Colors.red,
-                                gravity: ToastGravity.CENTER);
-                          } else {
-                            setState(() {
-                              showSearchButton = false;
-                              widget.searchFun(widget.textController.text);
-                            });
-                          }
-                        },
-                        child: showSearchButton
-                            ? Container(
+                            )
+                          ],
+                        )),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (widget.textController.text.length < 3) {
+                          Fluttertoast.showToast(
+                              msg: "يجب ان لا يقل البحث عن 3 احرف",
+                              backgroundColor: Colors.red,
+                              gravity: ToastGravity.CENTER);
+                        } else {
+                          setState(() {
+                            showSearchButton = false;
+                            widget.searchFun(widget.textController.text);
+                          });
+                        }
+                      },
+                      child: showSearchButton
+                          ? Container(
+                              height: 44.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color(0xff4a4a4a), width: 1.0),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10)),
+                                color: Colors.orange[500],
+                              ),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                setState(() {
+                                  showSearchButton = true;
+                                });
+                                widget.resetTextFieldFun();
+                              },
+                              child: Container(
                                 height: 44.h,
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -174,36 +194,13 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                       bottomLeft: Radius.circular(10)),
                                   color: Colors.orange[500],
                                 ),
-                                child: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    showSearchButton = true;
-                                  });
-                                  widget.resetTextFieldFun();
-                                },
-                                child: Container(
-                                  height: 44.h,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Color(0xff4a4a4a), width: 1.0),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10)),
-                                    color: Colors.orange[500],
-                                  ),
-                                  child: Icon(FontAwesomeIcons.times,
-                                      color: Colors.white),
-                                ),
+                                child: Icon(FontAwesomeIcons.times,
+                                    color: Colors.white),
                               ),
-                      ),
-                    )
-                  ],
-                ),
+                            ),
+                    ),
+                  )
+                ],
               ),
             ),
             SizedBox(
@@ -219,101 +216,96 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                         child: Center(
                           child: Column(
                             children: [
-                              Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: Consumer<ShiftsData>(
-                                  builder: (context, value, child) {
-                                    return DropdownButton(
-                                        isExpanded: true,
-                                        underline: SizedBox(),
-                                        elevation: 5,
-                                        items: value.shiftsList
-                                            .map(
-                                              (value) => DropdownMenuItem(
-                                                  child: Container(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      height: 20.h,
-                                                      child: AutoSizeText(
-                                                        value.shiftName,
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(12,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                      )),
-                                                  value: value.shiftName),
-                                            )
-                                            .toList(),
-                                        onChanged: (v) async {
-                                          int holder;
-                                          print(v);
-                                          prov.setShiftValue(v);
+                              Consumer<ShiftsData>(
+                                builder: (context, value, child) {
+                                  return DropdownButton(
+                                      isExpanded: true,
+                                      underline: SizedBox(),
+                                      elevation: 5,
+                                      items: value.shiftsList
+                                          .map(
+                                            (value) => DropdownMenuItem(
+                                                child: Container(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    height: 20.h,
+                                                    child: AutoSizeText(
+                                                      value.shiftName,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(12,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    )),
+                                                value: value.shiftName),
+                                          )
+                                          .toList(),
+                                      onChanged: (v) async {
+                                        int holder;
+                                        print(v);
+                                        prov.setShiftValue(v);
 
-                                          List<String> x = [];
+                                        List<String> x = [];
 
-                                          value.shiftsList.forEach((element) {
-                                            x.add(element.shiftName);
-                                          });
+                                        value.shiftsList.forEach((element) {
+                                          x.add(element.shiftName);
+                                        });
 
-                                          holder = x.indexOf(v);
-                                          print(
-                                              value.shiftsList[holder].shiftId);
-                                          if (value
-                                                  .shiftsList[holder].shiftId ==
-                                              -100) {
-                                            Provider.of<MemberData>(context,
-                                                    listen: false)
-                                                .bySitePageIndex = 0;
-                                            Provider.of<MemberData>(context,
-                                                    listen: false)
-                                                .keepRetriving = true;
-                                          }
+                                        holder = x.indexOf(v);
+                                        print(value.shiftsList[holder].shiftId);
+                                        if (value.shiftsList[holder].shiftId ==
+                                            -100) {
                                           Provider.of<MemberData>(context,
                                                   listen: false)
-                                              .byShiftPageIndex = 0;
+                                              .bySitePageIndex = 0;
                                           Provider.of<MemberData>(context,
                                                   listen: false)
                                               .keepRetriving = true;
-                                          Provider.of<MemberData>(context,
-                                                  listen: false)
-                                              .getAllCompanyMember(
-                                                  Provider.of<UserData>(context,
-                                                          listen: false)
-                                                      .user
-                                                      .userSiteId,
-                                                  Provider.of<CompanyData>(
-                                                          context,
-                                                          listen: false)
-                                                      .com
-                                                      .id,
-                                                  Provider.of<UserData>(context,
-                                                          listen: false)
-                                                      .user
-                                                      .userToken,
-                                                  context,
-                                                  value.shiftsList[holder]
-                                                              .shiftId ==
-                                                          -100
-                                                      ? -1
-                                                      : value.shiftsList[holder]
-                                                          .shiftId);
-                                          print(holder);
-                                          prov.setDropDownShift(holder);
-                                        },
-                                        hint: Text("كل المناوبات"),
-                                        value: value
-                                            .shiftsList[prov.dropDownShiftIndex]
-                                            .shiftName
+                                        }
+                                        Provider.of<MemberData>(context,
+                                                listen: false)
+                                            .byShiftPageIndex = 0;
+                                        Provider.of<MemberData>(context,
+                                                listen: false)
+                                            .keepRetriving = true;
+                                        Provider.of<MemberData>(context,
+                                                listen: false)
+                                            .getAllCompanyMember(
+                                                Provider.of<UserData>(context,
+                                                        listen: false)
+                                                    .user
+                                                    .userSiteId,
+                                                Provider.of<CompanyData>(
+                                                        context,
+                                                        listen: false)
+                                                    .com
+                                                    .id,
+                                                Provider.of<UserData>(context,
+                                                        listen: false)
+                                                    .user
+                                                    .userToken,
+                                                context,
+                                                value.shiftsList[holder]
+                                                            .shiftId ==
+                                                        -100
+                                                    ? -1
+                                                    : value.shiftsList[holder]
+                                                        .shiftId);
+                                        print(holder);
+                                        prov.setDropDownShift(holder);
+                                      },
+                                      hint: AutoSizeText(getTranslated(
+                                          context, "كل المناوبات")),
+                                      value: value
+                                          .shiftsList[prov.dropDownShiftIndex]
+                                          .shiftName
 
-                                        // value
-                                        );
-                                  },
-                                ),
+                                      // value
+                                      );
+                                },
                               ),
                               Divider(
                                 height: 1,
@@ -497,12 +489,9 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
 
                       ///Title
                       ///
-                      Directionality(
-                        textDirection: ui.TextDirection.rtl,
-                        child: SmallDirectoriesHeader(
-                          Lottie.asset("resources/user.json", repeat: false),
-                          "دليل المستخدمين",
-                        ),
+                      SmallDirectoriesHeader(
+                        Lottie.asset("resources/user.json", repeat: false),
+                        getTranslated(context, "دليل المستخدمين"),
                       ),
 
                       ///List OF SITES
@@ -634,39 +623,36 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                         itemBuilder:
                                                                             (BuildContext context,
                                                                                 int index) {
-                                                                          return Directionality(
-                                                                            textDirection:
-                                                                                TextDirection.rtl,
-                                                                            child:
-                                                                                InkWell(
-                                                                              onTap: () {
-                                                                                Navigator.push(
-                                                                                    context,
-                                                                                    MaterialPageRoute(
-                                                                                      builder: (context) => UserFullDataScreen(
-                                                                                        index: index,
-                                                                                        onResetMac: () {
-                                                                                          settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                        },
-                                                                                        onTapDelete: () {
-                                                                                          settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                        },
-                                                                                        siteIndex: siteIndex,
-                                                                                        userId: value.userSearchMember[index].id,
-                                                                                      ),
-                                                                                    ));
-                                                                              },
-                                                                              child: Card(
-                                                                                elevation: 2,
-                                                                                child: Container(
-                                                                                  alignment: Alignment.centerRight,
-                                                                                  width: double.infinity,
-                                                                                  height: 50.h,
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.all(10.0),
-                                                                                    child: Text(
-                                                                                      value.userSearchMember[index].username,
+                                                                          return InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(
+                                                                                    builder: (context) => UserFullDataScreen(
+                                                                                      index: index,
+                                                                                      onResetMac: () {
+                                                                                        settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                      },
+                                                                                      onTapDelete: () {
+                                                                                        settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                      },
+                                                                                      siteIndex: siteIndex,
+                                                                                      userId: value.userSearchMember[index].id,
                                                                                     ),
+                                                                                  ));
+                                                                            },
+                                                                            child:
+                                                                                Card(
+                                                                              elevation: 2,
+                                                                              child: Container(
+                                                                                alignment: Alignment.centerRight,
+                                                                                width: double.infinity,
+                                                                                height: 50.h,
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(10.0),
+                                                                                  child: Text(
+                                                                                    value.userSearchMember[index].username,
                                                                                   ),
                                                                                 ),
                                                                               ),
@@ -1005,80 +991,76 @@ class _MemberTileState extends State<MemberTile> {
             elevation: 3,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Container(
-                  width: double.infinity,
-                  height: 65.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 55.w,
-                            height: 55.h,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border:
-                                    Border.all(width: 2, color: Colors.orange)),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Image(
-                                  width: 55.w,
-                                  height: 55.h,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Container(
-                                      width: 55.w,
-                                      height: 55.h,
-                                      child: Center(
-                                          child: CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.orange),
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes
-                                            : null,
-                                      )),
-                                    );
-                                  },
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    '$imageUrl${widget.user.userImageURL}',
-                                  ),
+              child: Container(
+                width: double.infinity,
+                height: 65.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 55.w,
+                          height: 55.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border:
+                                  Border.all(width: 2, color: Colors.orange)),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image(
+                                width: 55.w,
+                                height: 55.h,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    width: 55.w,
+                                    height: 55.h,
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              Colors.orange),
+                                      value: loadingProgress
+                                                  .expectedTotalBytes !=
+                                              null
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes
+                                          : null,
+                                    )),
+                                  );
+                                },
+                                fit: BoxFit.fill,
+                                image: NetworkImage(
+                                  '$imageUrl${widget.user.userImageURL}',
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 10.w,
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Container(
+                          height: 30.h,
+                          child: AutoSizeText(
+                            widget.user.name,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: ScreenUtil()
+                                    .setSp(15, allowFontScalingSelf: true),
+                                fontWeight: FontWeight.w600),
                           ),
-                          Container(
-                            height: 30.h,
-                            child: AutoSizeText(
-                              widget.user.name,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(15, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             )),
@@ -1101,190 +1083,183 @@ class _MemberTileState extends State<MemberTile> {
                 shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(20.0)), //this right here
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 500.h,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 100.w,
-                                height: 100.h,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 500.h,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 100.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color(0xffFF7E00),
+                                ),
+                              ),
+                              child: Container(
+                                width: 120.w,
+                                height: 120.h,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Color(0xffFF7E00),
-                                  ),
-                                ),
-                                child: Container(
-                                  width: 120.w,
-                                  height: 120.h,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(
-                                          '$imageUrl${widget.user.userImageURL}',
-                                        ),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        '$imageUrl${widget.user.userImageURL}',
                                       ),
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          width: 2, color: Color(0xffFF7E00))),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Container(
-                                height: 20,
-                                child: AutoSizeText(
-                                  widget.user.name,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: Colors.orange,
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 5.h),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        UserDataField(
-                                          icon: Icons.title,
-                                          text: widget.user.jobTitle,
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        UserDataField(
-                                          icon: Icons.email,
-                                          text: widget.user.email,
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        userType == 4
-                                            ? UserDataField(
-                                                icon: Icons.person,
-                                                text:
-                                                    widget.user.normalizedName,
-                                              )
-                                            : Container(),
-                                        userType == 4
-                                            ? SizedBox(
-                                                height: 10.0.h,
-                                              )
-                                            : Container(),
-                                        UserDataField(
-                                            icon: Icons.phone,
-                                            text: plusSignPhone(
-                                                    widget.user.phoneNumber)
-                                                .replaceAll(
-                                                    new RegExp(r"\s+\b|\b\s"),
-                                                    "")),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        UserDataField(
-                                          icon: Icons.location_on,
-                                          text: Provider.of<SiteData>(context,
-                                                  listen: true)
-                                              .sitesList[siteIndex]
-                                              .name,
-                                        ),
-                                        SizedBox(
-                                          height: 10.0.h,
-                                        ),
-                                        UserDataField(
-                                            icon: Icons.query_builder,
-                                            text: getShiftName())
-                                      ],
                                     ),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        width: 2, color: Color(0xffFF7E00))),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Container(
+                              height: 20,
+                              child: AutoSizeText(
+                                widget.user.name,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: Colors.orange,
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 5.h),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      UserDataField(
+                                        icon: Icons.title,
+                                        text: widget.user.jobTitle,
+                                      ),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      UserDataField(
+                                        icon: Icons.email,
+                                        text: widget.user.email,
+                                      ),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      userType == 4
+                                          ? UserDataField(
+                                              icon: Icons.person,
+                                              text: widget.user.normalizedName,
+                                            )
+                                          : Container(),
+                                      userType == 4
+                                          ? SizedBox(
+                                              height: 10.0.h,
+                                            )
+                                          : Container(),
+                                      UserDataField(
+                                          icon: Icons.phone,
+                                          text: plusSignPhone(
+                                                  widget.user.phoneNumber)
+                                              .replaceAll(
+                                                  new RegExp(r"\s+\b|\b\s"),
+                                                  "")),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      UserDataField(
+                                        icon: Icons.location_on,
+                                        text: Provider.of<SiteData>(context,
+                                                listen: true)
+                                            .sitesList[siteIndex]
+                                            .name,
+                                      ),
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      UserDataField(
+                                          icon: Icons.query_builder,
+                                          text: getShiftName())
+                                    ],
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10.h,
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: RounderButton(
+                                          "تعديل", widget.onTapEdit)),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  Provider.of<UserData>(context, listen: false)
+                                              .user
+                                              .id ==
+                                          member.id
+                                      ? Container()
+                                      : Expanded(
+                                          child: RounderButton(
+                                              "حذف", widget.onTapDelete))
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: RounderButton(
-                                            "تعديل", widget.onTapEdit)),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    Provider.of<UserData>(context,
-                                                    listen: false)
-                                                .user
-                                                .id ==
-                                            member.id
-                                        ? Container()
-                                        : Expanded(
-                                            child: RounderButton(
-                                                "حذف", widget.onTapDelete))
-                                  ],
-                                ),
-                              )
-                            ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 5.0.w,
+                      top: 5.0.h,
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.orange,
+                            size: 25,
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 5.0.w,
-                        top: 5.0.h,
-                        child: Container(
-                          width: 50.w,
-                          height: 50.h,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.orange,
-                              size: 25,
-                            ),
+                    ),
+                    Positioned(
+                      right: 5.0,
+                      top: 5.0,
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        child: InkWell(
+                          onTap: () {
+                            widget.onResetMac();
+                          },
+                          child: Icon(
+                            Icons.repeat,
+                            color: Colors.orange,
+                            size: 25,
                           ),
                         ),
                       ),
-                      Positioned(
-                        right: 5.0,
-                        top: 5.0,
-                        child: Container(
-                          width: 50.w,
-                          height: 50.h,
-                          child: InkWell(
-                            onTap: () {
-                              widget.onResetMac();
-                            },
-                            child: Icon(
-                              Icons.repeat,
-                              color: Colors.orange,
-                              size: 25,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )),
           );
         });

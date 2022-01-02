@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SitesScreen.dart';
@@ -110,7 +111,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       textAlign: TextAlign.right,
                                       validator: (text) {
                                         if (text.length == 0) {
-                                          return 'مطلوب';
+                                          return getTranslated(
+                                              context, "مطلوب");
                                         } else if (text.length > 35) {
                                           return "يجب ان لا يزيد اسم الموقع عن 35 حرف";
                                         }

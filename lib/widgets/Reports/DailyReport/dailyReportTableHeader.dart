@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class DataTableHeader extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class DataTableHeader extends StatelessWidget {
                   child: Container(
                 height: 20,
                 child: AutoSizeText(
-                  'الاسم',
+                  getTranslated(context, 'الأسم'),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -30,9 +31,12 @@ class DataTableHeader extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                DataTableHeaderTitles("التأخير", ColorManager.primary),
-                DataTableHeaderTitles("حضور", ColorManager.primary),
-                DataTableHeaderTitles("انصراف", ColorManager.primary),
+                DataTableHeaderTitles(
+                    getTranslated(context, "التأخير"), ColorManager.primary),
+                DataTableHeaderTitles(
+                    getTranslated(context, "حضور"), ColorManager.primary),
+                DataTableHeaderTitles(
+                    getTranslated(context, "انصراف"), ColorManager.primary),
                 Expanded(
                   flex: 1,
                   child: Container(
