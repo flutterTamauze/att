@@ -210,8 +210,9 @@ class _CompanySettingsState extends State<CompanySettings> {
                                     Container(
                                       alignment: Alignment.center,
                                       height: 50.h,
-                                      child: Text(
-                                        "سماحية التأخير (دقيقة)",
+                                      child: AutoSizeText(
+                                        getTranslated(
+                                            context, "سماحية التأخير (دقيقة)"),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
@@ -251,7 +252,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                 fontSize: ScreenUtil().setSp(14,
                                                     allowFontScalingSelf:
                                                         true)),
-                                            hintText: "0-30 دقيقة",
+                                            hintText: getTranslated(
+                                                context, "0-30 دقيقة"),
                                             disabledBorder: const OutlineInputBorder(
                                                 borderSide: const BorderSide(
                                                     color: Colors.grey,
@@ -268,8 +270,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                 borderSide: const BorderSide(
                                                     color: Colors.grey,
                                                     width: 0.0),
-                                                borderRadius:
-                                                    BorderRadius.all(Radius.circular(10)))),
+                                                borderRadius: BorderRadius.all(Radius.circular(10)))),
                                       ),
                                     )
                                   ],
@@ -283,7 +284,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("سماحية تسجيل الحضور"),
+                              AutoSizeText(getTranslated(
+                                  context, "سماحية تسجيل الحضور")),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Container(
@@ -303,13 +305,14 @@ class _CompanySettingsState extends State<CompanySettings> {
                                     items: attendNumbers.map((String x) {
                                       return DropdownMenuItem<String>(
                                           value: x,
-                                          child: Align(
-                                            alignment: Alignment.centerRight,
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Row(
                                               children: [
-                                                Text(
-                                                  "ساعات",
-                                                  textAlign: TextAlign.right,
+                                                AutoSizeText(
+                                                  getTranslated(
+                                                      context, "ساعات"),
                                                   style: TextStyle(
                                                       color: Colors.orange,
                                                       fontWeight:
@@ -347,7 +350,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("سماحية تسجيل الأنصراف"),
+                              AutoSizeText(getTranslated(
+                                  context, "سماحية تسجيل الأنصراف")),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Container(
@@ -369,26 +373,31 @@ class _CompanySettingsState extends State<CompanySettings> {
                                           value: x,
                                           child: Align(
                                             alignment: Alignment.centerRight,
-                                            child: Row(
-                                              children: [
-                                                Text("ساعات",
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Row(
+                                                children: [
+                                                  AutoSizeText(
+                                                      getTranslated(
+                                                          context, "ساعات"),
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.w500)),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  AutoSizeText(
+                                                    x,
                                                     textAlign: TextAlign.right,
                                                     style: TextStyle(
                                                         color: Colors.orange,
                                                         fontWeight:
-                                                            FontWeight.w500)),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  x,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      color: Colors.orange,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
+                                                            FontWeight.w500),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ));
                                     }).toList(),
@@ -410,7 +419,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                       backgroundColor: Colors.orange,
                                     )
                                   : RoundedButton(
-                                      title: "حفظ",
+                                      title: getTranslated(context, "حفظ"),
                                       onPressed: () async {
                                         if (!_formKey.currentState.validate()) {
                                           return;

@@ -458,10 +458,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                   }
                                 },
                                 title: (!widget.isEdit)
-                                    ? "إضافة"
+                                    ? getTranslated(context, "إضافة")
                                     : edit
-                                        ? "حفظ"
-                                        : "تعديل",
+                                        ? getTranslated(context, "حفظ")
+                                        : getTranslated(context, "تعديل"),
                               ),
                             ),
                           ],

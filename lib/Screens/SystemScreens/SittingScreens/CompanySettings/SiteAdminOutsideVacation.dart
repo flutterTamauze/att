@@ -545,8 +545,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   const EdgeInsets.all(8.0),
                                               child: Container(
                                                 alignment: Alignment.topRight,
-                                                padding: EdgeInsets.only(
-                                                    right: 10),
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -560,8 +560,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         child: DropdownButton(
                                                   elevation: 2,
                                                   isExpanded: true,
-                                                  items: widget
-                                                      .permessionTitles
+                                                  items: widget.permessionTitles
                                                       .map((String x) {
                                                     return DropdownMenuItem<
                                                             String>(
@@ -572,8 +571,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           child: Text(
                                                             x,
                                                             textAlign:
-                                                                TextAlign
-                                                                    .right,
+                                                                TextAlign.right,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .orange,
@@ -922,7 +920,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         "قم بأدخال البيانات المطلوبة");
                                               }
                                             },
-                                            title: "حفظ",
+                                            title:
+                                                getTranslated(context, "حفظ"),
                                           )
                                   ],
                                 ),

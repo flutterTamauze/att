@@ -27,7 +27,7 @@ class AssignTaskToUser extends StatelessWidget {
               Text(
                 taskName,
                 style: TextStyle(
-                    height: 1.5.h, fontSize: setResponsiveFontSize(15)),
+                    height: 1.5.h, fontSize: setResponsiveFontSize(14)),
               ),
               Container(
                 width: 25.w,

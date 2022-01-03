@@ -29,11 +29,17 @@ class UserReportPieChartState extends State {
               child: Column(
                 children: [
                   AutoSizeText(
-                    "تحليل بيانات الموظف",
+                    getTranslated(
+                      context,
+                      "تحليل بيانات الموظف",
+                    ),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: ScreenUtil().setSp(16),
                         color: Colors.orange[600]),
+                  ),
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Expanded(
                     flex: 1,
@@ -77,8 +83,8 @@ class UserReportPieChartState extends State {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red[600]),
                   ),
-                  Text(
-                    " الغياب",
+                  AutoSizeText(
+                    getTranslated(context, "الغياب"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -110,8 +116,8 @@ class UserReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.green[600])),
-                  Text(
-                    "الانتظام ",
+                  AutoSizeText(
+                    getTranslated(context, "الأنتظام"),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

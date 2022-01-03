@@ -900,10 +900,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   }
                                 },
                                 title: (!widget.isEdit)
-                                    ? "إضافة"
+                                    ? getTranslated(context, "إضافة")
                                     : edit
-                                        ? "حفظ"
-                                        : "تعديل",
+                                        ? getTranslated(context, "حفظ")
+                                        : getTranslated(context, "تعديل"),
                               ),
                             ),
                           ],

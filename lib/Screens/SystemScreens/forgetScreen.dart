@@ -477,7 +477,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.right,
                                 decoration: kTextFieldDecorationWhite.copyWith(
-                                  hintText: 'كلمة المرور',
+                                  hintText:
+                                      getTranslated(context, 'كلمة المرور'),
                                   suffixIcon: Icon(
                                     Icons.lock,
                                     color: Colors.orange,
@@ -524,7 +525,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.right,
                                 decoration: kTextFieldDecorationWhite.copyWith(
-                                  hintText: 'تأكيد كلمة المرور',
+                                  hintText: getTranslated(
+                                      context, 'تأكيد كلمة المرور'),
                                   suffixIcon: Icon(
                                     Icons.lock,
                                     color: Colors.orange,

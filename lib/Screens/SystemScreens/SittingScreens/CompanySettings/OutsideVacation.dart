@@ -568,7 +568,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         "قم بأدخال مدة الأجازة");
                                               }
                                             },
-                                            title: "حفظ",
+                                            title:
+                                                getTranslated(context, "حفظ"),
                                           )
                                   ],
                                 )
@@ -808,7 +809,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 .shiftName);
                                                   }
                                                 },
-                                                title: "حفظ",
+                                                title: getTranslated(
+                                                    context, "حفظ"),
                                               )
                                       ],
                                     )
@@ -1261,7 +1263,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             "قم بأدخال البيانات المطلوبة");
                                                   }
                                                 },
-                                                title: "حفظ",
+                                                title: getTranslated(
+                                                    context, "حفظ"),
                                               )
                                       ],
                                     ),
