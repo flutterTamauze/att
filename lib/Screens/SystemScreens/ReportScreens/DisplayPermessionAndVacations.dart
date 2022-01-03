@@ -100,7 +100,7 @@ class _VacationAndPermessionsReportState
                 child: Provider.of<MemberData>(context).loadingSearch
                     ? Center(
                         child: CircularProgressIndicator(
-                        color: Colors.orange,
+                          backgroundColor: Colors.orange,
                       ))
                     : searchTextField = AutoCompleteTextField<SearchMember>(
                         key: key,

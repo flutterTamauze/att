@@ -532,7 +532,7 @@ class _UserAttendanceReportScreenState
                                       .loadingSearch
                                   ? Center(
                                       child: CircularProgressIndicator(
-                                      color: Colors.orange,
+                                      backgroundColor: Colors.orange,
                                     ))
                                   : searchTextField =
                                       AutoCompleteTextField<SearchMember>(

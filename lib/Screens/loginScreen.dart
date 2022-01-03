@@ -137,7 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         textAlign: TextAlign.right,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                          hintText: 'كلمة المرور',
+                                          hintText: getTranslated(
+                                              context, 'كلمة المرور'),
                                           suffixIcon: Icon(
                                             Icons.lock,
                                             color: Colors.orange,
@@ -181,8 +182,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             chechPermissions();
                                             setState(() {});
                                           },
-                                          title: 'تسجيل الدخول',
-                                        ),
+                                          title: getTranslated(
+                                              context, "تسجيل الدخول")),
                                   SizedBox(
                                     height: 10.h,
                                   ),
@@ -198,7 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: SizedBox(
                                       height: 20,
                                       child: AutoSizeText(
-                                        "نسيت كلمة المرور ؟",
+                                        getTranslated(
+                                            context, "نسيت كلمة المرور"),
                                         maxLines: 1,
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(15,

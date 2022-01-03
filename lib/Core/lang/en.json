@@ -145,8 +145,10 @@
 "لا يوجد عطلات رسمية":"There are no official vacations",
 "إضافة عطلة":"Add Vacation",
 "عدد ايام العطلة":"Vacations number",
-"تعديل عطلة":"Edit Vacation"
-
+"تعديل عطلة":"Edit Vacation",
+ "كلمة المرور":"Password",
+"تسجيل الدخول":"Login",
+"نسيت كلمة المرور":"Forgot Password ?"
     
 
 

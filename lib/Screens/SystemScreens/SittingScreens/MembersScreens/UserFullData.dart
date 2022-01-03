@@ -172,7 +172,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                     userData == null) {
                   return Expanded(
                     child: Center(
-                        child: CircularProgressIndicator(color: Colors.orange)),
+                        child: CircularProgressIndicator(
+                            backgroundColor: Colors.orange)),
                   );
                 }
 

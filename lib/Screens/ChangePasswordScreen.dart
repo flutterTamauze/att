@@ -284,7 +284,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     obscureText: _passwordVisible,
                                     decoration:
                                         kTextFieldDecorationWhite.copyWith(
-                                      hintText: 'كلمة المرور',
+                                      hintText:
+                                          getTranslated(context, 'كلمة المرور'),
                                       fillColor: Colors.white,
                                       suffixIcon: Icon(
                                         Icons.lock,
