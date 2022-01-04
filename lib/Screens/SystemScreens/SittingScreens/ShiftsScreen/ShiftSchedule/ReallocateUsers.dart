@@ -234,7 +234,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                           controller: _dateController,
                                           decoration: kTextFieldDecorationFromTO
                                               .copyWith(
-                                                  hintText: 'المدة من / إلى',
+                                                  hintText: getTranslated(
+                                                      context,
+                                                      'المدة من / إلى'),
                                                   prefixIcon: Icon(
                                                     Icons
                                                         .calendar_today_rounded,

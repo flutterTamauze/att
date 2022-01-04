@@ -141,11 +141,15 @@ class _UserPropertiesState extends State<UserProperties> {
                         : Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OutsideVacation(
-                                        widget.user, 2, [
+                                builder: (context) =>
+                                    OutsideVacation(widget.user, 2, [
                                       getTranslated(context, "تأخير عن الحضور"),
                                       getTranslated(context, "انصراف مبكر")
-                                    ], [])),
+                                    ], [
+                                      getTranslated(context, "عارضة"),
+                                      getTranslated(context, "مرضى"),
+                                      getTranslated(context, "رصيد اجازات")
+                                    ])),
                           )),
                 Divider(),
                 userDataProvider.userType == 4

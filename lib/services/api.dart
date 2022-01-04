@@ -55,11 +55,13 @@ class ShiftApi with ChangeNotifier {
   Future<int> getCurrentLocation() async {
     try {
       HuaweiServices _huawi = HuaweiServices();
-      if (await _huawi.isHuaweiDevice()) {
-        await _huawi.getHuaweiCurrentLocation().then((value) {
-          currentHuaweiLocation = value;
-        });
-        return 0;
+      if (Platform.isAndroid) {
+        if (await _huawi.isHuaweiDevice()) {
+          await _huawi.getHuaweiCurrentLocation().then((value) {
+            currentHuaweiLocation = value;
+          });
+          return 0;
+        }
       } else {
         if (await Permission.location.isGranted) {
           bool enabled = false;
@@ -177,12 +179,14 @@ class ShiftApi with ChangeNotifier {
     if (await isConnectedToInternet()) {
       isConnected = true;
       List<Shift> shiftsList;
-
-      HuaweiServices _huawi = HuaweiServices();
-      bool isHawawi = await _huawi.isHuaweiDevice();
+      bool isHawawi = false;
       int isMoc;
-      if (isHawawi) {
-        isMoc = 0;
+      HuaweiServices _huawi = HuaweiServices();
+      if (Platform.isAndroid) {
+        isHawawi = await _huawi.isHuaweiDevice();
+        if (isHawawi) {
+          isMoc = 0;
+        }
       } else {
         isMoc = await getCurrentLocation();
       }

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -33,7 +34,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
                   : Container(
                       height: 20,
                       child: AutoSizeText(
-                        "برجاء قبول التصريحات التالية ",
+                        getTranslated(context, "برجاء قبول التصريحات التالية"),
                         maxLines: 1,
                         style: TextStyle(
                             fontSize: ScreenUtil()

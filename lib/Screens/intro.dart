@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Core/constants.dart';
 import "../services/user_data.dart";
@@ -50,17 +51,17 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
       ),
       IntroContent(
         imageUrl: "resources/intro1.json",
-        title:
-            "تقدر تسجل حضور و انصراف بمنتهى السهولة عن طريق الكود / البطاقة .",
+        title: getTranslated(context,
+            "تقدر تسجل حضور و انصراف بمنتهى السهولة عن طريق الكود / البطاقة ."),
       ),
       IntroContent(
-        title:
-            "من حسابك تقدر تقدم على طلب (اذن/اجازة) بكل سهولة و تتابعة و تقدر تتابع حضورك و انصرافك و مناوباتك .",
+        title: getTranslated(context,
+            "من حسابك تقدر تقدم على طلب (اذن/اجازة) بكل سهولة و تتابعة و تقدر تتابع حضورك و انصرافك و مناوباتك ."),
         imageUrl: "resources/intro2.json",
       ),
       IntroContent(
-        title:
-            "كمدير تقدر تتابع موظفينك و تقاريرهم و ترد على طلباتهم من اى مكان و فى اى وقت .",
+        title: getTranslated(context,
+            ". كمدير تقدر تتابع موظفينك و تقاريرهم و ترد على طلباتهم من اى مكان و فى اى وقت"),
         imageUrl: "resources/intro3.json",
       ),
     ];
@@ -124,7 +125,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                             padding: EdgeInsets.all(10),
                             child: Center(
                               child: Text(
-                                "ابدأ",
+                                getTranslated(context, "ابدأ"),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
@@ -170,7 +171,6 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                                 ? "إنهاء"
                                 : "تخطى",
                             maxLines: 1,
-                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: ColorManager.primary),
@@ -248,7 +248,7 @@ class IntroContent extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(5.0),
                 child: ZoomIn(
                   child: Container(
                     width: 600.w,
@@ -258,20 +258,22 @@ class IntroContent extends StatelessWidget {
                             Border.all(width: 1, color: ColorManager.primary),
                         borderRadius: BorderRadius.circular(10)),
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 10.h),
                       child: title == ""
                           ? FadeIn(
                               child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      ". وداعا لمشاكل الصيانة و الأعطال",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: setResponsiveFontSize(14)),
+                                    Container(
+                                      width: 400.w,
+                                      child: AutoSizeText(
+                                        getTranslated(context,
+                                            ". وداعا لمشاكل الصيانة و الأعطال"),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                setResponsiveFontSize(13)),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -289,14 +291,17 @@ class IntroContent extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: setResponsiveFontSize(14)),
-                                      textAlign: TextAlign.right,
+                                    Container(
+                                      width: 400.w,
+                                      child: AutoSizeText(
+                                        getTranslated(context,
+                                            ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية"),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                setResponsiveFontSize(13)),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -314,14 +319,19 @@ class IntroContent extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      ". وداعا للروتين و التأخير",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: setResponsiveFontSize(14)),
-                                      textAlign: TextAlign.right,
+                                    Container(
+                                      width: 400.w,
+                                      child: AutoSizeText(
+                                        getTranslated(
+                                          context,
+                                          ". وداعا للروتين و التأخير",
+                                        ),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                setResponsiveFontSize(13)),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 10.w,
@@ -339,12 +349,12 @@ class IntroContent extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Directionality(
-                                      textDirection: ui.TextDirection.rtl,
-                                      child: Text(
-                                        "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO .",
+                                    Container(
+                                      width: 400.w,
+                                      child: AutoSizeText(
+                                        getTranslated(context,
+                                            "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO ."),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize:
@@ -366,15 +376,16 @@ class IntroContent extends StatelessWidget {
                               ],
                             ))
                           : FadeIn(
-                              child: Text(title,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: setResponsiveFontSize(14),
-                                    height: 1.3,
-                                    color: Colors.black,
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                  textDirection: ui.TextDirection.rtl),
+                              child: AutoSizeText(
+                                title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: setResponsiveFontSize(13),
+                                  height: 1.3,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
                             ),
                     ),
                   ),

@@ -154,7 +154,11 @@ class CompanyData extends ChangeNotifier {
 
     if (Platform.isAndroid) {
       HuaweiServices _huawei = HuaweiServices();
-      bool isHawawi = await _huawei.isHuaweiDevice();
+      bool isHawawi = false;
+      if (Platform.isAndroid) {
+        isHawawi = await _huawei.isHuaweiDevice();
+      }
+
       bool enabled;
       if (isHawawi) {
         enabled = await Geolocator.isLocationServiceEnabled();

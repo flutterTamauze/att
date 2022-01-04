@@ -56,6 +56,9 @@ class DrawerI extends StatelessWidget {
           children: [
             Column(
               children: [
+                SizedBox(
+                  height: 17.h,
+                ),
                 Card(
                   color: Colors.black,
                   elevation: 1,

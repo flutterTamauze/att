@@ -136,13 +136,16 @@ class LangugageDropdownItem extends StatelessWidget {
           langugage,
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        Image(
-          width: 60,
-          height: 30,
-          image: AssetImage(
-            imagePath,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image(
+            width: 60,
+            height: 30,
+            image: AssetImage(
+              imagePath,
+            ),
+            fit: BoxFit.cover,
           ),
-          fit: BoxFit.cover,
         )
       ],
     );

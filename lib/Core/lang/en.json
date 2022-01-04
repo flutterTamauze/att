@@ -48,6 +48,7 @@
    "عدد مستخدمين الشركة":"Total Users Number",
     "الموجود":"Present",
     "الأجازة":"Holiday",
+    "تسجيل طلب للمستخدم":"Register Request For :",
     "المأموريات الخارجية":"External Missions",
     "تمام شركة":"Statistical Report for",
     "التاريخ":"Date",
@@ -55,6 +56,7 @@
     "حضور":"Attend",
     "انصراف":"Leave",
     "غياب":"Absence",
+    "مأمورية":"Mission",
     "ايام الغياب":"Absence days",
     "مدة التأخير":"Late Duration","ايام التأخير":"Late Days","خصم الغياب":"Absence Deduction",
     "خصم التأخير":"Late Deduction","إجمالى الخصومات":"Total Deductions",
@@ -80,8 +82,23 @@
     "تاريخ الأذن":"Permession Date",
     "المدة من / إلى":"Duration from / to",
     "من":"From",
-    "إلى":"To",
+    "إلى":"To","داخلية":"Internal",
+    "خارجية":"External",
+    "لا يوجد مأموريات لهذا المستخدم":"There are no missions for this user",
+    "مأموريات المستخدم":"User Missions",
+    "اجازات المستخدم":"User Holidays",
+    "لا يوجد اجازات لهذا المستخدم":"There are no holidays for this user",
+    "اذونات المستخدم":"User Permessions",
+    "لا يوجد اذونات لهذا المستخدم":"There are no permessions for this user",
+    "مدة المأمورية":"Mission Duration",
     "يوم":"Day",
+    "إثباتات الحضور":   "إثباتات الحضور",
+    "الموقع و المناوبة للمأمورية":"Site & Shift for the mission",
+    "نوع المأمورية":"Mission Type",
+    "لا يوجد اذونات لم يتم الرد عليها":"There Are No Unanswered Permissions",
+    "لا يوجد اجازات لم يتم الرد عليها":  "There Are No Unanswered Holidays",
+    "لا يوجد إثباتات حضور فى هذا اليوم":"There Are No Attend Proofs At This Day",
+
     "تم اختيار":"Chosen",
     "الأجازات":"Holidays",
     "الأذونات":"Permessions",
@@ -106,9 +123,12 @@
  "برجاء اختيار اسم مستخدم":"Please choose a username",
  "تقرير الأجازات و المأموريات":"Missions & Holidays Report",
  "المأموريات":"Missions",
- "دليل المواقع": "Sites",
+ "طلبات الأذونات":"Permessions Requests","طلبات الأذونات للمستخدمين":"Permessions Requests For Users",
+ "دليل المواقع": "Sites", "طلبات الأجازات":"Holidays Requests",
+ "طلبات الأجازات للمستخدمين":"Holidays Requests For Users",
  "البحث بأسم الموقع":"Search by Site Name",
- "دليل المناوبات":"Shifts",
+ "تقرير إثبات الحضور":"Attend Proof Report",
+ "دليل المناوبات":"Shifts",   "إثبات الحضور":"Attend Proof",
  "دليل المستخدمين":"Users",
  "كل المواقع":"All Sites",
  "الرئيسية":"Home",
@@ -173,9 +193,40 @@
 "كلمة المرور":"Password",
 "برجاء ادخال كلمة مرور":"Please Enter Password",
 "تأكيد كلمة المرور":"Confirm Password",
-"نسيت كلمة المرور":"Forgot Password ?"
-
-
-
+"تسجيل الدخول":"Login",
+"تم التسجيل بنجاح":"Successfully Registered",
+"لقد تم تسجيل الحضور من قبل":"Attendance has already been registered",
+"لقد تم تسجيل الأنصراف من قبل":"Leave has already been registered",
+"نسيت كلمة المرور":"Forgot Password ?",
+"اعطاء تصريح":"Give Permession",
+"برجاء قبول التصريحات التالية":      "Please Accept The Following Permessions",
+"متابعة":"Continue",
+"نعم":"Yes",
+"لا":"No",
+"المقر الرئيسى":"Headquarters",
+"خدمة العملاء":"Customer Service",
+"رقم التليفون":"Phone Number",
+"البريد الإلكترونى":"E-Mail Address",
+"الموقع الإلكترونى":"Website",
+"اعمالنا على المتجر":"Our Work On Store"
+,
+"تخطى":"Skip",
+    ". وداعا لمشاكل الصيانة و الأعطال":
+    "Goodbye to maintenance problems and malfunctions .",
+    ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية"
+    :"Goodbye to the problems of attendance and departure by traditional ways .",
+    ". وداعا للروتين و التأخير"
+    :"Goodbye to routine and delay .",
+    "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO .":
+    "Now attendance and departure has become easier with CHILANGO .",
+    "تقدر تسجل حضور و انصراف بمنتهى السهولة عن طريق الكود / البطاقة .":
+      "You can register attendance and departure very easily through the code / card .",
+    "من حسابك تقدر تقدم على طلب (اذن/اجازة) بكل سهولة و تتابعة و تقدر تتابع حضورك و انصرافك و مناوباتك ."  
+    :   "From your account, you can apply for (permission / holiday) easily and quickly, and you can track your attendance, departure and shifts .",
+    ". كمدير تقدر تتابع موظفينك و تقاريرهم و ترد على طلباتهم من اى مكان و فى اى وقت" : 
+    "As a manager, you can follow up on your employees and their reports and respond to their requests anytime and anywhere .",
+    "ابدأ":"Start"
+,
+"اضغط للمحاولة مره اخرى":"Tap To Retry"
     }
     

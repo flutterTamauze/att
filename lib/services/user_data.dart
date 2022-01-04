@@ -106,9 +106,11 @@ class UserData with ChangeNotifier {
       bool isHuawei = false;
 
       final HuaweiServices _huawei = HuaweiServices();
-      if (await _huawei.isHuaweiDevice()) {
-        token = hawawiToken;
-        isHuawei = true;
+      if (Platform.isAndroid) {
+        if (await _huawei.isHuaweiDevice()) {
+          token = hawawiToken;
+          isHuawei = true;
+        }
       } else {
         bool isError = false;
         String isnull = await firebaseMessaging.getToken().catchError((e) {
@@ -316,7 +318,11 @@ class UserData with ChangeNotifier {
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
     final HuaweiServices _huawei = HuaweiServices();
-    final bool isHawawi = await _huawei.isHuaweiDevice();
+    bool isHawawi = false;
+    if (Platform.isAndroid) {
+      isHawawi = await _huawei.isHuaweiDevice();
+    }
+
     print(image.lengthSync());
     log("image ${image.path}");
     String msg;
@@ -395,7 +401,11 @@ class UserData with ChangeNotifier {
       if (await isConnectedToInternet("www.google.com")) {
         final int locationService = await getCurrentLocation();
         final HuaweiServices _huawei = HuaweiServices();
-        final bool isHawawi = await _huawei.isHuaweiDevice();
+        bool isHawawi = false;
+        if (Platform.isAndroid) {
+          isHawawi = await _huawei.isHuaweiDevice();
+        }
+
         if (locationService == 0) {
           final String imei = await getDeviceUUID();
           print("imei is : $imei");
@@ -645,7 +655,11 @@ class UserData with ChangeNotifier {
     // await checkPermissions();
     HuaweiServices _huawei = HuaweiServices();
     bool enabled = true;
-    bool isHawawi = await _huawei.isHuaweiDevice();
+    bool isHawawi = false;
+    if (Platform.isAndroid) {
+      isHawawi = await _huawei.isHuaweiDevice();
+    }
+
     if (!isHawawi) {
       enabled = await Geolocator.isLocationServiceEnabled();
     }

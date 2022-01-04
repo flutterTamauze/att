@@ -90,10 +90,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     fontSize: ScreenUtil()
                                         .setSp(15, allowFontScalingSelf: true),
                                     fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.right,
                                 decoration: kTextFieldDecorationWhite.copyWith(
-                                    hintText: "اسم المستخدم",
-                                    suffixIcon: Icon(
+                                    hintText:
+                                        getTranslated(context, "اسم المستخدم"),
+                                    prefixIcon: Icon(
                                       Icons.person,
                                       color: Colors.orange,
                                     )),
@@ -105,7 +105,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15),
                                   isEnabled: true,
-                                  locale: "ar",
                                   countries: [
                                     "EG",
                                     "SA",
@@ -126,11 +125,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                   errorMessage: _phoneController.text.isEmpty
                                       ? "مطلوب"
                                       : "رقم خاطئ",
-                                  textAlign: TextAlign.right,
                                   inputDecoration:
                                       kTextFieldDecorationWhite.copyWith(
-                                          hintText: "رقم الهاتف",
-                                          suffixIcon: Icon(
+                                          hintText: getTranslated(
+                                              context, "رقم الهاتف"),
+                                          prefixIcon: Icon(
                                             Icons.phone,
                                             color: Colors.orange,
                                           )),
@@ -197,7 +196,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       onPressed: () async {
                                         forgetFunction();
                                       },
-                                      title: 'متابعة',
+                                      title: getTranslated(context, 'متابعة'),
                                     ),
                             ],
                           ),
@@ -215,7 +214,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             child: SafeArea(
               child: IconButton(
                 icon: Icon(
-                  Icons.chevron_left,
+                  Icons.chevron_right,
                   color: Color(0xffF89A41),
                   size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
                 ),

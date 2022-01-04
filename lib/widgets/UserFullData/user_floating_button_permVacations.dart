@@ -1,8 +1,11 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/DataTablePermessionHeader.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
@@ -116,12 +119,14 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                               ? LoadingIndicator()
                               : Column(
                                   children: [
-                                    Text(
+                                    AutoSizeText(
                                       radioVal2 == 1
-                                          ? "اجازات المستخدم"
-                                          : "اذونات المستخدم",
+                                          ? getTranslated(
+                                              context, "اجازات المستخدم")
+                                          : getTranslated(
+                                              context, "اذونات المستخدم"),
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: setResponsiveFontSize(20),
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Divider(),
@@ -167,11 +172,15 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                       } else {
                                                         return provList.isEmpty
                                                             ? Center(
-                                                                child: Text(
-                                                                "لا يوجد اجازات لهذا المستخدم",
+                                                                child:
+                                                                    AutoSizeText(
+                                                                getTranslated(
+                                                                    context,
+                                                                    "لا يوجد اجازات لهذا المستخدم"),
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        15,
+                                                                        setResponsiveFontSize(
+                                                                            15),
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold),
@@ -225,11 +234,15 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                         return permessionsList
                                                                 .isEmpty
                                                             ? Center(
-                                                                child: Text(
-                                                                "لا يوجد اذونات لهذا المستخدم",
+                                                                child:
+                                                                    AutoSizeText(
+                                                                getTranslated(
+                                                                    context,
+                                                                    "لا يوجد اذونات لهذا المستخدم"),
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        15,
+                                                                        setResponsiveFontSize(
+                                                                            15),
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold),

@@ -59,7 +59,11 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(
                                               context, "تأخير عن الحضور"),
                                           getTranslated(context, "انصراف مبكر")
-                                        ], [])
+                                        ], [
+                                          getTranslated(context, "عارضة"),
+                                          getTranslated(context, "مرضى"),
+                                          getTranslated(context, "رصيد اجازات")
+                                        ])
                                       : SiteAdminOutsideVacation(
                                           widget.user, 3, [
                                           getTranslated(

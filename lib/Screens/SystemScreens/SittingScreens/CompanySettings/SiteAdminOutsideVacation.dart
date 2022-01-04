@@ -144,7 +144,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                 SmallDirectoriesHeader(
                                   Lottie.asset("resources/calender.json",
                                       repeat: false),
-                                  "الأجازات و المأموريات",
+                                  getTranslated(
+                                      context, "الأجازات و المأموريات"),
                                 ),
                               ],
                             ),
@@ -293,7 +294,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 alignment:
                                                     Alignment.centerRight,
                                                 child: Text(
-                                                  "تم اختيار $dateDifference يوم ",
+                                                  "${getTranslated(context, "تم اختيار")}$dateDifference ${getTranslated(context, "يوم")} ",
                                                   style: TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
@@ -963,7 +964,10 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
     return Column(
       children: [
         VacationCardHeader(
-          header: "الموقع و المناوبة للمأمورية",
+          header: getTranslated(
+            context,
+            "الموقع و المناوبة للمأمورية",
+          ),
         ),
         SizedBox(
           height: 5,
