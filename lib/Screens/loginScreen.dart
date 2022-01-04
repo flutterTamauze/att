@@ -1,7 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
@@ -15,12 +17,14 @@ import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Settings/LanguageSettings.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../main.dart';
 import 'Notifications/Notifications.dart';
 import 'SuperAdmin/Screen/super_admin.dart';
 import 'SuperAdmin/Screen/super_company_pie_chart.dart';
@@ -37,8 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   var _passwordVisible = true;
   void initState() {
+    languageCode =
+        Provider.of<PermissionHan>(context, listen: false).isEnglishLocale()
+            ? "En"
+            : "Ar";
+
     super.initState();
   }
+
+  String languageCode;
 
   var isLoading = false;
   @override
@@ -239,7 +250,110 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 5.h,
+                                    height: 15.h,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: AutoSizeText(
+                                          getTranslated(context, "لغة التطبيق"),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        height: 40.h,
+                                        width: 60.w,
+                                        child: Container(
+                                          child: Container(
+                                            width: 60,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            child: DropdownButtonHideUnderline(
+                                                child: DropdownButton(
+                                              elevation: 2,
+                                              icon: Visibility(
+                                                  visible: false,
+                                                  child: Icon(
+                                                      Icons.arrow_downward)),
+                                              onChanged: (value) {
+                                                print(value);
+                                                Locale _tempLocal;
+                                                switch (value) {
+                                                  case 'Ar':
+                                                    _tempLocal =
+                                                        Locale("ar", "SA");
+                                                    break;
+                                                  case 'En':
+                                                    _tempLocal =
+                                                        Locale("en", "US");
+                                                }
+                                                setState(() {
+                                                  languageCode = value;
+                                                  Provider.of<PermissionHan>(
+                                                          context,
+                                                          listen: false)
+                                                      .setLocale(_tempLocal);
+                                                });
+                                                print(
+                                                    "current local $_tempLocal");
+                                                setLocale(value == "En"
+                                                    ? "en"
+                                                    : "ar");
+                                                MyApp.setLocale(
+                                                    context, _tempLocal);
+                                                Fluttertoast.showToast(
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    msg: value == "En"
+                                                        ? "Langugage has been saved successfully !"
+                                                        : "تم حفظ اللغة بنجاح");
+                                              },
+                                              isExpanded: true,
+                                              value: languageCode,
+                                              items: [
+                                                DropdownMenuItem(
+                                                  child: FadeIn(
+                                                    child:
+                                                        LangugageDropdownItem(
+                                                      langugage: "Arabic",
+                                                      imagePath:
+                                                          "resources/EgyptFlag.png",
+                                                    ),
+                                                  ),
+                                                  value: "Ar",
+                                                ),
+                                                DropdownMenuItem(
+                                                  child: FadeIn(
+                                                    child:
+                                                        LangugageDropdownItem(
+                                                      langugage: "English",
+                                                      imagePath:
+                                                          "resources/EnglishFlag.png",
+                                                    ),
+                                                  ),
+                                                  value: "En",
+                                                )
+                                              ],
+                                            )),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
 //                                  InkWell(
 //                                    onTap: () {
