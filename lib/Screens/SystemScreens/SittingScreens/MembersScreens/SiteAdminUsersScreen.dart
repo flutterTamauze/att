@@ -798,7 +798,9 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                   .length);
                                                             },
                                                             child: AutoSizeText(
-                                                              "لا يوجد مستخدمين بهذا الموقع",
+                                                              getTranslated(
+                                                                  context,
+                                                                  "لا يوجد مستخدمين بهذا الموقع"),
                                                               maxLines: 2,
                                                               textAlign:
                                                                   TextAlign

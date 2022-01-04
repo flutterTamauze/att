@@ -123,7 +123,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                       widget.edit
                                           ? Container()
                                           : Expanded(
-                                              flex: 1,
+                                              flex: 2,
                                               child: Container(
                                                 child: TextFormField(
                                                   controller:
@@ -199,7 +199,6 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                     DateTime.december,
                                                     31),
                                                 //controller: _endTimeController,
-                                                textAlign: TextAlign.right,
                                                 style: TextStyle(
                                                     fontSize: ScreenUtil().setSp(
                                                         14,
@@ -249,7 +248,6 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                   TextFormField(
                                     onFieldSubmitted: (_) {},
                                     textInputAction: TextInputAction.next,
-                                    textAlign: TextAlign.right,
                                     validator: (text) {
                                       if (text.length == 0) {
                                         return getTranslated(context, 'مطلوب');
@@ -285,8 +283,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                     )
                                   : RoundedButton(
                                       title: widget.edit
-                                          ? getTranslated(context, "إضافة")
-                                          : getTranslated(context, "تعديل"),
+                                          ? getTranslated(context, "تعديل")
+                                          : getTranslated(context, "إضافة"),
                                       onPressed: () async {
                                         var vactionProv =
                                             Provider.of<VacationData>(context,

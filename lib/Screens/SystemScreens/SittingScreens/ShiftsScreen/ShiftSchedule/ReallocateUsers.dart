@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -486,7 +487,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                         bottom:
                                                                             20.h),
                                                                     child: RoundedButton(
-                                                                        title: "حفظ",
+                                                                        title: getTranslated(context, "حفظ"),
                                                                         onPressed: () async {
                                                                           String
                                                                               shiftName =
@@ -715,7 +716,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                         }
                                       }
                                     },
-                                    title: widget.isEdit ? "تعديل" : "حفظ",
+                                    title: widget.isEdit
+                                        ? getTranslated(context, "تعديل")
+                                        : getTranslated(context, "حفظ"),
                                   ),
                                 ),
                               ],

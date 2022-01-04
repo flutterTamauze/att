@@ -20,6 +20,7 @@ import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class MultipleFloatingButtons extends StatelessWidget {
@@ -39,7 +40,12 @@ class MultipleFloatingButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20.w),
+      padding: EdgeInsets.only(
+        left:
+            Provider.of<PermissionHan>(context).isEnglishLocale() ? 20.w : 0.w,
+        right:
+            Provider.of<PermissionHan>(context).isEnglishLocale() ? 0.w : 20.w,
+      ),
       child: SpeedDial(
         overlayOpacity: 0,
         animatedIcon: AnimatedIcons.menu_close,

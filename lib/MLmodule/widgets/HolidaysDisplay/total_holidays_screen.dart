@@ -105,14 +105,17 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? Text(
-                                                "لا يوجد نتائج للبحث",
+                                            ? AutoSizeText(
+                                                getTranslated(context,
+                                                    "لا يوجد نتائج للبحث"),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
                                                 "لا يوجد اجازات لهذا المستخدم",
                                                 style: TextStyle(
                                                     fontSize: 15,

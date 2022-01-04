@@ -108,14 +108,15 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? Text(
-                                                "لا يوجد نتائج للبحث",
+                                            ? AutoSizeText(
+                                                getTranslated(context,
+                                                    "لا يوجد نتائج للبحث"),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
                                                 "لا يوجد اذونات لهذا المستخدم",
                                                 style: TextStyle(
                                                     fontSize: 15,

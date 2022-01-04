@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -280,7 +281,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           child: UserDataField(
                                               icon: FontAwesomeIcons.moneyBill,
                                               text:
-                                                  "${userData.salary} جنية مصرى"),
+                                                  "${userData.salary} ${getTranslated(context, "جنية مصرى")}"),
                                         ),
                                       ],
                                     ),

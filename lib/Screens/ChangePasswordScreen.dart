@@ -234,7 +234,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Container(
                       height: 20,
                       child: AutoSizeText(
-                        "برجاء ادخال كلمة مرور ",
+                        getTranslated(
+                          context,
+                          "برجاء ادخال كلمة مرور ",
+                        ),
                         maxLines: 1,
                         style: TextStyle(
                             color: Colors.orange,
@@ -351,7 +354,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     obscureText: _repasswordVisible,
                                     decoration:
                                         kTextFieldDecorationWhite.copyWith(
-                                      hintText: 'تأكيد كلمة المرور',
+                                      hintText: getTranslated(
+                                          context, 'تأكيد كلمة المرور'),
                                       fillColor: Colors.white,
                                       suffixIcon: Icon(
                                         Icons.lock,
@@ -444,7 +448,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           child: Container(
                                             height: 20,
                                             child: AutoSizeText(
-                                              'حفظ',
+                                              getTranslated(context, 'حفظ'),
                                               maxLines: 1,
                                               style: TextStyle(
                                                   color: Colors.black,

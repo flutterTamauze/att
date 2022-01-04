@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,8 +65,8 @@ class LateReportPieChartState extends State {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red[600]),
                   ),
-                  Text(
-                    " الغياب",
+                  AutoSizeText(
+                    getTranslated(context, "الغياب"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -96,8 +97,8 @@ class LateReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.green[600])),
-                  Text(
-                    "الأنتظام",
+                  AutoSizeText(
+                    getTranslated(context, "الأنتظام"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],

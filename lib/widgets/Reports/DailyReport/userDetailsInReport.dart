@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -133,7 +134,8 @@ class UserDetailsInReport extends StatelessWidget {
                                   flex: 1,
                                   child: UserDataFieldInReport(
                                       icon: FontAwesomeIcons.moneyBill,
-                                      text: "${userData.salary} جنية مصرى"),
+                                      text:
+                                          "${userData.salary}  ${getTranslated(context, "جنية مصرى")}"),
                                 ),
                               ],
                             ),

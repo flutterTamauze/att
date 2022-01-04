@@ -477,8 +477,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                           0
                                                                       ? Center(
                                                                           child:
-                                                                              Text(
-                                                                            "لا يوجد نتائج للبحث",
+                                                                              AutoSizeText(
+                                                                            getTranslated(context,
+                                                                                "لا يوجد نتائج للبحث"),
                                                                             style:
                                                                                 TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                                                                           ),
@@ -624,7 +625,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                     ? Center(
                                                                         child:
                                                                             AutoSizeText(
-                                                                          "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين",
+                                                                          getTranslated(
+                                                                              context,
+                                                                              "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين"),
                                                                           maxLines:
                                                                               1,
                                                                           textAlign:
@@ -638,7 +641,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                     : Center(
                                                                         child:
                                                                             AutoSizeText(
-                                                                          "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين",
+                                                                          getTranslated(
+                                                                              context,
+                                                                              "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين"),
                                                                           maxLines:
                                                                               1,
                                                                           textAlign:

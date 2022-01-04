@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -97,14 +98,15 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? Text(
-                                                "لا يوجد نتائج للبحث",
+                                            ? AutoSizeText(
+                                                getTranslated(context,
+                                                    "لا يوجد نتائج للبحث"),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
                                                 "لا يوجد مأموريات لهذا المستخدم",
                                                 style: TextStyle(
                                                     fontSize: 15,

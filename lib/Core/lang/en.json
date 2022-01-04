@@ -146,10 +146,35 @@
 "إضافة عطلة":"Add Vacation",
 "عدد ايام العطلة":"Vacations number",
 "تعديل عطلة":"Edit Vacation",
- "كلمة المرور":"Password",
-"تسجيل الدخول":"Login",
+"سماحية التأخير (دقيقة)":"Late Tolerance (minutes)",
+"سماحية تسجيل الحضور":"Attend Register Tolerance",
+"سماحية تسجيل الأنصراف":"Leave Register Tolerance "
+, "0-30 دقيقة":
+    "0-30 Minutes" ,"لا يوجد نتائج للبحث":"No search results found",
+    "ساعات":"Hours",
+    "الأنتظام":"InTime",
+    "تحليل بيانات الموظف":"User Information Analysis",
+    "اعادة ضبط هاتف المستخدم":"Reset User Phone",
+"جدولة المناوبات":"Schedule Shifts",
+"إرسال اثبات حضور":"Send Attend Proof",
+"عدم الظهور فى التقرير":"Don't show in report",
+"السماح للمستخدم بالتسجيل بالبطاقة":"Allow User Attend By Card",
+"تسجيل  مأموريات / اذونات / اجازات":"Register Mission / Permession / Vacation",
+"جنية مصرى":"EGP",
+"تسجيل اذونات / اجازات":"Register Permession / Vacation",
+"لا يوجد مستخدمين بهذا الموقع":"There are no users in this site",
+"لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين":
+"There are no users in this shift\nPlease add users to this shift",
+"لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين":
+"There are no users in this site\nPlease add users to this site",
+"كود بطاقة التعريف الشخصية": "Personal ID Card Code",
+"تاريخ التعيين":"Hiring Date",
+"تغير كلمة السر":"Change Password",
+"كلمة المرور":"Password",
+"برجاء ادخال كلمة مرور":"Please Enter Password",
+"تأكيد كلمة المرور":"Confirm Password",
 "نسيت كلمة المرور":"Forgot Password ?"
-    
+
 
 
     }
