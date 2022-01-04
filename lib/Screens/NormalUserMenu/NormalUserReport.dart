@@ -254,8 +254,9 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                   _dateController,
                                                               decoration: kTextFieldDecorationFromTO
                                                                   .copyWith(
-                                                                      hintText:
-                                                                          'المدة من / إلى',
+                                                                      hintText: getTranslated(
+                                                                          context,
+                                                                          "المدة من / إلى"),
                                                                       prefixIcon:
                                                                           Icon(
                                                                         Icons

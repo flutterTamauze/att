@@ -321,10 +321,11 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "تاريخ التعيين",
+                                          AutoSizeText(
+                                            getTranslated(
+                                                context, "تاريخ التعيين"),
                                           ),
-                                          Text(DateFormat('yMMMd')
+                                          AutoSizeText(DateFormat('yMMMd')
                                               .format(userData.hiredDate)
                                               .toString()),
                                         ],

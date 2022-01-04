@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
@@ -81,7 +82,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                   repeat: false),
                             ),
                           ),
-                          "لوحة التحكم"),
+                          getTranslated(context, "لوحة التحكم")),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -92,8 +93,9 @@ class _AdminPanelState extends State<AdminPanel> {
                         Consumer<UserPermessionsData>(
                           builder: (context, value, child) {
                             return AdminPanelTile(
-                                title: "طلبات الأذونات",
-                                subTitle: "طلبات الأذونات للمستخدمين",
+                                title: getTranslated(context, "طلبات الأذونات"),
+                                subTitle: getTranslated(
+                                    context, "طلبات الأذونات للمستخدمين"),
                                 icon: Icons.calendar_today_sharp,
                                 // requestsCount: value
                                 //     .pendingCompanyPermessions.length
@@ -111,8 +113,9 @@ class _AdminPanelState extends State<AdminPanel> {
                         Consumer<UserHolidaysData>(
                           builder: (context, value, child) {
                             return AdminPanelTile(
-                                title: "طلبات الأجازات",
-                                subTitle: "طلبات الأجازات للمستخدمين",
+                                title: getTranslated(context, "طلبات الأجازات"),
+                                subTitle: getTranslated(
+                                    context, "طلبات الأجازات للمستخدمين"),
                                 icon: Icons.calendar_today_sharp,
                                 // requestsCount: value
                                 //     .pendingCompanyHolidays.length
@@ -129,8 +132,9 @@ class _AdminPanelState extends State<AdminPanel> {
                         ),
                         AdminPanelTile(
                             // requestsCount: null,
-                            title: "إثبات الحضور",
-                            subTitle: "تقرير إثبات الحضور",
+                            title: getTranslated(context, "إثبات الحضور"),
+                            subTitle:
+                                getTranslated(context, "تقرير إثبات الحضور"),
                             icon: Icons.check,
                             onTap: () {
                               Navigator.push(
@@ -233,7 +237,6 @@ class AdminPanelTile extends StatelessWidget {
           child: AutoSizeText(
             title,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         subtitle: Container(
@@ -241,7 +244,6 @@ class AdminPanelTile extends StatelessWidget {
           child: AutoSizeText(
             subTitle,
             maxLines: 1,
-            textAlign: TextAlign.right,
           ),
         ),
         // leading: requestsCount == null

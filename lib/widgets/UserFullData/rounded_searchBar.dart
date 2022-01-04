@@ -385,7 +385,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                 context, "اسم المستخدم"),
                                             hintStyle: TextStyle(
                                               fontSize: ScreenUtil().setSp(
-                                                16,
+                                                setResponsiveFontSize(16),
                                                 allowFontScalingSelf: true,
                                               ),
                                             ),

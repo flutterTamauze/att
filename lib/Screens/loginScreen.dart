@@ -13,6 +13,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -74,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               Column(
                                 children: <Widget>[
                                   TextFormField(
-                                    textAlign: TextAlign.right,
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (_) =>
                                         FocusScope.of(context).nextFocus(),
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         kTextFieldDecorationWhite.copyWith(
                                             hintText: getTranslated(
                                                 context, "اسم المستخدم"),
-                                            suffixIcon: Icon(
+                                            prefixIcon: Icon(
                                               Icons.person,
                                               color: Colors.orange,
                                             )),
@@ -134,35 +134,60 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontSize: ScreenUtil().setSp(17,
                                                 allowFontScalingSelf: true),
                                             fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.right,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                           hintText: getTranslated(
                                               context, 'كلمة المرور'),
-                                          suffixIcon: Icon(
+                                          prefixIcon: Icon(
                                             Icons.lock,
                                             color: Colors.orange,
                                           ),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(
-                                          // Based on passwordVisible state choose the icon
-                                          _passwordVisible
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                          color: Colors.grey,
-                                        ),
-                                        onPressed: () {
-                                          // Update the state i.e. toogle the state of passwordVisible variable
-                                          setState(() {
-                                            _passwordVisible =
-                                                !_passwordVisible;
-                                            FocusScope.of(context)
-                                                .requestFocus();
-                                          });
-                                        },
-                                      ),
+                                      Provider.of<PermissionHan>(context)
+                                              .isEnglishLocale()
+                                          ? Positioned(
+                                              right: 0,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  // Based on passwordVisible state choose the icon
+                                                  _passwordVisible
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                    FocusScope.of(context)
+                                                        .requestFocus();
+                                                  });
+                                                },
+                                              ),
+                                            )
+                                          : Positioned(
+                                              left: 0,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  // Based on passwordVisible state choose the icon
+                                                  _passwordVisible
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                    FocusScope.of(context)
+                                                        .requestFocus();
+                                                  });
+                                                },
+                                              ),
+                                            ),
                                     ],
                                   ),
                                   SizedBox(
@@ -182,7 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             chechPermissions();
                                             setState(() {});
                                           },
-                                          title: 'تسجيل الدخول',
+                                          title: getTranslated(
+                                              context, 'تسجيل الدخول'),
                                         ),
                                   SizedBox(
                                     height: 10.h,
@@ -200,7 +226,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       height: 20,
                                       child: AutoSizeText(
                                         getTranslated(
-                                            context, "نسيت كلمة المرور"),
+                                                context, "نسيت كلمة المرور") ??
+                                            "نسيت كلمة المرور ؟",
                                         maxLines: 1,
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(15,
@@ -264,8 +291,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // loginFunction();
                   Navigator.pop(context);
                 },
-                title: 'اعطاء تصريح',
-                content: "برجاء قبول التصريحات التالية "));
+                title: getTranslated(context, 'اعطاء تصريح'),
+                content:
+                    getTranslated(context, "برجاء قبول التصريحات التالية ")));
       }
     } else {
       print("validation error");

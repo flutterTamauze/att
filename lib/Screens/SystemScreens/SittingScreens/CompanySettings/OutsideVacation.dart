@@ -26,6 +26,7 @@ import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
@@ -51,8 +52,10 @@ class OutsideVacation extends StatefulWidget {
 }
 
 var selectedAction = "عارضة";
-var selectedMission = "داخلية";
+var selectedMission;
 var sleectedMember;
+String selectedReason;
+String selectedPermession;
 DateTime toDate;
 String toText;
 String fromText;
@@ -62,7 +65,7 @@ TextEditingController timeOutController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
 String newString = "";
-List<String> missions = ["داخلية", "خارجية"];
+List<String> missions;
 TimeOfDay toPicked;
 String dateDifference;
 List<DateTime> picked = [];
@@ -81,6 +84,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
   List<DateTime> picked = [];
 
   TextEditingController _nameController = TextEditingController();
+  @override
+  void didChangeDependencies() {
+    missions = [
+      getTranslated(context, "داخلية"),
+      getTranslated(context, "خارجية")
+    ];
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -101,7 +112,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
     Provider.of<MissionsData>(context, listen: false)
         .singleUserMissionsList
         .clear();
-
+    selectedMission =
+        Provider.of<PermissionHan>(context, listen: false).isEnglishLocale()
+            ? "Internal"
+            : "داخلية";
+    selectedReason = widget.holidayTitles.first;
+    selectedPermession = widget.permessionTitles.first;
     var now = DateTime.now();
     fromText = "";
     toText = "";
@@ -166,25 +182,22 @@ class _OutsideVacationState extends State<OutsideVacation> {
                     child: Container(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SmallDirectoriesHeader(
-                                  Lottie.asset("resources/calender.json",
-                                      repeat: false),
-                                  "الأجازات و المأموريات",
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SmallDirectoriesHeader(
+                                Lottie.asset("resources/calender.json",
+                                    repeat: false),
+                                getTranslated(context, "الأجازات و المأموريات"),
+                              ),
+                            ],
                           ),
                           VacationCardHeader(
                             header:
-                                "تسجيل طلب للمستخدم : ${widget.member.name}",
+                                "${getTranslated(context, "تسجيل طلب للمستخدم")} ${widget.member.name}",
                           ),
                           VacationCardHeader(
-                            header: "نوع الطلب",
+                            header: getTranslated(context, "نوع الطلب"),
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: 20.w),
@@ -194,7 +207,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                 RadioButtonWidg(
                                   radioVal2: widget.radioValue,
                                   radioVal: 3,
-                                  title: "أذن",
+                                  title: getTranslated(context, "أذن"),
                                   onchannge: (value) {
                                     setState(() {
                                       _today = DateTime.now();
@@ -205,7 +218,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                 RadioButtonWidg(
                                   radioVal2: widget.radioValue,
                                   radioVal: 1,
-                                  title: "اجازة",
+                                  title: getTranslated(context, "اجازة"),
                                   onchannge: (value) {
                                     setState(() {
                                       fromDate = widget.radioValue == 3
@@ -218,7 +231,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                 RadioButtonWidg(
                                   radioVal: 2,
                                   radioVal2: widget.radioValue,
-                                  title: "مأمورية",
+                                  title: getTranslated(
+                                    context,
+                                    "مأمورية",
+                                  ),
                                   onchannge: (value) {
                                     // getSingleUserMission();
                                     setState(() {
@@ -233,7 +249,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                               ? Column(
                                   children: [
                                     VacationCardHeader(
-                                      header: "مدة الأجازة",
+                                      header:
+                                          getTranslated(context, "مدة الأجازة"),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -250,7 +267,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         context: context,
                                                         initialFirstDate:
                                                             selectedReason ==
-                                                                    "عارضة"
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
                                                                 ? _today
                                                                 : tomorrow,
                                                         initialLastDate: toDate,
@@ -259,7 +278,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             DateTime.now()
                                                                 .month,
                                                             selectedReason ==
-                                                                    "عارضة"
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
                                                                 ? DateTime.now()
                                                                     .day
                                                                 : DateTime.now()
@@ -279,9 +300,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           1)
                                                       .toString();
                                                   fromText =
-                                                      " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                      " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
                                                   toText =
-                                                      " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                      "  ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
                                                   newString =
                                                       "$fromText $toText";
                                                 });
@@ -297,35 +318,32 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       .format(toDate);
                                                 }
                                               },
-                                              child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  // width: 330,
-                                                  width: 365.w,
-                                                  child: IgnorePointer(
-                                                    child: TextFormField(
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                      textInputAction:
-                                                          TextInputAction.next,
-                                                      controller:
-                                                          _dateController,
-                                                      decoration:
-                                                          kTextFieldDecorationFromTO
-                                                              .copyWith(
-                                                                  hintText:
-                                                                      'المدة من / إلى',
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .calendar_today_rounded,
-                                                                    color: Colors
-                                                                        .orange,
-                                                                  )),
-                                                    ),
+                                              child: Container(
+                                                // width: 330,
+                                                width: 365.w,
+                                                child: IgnorePointer(
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    controller: _dateController,
+                                                    decoration:
+                                                        kTextFieldDecorationFromTO
+                                                            .copyWith(
+                                                                hintText:
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "المدة من / الى"),
+                                                                prefixIcon:
+                                                                    Icon(
+                                                                  Icons
+                                                                      .calendar_today_rounded,
+                                                                  color: Colors
+                                                                      .orange,
+                                                                )),
                                                   ),
                                                 ),
                                               ));
@@ -343,7 +361,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 alignment:
                                                     Alignment.centerRight,
                                                 child: Text(
-                                                  "تم اختيار $dateDifference يوم ",
+                                                  "${getTranslated(context, "تم اختيار")} $dateDifference ${getTranslated(context, "يوم")} ",
                                                   style: TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
@@ -354,72 +372,60 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                       height: 5,
                                     ),
                                     VacationCardHeader(
-                                      header: "نوع الأجازة",
+                                      header:
+                                          getTranslated(context, "نوع الأجازة"),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(right: 5.w),
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              alignment: Alignment.topRight,
-                                              padding:
-                                                  EdgeInsets.only(right: 10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(width: 1)),
-                                              width: 150.w,
-                                              height: 40.h,
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                elevation: 2,
-                                                isExpanded: true,
-                                                items: widget.holidayTitles
-                                                    .map((String x) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: x,
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Text(
-                                                          x,
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.orange,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedReason = value;
-                                                    if (value != "عارضة") {
-                                                      _dateController.text = "";
-                                                      newString = "";
-                                                      tomorrow = DateTime(
-                                                          DateTime.now().year,
-                                                          DateTime.now().month,
-                                                          DateTime.now().day +
-                                                              1);
-                                                      _today = DateTime.now();
-                                                      toDate = tomorrow;
-                                                    }
-                                                  });
-                                                },
-                                                value: selectedReason,
-                                              )),
-                                            ),
-                                          ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          padding: EdgeInsets.only(right: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(width: 1)),
+                                          height: 40.h,
+                                          child: DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                            elevation: 2,
+                                            isExpanded: true,
+                                            items: widget.holidayTitles
+                                                .map((String x) {
+                                              return DropdownMenuItem<String>(
+                                                  value: x,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10),
+                                                    child: AutoSizeText(
+                                                      x,
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ));
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedReason = value;
+                                                if (value !=
+                                                    getTranslated(
+                                                        context, "عارضة")) {
+                                                  _dateController.text = "";
+                                                  newString = "";
+                                                  tomorrow = DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day + 1);
+                                                  _today = DateTime.now();
+                                                  toDate = tomorrow;
+                                                }
+                                              });
+                                            },
+                                            value: selectedReason,
+                                          )),
                                         ),
                                       ),
                                     ),
@@ -455,17 +461,21 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                     .text,
                                                             fromDate: fromDate,
                                                             toDate:
-                                                                picked.length == 2
+                                                                picked.length ==
+                                                                        2
                                                                     ? toDate
                                                                     : fromDate,
-                                                            holidayType:
-                                                                selectedReason ==
-                                                                        "عارضة"
-                                                                    ? 1
-                                                                    : selectedReason ==
-                                                                            "مرضية"
-                                                                        ? 2
-                                                                        : 3,
+                                                            holidayType: selectedReason ==
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
+                                                                ? 1
+                                                                : selectedReason ==
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "مرضية")
+                                                                    ? 2
+                                                                    : 3,
                                                             createdOnDate:
                                                                 DateTime.now(),
                                                             holidayStatus: 3),
@@ -577,65 +587,50 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                   ? Column(
                                       children: [
                                         VacationCardHeader(
-                                          header: "نوع المأمورية",
+                                          header: getTranslated(
+                                              context, "نوع المأمورية"),
                                         ),
-                                        Directionality(
-                                          textDirection: ui.TextDirection.rtl,
-                                          child: Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                alignment: Alignment.topRight,
-                                                padding: EdgeInsets.only(
-                                                    right: 10.w),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border:
-                                                        Border.all(width: 1)),
-                                                width: 150.w,
-                                                height: 40.h,
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                        child: DropdownButton(
-                                                  elevation: 2,
-                                                  isExpanded: true,
-                                                  items:
-                                                      missions.map((String x) {
-                                                    return DropdownMenuItem<
-                                                            String>(
-                                                        value: x,
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child: Text(
-                                                            x,
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .orange,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ));
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedMission = value;
-                                                    });
-                                                  },
-                                                  value: selectedMission,
-                                                )),
-                                              ),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(width: 1)),
+                                            height: 40.h,
+                                            child: DropdownButtonHideUnderline(
+                                                child: DropdownButton(
+                                              elevation: 2,
+                                              isExpanded: true,
+                                              items: missions.map((String x) {
+                                                return DropdownMenuItem<String>(
+                                                    value: x,
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: AutoSizeText(
+                                                        x,
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ));
+                                              }).toList(),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedMission = value;
+                                                });
+                                              },
+                                              value: selectedMission,
+                                            )),
                                           ),
                                         ),
-                                        selectedMission == "داخلية"
+                                        selectedMission ==
+                                                getTranslated(context, "داخلية")
                                             ? SitesAndMissionsWidg(
                                                 prov: prov,
                                                 selectedVal: selectedVal,
@@ -648,7 +643,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                               )
                                             : Container(),
                                         VacationCardHeader(
-                                          header: "مدة المأمورية",
+                                          header: getTranslated(
+                                              context, "مدة المأمورية"),
                                         ),
                                         SizedBox(
                                           height: 5,
@@ -682,9 +678,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       toDate = picked.last;
                                                       isPicked = true;
                                                       String fromText =
-                                                          " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                          " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
                                                       String toText =
-                                                          " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                          " ${getTranslated(context, "إلى")}  ${DateFormat('yMMMd').format(toDate).toString()}";
                                                       newString =
                                                           "$fromText $toText";
                                                     });
@@ -702,38 +698,34 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               .format(toDate);
                                                     }
                                                   },
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        ui.TextDirection.rtl,
-                                                    child: Container(
-                                                      // width: 330,
-                                                      width: 365.w,
-                                                      child: IgnorePointer(
-                                                        child: TextFormField(
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          controller:
-                                                              _dateController,
-                                                          decoration:
-                                                              kTextFieldDecorationFromTO
-                                                                  .copyWith(
-                                                                      hintText:
-                                                                          'المدة من / إلى',
-                                                                      prefixIcon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .calendar_today_rounded,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      )),
-                                                        ),
+                                                  child: Container(
+                                                    // width: 330,
+                                                    width: 365.w,
+                                                    child: IgnorePointer(
+                                                      child: TextFormField(
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        controller:
+                                                            _dateController,
+                                                        decoration: kTextFieldDecorationFromTO
+                                                            .copyWith(
+                                                                hintText:
+                                                                    getTranslated(
+                                                                        context,
+                                                                        'المدة من / إلى'),
+                                                                prefixIcon:
+                                                                    Icon(
+                                                                  Icons
+                                                                      .calendar_today_rounded,
+                                                                  color: Colors
+                                                                      .orange,
+                                                                )),
                                                       ),
                                                     ),
                                                   ));
@@ -760,7 +752,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                             : RoundedButton(
                                                 onPressed: () async {
                                                   if (selectedMission ==
-                                                      "خارجية") {
+                                                      getTranslated(
+                                                          context, "خارجية")) {
                                                     if (isPicked == false) {
                                                       Fluttertoast.showToast(
                                                           msg:
@@ -816,331 +809,288 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                     )
                                   : Column(
                                       children: [
-                                        Directionality(
-                                          textDirection: ui.TextDirection.rtl,
-                                          child: Card(
-                                            elevation: 5,
-                                            child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              child: Row(
-                                                children: [
-                                                  AutoSizeText(
-                                                    "نوع الأذن",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 11),
-                                                    maxLines: 2,
-                                                  ),
-                                                ],
-                                              ),
+                                        Card(
+                                          elevation: 5,
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Row(
+                                              children: [
+                                                AutoSizeText(
+                                                  getTranslated(
+                                                      context, "نوع الأذن"),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11),
+                                                  maxLines: 2,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: Column(
-                                              children: [
-                                                Directionality(
-                                                  textDirection:
-                                                      ui.TextDirection.rtl,
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                right: 10),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: 10),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border:
+                                                          Border.all(width: 1)),
+                                                  height: 40.h,
+                                                  child:
+                                                      DropdownButtonHideUnderline(
+                                                          child: DropdownButton(
+                                                    elevation: 2,
+                                                    isExpanded: true,
+                                                    items: widget
+                                                        .permessionTitles
+                                                        .map((String x) {
+                                                      return DropdownMenuItem<
+                                                              String>(
+                                                          value: x,
+                                                          child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
                                                                         10),
-                                                            border: Border.all(
-                                                                width: 1)),
-                                                        width: 200.w,
-                                                        height: 40.h,
-                                                        child:
-                                                            DropdownButtonHideUnderline(
-                                                                child:
-                                                                    DropdownButton(
-                                                          elevation: 2,
-                                                          isExpanded: true,
-                                                          items: widget
-                                                              .permessionTitles
-                                                              .map((String x) {
-                                                            return DropdownMenuItem<
-                                                                    String>(
-                                                                value: x,
-                                                                child: Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerRight,
-                                                                  child: Text(
-                                                                    x,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .right,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .orange,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
-                                                                  ),
-                                                                ));
-                                                          }).toList(),
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedPermession =
-                                                                  value;
-                                                            });
-                                                          },
-                                                          value:
-                                                              selectedPermession,
-                                                        )),
+                                                            child: AutoSizeText(
+                                                              x,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .orange,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ));
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedPermession =
+                                                            value;
+                                                      });
+                                                    },
+                                                    value: selectedPermession,
+                                                  )),
+                                                ),
+                                              ),
+                                              Divider(),
+                                              Card(
+                                                elevation: 5,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    children: [
+                                                      AutoSizeText(
+                                                        getTranslated(context,
+                                                            "تاريخ الأذن"),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize:
+                                                                setResponsiveFontSize(
+                                                                    13)),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ),
-                                                Divider(),
-                                                Directionality(
-                                                  textDirection:
-                                                      ui.TextDirection.rtl,
-                                                  child: Card(
-                                                    elevation: 5,
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "تاريخ الأذن",
-                                                            style: TextStyle(
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(5),
+                                                child: Container(
+                                                  child: Theme(
+                                                    data: clockTheme,
+                                                    child: DateTimePicker(
+                                                      initialValue:
+                                                          _selectedDateString,
+
+                                                      onChanged: (value) {
+                                                        date = value;
+
+                                                        setState(() {
+                                                          _selectedDateString =
+                                                              date;
+                                                          selectedDate =
+                                                              DateTime.parse(
+                                                                  _selectedDateString);
+                                                        });
+                                                      },
+                                                      type: DateTimePickerType
+                                                          .date,
+                                                      initialDate: _today,
+                                                      firstDate: _today,
+                                                      lastDate: DateTime(
+                                                          DateTime.now().year +
+                                                              2,
+                                                          DateTime.december,
+                                                          31),
+                                                      //controller: _endTimeController,
+                                                      style: TextStyle(
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(14,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+
+                                                      decoration: kTextFieldDecorationTime
+                                                          .copyWith(
+                                                              hintStyle:
+                                                                  TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w600,
-                                                                fontSize: 13),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        ui.TextDirection.rtl,
-                                                    child: Container(
-                                                      child: Theme(
-                                                        data: clockTheme,
-                                                        child: DateTimePicker(
-                                                          initialValue:
-                                                              _selectedDateString,
-
-                                                          onChanged: (value) {
-                                                            date = value;
-
-                                                            setState(() {
-                                                              _selectedDateString =
-                                                                  date;
-                                                              selectedDate =
-                                                                  DateTime.parse(
-                                                                      _selectedDateString);
-                                                            });
-                                                          },
-                                                          type:
-                                                              DateTimePickerType
-                                                                  .date,
-                                                          initialDate: _today,
-                                                          firstDate: _today,
-                                                          lastDate: DateTime(
-                                                              DateTime.now()
-                                                                      .year +
-                                                                  2,
-                                                              DateTime.december,
-                                                              31),
-                                                          //controller: _endTimeController,
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(14,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-
-                                                          decoration:
-                                                              kTextFieldDecorationTime
-                                                                  .copyWith(
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.w400,
-                                                                        color: Colors
-                                                                            .black,
-                                                                      ),
-                                                                      hintText:
-                                                                          'اليوم',
-                                                                      prefixIcon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .access_time,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      )),
-                                                          validator: (val) {
-                                                            if (val.length ==
-                                                                0) {
-                                                              return getTranslated(
-                                                                  context,
-                                                                  "مطلوب");
-                                                            }
-                                                            return null;
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Card(
-                                                  elevation: 5,
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          selectedPermession ==
-                                                                  "تأخير عن الحضور"
-                                                              ? "اذن حتى الساعة"
-                                                              : "اذن من الساعة",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 13),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Directionality(
-                                                  textDirection:
-                                                      ui.TextDirection.rtl,
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 50.h,
-                                                    child: Container(
-                                                        child: Theme(
-                                                      data: clockTheme,
-                                                      child: Builder(
-                                                        builder: (context) {
-                                                          return InkWell(
-                                                              onTap: () async {
-                                                                var to =
-                                                                    await showTimePicker(
-                                                                  context:
+                                                                        .w400,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              hintText:
+                                                                  getTranslated(
                                                                       context,
-                                                                  initialTime:
-                                                                      toPicked,
-                                                                  builder: (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child) {
-                                                                    return MediaQuery(
-                                                                      data: MediaQuery.of(
-                                                                              context)
-                                                                          .copyWith(
-                                                                        alwaysUse24HourFormat:
-                                                                            false,
-                                                                      ),
-                                                                      child:
-                                                                          child,
-                                                                    );
-                                                                  },
+                                                                      'اليوم'),
+                                                              prefixIcon: Icon(
+                                                                Icons
+                                                                    .access_time,
+                                                                color: Colors
+                                                                    .orange,
+                                                              )),
+                                                      validator: (val) {
+                                                        if (val.length == 0) {
+                                                          return getTranslated(
+                                                              context, "مطلوب");
+                                                        }
+                                                        return null;
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Card(
+                                                elevation: 5,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    children: [
+                                                      AutoSizeText(
+                                                        selectedPermession ==
+                                                                getTranslated(
+                                                                    context,
+                                                                    "تأخير عن الحضور")
+                                                            ? "اذن حتى الساعة"
+                                                            : "اذن من الساعة",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 13),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                height: 50.h,
+                                                child: Container(
+                                                    child: Theme(
+                                                  data: clockTheme,
+                                                  child: Builder(
+                                                    builder: (context) {
+                                                      return InkWell(
+                                                          onTap: () async {
+                                                            var to =
+                                                                await showTimePicker(
+                                                              context: context,
+                                                              initialTime:
+                                                                  toPicked,
+                                                              builder: (BuildContext
+                                                                      context,
+                                                                  Widget
+                                                                      child) {
+                                                                return MediaQuery(
+                                                                  data: MediaQuery.of(
+                                                                          context)
+                                                                      .copyWith(
+                                                                    alwaysUse24HourFormat:
+                                                                        false,
+                                                                  ),
+                                                                  child: child,
                                                                 );
+                                                              },
+                                                            );
 
-                                                                if (to !=
-                                                                    null) {
-                                                                  final now =
-                                                                      new DateTime
-                                                                          .now();
-                                                                  final dt = DateTime(
+                                                            if (to != null) {
+                                                              final now =
+                                                                  new DateTime
+                                                                      .now();
+                                                              final dt =
+                                                                  DateTime(
                                                                       now.year,
                                                                       now.month,
                                                                       now.day,
                                                                       to.hour,
                                                                       to.minute);
 
-                                                                  formattedTime =
-                                                                      DateFormat
-                                                                              .Hm()
-                                                                          .format(
-                                                                              dt);
+                                                              formattedTime =
+                                                                  DateFormat
+                                                                          .Hm()
+                                                                      .format(
+                                                                          dt);
 
-                                                                  toPicked = to;
-                                                                  setState(() {
-                                                                    timeOutController
-                                                                            .text =
-                                                                        "${toPicked.format(context).replaceAll(" ", " ")}";
-                                                                  });
-                                                                }
-                                                              },
+                                                              toPicked = to;
+                                                              setState(() {
+                                                                timeOutController
+                                                                        .text =
+                                                                    "${toPicked.format(context).replaceAll(" ", " ")}";
+                                                              });
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                            child:
+                                                                IgnorePointer(
                                                               child:
-                                                                  Directionality(
-                                                                textDirection: ui
-                                                                    .TextDirection
-                                                                    .rtl,
-                                                                child:
-                                                                    Container(
-                                                                  child:
-                                                                      IgnorePointer(
-                                                                    child:
-                                                                        TextFormField(
-                                                                      enabled:
-                                                                          false,
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontWeight:
-                                                                              FontWeight.w400),
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      controller:
-                                                                          timeOutController,
-                                                                      decoration: kTextFieldDecorationFromTO.copyWith(
-                                                                          hintText: 'الوقت',
-                                                                          prefixIcon: Icon(
-                                                                            Icons.alarm,
-                                                                            color:
-                                                                                Colors.orange,
-                                                                          )),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ));
-                                                        },
-                                                      ),
-                                                    )),
+                                                                  TextFormField(
+                                                                enabled: false,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                controller:
+                                                                    timeOutController,
+                                                                decoration: kTextFieldDecorationFromTO
+                                                                    .copyWith(
+                                                                        hintText: getTranslated(
+                                                                            context,
+                                                                            'الوقت'),
+                                                                        prefixIcon:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .alarm,
+                                                                          color:
+                                                                              Colors.orange,
+                                                                        )),
+                                                              ),
+                                                            ),
+                                                          ));
+                                                    },
                                                   ),
-                                                ),
-                                                DetialsTextField(
-                                                    commentController)
-                                              ],
-                                            ),
+                                                )),
+                                              ),
+                                              DetialsTextField(
+                                                  commentController)
+                                            ],
                                           ),
                                         ),
                                         Provider.of<UserPermessionsData>(
@@ -1167,7 +1117,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 .replaceAll(
                                                                     ":", ""),
                                                             permessionType:
-                                                                selectedPermession == "تأخير عن الحضور"
+                                                                selectedPermession == getTranslated(context, "تأخير عن الحضور")
                                                                     ? 1
                                                                     : 2,
                                                             permessionDescription:
@@ -1306,14 +1256,17 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
     return Column(
       children: [
         VacationCardHeader(
-          header: "الموقع و المناوبة للمأمورية",
-        ),
+            header: getTranslated(
+          context,
+          "الموقع و المناوبة للمأمورية",
+        )),
         SizedBox(
           height: 5,
         ),
         Container(
           height: 60.h,
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
                 Flexible(
@@ -1322,80 +1275,72 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     child: Center(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Consumer<SiteShiftsData>(
-                              builder: (context, value, child) {
-                                return IgnorePointer(
-                                  ignoring:
-                                      widget.prov.siteValue == "كل المواقع"
-                                          ? true
-                                          : false,
-                                  child: DropdownButton(
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      elevation: 5,
-                                      items: value.shifts
-                                          .map(
-                                            (value) => DropdownMenuItem(
-                                                child: Container(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    height: 20.h,
-                                                    child: AutoSizeText(
-                                                      value.shiftName,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(12,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    )),
-                                                value: value.shiftName),
-                                          )
-                                          .toList(),
-                                      onChanged: (v) async {
-                                        if (widget.selectedVal !=
-                                            "كل المواقع") {
-                                          List<String> x = [];
+                          Consumer<SiteShiftsData>(
+                            builder: (context, value, child) {
+                              return IgnorePointer(
+                                ignoring: widget.prov.siteValue == "كل المواقع"
+                                    ? true
+                                    : false,
+                                child: DropdownButton(
+                                    isExpanded: true,
+                                    underline: SizedBox(),
+                                    elevation: 5,
+                                    items: value.shifts
+                                        .map(
+                                          (value) => DropdownMenuItem(
+                                              child: Container(
+                                                  height: 20.h,
+                                                  child: AutoSizeText(
+                                                    value.shiftName,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  )),
+                                              value: value.shiftName),
+                                        )
+                                        .toList(),
+                                    onChanged: (v) async {
+                                      if (widget.selectedVal != "كل المواقع") {
+                                        List<String> x = [];
 
-                                          value.shifts.forEach((element) {
-                                            x.add(element.shiftName);
-                                          });
-                                          setState(() {
-                                            print("on changed $v");
-                                            holder = x.indexOf(v);
+                                        value.shifts.forEach((element) {
+                                          x.add(element.shiftName);
+                                        });
+                                        setState(() {
+                                          print("on changed $v");
+                                          holder = x.indexOf(v);
 
-                                            Provider.of<SiteData>(context,
-                                                    listen: false)
-                                                .setDropDownShift(holder);
-                                            print(
-                                                "x ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
+                                          Provider.of<SiteData>(context,
+                                                  listen: false)
+                                              .setDropDownShift(holder);
+                                          print(
+                                              "x ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
 
-                                            shiftId =
-                                                value.shifts[holder].shiftId;
-                                          });
-                                        }
-                                      },
-                                      hint: AutoSizeText(getTranslated(
-                                          context, "كل المناوبات")),
-                                      value:
-                                          widget.prov.siteValue == "كل المواقع"
-                                              ? null
-                                              : value
-                                                  .shifts[Provider.of<SiteData>(
-                                                          context,
-                                                          listen: true)
-                                                      .dropDownShiftIndex]
-                                                  .shiftName
+                                          shiftId =
+                                              value.shifts[holder].shiftId;
+                                        });
+                                      }
+                                    },
+                                    hint: AutoSizeText(
+                                        getTranslated(context, "كل المناوبات")),
+                                    value: widget.prov.siteValue == "كل المواقع"
+                                        ? null
+                                        : value
+                                            .shifts[Provider.of<SiteData>(
+                                                    context,
+                                                    listen: true)
+                                                .dropDownShiftIndex]
+                                            .shiftName
 
-                                      // value
-                                      ),
-                                );
-                              },
-                            ),
+                                    // value
+                                    ),
+                              );
+                            },
                           ),
                           Divider(
                             height: 1,
@@ -1423,71 +1368,65 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     child: Center(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Consumer<ShiftsData>(
-                              builder: (context, value, child) {
-                                return DropdownButton(
-                                  isExpanded: true,
-                                  underline: SizedBox(),
-                                  elevation: 5,
-                                  items: widget.list
-                                      .map((value) => DropdownMenuItem(
-                                            child: Container(
-                                              alignment: Alignment.topRight,
-                                              height: 20,
-                                              child: AutoSizeText(
-                                                value.name,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: ScreenUtil().setSp(
-                                                        12,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
+                          Consumer<ShiftsData>(
+                            builder: (context, value, child) {
+                              return DropdownButton(
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                elevation: 5,
+                                items: widget.list
+                                    .map((value) => DropdownMenuItem(
+                                          child: Container(
+                                            height: 20,
+                                            child: AutoSizeText(
+                                              value.name,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      12,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  fontWeight: FontWeight.w700),
                                             ),
-                                            value: value.name,
-                                          ))
-                                      .toList(),
-                                  onChanged: (v) async {
-                                    print(v);
-                                    widget.prov.setDropDownShift(0);
-                                    Provider.of<SiteShiftsData>(context,
-                                            listen: false)
-                                        .getShiftsList(v, false);
-                                    if (v != "كل المواقع") {
-                                      widget.prov.setDropDownIndex(widget
-                                              .prov.dropDownSitesStrings
-                                              .indexOf(v) -
-                                          1);
-                                    } else {
-                                      widget.prov.setDropDownIndex(0);
-                                    }
-                                    // await Provider.of<ShiftsData>(context,
-                                    //         listen: false)
-                                    //     .findMatchingShifts(
-                                    //         Provider.of<SiteData>(context,
-                                    //                 listen: false)
-                                    //             .sitesList[widget
-                                    //                 .prov.dropDownSitesIndex]
-                                    //             .id,
-                                    //         false);
+                                          ),
+                                          value: value.name,
+                                        ))
+                                    .toList(),
+                                onChanged: (v) async {
+                                  print(v);
+                                  widget.prov.setDropDownShift(0);
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .getShiftsList(v, false);
+                                  if (v != "كل المواقع") {
+                                    widget.prov.setDropDownIndex(widget
+                                            .prov.dropDownSitesStrings
+                                            .indexOf(v) -
+                                        1);
+                                  } else {
+                                    widget.prov.setDropDownIndex(0);
+                                  }
+                                  // await Provider.of<ShiftsData>(context,
+                                  //         listen: false)
+                                  //     .findMatchingShifts(
+                                  //         Provider.of<SiteData>(context,
+                                  //                 listen: false)
+                                  //             .sitesList[widget
+                                  //                 .prov.dropDownSitesIndex]
+                                  //             .id,
+                                  //         false);
 
-                                    widget.prov.fillCurrentShiftID(widget
-                                        .list[
-                                            widget.prov.dropDownSitesIndex + 1]
-                                        .id);
+                                  widget.prov.fillCurrentShiftID(widget
+                                      .list[widget.prov.dropDownSitesIndex + 1]
+                                      .id);
 
-                                    widget.prov.setSiteValue(v);
-                                    widget.onchannge(v);
-                                    print(widget.prov.dropDownSitesStrings);
-                                  },
-                                  value: widget.selectedVal,
-                                );
-                              },
-                            ),
+                                  widget.prov.setSiteValue(v);
+                                  widget.onchannge(v);
+                                  print(widget.prov.dropDownSitesStrings);
+                                },
+                                value: widget.selectedVal,
+                              );
+                            },
                           ),
                           Divider(
                             height: 1,

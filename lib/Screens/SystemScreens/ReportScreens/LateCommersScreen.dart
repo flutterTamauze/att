@@ -427,18 +427,18 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                   .next,
                                                           controller:
                                                               _dateController,
-                                                          decoration:
-                                                              kTextFieldDecorationFromTO
-                                                                  .copyWith(
-                                                                      hintText:
-                                                                          'المدة من / إلى',
-                                                                      prefixIcon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .calendar_today_rounded,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      )),
+                                                          decoration: kTextFieldDecorationFromTO
+                                                              .copyWith(
+                                                                  hintText: getTranslated(
+                                                                      context,
+                                                                      'المدة من / إلى'),
+                                                                  prefixIcon:
+                                                                      Icon(
+                                                                    Icons
+                                                                        .calendar_today_rounded,
+                                                                    color: Colors
+                                                                        .orange,
+                                                                  )),
                                                         ),
                                                       ),
                                                     ),

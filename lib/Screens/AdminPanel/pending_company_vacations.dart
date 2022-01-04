@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -91,7 +93,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
               ),
               SmallDirectoriesHeader(
                 Lottie.asset("resources/calender.json", repeat: false),
-                "طلبات الأجازات",
+                getTranslated(context, "طلبات الأجازات"),
               ),
               FutureBuilder(
                   future: pendingHolidays,
@@ -120,8 +122,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                       return Expanded(
                           child: pendingList.pendingCompanyHolidays.length == 0
                               ? Center(
-                                  child: Text(
-                                  "لا يوجد اذونات لم يتم الرد عليها",
+                                  child: AutoSizeText(
+                                  getTranslated(context,
+                                      "لا يوجد اجازات لم يتم الرد عليها"),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: setResponsiveFontSize(16)),

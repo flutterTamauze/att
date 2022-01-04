@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -138,7 +140,8 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 5.h,
                                             ),
                                             MyListTile(
-                                              title: 'المقر الرئيسى',
+                                              title: getTranslated(
+                                                  context, 'المقر الرئيسى'),
                                               icon: Icons.location_on,
                                               link:
                                                   'https://www.google.com/maps/place/Raven+%D8%B3%D9%8A%D8%AA%D9%8A+%D8%B3%D9%86%D8%AA%D8%B1+%D9%85%D9%83%D8%B1%D9%85+%D8%B9%D8%A8%D9%8A%D8%AF%E2%80%AD/@30.0683442,31.3425179,17z/data=!3m1!4b1!4m5!3m4!1s0x14583f50339ed26f:0x62296d6fcc1dc44!8m2!3d30.0683286!4d31.3445994',
@@ -147,7 +150,8 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 10.0.h,
                                             ),
                                             MyListTile(
-                                              title: 'خدمة العملاء',
+                                              title: getTranslated(
+                                                  context, 'خدمة العملاء'),
                                               icon: Icons
                                                   .quick_contacts_dialer_outlined,
 
@@ -157,7 +161,8 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 10.0.h,
                                             ),
                                             MyListTile(
-                                              title: 'رقم التليفون',
+                                              title: getTranslated(
+                                                  context, 'رقم التليفون'),
                                               icon: Icons.phone,
 
                                               // link: 'tel:+0223521011',
@@ -166,7 +171,8 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 10.0.h,
                                             ),
                                             MyListTile(
-                                              title: 'البريد الإلكترونى',
+                                              title: getTranslated(
+                                                  context, 'البريد الإلكترونى'),
                                               icon: Icons.email,
                                               link: 'mailto:info@tamauzeds.com',
                                             ),
@@ -174,12 +180,14 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 10.0.h,
                                             ),
                                             MyListTile(
-                                              title: "الموقع الإلكترونى",
+                                              title: getTranslated(
+                                                  context, "الموقع الإلكترونى"),
                                               icon: FontAwesomeIcons.globe,
                                               link: 'https://tamauzeds.com/',
                                             ),
                                             MyListTile(
-                                              title: "اعمالنا على المتجر",
+                                              title: getTranslated(context,
+                                                  "اعمالنا على المتجر"),
                                               icon: Platform.isAndroid
                                                   ? FontAwesomeIcons.googlePlay
                                                   : FontAwesomeIcons.appStore,
@@ -286,17 +294,17 @@ class MyListTile extends StatelessWidget {
       color: Colors.white,
       child: ListTile(
         onTap: () {
-          title == "رقم التليفون"
+          title == getTranslated(context, "رقم التليفون")
               ? buildShowModalBottomSheet(
                   context,
                   "0223521011",
                   Icons.call,
                   "0223521010",
                 )
-              : title == "خدمة العملاء"
+              : title == getTranslated(context, "خدمة العملاء")
                   ? buildShowModalBottomSheet(context, "0223521010",
                       FontAwesomeIcons.whatsapp, "0223521011")
-                  : title == "المقر الرئيسى"
+                  : title == getTranslated(context, "المقر الرئيسى")
                       ? showModalBottomSheet<dynamic>(
                           context: context,
                           isScrollControlled: false,
@@ -317,7 +325,6 @@ class MyListTile extends StatelessWidget {
                                       Container(
                                         width: 340.w,
                                         child: Container(
-                                          height: 30,
                                           child: AutoSizeText(
                                             "سيتى سنتر ، 3 مكرم عبيد ، مدينة نصر ، الدور السادس ، مكتب 604، محافظة القاهرة",
                                             maxLines: 2,
@@ -326,7 +333,8 @@ class MyListTile extends StatelessWidget {
                                                 fontWeight: FontWeight.w700,
                                                 letterSpacing: 1,
                                                 height: 2,
-                                                fontSize: 14),
+                                                fontSize:
+                                                    setResponsiveFontSize(14)),
                                             textAlign: TextAlign.right,
                                           ),
                                         ),

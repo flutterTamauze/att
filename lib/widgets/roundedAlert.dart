@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/services/permissions_data.dart';
 
@@ -82,12 +83,12 @@ class RoundedAlert extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              "لا",
+                              getTranslated(context, "لا"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                               ),
                             ),
                           ),
@@ -105,12 +106,12 @@ class RoundedAlert extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              "نعم",
+                              getTranslated(context, "نعم"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                               ),
                             ),
                           ),
@@ -219,12 +220,12 @@ class RoundedAlertWithComment extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              "نعم",
+                              getTranslated(context, "نعم"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                               ),
                             ),
                           ),
@@ -245,12 +246,12 @@ class RoundedAlertWithComment extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              "لا",
+                              getTranslated(context, "لا"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                               ),
                             ),
                           ),
