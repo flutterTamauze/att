@@ -105,7 +105,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                               comProvider.com.id,
                                               userData.user.userToken);
 
-                                      var chartResponse =
+                                      final chartResponse =
                                           await userData.getSuperCompanyChart(
                                               userData.user.userToken,
                                               comProvider.com.id);

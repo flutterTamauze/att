@@ -39,8 +39,6 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    Provider.of<SiteData>(context, listen: false).dropDownSitesStrings.clear();
-    Provider.of<SiteData>(context, listen: false).filSitesStringsList(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
       final notificationProv =
           Provider.of<NotificationDataService>(context, listen: false);
