@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -135,7 +136,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
+                                            "نوع الأذن : ${widget.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")} ",
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -147,9 +148,8 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                           if (widget.desc != null) ...[
                                             widget.desc == ""
                                                 ? Container()
-                                                : Text(
-                                                    "تفاصيل الطلب : ${widget.desc}",
-                                                    textAlign: TextAlign.right,
+                                                : AutoSizeText(
+                                                    "${getTranslated(context, "تفاصيل الطلب")}: ${widget.desc}",
                                                     style: TextStyle(
                                                       fontSize:
                                                           setResponsiveFontSize(
@@ -162,12 +162,13 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                 ? Container()
                                                 : Divider()
                                           ],
-                                          Text(
-                                              "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
+                                          AutoSizeText(
+                                              "${getTranslated(context, "تاريخ الأذن")}  : ${widget.date.toString().substring(0, 11)}"),
                                           Divider(),
-                                          Text(widget.permessionType == 1
-                                              ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
-                                              : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
+                                          AutoSizeText(widget.permessionType ==
+                                                  1
+                                              ? "${getTranslated(context, "اذن حتى الساعة")}  : ${amPmChanger(int.parse(widget.duration))}"
+                                              : "${getTranslated(context, "اذن من الساعة")} : ${amPmChanger(int.parse(widget.duration))}"),
                                           widget.desc != null
                                               ? Divider()
                                               : Container(),

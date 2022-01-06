@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
@@ -24,8 +25,8 @@ class DataTablePermessionRow extends StatelessWidget {
             alignment: Alignment.center,
             child: AutoSizeText(
               permessions.permessionType == 1
-                  ? "تأخير عن الحضور"
-                  : "انصراف مبكر",
+                  ? getTranslated(context, "تأخير عن الحضور")
+                  : getTranslated(context, "انصراف مبكر"),
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(14, allowFontScalingSelf: true),
               ),

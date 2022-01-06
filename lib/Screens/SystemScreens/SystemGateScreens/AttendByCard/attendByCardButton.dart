@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/SytemScanner.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -27,7 +28,7 @@ class AttendByCardButton extends StatelessWidget {
           child: Container(
             height: 20,
             child: AutoSizeText(
-              "التسجيل ببطاقة التعريف الشخصية",
+              getTranslated(context, "التسجيل ببطاقة التعريف الشخصية"),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),

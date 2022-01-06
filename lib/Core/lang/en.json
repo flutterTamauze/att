@@ -51,6 +51,7 @@
     "تسجيل طلب للمستخدم":"Register Request For :",
     "المأموريات الخارجية":"External Missions",
     "تمام شركة":"Statistical Report for",
+    "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12":"Password must be > 8 and < 12 characters",
     "التاريخ":"Date",
     "التأخير":"Late",
     "حضور":"Attend",
@@ -113,6 +114,10 @@
 "اختر لغة التطبيق":"Choose Application Langugage",
 "السبت":"Saturday",
 "لغة التطبيق":"App Langugage",
+"تسجيل عن طريق مسح الكود":"Register by QR Scan",
+"تسجيل الحضور من":"Attendance Registeration From",
+"التسجيل ببطاقة التعريف الشخصية":"Register By ID Card",
+"تسجيل الانصراف من":"Leave Registeration From",
  "الأحد":"Sunday"
  , "الأثنين":"Monday",
  "الثلاثاء":"Tuesday",

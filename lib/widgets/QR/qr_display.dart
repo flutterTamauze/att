@@ -147,9 +147,9 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                               ),
                                             ),
                                             Container(
-                                              height: 20.h,
                                               child: AutoSizeText(
-                                                "تسجيل عن طريق مسح الكود",
+                                                getTranslated(context,
+                                                    "تسجيل عن طريق مسح الكود"),
                                                 maxLines: 1,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
@@ -172,22 +172,18 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                 SizedBox(
                                                   height: 6,
                                                 ),
-                                                Directionality(
-                                                  textDirection:
-                                                      ui.TextDirection.rtl,
-                                                  child: AutoSizeText(
-                                                    " تسجيل الحضور من ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromStartTime))} الى ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromEndTime))} \n تسجيل الانصراف من ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToStartTime))} الى ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToEndTime) % 2400)}",
-                                                    maxLines: 3,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        height: 1.5,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(15,
-                                                                allowFontScalingSelf:
-                                                                    true)),
-                                                  ),
+                                                AutoSizeText(
+                                                  " ${getTranslated(context, "تسجيل الحضور من ")}${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromStartTime))} ${getTranslated(context, "إلى")} ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftFromEndTime))} \n ${getTranslated(context, "تسجيل الانصراف من")} ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToStartTime))} ${getTranslated(context, "إلى")} ${amPmChanger(int.parse(shiftApiConsumer.qrShift.shiftToEndTime) % 2400)}",
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      height: 1.5,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          15,
+                                                          allowFontScalingSelf:
+                                                              true)),
                                                 ),
                                               ],
                                             )
@@ -247,23 +243,19 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                               SizedBox(
                                                 height: 5.h,
                                               ),
-                                              Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  height: 45.h,
-                                                  child: AutoSizeText(
-                                                    " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
-                                                    maxLines: 3,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(18,
-                                                                allowFontScalingSelf:
-                                                                    true)),
-                                                  ),
+                                              Container(
+                                                height: 45.h,
+                                                child: AutoSizeText(
+                                                  " تسجيل الحضور من ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftStartTime)} إلى ${amPmChanger(shiftApiConsumer.shiftsListProvider[0].shiftEndTime)} \n تسجيل الانصراف من ${amPmChanger(shiftApiConsumer.shiftsListProvider[1].shiftStartTime)} إلى ${amPmChanger((shiftApiConsumer.shiftsListProvider[1].shiftEndTime) % 2400)}",
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          18,
+                                                          allowFontScalingSelf:
+                                                              true)),
                                                 ),
                                               )
                                             ],
