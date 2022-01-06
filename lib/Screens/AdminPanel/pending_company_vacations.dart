@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -120,8 +121,8 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                       return Expanded(
                           child: pendingList.pendingCompanyHolidays.length == 0
                               ? Center(
-                                  child: Text(
-                                  "لا يوجد اذونات لم يتم الرد عليها",
+                                  child: AutoSizeText(
+                                  "لا يوجد اجازات لم يتم الرد عليها",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: setResponsiveFontSize(16)),

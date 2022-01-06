@@ -9,8 +9,8 @@ import '../../Sites_data.dart';
 
 getDailyReport(int siteIndex, String date, BuildContext context) async {
   int siteID;
-  var userProvider = Provider.of<UserData>(context, listen: false);
-  var comProvider = Provider.of<CompanyData>(context, listen: false);
+  final userProvider = Provider.of<UserData>(context, listen: false);
+  final comProvider = Provider.of<CompanyData>(context, listen: false);
   print("company id ${comProvider.com.id}");
   if (userProvider.user.userType == 2) {
     siteID = userProvider.user.userSiteId;

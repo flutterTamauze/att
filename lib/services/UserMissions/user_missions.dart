@@ -146,6 +146,8 @@ class MissionsData with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     print(userMissions.shiftId);
+    print(userMissions.description);
+    print(userMissions.userId);
     var response = await http.post(
         Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
         headers: {

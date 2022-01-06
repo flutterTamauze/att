@@ -7,9 +7,6 @@ import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 
-import '../Core/constants.dart';
-import 'NetworkFaliure.dart';
-
 class NetworkApi {
   final timeOutDuration = Duration(seconds: 20);
 

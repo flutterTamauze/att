@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
+import 'dart:math';
 
 class UserReportPieChart extends StatefulWidget {
   @override
@@ -144,13 +145,16 @@ class UserReportPieChartState extends State {
         case 0:
           return PieChartSectionData(
             color: Colors.orange,
-            value: reportsData.userAttendanceReport.totalLateDay /
-                (reportsData.userAttendanceReport.userAttendListUnits.length) *
-                100,
-            title: (reportsData.userAttendanceReport.totalLateDay /
-                    (reportsData
-                        .userAttendanceReport.userAttendListUnits.length) *
+            value: ((reportsData.userAttendanceReport.totalLateDay) /
+                    ((reportsData
+                        .userAttendanceReport.userAttendListUnits.length)) *
                     100)
+                .toDouble(),
+            title: ((reportsData.userAttendanceReport.totalLateDay) /
+                    ((reportsData
+                        .userAttendanceReport.userAttendListUnits.length)) *
+                    100)
+                .toDouble()
                 .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(
@@ -161,13 +165,16 @@ class UserReportPieChartState extends State {
         case 1:
           return PieChartSectionData(
             color: Colors.red[600],
-            value: (reportsData.userAttendanceReport.totalAbsentDay /
-                (reportsData.userAttendanceReport.userAttendListUnits.length) *
-                100),
-            title: (reportsData.userAttendanceReport.totalAbsentDay /
-                    (reportsData
-                        .userAttendanceReport.userAttendListUnits.length) *
+            value: ((reportsData.userAttendanceReport.totalAbsentDay) /
+                    ((reportsData
+                        .userAttendanceReport.userAttendListUnits.length)) *
                     100)
+                .toDouble(),
+            title: ((reportsData.userAttendanceReport.totalAbsentDay) /
+                    ((reportsData
+                        .userAttendanceReport.userAttendListUnits.length)) *
+                    100)
+                .toDouble()
                 .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(
@@ -179,21 +186,28 @@ class UserReportPieChartState extends State {
         case 2:
           return PieChartSectionData(
             color: Colors.green[600],
-            value: ((reportsData
-                            .userAttendanceReport.userAttendListUnits.length -
-                        (reportsData.userAttendanceReport.totalAbsentDay +
-                            reportsData.userAttendanceReport.totalLateDay)) /
-                    reportsData
-                        .userAttendanceReport.userAttendListUnits.length) *
-                100,
-            title: (((reportsData.userAttendanceReport.userAttendListUnits
-                                .length -
-                            (reportsData.userAttendanceReport.totalAbsentDay +
-                                reportsData
-                                    .userAttendanceReport.totalLateDay)) /
-                        reportsData
-                            .userAttendanceReport.userAttendListUnits.length) *
-                    100)
+            value: (100 -
+                (((reportsData.userAttendanceReport.totalAbsentDay) /
+                            ((reportsData.userAttendanceReport
+                                .userAttendListUnits.length)) *
+                            100)
+                        .toDouble() +
+                    ((reportsData.userAttendanceReport.totalLateDay) /
+                            ((reportsData.userAttendanceReport
+                                .userAttendListUnits.length)) *
+                            100)
+                        .toDouble())),
+            title: (100 -
+                    (((reportsData.userAttendanceReport.totalAbsentDay) /
+                                ((reportsData.userAttendanceReport
+                                     .userAttendListUnits.length)) *
+                                100)
+                            .toDouble() +
+                        ((reportsData.userAttendanceReport.totalLateDay) /
+                                ((reportsData.userAttendanceReport
+                                    .userAttendListUnits.length)) *
+                                100)
+                            .toDouble()))
                 .toStringAsFixed(1),
             radius: radius,
             titleStyle: TextStyle(

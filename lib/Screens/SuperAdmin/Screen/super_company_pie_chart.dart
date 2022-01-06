@@ -9,6 +9,7 @@ import 'package:qr_users/Core/constants.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 
 import 'package:qr_users/services/user_data.dart';
@@ -253,6 +254,11 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                     Spacer(),
                     InkWell(
                       onTap: () {
+                        Provider.of<SiteData>(context, listen: false)
+                            .dropDownSitesStrings
+                            .clear();
+                        Provider.of<SiteData>(context, listen: false)
+                            .filSitesStringsList(context);
                         if (userData.isTechnicalSupport) {
                           print("overiding tech supporrt rule from 4 to 3");
                           Provider.of<UserData>(context, listen: false)

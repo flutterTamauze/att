@@ -101,7 +101,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   }
 
   int getsiteIDbyName(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    var list = Provider.of<SiteShiftsData>(context, listen: false).sites;
     List<Site> currentSite =
         list.where((element) => element.name == siteName).toList();
     return currentSite[0].id;
@@ -117,16 +117,17 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     } else {
       selectedVal = "";
     }
-    var list = Provider.of<SiteShiftsData>(context, listen: true).siteShiftList;
-    var prov = Provider.of<SiteData>(context, listen: false);
-    var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-    var scheduleList =
+    final list =
+        Provider.of<SiteShiftsData>(context, listen: true).siteShiftList;
+    final prov = Provider.of<SiteData>(context, listen: false);
+    final daysofflist = Provider.of<DaysOffData>(context, listen: true);
+    final scheduleList =
         Provider.of<ShiftsData>(context, listen: true).firstAvailableSchedule;
-    List<String> sites =
+    final List<String> sites =
         Provider.of<ShiftsData>(context, listen: true).sitesSchedules;
-    List<String> shifts =
+    final List<String> shifts =
         Provider.of<ShiftsData>(context, listen: true).shiftSchedules;
-    ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
+    final ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
     return GestureDetector(
         onTap: () {
           for (int i = 0; i < list.length; i++) {
@@ -312,7 +313,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                           EdgeInsets.all(
                                                                               20),
                                                                       child:
-                                                                          Text(
+                                                                          AutoSizeText(
                                                                         "اختر الموقع و المناوبة",
                                                                         style: TextStyle(
                                                                             color:
@@ -440,10 +441,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                               print(v);
                                                                                               prov.setDropDownShift(0);
 
+                                                                                              // ignore: cascade_invocations
+                                                                                              for (int i = 0; i < prov.dropDownSitesStrings.length; i++) {
+                                                                                                print(prov.dropDownSitesStrings[i]);
+                                                                                              }
                                                                                               prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
 
                                                                                               // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
-                                                                                              Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName, false);
+                                                                                              print("drop down site index ${prov.dropDownSitesIndex}");
+                                                                                              Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex ?? 0].siteName, false);
                                                                                               prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].siteId);
 
                                                                                               prov.setSiteValue(v);
@@ -545,7 +551,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                 ))
                                         ],
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                           daysofflist
                                               .reallocateUsers[index].dayName,
                                           textAlign: TextAlign.right,

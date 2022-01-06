@@ -749,7 +749,7 @@ class User {
     return User(
       userToken: json["token"],
       id: json["userData"]["id"],
-      // userID: json["userData"]["userName"],
+      userID: json["userData"]["userName"],
       name: json["userData"]["userName1"],
       userJob: json["userData"]["userJob"],
       email: json["userData"]["email"],
@@ -765,6 +765,7 @@ class User {
       userShiftId: json["userData"]["shiftId"],
       // isAllowedToAttend: json["userData"]["isAllowtoAttend"],
       userImage: "$imageUrl${json["userData"]["userImage"]}",
+      // userImage: "$imageUrl${json["userData"]["userName"]}.png",
     );
   }
 }

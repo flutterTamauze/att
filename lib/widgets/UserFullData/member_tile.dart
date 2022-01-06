@@ -273,7 +273,10 @@ class _MemberTileState extends State<MemberTile> {
                                       },
                                       fit: BoxFit.fill,
                                       image: NetworkImage(
-                                        '$imageUrl${widget.user.userImageURL}',
+                                        '$imageUrl${widget.user.userImageURL}'
+                                                .contains("null")
+                                            ? '$imageUrl${widget.user.normalizedName}.png'
+                                            : '$imageUrl${widget.user.userImageURL}',
                                       ),
                                     ),
                                   ),
