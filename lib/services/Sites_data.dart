@@ -407,79 +407,74 @@ class SiteData with ChangeNotifier {
         " id:${site.id}  name:${site.name} long:${site.long} lat:${site.lat} comId:$companyId , listId:$id");
 
     if (await isConnectedToInternet()) {
-      try {
-        dropDownSitesStrings = [];
-        final response = await http.put(
-            Uri.parse("$baseURL/api/Sites/${site.id}"),
-            body: json.encode(
-              {
-                "id": site.id,
-                "siteLan": site.long,
-                "siteLat": site.lat,
-                "siteName": site.name,
-                "companyId": companyId
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+      dropDownSitesStrings = [];
+      final response = await http.put(
+          Uri.parse("$baseURL/api/Sites/${site.id}"),
+          body: json.encode(
+            {
+              "id": site.id,
+              "siteLan": site.long,
+              "siteLat": site.lat,
+              "siteName": site.name,
+              "companyId": companyId
+            },
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await editSite(
+          site,
+          companyId,
+          userToken,
+          id,
+          context,
+        );
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
         print(response.body);
-        print(response.statusCode);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await editSite(
-            site,
-            companyId,
-            userToken,
-            id,
-            context,
-          );
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            Site newSite = Site(
-                id: decodedRes['data']['id'] as int,
-                lat: double.parse(decodedRes['data']['siteLat'].toString()),
-                long: double.parse(decodedRes['data']['siteLan'].toString()),
-                name: decodedRes['data']['siteName']);
+        if (decodedRes["message"] == "Success") {
+          print("edit success");
+          Site newSite = Site(
+              id: decodedRes['data']['id'] as int,
+              lat: double.parse(decodedRes['data']['siteLat'].toString()),
+              long: double.parse(decodedRes['data']['siteLan'].toString()),
+              name: decodedRes['data']['siteName']);
 
-            sitesList[id] = newSite;
-            Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList[id]
-                .siteId = newSite.id;
-            Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList[id]
-                .siteName = newSite.name;
+          // sitesList[id] = newSite;
+          Provider.of<SiteShiftsData>(context, listen: false)
+              .siteShiftList[id]
+              .siteId = newSite.id;
+          Provider.of<SiteShiftsData>(context, listen: false)
+              .siteShiftList[id]
+              .siteName = newSite.name;
 
-            dropDownSitesList = [...sitesList];
-            dropDownSitesList.insert(
-                0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
-            filSitesStringsList(context);
-            await sendFcmDataOnly(
-                category: "reloadData",
-                topicName:
-                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          dropDownSitesList = [...sitesList];
+          dropDownSitesList.insert(
+              0, Site(name: "كل المواقع", id: -1, lat: 0, long: 0));
+          filSitesStringsList(context);
+          await sendFcmDataOnly(
+              category: "reloadData",
+              topicName:
+                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
 
-            await Provider.of<SiteShiftsData>(context, listen: false)
-                .getAllSitesAndShifts(
-                    Provider.of<CompanyData>(context, listen: false).com.id,
-                    Provider.of<UserData>(context, listen: false)
-                        .user
-                        .userToken);
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : The same Site name already exists in company") {
-            return "exists";
-          }
+          await Provider.of<SiteShiftsData>(context, listen: false)
+              .getAllSitesAndShifts(
+                  Provider.of<CompanyData>(context, listen: false).com.id,
+                  Provider.of<UserData>(context, listen: false).user.userToken);
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Fail : The same Site name already exists in company") {
+          return "exists";
         }
-      } catch (e) {
-        print(e);
       }
       return "failed";
     } else {

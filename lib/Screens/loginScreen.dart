@@ -134,7 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               return null;
                                             }
                                           } else {
-                                            return "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12 ";
+                                            return getTranslated(context,
+                                                "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12");
                                           }
                                         },
                                         keyboardType: TextInputType.text,

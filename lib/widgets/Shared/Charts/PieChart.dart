@@ -184,17 +184,7 @@ class LateReportPieChartState extends State {
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
+
         default:
           throw Error();
       }

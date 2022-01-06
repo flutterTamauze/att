@@ -325,7 +325,7 @@ class UserHolidaysData with ChangeNotifier {
     ).toIso8601String();
     loadingHolidaysDetails = true;
     // notifyListeners();
-    String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
+    String endingTime = DateTime(DateTime.now().year, 12, 31).toIso8601String();
     var response = await http.get(
       Uri.parse(
           "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime?isMobile=true"),
@@ -336,7 +336,7 @@ class UserHolidaysData with ChangeNotifier {
     );
     loadingHolidaysDetails = false;
     print(response.statusCode);
-
+    print(response.request.url);
     log(response.body);
     var decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {

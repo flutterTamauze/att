@@ -92,23 +92,23 @@ class _DataTableRowState extends State<DataTableRow> {
                 );
               },
               onTap: () async {
-                var now = DateTime.now();
-                int legalDay = Provider.of<CompanyData>(context, listen: false)
-                    .com
-                    .legalComDate;
-                var toDate = DateTime(now.year, now.month, now.day - 1);
-                var fromDate = DateTime(now.year, now.month, legalDay);
-
-                var userProvider =
-                    Provider.of<UserData>(context, listen: false).user;
-
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return RoundedLoadingIndicator();
                     });
+                var now = DateTime.now();
+                final int legalDay =
+                    Provider.of<CompanyData>(context, listen: false)
+                        .com
+                        .legalComDate;
+                final toDate = DateTime(now.year, now.month, now.day - 1);
+                var fromDate = DateTime(now.year, now.month, legalDay);
+                final userProvider =
+                    Provider.of<UserData>(context, listen: false).user;
+
                 // getMembersData();
-                DateTime companyDate =
+                final DateTime companyDate =
                     Provider.of<CompanyData>(context, listen: false)
                         .com
                         .createdOn;
@@ -133,28 +133,21 @@ class _DataTableRowState extends State<DataTableRow> {
                         context)
                     .then((value) async {
                   print("value $value");
-                  if (value == "Success" ||
-                      value == "user created after period") {
-                    Navigator.pop(context);
-                    await Navigator.of(context).push(
-                      new MaterialPageRoute(
-                        builder: (context) => UserAttendanceReportScreen(
-                          name: widget.attendUnit.userName,
-                          userFromDate: fromDate,
-                          userToDate: toDate,
-                          id: widget.attendUnit.userId,
-                          siteId: widget.siteId,
-                          // siteIndex:
-                        ),
+
+                  // Navigator.maybePop(context);
+                  await Navigator.of(context).push(
+                    new MaterialPageRoute(
+                      builder: (context) => UserAttendanceReportScreen(
+                        name: widget.attendUnit.userName,
+                        userFromDate: fromDate,
+                        userToDate: toDate,
+                        id: widget.attendUnit.userId,
+                        siteId: widget.siteId,
+                        // siteIndex:
                       ),
-                    );
-                  } else if (value == "failed") {
-                    Fluttertoast.showToast(
-                        msg: 'حدث خطأ',
-                        backgroundColor: Colors.red,
-                        gravity: ToastGravity.CENTER);
-                    Navigator.pop(context);
-                  }
+                    ),
+                  );
+                  Navigator.pop(context);
                 });
               },
               //USERNAME IN LISTVIEW//

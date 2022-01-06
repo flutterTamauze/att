@@ -10,17 +10,16 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 
 import 'package:qr_users/services/user_data.dart';
 
-import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/Shared/Charts/PieChartInfo.dart';
 import 'package:qr_users/widgets/Shared/Charts/SuperCompanyChart.dart';
 import 'package:qr_users/widgets/Shared/RoundBorderImage.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qr_users/widgets/roundedButton.dart';
 
 class SuperCompanyPieChart extends StatefulWidget {
   @override
@@ -148,13 +147,18 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                SinglePieChartItem(
-                                  title: getTranslated(context, "الأجازة"),
-                                  color: ColorManager.primary,
-                                  count: userData
-                                      .superCompaniesChartModel.totalHolidays
-                                      .toString(),
-                                ),
+                                if (!userData
+                                        .superCompaniesChartModel.isHoliday &&
+                                    !userData.superCompaniesChartModel
+                                        .isOfficialVac) ...[
+                                  SinglePieChartItem(
+                                    title: getTranslated(context, "الأجازة"),
+                                    color: ColorManager.primary,
+                                    count: userData
+                                        .superCompaniesChartModel.totalHolidays
+                                        .toString(),
+                                  ),
+                                ],
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -223,9 +227,36 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                     //     ),
                     //   ),
                     // ),
+                    SizedBox(
+                      height: 60.h,
+                    ),
+                    userData.superCompaniesChartModel.isOfficialVac
+                        ? Container(
+                            child: AutoSizeText(
+                              getTranslated(context, "عطلة رسمية"),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: setResponsiveFontSize(16)),
+                            ),
+                          )
+                        : userData.superCompaniesChartModel.isHoliday
+                            ? Container(
+                                child: AutoSizeText(
+                                  getTranslated(context, "عطلة اسبوعية"),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: setResponsiveFontSize(16)),
+                                ),
+                              )
+                            : Container(),
                     Spacer(),
                     InkWell(
                       onTap: () {
+                        Provider.of<SiteData>(context, listen: false)
+                            .dropDownSitesStrings
+                            .clear();
+                        Provider.of<SiteData>(context, listen: false)
+                            .filSitesStringsList(context);
                         if (userData.isTechnicalSupport) {
                           print("overiding tech supporrt rule from 4 to 3");
                           Provider.of<UserData>(context, listen: false)

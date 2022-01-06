@@ -14,6 +14,7 @@ import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
+import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -41,14 +42,16 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
+    Provider.of<SiteData>(context, listen: false).dropDownSitesStrings.clear();
+    Provider.of<SiteData>(context, listen: false).filSitesStringsList(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
-      var notificationProv =
+      final notificationProv =
           Provider.of<NotificationDataService>(context, listen: false);
       notificationProv.firebaseMessagingConfig(context);
     }
 
     //Check for updates
-    DownloadService downloadService = DownloadService();
+    final DownloadService downloadService = DownloadService();
     downloadService.checkReleaseDate(showApk, context);
     // Provider.of<NotificationDataService>(context, listen: false)
     //     .huaweiMessagingConfig(context);

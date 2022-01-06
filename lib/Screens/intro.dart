@@ -124,8 +124,11 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Center(
-                              child: Text(
-                                "ابدأ",
+                              child: AutoSizeText(
+                                getTranslated(
+                                  context,
+                                  "ابدأ",
+                                ),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),

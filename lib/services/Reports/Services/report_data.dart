@@ -541,6 +541,7 @@ class ReportsData with ChangeNotifier {
         if (decodedRes["message"] == "Success") {
           userAttendanceReport.totalOfficialVacation =
               decodedRes["data"]["totalOffcialVacation"];
+          // ignore: cascade_invocations
           userAttendanceReport.totalLateDuration =
               getTimeToString(decodedRes['data']['totalLateDuration'] as int);
           userAttendanceReport.totalAbsentDay =
@@ -557,7 +558,7 @@ class ReportsData with ChangeNotifier {
               jsonDecode(response.body)['data']['userDayAttends'] as List;
           userAttendanceReport.totalOfficialVacation =
               decodedRes["data"]["totalOffcialVacation"] as int;
-
+          log(reportObjJson.toString());
           if (reportObjJson.isNotEmpty) {
             print("reportObjJson: $reportObjJson");
             userAttendanceReport.isDayOff = 0;
