@@ -117,6 +117,7 @@ class MultipleFloatingButtons extends StatelessWidget {
 
                         break;
                       case "إضافة موقع":
+                      case "Add Site":
                         Navigator.push(
                           context,
                           MaterialPageRoute(

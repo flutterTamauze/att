@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
@@ -82,7 +83,7 @@ class Settings {
                   if (await memberData.deleteMember(
                           userId, listIndex, token, context) ==
                       "Success") {
-                    successfullDelete();
+                    successfullDelete(context);
                     log("going to users screen");
                     await Navigator.pushReplacement(
                         context,
@@ -95,8 +96,9 @@ class Settings {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                title: 'إزالة مستخدم',
-                content: "هل تريد إزالة $username ؟"),
+                title: getTranslated(context, 'إزالة مستخدم'),
+                content:
+                    "${getTranslated(context, "هل تريد إزالة")}$username ؟"),
           );
         });
   }

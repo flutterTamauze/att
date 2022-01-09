@@ -296,7 +296,8 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                             onTap: () {
                               if (widget.textController.text.length < 3) {
                                 Fluttertoast.showToast(
-                                    msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                    msg: getTranslated(context,
+                                        "يجب ان لا يقل البحث عن 3 احرف"),
                                     backgroundColor: Colors.red,
                                     gravity: ToastGravity.CENTER);
                               } else {
@@ -497,7 +498,8 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                               onTap: () {
                                 if (widget.textController.text.length < 3) {
                                   Fluttertoast.showToast(
-                                      msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                      msg: getTranslated(context,
+                                          "يجب ان لا يقل البحث عن 3 احرف"),
                                       backgroundColor: Colors.red,
                                       gravity: ToastGravity.CENTER);
                                 } else {

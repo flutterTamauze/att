@@ -426,8 +426,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   if (value ==
                                                       "Success : Holiday Created!") {
                                                     Fluttertoast.showToast(
-                                                            msg:
-                                                                "تم إضافة الأجازة بنجاح",
+                                                            msg: getTranslated(
+                                                                context,
+                                                                "تم إضافة الأجازة بنجاح"),
                                                             gravity:
                                                                 ToastGravity
                                                                     .CENTER,
@@ -485,8 +486,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -496,14 +498,15 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else {
-                                                    errorToast();
+                                                    errorToast(context);
                                                   }
                                                 });
                                               } else {
@@ -511,12 +514,14 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor: Colors.red,
-                                                    msg:
-                                                        "قم بأدخال مدة الأجازة");
+                                                    msg: getTranslated(context,
+                                                        "قم بأدخال مدة الأجازة"));
                                               }
                                             },
-                                            title: "حفظ",
-                                          )
+                                            title: getTranslated(
+                                              context,
+                                              "حفظ",
+                                            ))
                                   ],
                                 )
                               : Column(
@@ -528,7 +533,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                         child: Row(
                                           children: [
                                             AutoSizeText(
-                                              "نوع الأذن",
+                                              getTranslated(
+                                                  context, "نوع الأذن"),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 11),
@@ -604,7 +610,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                               child: Row(
                                                 children: [
                                                   Text(
-                                                    "تاريخ الأذن",
+                                                    getTranslated(
+                                                        context, "تاريخ الأذن"),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -688,13 +695,19 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 children: [
                                                   AutoSizeText(
                                                     selectedPermession ==
-                                                            "تأخير عن الحضور"
-                                                        ? "اذن حتى الساعة"
-                                                        : "اذن من الساعة",
+                                                            getTranslated(
+                                                                context,
+                                                                "تأخير عن الحضور")
+                                                        ? getTranslated(context,
+                                                            "اذن حتى الساعة")
+                                                        : getTranslated(context,
+                                                            "اذن من الساعة"),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 13),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
                                                   ),
                                                 ],
                                               ),
@@ -710,7 +723,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 builder: (context) {
                                                   return InkWell(
                                                       onTap: () async {
-                                                        var to =
+                                                        final to =
                                                             await showTimePicker(
                                                           context: context,
                                                           initialTime: toPicked,
@@ -811,13 +824,13 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             .replaceAll(
                                                                 ":", ""),
                                                         permessionType:
-                                                            selectedPermession ==
-                                                                    "تأخير عن الحضور"
+                                                            selectedPermession == getTranslated(context, "تأخير عن الحضور")
                                                                 ? 1
                                                                 : 2,
                                                         permessionDescription:
                                                             commentController.text == ""
-                                                                ? "لا يوجد تعليق"
+                                                                ? getTranslated(
+                                                                    context, "لا يوجد تعليق")
                                                                 : commentController
                                                                     .text,
                                                         user:
@@ -867,8 +880,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "يوجد مأمورية خارجية فى هذا اليوم");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "يوجد مأمورية خارجية فى هذا اليوم"));
                                                 } else if (msg ==
                                                     'already exist') {
                                                   Fluttertoast.showToast(
@@ -876,10 +890,11 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "لقد تم تقديم طلب من قبل");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لقد تم تقديم طلب من قبل"));
                                                 } else if (msg == "failed") {
-                                                  errorToast();
+                                                  errorToast(context);
                                                 } else if (msg ==
                                                     "dublicate permession") {
                                                   Fluttertoast.showToast(
@@ -887,8 +902,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "يوجد اذن فى هذا اليوم");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "يوجد اذن فى هذا اليوم"));
                                                 }
                                               } else {
                                                 print(selectedDateString);
@@ -897,8 +913,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor: Colors.red,
-                                                    msg:
-                                                        "قم بأدخال البيانات المطلوبة");
+                                                    msg: getTranslated(context,
+                                                        "قم بأدخال البيانات المطلوبة"));
                                               }
                                             },
                                             title:

@@ -12,6 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/recognition_services/FaceDetectorPainter.dart';
 
 import 'package:image/image.dart' as img;
@@ -356,7 +357,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 if (msg ==
                                                     "Success : successfully registered") {
                                                   Fluttertoast.showToast(
-                                                      msg: "تم التسجيل بنجاح",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "تم التسجيل بنجاح"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -365,8 +368,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Success : already registered attend") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "لقد تم تسجيل الحضور من قبل",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لقد تم تسجيل الحضور من قبل"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       toastLength:
@@ -377,8 +381,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Success : already registered leave") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "لقد تم تسجيل الأنصراف من قبل",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لقد تم تسجيل الأنصراف من قبل"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       toastLength:
@@ -389,8 +394,10 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Success : User was not proof") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+                                                      msg: getTranslated(
+                                                        context,
+                                                        "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+                                                      ),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       toastLength:
@@ -401,8 +408,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "you can't register now during shift!") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "لا يمكن التسجيل بمناوبتك الأن",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لا يمكن التسجيل بمناوبتك الأن"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -411,8 +419,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Sorry : You have an external mission today!") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "لم يتم التسجيل: لديك مأمورية خارجية ",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لم يتم التسجيل: لديك مأمورية خارجية"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       toastLength:
@@ -423,8 +432,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Sorry : Today is an official vacation!") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          " لم يتم التسجيل : عطلة رسمية",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لم يتم التسجيل : عطلة رسمية"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -433,8 +443,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "noInternet") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: لا يوجد اتصال بالانترنت"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -454,8 +465,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                       textColor: Colors.black);
                                                 } else if (msg == "off") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -463,8 +475,10 @@ class TakePictureScreenState extends State<CameraPicker>
                                                       textColor: Colors.black);
                                                 } else if (msg == "mock") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      msg: getTranslated(
+                                                        context,
+                                                        "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      ),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -473,8 +487,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
                                                   await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: كود غير صحيح",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: كود غير صحيح"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -483,8 +498,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Fail : Using another attend method") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -505,8 +521,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Failed : Mac address not match") {
                                                   Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       toastLength:
@@ -517,8 +534,10 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Failed : Location not found") {
                                                   await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      msg: getTranslated(
+                                                        context,
+                                                        "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                      ),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -527,8 +546,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Failed : User Id not valid") {
                                                   await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: كود غير صحيح",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل: كود غير صحيح"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -537,8 +557,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 } else if (msg ==
                                                     "Failed : Out of shift time") {
                                                   await Fluttertoast.showToast(
-                                                      msg:
-                                                          "التسجيل غير متاح الأن",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "التسجيل غير متاح الأن"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -546,7 +567,9 @@ class TakePictureScreenState extends State<CameraPicker>
                                                       textColor: Colors.black);
                                                 } else {
                                                   await Fluttertoast.showToast(
-                                                      msg: "خطأ فى التسجيل",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى التسجيل"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:

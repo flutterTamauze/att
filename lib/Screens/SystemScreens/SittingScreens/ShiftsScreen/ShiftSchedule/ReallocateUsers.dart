@@ -684,10 +684,10 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.red);
                                           } else {
-                                            errorToast();
+                                            errorToast(context);
                                           }
                                         } else {
-                                          String msg = await Provider.of<
+                                          final String msg = await Provider.of<
                                                       ShiftsData>(context,
                                                   listen: false)
                                               .addShiftSchedule(
@@ -719,7 +719,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                     "تم طلب جدولة لهذا المستخدم مسبقا",
                                                 backgroundColor: Colors.red);
                                           } else {
-                                            errorToast();
+                                            errorToast(context);
                                           }
                                         }
                                       }

@@ -315,12 +315,12 @@ class RoundedDialog extends StatelessWidget {
                       child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          "الغاء",
+                          getTranslated(context, "الغاء"),
                           maxLines: 1,
                           style: TextStyle(
                             color: Colors.orange,
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize: setResponsiveFontSize(17),
                           ),
                         ),
                       ),

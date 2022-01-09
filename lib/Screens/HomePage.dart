@@ -103,11 +103,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ? StackedNotificaitonAlert(
             popWidget: false,
             isFromBackground: true,
-            notificationTitle: "اثبات حضور",
-            notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
-            roundedButtonTitle: "اثبات",
+            notificationTitle: getTranslated(context, "اثبات حضور"),
+            notificationContent: getTranslated(
+                context, "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+            roundedButtonTitle: getTranslated(context, "اثبات"),
             lottieAsset: "resources/notificationalarm.json",
-            notificationToast: "تم اثبات الحضور بنجاح",
+            notificationToast: getTranslated(context, "تم اثبات الحضور بنجاح"),
             showToast: true,
             repeatAnimation: true,
           )

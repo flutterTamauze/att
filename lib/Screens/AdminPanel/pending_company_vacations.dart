@@ -18,7 +18,6 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -221,14 +220,19 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                         pending
                                                                             .fcmToken,
                                                                     title:
-                                                                        "طلب اجازة",
-                                                                    message:
-                                                                        "تم الموافقة على طلب الأجازة");
+                                                                        getTranslated(
+                                                                      context,
+                                                                      "طلب اجازة",
+                                                                    ),
+                                                                    message: getTranslated(
+                                                                        context,
+                                                                        "تم الموافقة على طلب الأجازة"));
                                                               }
 
                                                               Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم الموافقة بنجاح",
+                                                                  msg: getTranslated(
+                                                                      context,
+                                                                      "تم الموافقة بنجاح"),
                                                                   gravity:
                                                                       ToastGravity
                                                                           .CENTER,
@@ -256,18 +260,20 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                           .red);
                                                             } else {
                                                               Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ في الموافقة",
+                                                                  msg: getTranslated(
+                                                                      context,
+                                                                      "خطأ في الموافقة"),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .red);
                                                             }
                                                           },
-                                                          content:
-                                                              "تأكيد الموافقة على الاجازة",
+                                                          content: getTranslated(
+                                                              context,
+                                                              "تأكيد الموافقة على الاجازة"),
                                                           onCancel: () {},
                                                           title:
-                                                              "الموافقة على طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                              "${getTranslated(context, "الموافقة على طلب")} ${pendingList.pendingCompanyHolidays[index].userName} ",
                                                         ),
                                                       );
                                                     });
@@ -282,7 +288,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                             TextDirection.rtl,
                                                         child:
                                                             RoundedAlertWithComment(
-                                                          hint: "سبب الرفض",
+                                                          hint: getTranslated(
+                                                              context,
+                                                              "سبب الرفض"),
                                                           onTapped: (comm) {
                                                             comment = comm;
                                                           },
@@ -329,15 +337,18 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                     userToken:
                                                                         pending
                                                                             .fcmToken,
-                                                                    title:
-                                                                        "طلب اجازة",
-                                                                    message:
-                                                                        "تم رفض طلب الأجازة");
+                                                                    title: getTranslated(
+                                                                        context,
+                                                                        "طلب اجازة"),
+                                                                    message: getTranslated(
+                                                                        context,
+                                                                        "تم رفض طلب الأجازة"));
                                                               }
 
                                                               Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم الرفض بنجاح",
+                                                                  msg: getTranslated(
+                                                                      context,
+                                                                      "تم الرفض بنجاح"),
                                                                   gravity:
                                                                       ToastGravity
                                                                           .CENTER,
@@ -347,8 +358,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                             } else if (msg ==
                                                                 "Fail : User not found") {
                                                               Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ فى بيانات المستخدم",
+                                                                  msg: getTranslated(
+                                                                      context,
+                                                                      "خطأ فى بيانات المستخدم"),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .red);
@@ -362,8 +374,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                           .red);
                                                             } else {
                                                               Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ في الرفض",
+                                                                  msg: getTranslated(
+                                                                      context,
+                                                                      "خطأ في الرفض"),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .red);
@@ -373,7 +386,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               "تأكيد رفض الأجازة",
                                                           onCancel: () {},
                                                           title:
-                                                              "رفض  طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                              "${getTranslated(context, "رفض  طلب ")}${pendingList.pendingCompanyHolidays[index].userName} ",
                                                         ),
                                                       );
                                                     });

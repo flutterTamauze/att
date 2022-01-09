@@ -62,7 +62,7 @@ class NotificationItem extends StatelessWidget {
                 Center(
                   child: Text(
                     value.notification.length != 0
-                        ? "الأشعارات"
+                        ? getTranslated(context, "الأشعارات")
                         : getTranslated(context, "لا يوجد اشعارات"),
                     style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
@@ -140,14 +140,17 @@ class NotificationItem extends StatelessWidget {
                                     barrierDismissible: false,
                                     builder: (context) {
                                       return StackedNotificaitonAlert(
-                                        notificationTitle: "اثبات حضور",
-                                        notificationContent:
-                                            "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
-                                        roundedButtonTitle: "اثبات",
+                                        notificationTitle: getTranslated(
+                                            context, "اثبات حضور"),
+                                        notificationContent: getTranslated(
+                                            context,
+                                            "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+                                        roundedButtonTitle:
+                                            getTranslated(context, "اثبات"),
                                         lottieAsset:
                                             "resources/notificationalarm.json",
-                                        notificationToast:
-                                            "تم اثبات الحضور بنجاح",
+                                        notificationToast: getTranslated(
+                                            context, "تم اثبات الحضور بنجاح"),
                                         showToast: true,
                                         popWidget: false,
                                         isFromBackground: false,
@@ -206,9 +209,13 @@ class NotificationItem extends StatelessWidget {
                                                 .clearNotifications();
                                             await db.clearNotifications();
                                           },
-                                          content: "حذف الأشعارات",
+                                          content: getTranslated(
+                                            context,
+                                            "حذف الأشعارات",
+                                          ),
                                           onCancel: () {},
-                                          title: "هل تريد حذف كل الأشعارات؟"),
+                                          title: getTranslated(context,
+                                              "هل تريد حذف كل الأشعارات؟")),
                                     );
                                   });
                             },

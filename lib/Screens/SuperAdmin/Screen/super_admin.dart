@@ -114,9 +114,10 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                         print("faliure occured");
                                         Navigator.pop(context);
                                         if (chartResponse.code == NO_INTERNET) {
-                                          return noInternetConnectionToast();
+                                          return noInternetConnectionToast(
+                                              context);
                                         } else {
-                                          return errorToast();
+                                          return errorToast(context);
                                         }
                                       } else {
                                         Navigator.pushReplacement(

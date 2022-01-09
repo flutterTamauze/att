@@ -73,9 +73,9 @@ setResponsiveFontSize(size) {
   return ScreenUtil().setSp(size);
 }
 
-successfullDelete() {
+successfullDelete(BuildContext context) {
   Fluttertoast.showToast(
-    msg: "تم الحذف بنجاح",
+    msg: getTranslated(context, "تم الحذف بنجاح"),
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
@@ -85,16 +85,16 @@ successfullDelete() {
   );
 }
 
-errorToast() {
+errorToast(BuildContext context) {
   Fluttertoast.showToast(
       gravity: ToastGravity.CENTER,
       backgroundColor: Colors.red,
-      msg: "حدث خطأ ما");
+      msg: getTranslated(context, "حدث خطأ ما"));
 }
 
-successfulSaved() {
+successfulSaved(BuildContext context) {
   Fluttertoast.showToast(
-      msg: "تم الحفظ بنجاح",
+      msg: getTranslated(context, "تم الحفظ بنجاح"),
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
@@ -103,9 +103,14 @@ successfulSaved() {
       fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
 }
 
-noInternetConnectionToast() {
+noInternetConnectionToast(BuildContext context) {
   Fluttertoast.showToast(
-    msg: "لا يوجد اتصال بالأنترنت",
+    msg: getTranslated(
+        context,
+        getTranslated(
+          context,
+          "لا يوجد اتصال بالأنترنت",
+        )),
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
@@ -123,9 +128,9 @@ noInternetConnectionAlert(BuildContext context) {
             onPressed: () {
               Navigator.pop(context);
             },
-            title: 'حدث خطأ',
-            content:
-                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى");
+            title: getTranslated(context, 'حدث خطأ ما'),
+            content: getTranslated(context,
+                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"));
       });
 }
 

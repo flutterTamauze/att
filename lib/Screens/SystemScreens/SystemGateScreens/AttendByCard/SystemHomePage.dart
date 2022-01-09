@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/attendByCardRetryButton.dart';
@@ -179,7 +180,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                     Container(
                                                       height: 20,
                                                       child: AutoSizeText(
-                                                        "او",
+                                                        getTranslated(
+                                                            context, "او"),
                                                         maxLines: 1,
                                                         textAlign:
                                                             TextAlign.center,

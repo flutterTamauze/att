@@ -69,7 +69,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           // print(value)
 
           Fluttertoast.showToast(
-              msg: "تم حفظ الصورة بنجاح",
+              msg: getTranslated(context, "تم حفظ الصورة بنجاح"),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
@@ -78,7 +78,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
         } else if (value == "noInternet") {
           Fluttertoast.showToast(
-              msg: "خطأ في التعديل: لا يوجد اتصال بالانترنت",
+              msg: getTranslated(
+                  context, "خطأ في التعديل: لا يوجد اتصال بالانترنت"),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
@@ -87,7 +88,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
         } else {
           Fluttertoast.showToast(
-              msg: "خطأ في حفظ الصورة",
+              msg: getTranslated(context, "خطأ في حفظ الصورة"),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
@@ -413,7 +414,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           Navigator.pop(context);
                                           print('Edit Done ');
                                         });
-                                        successfulSaved();
+                                        successfulSaved(context);
                                         Navigator.pop(context);
                                       } else {
                                         setState(() {

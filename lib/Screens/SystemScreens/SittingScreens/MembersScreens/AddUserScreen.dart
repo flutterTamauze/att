@@ -833,7 +833,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
                                         if (msg == "Success") {
                                           Fluttertoast.showToast(
-                                              msg: "تم اضافة المستخدم بنجاح",
+                                              msg: getTranslated(context,
+                                                  "تم اضافة المستخدم بنجاح"),
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.CENTER,
                                               timeInSecForIosWeb: 1,
@@ -851,8 +852,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               ));
                                         } else if (msg == "exists") {
                                           Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ في اضافة المستخدم : رقم الهاتف  مستخدم مسبقا",
+                                              msg: getTranslated(context,
+                                                  "خطأ في اضافة المستخدم : رقم الهاتف  مستخدم مسبقا"),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
@@ -861,8 +862,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else if (msg == "user exists") {
                                           Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ في اضافة المستخدم : المستخدم موجود بالفعل",
+                                              msg: getTranslated(context,
+                                                  "خطأ في اضافة المستخدم : المستخدم موجود بالفعل"),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
@@ -871,8 +872,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else if (msg == "Limit Reached") {
                                           Fluttertoast.showToast(
-                                              msg:
-                                                  "لقد وصلت الى الحد المسموح بة من المستخدمين",
+                                              msg: getTranslated(context,
+                                                  "لقد وصلت الى الحد المسموح بة من المستخدمين"),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
@@ -881,7 +882,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else if (msg == "failed") {
                                           Fluttertoast.showToast(
-                                              msg: "خطأ في اضافة المستخدم",
+                                              msg: getTranslated(context,
+                                                  "خطأ في اضافة المستخدم"),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
@@ -890,8 +892,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else if (msg == "noInternet") {
                                           Fluttertoast.showToast(
-                                              msg:
-                                                  "خطأ في اضافة المستخدم:لايوجد اتصال بالانترنت",
+                                              msg: getTranslated(
+                                                context,
+                                                "خطأ في اضافة المستخدم:لايوجد اتصال بالانترنت",
+                                              ),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.red,
@@ -900,7 +904,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               fontSize: 16.0);
                                         } else {
                                           Fluttertoast.showToast(
-                                              msg: "خطأ في اضافة المستخدم",
+                                              msg: getTranslated(context,
+                                                  "خطأ في اضافة المستخدم"),
                                               toastLength: Toast.LENGTH_LONG,
                                               timeInSecForIosWeb: 1,
                                               gravity: ToastGravity.CENTER,
@@ -922,8 +927,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 .shiftName ==
                                             "لا يوجد مناوبات بهذا الموقع") {
                                           Fluttertoast.showToast(
-                                              msg:
-                                                  "لا يوجد مناوبات بهذا الموقع",
+                                              msg: getTranslated(context,
+                                                  "لا يوجد مناوبات بهذا الموقع"),
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER);
                                         } else {

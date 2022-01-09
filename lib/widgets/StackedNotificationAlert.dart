@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
@@ -53,133 +54,126 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
         Dialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)), //this right here
-            child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Container(
-                  height: 200.h,
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        InkWell(
-                          onTap: () async {},
-                          child: Text(
-                            widget.notificationTitle,
-                            style: TextStyle(
-                                color: Colors.orange,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Divider(),
-                        Text(widget.notificationContent),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        isloading
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  backgroundColor: Colors.orange,
-                                ),
-                              )
-                            : RoundedButton(
-                                title: widget.roundedButtonTitle,
-                                onPressed: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  if (widget.showToast) {
-                                    setState(() {
-                                      isloading = true;
-                                    });
-                                    int attendId =
-                                        await attendObj.getAttendProofID(
-                                            user.id, user.userToken);
-                                    print(attendId);
-                                    Position currentPosition =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
-
-                                    String msg =
-                                        await attendObj.acceptAttendProof(
-                                            user.userToken,
-                                            attendId.toString(),
-                                            currentPosition);
-                                    setState(() {
-                                      isloading = false;
-                                    });
-                                    prefs.setString("notifCategory", "");
-                                    if (msg == "timeout") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "لم يتم اثبات الحضور انتهى وقت التسجيل",
-                                          backgroundColor: Colors.red,
-                                          gravity: ToastGravity.CENTER);
-                                    } else if (msg == "wrong location") {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "لم يتم اثبات الحضور : خارج موقع العمل",
-                                          backgroundColor: Colors.red,
-                                          gravity: ToastGravity.CENTER);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: widget.notificationToast,
-                                          backgroundColor: Colors.green,
-                                          gravity: ToastGravity.CENTER);
-                                    }
-                                    if (user.userType != 0 &&
-                                        !widget.isFromBackground) {
-                                      print("not user not back ground");
-                                      Navigator.pop(context);
-                                    } else {
-                                      print("normal user");
-                                      if (!widget.isFromBackground) {
-                                        Navigator.pop(context);
-                                      }
-                                    }
-                                    Provider.of<PermissionHan>(context,
-                                            listen: false)
-                                        .setAttendProoftoDefault();
-
-                                    if (widget.popWidget) {
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                    }
-                                  } else {
-                                    if (!widget.isAdmin) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserOrdersView(
-                                              selectedOrder: widget
-                                                      .notificationTitle
-                                                      .contains("الأذن")
-                                                  ? getTranslated(
-                                                      context, "الأذونات")
-                                                  : getTranslated(
-                                                      context, "الأجازات"),
-                                              ordersList: [
-                                                getTranslated(
-                                                    context, "الأجازات"),
-                                                getTranslated(
-                                                    context, "الأذونات")
-                                              ],
-                                            ),
-                                          ));
-                                    } else {
-                                      Navigator.pop(context);
-                                    }
-                                  }
-                                }),
-                      ],
+            child: Container(
+              height: 200.h,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50.h,
                     ),
-                  ),
-                ))),
+                    InkWell(
+                      onTap: () async {},
+                      child: Text(
+                        widget.notificationTitle,
+                        style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: setResponsiveFontSize(17),
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Divider(),
+                    Text(widget.notificationContent),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    isloading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.orange,
+                            ),
+                          )
+                        : RoundedButton(
+                            title: widget.roundedButtonTitle,
+                            onPressed: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              if (widget.showToast) {
+                                setState(() {
+                                  isloading = true;
+                                });
+                                int attendId = await attendObj.getAttendProofID(
+                                    user.id, user.userToken);
+                                print(attendId);
+                                Position currentPosition =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.best);
+
+                                final String msg =
+                                    await attendObj.acceptAttendProof(
+                                        user.userToken,
+                                        attendId.toString(),
+                                        currentPosition);
+                                setState(() {
+                                  isloading = false;
+                                });
+                                prefs.setString("notifCategory", "");
+                                if (msg == "timeout") {
+                                  Fluttertoast.showToast(
+                                      msg: getTranslated(context,
+                                          "لم يتم اثبات الحضور انتهى وقت التسجيل"),
+                                      backgroundColor: Colors.red,
+                                      gravity: ToastGravity.CENTER);
+                                } else if (msg == "wrong location") {
+                                  Fluttertoast.showToast(
+                                      msg: getTranslated(context,
+                                          "لم يتم اثبات الحضور : خارج موقع العمل"),
+                                      backgroundColor: Colors.red,
+                                      gravity: ToastGravity.CENTER);
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: widget.notificationToast,
+                                      backgroundColor: Colors.green,
+                                      gravity: ToastGravity.CENTER);
+                                }
+                                if (user.userType != 0 &&
+                                    !widget.isFromBackground) {
+                                  print("not user not back ground");
+                                  Navigator.pop(context);
+                                } else {
+                                  print("normal user");
+                                  if (!widget.isFromBackground) {
+                                    Navigator.pop(context);
+                                  }
+                                }
+                                Provider.of<PermissionHan>(context,
+                                        listen: false)
+                                    .setAttendProoftoDefault();
+
+                                if (widget.popWidget) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                if (!widget.isAdmin) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserOrdersView(
+                                          selectedOrder: widget
+                                                  .notificationTitle
+                                                  .contains("الأذن")
+                                              ? getTranslated(
+                                                  context, "الأذونات")
+                                              : getTranslated(
+                                                  context, "الأجازات"),
+                                          ordersList: [
+                                            getTranslated(context, "الأجازات"),
+                                            getTranslated(context, "الأذونات")
+                                          ],
+                                        ),
+                                      ));
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              }
+                            }),
+                  ],
+                ),
+              ),
+            )),
         Positioned(
             right: 125.w,
             top: widget.popWidget ? 170.h : 180.h,

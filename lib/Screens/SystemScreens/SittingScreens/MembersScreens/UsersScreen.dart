@@ -585,7 +585,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                 "noInternet"
                                                             ? CenterMessageText(
                                                                 message:
-                                                                    "لا يوجد اتصال بالأنترنت")
+                                                                    getTranslated(
+                                                                  context,
+                                                                  "لا يوجد اتصال بالأنترنت",
+                                                                ),
+                                                              )
                                                             : memberData.membersList
                                                                         .length !=
                                                                     0

@@ -29,7 +29,7 @@ class UserPropertiesMenu extends StatefulWidget {
 class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
   @override
   Widget build(BuildContext context) {
-    var userDataProvider = Provider.of<UserData>(context, listen: false).user;
+    final userDataProvider = Provider.of<UserData>(context, listen: false).user;
     return ZoomIn(
       child: Directionality(
         textDirection: TextDirection.rtl,
@@ -152,26 +152,30 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                         "برجاء اثبات حضورك الأن",
                                         "attend");
                                     Fluttertoast.showToast(
-                                        msg: "تم الأرسال بنجاح",
+                                        msg: getTranslated(
+                                            context, "تم الأرسال بنجاح"),
                                         backgroundColor: Colors.green,
                                         gravity: ToastGravity.CENTER);
                                   } else
                                     sendFcmMessage(
                                             topicName: "",
                                             userToken: widget.user.fcmToken,
-                                            title: "اثبات حضور",
+                                            title: getTranslated(
+                                                context, "اثبات حضور"),
                                             category: "attend",
                                             message: "برجاء اثبات حضورك الأن")
                                         .then((value) {
                                       if (value) {
                                         Fluttertoast.showToast(
-                                            msg: "تم الأرسال بنجاح",
+                                            msg: getTranslated(
+                                                context, "تم الأرسال بنجاح"),
                                             backgroundColor: Colors.green,
                                             gravity: ToastGravity.CENTER);
                                       } else {
                                         if (value) {
                                           Fluttertoast.showToast(
-                                              msg: "خطأ فى الأرسال ",
+                                              msg: getTranslated(
+                                                  context, "خطأ فى الأرسال"),
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER);
                                         }
@@ -180,16 +184,16 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                   break;
                                 case "limit exceed":
                                   Fluttertoast.showToast(
-                                      msg:
-                                          "خطأ : لقد تجاوزت العدد المسموح بة لهذا المستخدم",
+                                      msg: getTranslated(context,
+                                          "خطأ : لقد تجاوزت العدد المسموح بة لهذا المستخدم"),
                                       backgroundColor: Colors.red,
                                       toastLength: Toast.LENGTH_LONG,
                                       gravity: ToastGravity.CENTER);
                                   break;
                                 case "fail shift":
                                   Fluttertoast.showToast(
-                                      msg:
-                                          "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة",
+                                      msg: getTranslated(context,
+                                          "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة"),
                                       backgroundColor: Colors.red,
                                       toastLength: Toast.LENGTH_LONG,
                                       gravity: ToastGravity.CENTER);
@@ -197,22 +201,23 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
 
                                 case "null":
                                   Fluttertoast.showToast(
-                                      msg:
-                                          "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل ",
+                                      msg: getTranslated(context,
+                                          "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل"),
                                       backgroundColor: Colors.red,
                                       gravity: ToastGravity.CENTER);
                                   break;
                                 case "fail present":
                                   Fluttertoast.showToast(
-                                      msg: "لم يتم تسجيل حضور هذا المتسخدم",
+                                      msg: getTranslated(context,
+                                          "لم يتم تسجيل حضور هذا المتسخدم"),
                                       backgroundColor: Colors.red,
                                       gravity: ToastGravity.CENTER);
                                   break;
                                 case "fail":
-                                  errorToast();
+                                  errorToast(context);
                                   break;
                                 default:
-                                  errorToast();
+                                  errorToast(context);
                               }
                             }).then((value) => Navigator.pop(context));
                           }),
