@@ -43,6 +43,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
         .getPendingCompanyHolidays(comId, token);
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   final ScrollController _scrollController = ScrollController();
@@ -78,6 +79,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
+        key: _scaffoldKey,
         floatingActionButton: MultipleFloatingButtonsNoADD(),
         endDrawer: NotificationItem(),
         body: Container(
@@ -178,6 +180,16 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           onPressed: () async {
                                                             Navigator.pop(
                                                                 context);
+                                                            showDialog(
+                                                                context:
+                                                                    _scaffoldKey
+                                                                        .currentContext,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return RoundedLoadingIndicator();
+                                                                });
+
                                                             String msg = await pendingList.acceptOrRefusePendingVacation(
                                                                 1,
                                                                 pending
@@ -194,7 +206,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                 pending
                                                                     .fromDate,
                                                                 pending.toDate);
-
+                                                            Navigator.pop(
+                                                                _scaffoldKey
+                                                                    .currentContext);
                                                             if (msg ==
                                                                 "Success : Updated!") {
                                                               HuaweiServices
@@ -287,6 +301,16 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           onPressed: () async {
                                                             Navigator.pop(
                                                                 context);
+                                                            showDialog(
+                                                                context:
+                                                                    _scaffoldKey
+                                                                        .currentContext,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return RoundedLoadingIndicator();
+                                                                });
+
                                                             String msg = await pendingList.acceptOrRefusePendingVacation(
                                                                 2,
                                                                 pending
@@ -303,7 +327,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                 pending
                                                                     .fromDate,
                                                                 pending.toDate);
-
+                                                            Navigator.pop(
+                                                                _scaffoldKey
+                                                                    .currentContext);
                                                             if (msg ==
                                                                 "Success : Updated!") {
                                                               HuaweiServices

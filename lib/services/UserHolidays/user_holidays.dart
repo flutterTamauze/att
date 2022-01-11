@@ -318,15 +318,16 @@ class UserHolidaysData with ChangeNotifier {
     sickVacationCount = 0;
     suddenVacationCount = 0;
     vacationCreditCount = 0;
-    String startTime = DateTime(
+    final String startTime = DateTime(
       DateTime.now().year,
       1,
       1,
     ).toIso8601String();
     loadingHolidaysDetails = true;
     // notifyListeners();
-    String endingTime = DateTime(DateTime.now().year, 12, 31).toIso8601String();
-    var response = await http.get(
+    final String endingTime =
+        DateTime(DateTime.now().year, 12, 31).toIso8601String();
+    final response = await http.get(
       Uri.parse(
           "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime?isMobile=true"),
       headers: {
@@ -338,9 +339,9 @@ class UserHolidaysData with ChangeNotifier {
     print(response.statusCode);
     print(response.request.url);
     log(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
-      var permessionsObj =
+      final permessionsObj =
           jsonDecode(response.body)['data']["Holidays"] as List;
       singleUserHoliday =
           permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();

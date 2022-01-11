@@ -16,6 +16,7 @@ class AttendProof {
       },
     );
     print(response.body);
+    print(fcmToken);
     print("status code : ${response.statusCode}");
     var decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {

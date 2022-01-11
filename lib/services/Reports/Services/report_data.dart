@@ -368,12 +368,14 @@ class ReportsData with ChangeNotifier {
       int userType, String date, BuildContext context) async {
     if (await isConnectedToInternet()) {
       print(date);
+      print(apiId);
       String url;
       if (userType == 3) {
-        url = "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date";
+        url =
+            "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date&pageIndex=1&pageSize=50";
       } else {
         url =
-            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date";
+            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50";
       }
       print(url);
       final response = await http.get(
@@ -387,7 +389,7 @@ class ReportsData with ChangeNotifier {
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
           var reportObjJson = jsonDecode(response.body)['data'] as List;

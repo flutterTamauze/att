@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/NetworkApi/Network.dart';
-import 'package:qr_users/NetworkApi/NetworkFaliure.dart';
+import 'package:qr_users/Network/Network.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';

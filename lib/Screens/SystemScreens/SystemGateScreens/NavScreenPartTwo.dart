@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

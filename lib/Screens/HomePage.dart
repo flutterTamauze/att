@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
@@ -109,12 +111,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () {
-                String finalDate = DateTime.now().day.toString() +
-                    DateTime.now().month.toString() +
-                    DateTime.now().year.toString();
-                print(finalDate);
-                print(".jpg");
+              onTap: () async {
                 // print(_startTime.hour);
               },
               child: Scaffold(

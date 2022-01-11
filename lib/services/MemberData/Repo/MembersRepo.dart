@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
-import 'package:qr_users/NetworkApi/Network.dart';
+import 'package:qr_users/Network/Network.dart';
 import 'package:qr_users/enums/request_type.dart';
 
 import '../../../Core/constants.dart';

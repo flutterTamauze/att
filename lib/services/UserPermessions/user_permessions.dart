@@ -45,8 +45,8 @@ class UserPermessions {
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
         // approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
-        createdOn:
-            DateTime.tryParse(json["createdOn"] ?? json["createdonDate"]),
+        // createdOn:
+        //     DateTime.tryParse(json["createdOn"] ?? json["createdonDate"]),
         // approvedDate: DateTime.tryParse(
         //   json["approvedDate"] ?? "",
         // ),
@@ -148,7 +148,7 @@ class UserPermessionsData with ChangeNotifier {
       pageIndex++;
       paginatedLoading = true;
       notifyListeners();
-      var response = await http.get(
+      final response = await http.get(
           Uri.parse(
               "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?pageIndex=$pageIndex&pageSize=8"),
           headers: {
@@ -159,9 +159,9 @@ class UserPermessionsData with ChangeNotifier {
       print(response.request.url);
       print(response.statusCode);
       print(response.body);
-      var decodedResp = json.decode(response.body);
+      final decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
-        var permessionsObj = jsonDecode(response.body)['data'] as List;
+        final permessionsObj = jsonDecode(response.body)['data'] as List;
         if (keepRetriving) {
           pendingCompanyPermessions.addAll(permessionsObj
               .map((json) => UserPermessions.fromJson(json))

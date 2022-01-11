@@ -88,11 +88,11 @@ class MissionsData with ChangeNotifier {
           });
       log(response.body);
       missionsLoading = false;
-      var decodedResp = json.decode(response.body);
+      final decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
-        var missionsObj =
+        final missionsObj =
             jsonDecode(response.body)['data']["ExternalMissions"] as List;
-        var internalObj =
+        final internalObj =
             jsonDecode(response.body)['data']["InternalMissions"] as List;
 
         List<CompanyMissions> externalMissions = missionsObj
@@ -235,38 +235,4 @@ class MissionsData with ChangeNotifier {
       }
     }
   }
-  // getCompanyMissions(int companyId, String userToken) async {
-  //   isLoading = true;
-  //   try {
-  //     print(companyId);
-  //     print(userToken);
-  //     var response = await http.get(
-  //         Uri.parse(
-  //             "$baseURL/api/InternalMission/GetInExternalMissionbyCompany/$companyId"),
-  //         headers: {
-  //           'Content-type': 'application/json',
-  //           'Authorization': "Bearer $userToken"
-  //         });
-  //     print(response.body);
-  //     print(response.statusCode);
-  //     var decodedResp = json.decode(response.body);
-  //     if (decodedResp["message"] == "Success") {
-  //       var missionsObj = jsonDecode(response.body)['data'][1] as List;
-  //       var internalObj = jsonDecode(response.body)['data'][0] as List;
-
-  //       List<CompanyMissions> externalMissions =
-  //           missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();
-  //       List<CompanyMissions> internalMissions =
-  //           internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
-  //       companyMissionsList =
-  //           [...externalMissions, ...internalMissions].toSet().toList();
-  //       getAllUserNamesInMission();
-  //       print(companyMissionsList.length);
-  //     }
-  //     isLoading = false;
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
