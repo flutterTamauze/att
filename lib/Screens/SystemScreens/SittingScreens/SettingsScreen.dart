@@ -1,8 +1,10 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens//MembersScreens/UsersScreen.dart';
@@ -94,9 +96,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 subTitle: "ادارة المواقع",
                                 icon: Icons.location_on,
                                 onTap: () async {
-                                  var bool = await userDataProvider
-                                      .isConnectedToInternet("www.google.com");
-                                  if (bool) {
+                                  final DataConnectionChecker
+                                      dataConnectionChecker =
+                                      DataConnectionChecker();
+                                  final NetworkInfoImp networkInfoImp =
+                                      NetworkInfoImp(dataConnectionChecker);
+                                  final bool isConnected =
+                                      await networkInfoImp.isConnected;
+                                  if (isConnected) {
                                     Navigator.of(context).push(
                                       new MaterialPageRoute(
                                         builder: (context) => SitesScreen(),
@@ -117,9 +124,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             subTitle: "ادارة المناوبات",
                             icon: Icons.alarm,
                             onTap: () async {
-                              var bool = await userDataProvider
-                                  .isConnectedToInternet("www.google.com");
-                              if (bool) {
+                              final DataConnectionChecker
+                                  dataConnectionChecker =
+                                  DataConnectionChecker();
+                              final NetworkInfoImp networkInfoImp =
+                                  NetworkInfoImp(dataConnectionChecker);
+                              final bool isConnected =
+                                  await networkInfoImp.isConnected;
+
+                              if (isConnected) {
                                 if (userProvider.user.userType != 2) {
                                   Provider.of<SiteShiftsData>(context,
                                           listen: false)
@@ -202,9 +215,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 );
                               } else {
-                                var networkStatus = await userDataProvider
-                                    .isConnectedToInternet("www.google.com");
-                                if (networkStatus) {
+                                final DataConnectionChecker
+                                    dataConnectionChecker =
+                                    DataConnectionChecker();
+                                final NetworkInfoImp networkInfoImp =
+                                    NetworkInfoImp(dataConnectionChecker);
+                                final bool isConnected =
+                                    await networkInfoImp.isConnected;
+                                if (isConnected) {
                                   Provider.of<SiteData>(context, listen: false)
                                       .setSiteValue("كل المواقع");
                                   Provider.of<SiteData>(context, listen: false)
@@ -250,9 +268,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 subTitle: "ادارة اعدادات الشركة",
                                 icon: Icons.settings,
                                 onTap: () async {
-                                  var bool = await userDataProvider
-                                      .isConnectedToInternet("www.google.com");
-                                  if (bool) {
+                                  final DataConnectionChecker
+                                      dataConnectionChecker =
+                                      DataConnectionChecker();
+                                  final NetworkInfoImp networkInfoImp =
+                                      NetworkInfoImp(dataConnectionChecker);
+                                  final bool isConnected =
+                                      await networkInfoImp.isConnected;
+                                  if (isConnected) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

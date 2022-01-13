@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -714,83 +715,86 @@ class RoundedAlertOkOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)), //this right here
-        child: Container(
-          height: 200.h,
-          width: 250.w,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: <Widget>[
-                      Center(
-                          child: Container(
-                        height: 20.h,
-                        child: AutoSizeText(
-                          title,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.orange,
-                              fontWeight: FontWeight.w900),
-                        ),
-                      )),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Center(
-                        child: Container(
-                          height: 40.h,
+    return FadeIn(
+      duration: Duration(milliseconds: 100),
+      child: Dialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)), //this right here
+          child: Container(
+            height: 200.h,
+            width: 250.w,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        Center(
+                            child: Container(
+                          height: 20.h,
                           child: AutoSizeText(
-                            content,
-                            maxLines: 2,
+                            title,
+                            maxLines: 1,
                             style: TextStyle(
-                                color: Colors.black,
-                                fontSize: setResponsiveFontSize(14),
-                                height: 1.5,
-                                fontWeight: FontWeight.w600),
-                            textAlign: TextAlign.center,
+                                fontSize: 18,
+                                color: Colors.orange,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        )),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Center(
+                          child: Container(
+                            height: 40.h,
+                            child: AutoSizeText(
+                              content,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: setResponsiveFontSize(14),
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Material(
-                        elevation: 5.0,
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          minWidth: 130,
-                          height: 30,
-                          child: Container(
-                            height: 20,
-                            child: AutoSizeText(
-                              "الغاء",
-                              maxLines: 1,
-                              style: TextStyle(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Material(
+                          elevation: 5.0,
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            minWidth: 130,
+                            height: 30,
+                            child: Container(
+                              height: 20,
+                              child: AutoSizeText(
+                                "الغاء",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ]),
-          ),
-        ));
+                      ],
+                    ),
+                  ]),
+            ),
+          )),
+    );
   }
 }
 

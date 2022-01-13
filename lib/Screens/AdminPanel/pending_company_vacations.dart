@@ -75,7 +75,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
 
   @override
   Widget build(BuildContext context) {
-    var pendingList = Provider.of<UserHolidaysData>(context);
+    final pendingList = Provider.of<UserHolidaysData>(context);
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
@@ -130,286 +130,263 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                       fontSize: setResponsiveFontSize(16)),
                                   textAlign: TextAlign.center,
                                 ))
-                              : SmartRefresher(
-                                  onRefresh: _onRefresh,
-                                  controller: refreshController,
-                                  header: WaterDropMaterialHeader(
-                                    color: Colors.white,
-                                    backgroundColor: Colors.orange,
-                                  ),
-                                  child: ListView.builder(
-                                    controller: _scrollController,
-                                    itemBuilder: (context, index) {
-                                      var pending = pendingList
-                                          .pendingCompanyHolidays[index];
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            ExpandedPendingVacation(
-                                              holidayId: pending.holidayNumber,
-                                              isAdmin: true,
-                                              createdOn: pending.createdOnDate
-                                                  .toString(),
-                                              adminComment:
-                                                  pending.adminResponse,
-                                              comments:
-                                                  pending.holidayDescription,
-                                              date: pending.fromDate.toString(),
-                                              response: pending.adminResponse,
-                                              userName: pending.userName,
-                                              vacationDaysCount: [
-                                                pending.fromDate,
-                                                pending.toDate
-                                              ],
-                                              holidayType: pending.holidayType,
-                                              onAccept: () {
-                                                return showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return Directionality(
-                                                        textDirection:
-                                                            TextDirection.rtl,
-                                                        child:
-                                                            RoundedAlertWithComment(
-                                                          onTapped: (comm) {
-                                                            comment = comm;
-                                                          },
-                                                          hint: "التفاصيل",
-                                                          onPressed: () async {
-                                                            Navigator.pop(
-                                                                context);
-                                                            showDialog(
-                                                                context:
-                                                                    _scaffoldKey
-                                                                        .currentContext,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return RoundedLoadingIndicator();
-                                                                });
+                              : ListView.builder(
+                                  controller: _scrollController,
+                                  itemBuilder: (context, index) {
+                                    final pending = pendingList
+                                        .pendingCompanyHolidays[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          ExpandedPendingVacation(
+                                            holidayId: pending.holidayNumber,
+                                            isAdmin: true,
+                                            createdOn: pending.createdOnDate
+                                                .toString(),
+                                            adminComment: pending.adminResponse,
+                                            comments:
+                                                pending.holidayDescription,
+                                            date: pending.fromDate.toString(),
+                                            response: pending.adminResponse,
+                                            userName: pending.userName,
+                                            vacationDaysCount: [
+                                              pending.fromDate,
+                                              pending.toDate
+                                            ],
+                                            holidayType: pending.holidayType,
+                                            onAccept: () {
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child:
+                                                          RoundedAlertWithComment(
+                                                        onTapped: (comm) {
+                                                          comment = comm;
+                                                        },
+                                                        hint: "التفاصيل",
+                                                        onPressed: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          showDialog(
+                                                              context: _scaffoldKey
+                                                                  .currentContext,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return RoundedLoadingIndicator();
+                                                              });
 
-                                                            String msg = await pendingList.acceptOrRefusePendingVacation(
-                                                                1,
-                                                                pending
-                                                                    .holidayNumber,
-                                                                pending
-                                                                    .holidayDescription,
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .user
-                                                                    .userToken,
-                                                                comment,
-                                                                pending
-                                                                    .fromDate,
-                                                                pending.toDate);
-                                                            Navigator.pop(
-                                                                _scaffoldKey
-                                                                    .currentContext);
-                                                            if (msg ==
-                                                                "Success : Updated!") {
-                                                              HuaweiServices
-                                                                  _huawei =
-                                                                  HuaweiServices();
-                                                              if (pending
-                                                                      .osType ==
-                                                                  3) {
-                                                                await _huawei.huaweiPostNotification(
-                                                                    pending
-                                                                        .fcmToken,
-                                                                    "طلب اجازة",
-                                                                    "تم الموافقة على طلب الأجازة",
-                                                                    "vacation");
-                                                              } else {
-                                                                await sendFcmMessage(
-                                                                    category:
-                                                                        "vacation",
-                                                                    topicName:
-                                                                        "",
-                                                                    userToken:
-                                                                        pending
-                                                                            .fcmToken,
-                                                                    title:
-                                                                        "طلب اجازة",
-                                                                    message:
-                                                                        "تم الموافقة على طلب الأجازة");
-                                                              }
-
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم الموافقة بنجاح",
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .CENTER,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green);
-                                                            } else if (msg ==
-                                                                "Fail : User not found") {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ فى بيانات المستخدم",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
-                                                            } else if (msg ==
-                                                                "Fail: holiday time out!") {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ فى الموافقة : انتهى وقت الرد",
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .CENTER,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
+                                                          final String msg = await pendingList.acceptOrRefusePendingVacation(
+                                                              1,
+                                                              pending
+                                                                  .holidayNumber,
+                                                              pending
+                                                                  .holidayDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
+                                                          Navigator.pop(
+                                                              _scaffoldKey
+                                                                  .currentContext);
+                                                          if (msg ==
+                                                              "Success : Updated!") {
+                                                            final HuaweiServices
+                                                                _huawei =
+                                                                HuaweiServices();
+                                                            if (pending
+                                                                    .osType ==
+                                                                3) {
+                                                              await _huawei.huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اجازة",
+                                                                  "تم الموافقة على طلب الأجازة",
+                                                                  "vacation");
                                                             } else {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ في الموافقة",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
+                                                              await sendFcmMessage(
+                                                                  category:
+                                                                      "vacation",
+                                                                  topicName: "",
+                                                                  userToken: pending
+                                                                      .fcmToken,
+                                                                  title:
+                                                                      "طلب اجازة",
+                                                                  message:
+                                                                      "تم الموافقة على طلب الأجازة");
                                                             }
-                                                          },
-                                                          content:
-                                                              "تأكيد الموافقة على الاجازة",
-                                                          onCancel: () {},
-                                                          title:
-                                                              "الموافقة على طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
-                                                        ),
-                                                      );
-                                                    });
-                                              },
-                                              onRefused: () {
-                                                return showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return Directionality(
-                                                        textDirection:
-                                                            TextDirection.rtl,
-                                                        child:
-                                                            RoundedAlertWithComment(
-                                                          hint: "سبب الرفض",
-                                                          onTapped: (comm) {
-                                                            comment = comm;
-                                                          },
-                                                          onPressed: () async {
-                                                            Navigator.pop(
-                                                                context);
-                                                            showDialog(
-                                                                context:
-                                                                    _scaffoldKey
-                                                                        .currentContext,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return RoundedLoadingIndicator();
-                                                                });
 
-                                                            String msg = await pendingList.acceptOrRefusePendingVacation(
-                                                                2,
-                                                                pending
-                                                                    .holidayNumber,
-                                                                pending
-                                                                    .holidayDescription,
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .user
-                                                                    .userToken,
-                                                                comment,
-                                                                pending
-                                                                    .fromDate,
-                                                                pending.toDate);
-                                                            Navigator.pop(
-                                                                _scaffoldKey
-                                                                    .currentContext);
-                                                            if (msg ==
-                                                                "Success : Updated!") {
-                                                              HuaweiServices
-                                                                  _huawei =
-                                                                  HuaweiServices();
-                                                              if (pending
-                                                                      .osType ==
-                                                                  3) {
-                                                                await _huawei.huaweiPostNotification(
-                                                                    pending
-                                                                        .fcmToken,
-                                                                    "طلب اجازة",
-                                                                    "تم رفض طلب الأجازة",
-                                                                    "vacation");
-                                                              } else {
-                                                                await sendFcmMessage(
-                                                                    category:
-                                                                        "vacation",
-                                                                    topicName:
-                                                                        "",
-                                                                    userToken:
-                                                                        pending
-                                                                            .fcmToken,
-                                                                    title:
-                                                                        "طلب اجازة",
-                                                                    message:
-                                                                        "تم رفض طلب الأجازة");
-                                                              }
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "تم الموافقة بنجاح",
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .green);
+                                                          } else if (msg ==
+                                                              "Fail : User not found") {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ فى بيانات المستخدم",
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          } else if (msg ==
+                                                              "Fail: holiday time out!") {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ فى الموافقة : انتهى وقت الرد",
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          } else {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ في الموافقة",
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          }
+                                                        },
+                                                        content:
+                                                            "تأكيد الموافقة على الاجازة",
+                                                        onCancel: () {},
+                                                        title:
+                                                            "الموافقة على طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                            onRefused: () {
+                                              return showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child:
+                                                          RoundedAlertWithComment(
+                                                        hint: "سبب الرفض",
+                                                        onTapped: (comm) {
+                                                          comment = comm;
+                                                        },
+                                                        onPressed: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          showDialog(
+                                                              context: _scaffoldKey
+                                                                  .currentContext,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return RoundedLoadingIndicator();
+                                                              });
 
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "تم الرفض بنجاح",
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .CENTER,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .green);
-                                                            } else if (msg ==
-                                                                "Fail : User not found") {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ فى بيانات المستخدم",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
-                                                            } else if (msg ==
-                                                                "Fail: holiday time out!") {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ فى الرفض : انتهى وقت الرد",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
+                                                          final String msg = await pendingList.acceptOrRefusePendingVacation(
+                                                              2,
+                                                              pending
+                                                                  .holidayNumber,
+                                                              pending
+                                                                  .holidayDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
+                                                          Navigator.pop(
+                                                              _scaffoldKey
+                                                                  .currentContext);
+                                                          if (msg ==
+                                                              "Success : Updated!") {
+                                                            final HuaweiServices
+                                                                _huawei =
+                                                                HuaweiServices();
+                                                            if (pending
+                                                                    .osType ==
+                                                                3) {
+                                                              await _huawei.huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اجازة",
+                                                                  "تم رفض طلب الأجازة",
+                                                                  "vacation");
                                                             } else {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      "خطأ في الرفض",
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
+                                                              await sendFcmMessage(
+                                                                  category:
+                                                                      "vacation",
+                                                                  topicName: "",
+                                                                  userToken: pending
+                                                                      .fcmToken,
+                                                                  title:
+                                                                      "طلب اجازة",
+                                                                  message:
+                                                                      "تم رفض طلب الأجازة");
                                                             }
-                                                          },
-                                                          content:
-                                                              "تأكيد رفض الأجازة",
-                                                          onCancel: () {},
-                                                          title:
-                                                              "رفض  طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
-                                                        ),
-                                                      );
-                                                    });
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    itemCount: pendingList
-                                        .pendingCompanyHolidays.length,
-                                  ),
+
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "تم الرفض بنجاح",
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .green);
+                                                          } else if (msg ==
+                                                              "Fail : User not found") {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ فى بيانات المستخدم",
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          } else if (msg ==
+                                                              "Fail: holiday time out!") {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ فى الرفض : انتهى وقت الرد",
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          } else {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    "خطأ في الرفض",
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          }
+                                                        },
+                                                        content:
+                                                            "تأكيد رفض الأجازة",
+                                                        onCancel: () {},
+                                                        title:
+                                                            "رفض  طلب ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  itemCount:
+                                      pendingList.pendingCompanyHolidays.length,
                                 ));
                     }
                   }),

@@ -1,10 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
@@ -114,24 +117,33 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           subTitle: "عرض مناوبات الأسبوع",
           icon: FontAwesomeIcons.clock,
           onTap: () async {
-            var user = Provider.of<UserData>(context, listen: false).user;
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundedLoadingIndicator();
-                });
-            await Provider.of<ShiftsData>(context, listen: false)
-                .getFirstAvailableSchedule(user.userToken, user.id);
+            final user = Provider.of<UserData>(context, listen: false).user;
+            final DataConnectionChecker dataConnectionChecker =
+                DataConnectionChecker();
+            final NetworkInfoImp networkInfoImp =
+                NetworkInfoImp(dataConnectionChecker);
+            final bool isConnected = await networkInfoImp.isConnected;
+            if (isConnected) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return RoundedLoadingIndicator();
+                  });
+              await Provider.of<ShiftsData>(context, listen: false)
+                  .getFirstAvailableSchedule(user.userToken, user.id);
 
-            await Provider.of<ShiftApi>(context, listen: false)
-                .getShiftByShiftId(user.userShiftId, user.userToken);
+              await Provider.of<ShiftApi>(context, listen: false)
+                  .getShiftByShiftId(user.userShiftId, user.userToken);
 
-            Navigator.pop(context);
-            Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (context) => UserCurrentShifts(),
-              ),
-            );
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                new MaterialPageRoute(
+                  builder: (context) => UserCurrentShifts(),
+                ),
+              );
+            } else {
+              return weakInternetConnection(context);
+            }
           }),
     ];
     SystemChrome.setEnabledSystemUIOverlays([]);

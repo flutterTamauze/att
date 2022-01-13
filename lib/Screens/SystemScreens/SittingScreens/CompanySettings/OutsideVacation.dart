@@ -80,17 +80,20 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
+    final UserHolidaysData _userHolidayData =
+        Provider.of<UserHolidaysData>(context, listen: false);
+    final UserPermessionsData _userPermessionData =
+        Provider.of<UserPermessionsData>(context, listen: false);
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
-    Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
-    Provider.of<UserHolidaysData>(context, listen: false)
-        .loadingHolidaysDetails = false;
-    Provider.of<UserPermessionsData>(context, listen: false)
-        .permessionDetailLoading = false;
+    _userPermessionData.isLoading = false;
+    _userHolidayData.loadingHolidaysDetails = false;
+
+    _userHolidayData.isLoading = false;
+    _userPermessionData.permessionDetailLoading = false;
     isPicked = false;
+    Provider.of<MissionsData>(context, listen: false).isLoading = false;
     // userMission = getSingleUserMission();
-    Provider.of<UserHolidaysData>(context, listen: false)
-        .singleUserHoliday
-        .clear();
+    _userHolidayData.singleUserHoliday.clear();
     Provider.of<UserPermessionsData>(context, listen: false)
         .singleUserPermessions
         .clear();
@@ -98,7 +101,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
         .singleUserMissionsList
         .clear();
 
-    var now = DateTime.now();
+    final now = DateTime.now();
     fromText = "";
     toText = "";
 
@@ -484,7 +487,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .whenComplete(() =>
                                                             Navigator.pop(
                                                                 context));
-                                                    HuaweiServices _huawei =
+                                                    final HuaweiServices
+                                                        _huawei =
                                                         HuaweiServices();
                                                     if (widget.member.osType ==
                                                         3) {
@@ -675,9 +679,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       fromDate = picked.first;
                                                       toDate = picked.last;
                                                       isPicked = true;
-                                                      String fromText =
+                                                      final String fromText =
                                                           " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                      String toText =
+                                                      final String toText =
                                                           " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
                                                       newString =
                                                           "$fromText $toText";
@@ -1046,7 +1050,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         builder: (context) {
                                                           return InkWell(
                                                               onTap: () async {
-                                                                var to =
+                                                                final to =
                                                                     await showTimePicker(
                                                                   context:
                                                                       context,
@@ -1154,7 +1158,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           null &&
                                                       timeOutController.text !=
                                                           "") {
-                                                    String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
+                                                    final String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
                                                         UserPermessions(
                                                             createdOn:
                                                                 DateTime.now(),
@@ -1164,7 +1168,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 .replaceAll(
                                                                     ":", ""),
                                                             permessionType:
-                                                                selectedPermession == "تأخير عن الحضور"
+                                                                selectedPermession ==
+                                                                        "تأخير عن الحضور"
                                                                     ? 1
                                                                     : 2,
                                                             permessionDescription:
@@ -1174,8 +1179,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                         .text,
                                                             user: widget
                                                                 .member.name),
-                                                        Provider.of<UserData>(
-                                                                context,
+                                                        Provider.of<UserData>(context,
                                                                 listen: false)
                                                             .user
                                                             .userToken,
@@ -1192,7 +1196,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           .whenComplete(() =>
                                                               Navigator.pop(
                                                                   context));
-                                                      HuaweiServices _huawei =
+                                                      final HuaweiServices
+                                                          _huawei =
                                                           HuaweiServices();
                                                       if (widget
                                                               .member.osType ==
@@ -1355,7 +1360,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                       onChanged: (v) async {
                                         if (widget.selectedVal !=
                                             "كل المواقع") {
-                                          List<String> x = [];
+                                          final List<String> x = [];
 
                                           value.shifts.forEach((element) {
                                             x.add(element.shiftName);

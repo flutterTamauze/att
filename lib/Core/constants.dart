@@ -102,6 +102,32 @@ successfulSaved() {
       fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
 }
 
+noInternetDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: "لا يوجد اتصال بالانترنت",
+            content: "برجاء اعادة المحاولة مرة اخرى");
+      });
+}
+
+weakInternetConnection(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: "الأتصال بالأنترنت ضعيف",
+            content: "برجاء اعادة المحاولة مرة اخرى");
+      });
+}
+
 noInternetConnectionToast() {
   Fluttertoast.showToast(
     msg: "لا يوجد اتصال بالأنترنت",

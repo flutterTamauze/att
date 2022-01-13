@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
@@ -36,6 +38,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:qr_users/services/Sites_data.dart";
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
+import '../../../../main.dart';
 import '../../../../services/ShiftsData.dart';
 import '../../../../services/Sites_data.dart';
 
@@ -129,9 +132,9 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 
   bool isLoading = false;
   int getSiteName(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -261,12 +264,13 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                       // shift: value
                                                       //     .shifts[index],
                                                       onTapDelete: () {
-                                                        var token = Provider.of<
-                                                                    UserData>(
-                                                                context,
-                                                                listen: false)
-                                                            .user
-                                                            .userToken;
+                                                        final token =
+                                                            Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .userToken;
                                                         return showDialog(
                                                             context: context,
                                                             builder:
@@ -285,7 +289,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                               builder: (BuildContext context) {
                                                                                 return RoundedLoadingIndicator();
                                                                               });
-                                                                          var msg = await shiftsData.deleteShift(
+                                                                          final msg = await shiftsData.deleteShift(
                                                                               value.dropDownShifts[index].shiftId,
                                                                               token,
                                                                               index,
@@ -489,41 +493,52 @@ class _ShiftTileState extends State<ShiftTile> {
 
   String amPmChanger(int intTime) {
     int hours = (intTime ~/ 100);
-    int min = intTime - (hours * 100);
+    final int min = intTime - (hours * 100);
 
-    var ampm = hours >= 12 ? 'PM' : 'AM';
+    final ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours != 0 ? hours : 12; //
 
-    String hoursStr = hours < 10
+    final String hoursStr = hours < 10
         ? '0$hours'
         : hours.toString(); // the hour '0' should be '12'
-    String minStr = min < 10 ? '0$min' : min.toString();
+    final String minStr = min < 10 ? '0$min' : min.toString();
 
-    var strTime = '$hoursStr:$minStr$ampm';
+    final strTime = '$hoursStr:$minStr$ampm';
 
     return strTime;
   }
 
   Widget build(BuildContext context) {
-    var siteProv = Provider.of<SiteData>(context, listen: false);
-    var shiftProv = Provider.of<ShiftsData>(context, listen: false);
+    final siteProv = Provider.of<SiteData>(context, listen: false);
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: InkWell(
         onTap: () async {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedLoadingIndicator();
-              });
-          await Provider.of<ShiftApi>(context, listen: false).getShiftByShiftId(
-              widget.shifts.shiftId,
-              Provider.of<UserData>(context, listen: false).user.userToken);
+          final bool isConnected = await networkInfoImp.isConnected;
+          if (isConnected) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedLoadingIndicator();
+                });
+            await Provider.of<ShiftApi>(context, listen: false)
+                .getShiftByShiftId(
+                    widget.shifts.shiftId,
+                    Provider.of<UserData>(context, listen: false)
+                        .user
+                        .userToken);
 
-          Navigator.pop(context);
-          showShiftDetails(
-              Provider.of<ShiftApi>(context, listen: false).userShift);
+            Navigator.pop(context);
+            showShiftDetails(
+                Provider.of<ShiftApi>(context, listen: false).userShift);
+          } else {
+            return weakInternetConnection(
+              navigatorKey.currentState.overlay.context,
+            );
+          }
         },
         child: Slidable(
           enabled:
@@ -535,27 +550,35 @@ class _ShiftTileState extends State<ShiftTile> {
           secondaryActions: [
             ZoomIn(
                 child: InkWell(
-              child: Container(
-                padding: EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(width: 2, color: Colors.orange)),
-                child: Icon(
-                  Icons.edit,
-                  size: 18,
-                  color: Colors.orange,
-                ),
-              ),
-              onTap: () async {
-                widget.onTapEdit();
-                // showDialog(
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       return RoundedLoadingIndicator();
-                //     });
-              },
-            )),
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(width: 2, color: Colors.orange)),
+                      child: Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    onTap: () async {
+                      final bool isConnected = await networkInfoImp.isConnected;
+                      if (isConnected) {
+                        widget.onTapEdit();
+                      } else {
+                        return weakInternetConnection(
+                          navigatorKey.currentState.overlay.context,
+                        );
+
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return RoundedLoadingIndicator();
+                        //     });
+
+                      }
+                    })),
             ZoomIn(
                 child: InkWell(
               child: Container(
@@ -570,8 +593,19 @@ class _ShiftTileState extends State<ShiftTile> {
                   color: Colors.red,
                 ),
               ),
-              onTap: () {
-                widget.onTapDelete();
+              onTap: () async {
+                final DataConnectionChecker dataConnectionChecker =
+                    DataConnectionChecker();
+                final NetworkInfoImp networkInfoImp =
+                    NetworkInfoImp(dataConnectionChecker);
+                final bool isConnected = await networkInfoImp.isConnected;
+                if (isConnected) {
+                  widget.onTapDelete();
+                } else {
+                  return weakInternetConnection(
+                    navigatorKey.currentState.overlay.context,
+                  );
+                }
               },
             )),
           ],
@@ -626,7 +660,7 @@ class _ShiftTileState extends State<ShiftTile> {
 
                             print("finding matching shifts");
                             print(siteProv.currentSiteName);
-                            var index = getSiteName(siteProv.currentSiteName);
+                            final index = getSiteName(siteProv.currentSiteName);
 
                             Provider.of<SiteShiftsData>(context, listen: false)
                                 .getShiftsList(
@@ -682,9 +716,9 @@ class _ShiftTileState extends State<ShiftTile> {
   }
 
   int getSiteName(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -694,25 +728,25 @@ class _ShiftTileState extends State<ShiftTile> {
   }
 
   showShiftDetails(Shift shift) {
-    String end = amPmChanger(shift.shiftEndTime);
-    String start = amPmChanger(shift.shiftStartTime);
-    String sunSt = amPmChanger(shift.sunShiftstTime);
-    String sunEn = amPmChanger(shift.sunShiftenTime);
-    String monSt = amPmChanger(shift.monShiftstTime);
-    String monEn = amPmChanger(shift.mondayShiftenTime);
-    String tuesSt = amPmChanger(shift.tuesdayShiftstTime);
-    String tuesEnd = amPmChanger(shift.tuesdayShiftenTime);
-    String wedSt = amPmChanger(shift.wednesDayShiftstTime);
-    String wedEn = amPmChanger(shift.wednesDayShiftenTime);
-    String thuSt = amPmChanger(shift.thursdayShiftstTime);
-    String thuEn = amPmChanger(shift.thursdayShiftenTime);
-    String friSt = amPmChanger(shift.fridayShiftstTime);
-    String friEn = amPmChanger(shift.fridayShiftenTime);
+    final String end = amPmChanger(shift.shiftEndTime);
+    final String start = amPmChanger(shift.shiftStartTime);
+    final String sunSt = amPmChanger(shift.sunShiftstTime);
+    final String sunEn = amPmChanger(shift.sunShiftenTime);
+    final String monSt = amPmChanger(shift.monShiftstTime);
+    final String monEn = amPmChanger(shift.mondayShiftenTime);
+    final String tuesSt = amPmChanger(shift.tuesdayShiftstTime);
+    final String tuesEnd = amPmChanger(shift.tuesdayShiftenTime);
+    final String wedSt = amPmChanger(shift.wednesDayShiftstTime);
+    final String wedEn = amPmChanger(shift.wednesDayShiftenTime);
+    final String thuSt = amPmChanger(shift.thursdayShiftstTime);
+    final String thuEn = amPmChanger(shift.thursdayShiftenTime);
+    final String friSt = amPmChanger(shift.fridayShiftstTime);
+    final String friEn = amPmChanger(shift.fridayShiftenTime);
 
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          var daysOff = Provider.of<DaysOffData>(context).weak;
+          final daysOff = Provider.of<DaysOffData>(context).weak;
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here

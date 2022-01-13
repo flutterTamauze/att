@@ -297,16 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print("VALUE OF USER");
         print(value);
         if (value == NO_INTERNET) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: "لا يوجد اتصال بالانترنت",
-                    content: "برجاء اعادة المحاولة مرة اخرى");
-              }).then((value) {
+          return noInternetDialog(context).then((value) {
             setState(() {
               isLoading = false;
             });

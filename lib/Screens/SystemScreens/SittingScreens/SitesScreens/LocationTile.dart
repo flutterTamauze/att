@@ -2,10 +2,13 @@ import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/ShowMylocation.dart';
@@ -16,6 +19,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
+import '../../../../main.dart';
 import 'CircularIconButton.dart';
 
 class LocationTile extends StatefulWidget {
@@ -97,6 +101,8 @@ class _LocationTileState extends State<LocationTile> {
   }
 
   Widget build(BuildContext context) {
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: Slidable(
@@ -122,12 +128,14 @@ class _LocationTileState extends State<LocationTile> {
               ),
             ),
             onTap: () async {
-              widget.onTapEdit();
-              // showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return RoundedLoadingIndicator();
-              //     });
+              final bool isConnected = await networkInfoImp.isConnected;
+              if (isConnected) {
+                widget.onTapEdit();
+              } else {
+                return weakInternetConnection(
+                  navigatorKey.currentState.overlay.context,
+                );
+              }
             },
           )),
           ZoomIn(
@@ -144,8 +152,15 @@ class _LocationTileState extends State<LocationTile> {
                 color: Colors.red,
               ),
             ),
-            onTap: () {
-              widget.onTapDelete();
+            onTap: () async {
+              final bool isConnected = await networkInfoImp.isConnected;
+              if (isConnected) {
+                widget.onTapDelete();
+              } else {
+                return weakInternetConnection(
+                  navigatorKey.currentState.overlay.context,
+                );
+              }
             },
           )),
         ],
@@ -164,26 +179,35 @@ class _LocationTileState extends State<LocationTile> {
                       Expanded(
                         child: InkWell(
                           onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return RoundedLoadingIndicator();
-                              },
-                            );
+                            final bool isConnected =
+                                await networkInfoImp.isConnected;
 
-                            final SiteData siteData =
-                                Provider.of<SiteData>(context, listen: false);
-                            await siteData
-                                .getSiteBySiteId(
-                                    Provider.of<SiteShiftsData>(context,
-                                            listen: false)
-                                        .sites[widget.index + 1]
-                                        .id,
-                                    Provider.of<UserData>(context,
-                                            listen: false)
-                                        .user
-                                        .userToken)
-                                .then((value) => {showShiftDetails(value)});
+                            if (isConnected) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return RoundedLoadingIndicator();
+                                },
+                              );
+
+                              final SiteData siteData =
+                                  Provider.of<SiteData>(context, listen: false);
+                              await siteData
+                                  .getSiteBySiteId(
+                                      Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .sites[widget.index + 1]
+                                          .id,
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken)
+                                  .then((value) => {showShiftDetails(value)});
+                            } else {
+                              return weakInternetConnection(
+                                navigatorKey.currentState.overlay.context,
+                              );
+                            }
 
                             //
                           },
