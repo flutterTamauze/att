@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
 class PermessionsSummaryTableEnd extends StatelessWidget {
@@ -34,7 +35,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20.h,
                   child: AutoSizeText(
-                    ' : الإجمالى',
+                    ' : ${getTranslated(context, "الإجمالى")}',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -62,7 +63,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20,
                   child: AutoSizeText(
-                    ': تأخير عن الحضور',
+                    ' : ${getTranslated(context, "تأخير عن الحضور")}',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -90,7 +91,7 @@ class PermessionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20.h,
                   child: AutoSizeText(
-                    ' : انصراف مبكر',
+                    ' : ${getTranslated(context, "انصراف مبكر")}',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,

@@ -13,14 +13,15 @@ class DataTablePermessionHeader extends StatelessWidget {
       child: Container(
           child: Row(
         children: [
-          DataTableHeaderTitles("نوع الأذن", Colors.orange),
+          DataTableHeaderTitles(
+              getTranslated(context, "نوع الأذن"), Colors.orange),
           DataTableHeaderTitles(
               getTranslated(
                 context,
                 "التاريخ",
               ),
               Colors.orange),
-          DataTableHeaderTitles("الوقت", Colors.orange),
+          DataTableHeaderTitles(getTranslated(context, "الوقت"), Colors.orange),
         ],
       )),
     );

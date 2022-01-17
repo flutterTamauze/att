@@ -110,7 +110,10 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                                         FontWeight.bold),
                                               )
                                             : AutoSizeText(
-                                                "لا يوجد اذونات لهذا المستخدم",
+                                                getTranslated(
+                                                  context,
+                                                  "لا يوجد اذونات لهذا المستخدم",
+                                                ),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
