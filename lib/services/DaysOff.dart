@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -86,13 +88,11 @@ class DaysOffData with ChangeNotifier {
   InheritDefault inheritDefault = InheritDefault();
   Future future;
   Future<bool> isConnectedToInternet() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        return true;
-      }
-    } on SocketException catch (_) {
-      return false;
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      return true;
     }
     return false;
   }

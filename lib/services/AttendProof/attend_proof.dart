@@ -1,14 +1,17 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:qr_users/Network/networkInfo.dart';
 import 'dart:convert';
 
 import '../../Core/constants.dart';
+import '../../main.dart';
 
 class AttendProof {
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
-    var response = await http.post(
+    final response = await http.post(
       Uri.parse("$baseURL/api/AttendProof/AddAttendProof?userid=$userId"),
       headers: {
         'Content-type': 'application/json',
@@ -16,8 +19,9 @@ class AttendProof {
       },
     );
     print(response.body);
+    print(fcmToken);
     print("status code : ${response.statusCode}");
-    var decodedResponse = jsonDecode(response.body);
+    final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (fcmToken == null) {
         return "null";
@@ -39,12 +43,12 @@ class AttendProof {
       return "fail";
     }
 
-    return "success";
+    return "fail";
   }
 
   Future<int> getAttendProofID(String userId, String userToken) async {
     try {
-      var response = await http.get(
+      final response = await http.get(
           Uri.parse(
               "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
           headers: {'Authorization': "Bearer $userToken"});
@@ -65,7 +69,7 @@ class AttendProof {
 
   Future<String> acceptAttendProof(
       String userToken, String attendId, Position latLng) async {
-    var response = await http.put(
+    final response = await http.put(
       Uri.parse("$baseURL/api/AttendProof/Approve"),
       headers: {
         'Content-type': 'application/json',
@@ -79,7 +83,7 @@ class AttendProof {
     );
     print(response.statusCode);
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Fail : Proof time out!") {
       return "timeout";
     } else if (decodedResponse["message"] == "Fail : Location Failed") {

@@ -1087,7 +1087,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         !friCheck) {
       Fluttertoast.showToast(
           msg:
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات ",
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات",
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);

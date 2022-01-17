@@ -700,7 +700,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                       Navigator.pop(context);
                                                                                       successfullDelete(context);
                                                                                     } else {
-                                                                                      unSuccessfullDelete();
+                                                                                      unSuccessfullDelete(context);
                                                                                     }
                                                                                     Navigator.pop(context);
                                                                                     Navigator.pop(context);

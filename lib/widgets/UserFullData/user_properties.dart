@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/SiteAdminOutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -28,6 +30,8 @@ import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../main.dart';
+
 class UserProperties extends StatefulWidget {
   final Member user;
   final int siteIndex;
@@ -42,16 +46,16 @@ class UserProperties extends StatefulWidget {
 
 class _UserPropertiesState extends State<UserProperties> {
   int getsiteIDbyShiftId(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    List<Shift> currentSite =
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final List<Shift> currentSite =
         list.where((element) => element.shiftId == shiftId).toList();
     print(currentSite[0].siteID);
     return currentSite[0].siteID;
   }
 
   String getShiftName() {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (list[i].shiftId == widget.user.shiftId) {
         return list[i].shiftName;
@@ -72,16 +76,16 @@ class _UserPropertiesState extends State<UserProperties> {
 //   }
 
   int getsiteIDbyName(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    List<SiteShiftsModel> currentSite =
+    final List<SiteShiftsModel> currentSite =
         list.where((element) => element.siteName == siteName).toList();
     return currentSite[0].siteId;
   }
 
   shiftScheduling() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvider = Provider.of<CompanyData>(context, listen: false);
     // String shiftName = getShiftName();
     print("index");
     print(widget.siteIndex);
@@ -111,8 +115,10 @@ class _UserPropertiesState extends State<UserProperties> {
 
   @override
   Widget build(BuildContext context) {
-    var userDataProvider = Provider.of<UserData>(context, listen: false).user;
-    var memberData = Provider.of<MemberData>(context, listen: false);
+    final userDataProvider = Provider.of<UserData>(context, listen: false).user;
+    final memberData = Provider.of<MemberData>(context, listen: false);
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     return ZoomIn(
       child: Container(
         // decoration: BoxDecoration(

@@ -84,22 +84,15 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                         .singleUserPermessions.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return permessionProv
-                                                  .singleUserPermessions[index]
-                                                  .permessionStatus ==
-                                              1
-                                          ? Column(
-                                              children: [
-                                                DataTablePermessionRow(
-                                                    permessionProv
-                                                            .singleUserPermessions[
-                                                        index]),
-                                                Divider(
-                                                  thickness: 1,
-                                                )
-                                              ],
-                                            )
-                                          : Container();
+                                      return Column(
+                                        children: [
+                                          DataTablePermessionRow(permessionProv
+                                              .singleUserPermessions[index]),
+                                          Divider(
+                                            thickness: 1,
+                                          )
+                                        ],
+                                      );
                                     })
                                 : Center(
                                     child: Provider.of<MemberData>(context)

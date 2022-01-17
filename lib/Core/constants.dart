@@ -32,9 +32,9 @@ List<String> weekDays = [
   "الجمعة"
 ];
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 1, 6);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 1, 11);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 1, 6);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 1, 11);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -103,6 +103,33 @@ successfulSaved(BuildContext context) {
       fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
 }
 
+noInternetDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: getTranslated(context, 'حدث خطأ ما'),
+            content: getTranslated(context,
+                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"));
+      });
+}
+
+weakInternetConnection(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: "الأتصال بالأنترنت ضعيف",
+            content: "برجاء اعادة المحاولة مرة اخرى");
+      });
+}
+
 noInternetConnectionToast(BuildContext context) {
   Fluttertoast.showToast(
     msg: getTranslated(
@@ -120,23 +147,9 @@ noInternetConnectionToast(BuildContext context) {
   );
 }
 
-noInternetConnectionAlert(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return RoundedAlertOkOnly(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            title: getTranslated(context, 'حدث خطأ ما'),
-            content: getTranslated(context,
-                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"));
-      });
-}
-
-unSuccessfullDelete() {
+unSuccessfullDelete(BuildContext context) {
   Fluttertoast.showToast(
-    msg: "خطأ في الحذف",
+    msg: getTranslated(context, "خطأ في الحذف"),
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,

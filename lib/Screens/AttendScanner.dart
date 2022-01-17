@@ -106,6 +106,14 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.black,
             textColor: Colors.orange);
         break;
+      case "Failed : You can't attend outside your company!":
+        Fluttertoast.showToast(
+            msg: "لا يمكنك التسجيل لشخص خارج شركتك",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.red,
+            textColor: Colors.black);
+        break;
       case "Success : already registered attend":
         Fluttertoast.showToast(
             msg: getTranslated(context, "لقد تم تسجيل الحضور من قبل"),

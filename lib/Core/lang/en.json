@@ -422,8 +422,32 @@
 "اضغط مره اخرى للخروج من التطبيق":
 "Press again to exit the application",
 "برجاء اثبات حضورك الأن":"Please proof your attendance now.",
-"إضافة موقع":"Add Site"
-
+"إضافة موقع":"Add Site",
+"خطأ في حفظ البيانات":"Failed saving data",
+"برجاء التقاط صورة شخصية للوجة اولا":
+"Please take a selfie first",
+"كلمة المرور غير متماثلتين"
+:"Password mismatch",
+"تمت اضافة المأمورية بنجاح"
+:"Mission added successfully",
+"تم وضع مأمورية لهذا المستخدم من قبل":
+"Another InternalMission not approved for this user!",
+"تم تسجيل مأمورية داخلية لك"
+:"An internal mission has been assigned for you",
+"خطأ فى اضافة المأمورية":
+"Error adding mission",
+"تم تكليفك بمأمورية"
+:"You have been assigned a mission",
+"لا يمكنك وضع مأمورية خارجية فى اليوم الحالى"
+:"You can’t set an external mission on the current day",
+"تم وضع مأمورية خارجية لهذا المستخدم من قبل":
+"There is an external mission in this period!",
+"يوجد مأمورية داخلية فى هذا التاريخ"
+:"There is an internal mission on this date",
+"برجاء ادخال المدة":
+"Please enter the duration",
+"تم تسجيل مأمورية خارجية لك":"An exteranl mission has been assigned to you",
+"خطأ في اضافة المأمورية":"Error adding mission"
 
 
 

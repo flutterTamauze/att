@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
@@ -8,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
@@ -16,6 +18,8 @@ import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserMissions/CompanyMissions.dart';
 import 'package:qr_users/services/user_data.dart';
+
+import '../../main.dart';
 
 class UserMissions {
   DateTime fromDate, toDate;
@@ -70,102 +74,132 @@ class MissionsData with ChangeNotifier {
   ) async {
     externalMissionsCount = 0;
     internalMissionsCount = 0;
-    String startTime = DateTime(
+    final String startTime = DateTime(
       DateTime.now().year,
       1,
       1,
     ).toIso8601String();
-    String endingTime = DateTime(DateTime.now().year, 12, 30).toIso8601String();
+    final String endingTime =
+        DateTime(DateTime.now().year, 12, 30).toIso8601String();
     try {
       missionsLoading = true;
       // notifyListeners();
-      var response = await http.get(
-          Uri.parse(
-              "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      log(response.body);
-      missionsLoading = false;
-      var decodedResp = json.decode(response.body);
-      if (decodedResp["message"] == "Success") {
-        var missionsObj =
-            jsonDecode(response.body)['data']["ExternalMissions"] as List;
-        var internalObj =
-            jsonDecode(response.body)['data']["InternalMissions"] as List;
+      final DataConnectionChecker dataConnectionChecker =
+          DataConnectionChecker();
+      final NetworkInfoImp networkInfoImp =
+          NetworkInfoImp(dataConnectionChecker);
+      final bool isConnected = await networkInfoImp.isConnected;
+      if (isConnected) {
+        final response = await http.get(
+            Uri.parse(
+                "$baseURL/api/InternalMission/GetInExternalMissionPeriodbyUser/$userId/$startTime/$endingTime"),
+            headers: {
+              'Content-type': 'application/json',
+              'Authorization': "Bearer $userToken"
+            });
+        log(response.body);
+        missionsLoading = false;
+        final decodedResp = json.decode(response.body);
+        if (decodedResp["message"] == "Success") {
+          final missionsObj =
+              jsonDecode(response.body)['data']["ExternalMissions"] as List;
+          final internalObj =
+              jsonDecode(response.body)['data']["InternalMissions"] as List;
 
-        List<CompanyMissions> externalMissions = missionsObj
-            .map((json) => CompanyMissions.fromJsonExternal(json))
-            .toList();
-        List<CompanyMissions> internalMissions = internalObj
-            .map((json) => CompanyMissions.fromJsonInternal(json))
-            .toList();
-        singleUserMissionsList =
-            [...externalMissions, ...internalMissions].toSet().toList();
-        if (singleUserMissionsList.length > 0) {
-          externalMissionsCount =
-              jsonDecode(response.body)['data']["TotalExternalMission"];
-          internalMissionsCount =
-              jsonDecode(response.body)['data']["TotalInternal"];
+          final List<CompanyMissions> externalMissions = missionsObj
+              .map((json) => CompanyMissions.fromJsonExternal(json))
+              .toList();
+          final List<CompanyMissions> internalMissions = internalObj
+              .map((json) => CompanyMissions.fromJsonInternal(json))
+              .toList();
+          singleUserMissionsList =
+              [...externalMissions, ...internalMissions].toSet().toList();
+          if (singleUserMissionsList.length > 0) {
+            externalMissionsCount =
+                jsonDecode(response.body)['data']["TotalExternalMission"];
+            internalMissionsCount =
+                jsonDecode(response.body)['data']["TotalInternal"];
+          }
         }
+        notifyListeners();
+      } else {
+        return weakInternetConnection(
+          navigatorKey.currentState.overlay.context,
+        );
       }
-      notifyListeners();
     } catch (e) {
       print(e);
     }
   }
 
   addUserExternalMission(UserMissions userMissions, String userToken) async {
-    isLoading = true;
-    notifyListeners();
-    var response = await http.post(
-        Uri.parse("$baseURL/api/externalMissions/Add"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-        body: json.encode({
-          "fromdate": userMissions.fromDate.toIso8601String(),
-          "shiftId": userMissions.shiftId,
-          "toDate": userMissions.toDate.toIso8601String(),
-          "userId": userMissions.userId,
-          "desc": userMissions.description,
-          "adminResponse": ""
-        }));
-    isLoading = false;
-    notifyListeners();
-    print(response.body);
-    return json.decode(response.body)["message"];
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      isLoading = true;
+      notifyListeners();
+      final response = await http.post(
+          Uri.parse("$baseURL/api/externalMissions/Add"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+          body: json.encode({
+            "fromdate": userMissions.fromDate.toIso8601String(),
+            "shiftId": userMissions.shiftId,
+            "toDate": userMissions.toDate.toIso8601String(),
+            "userId": userMissions.userId,
+            "desc": userMissions.description,
+            "adminResponse": ""
+          }));
+      isLoading = false;
+      notifyListeners();
+      print(response.body);
+      return json.decode(response.body)["message"];
+    } else {
+      return weakInternetConnection(
+        navigatorKey.currentState.overlay.context,
+      );
+    }
   }
 
   addUserInternalMission(
     UserMissions userMissions,
     String userToken,
   ) async {
-    isLoading = true;
-    notifyListeners();
     print(userMissions.shiftId);
     print(userMissions.description);
     print(userMissions.userId);
-    var response = await http.post(
-        Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-        body: json.encode({
-          "fromdate": userMissions.fromDate.toIso8601String(),
-          "shiftId": userMissions.shiftId,
-          "toDate": userMissions.toDate.toIso8601String(),
-          "userId": userMissions.userId,
-          "desc": userMissions.description,
-        }));
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      isLoading = true;
+      notifyListeners();
+      final response = await http.post(
+          Uri.parse("$baseURL/api/InternalMission/AddInternalMission"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+          body: json.encode({
+            "fromdate": userMissions.fromDate.toIso8601String(),
+            "shiftId": userMissions.shiftId,
+            "toDate": userMissions.toDate.toIso8601String(),
+            "userId": userMissions.userId,
+            "desc": userMissions.description,
+          }));
 
-    isLoading = false;
-    notifyListeners();
-    print(response.body);
-    return json.decode(response.body)["message"];
+      isLoading = false;
+      notifyListeners();
+      print(response.body);
+      return json.decode(response.body)["message"];
+    } else {
+      return weakInternetConnection(
+        navigatorKey.currentState.overlay.context,
+      );
+    }
   }
 
   addInternalMission(
@@ -179,14 +213,14 @@ class MissionsData with ChangeNotifier {
       int osType,
       String sitename,
       String shiftName) async {
-    var prov = Provider.of<SiteData>(context, listen: false);
+    final prov = Provider.of<SiteData>(context, listen: false);
     if (prov.siteValue == "كل المواقع" || picked.isEmpty) {
       Fluttertoast.showToast(
           msg: "برجاء ادخال البيانات المطلوبة",
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER);
     } else {
-      String msg = await addUserInternalMission(
+      final String msg = await addUserInternalMission(
         UserMissions(
             description: description ?? "لا يوجد تفاصيل",
             fromDate: fromDate,
@@ -202,7 +236,7 @@ class MissionsData with ChangeNotifier {
             msg: "تمت اضافة المأمورية بنجاح",
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
-        HuaweiServices _huawei = HuaweiServices();
+        final HuaweiServices _huawei = HuaweiServices();
         if (osType == 3) {
           await _huawei.huaweiPostNotification(
             fcmToken,
@@ -235,38 +269,4 @@ class MissionsData with ChangeNotifier {
       }
     }
   }
-  // getCompanyMissions(int companyId, String userToken) async {
-  //   isLoading = true;
-  //   try {
-  //     print(companyId);
-  //     print(userToken);
-  //     var response = await http.get(
-  //         Uri.parse(
-  //             "$baseURL/api/InternalMission/GetInExternalMissionbyCompany/$companyId"),
-  //         headers: {
-  //           'Content-type': 'application/json',
-  //           'Authorization': "Bearer $userToken"
-  //         });
-  //     print(response.body);
-  //     print(response.statusCode);
-  //     var decodedResp = json.decode(response.body);
-  //     if (decodedResp["message"] == "Success") {
-  //       var missionsObj = jsonDecode(response.body)['data'][1] as List;
-  //       var internalObj = jsonDecode(response.body)['data'][0] as List;
-
-  //       List<CompanyMissions> externalMissions =
-  //           missionsObj.map((json) => CompanyMissions.fromJson(json)).toList();
-  //       List<CompanyMissions> internalMissions =
-  //           internalObj.map((json) => CompanyMissions.fromJson(json)).toList();
-  //       companyMissionsList =
-  //           [...externalMissions, ...internalMissions].toSet().toList();
-  //       getAllUserNamesInMission();
-  //       print(companyMissionsList.length);
-  //     }
-  //     isLoading = false;
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }

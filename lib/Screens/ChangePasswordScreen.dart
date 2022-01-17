@@ -274,7 +274,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           return null;
                                         }
                                       } else {
-                                        return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
+                                        return getTranslated(context,
+                                            "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12");
                                       }
                                     },
                                     controller: _passwordController,
@@ -337,10 +338,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                             r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
                                         RegExp regex = new RegExp(pattern);
                                         if (!regex.hasMatch(text)) {
-                                          return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                          return 'كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
                                         } else if (text !=
                                             _passwordController.text) {
-                                          return 'كلمة المرور غير متماثلتين';
+                                          return getTranslated(context,
+                                              'كلمة المرور غير متماثلتين');
                                         } else if (text == null ||
                                             text.isEmpty) {
                                           return getTranslated(
@@ -349,7 +351,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           return null;
                                         }
                                       } else {
-                                        return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
+                                        return getTranslated(context,
+                                            "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12");
                                       }
                                     },
                                     obscureText: _repasswordVisible,
@@ -506,7 +509,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               return RoundedLoadingIndicator();
             });
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
 
         try {
           var msg = await Provider.of<UserData>(context, listen: false)
@@ -521,7 +524,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 final DeviceInfoPlugin deviceInfoPlugin =
                     new DeviceInfoPlugin();
                 var data = await deviceInfoPlugin.iosInfo;
-                String chainValue = await storage.read(key: "deviceMac");
+                final String chainValue = await storage.read(key: "deviceMac");
 
                 print(
                     "saving to the keychain mac : ${data.identifierForVendor}"); //UUID for iOS
@@ -559,7 +562,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             }
 
             Fluttertoast.showToast(
-                msg: "تم الحفظ بنجاح",
+                msg: getTranslated(
+                  context,
+                  "تم الحفظ بنجاح",
+                ),
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 1,
@@ -569,7 +575,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           } else {
             Fluttertoast.showToast(
                 gravity: ToastGravity.CENTER,
-                msg: "خطأ في حفظ البيانات",
+                msg: getTranslated(
+                  context,
+                  "خطأ في حفظ البيانات",
+                ),
                 toastLength: Toast.LENGTH_SHORT,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,

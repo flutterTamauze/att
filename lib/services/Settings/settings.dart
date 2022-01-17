@@ -91,7 +91,7 @@ class Settings {
                           builder: (context) => UsersScreen(-1, false, ""),
                         ));
                   } else {
-                    unSuccessfullDelete();
+                    unSuccessfullDelete(context);
                   }
                   Navigator.pop(context);
                   Navigator.pop(context);

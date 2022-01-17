@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:huawei_location/location/location.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/defaultClass.dart';
@@ -83,15 +85,11 @@ class CompanyData extends ChangeNotifier {
       companyUsers: 0);
 
   Future<bool> isConnectedToInternet() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-        return true;
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-      return false;
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      return true;
     }
     return false;
   }

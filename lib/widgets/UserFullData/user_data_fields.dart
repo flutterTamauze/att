@@ -14,7 +14,7 @@ class UserDataField extends StatelessWidget {
   UserDataField({this.icon, this.text});
 
   Widget build(BuildContext context) {
-    var phone = {
+    final phone = {
       Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber
     };
     return Container(

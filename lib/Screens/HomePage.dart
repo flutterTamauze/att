@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:math';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
@@ -42,8 +44,6 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    Provider.of<SiteData>(context, listen: false).dropDownSitesStrings.clear();
-    Provider.of<SiteData>(context, listen: false).filSitesStringsList(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
       final notificationProv =
           Provider.of<NotificationDataService>(context, listen: false);
@@ -115,12 +115,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         : WillPopScope(
             onWillPop: onWillPop,
             child: GestureDetector(
-              onTap: () {
-                String finalDate = DateTime.now().day.toString() +
-                    DateTime.now().month.toString() +
-                    DateTime.now().year.toString();
-                print(finalDate);
-                print(".jpg");
+              onTap: () async {
                 // print(_startTime.hour);
               },
               child: Scaffold(
@@ -174,13 +169,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<bool> onWillPop() {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
 
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(
-        msg: "اضغط مره اخرى للخروج من التطبيق",
+        msg: getTranslated(context, "اضغط مره اخرى للخروج من التطبيق"),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,

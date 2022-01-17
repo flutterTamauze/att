@@ -17,7 +17,7 @@ class ExpandedPendingPermessions extends StatefulWidget {
   Function onRefused;
   bool isAdmin = false;
   final int permessionType;
-  final String date, createdOn;
+  final String date;
 
   ExpandedPendingPermessions({
     this.userName,
@@ -30,7 +30,6 @@ class ExpandedPendingPermessions extends StatefulWidget {
     this.adminComment,
     this.desc,
     this.date,
-    this.createdOn,
     this.userId,
     Key key,
   }) : super(key: key);
@@ -73,9 +72,6 @@ class _ExpandedPendingPermessionsState
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            widget.createdOn,
-                          ),
                           widget.isAdmin
                               ? Container()
                               : FaIcon(

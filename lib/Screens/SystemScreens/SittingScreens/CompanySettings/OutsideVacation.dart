@@ -95,17 +95,20 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
   @override
   void initState() {
+    final UserHolidaysData _userHolidayData =
+        Provider.of<UserHolidaysData>(context, listen: false);
+    final UserPermessionsData _userPermessionData =
+        Provider.of<UserPermessionsData>(context, listen: false);
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
-    Provider.of<UserPermessionsData>(context, listen: false).isLoading = false;
-    Provider.of<UserHolidaysData>(context, listen: false)
-        .loadingHolidaysDetails = false;
-    Provider.of<UserPermessionsData>(context, listen: false)
-        .permessionDetailLoading = false;
+    _userPermessionData.isLoading = false;
+    _userHolidayData.loadingHolidaysDetails = false;
+
+    _userHolidayData.isLoading = false;
+    _userPermessionData.permessionDetailLoading = false;
     isPicked = false;
+    Provider.of<MissionsData>(context, listen: false).isLoading = false;
     // userMission = getSingleUserMission();
-    Provider.of<UserHolidaysData>(context, listen: false)
-        .singleUserHoliday
-        .clear();
+    _userHolidayData.singleUserHoliday.clear();
     Provider.of<UserPermessionsData>(context, listen: false)
         .singleUserPermessions
         .clear();
@@ -500,7 +503,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .whenComplete(() =>
                                                             Navigator.pop(
                                                                 context));
-                                                    HuaweiServices _huawei =
+                                                    final HuaweiServices
+                                                        _huawei =
                                                         HuaweiServices();
                                                     if (widget.member.osType ==
                                                         3) {
@@ -1109,7 +1113,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           null &&
                                                       timeOutController.text !=
                                                           "") {
-                                                    String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
+                                                    final String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
                                                         UserPermessions(
                                                             createdOn:
                                                                 DateTime.now(),
@@ -1122,15 +1126,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 selectedPermession == getTranslated(context, "تأخير عن الحضور")
                                                                     ? 1
                                                                     : 2,
-                                                            permessionDescription:
-                                                                commentController.text == ""
-                                                                    ? getTranslated(context, "لا يوجد تعليق")
-                                                                    : commentController
-                                                                        .text,
+                                                            permessionDescription: commentController.text == ""
+                                                                ? getTranslated(
+                                                                    context, "لا يوجد تعليق")
+                                                                : commentController
+                                                                    .text,
                                                             user: widget
                                                                 .member.name),
-                                                        Provider.of<UserData>(
-                                                                context,
+                                                        Provider.of<UserData>(context,
                                                                 listen: false)
                                                             .user
                                                             .userToken,
@@ -1147,7 +1150,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           .whenComplete(() =>
                                                               Navigator.pop(
                                                                   context));
-                                                      HuaweiServices _huawei =
+                                                      final HuaweiServices
+                                                          _huawei =
                                                           HuaweiServices();
                                                       if (widget
                                                               .member.osType ==
@@ -1188,8 +1192,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               .CENTER,
                                                           backgroundColor:
                                                               Colors.red,
-                                                          msg:
-                                                          getTranslated(context,  "لقد تم تقديم طلب من قبل")   );
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "لقد تم تقديم طلب من قبل"));
                                                     } else if (msg ==
                                                         "failed") {
                                                       errorToast(context);
@@ -1213,8 +1218,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red,
-                                                        msg: getTranslated(context,
-                                                    "قم بأدخال البيانات المطلوبة"));
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "قم بأدخال البيانات المطلوبة"));
                                                   }
                                                 },
                                                 title: getTranslated(
