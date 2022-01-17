@@ -134,9 +134,9 @@ noInternetConnectionAlert(BuildContext context) {
       });
 }
 
-unSuccessfullDelete() {
+unSuccessfullDelete(BuildContext context) {
   Fluttertoast.showToast(
-    msg: "خطأ في الحذف",
+    msg: getTranslated(context, "خطأ في الحذف"),
     gravity: ToastGravity.CENTER,
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,

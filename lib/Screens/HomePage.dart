@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () {
-                String finalDate = DateTime.now().day.toString() +
+                final String finalDate = DateTime.now().day.toString() +
                     DateTime.now().month.toString() +
                     DateTime.now().year.toString();
                 print(finalDate);
@@ -174,13 +174,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<bool> onWillPop() {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
 
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(
-        msg: "اضغط مره اخرى للخروج من التطبيق",
+        msg: getTranslated(context, "اضغط مره اخرى للخروج من التطبيق"),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,

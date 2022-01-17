@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
@@ -86,7 +87,7 @@ class UserHolidaysData with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    var response = await http.delete(
+    final response = await http.delete(
         Uri.parse("$baseURL/api/Holiday/DeleteHoliday?id=$holidayID"),
         headers: {
           'Content-type': 'application/json',
@@ -96,7 +97,7 @@ class UserHolidaysData with ChangeNotifier {
     print(response.body);
     isLoading = false;
     notifyListeners();
-    var decodedResp = json.decode(response.body);
+    final decodedResp = json.decode(response.body);
     if (decodedResp["message"] == "Success : Holiday Deleted!") {
       singleUserHoliday.removeAt(holidayIndex);
       notifyListeners();
@@ -159,7 +160,7 @@ class UserHolidaysData with ChangeNotifier {
       print(vacID);
       isLoading = true;
       notifyListeners();
-      var response = await http.put(
+      final response = await http.put(
           Uri.parse(
             "$baseURL/api/Holiday/Approve",
           ),
@@ -179,7 +180,7 @@ class UserHolidaysData with ChangeNotifier {
       isLoading = false;
       notifyListeners();
       print(response.body);
-      var decodedResp = json.decode(response.body);
+      final decodedResp = json.decode(response.body);
       if (response.statusCode == 200 &&
           (!decodedResp["message"].toString().contains("Fail"))) {
         pendingCompanyHolidays
@@ -203,7 +204,7 @@ class UserHolidaysData with ChangeNotifier {
     loadingHolidaysDetails = true;
     notifyListeners();
     print("holiday id $holidayId");
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse("$baseURL/api/Holiday/$holidayId"),
       headers: {
         'Content-type': 'application/json',
@@ -246,7 +247,7 @@ class UserHolidaysData with ChangeNotifier {
       loadingHolidaysDetails = true;
       notifyListeners();
       print("holiday id $holidayId");
-      var response = await http.get(
+      final response = await http.get(
         Uri.parse("$baseURL/api/Holiday/$holidayId"),
         headers: {
           'Content-type': 'application/json',
@@ -258,10 +259,10 @@ class UserHolidaysData with ChangeNotifier {
       log(response.body);
       loadingHolidaysDetails = false;
       notifyListeners();
-      var decodedResponse = json.decode(response.body);
+      final decodedResponse = json.decode(response.body);
       if (decodedResponse["message"] == "Success") {
         holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
-        var holidays = singleUserHoliday
+        final holidays = singleUserHoliday
             .where((element) => element.holidayNumber == holidayId)
             .toList();
 
@@ -297,9 +298,9 @@ class UserHolidaysData with ChangeNotifier {
     print(response.statusCode);
 
     log(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
-      var holidaysObj = jsonDecode(response.body)['data'] as List;
+      final holidaysObj = jsonDecode(response.body)['data'] as List;
       singleUserHoliday =
           holidaysObj.map((json) => UserHolidays.fromJson(json)).toList();
 
@@ -338,9 +339,9 @@ class UserHolidaysData with ChangeNotifier {
     print(response.statusCode);
     print(response.request.url);
     log(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
-      var permessionsObj =
+      final permessionsObj =
           jsonDecode(response.body)['data']["Holidays"] as List;
       singleUserHoliday =
           permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
@@ -359,7 +360,7 @@ class UserHolidaysData with ChangeNotifier {
       String userToken, int companyId) async {
     isLoading = true;
     // notifyListeners();
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse("$baseURL/api/Holiday/GetAllHolidaysbyComId/$companyId"),
       headers: {
         'Content-type': 'application/json',
@@ -367,9 +368,9 @@ class UserHolidaysData with ChangeNotifier {
       },
     );
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
-      var holidayObj = jsonDecode(response.body)['data'] as List;
+      final holidayObj = jsonDecode(response.body)['data'] as List;
       holidaysList =
           holidayObj.map((json) => UserHolidays.fromJson(json)).toList();
       isLoading = false;
@@ -412,7 +413,7 @@ class UserHolidaysData with ChangeNotifier {
     print(fromDate);
     print(toDate);
     if (fromDate != null && toDate != null) {
-      String msg = await Provider.of<MissionsData>(context, listen: false)
+      final String msg = await Provider.of<MissionsData>(context, listen: false)
           .addUserExternalMission(
               UserMissions(
                   description: desc,
@@ -423,43 +424,51 @@ class UserHolidaysData with ChangeNotifier {
 
       if (msg == "Success : External Missions Created!") {
         Fluttertoast.showToast(
-            msg: "تمت اضافة المأمورية بنجاح",
+            msg: getTranslated(context, "تمت اضافة المأمورية بنجاح"),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
         await sendFcmMessage(
-          category: "externalMission",
-          message:
-              "تم تسجيل مأمورية خارجية لك \n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
-          userToken: fcmToken,
-          topicName: "",
-          title: "تم تكليفك بمأمورية",
-        ).then((value) => Navigator.pop(context));
+            category: "externalMission",
+            message:
+                "${getTranslated(context, "تم تسجيل مأمورية خارجية لك")} \n ${getTranslated(context, "من")} ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
+            userToken: fcmToken,
+            topicName: "",
+            title: getTranslated(
+              context,
+              "تم تكليفك بمأمورية",
+            )).then((value) => Navigator.pop(context));
       } else if (msg == "Failed : There are external mission in this period!") {
         Fluttertoast.showToast(
-            msg: "تم وضع مأمورية خارجية لهذا المستخدم من قبل",
+            msg: getTranslated(
+                context, "تم وضع مأمورية خارجية لهذا المستخدم من قبل"),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else if (msg ==
           "Failed : You can't request an external mission from today!") {
         Fluttertoast.showToast(
-            msg: "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى",
+            msg: getTranslated(
+                context, "لا يمكنك وضع مأمورية خارجية فى اليوم الحالى"),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else if (msg ==
           "Failed : There are an internal Mission in this period!") {
         Fluttertoast.showToast(
-            msg: "يوجد مأمورية داخلية فى هذا التاريخ",
+            msg: getTranslated(context, "يوجد مأمورية داخلية فى هذا التاريخ"),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else {
         Fluttertoast.showToast(
-            msg: "خطأ في اضافة المأمورية",
+            msg: getTranslated(context, "خطأ في اضافة المأمورية"),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       }
     } else {
       Fluttertoast.showToast(
-          msg: "برجاء ادخال المدة", backgroundColor: Colors.red);
+          msg: getTranslated(
+            context,
+            "برجاء ادخال المدة",
+          ),
+          backgroundColor: Colors.red);
     }
   }
 }
