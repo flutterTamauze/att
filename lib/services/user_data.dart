@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:huawei_location/location/location.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,8 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
-import 'package:qr_users/NetworkApi/NetworkFaliure.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesModel.dart';
 import 'package:qr_users/Screens/SuperAdmin/Service/SuperCompaniesRepo.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -97,7 +99,9 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(String username, String password, BuildContext context,
       bool cacheLogin) async {
-    if (await isConnectedToInternet("www.wikipedia.org")) {
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    if (await networkInfoImp.isConnected) {
       int userType;
       var decodedRes;
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -330,7 +334,7 @@ class UserData with ChangeNotifier {
         final uri = Uri.parse("$baseURL/api/AttendLogin");
 
         final request = new http.MultipartRequest("POST", uri);
-        Map<String, String> headers = {
+        final Map<String, String> headers = {
           'Authorization': "Bearer ${user.userToken}"
         };
         request.headers.addAll(headers);

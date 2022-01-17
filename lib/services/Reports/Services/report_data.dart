@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/Reports/Services/todays_user_Report_model.dart';
 import 'package:qr_users/services/defaultClass.dart';
@@ -299,15 +301,11 @@ class ReportsData with ChangeNotifier {
       LateAbsenceReport([], "0%", "0%", true, 0.0);
 
   Future<bool> isConnectedToInternet() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-        return true;
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-      return false;
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      return true;
     }
     return false;
   }
@@ -368,12 +366,14 @@ class ReportsData with ChangeNotifier {
       int userType, String date, BuildContext context) async {
     if (await isConnectedToInternet()) {
       print(date);
+      print(apiId);
       String url;
       if (userType == 3) {
-        url = "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date";
+        url =
+            "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date&pageIndex=1&pageSize=50";
       } else {
         url =
-            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date";
+            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50";
       }
       print(url);
       final response = await http.get(
@@ -387,7 +387,7 @@ class ReportsData with ChangeNotifier {
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
           var reportObjJson = jsonDecode(response.body)['data'] as List;

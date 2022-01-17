@@ -195,17 +195,13 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                                         int index) {
                                                                   return Column(
                                                                     children: [
-                                                                      provList[index].holidayStatus !=
-                                                                              1
-                                                                          ? Container()
-                                                                          : DataTableHolidayRow(
-                                                                              provList[index]),
-                                                                      provList[index].holidayStatus !=
-                                                                              1
-                                                                          ? Container()
-                                                                          : Divider(
-                                                                              thickness: 1,
-                                                                            )
+                                                                      DataTableHolidayRow(
+                                                                          provList[
+                                                                              index]),
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                      )
                                                                     ],
                                                                   );
                                                                 });
@@ -257,17 +253,13 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                                         int index) {
                                                                   return Column(
                                                                     children: [
-                                                                      permessionsList[index].permessionStatus !=
-                                                                              1
-                                                                          ? Container()
-                                                                          : DataTablePermessionRow(
-                                                                              permessionsList[index]),
-                                                                      permessionsList[index].permessionStatus !=
-                                                                              1
-                                                                          ? Container()
-                                                                          : Divider(
-                                                                              thickness: 1,
-                                                                            )
+                                                                      DataTablePermessionRow(
+                                                                          permessionsList[
+                                                                              index]),
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                      )
                                                                     ],
                                                                   );
                                                                 });

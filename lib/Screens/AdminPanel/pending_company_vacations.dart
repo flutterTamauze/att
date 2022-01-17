@@ -43,6 +43,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
         .getPendingCompanyHolidays(comId, token);
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   final ScrollController _scrollController = ScrollController();
@@ -74,10 +75,11 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
 
   @override
   Widget build(BuildContext context) {
-    var pendingList = Provider.of<UserHolidaysData>(context);
+    final pendingList = Provider.of<UserHolidaysData>(context);
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
+        key: _scaffoldKey,
         floatingActionButton: MultipleFloatingButtonsNoADD(),
         endDrawer: NotificationItem(),
         body: Container(

@@ -366,6 +366,18 @@ class TakePictureScreenState extends State<CameraPicker>
                                                           Colors.orange,
                                                       textColor: Colors.white);
                                                 } else if (msg ==
+                                                    "Failed : You can't attend outside your company!") {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "لا يمكنك التسجيل لشخص خارج شركتك",
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.black);
+                                                } else if (msg ==
                                                     "Success : already registered attend") {
                                                   Fluttertoast.showToast(
                                                       msg: getTranslated(

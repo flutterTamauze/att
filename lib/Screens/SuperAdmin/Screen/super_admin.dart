@@ -1,10 +1,13 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/NetworkApi/Network.dart';
-import 'package:qr_users/NetworkApi/NetworkFaliure.dart';
+
+import 'package:qr_users/Network/Network.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
@@ -88,10 +91,15 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                   title: userData
                                       .superCompaniesList[index].companyName,
                                   onTap: () async {
-                                    NetworkApi networkApi = NetworkApi();
-                                    if (!await networkApi.isConnectedToInternet(
-                                        'www.google.com')) {
-                                      noInternetConnectionAlert(context);
+                                    final DataConnectionChecker
+                                        dataConnectionChecker =
+                                        DataConnectionChecker();
+                                    final NetworkInfoImp networkInfoImp =
+                                        NetworkInfoImp(dataConnectionChecker);
+                                    final bool isConnected =
+                                        await networkInfoImp.isConnected;
+                                    if (!await isConnected) {
+                                      noInternetDialog(context);
                                     } else {
                                       showDialog(
                                           context: context,
@@ -106,7 +114,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                               comProvider.com.id,
                                               userData.user.userToken);
 
-                                      var chartResponse =
+                                      final chartResponse =
                                           await userData.getSuperCompanyChart(
                                               userData.user.userToken,
                                               comProvider.com.id);

@@ -1,12 +1,12 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Core/lang/Localization/localization.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens//MembersScreens/UsersScreen.dart';

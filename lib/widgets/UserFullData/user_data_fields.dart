@@ -14,7 +14,7 @@ class UserDataField extends StatelessWidget {
   UserDataField({this.icon, this.text});
 
   Widget build(BuildContext context) {
-    var phone = {
+    final phone = {
       Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber
     };
     return Container(
@@ -65,6 +65,7 @@ class UserDataField extends StatelessWidget {
                   icon: Icon(FontAwesomeIcons.whatsapp),
                   tooltip: "Open WhatsApp",
                   onPressed: () {
+                    // print(phone);
                     launch(
                         "https://api.whatsapp.com/send?phone=${phone}text=Write%20Your%20Message%20Here");
                   },
