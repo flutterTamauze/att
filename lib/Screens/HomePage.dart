@@ -14,6 +14,7 @@ import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
+import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -41,14 +42,16 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
+    Provider.of<SiteData>(context, listen: false).dropDownSitesStrings.clear();
+    Provider.of<SiteData>(context, listen: false).filSitesStringsList(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
-      var notificationProv =
+      final notificationProv =
           Provider.of<NotificationDataService>(context, listen: false);
       notificationProv.firebaseMessagingConfig(context);
     }
 
     //Check for updates
-    DownloadService downloadService = DownloadService();
+    final DownloadService downloadService = DownloadService();
     downloadService.checkReleaseDate(showApk, context);
     // Provider.of<NotificationDataService>(context, listen: false)
     //     .huaweiMessagingConfig(context);
@@ -100,11 +103,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ? StackedNotificaitonAlert(
             popWidget: false,
             isFromBackground: true,
-            notificationTitle: "اثبات حضور",
-            notificationContent: "برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
-            roundedButtonTitle: "اثبات",
+            notificationTitle: getTranslated(context, "اثبات حضور"),
+            notificationContent: getTranslated(
+                context, "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"),
+            roundedButtonTitle: getTranslated(context, "اثبات"),
             lottieAsset: "resources/notificationalarm.json",
-            notificationToast: "تم اثبات الحضور بنجاح",
+            notificationToast: getTranslated(context, "تم اثبات الحضور بنجاح"),
             showToast: true,
             repeatAnimation: true,
           )

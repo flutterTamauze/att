@@ -50,7 +50,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
   void initState() {
     super.initState();
     vacationProv = Provider.of<VacationData>(context, listen: false);
-    var now = DateTime.now();
+    final now = DateTime.now();
     if (widget.edit) {
       selectedDate = Provider.of<VacationData>(context, listen: false)
           .copyVacationList[widget.vacationListID]
@@ -252,7 +252,8 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                       if (text.length == 0) {
                                         return getTranslated(context, 'مطلوب');
                                       } else if (text.length > 40) {
-                                        return "يجب ان لا يتخطي الأسم عن 40 حرف";
+                                        return getTranslated(context,
+                                            "يجب ان لا يتخطي الأسم عن 40 حرف");
                                       }
                                       return null;
                                     },
@@ -286,12 +287,12 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                           ? getTranslated(context, "تعديل")
                                           : getTranslated(context, "إضافة"),
                                       onPressed: () async {
-                                        var vactionProv =
+                                        final vactionProv =
                                             Provider.of<VacationData>(context,
                                                 listen: false);
 
                                         if (widget.edit) {
-                                          String msg =
+                                          final String msg =
                                               await vactionProv.updateVacation(
                                                   widget.vacationListID,
                                                   Vacation(
@@ -313,11 +314,13 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                           Navigator.pop(context);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(
-                                                msg: "تم تعديل العطلة بنجاح",
+                                                msg: getTranslated(context,
+                                                    "تم تعديل العطلة بنجاح"),
                                                 backgroundColor: Colors.green);
                                           } else {
                                             Fluttertoast.showToast(
-                                                msg: "خطأ فى تعديل العطلة",
+                                                msg: getTranslated(context,
+                                                    "خطأ فى تعديل العطلة"),
                                                 backgroundColor: Colors.red);
                                           }
                                         } else {
@@ -325,7 +328,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                               .validate()) {
                                             return;
                                           } else {
-                                            String msg =
+                                            final String msg =
                                                 await vactionProv.addVacation(
                                                     Vacation(
                                                       vacationDate:
@@ -340,14 +343,16 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                             .text));
                                             if (msg == "Success") {
                                               Fluttertoast.showToast(
-                                                  msg: "تم اضافة العطلة بنجاح",
+                                                  msg: getTranslated(context,
+                                                      "تم اضافة العطلة بنجاح"),
                                                   backgroundColor:
                                                       Colors.green);
 
                                               Navigator.pop(context);
                                             } else {
                                               Fluttertoast.showToast(
-                                                  msg: "خطأ فى اضافة العطلة",
+                                                  msg: getTranslated(context,
+                                                      "خطأ فى اضافة العطلة"),
                                                   backgroundColor: Colors.red);
 
                                               Navigator.pop(context);

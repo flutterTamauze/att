@@ -42,6 +42,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
             height: 100,
+            width: 10,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

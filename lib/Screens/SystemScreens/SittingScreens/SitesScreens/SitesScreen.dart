@@ -190,7 +190,7 @@ class _SitesScreenState extends State<SitesScreen> {
                                 .userType ==
                             4
                         ? MultipleFloatingButtons(
-                            mainTitle: "إضافة موقع",
+                            mainTitle: getTranslated(context, "إضافة موقع"),
                             shiftName: "",
                             comingFromShifts: false,
                             mainIconData: Icons.add_location_alt,

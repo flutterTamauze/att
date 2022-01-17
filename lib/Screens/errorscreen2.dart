@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/enums/connectivity_status.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,7 +48,10 @@ class ErrorScreen2 extends StatelessWidget {
                         Container(
                           height: 20,
                           child: AutoSizeText(
-                            "لا يوجد اتصال بالأنترنت",
+                            getTranslated(
+                              context,
+                              "لا يوجد اتصال بالأنترنت",
+                            ),
                             maxLines: 1,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

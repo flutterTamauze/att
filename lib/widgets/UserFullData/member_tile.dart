@@ -409,10 +409,7 @@ class _MemberTileState extends State<MemberTile> {
                                       UserDataField(
                                           icon: Icons.phone,
                                           text: plusSignPhone(
-                                                  widget.user.phoneNumber)
-                                              .replaceAll(
-                                                  new RegExp(r"\s+\b|\b\s"),
-                                                  "")),
+                                              widget.user.phoneNumber)),
                                       SizedBox(
                                         height: 10.0.h,
                                       ),

@@ -886,9 +886,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                     editShiftFun();
                                                   }
                                                 },
-                                                title: 'حفظ التعديل',
-                                                content:
-                                                    "هل تريد حفظ التعديل ؟");
+                                                title: getTranslated(
+                                                    context, 'حفظ التعديل'),
+                                                content: getTranslated(context,
+                                                    "هل تريد حفظ التعديل ؟"));
                                           },
                                         );
                                       }

@@ -230,7 +230,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       Navigator.pop(context);
                                       if (msg == "Success") {
                                         Fluttertoast.showToast(
-                                            msg: "تم اضافة الموقع بنجاح",
+                                            msg: getTranslated(context,
+                                                "تم اضافة الموقع بنجاح"),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -248,8 +249,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                     false);
                                       } else if (msg == "exists") {
                                         Fluttertoast.showToast(
-                                            msg:
-                                                "خطأ في اضافة الموقع: اسم الموقع مضاف مسبقا",
+                                            msg: getTranslated(context,
+                                                "خطأ في اضافة الموقع: اسم الموقع مضاف مسبقا"),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -259,8 +260,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                 allowFontScalingSelf: true));
                                       } else if (msg == "Limit Reached") {
                                         Fluttertoast.showToast(
-                                            msg:
-                                                "لقد وصلت الى الحد المسموح بة من المواقع",
+                                            msg: getTranslated(context,
+                                                "لقد وصلت الى الحد المسموح بة من المواقع"),
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -270,7 +271,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                 allowFontScalingSelf: true));
                                       } else if (msg == "failed") {
                                         Fluttertoast.showToast(
-                                            msg: "خطأ في اضافة الموقع",
+                                            msg: getTranslated(
+                                              context,
+                                              "خطأ في اضافة الموقع",
+                                            ),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -280,8 +284,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                 allowFontScalingSelf: true));
                                       } else if (msg == "noInternet") {
                                         Fluttertoast.showToast(
-                                            msg:
-                                                "خطأ في اضافة الموقع:لايوجد اتصال بالانترنت",
+                                            msg: getTranslated(context,
+                                                "خطأ في اضافة الموقع:لايوجد اتصال بالانترنت"),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -291,7 +295,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                 allowFontScalingSelf: true));
                                       } else {
                                         Fluttertoast.showToast(
-                                            msg: "خطأ في اضافة الموقع",
+                                            msg: getTranslated(
+                                                context, "خطأ في اضافة الموقع"),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -317,18 +322,18 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                         return RoundedLoadingIndicator();
                                                       });
 
-                                                  Company com =
+                                                  final Company com =
                                                       Provider.of<CompanyData>(
                                                               context,
                                                               listen: false)
                                                           .com;
-                                                  var userToken =
+                                                  final userToken =
                                                       Provider.of<UserData>(
                                                               context,
                                                               listen: false)
                                                           .user
                                                           .userToken;
-                                                  var msg = await Provider.of<
+                                                  final msg = await Provider.of<
                                                               SiteData>(context,
                                                           listen: false)
                                                       .editSite(
@@ -347,8 +352,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
 
                                                   if (msg == "Success") {
                                                     Fluttertoast.showToast(
-                                                            msg:
-                                                                "تم تعديل الموقع بنجاح",
+                                                            msg: getTranslated(
+                                                                context, "تم تعديل الموقع بنجاح"),
                                                             toastLength: Toast
                                                                 .LENGTH_SHORT,
                                                             timeInSecForIosWeb:
@@ -369,8 +374,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                                     builder:
                                                                         (context) =>
                                                                             SitesScreen()),
-                                                                (Route<dynamic>
-                                                                        route) =>
+                                                                (Route<dynamic> route) =>
                                                                     false));
 
                                                     setState(() {
@@ -378,8 +382,9 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                     });
                                                   } else if (msg == "exists") {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في تعديل الموقع: اسم الموقع مضاف مسبقا",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "خطأ في تعديل الموقع: اسم الموقع مضاف مسبقا"),
                                                         toastLength:
                                                             Toast.LENGTH_SHORT,
                                                         gravity:
@@ -394,8 +399,9 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                                     true));
                                                   } else if (msg == "failed") {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في تعديل الموقع",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "خطأ في تعديل الموقع"),
                                                         toastLength:
                                                             Toast.LENGTH_SHORT,
                                                         gravity:
@@ -411,8 +417,9 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                   } else if (msg ==
                                                       "noInternet") {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في تعديل الموقع:لايوجد اتصال بالانترنت",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "خطأ في تعديل الموقع:لايوجد اتصال بالانترنت"),
                                                         toastLength:
                                                             Toast.LENGTH_SHORT,
                                                         timeInSecForIosWeb: 1,
@@ -427,8 +434,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                                     true));
                                                   } else {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "خطأ في تعديل الموقع",
+                                                        msg: getTranslated(
+                                                          context,
+                                                          "خطأ في تعديل الموقع",
+                                                        ),
                                                         toastLength:
                                                             Toast.LENGTH_SHORT,
                                                         gravity:
@@ -445,9 +454,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
                                                 },
-                                                title: 'حفظ التعديل',
-                                                content:
-                                                    "هل تريد حفظ التعديل ؟");
+                                                title: getTranslated(
+                                                    context, 'حفظ التعديل'),
+                                                content: getTranslated(context,
+                                                    "هل تريد حفظ التعديل ؟"));
                                           },
                                         );
                                       }

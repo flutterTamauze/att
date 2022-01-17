@@ -162,8 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         UserDataFieldInReport(
                             icon: Icons.phone,
-                            text: plusSignPhone(userProv.phoneNum)
-                                .replaceAll(new RegExp(r"\s+\b|\b\s"), "")),
+                            text: plusSignPhone(userProv.phoneNum)),
                         SizedBox(
                           height: 5.h,
                         ),
@@ -315,12 +314,12 @@ class RoundedDialog extends StatelessWidget {
                       child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          "الغاء",
+                          getTranslated(context, "الغاء"),
                           maxLines: 1,
                           style: TextStyle(
                             color: Colors.orange,
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize: setResponsiveFontSize(17),
                           ),
                         ),
                       ),

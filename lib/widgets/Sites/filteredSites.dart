@@ -9,6 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/AddSite.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/LocationTile.dart';
@@ -92,11 +93,11 @@ class _FilteredSitesDisplayState extends State<FilteredSitesDisplay> {
                                   if (msg == "Success") {
                                     // Navigator.pop(
                                     //     context);
-                                    successfullDelete();
+                                    successfullDelete(context);
                                   } else if (msg == "hasData") {
                                     Fluttertoast.showToast(
-                                        msg:
-                                            "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا.",
+                                        msg: getTranslated(context,
+                                            "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا"),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -106,7 +107,8 @@ class _FilteredSitesDisplayState extends State<FilteredSitesDisplay> {
                                             allowFontScalingSelf: true));
                                   } else if (msg == "failed") {
                                     Fluttertoast.showToast(
-                                        msg: "خطأ في اثناء الحذف.",
+                                        msg: getTranslated(
+                                            context, "خطأ في الحذف"),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -116,8 +118,8 @@ class _FilteredSitesDisplayState extends State<FilteredSitesDisplay> {
                                             allowFontScalingSelf: true));
                                   } else if (msg == "noInternet") {
                                     Fluttertoast.showToast(
-                                        msg:
-                                            "خطأ في الحذف: لا يوجد اتصال بالانترنت.",
+                                        msg: getTranslated(context,
+                                            "خطأ في الحذف : لا يوجد اتصال بالانترنت"),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -127,7 +129,8 @@ class _FilteredSitesDisplayState extends State<FilteredSitesDisplay> {
                                             allowFontScalingSelf: true));
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "خطأ في الحذف.",
+                                        msg: getTranslated(
+                                            context, "خطأ في الحذف"),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -139,9 +142,9 @@ class _FilteredSitesDisplayState extends State<FilteredSitesDisplay> {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 },
-                                title: 'إزالة موقع',
+                                title: getTranslated(context, 'إزالة موقع'),
                                 content:
-                                    "هل تريد إزالة${widget.filteredSites[index].name} ؟");
+                                    "${getTranslated(context, "هل تريد إزالة")}${widget.filteredSites[index].name} ؟");
                           });
                     },
                     onTapEdit: () async {

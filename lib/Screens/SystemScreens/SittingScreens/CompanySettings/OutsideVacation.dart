@@ -489,8 +489,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                   if (value ==
                                                       "Success : Holiday Created!") {
                                                     Fluttertoast.showToast(
-                                                            msg:
-                                                                "تم وضع الأجازة بنجاح",
+                                                            msg: getTranslated(
+                                                                context,
+                                                                "تم إضافة الأجازة بنجاح"),
                                                             gravity:
                                                                 ToastGravity
                                                                     .CENTER,
@@ -559,14 +560,15 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else {
-                                                    errorToast();
+                                                    errorToast(context);
                                                   }
                                                 });
                                               } else {
@@ -574,8 +576,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor: Colors.red,
-                                                    msg:
-                                                        "قم بأدخال مدة الأجازة");
+                                                    msg: getTranslated(context,
+                                                        "قم بأدخال مدة الأجازة"));
                                               }
                                             },
                                             title:
@@ -1122,7 +1124,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                     : 2,
                                                             permessionDescription:
                                                                 commentController.text == ""
-                                                                    ? "لا يوجد تعليق"
+                                                                    ? getTranslated(context, "لا يوجد تعليق")
                                                                     : commentController
                                                                         .text,
                                                             user: widget
@@ -1136,7 +1138,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     if (msg == "success") {
                                                       Fluttertoast.showToast(
                                                               msg:
-                                                                  "تم وضع الأذن بنجاح",
+                                                                  "تم إضافة الأذن بنجاح",
                                                               backgroundColor:
                                                                   Colors.green,
                                                               gravity:
@@ -1176,8 +1178,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               .CENTER,
                                                           backgroundColor:
                                                               Colors.red,
-                                                          msg:
-                                                              "يوجد مأمورية خارجية فى هذا اليوم");
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "يوجد مأمورية خارجية فى هذا اليوم"));
                                                     } else if (msg ==
                                                         'already exist') {
                                                       Fluttertoast.showToast(
@@ -1186,10 +1189,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           backgroundColor:
                                                               Colors.red,
                                                           msg:
-                                                              "لقد تم تقديم طلب من قبل");
+                                                          getTranslated(context,  "لقد تم تقديم طلب من قبل")   );
                                                     } else if (msg ==
                                                         "failed") {
-                                                      errorToast();
+                                                      errorToast(context);
                                                     } else if (msg ==
                                                         "dublicate permession") {
                                                       Fluttertoast.showToast(
@@ -1197,8 +1200,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               .CENTER,
                                                           backgroundColor:
                                                               Colors.red,
-                                                          msg:
-                                                              "يوجد اذن فى هذا اليوم");
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "يوجد اذن فى هذا اليوم"));
                                                     }
                                                   } else {
                                                     print(selectedDateString);
@@ -1209,8 +1213,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red,
-                                                        msg:
-                                                            "قم بأدخال البيانات المطلوبة");
+                                                        msg: getTranslated(context,
+                                                    "قم بأدخال البيانات المطلوبة"));
                                                   }
                                                 },
                                                 title: getTranslated(

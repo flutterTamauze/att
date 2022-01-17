@@ -688,14 +688,17 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             picked.length == 2
                                                                 ? toDate
                                                                 : fromDate,
-                                                        holidayType:
-                                                            selectedReason ==
-                                                                    "عارضة"
-                                                                ? 1
-                                                                : selectedReason ==
-                                                                        "مرضية"
-                                                                    ? 2
-                                                                    : 3,
+                                                        holidayType: selectedReason ==
+                                                                getTranslated(
+                                                                    context,
+                                                                    "عارضة")
+                                                            ? 1
+                                                            : selectedReason ==
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "مرضية")
+                                                                ? 2
+                                                                : 3,
                                                         holidayStatus: 3),
                                                     userdata.userToken,
                                                     userdata.id)
@@ -729,11 +732,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                       popWidget: true,
                                                       isAdmin: false,
                                                       notificationTitle:
-                                                          "تم تقديم طلب الأجازة بنجاح ",
+                                                          getTranslated(context,
+                                                              "تم تقديم طلب الأجازة بنجاح"),
                                                       notificationContent:
-                                                          "برجاء متابعة الطلب ",
+                                                          getTranslated(context,
+                                                              "برجاء متابعة الطلب"),
                                                       roundedButtonTitle:
-                                                          "متابعة",
+                                                          getTranslated(context,
+                                                              "متابعة"),
                                                       lottieAsset:
                                                           "resources/success.json",
                                                       showToast: false,
@@ -746,8 +752,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   Fluttertoast.showToast(
                                                       toastLength:
                                                           Toast.LENGTH_LONG,
-                                                      msg:
-                                                          "لا يمكن طلب الاجازة : يوجد مأمورية خارجية",
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لا يمكن طلب الاجازة : يوجد مأمورية خارجية"),
                                                       gravity:
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
@@ -758,8 +765,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    msg:
-                                                        "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                    msg: getTranslated(context,
+                                                        "يوجد اجازة تم الموافقة عليها فى هذه الفترة"),
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor:
@@ -769,8 +776,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    msg:
-                                                        "لا يمكن طلب الاجازة : يوجد مأمورية داخلية",
+                                                    msg: getTranslated(context,
+                                                        "لا يمكن طلب الاجازة : يوجد مأمورية داخلية"),
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor:
@@ -780,21 +787,22 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    msg:
-                                                        "لا يمكن طلب الاجازة : يوجد طلب اذن",
+                                                    msg: getTranslated(context,
+                                                        "لا يمكن طلب الاجازة : يوجد طلب اذن"),
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor:
                                                         Colors.red);
                                               } else {
-                                                errorToast();
+                                                errorToast(context);
                                               }
                                             });
                                           } else {
                                             Fluttertoast.showToast(
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.red,
-                                                msg: "قم بأدخال مدة الأجازة");
+                                                msg: getTranslated(context,
+                                                    "قم بأدخال مدة الأجازة"));
                                           }
                                         } else //اذن
                                         {
@@ -806,19 +814,19 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 UserPermessions(
                                                     createdOn: DateTime.now(),
                                                     date: selectedDate,
-                                                    duration:
-                                                        formattedTime.replaceAll(
-                                                            ":", ""),
-                                                    permessionType:
-                                                        selectedPermession ==
-                                                                getTranslated(
-                                                                    context,
-                                                                    "تأخير عن الحضور")
-                                                            ? 1
-                                                            : 2,
+                                                    duration: formattedTime
+                                                        .replaceAll(":", ""),
+                                                    permessionType: selectedPermession ==
+                                                            getTranslated(
+                                                                context,
+                                                                "تأخير عن الحضور")
+                                                        ? 1
+                                                        : 2,
                                                     permessionDescription:
                                                         commentController.text == ""
-                                                            ? "لا يوجد تعليق"
+                                                            ? getTranslated(
+                                                                context,
+                                                                "لا يوجد تعليق")
                                                             : commentController
                                                                 .text,
                                                     user: userdata.name),
@@ -834,11 +842,12 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   sendFcmMessage(
                                                     topicName:
                                                         "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                    title: "طلب اذن",
+                                                    title: getTranslated(
+                                                        context, "طلب اذن"),
                                                     category:
                                                         "permessionRequest",
                                                     message:
-                                                        "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                        "${getTranslated(context, "تم طلب اذن من قبل المستخدم ")}${Provider.of<UserData>(context, listen: false).user.name}",
                                                   );
 
                                                   return StackedNotificaitonAlert(
@@ -846,11 +855,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     popWidget: true,
                                                     isAdmin: false,
                                                     notificationTitle:
-                                                        "تم تقديم طلب الأذن بنجاح ",
+                                                        getTranslated(context,
+                                                            "تم تقديم طلب الأذن بنجاح"),
                                                     notificationContent:
-                                                        "برجاء متابعة الطلب ",
+                                                        getTranslated(context,
+                                                            "برجاء متابعة الطلب"),
                                                     roundedButtonTitle:
-                                                        "متابعة",
+                                                        getTranslated(
+                                                            context, "متابعة"),
                                                     lottieAsset:
                                                         "resources/success.json",
                                                     showToast: false,
@@ -861,37 +873,37 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
-                                                  msg:
-                                                      "لقد تم تقديم طلب من قبل");
+                                                  msg: getTranslated(context,
+                                                      "لقد تم تقديم طلب من قبل"));
                                             } else if (msg ==
                                                 "dublicate permession") {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
-                                                  msg:
-                                                      "يوجد اذن اخر فى هذا اليوم");
+                                                  msg: getTranslated(context,
+                                                      "يوجد اذن اخر فى هذا اليوم"));
                                             } else if (msg ==
                                                 "external mission") {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
-                                                  msg:
-                                                      "يوجد مأمورية خارجية فى هذا اليوم");
+                                                  msg: getTranslated(context,
+                                                      "يوجد مأمورية خارجية فى هذا اليوم"));
                                             } else if (msg == "holiday") {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
-                                                  msg:
-                                                      "يوجد اجازة فى هذا اليوم");
+                                                  msg: getTranslated(context,
+                                                      "يوجد اجازة فى هذا اليوم"));
                                             } else if (msg ==
                                                 "holiday was not approved") {
                                               Fluttertoast.showToast(
                                                   gravity: ToastGravity.CENTER,
                                                   backgroundColor: Colors.red,
-                                                  msg:
-                                                      "يوجد اجازة لم يتم الموافقة عليها");
+                                                  msg: getTranslated(context,
+                                                      "يوجد اجازة لم يتم الموافقة عليها"));
                                             } else if (msg == "failed") {
-                                              errorToast();
+                                              errorToast(context);
                                             }
                                           } else {
                                             print(selectedDateString);
@@ -899,8 +911,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                             Fluttertoast.showToast(
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.red,
-                                                msg:
-                                                    "قم بأدخال البيانات المطلوبة");
+                                                msg: getTranslated(context,
+                                                    "قم بأدخال البيانات المطلوبة"));
                                           }
                                         }
                                       }),

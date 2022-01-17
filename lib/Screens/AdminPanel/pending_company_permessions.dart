@@ -19,8 +19,7 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
-import 'package:qr_users/widgets/Shared/centerMessageText.dart';
+
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -79,7 +78,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
       RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
-    var pendingList = Provider.of<UserPermessionsData>(context);
+    final pendingList = Provider.of<UserPermessionsData>(context);
     return GestureDetector(
       onTap: () {
         print(textEditingController.text);
@@ -176,7 +175,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                         onTapped: (e) {
                                                           comment = e;
                                                         },
-                                                        hint: "سبب الرفض",
+                                                        hint: getTranslated(
+                                                          context,
+                                                          "سبب الرفض",
+                                                        ),
                                                         onPressed: () async {
                                                           Navigator.pop(
                                                               context);
@@ -223,31 +225,37 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                                     "تم رفض طلب الأذن");
 
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "تم الرفض بنجاح",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "تم الرفض بنجاح"),
                                                                 backgroundColor:
                                                                     Colors
                                                                         .green);
                                                           } else if (msg ==
                                                               "Fail: Permission out of date!") {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ فى الرفض : انتهى وقت الطلب",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ فى الرفض : انتهى وقت الطلب"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           } else {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في الرفض",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ في الرفض"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           }
                                                         },
-                                                        content:
-                                                            "تأكيد رفض الأذن",
+                                                        content: getTranslated(
+                                                            context,
+                                                            getTranslated(
+                                                                context,
+                                                                "تأكيد رفض الأذن")),
                                                         onCancel: () {},
                                                         title:
-                                                            "رفض  طلب ${pendingList.pendingCompanyPermessions[index].user} ",
+                                                            "${getTranslated(context, "رفض  طلب ")} ${pendingList.pendingCompanyPermessions[index].user} ",
                                                       );
                                                     });
                                               },
@@ -260,7 +268,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                         onTapped: (comm) {
                                                           comment = comm;
                                                         },
-                                                        hint: "التفاصيل",
+                                                        hint: getTranslated(
+                                                            context,
+                                                            "التفاصيل"),
                                                         onPressed: () async {
                                                           Navigator.pop(
                                                               context);
@@ -301,38 +311,44 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                                   topicName: "",
                                                                   userToken: pending
                                                                       .fcmToken,
-                                                                  title:
-                                                                      "طلب اذن",
-                                                                  message:
-                                                                      "تم الموافقة على طلب الأذن");
+                                                                  title: getTranslated(
+                                                                      context,
+                                                                      "طلب اذن"),
+                                                                  message: getTranslated(
+                                                                      context,
+                                                                      "تم الموافقة على طلب الأذن"));
                                                             }
 
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "تم الموافقة بنجاح",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "تم الموافقة بنجاح"),
                                                                 backgroundColor:
                                                                     Colors
                                                                         .green);
                                                           } else if (msg ==
                                                               "Fail: Permission out of date!") {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ فى الرفض : انتهى وقت الطلب",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ فى الرفض : انتهى وقت الطلب"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           } else {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ في الموافقة",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ في الموافقة"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           }
                                                         },
-                                                        content:
-                                                            "تأكيد الموافقة على الأذن",
+                                                        content: getTranslated(
+                                                            context,
+                                                            "تأكيد الموافقة على الأذن"),
                                                         onCancel: () {},
                                                         title:
-                                                            "الموافقة على طلب ${pendingList.pendingCompanyPermessions[index].user} ",
+                                                            "${getTranslated(context, "الموافقة على طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
                                                       );
                                                     });
                                               },

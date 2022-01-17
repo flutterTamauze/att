@@ -124,8 +124,11 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Center(
-                              child: Text(
-                                getTranslated(context, "ابدأ"),
+                              child: AutoSizeText(
+                                getTranslated(
+                                  context,
+                                  "ابدأ",
+                                ),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
@@ -168,8 +171,8 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                           child: AutoSizeText(
                             Provider.of<UserData>(context, listen: true)
                                     .loggedIn
-                                ? "إنهاء"
-                                : "تخطى",
+                                ? getTranslated(context, "إنهاء")
+                                : getTranslated(context, "تخطى"),
                             maxLines: 1,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,

@@ -298,8 +298,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                           false);
                                                                       // Navigator.pop(context);
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "تم الحذف بنجاح",
+                                                                          msg: getTranslated(context,
+                                                                              "تم الحذف بنجاح"),
                                                                           toastLength: Toast
                                                                               .LENGTH_SHORT,
                                                                           timeInSecForIosWeb:
@@ -316,8 +316,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                     } else if (msg ==
                                                                         "hasData") {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.",
+                                                                          msg: getTranslated(context,
+                                                                              "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"),
                                                                           toastLength: Toast
                                                                               .LENGTH_SHORT,
                                                                           gravity: ToastGravity
@@ -334,8 +334,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                     } else if (msg ==
                                                                         "failed") {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "خطأ في اثناء الحذف.",
+                                                                          msg: getTranslated(context,
+                                                                              "خطأ في الحذف"),
                                                                           gravity: ToastGravity
                                                                               .CENTER,
                                                                           toastLength: Toast
@@ -352,8 +352,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                     } else if (msg ==
                                                                         "noInternet") {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "خطأ في الحذف: لا يوجد اتصال بالانترنت.",
+                                                                          msg: getTranslated(context,
+                                                                              "خطأ في الحذف : لا يوجد اتصال بالانترنت"),
                                                                           gravity: ToastGravity
                                                                               .CENTER,
                                                                           toastLength: Toast
@@ -369,8 +369,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                               allowFontScalingSelf: true));
                                                                     } else {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "خطأ في الحذف.",
+                                                                          msg: getTranslated(context,
+                                                                              "خطأ في الحذف"),
                                                                           gravity: ToastGravity
                                                                               .CENTER,
                                                                           toastLength: Toast
@@ -390,10 +390,11 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  title:
-                                                                      'إزالة مناوبة',
+                                                                  title: getTranslated(
+                                                                      context,
+                                                                      'إزالة مناوبة'),
                                                                   content:
-                                                                      "هل تريد إزالة ${value.dropDownShifts[index].shiftName} ؟");
+                                                                      "${getTranslated(context, "هل تريد إزالة")} ${value.dropDownShifts[index].shiftName} ؟");
                                                             });
                                                       },
                                                       onTapEdit: () async {

@@ -136,26 +136,22 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                     child: Container(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SmallDirectoriesHeader(
-                                  Lottie.asset("resources/calender.json",
-                                      repeat: false),
-                                  getTranslated(
-                                      context, "الأجازات و المأموريات"),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SmallDirectoriesHeader(
+                                Lottie.asset("resources/calender.json",
+                                    repeat: false),
+                                getTranslated(context, "الأجازات و المأموريات"),
+                              ),
+                            ],
                           ),
                           VacationCardHeader(
                             header:
-                                "تسجيل طلب للمستخدم : ${widget.member.name}",
+                                "${getTranslated(context, "تسجيل طلب للمستخدم")}: ${widget.member.name}",
                           ),
                           VacationCardHeader(
-                            header: "نوع الطلب",
+                            header: getTranslated(context, "نوع الطلب"),
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: 20.w),
@@ -165,7 +161,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                 RadioButtonWidg(
                                   radioVal2: widget.radioValue,
                                   radioVal: 3,
-                                  title: "أذن",
+                                  title: getTranslated(context, "أذن"),
                                   onchannge: (value) {
                                     setState(() {
                                       widget.radioValue = value;
@@ -175,7 +171,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                 RadioButtonWidg(
                                   radioVal2: widget.radioValue,
                                   radioVal: 1,
-                                  title: "اجازة",
+                                  title: getTranslated(context, "اجازة"),
                                   onchannge: (value) {
                                     setState(() {
                                       widget.radioValue = value;
@@ -189,7 +185,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                               ? Column(
                                   children: [
                                     VacationCardHeader(
-                                      header: "مدة الأجازة",
+                                      header:
+                                          getTranslated(context, "مدة الأجازة"),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -206,7 +203,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         context: context,
                                                         initialFirstDate:
                                                             selectedReason ==
-                                                                    "عارضة"
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
                                                                 ? _today
                                                                 : tomorrow,
                                                         initialLastDate: toDate,
@@ -215,7 +214,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             DateTime.now()
                                                                 .month,
                                                             selectedReason ==
-                                                                    "عارضة"
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
                                                                 ? DateTime.now()
                                                                     .day
                                                                 : DateTime.now()
@@ -235,9 +236,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           1)
                                                       .toString();
                                                   fromText =
-                                                      " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                      " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
                                                   toText =
-                                                      " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                      " ${getTranslated(context, "إلى")}  ${DateFormat('yMMMd').format(toDate).toString()}";
                                                   newString =
                                                       "$fromText $toText";
                                                 });
@@ -269,7 +270,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         kTextFieldDecorationFromTO
                                                             .copyWith(
                                                                 hintText:
-                                                                    'المدة من / إلى',
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "المدة من / الى"),
                                                                 prefixIcon:
                                                                     Icon(
                                                                   Icons
@@ -423,8 +426,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   if (value ==
                                                       "Success : Holiday Created!") {
                                                     Fluttertoast.showToast(
-                                                            msg:
-                                                                "تم وضع الأجازة بنجاح",
+                                                            msg: getTranslated(
+                                                                context,
+                                                                "تم إضافة الأجازة بنجاح"),
                                                             gravity:
                                                                 ToastGravity
                                                                     .CENTER,
@@ -482,8 +486,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن طلب الاجازة : يوجد مأمورية داخلية"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -493,14 +498,15 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن طلب الاجازة : يوجد طلب اذن"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else {
-                                                    errorToast();
+                                                    errorToast(context);
                                                   }
                                                 });
                                               } else {
@@ -508,12 +514,14 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor: Colors.red,
-                                                    msg:
-                                                        "قم بأدخال مدة الأجازة");
+                                                    msg: getTranslated(context,
+                                                        "قم بأدخال مدة الأجازة"));
                                               }
                                             },
-                                            title: "حفظ",
-                                          )
+                                            title: getTranslated(
+                                              context,
+                                              "حفظ",
+                                            ))
                                   ],
                                 )
                               : Column(
@@ -525,7 +533,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                         child: Row(
                                           children: [
                                             AutoSizeText(
-                                              "نوع الأذن",
+                                              getTranslated(
+                                                  context, "نوع الأذن"),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 11),
@@ -601,7 +610,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                               child: Row(
                                                 children: [
                                                   Text(
-                                                    "تاريخ الأذن",
+                                                    getTranslated(
+                                                        context, "تاريخ الأذن"),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -613,197 +623,180 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                           ),
                                           Container(
                                             padding: EdgeInsets.all(5),
-                                            child: Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Container(
-                                                child: Theme(
-                                                  data: clockTheme,
-                                                  child: DateTimePicker(
-                                                    initialValue:
-                                                        _selectedDateString,
-
-                                                    onChanged: (value) {
-                                                      date = value;
-
-                                                      setState(() {
-                                                        _selectedDateString =
-                                                            date;
-                                                        selectedDate =
-                                                            DateTime.parse(
-                                                                _selectedDateString);
-                                                      });
-                                                    },
-                                                    type:
-                                                        DateTimePickerType.date,
-                                                    initialDate: _today,
-                                                    firstDate: _today,
-                                                    lastDate: DateTime(
-                                                        DateTime.now().year,
-                                                        DateTime.december,
-                                                        31),
-                                                    //controller: _endTimeController,
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-
-                                                    decoration:
-                                                        kTextFieldDecorationTime
-                                                            .copyWith(
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                                hintText:
-                                                                    'اليوم',
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons
-                                                                      .access_time,
-                                                                  color: Colors
-                                                                      .orange,
-                                                                )),
-                                                    validator: (val) {
-                                                      if (val.length == 0) {
-                                                        return 'مطلوب';
-                                                      }
-                                                      return null;
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: Card(
-                                              elevation: 5,
-                                              child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      selectedPermession ==
-                                                              "تأخير عن الحضور"
-                                                          ? "اذن حتى الساعة"
-                                                          : "اذن من الساعة",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 13),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Directionality(
-                                            textDirection: ui.TextDirection.rtl,
                                             child: Container(
-                                              width: double.infinity,
-                                              height: 50.h,
-                                              child: Container(
-                                                  child: Theme(
+                                              child: Theme(
                                                 data: clockTheme,
-                                                child: Builder(
-                                                  builder: (context) {
-                                                    return InkWell(
-                                                        onTap: () async {
-                                                          var to =
-                                                              await showTimePicker(
-                                                            context: context,
-                                                            initialTime:
-                                                                toPicked,
-                                                            builder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    Widget
-                                                                        child) {
-                                                              return MediaQuery(
-                                                                data: MediaQuery.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  alwaysUse24HourFormat:
-                                                                      false,
-                                                                ),
-                                                                child: child,
-                                                              );
-                                                            },
-                                                          );
+                                                child: DateTimePicker(
+                                                  initialValue:
+                                                      _selectedDateString,
 
-                                                          if (to != null) {
-                                                            final now =
-                                                                new DateTime
-                                                                    .now();
-                                                            final dt = DateTime(
-                                                                now.year,
-                                                                now.month,
-                                                                now.day,
-                                                                to.hour,
-                                                                to.minute);
+                                                  onChanged: (value) {
+                                                    date = value;
 
-                                                            formattedTime =
-                                                                DateFormat.Hm()
-                                                                    .format(dt);
+                                                    setState(() {
+                                                      _selectedDateString =
+                                                          date;
+                                                      selectedDate =
+                                                          DateTime.parse(
+                                                              _selectedDateString);
+                                                    });
+                                                  },
+                                                  type: DateTimePickerType.date,
+                                                  initialDate: _today,
+                                                  firstDate: _today,
+                                                  lastDate: DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.december,
+                                                      31),
+                                                  //controller: _endTimeController,
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil().setSp(
+                                                          14,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w400),
 
-                                                            toPicked = to;
-                                                            setState(() {
-                                                              timeOutController
-                                                                      .text =
-                                                                  "${toPicked.format(context).replaceAll(" ", " ")}";
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Directionality(
-                                                          textDirection: ui
-                                                              .TextDirection
-                                                              .rtl,
-                                                          child: Container(
-                                                            child:
-                                                                IgnorePointer(
-                                                              child:
-                                                                  TextFormField(
-                                                                enabled: false,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400),
-                                                                textInputAction:
-                                                                    TextInputAction
-                                                                        .next,
-                                                                controller:
-                                                                    timeOutController,
-                                                                decoration: kTextFieldDecorationFromTO
-                                                                    .copyWith(
-                                                                        hintText:
-                                                                            'الوقت',
-                                                                        prefixIcon:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .alarm,
-                                                                          color:
-                                                                              Colors.orange,
-                                                                        )),
+                                                  decoration:
+                                                      kTextFieldDecorationTime
+                                                          .copyWith(
+                                                              hintStyle:
+                                                                  TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
-                                                            ),
-                                                          ),
-                                                        ));
+                                                              hintText: 'اليوم',
+                                                              prefixIcon: Icon(
+                                                                Icons
+                                                                    .access_time,
+                                                                color: Colors
+                                                                    .orange,
+                                                              )),
+                                                  validator: (val) {
+                                                    if (val.length == 0) {
+                                                      return 'مطلوب';
+                                                    }
+                                                    return null;
                                                   },
                                                 ),
-                                              )),
+                                              ),
                                             ),
+                                          ),
+                                          Card(
+                                            elevation: 5,
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Row(
+                                                children: [
+                                                  AutoSizeText(
+                                                    selectedPermession ==
+                                                            getTranslated(
+                                                                context,
+                                                                "تأخير عن الحضور")
+                                                        ? getTranslated(context,
+                                                            "اذن حتى الساعة")
+                                                        : getTranslated(context,
+                                                            "اذن من الساعة"),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            height: 50.h,
+                                            child: Container(
+                                                child: Theme(
+                                              data: clockTheme,
+                                              child: Builder(
+                                                builder: (context) {
+                                                  return InkWell(
+                                                      onTap: () async {
+                                                        final to =
+                                                            await showTimePicker(
+                                                          context: context,
+                                                          initialTime: toPicked,
+                                                          builder: (BuildContext
+                                                                  context,
+                                                              Widget child) {
+                                                            return MediaQuery(
+                                                              data: MediaQuery.of(
+                                                                      context)
+                                                                  .copyWith(
+                                                                alwaysUse24HourFormat:
+                                                                    false,
+                                                              ),
+                                                              child: child,
+                                                            );
+                                                          },
+                                                        );
+
+                                                        if (to != null) {
+                                                          final now =
+                                                              new DateTime
+                                                                  .now();
+                                                          final dt = DateTime(
+                                                              now.year,
+                                                              now.month,
+                                                              now.day,
+                                                              to.hour,
+                                                              to.minute);
+
+                                                          formattedTime =
+                                                              DateFormat.Hm()
+                                                                  .format(dt);
+
+                                                          toPicked = to;
+                                                          setState(() {
+                                                            timeOutController
+                                                                    .text =
+                                                                "${toPicked.format(context).replaceAll(" ", " ")}";
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        child: IgnorePointer(
+                                                          child: TextFormField(
+                                                            enabled: false,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            controller:
+                                                                timeOutController,
+                                                            decoration: kTextFieldDecorationFromTO
+                                                                .copyWith(
+                                                                    hintText:
+                                                                        'الوقت',
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .alarm,
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ));
+                                                },
+                                              ),
+                                            )),
                                           ),
                                           DetialsTextField(commentController)
                                         ],
@@ -831,13 +824,13 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             .replaceAll(
                                                                 ":", ""),
                                                         permessionType:
-                                                            selectedPermession ==
-                                                                    "تأخير عن الحضور"
+                                                            selectedPermession == getTranslated(context, "تأخير عن الحضور")
                                                                 ? 1
                                                                 : 2,
                                                         permessionDescription:
                                                             commentController.text == ""
-                                                                ? "لا يوجد تعليق"
+                                                                ? getTranslated(
+                                                                    context, "لا يوجد تعليق")
                                                                 : commentController
                                                                     .text,
                                                         user:
@@ -850,7 +843,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 if (msg == "success") {
                                                   Fluttertoast.showToast(
                                                           msg:
-                                                              "تم وضع الأذن بنجاح",
+                                                              "تم إضافة الأذن بنجاح",
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
@@ -887,8 +880,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "يوجد مأمورية خارجية فى هذا اليوم");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "يوجد مأمورية خارجية فى هذا اليوم"));
                                                 } else if (msg ==
                                                     'already exist') {
                                                   Fluttertoast.showToast(
@@ -896,10 +890,11 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "لقد تم تقديم طلب من قبل");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "لقد تم تقديم طلب من قبل"));
                                                 } else if (msg == "failed") {
-                                                  errorToast();
+                                                  errorToast(context);
                                                 } else if (msg ==
                                                     "dublicate permession") {
                                                   Fluttertoast.showToast(
@@ -907,8 +902,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           ToastGravity.CENTER,
                                                       backgroundColor:
                                                           Colors.red,
-                                                      msg:
-                                                          "يوجد اذن فى هذا اليوم");
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "يوجد اذن فى هذا اليوم"));
                                                 }
                                               } else {
                                                 print(selectedDateString);
@@ -917,8 +913,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor: Colors.red,
-                                                    msg:
-                                                        "قم بأدخال البيانات المطلوبة");
+                                                    msg: getTranslated(context,
+                                                        "قم بأدخال البيانات المطلوبة"));
                                               }
                                             },
                                             title:
@@ -983,72 +979,64 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     child: Center(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Consumer<SiteShiftsData>(
-                              builder: (context, value, child) {
-                                return IgnorePointer(
-                                  ignoring:
-                                      widget.prov.siteValue == "كل المواقع"
-                                          ? true
-                                          : false,
-                                  child: DropdownButton(
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      elevation: 5,
-                                      items: value.shifts
-                                          .map(
-                                            (value) => DropdownMenuItem(
-                                                child: Container(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    height: 20.h,
-                                                    child: AutoSizeText(
-                                                      value.shiftName,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(12,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    )),
-                                                value: value.shiftName),
-                                          )
-                                          .toList(),
-                                      onChanged: (v) async {
-                                        if (widget.selectedVal !=
-                                            "كل المواقع") {
-                                          List<String> x = [];
+                          Consumer<SiteShiftsData>(
+                            builder: (context, value, child) {
+                              return IgnorePointer(
+                                ignoring: widget.prov.siteValue == "كل المواقع"
+                                    ? true
+                                    : false,
+                                child: DropdownButton(
+                                    isExpanded: true,
+                                    underline: SizedBox(),
+                                    elevation: 5,
+                                    items: value.shifts
+                                        .map(
+                                          (value) => DropdownMenuItem(
+                                              child: Container(
+                                                  alignment: Alignment.topRight,
+                                                  height: 20.h,
+                                                  child: AutoSizeText(
+                                                    value.shiftName,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  )),
+                                              value: value.shiftName),
+                                        )
+                                        .toList(),
+                                    onChanged: (v) async {
+                                      if (widget.selectedVal != "كل المواقع") {
+                                        List<String> x = [];
 
-                                          value.shifts.forEach((element) {
-                                            x.add(element.shiftName);
-                                          });
+                                        value.shifts.forEach((element) {
+                                          x.add(element.shiftName);
+                                        });
 
-                                          print("on changed $v");
-                                          holder = x.indexOf(v);
+                                        print("on changed $v");
+                                        holder = x.indexOf(v);
 
-                                          widget.prov.setDropDownShift(holder);
-                                          shiftId =
-                                              value.shifts[holder].shiftId;
-                                        }
-                                      },
-                                      hint: AutoSizeText(getTranslated(
-                                          context, "كل المناوبات")),
-                                      value:
-                                          widget.prov.siteValue == "كل المواقع"
-                                              ? null
-                                              : value
-                                                  .shifts[widget
-                                                      .prov.dropDownShiftIndex]
-                                                  .shiftName
+                                        widget.prov.setDropDownShift(holder);
+                                        shiftId = value.shifts[holder].shiftId;
+                                      }
+                                    },
+                                    hint: AutoSizeText(
+                                        getTranslated(context, "كل المناوبات")),
+                                    value: widget.prov.siteValue == "كل المواقع"
+                                        ? null
+                                        : value
+                                            .shifts[
+                                                widget.prov.dropDownShiftIndex]
+                                            .shiftName
 
-                                      // value
-                                      ),
-                                );
-                              },
-                            ),
+                                    // value
+                                    ),
+                              );
+                            },
                           ),
                           Divider(
                             height: 1,
@@ -1076,71 +1064,66 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     child: Center(
                       child: Column(
                         children: [
-                          Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Consumer<ShiftsData>(
-                              builder: (context, value, child) {
-                                return DropdownButton(
-                                  isExpanded: true,
-                                  underline: SizedBox(),
-                                  elevation: 5,
-                                  items: widget.list
-                                      .map((value) => DropdownMenuItem(
-                                            child: Container(
-                                              alignment: Alignment.topRight,
-                                              height: 20,
-                                              child: AutoSizeText(
-                                                value.name,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: ScreenUtil().setSp(
-                                                        12,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
+                          Consumer<ShiftsData>(
+                            builder: (context, value, child) {
+                              return DropdownButton(
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                elevation: 5,
+                                items: widget.list
+                                    .map((value) => DropdownMenuItem(
+                                          child: Container(
+                                            alignment: Alignment.topRight,
+                                            height: 20,
+                                            child: AutoSizeText(
+                                              value.name,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      12,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  fontWeight: FontWeight.w700),
                                             ),
-                                            value: value.name,
-                                          ))
-                                      .toList(),
-                                  onChanged: (v) async {
-                                    print(v);
-                                    widget.prov.setDropDownShift(0);
-                                    Provider.of<SiteShiftsData>(context,
-                                            listen: false)
-                                        .getShiftsList(v, false);
-                                    if (v != "كل المواقع") {
-                                      widget.prov.setDropDownIndex(widget
-                                              .prov.dropDownSitesStrings
-                                              .indexOf(v) -
-                                          1);
-                                    } else {
-                                      widget.prov.setDropDownIndex(0);
-                                    }
-                                    // await Provider.of<ShiftsData>(context,
-                                    //         listen: false)
-                                    //     .findMatchingShifts(
-                                    //         Provider.of<SiteData>(context,
-                                    //                 listen: false)
-                                    //             .sitesList[widget
-                                    //                 .prov.dropDownSitesIndex]
-                                    //             .id,
-                                    //         false);
+                                          ),
+                                          value: value.name,
+                                        ))
+                                    .toList(),
+                                onChanged: (v) async {
+                                  print(v);
+                                  widget.prov.setDropDownShift(0);
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .getShiftsList(v, false);
+                                  if (v != "كل المواقع") {
+                                    widget.prov.setDropDownIndex(widget
+                                            .prov.dropDownSitesStrings
+                                            .indexOf(v) -
+                                        1);
+                                  } else {
+                                    widget.prov.setDropDownIndex(0);
+                                  }
+                                  // await Provider.of<ShiftsData>(context,
+                                  //         listen: false)
+                                  //     .findMatchingShifts(
+                                  //         Provider.of<SiteData>(context,
+                                  //                 listen: false)
+                                  //             .sitesList[widget
+                                  //                 .prov.dropDownSitesIndex]
+                                  //             .id,
+                                  //         false);
 
-                                    widget.prov.fillCurrentShiftID(widget
-                                        .list[
-                                            widget.prov.dropDownSitesIndex + 1]
-                                        .id);
+                                  widget.prov.fillCurrentShiftID(widget
+                                      .list[widget.prov.dropDownSitesIndex + 1]
+                                      .id);
 
-                                    widget.prov.setSiteValue(v);
-                                    widget.onchannge(v);
-                                    print(widget.prov.dropDownSitesStrings);
-                                  },
-                                  value: widget.selectedVal,
-                                );
-                              },
-                            ),
+                                  widget.prov.setSiteValue(v);
+                                  widget.onchannge(v);
+                                  print(widget.prov.dropDownSitesStrings);
+                                },
+                                value: widget.selectedVal,
+                              );
+                            },
                           ),
                           Divider(
                             height: 1,
@@ -1177,20 +1160,17 @@ class VacationCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Card(
-        elevation: 5,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Text(
-                header,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-              ),
-            ],
-          ),
+    return Card(
+      elevation: 5,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Text(
+              header,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+            ),
+          ],
         ),
       ),
     );

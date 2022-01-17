@@ -135,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               return null;
                                             }
                                           } else {
-                                            return "كلمة المرور ان تكون اكثر من 8 احرف و اقل من 12";
+                                            return getTranslated(context,
+                                                "كلمة المرور يجب ان تكون اكثر من 8 احرف و اقل من 12");
                                           }
                                         },
                                         keyboardType: TextInputType.text,
@@ -424,8 +425,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: "لا يوجد اتصال بالانترنت",
-                    content: "برجاء اعادة المحاولة مرة اخرى");
+                    title: getTranslated(context, "لا يوجد اتصال بالانترنت"),
+                    content: getTranslated(
+                        context, "برجاء اعادة المحاولة مرة اخرى"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -439,8 +441,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ في التسجيل',
-                  content: "حدث خطأ ما ",
+                  title: getTranslated(
+                    context,
+                    'خطأ في التسجيل',
+                  ),
+                  content: getTranslated(context, "حدث خطأ ما "),
                 );
               }).then((value) => setState(() {
                 isLoading = false;
@@ -455,9 +460,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في التسجيل',
-                    content:
-                        "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق ");
+                    title: getTranslated(context, 'خطأ في التسجيل'),
+                    content: getTranslated(context,
+                        "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -500,9 +505,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في التسجيل',
-                    content:
-                        "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى");
+                    title: getTranslated(context, 'خطأ في التسجيل'),
+                    content: getTranslated(context,
+                        "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -516,8 +521,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ فى البيانات الحساب',
-                    content: "الشركة متوقفة حاليا\nمن فضلك راجع مدير النظام");
+                    title: getTranslated(context, 'خطأ فى البيانات الحساب'),
+                    content: getTranslated(context,
+                        "الشركة متوقفة حاليا\nمن فضلك راجع مدير النظام"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -531,7 +537,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ في التسجيل',
+                  title: getTranslated(context, 'خطأ في التسجيل'),
                   content: "",
                 );
               }).then((value) {

@@ -106,6 +106,7 @@ class CompanyData extends ChangeNotifier {
       int companyId, String userToken, BuildContext context) async {
     if (await isConnectedToInternet()) {
       try {
+        DateTime preTime = DateTime.now();
         final response = await http.get(
             Uri.parse("$baseURL/api/Company/GetCompanyInfoById/$companyId"),
             headers: {
@@ -120,7 +121,9 @@ class CompanyData extends ChangeNotifier {
           print(decodedRes["message"]);
           if (decodedRes["message"] == "Success") {
             com = Company.fromJson(decodedRes);
-
+            DateTime postTime = DateTime.now();
+            print(
+                "company data Request Code : ${response.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
             notifyListeners();
             return "Success";
           } else if (decodedRes["message"] ==

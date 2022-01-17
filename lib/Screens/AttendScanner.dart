@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -99,7 +100,7 @@ class _ScanPageState extends State<ScanPage> {
     switch (msg) {
       case "Success : successfully registered":
         Fluttertoast.showToast(
-            msg: "تم التسجيل بنجاح",
+            msg: getTranslated(context, "تم التسجيل بنجاح"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -107,7 +108,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Success : already registered attend":
         Fluttertoast.showToast(
-            msg: "لقد تم تسجيل الحضور من قبل",
+            msg: getTranslated(context, "لقد تم تسجيل الحضور من قبل"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -115,7 +116,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Success : already registered leave":
         Fluttertoast.showToast(
-            msg: "لقد تم تسجيل الأنصراف من قبل",
+            msg: getTranslated(context, "لقد تم تسجيل الأنصراف من قبل"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -123,7 +124,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "you can't register now during shift!":
         Fluttertoast.showToast(
-            msg: "لا يمكن التسجيل بمناوبتك الأن",
+            msg: getTranslated(context, "لا يمكن التسجيل بمناوبتك الأن"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -131,7 +132,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Sorry : You have an external mission today!":
         Fluttertoast.showToast(
-            msg: "لم يتم التسجيل: لديك مأمورية خارجية ",
+            msg: getTranslated(context, "لم يتم التسجيل: لديك مأمورية خارجية"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.black,
@@ -140,7 +141,10 @@ class _ScanPageState extends State<ScanPage> {
 
       case "Failed : Location not found":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+            msg: getTranslated(
+              context,
+              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+            ),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -156,8 +160,8 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Failed : Mac address not match":
         Fluttertoast.showToast(
-            msg:
-                "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
+            msg: getTranslated(context,
+                "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -165,7 +169,8 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Fail : Using another attend method":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
+            msg: getTranslated(context,
+                "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -173,7 +178,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Failed : Qrcode not valid":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: كود غير صحيح",
+            msg: getTranslated(context, "خطأ فى التسجيل: كود غير صحيح"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -181,7 +186,8 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "noInternet":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
+            msg: getTranslated(
+                context, "خطأ فى التسجيل: لا يوجد اتصال بالانترنت"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -189,7 +195,8 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "off":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
+            msg: getTranslated(
+                context, "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -197,7 +204,10 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "mock":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+            msg: getTranslated(
+              context,
+              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+            ),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -205,7 +215,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Sorry : Today is an official vacation!":
         Fluttertoast.showToast(
-            msg: "لم يتم التسجيل : عطلة رسمية",
+            msg: getTranslated(context, "لم يتم التسجيل : عطلة رسمية"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -213,7 +223,10 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Success : User was not proof":
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+            msg: getTranslated(
+              context,
+              "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+            ),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -221,7 +234,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Failed : Out of shift time":
         Fluttertoast.showToast(
-            msg: "التسجيل غير متاح الأن",
+            msg: getTranslated(context, "التسجيل غير متاح الأن"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.orange,
@@ -229,7 +242,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       default:
         Fluttertoast.showToast(
-            msg: "خطأ فى التسجيل",
+            msg: getTranslated(context, "خطأ فى التسجيل"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,

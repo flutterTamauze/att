@@ -65,6 +65,7 @@ class SiteShiftsData with ChangeNotifier {
   getAllSitesAndShifts(int companyId, String userToken) async {
     siteShiftList.clear();
     sites.clear();
+    DateTime preTime = DateTime.now();
     var response = await http
         .get(Uri.parse(("$baseURL/api/Company/$companyId")), headers: {
       'Authorization': "Bearer $userToken",
@@ -73,6 +74,9 @@ class SiteShiftsData with ChangeNotifier {
     log(response.body);
     print("get all siteshift response code ${response.statusCode}");
     var decodedResponse = json.decode(response.body);
+    DateTime postTime = DateTime.now();
+    print(
+        "SiteShiftData Request Code : ${response.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
     if (response.statusCode == 200) {
       if (decodedResponse["message"] == "Success") {
         var responseObj = jsonDecode(response.body)['data'] as List;

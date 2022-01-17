@@ -123,9 +123,8 @@ class UserDetailsInReport extends StatelessWidget {
                                   flex: 1,
                                   child: UserDataFieldInReport(
                                       icon: Icons.phone,
-                                      text: plusSignPhone(userData.phoneNumber)
-                                          .replaceAll(
-                                              new RegExp(r"\s+\b|\b\s"), "")),
+                                      text:
+                                          plusSignPhone(userData.phoneNumber)),
                                 ),
                                 SizedBox(
                                   width: 3,

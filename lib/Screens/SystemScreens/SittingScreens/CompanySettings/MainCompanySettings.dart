@@ -441,7 +441,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                           )
                                               .then((value) {
                                             if (value) {
-                                              successfulSaved();
+                                              successfulSaved(context);
                                             } else {
                                               Fluttertoast.showToast(
                                                   msg: "خطأ فى التعديل",

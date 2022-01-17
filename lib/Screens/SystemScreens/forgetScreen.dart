@@ -243,8 +243,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       })).then((value) {
         if (value == "success") {
           Fluttertoast.showToast(
-              msg:
-                  "تم ارسال رمز التفعيل على الهاتف و البريد الإلكترونى الخاص بكم",
+              msg: getTranslated(context,
+                  "تم ارسال رمز التفعيل على الهاتف و البريد الإلكترونى الخاص بكم"),
               gravity: ToastGravity.CENTER,
               toastLength: Toast.LENGTH_LONG,
               backgroundColor: Colors.black,
@@ -293,8 +293,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ فى بيانات الحساب',
-                    content: "من فضلك راجع مدير النظام");
+                    title: getTranslated(context, 'خطأ فى بيانات الحساب'),
+                    content:
+                        getTranslated(context, "من فضلك راجع مدير النظام"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -437,7 +438,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.right,
                                 decoration: kTextFieldDecorationWhite.copyWith(
-                                  hintText: 'رمز التفعيل',
+                                  hintText:
+                                      getTranslated(context, 'رمز التفعيل'),
                                   suffixIcon: Icon(
                                     Icons.lock_clock,
                                     color: Colors.orange,
@@ -563,8 +565,10 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                       onPressed: () async {
                                         changePasswordFunction();
                                       },
-                                      title: 'متابعة',
-                                    ),
+                                      title: getTranslated(
+                                        context,
+                                        'متابعة',
+                                      )),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -585,8 +589,10 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                   height: 50,
                                   child: AutoSizeText(
                                     (!reSend)
-                                        ? "اعادة ارسال رمز التفعيل"
-                                        : "لم يصلك رمز التفعيل ؟\n لإعادة الإرسال برجاء الانتظار",
+                                        ? getTranslated(
+                                            context, "اعادة ارسال رمز التفعيل")
+                                        : getTranslated(context,
+                                            "لم يصلك رمز التفعيل ؟\n لإعادة الإرسال برجاء الانتظار"),
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     style: TextStyle(
@@ -664,7 +670,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
         });
 
         Fluttertoast.showToast(
-            msg: "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم",
+            msg: getTranslated(
+                context, "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم"),
             gravity: ToastGravity.CENTER,
             backgroundColor: Colors.black,
             textColor: Colors.orange);
@@ -706,8 +713,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ فى بيانات الحساب',
-                  content: "من فضلك راجع مدير النظام");
+                  title: getTranslated(context, 'خطأ فى بيانات الحساب'),
+                  content: getTranslated(context, "من فضلك راجع مدير النظام"));
             }).then((value) {
           setState(() {
             isLoading = false;
@@ -869,7 +876,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ فى البيانات الحساب',
+                  title: getTranslated(context, 'خطأ فى البيانات الحساب'),
                   content: "من فضلك راجع مدير النظام");
             }).then((value) {
           setState(() {
@@ -904,9 +911,9 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ في التسجيل',
-                  content:
-                      "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى");
+                  title: getTranslated(context, 'خطأ في التسجيل'),
+                  content: getTranslated(context,
+                      "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى"));
             }).then((value) {
           setState(() {
             isLoading = false;
@@ -920,8 +927,9 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ فى البيانات الحساب',
-                  content: "الخدمة متوقفة حاليا\nمن فضلك راجع مدير النظام");
+                  title: getTranslated(context, 'خطأ فى البيانات الحساب'),
+                  content: getTranslated(context,
+                      "الخدمة متوقفة حاليا\nمن فضلك راجع مدير النظام"));
             }).then((value) {
           setState(() {
             isLoading = false;
@@ -935,7 +943,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                title: 'خطأ في التسجيل',
+                title: getTranslated(context, 'خطأ في التسجيل'),
                 content: "",
               );
             }).then((value) {

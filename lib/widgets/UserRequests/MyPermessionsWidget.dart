@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -120,158 +121,163 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                     ),
                     children: [
                       SlideInDown(
-                        child: Provider.of<UserPermessionsData>(context)
-                                .permessionDetailLoading
-                            ? LoadingIndicator()
-                            : Card(
-                                elevation: 5,
-                                child: Container(
-                                  width: 330.w,
-                                  margin: EdgeInsets.all(15),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                        child:
+                            Provider.of<UserPermessionsData>(context)
+                                    .permessionDetailLoading
+                                ? LoadingIndicator()
+                                : Card(
+                                    elevation: 5,
+                                    child: Container(
+                                      width: 330.w,
+                                      margin: EdgeInsets.all(15),
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          widget.desc == ""
-                                              ? Container()
-                                              : Divider(),
-                                          if (widget.desc != null) ...[
-                                            widget.desc == ""
-                                                ? Container()
-                                                : Text(
-                                                    "تفاصيل الطلب : ${widget.desc}",
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          setResponsiveFontSize(
-                                                              14),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                            widget.desc == ""
-                                                ? Container()
-                                                : Divider()
-                                          ],
-                                          Text(
-                                              "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
-                                          Divider(),
-                                          Text(widget.permessionType == 1
-                                              ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
-                                              : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
-                                          widget.desc != null
-                                              ? Divider()
-                                              : Container(),
-                                          widget.status != 3
-                                              ? Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    widget.status == 2
-                                                        ? widget.adminComment ==
-                                                                    "" ||
-                                                                widget.adminComment ==
-                                                                    null
-                                                            ? Container()
-                                                            : Container(
-                                                                padding: EdgeInsets
-                                                                    .only(
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              AutoSizeText(
+                                                "${getTranslated(context, "نوع الأذن")} : ${widget.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")} ",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      setResponsiveFontSize(14),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              widget.desc == ""
+                                                  ? Container()
+                                                  : Divider(),
+                                              if (widget.desc != null) ...[
+                                                widget.desc == ""
+                                                    ? Container()
+                                                    : AutoSizeText(
+                                                        "${getTranslated(context, "تفاصيل الطلب")}: ${widget.desc}",
+                                                        style: TextStyle(
+                                                          fontSize:
+                                                              setResponsiveFontSize(
+                                                                  14),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                widget.desc == ""
+                                                    ? Container()
+                                                    : Divider()
+                                              ],
+                                              AutoSizeText(
+                                                  "${getTranslated(context, "تاريخ الأذن")}  : ${widget.date.toString().substring(0, 11)}"),
+                                              Divider(),
+                                              AutoSizeText(widget
+                                                          .permessionType ==
+                                                      1
+                                                  ? "${getTranslated(context, "اذن حتى الساعة")}  : ${amPmChanger(int.parse(widget.duration))}"
+                                                  : "${getTranslated(context, "اذن من الساعة")} : ${amPmChanger(int.parse(widget.duration))}"),
+                                              widget.desc != null
+                                                  ? Divider()
+                                                  : Container(),
+                                              widget.status != 3
+                                                  ? Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        widget.status == 2
+                                                            ? widget.adminComment ==
+                                                                        "" ||
+                                                                    widget.adminComment ==
+                                                                        null
+                                                                ? Container()
+                                                                : Container(
+                                                                    padding: EdgeInsets.only(
                                                                         bottom:
                                                                             10.h),
-                                                                child: Text(
-                                                                  "سبب الرفض : ${widget.adminComment}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .right,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "${getTranslated(context, "سبب الرفض ")}: ${widget.adminComment}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            setResponsiveFontSize(14),
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                            : widget.adminComment ==
+                                                                        null ||
+                                                                    widget.adminComment ==
+                                                                        ""
+                                                                ? Container()
+                                                                : Container(
+                                                                    width:
+                                                                        230.w,
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      "${getTranslated(context, "تعليق الأدمن")} : ${widget.adminComment}",
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .justify,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            setResponsiveFontSize(13),
+                                                                        color: Colors
+                                                                            .green,
+                                                                        height:
+                                                                            1.3,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              )
-                                                        : widget.adminComment ==
+                                                        widget.adminComment ==
                                                                     null ||
                                                                 widget.adminComment ==
                                                                     ""
                                                             ? Container()
-                                                            : Container(
-                                                                width: 230.w,
-                                                                child:
-                                                                    AutoSizeText(
-                                                                  "تعليق الأدمن : ${widget.adminComment}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .justify,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        setResponsiveFontSize(
-                                                                            13),
-                                                                    color: Colors
-                                                                        .green,
-                                                                    height: 1.3,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                    widget.adminComment ==
-                                                                null ||
-                                                            widget.adminComment ==
-                                                                ""
-                                                        ? Container()
-                                                        : Divider()
-                                                  ],
-                                                )
-                                              : Container(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  padding: EdgeInsets.only(
-                                                      bottom: 5),
-                                                  child: Text(
-                                                    'تم ارسال الطلب برجاء انتظار الرد',
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.grey[700],
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                            : Divider()
+                                                      ],
+                                                    )
+                                                  : Container(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 5),
+                                                      child: AutoSizeText(
+                                                        getTranslated(context,
+                                                            'تم ارسال الطلب برجاء انتظار الرد'),
+                                                        style: TextStyle(
+                                                          fontSize:
+                                                              setResponsiveFontSize(
+                                                                  15),
+                                                          color:
+                                                              Colors.grey[700],
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
+                                            ],
+                                          ),
+                                          Expanded(child: Container()),
+                                          widget.status == 1 ||
+                                                  widget.status == 2
+                                              ? Lottie.asset(
+                                                  widget.status == 1
+                                                      ? "resources/accepted.json"
+                                                      : "resources/refused.json",
+                                                  width: widget.status == 1
+                                                      ? 100.w
+                                                      : 60.w,
+                                                  height: widget.status == 1
+                                                      ? 100
+                                                      : 60.h,
+                                                  repeat: false)
+                                              : Container()
                                         ],
                                       ),
-                                      Expanded(child: Container()),
-                                      widget.status == 1 || widget.status == 2
-                                          ? Lottie.asset(
-                                              widget.status == 1
-                                                  ? "resources/accepted.json"
-                                                  : "resources/refused.json",
-                                              width: widget.status == 1
-                                                  ? 100.w
-                                                  : 60.w,
-                                              height: widget.status == 1
-                                                  ? 100
-                                                  : 60.h,
-                                              repeat: false)
-                                          : Container()
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
                       )
                     ],
                   ),
@@ -303,17 +309,23 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                         if (msg ==
                                             "Success : Permission Deleted!") {
                                           Fluttertoast.showToast(
-                                              msg: "تم الحذف بنجاح",
+                                              msg: getTranslated(
+                                                  context, "تم الحذف بنجاح"),
                                               backgroundColor: Colors.green);
                                         } else {
                                           Fluttertoast.showToast(
-                                              msg: "خطأ في الحذف",
+                                              msg: getTranslated(
+                                                  context, "خطأ في الحذف"),
                                               backgroundColor: Colors.red);
                                         }
                                       },
-                                      content: "هل تريد حذف الطلب",
+                                      content: getTranslated(
+                                        context,
+                                        "هل تريد حذف الطلب",
+                                      ),
                                       onCancel: () {},
-                                      title: "حذف الطلب",
+                                      title:
+                                          getTranslated(context, "حذف الطلب"),
                                     ),
                                   );
                                 });

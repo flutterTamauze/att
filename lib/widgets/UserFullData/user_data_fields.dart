@@ -64,9 +64,21 @@ class UserDataField extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(FontAwesomeIcons.whatsapp),
                   tooltip: "Open WhatsApp",
-                  onPressed: () {
-                    launch(
-                        "https://api.whatsapp.com/send?phone=${phone}text=Write%20Your%20Message%20Here");
+                  onPressed: () async {
+                    print(phone);
+                    final url =
+                        "https://api.whatsapp.com/send?phone=$phone&text=";
+
+                    final uri = Uri.encodeFull(url);
+
+                    // String url =
+                    //     'https://api.whatsapp.com/send?phone=$phone&text=HELLO';
+                    if (await canLaunch(uri)) {
+                      await launch(uri);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                    // launch(whatsappUrl);
                   },
                   color: Colors.green[600],
                 ),

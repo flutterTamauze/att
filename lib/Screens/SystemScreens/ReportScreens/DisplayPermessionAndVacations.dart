@@ -68,8 +68,8 @@ class _VacationAndPermessionsReportState
   AutoCompleteTextField searchTextField;
   @override
   Widget build(BuildContext context) {
-    var comMissionProv = Provider.of<MissionsData>(context, listen: false);
-    var userProv = Provider.of<UserData>(context, listen: false);
+    final comMissionProv = Provider.of<MissionsData>(context, listen: false);
+    final userProv = Provider.of<UserData>(context, listen: false);
     return GestureDetector(
       onTap: () {
         print(_nameController.text);
@@ -144,7 +144,8 @@ class _VacationAndPermessionsReportState
                                     }
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "يجب ان لا يقل البحث عن 3 احرف",
+                                        msg: getTranslated(context,
+                                            "يجب ان لا يقل البحث عن 3 احرف"),
                                         backgroundColor: Colors.red,
                                         gravity: ToastGravity.CENTER);
                                   }

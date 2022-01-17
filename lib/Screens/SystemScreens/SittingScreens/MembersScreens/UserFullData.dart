@@ -271,10 +271,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           child: UserDataField(
                                               icon: Icons.phone,
                                               text: plusSignPhone(
-                                                      userData.phoneNumber)
-                                                  .replaceAll(
-                                                      new RegExp(r"\s+\b|\b\s"),
-                                                      "")),
+                                                  userData.phoneNumber)),
                                         ),
                                         Expanded(
                                           flex: 1,

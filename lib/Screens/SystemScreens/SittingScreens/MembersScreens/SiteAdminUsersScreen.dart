@@ -698,15 +698,15 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                     var token = Provider.of<UserData>(context, listen: false).user.userToken;
                                                                                     if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
                                                                                       Navigator.pop(context);
-                                                                                      successfullDelete();
+                                                                                      successfullDelete(context);
                                                                                     } else {
                                                                                       unSuccessfullDelete();
                                                                                     }
                                                                                     Navigator.pop(context);
                                                                                     Navigator.pop(context);
                                                                                   },
-                                                                                  title: 'إزالة مستخدم',
-                                                                                  content: "هل تريد إزالة${memberData.membersListScreenDropDownSearch[index].name} ؟");
+                                                                                  title: getTranslated(context, 'إزالة مستخدم'),
+                                                                                  content: "${getTranslated(context, "هل تريد إزالة")}${memberData.membersListScreenDropDownSearch[index].name} ؟");
                                                                             });
                                                                       },
                                                                       onTapEdit:
@@ -1171,10 +1171,7 @@ class _MemberTileState extends State<MemberTile> {
                                       UserDataField(
                                           icon: Icons.phone,
                                           text: plusSignPhone(
-                                                  widget.user.phoneNumber)
-                                              .replaceAll(
-                                                  new RegExp(r"\s+\b|\b\s"),
-                                                  "")),
+                                              widget.user.phoneNumber)),
                                       SizedBox(
                                         height: 10.0.h,
                                       ),

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/SiteAdminUsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addShift.dart';
@@ -232,21 +233,31 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
 
                                                                                 if (msg == "Success") {
                                                                                   Navigator.pop(context);
-                                                                                  Fluttertoast.showToast(msg: "تم الحذف بنجاح", toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.green, gravity: ToastGravity.CENTER, textColor: Colors.white, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                  Fluttertoast.showToast(msg: getTranslated(context, "تم الحذف بنجاح"), toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.green, gravity: ToastGravity.CENTER, textColor: Colors.white, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                 } else if (msg == "hasData") {
-                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا.", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                  Fluttertoast.showToast(msg: getTranslated(context, "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"), toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                 } else if (msg == "failed") {
-                                                                                  Fluttertoast.showToast(msg: "خطأ في اثناء الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                  Fluttertoast.showToast(msg: getTranslated(context, "خطأ في الحذف"), gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                 } else if (msg == "noInternet") {
-                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف: لا يوجد اتصال بالانترنت.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                  Fluttertoast.showToast(msg: getTranslated(context, "خطأ في الحذف : لا يوجد اتصال بالانترنت"), gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                 } else {
-                                                                                  Fluttertoast.showToast(msg: "خطأ في الحذف.", gravity: ToastGravity.CENTER, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.black, fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                                  Fluttertoast.showToast(
+                                                                                      msg: getTranslated(
+                                                                                        context,
+                                                                                        "خطأ في الحذف",
+                                                                                      ),
+                                                                                      gravity: ToastGravity.CENTER,
+                                                                                      toastLength: Toast.LENGTH_SHORT,
+                                                                                      timeInSecForIosWeb: 1,
+                                                                                      backgroundColor: Colors.red,
+                                                                                      textColor: Colors.black,
+                                                                                      fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
                                                                                 }
                                                                                 Navigator.pop(context);
                                                                                 Navigator.pop(context);
                                                                               },
-                                                                              title: 'إزالة مناوبة',
-                                                                              content: "هل تريد إزالة${value.shiftsList[index].shiftName} ؟");
+                                                                              title: getTranslated(context, 'إزالة مناوبة'),
+                                                                              content: "${getTranslated(context, "هل تريد إزالة")}${value.shiftsList[index].shiftName} ؟");
                                                                         });
                                                                   },
                                                                   onTapEdit:

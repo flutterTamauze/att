@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -145,23 +146,23 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                         children: [
                                           widget.vacationDaysCount[1].isBefore(
                                                   widget.vacationDaysCount[0])
-                                              ? Text(
+                                              ? AutoSizeText(
                                                   " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                                   style: TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 )
-                                              : Text(
-                                                  "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
+                                              : AutoSizeText(
+                                                  "${getTranslated(context, "مدة الأجازة")} : ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)} ${getTranslated(context, "إلى")} ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
                                                   style: TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
                                           Divider(),
-                                          Text(
-                                            "نوع الأجازة : ${getVacationType(widget.holidayType)} ",
+                                          AutoSizeText(
+                                            "${getTranslated(context, "نوع الأجازة ")}: ${getVacationType(widget.holidayType)} ",
                                             style: TextStyle(
                                               fontSize:
                                                   setResponsiveFontSize(14),
@@ -174,8 +175,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                           widget.comments != null
                                               ? widget.comments == ""
                                                   ? Container()
-                                                  : Text(
-                                                      "تفاصيل الطلب : ${widget.comments}",
+                                                  : AutoSizeText(
+                                                      "${getTranslated(context, "تفاصيل الطلب")} : ${widget.comments}",
                                                       textAlign:
                                                           TextAlign.right,
                                                       style: TextStyle(
@@ -203,15 +204,14 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                                     .only(
                                                                         bottom:
                                                                             10.h),
-                                                                child: Text(
-                                                                  "سبب الرفض : ${widget.adminComment}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .right,
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  "${getTranslated(context, "سبب الرفض")} : ${widget.adminComment}",
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
-                                                                        14,
+                                                                        setResponsiveFontSize(
+                                                                            14),
                                                                     color: Colors
                                                                         .red,
                                                                     fontWeight:
@@ -232,7 +232,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                                         230.w,
                                                                     child:
                                                                         AutoSizeText(
-                                                                      "تعليق الأدمن : ${widget.adminComment}",
+                                                                      "${getTranslated(context, "تعليق الأدمن")} : ${widget.adminComment}",
                                                                       textAlign:
                                                                           TextAlign
                                                                               .justify,
@@ -257,10 +257,13 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                       Alignment.centerRight,
                                                   padding: EdgeInsets.only(
                                                       bottom: 5),
-                                                  child: Text(
-                                                    'تم ارسال الطلب برجاء انتظار الرد',
+                                                  child: AutoSizeText(
+                                                    getTranslated(context,
+                                                        'تم ارسال الطلب برجاء انتظار الرد'),
                                                     style: TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              15),
                                                       color: Colors.grey[700],
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -336,17 +339,21 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                         if (msg ==
                                             "Success : Holiday Deleted!") {
                                           Fluttertoast.showToast(
-                                              msg: "تم الحذف بنجاح",
+                                              msg: getTranslated(
+                                                  context, "تم الحذف بنجاح"),
                                               backgroundColor: Colors.green);
                                         } else {
                                           Fluttertoast.showToast(
-                                              msg: "خطأ في الحذف",
+                                              msg: getTranslated(
+                                                  context, "خطأ في الحذف"),
                                               backgroundColor: Colors.red);
                                         }
                                       },
-                                      content: "هل تريد حذف الطلب",
+                                      content: getTranslated(
+                                          context, "هل تريد حذف الطلب"),
                                       onCancel: () {},
-                                      title: "حذف الطلب",
+                                      title:
+                                          getTranslated(context, "حذف الطلب"),
                                     ),
                                   );
                                 });
