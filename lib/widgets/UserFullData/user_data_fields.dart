@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,21 @@ class UserDataField extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 3.h),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   if (icon == Icons.phone) {
-                    launch(
-                        "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}");
+                    if (Platform.isAndroid)
+                      launch(
+                          "tel:${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}");
+                    else {
+                      final Uri phone = Uri(
+                          scheme: "tel",
+                          path: Provider.of<MemberData>(context, listen: false)
+                              .singleMember
+                              .phoneNumber);
+                      if (await canLaunch(phone.toString())) {
+                        await launch(phone.toString());
+                      }
+                    }
                   }
                 },
                 child: Icon(

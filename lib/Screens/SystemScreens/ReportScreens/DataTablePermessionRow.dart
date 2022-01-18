@@ -33,9 +33,6 @@ class DataTablePermessionRow extends StatelessWidget {
             ),
           ),
           Container(
-            padding: permessions.permessionType != 1
-                ? EdgeInsets.only(right: 20.w)
-                : null,
             height: 35.h,
             width: 90.w,
             child: Center(
@@ -55,9 +52,6 @@ class DataTablePermessionRow extends StatelessWidget {
             ),
           ),
           Container(
-            padding: permessions.permessionType != 1
-                ? EdgeInsets.only(right: 10.w)
-                : null,
             height: 30.h,
             width: 80.w,
             child: Center(

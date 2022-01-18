@@ -131,11 +131,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                             : Card(
                                 elevation: 5,
                                 child: Container(
-                                  width: 350.w,
-                                  margin: EdgeInsets.all(15),
-                                  padding: EdgeInsets.only(
-                                    top: 10,
-                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -162,7 +159,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                 ),
                                           Divider(),
                                           AutoSizeText(
-                                            "${getTranslated(context, "نوع الأجازة ")}: ${getVacationType(widget.holidayType)} ",
+                                            "${getTranslated(context, "نوع الأجازة ")}: ${getTranslated(context, getVacationType(widget.holidayType))} ",
                                             style: TextStyle(
                                               fontSize:
                                                   setResponsiveFontSize(14),
@@ -180,9 +177,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                       textAlign:
                                                           TextAlign.right,
                                                       style: TextStyle(
-                                                        fontSize:
-                                                            setResponsiveFontSize(
-                                                                14),
+                                                        fontSize: 15,
+                                                        color: Colors.grey[700],
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -296,7 +292,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                   ? "resources/accepted.json"
                                                   : "resources/refused.json",
                                               width: widget.status == 1
-                                                  ? 100.w
+                                                  ? 80.w
                                                   : 60.w,
                                               height: widget.status == 1
                                                   ? 100

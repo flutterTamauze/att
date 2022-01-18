@@ -543,50 +543,47 @@ class _PermissionState extends State<PermissionWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Icon(
-                permissionData.icon,
-                color: Colors.orange,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    height: 3,
-                    color: Colors.grey,
-                  ),
+      title: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Icon(
+              permissionData.icon,
+              color: Colors.orange,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  height: 3,
+                  color: Colors.grey,
                 ),
               ),
-              Switch(
-                value: getPermissionStatue(),
-                onChanged: (value) async {
-                  print("sdas");
-                  if (await permissionData.permission.isPermanentlyDenied) {
-                    openAppSettings();
-                  } else if (await permissionData.permission.isDenied) {
-                    await requestPermission(permissionData.permission);
-                    if (await permissionData.permission.isGranted) {
-                      widget.onTap();
-                    }
-                  } else if (await permissionData.permission.isGranted) {
+            ),
+            Switch(
+              value: getPermissionStatue(),
+              onChanged: (value) async {
+                print("sdas");
+                if (await permissionData.permission.isPermanentlyDenied) {
+                  openAppSettings();
+                } else if (await permissionData.permission.isDenied) {
+                  await requestPermission(permissionData.permission);
+                  if (await permissionData.permission.isGranted) {
                     widget.onTap();
-                  } else {
-                    openAppSettings();
                   }
-                },
-                activeTrackColor: getPermissionSubColor(),
-                activeColor: getPermissionColor(),
-                inactiveTrackColor: getPermissionSubColor(),
-                // inactiveTrackColor: Colors.redAccent,
-                inactiveThumbColor: getPermissionColor(),
-              ),
-            ],
-          ),
+                } else if (await permissionData.permission.isGranted) {
+                  widget.onTap();
+                } else {
+                  openAppSettings();
+                }
+              },
+              activeTrackColor: getPermissionSubColor(),
+              activeColor: getPermissionColor(),
+              inactiveTrackColor: getPermissionSubColor(),
+              // inactiveTrackColor: Colors.redAccent,
+              inactiveThumbColor: getPermissionColor(),
+            ),
+          ],
         ),
       ),
 
@@ -736,21 +733,6 @@ class RoundedAlertOkOnly extends StatelessWidget {
                           title,
                           maxLines: 1,
                           style: TextStyle(
-                              fontSize: setResponsiveFontSize(18),
-                              color: Colors.orange,
-                              fontWeight: FontWeight.w900),
-                        ),
-                      )),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Center(
-                          child: Container(
-                        height: 40.h,
-                        child: AutoSizeText(
-                          title,
-                          maxLines: 1,
-                          style: TextStyle(
                               fontSize: 18,
                               color: Colors.orange,
                               fontWeight: FontWeight.w900),
@@ -763,12 +745,45 @@ class RoundedAlertOkOnly extends StatelessWidget {
                         child: Container(
                           height: 40.h,
                           child: AutoSizeText(
-                            getTranslated(context, "الغاء"),
-                            maxLines: 1,
+                            content,
+                            maxLines: 2,
                             style: TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: setResponsiveFontSize(16),
+                                color: Colors.black,
+                                fontSize: setResponsiveFontSize(14),
+                                height: 1.5,
+                                fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Material(
+                        elevation: 5.0,
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          minWidth: 130,
+                          height: 30,
+                          child: Container(
+                            height: 20,
+                            child: AutoSizeText(
+                              getTranslated(
+                                context,
+                                "الغاء",
+                              ),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
                             ),
                           ),
                         ),

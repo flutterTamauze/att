@@ -234,9 +234,8 @@
 "تم التسجيل بنجاح":"Successfully Registered",
 "لقد تم تسجيل الحضور من قبل":"Attendance has already been registered",
 "لقد تم تسجيل الأنصراف من قبل":"Leave has already been registered",
-"نسيت كلمة المرور":"Forgot Password ?",
 "اعطاء تصريح":"Give Permission",
-"برجاء قبول التصريحات التالية":      "Please Accept The Following Permissions",
+"برجاء قبول التصريحات التالية":      "Please accept the following permissions",
 "متابعة":"Continue",
 "نعم":"Yes",
 "لا":"No",
@@ -267,7 +266,7 @@
     "خطأ فى الرفض : انتهى وقت الطلب":"Rejection Error: Request timed out",
     "خطأ في الرفض":"Rejection Error",
     "رفض  طلب":"Reject Request",
-    "تأكيد رفض الأذن":"Confirm Permission Rejection",
+    
     "لا يمكن التسجيل بمناوبتك الأن":"You can't register in your shift now",
     "لم يتم التسجيل: لديك مأمورية خارجية":"Not registered: You have an external mission",
     "او":"OR",
@@ -448,8 +447,27 @@
 "برجاء ادخال المدة":
 "Please enter the duration",
 "تم تسجيل مأمورية خارجية لك":"An exteranl mission has been assigned to you",
-"خطأ في اضافة المأمورية":"Error adding mission"
-
+"خطأ في اضافة المأمورية":"Error adding mission",
+"نسيت كلمة المرور":"Forgot password ?",
+"مأمورية داخلية":"Internal Mission",
+"مأمورية خارجية":"External Mission",
+"التاريخ قبل إنشاء الشركة":"Date is before company creation",
+"تقرير حضور مستخدم":"Attend User Report",
+"لا يمكن وضع الأجازة : يوجد مأمورية خارجية":"There is an external mission"
+,"تأكيد رفض الأذن":
+"Confirm permession rejection",
+"تأكيد رفض الأجازة"
+:"Confirm vacation rejection"
+,"إعادة ضبط بيانات مستخدم"
+:"Reset user phone",
+"هل تريد اعادة ضبط بيانات هاتف المستخدم؟"
+:"Do you want to reset user phone information?",
+ "جدولة المناوبات للمستخدم":"Schedule shifts for",
+ "تم اعادة الضبط بنجاح"
+ :"Reseted Successfully",
+ "تمت اضافة الجدولة بنجاح"
+ :"Mission added successfully",
+ "برجاء ادخال البيانات المطلوبة":"Please enter the needed data"
 
 
     }

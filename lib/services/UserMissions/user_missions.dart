@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
@@ -216,7 +217,7 @@ class MissionsData with ChangeNotifier {
     final prov = Provider.of<SiteData>(context, listen: false);
     if (prov.siteValue == "كل المواقع" || picked.isEmpty) {
       Fluttertoast.showToast(
-          msg: "برجاء ادخال البيانات المطلوبة",
+          msg: getTranslated(context, "برجاء ادخال البيانات المطلوبة"),
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER);
     } else {
@@ -233,7 +234,10 @@ class MissionsData with ChangeNotifier {
       );
       if (msg == "Success : InternalMission Created!") {
         Fluttertoast.showToast(
-            msg: "تمت اضافة المأمورية بنجاح",
+            msg: getTranslated(
+              context,
+              "تمت اضافة المأمورية بنجاح",
+            ),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
         final HuaweiServices _huawei = HuaweiServices();
@@ -252,18 +256,21 @@ class MissionsData with ChangeNotifier {
                 " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
             userToken: fcmToken,
             topicName: "",
-            title: "تم تكليفك بمأمورية",
+            title: getTranslated(context, "تم تكليفك بمأمورية"),
           ).then((value) => Navigator.pop(context));
         }
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         Fluttertoast.showToast(
-            msg: "تم وضع مأمورية لهذا المستخدم من قبل",
+            msg: getTranslated(context, "تم وضع مأمورية لهذا المستخدم من قبل"),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       } else {
         Fluttertoast.showToast(
-            msg: "خطأ فى اضافة المأمورية",
+            msg: getTranslated(
+              context,
+              "خطأ فى اضافة المأمورية",
+            ),
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER);
       }

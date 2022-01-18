@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:huawei_location/location/location.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -21,6 +22,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:trust_location/trust_location.dart';
 
 import '../Core/constants.dart';
+import 'CompanySettings/Repo/CompanyRepo.dart';
 
 class Company {
   String nameAr;
@@ -102,39 +104,29 @@ class CompanyData extends ChangeNotifier {
 
   getCompanyProfileApi(
       int companyId, String userToken, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        DateTime preTime = DateTime.now();
-        final response = await http.get(
-            Uri.parse("$baseURL/api/Company/GetCompanyInfoById/$companyId"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print(response.statusCode);
-        print(response.body);
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          print("COMPANY MSG }");
-          print(decodedRes["message"]);
-          if (decodedRes["message"] == "Success") {
-            com = Company.fromJson(decodedRes);
-            DateTime postTime = DateTime.now();
-            print(
-                "company data Request Code : ${response.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+    try {
+      final response = await CompanyRepo().getCompanyData(companyId, userToken);
+      if (response is Faliure) {
+        print(response.errorResponse);
+        return Faliure(
+            code: response.code, errorResponse: response.errorResponse);
+      } else {
+        final decodedRes = json.decode(response);
+        print("COMPANY MSG }");
+        print(decodedRes["message"]);
+        if (decodedRes["message"] == "Success") {
+          com = Company.fromJson(decodedRes);
+
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
         return "failed";
-      } catch (e) {
-        print(e);
       }
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -107,9 +108,12 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                                                         FontWeight.bold),
                                               )
                                             : AutoSizeText(
-                                                "لا يوجد مأموريات لهذا المستخدم",
+                                                getTranslated(context,
+                                                    "لا يوجد مأموريات لهذا المستخدم"),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            14),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ));

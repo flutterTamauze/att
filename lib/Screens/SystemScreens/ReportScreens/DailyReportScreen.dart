@@ -419,8 +419,10 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                         "Date is older than company date"
                                                                     ? CenterMessageText(
                                                                         message:
-                                                                            "التاريخ قبل إنشاء الشركة",
-                                                                      )
+                                                                            getTranslated(
+                                                                        context,
+                                                                        "التاريخ قبل إنشاء الشركة",
+                                                                      ))
                                                                     : ListView.builder(
                                                                         physics: AlwaysScrollableScrollPhysics(),
                                                                         itemCount: reportsData.dailyReport.attendListUnits.length,
