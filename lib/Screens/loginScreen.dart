@@ -380,8 +380,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // loginFunction();
                   Navigator.pop(context);
                 },
-                title: 'اعطاء تصريح',
-                content: "برجاء قبول التصريحات التالية "));
+                title: getTranslated(context, 'اعطاء تصريح'),
+                content:
+                    getTranslated(context, "برجاء قبول التصريحات التالية ")));
       }
     } else {
       print("validation error");
