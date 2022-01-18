@@ -169,6 +169,17 @@ class _VacationAndPermessionsReportState
                             return a.username.compareTo(b.username);
                           },
                           itemSubmitted: (item) async {
+                            Provider.of<UserHolidaysData>(context,
+                                    listen: false)
+                                .singleUserHoliday
+                                .clear();
+                            Provider.of<UserPermessionsData>(context,
+                                    listen: false)
+                                .singleUserPermessions
+                                .clear();
+                            Provider.of<MissionsData>(context, listen: false)
+                                .singleUserMissionsList
+                                .clear();
                             if (_nameController.text != item.username) {
                               setState(() {
                                 userName = item.username;

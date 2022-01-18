@@ -785,6 +785,17 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                           Colors.red);
                                                 }
                                               } else if (value ==
+                                                  "Failed : Another Holiday not approved for this user!") {
+                                                Fluttertoast.showToast(
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                    msg:
+                                                        "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    backgroundColor:
+                                                        Colors.red);
+                                              } else if (value ==
                                                   "Failed : There are an holiday approved in this period!") {
                                                 Fluttertoast.showToast(
                                                     toastLength:

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +18,7 @@ class ExpandedPendingPermessions extends StatefulWidget {
   Function onRefused;
   bool isAdmin = false;
   final int permessionType;
-  final String date;
+  final String date, createdOn;
 
   ExpandedPendingPermessions({
     this.userName,
@@ -31,6 +32,7 @@ class ExpandedPendingPermessions extends StatefulWidget {
     this.desc,
     this.date,
     this.userId,
+    this.createdOn,
     Key key,
   }) : super(key: key);
 
@@ -72,6 +74,14 @@ class _ExpandedPendingPermessionsState
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Center(
+                              child: AutoSizeText(
+                                widget.createdOn.substring(0, 11),
+                              ),
+                            ),
+                          ),
                           widget.isAdmin
                               ? Container()
                               : FaIcon(
@@ -85,8 +95,10 @@ class _ExpandedPendingPermessionsState
                     ],
                   ),
                 ),
-                title: Text(
-                  widget.userName,
+                title: Container(
+                  child: AutoSizeText(
+                    widget.userName,
+                  ),
                 ),
                 children: [
                   Stack(
@@ -105,7 +117,7 @@ class _ExpandedPendingPermessionsState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      AutoSizeText(
                                         "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
                                         style: TextStyle(
                                           fontSize: 14,
@@ -118,7 +130,7 @@ class _ExpandedPendingPermessionsState
                                       widget.desc != null
                                           ? widget.desc == ""
                                               ? Container()
-                                              : Text(
+                                              : AutoSizeText(
                                                   "تفاصيل الطلب : ${widget.desc}",
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
@@ -132,10 +144,10 @@ class _ExpandedPendingPermessionsState
                                               ? Container()
                                               : Divider()
                                           : Container(),
-                                      Text(
+                                      AutoSizeText(
                                           "تاريخ الأذن : ${widget.date.substring(0, 11)}"),
                                       Divider(),
-                                      Text(widget.permessionType == 1
+                                      AutoSizeText(widget.permessionType == 1
                                           ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
                                           : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
                                       widget.desc != null

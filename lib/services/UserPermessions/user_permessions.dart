@@ -45,16 +45,37 @@ class UserPermessions {
         userID: json['userId'] ?? "",
         permessionId: json["id"],
         osType: json["mobileOS"] ?? 1,
-        permessionDescription: json["desc"] ?? "",
+        permessionDescription: json["desc"],
         permessionStatus: json["status"],
         adminResponse: json["adminResponse"],
         // approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
-        // createdOn:
-        //     DateTime.tryParse(json["createdOn"] ?? json["createdonDate"]),
+        createdOn: DateTime.tryParse(json["createdonDate"]),
         // approvedDate: DateTime.tryParse(
         //   json["approvedDate"] ?? "",
         // ),
         user: json["userName"]);
+  }
+  factory UserPermessions.fromJsonWithCreatedOn(dynamic json) {
+    return UserPermessions(
+        date: DateTime.tryParse(json["date"]),
+        duration: json["time"],
+        permessionType: json["type"],
+        fcmToken: json["fcmToken"] ?? "null",
+        userID: json['userId'] ?? "",
+        permessionId: json["id"],
+        permessionStatus: json["status"],
+        createdOn: DateTime.tryParse(json["createdOn"]),
+        user: json["userName"]);
+  }
+  factory UserPermessions.detailsFromJson(dynamic json) {
+    return UserPermessions(
+      date: DateTime.tryParse(json["date"]),
+      permessionDescription: json["desc"],
+      duration: json["time"],
+      permessionType: json["type"],
+      adminResponse: json["adminResponse"],
+      permessionId: json["id"],
+    );
   }
 }
 
@@ -171,7 +192,7 @@ class UserPermessionsData with ChangeNotifier {
           final permessionsObj = jsonDecode(response.body)['data'] as List;
           if (keepRetriving) {
             pendingCompanyPermessions.addAll(permessionsObj
-                .map((json) => UserPermessions.fromJson(json))
+                .map((json) => UserPermessions.fromJsonWithCreatedOn(json))
                 .toList());
 
             pendingCompanyPermessions =
@@ -228,7 +249,7 @@ class UserPermessionsData with ChangeNotifier {
       final decodedResponse = json.decode(response.body);
       if (decodedResponse["message"] == "Success") {
         singlePermessionDetail =
-            UserPermessions.fromJson(decodedResponse['data']);
+            UserPermessions.detailsFromJson(decodedResponse['data']);
         final permessions = pendingCompanyPermessions
             .where((element) => element.permessionId == permessionId)
             .toList();
@@ -252,47 +273,52 @@ class UserPermessionsData with ChangeNotifier {
 
   Future<void> getPermessionDetailsByID(
       int permessionId, String userToken) async {
-    print(permessionId);
-    final permessions = singleUserPermessions
-        .where((element) => element.permessionId == permessionId)
-        .toList();
+    try {
+      print(permessionId);
+      final permessions = singleUserPermessions
+          .where((element) => element.permessionId == permessionId)
+          .toList();
 
-    final int permessionyIndex = singleUserPermessions.indexOf(permessions[0]);
-    if (singleUserPermessions[permessionyIndex].adminResponse == null ||
-        singleUserPermessions[permessionyIndex].permessionDescription == null) {
-      permessionDetailLoading = true;
-      notifyListeners();
+      final int permessionyIndex =
+          singleUserPermessions.indexOf(permessions[0]);
+      if (singleUserPermessions[permessionyIndex].permessionDescription ==
+          null) {
+        permessionDetailLoading = true;
+        notifyListeners();
 
-      final response = await http.get(
-        Uri.parse("$baseURL/api/Permissions/$permessionId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      log(response.body);
-      print(response.statusCode);
+        final response = await http.get(
+          Uri.parse("$baseURL/api/Permissions/$permessionId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+        );
+        log(response.body);
+        print(response.statusCode);
 
-      permessionDetailLoading = false;
-      notifyListeners();
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        singlePermessionDetail =
-            UserPermessions.fromJson(decodedResponse['data']);
-        final permessions = singleUserPermessions
-            .where((element) => element.permessionId == permessionId)
-            .toList();
+        permessionDetailLoading = false;
+        notifyListeners();
+        final decodedResponse = json.decode(response.body);
+        if (decodedResponse["message"] == "Success") {
+          singlePermessionDetail =
+              UserPermessions.detailsFromJson(decodedResponse['data']);
+          final permessions = singleUserPermessions
+              .where((element) => element.permessionId == permessionId)
+              .toList();
 
-        final int permIndex = singleUserPermessions.indexOf(permessions[0]);
-        singleUserPermessions[permIndex].adminResponse =
-            singlePermessionDetail.adminResponse;
-        singleUserPermessions[permIndex].permessionDescription =
-            singlePermessionDetail.permessionDescription;
+          final int permIndex = singleUserPermessions.indexOf(permessions[0]);
+          singleUserPermessions[permIndex].adminResponse =
+              singlePermessionDetail.adminResponse;
+          singleUserPermessions[permIndex].permessionDescription =
+              singlePermessionDetail.permessionDescription;
+        }
+
+        notifyListeners();
+      } else {
+        print("not null");
       }
-
-      notifyListeners();
-    } else {
-      print("not null");
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -355,34 +381,38 @@ class UserPermessionsData with ChangeNotifier {
     final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     final bool isConnected = await networkInfoImp.isConnected;
     if (isConnected) {
-      final response = await http.get(
-        Uri.parse(
-            "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime?isMobile=true"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      permessionDetailLoading = false;
-      print("response");
-      print(userId);
-      log(response.body);
-      log(response.statusCode.toString());
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        final permessionsObj =
-            jsonDecode(response.body)['data']["Permissions"] as List;
-        singleUserPermessions = permessionsObj
-            .map((json) => UserPermessions.fromJson(json))
-            .toList();
+      try {
+        final response = await http.get(
+          Uri.parse(
+              "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime?isMobile=true"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+        );
+        permessionDetailLoading = false;
+        print("response");
+        print(userId);
+        log(response.body);
+        log(response.statusCode.toString());
+        final decodedResponse = json.decode(response.body);
+        if (decodedResponse["message"] == "Success") {
+          final permessionsObj =
+              jsonDecode(response.body)['data']["Permissions"] as List;
+          singleUserPermessions = permessionsObj
+              .map((json) => UserPermessions.detailsFromJson(json))
+              .toList();
 
-        singleUserPermessions = singleUserPermessions.reversed.toList();
-        lateAbesenceCount = jsonDecode(response.body)['data']['TotalLate'];
-        earlyLeaversCount = jsonDecode(response.body)['data']['TotalLeave'];
+          singleUserPermessions = singleUserPermessions.reversed.toList();
+          lateAbesenceCount = jsonDecode(response.body)['data']['TotalLate'];
+          earlyLeaversCount = jsonDecode(response.body)['data']['TotalLeave'];
 
-        notifyListeners();
+          notifyListeners();
 
-        return singleUserPermessions;
+          return singleUserPermessions;
+        }
+      } catch (e) {
+        print(e);
       }
     } else {
       return weakInternetConnection(

@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
+import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -150,6 +152,19 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     }
                                   } else {
                                     if (!widget.isAdmin) {
+                                      if (widget.notificationTitle
+                                          .contains("الأذن")) {
+                                        Provider.of<UserPermessionsData>(
+                                                context,
+                                                listen: false)
+                                            .getFutureSinglePermession(
+                                                user.id, user.userToken);
+                                      } else {
+                                        Provider.of<UserHolidaysData>(context,
+                                                listen: false)
+                                            .getFutureSingleUserHoliday(
+                                                user.id, user.userToken);
+                                      }
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

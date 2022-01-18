@@ -21,6 +21,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 import '../../../Core/constants.dart';
+import '../../../main.dart';
 
 class SuperAdminScreen extends StatefulWidget {
   @override
@@ -28,22 +29,26 @@ class SuperAdminScreen extends StatefulWidget {
 }
 
 class _SuperAdminScreenState extends State<SuperAdminScreen> {
-  getCompanyData(int comiD) async {
+  Future getCompanyData(int comiD) async {
     var msg = await Provider.of<CompanyData>(context, listen: false)
         .getCompanyProfileApi(
             comiD,
             Provider.of<UserData>(context, listen: false).user.userToken,
             context);
-    if (msg == "Success") {
-      print("ana get b success");
+    // if (msg == "Success") {
+    //   print("ana get b success");
 
-      await Provider.of<ShiftsData>(context, listen: false).getShifts(
-          Provider.of<CompanyData>(context, listen: false).com.id,
-          Provider.of<UserData>(context, listen: false).user.userToken,
-          context,
-          4,
-          0);
+    //   // await Provider.of<ShiftsData>(context, listen: false).getShifts(
+    //   //     Provider.of<CompanyData>(context, listen: false).com.id,
+    //   //     Provider.of<UserData>(context, listen: false).user.userToken,
+    //   //     context,
+    //   //     4,
+    //   //     0);
+    // }
+    if (msg is Faliure) {
+      print("msg faliure ${msg.code} ${msg.errorResponse}");
     }
+    return msg;
   }
 
   @override
@@ -89,50 +94,40 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                   title: userData
                                       .superCompaniesList[index].companyName,
                                   onTap: () async {
-                                    final DataConnectionChecker
-                                        dataConnectionChecker =
-                                        DataConnectionChecker();
-                                    final NetworkInfoImp networkInfoImp =
-                                        NetworkInfoImp(dataConnectionChecker);
-                                    final bool isConnected =
-                                        await networkInfoImp.isConnected;
-                                    if (!await isConnected) {
-                                      noInternetConnectionAlert(context);
-                                    } else {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return RoundedLoadingIndicator();
-                                          });
-                                      await getCompanyData(userData
-                                          .superCompaniesList[index].companyId);
-                                      await Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .getAllSitesAndShifts(
-                                              comProvider.com.id,
-                                              userData.user.userToken);
-
-                                      final chartResponse =
-                                          await userData.getSuperCompanyChart(
-                                              userData.user.userToken,
-                                              comProvider.com.id);
-                                      if (chartResponse is Faliure) {
-                                        print("faliure occured");
-                                        Navigator.pop(context);
-                                        if (chartResponse.code == NO_INTERNET) {
-                                          return noInternetConnectionToast();
-                                        } else {
-                                          return errorToast();
-                                        }
-                                      } else {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SuperCompanyPieChart(),
-                                            ));
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return RoundedLoadingIndicator();
+                                        });
+                                    await getCompanyData(userData
+                                            .superCompaniesList[index]
+                                            .companyId)
+                                        .then((value) async {
+                                      if (value.toString() == "Success") {
+                                        await Provider.of<SiteShiftsData>(
+                                                context,
+                                                listen: false)
+                                            .getAllSitesAndShifts(
+                                                comProvider.com.id,
+                                                userData.user.userToken);
+                                        final chartResponse = await userData
+                                            .getSuperCompanyChart(
+                                                userData.user.userToken,
+                                                comProvider.com.id)
+                                            .then((value) {
+                                          if (value == "Success") {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuperCompanyPieChart(),
+                                                ));
+                                          } else {
+                                            errorToast();
+                                          }
+                                        });
                                       }
-                                    }
+                                    });
 
                                     //here we add the PIE CHART SCREEN//
                                   });

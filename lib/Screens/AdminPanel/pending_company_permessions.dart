@@ -155,6 +155,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                             permessionType:
                                                 pending.permessionType,
                                             userName: pending.user.toString(),
+                                            createdOn: pending.createdOn
+                                                .toString()
+                                                .substring(0, 11),
                                             duration: pending.duration
                                                 .replaceAll(":", ""),
                                             onRefused: () {

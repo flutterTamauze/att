@@ -8,6 +8,7 @@ import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/DataTablePermession
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +61,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                             .userToken);
               }
 
-              Navigator.pop(context);
+              Navigator.pop(navigatorKey.currentState.overlay.context);
             }
             if (radioVal2 == 3) {
               if (Provider.of<UserPermessionsData>(context, listen: false)
@@ -86,7 +87,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
               }
             }
             showDialog(
-              context: context,
+              context: navigatorKey.currentState.overlay.context,
               builder: (context) {
                 List<UserHolidays> provList =
                     Provider.of<UserHolidaysData>(context, listen: true)
