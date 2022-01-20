@@ -93,101 +93,95 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                   Stack(
                     children: [
                       SlideInDown(
-                        child: Provider.of<UserHolidaysData>(context)
-                                .loadingHolidaysDetails
-                            ? LoadingIndicator()
-                            : Card(
-                                elevation: 5,
-                                child: Container(
-                                  width: 300.w,
-                                  margin: EdgeInsets.all(15),
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      widget.vacationDaysCount[1].isBefore(
-                                              widget.vacationDaysCount[0])
-                                          ? Text(
-                                              " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            )
-                                          : Text(
-                                              "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                      Divider(),
-                                      Text(
-                                        "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
+                        child: Card(
+                          elevation: 5,
+                          child: Container(
+                            width: 300.w,
+                            margin: EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                widget.vacationDaysCount[1]
+                                        .isBefore(widget.vacationDaysCount[0])
+                                    ? Text(
+                                        " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : Text(
+                                        "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      widget.comments == ""
-                                          ? Container()
-                                          : Divider(),
-                                      widget.comments != null
-                                          ? widget.comments == ""
-                                              ? Container()
-                                              : Text(
-                                                  "تفاصيل الطلب : ${widget.comments}",
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                )
-                                          : Container(),
-                                      widget.comments != null
-                                          ? Divider()
-                                          : Container(),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Column(
-                                        children: [
-                                          // Text(
-                                          //   "قرارك",
-                                          //   style: TextStyle(
-                                          //       fontWeight: FontWeight.bold),
-                                          // ),
-                                          Divider(),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              InkWell(
-                                                onTap: () => widget.onAccept(),
-                                                child: FaIcon(
-                                                  FontAwesomeIcons.check,
-                                                  color: Colors.green,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 20.w,
-                                              ),
-                                              InkWell(
-                                                onTap: () => widget.onRefused(),
-                                                child: FaIcon(
-                                                  FontAwesomeIcons.times,
-                                                  color: Colors.red,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                Divider(),
+                                Text(
+                                  "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ),
+                                widget.comments == "" ? Container() : Divider(),
+                                widget.comments != null
+                                    ? widget.comments == ""
+                                        ? Container()
+                                        : Text(
+                                            "تفاصيل الطلب : ${widget.comments}",
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                    : Container(),
+                                widget.comments != null
+                                    ? Divider()
+                                    : Container(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    // Text(
+                                    //   "قرارك",
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () => widget.onAccept(),
+                                          child: FaIcon(
+                                            FontAwesomeIcons.check,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        InkWell(
+                                          onTap: () => widget.onRefused(),
+                                          child: FaIcon(
+                                            FontAwesomeIcons.times,
+                                            color: Colors.red,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       Provider.of<UserHolidaysData>(context)
                               .loadingHolidaysDetails

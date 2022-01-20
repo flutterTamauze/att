@@ -554,6 +554,17 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
                                                             Colors.red);
+                                                  } else if (value ==
+                                                      "Failed : Another Holiday not approved for this user!") {
+                                                    Fluttertoast.showToast(
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        msg:
+                                                            "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red);
                                                   } else {
                                                     errorToast();
                                                   }
@@ -1251,6 +1262,24 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               Colors.red,
                                                           msg:
                                                               "يوجد اذن فى هذا اليوم");
+                                                    } else if (msg ==
+                                                        "holiday was not approved") {
+                                                      Fluttertoast.showToast(
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          msg:
+                                                              "يوجد اجازة لم يتم الموافقة عليها");
+                                                    } else if (msg ==
+                                                        "holiday") {
+                                                      Fluttertoast.showToast(
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          msg:
+                                                              "يوجد اجازة فى هذا اليوم");
                                                     }
                                                   } else {
                                                     print(selectedDateString);

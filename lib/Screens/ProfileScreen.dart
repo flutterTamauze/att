@@ -96,6 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       imageUrl: Provider.of<UserData>(context, listen: true)
                           .user
                           .userImage,
+                      httpHeaders: {
+                        "Authorization": "Bearer " +
+                            Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userToken
+                      },
                       fit: BoxFit.fill,
                       placeholder: (context, url) => Center(
                         child: CircularProgressIndicator(

@@ -75,6 +75,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
     });
   }
 
+  int currentIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -146,6 +147,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                         children: [
                                           ExpandedPendingPermessions(
                                             isAdmin: true,
+                                            index: index,
                                             date: pending.date
                                                 .toString()
                                                 .substring(0, 11),

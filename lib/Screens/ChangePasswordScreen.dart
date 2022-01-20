@@ -176,6 +176,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           headerImage: Container(
                             height: 140.h,
                             child: CachedNetworkImage(
+                              httpHeaders: {
+                                "Authorization": "Bearer " +
+                                    Provider.of<UserData>(context,
+                                            listen: false)
+                                        .user
+                                        .userToken
+                              },
                               imageUrl: userData.user.userImage,
                               fit: BoxFit.fill,
                               placeholder: (context, url) => Center(

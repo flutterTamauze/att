@@ -83,6 +83,7 @@ class UserPermessionsData with ChangeNotifier {
   bool isLoading = false;
   bool paginatedLoading = false;
   bool permessionDetailLoading = false;
+
   List<UserPermessions> permessionsList = [];
   List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
@@ -110,6 +111,7 @@ class UserPermessionsData with ChangeNotifier {
     DateTime permDate,
   ) async {
     print(desc);
+
     isLoading = true;
     notifyListeners();
     final response = await http.put(
@@ -206,11 +208,14 @@ class UserPermessionsData with ChangeNotifier {
             "No Permissions pending for this company!") {
           keepRetriving = false;
           isLoading = false;
+          paginatedLoading = false;
           notifyListeners();
         }
       } else {
         return "noInternet";
       }
+      isLoading = false;
+      notifyListeners();
       return "Success";
     } else {
       return weakInternetConnection(
@@ -531,6 +536,7 @@ class UserPermessionsData with ChangeNotifier {
         } else if (decodedMsg ==
                 "Failed : there is a holiday was not approved in this date!" ||
             decodedMsg == "Failed : there is a holiday still pending!") {
+          print("not approved");
           return "holiday was not approved";
         }
         notifyListeners();

@@ -272,6 +272,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           image: DecorationImage(
                                               image: NetworkImage(
                                                 "$imageUrl${widget.member.userImageURL}",
+                                                headers: {
+                                                  "Authorization": "Bearer " +
+                                                      Provider.of<UserData>(
+                                                              context,
+                                                              listen: false)
+                                                          .user
+                                                          .userToken
+                                                },
                                               ),
                                               fit: BoxFit.fill)),
                                     )

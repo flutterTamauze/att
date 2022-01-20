@@ -17,17 +17,13 @@ class CompanyMissions {
       this.shiftName});
 
   CompanyMissions.fromJsonInternal(Map<String, dynamic> json) {
-    id = json['id'];
     fromdate = DateTime.tryParse(json['fromdate']);
     toDate = DateTime.tryParse(json['toDate']);
-    userName = json['userName'];
+
     sitename = json['sitename'];
-    shiftName = json['shiftName'];
   }
   CompanyMissions.fromJsonExternal(Map<String, dynamic> json) {
-    id = json['id'];
     fromdate = DateTime.tryParse(json['fromdate']);
     toDate = DateTime.tryParse(json['toDate']);
-    userName = json['userName'];
   }
 }

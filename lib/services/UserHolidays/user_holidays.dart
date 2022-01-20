@@ -56,6 +56,16 @@ class UserHolidays {
   }
 }
 
+enum Holiday {
+  Success,
+  External_Mission_InThis_Period,
+  Holiday_Approved_InThis_Period,
+  Internal_Mission_InThis_Period,
+  Permession_InThis_Period,
+  Another_Holiday_NOT_APPROVED,
+  Failed
+}
+
 class UserHolidaysData with ChangeNotifier {
   bool isLoading = false;
   bool paginatedIsLoading = false;
@@ -69,6 +79,7 @@ class UserHolidaysData with ChangeNotifier {
   bool keepRetriving = true;
   int pageIndex = 0;
   int sickVacationCount = 0, vacationCreditCount = 0, suddenVacationCount = 0;
+
   getAllUserNamesInHolidays() {
     userNames = [];
     holidaysList.forEach((element) {
@@ -432,32 +443,7 @@ class UserHolidaysData with ChangeNotifier {
     return singleUserHoliday;
   }
 
-  Future<List<UserHolidays>> getAllHolidays(
-      String userToken, int companyId) async {
-    isLoading = true;
-    // notifyListeners();
-    final response = await http.get(
-      Uri.parse("$baseURL/api/Holiday/GetAllHolidaysbyComId/$companyId"),
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': "Bearer $userToken"
-      },
-    );
-    print(response.body);
-    final decodedResponse = json.decode(response.body);
-    if (decodedResponse["message"] == "Success") {
-      final holidayObj = jsonDecode(response.body)['data'] as List;
-      holidaysList =
-          holidayObj.map((json) => UserHolidays.fromJson(json)).toList();
-      isLoading = false;
-      getAllUserNamesInHolidays();
-      notifyListeners();
-    }
-
-    return holidaysList;
-  }
-
-  Future<String> addHoliday(
+  Future<Holiday> addHoliday(
       UserHolidays holiday, String userToken, String userId) async {
     print(holiday.holidayDescription);
 
@@ -486,7 +472,30 @@ class UserHolidaysData with ChangeNotifier {
       notifyListeners();
       print("adding holiday");
       print(response.body);
-      return json.decode(response.body)["message"];
+      final decodedMessage = json.decode(response.body)["message"];
+      switch (decodedMessage) {
+        case "Success : Holiday Created!":
+          return Holiday.Success;
+          break;
+        case "Failed : There are external mission in this period!":
+          return Holiday.External_Mission_InThis_Period;
+          break;
+        case "Failed : Another Holiday not approved for this user!":
+          return Holiday.Another_Holiday_NOT_APPROVED;
+          break;
+        case "Failed : There are an holiday approved in this period!":
+          return Holiday.Holiday_Approved_InThis_Period;
+          break;
+        case "Failed : There are an internal Mission in this period!":
+          return Holiday.Internal_Mission_InThis_Period;
+          break;
+        case "Failed : There are an permission in this period!":
+          return Holiday.Permession_InThis_Period;
+          break;
+
+        default:
+          return Holiday.Failed;
+      }
     } else {
       return weakInternetConnection(
         navigatorKey.currentState.overlay.context,

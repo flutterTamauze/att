@@ -62,6 +62,7 @@ DateTime _today, _tomorow;
 class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
+    print("initstate started");
     picked = null;
     _today = DateTime.now();
     _tomorow = DateTime(
@@ -73,7 +74,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     selectedDateString = null;
     dateDifference = null;
     _dateController.text = "";
-    var now = DateTime.now();
+    final now = DateTime.now();
     commentController.text = "";
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
@@ -93,7 +94,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   var newString = "";
   @override
   Widget build(BuildContext context) {
-    var userdata = Provider.of<UserData>(context, listen: false).user;
+    final userdata = Provider.of<UserData>(context, listen: false).user;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -588,7 +589,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     builder: (context) {
                                                       return InkWell(
                                                           onTap: () async {
-                                                            var to =
+                                                            final to =
                                                                 await showTimePicker(
                                                               context: context,
                                                               initialTime:
@@ -731,13 +732,13 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     userdata.userToken,
                                                     userdata.id)
                                                 .then((value) {
-                                              if (value ==
-                                                  "Success : Holiday Created!") {
+                                              if (value == Holiday.Success) {
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     if (userdata.osType == 3) {
-                                                      HuaweiServices _huawei =
+                                                      final HuaweiServices
+                                                          _huawei =
                                                           HuaweiServices();
                                                       _huawei.huaweiSendToTopic(
                                                           "طلب أجازة",
@@ -772,7 +773,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   },
                                                 );
                                               } else if (value ==
-                                                  "Failed : There are external mission in this period!") {
+                                                  Holiday
+                                                      .Internal_Mission_InThis_Period) {
                                                 {
                                                   Fluttertoast.showToast(
                                                       toastLength:
@@ -785,7 +787,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                           Colors.red);
                                                 }
                                               } else if (value ==
-                                                  "Failed : Another Holiday not approved for this user!") {
+                                                  Holiday
+                                                      .Another_Holiday_NOT_APPROVED) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -796,7 +799,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an holiday approved in this period!") {
+                                                  Holiday
+                                                      .Holiday_Approved_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -807,7 +811,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an internal Mission in this period!") {
+                                                  Holiday
+                                                      .Internal_Mission_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -818,7 +823,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an permission in this period!") {
+                                                  Holiday
+                                                      .Permession_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -844,7 +850,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               timeOutController.text != "") {
                                             print(selectedDate);
                                             print(timeOutController.text);
-                                            String msg = await Provider.of<UserPermessionsData>(
+                                            final String msg = await Provider.of<UserPermessionsData>(
                                                     context,
                                                     listen: false)
                                                 .addUserPermession(
