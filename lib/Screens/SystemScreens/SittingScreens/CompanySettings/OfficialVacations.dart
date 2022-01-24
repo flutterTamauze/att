@@ -317,7 +317,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                   child: Container(
                                   child: vactionProv.vactionList.length == 0
                                       ? Center(
-                                          child: Text(
+                                          child: AutoSizeText(
                                             "لا يوجد عطلات رسمية",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),

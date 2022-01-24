@@ -108,7 +108,7 @@ class Header extends StatelessWidget {
                                     maxLines: 1,
                                     style: TextStyle(
                                       color: Colors.orange,
-                                      fontSize: 17,
+                                      fontSize: setResponsiveFontSize(17),
                                     ),
                                     textAlign: TextAlign.right,
                                   ),
@@ -187,13 +187,14 @@ class Header extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             color: Colors.red,
                                           ),
-                                          child: Text(
+                                          child: AutoSizeText(
                                             value
                                                 .getUnSeenNotifications()
                                                 .toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 11),
+                                                fontSize:
+                                                    setResponsiveFontSize(11)),
                                           )),
                                     )
                             ],
@@ -362,7 +363,7 @@ class SuperadminHeader extends StatelessWidget {
                                     maxLines: 1,
                                     style: TextStyle(
                                       color: Colors.orange,
-                                      fontSize: 17,
+                                      fontSize: setResponsiveFontSize(17),
                                     ),
                                     textAlign: TextAlign.right,
                                   ),
@@ -482,13 +483,14 @@ class SuperadminHeader extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             color: Colors.red,
                                           ),
-                                          child: Text(
+                                          child: AutoSizeText(
                                             value
                                                 .getUnSeenNotifications()
                                                 .toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 11),
+                                                fontSize:
+                                                    setResponsiveFontSize(11)),
                                           )),
                                     )
                             ],
@@ -620,7 +622,7 @@ class ProfileHeader extends StatelessWidget {
                             ),
                             Container(
                               padding: EdgeInsets.only(right: 5.w),
-                              child: Text(
+                              child: AutoSizeText(
                                   Provider.of<UserData>(context, listen: false)
                                       .user
                                       .name,

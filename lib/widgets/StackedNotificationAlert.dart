@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -47,7 +49,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
   bool isloading = false;
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<UserData>(context, listen: false).user;
+    final user = Provider.of<UserData>(context, listen: false).user;
 
     return Stack(
       children: [
@@ -68,11 +70,11 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                         ),
                         InkWell(
                           onTap: () async {},
-                          child: Text(
+                          child: AutoSizeText(
                             widget.notificationTitle,
                             style: TextStyle(
                                 color: Colors.orange,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -90,22 +92,22 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                             : RoundedButton(
                                 title: widget.roundedButtonTitle,
                                 onPressed: () async {
-                                  SharedPreferences prefs =
+                                  final SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   if (widget.showToast) {
                                     setState(() {
                                       isloading = true;
                                     });
-                                    int attendId =
+                                    final int attendId =
                                         await attendObj.getAttendProofID(
                                             user.id, user.userToken);
                                     print(attendId);
-                                    Position currentPosition =
+                                    final Position currentPosition =
                                         await Geolocator.getCurrentPosition(
                                             desiredAccuracy:
                                                 LocationAccuracy.best);
 
-                                    String msg =
+                                    final String msg =
                                         await attendObj.acceptAttendProof(
                                             user.userToken,
                                             attendId.toString(),

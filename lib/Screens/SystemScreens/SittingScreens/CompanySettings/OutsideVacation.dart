@@ -475,7 +475,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         widget.member.id)
                                                     .then((value) {
                                                   if (value ==
-                                                      "Success : Holiday Created!") {
+                                                      Holiday.Success) {
                                                     Fluttertoast.showToast(
                                                             msg:
                                                                 "تم إضافة الأجازة بنجاح",
@@ -511,7 +511,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       );
                                                     }
                                                   } else if (value ==
-                                                      "Failed : There are external mission in this period!") {
+                                                      Holiday
+                                                          .External_Mission_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         msg:
                                                             "لا يمكن وضع الأجازة : يوجد مأمورية خارجية",
@@ -522,7 +523,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an holiday approved in this period!") {
+                                                      Holiday
+                                                          .Holiday_Approved_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -533,7 +535,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an internal Mission in this period!") {
+                                                      Holiday
+                                                          .Internal_Mission_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -544,7 +547,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an permission in this period!") {
+                                                      Holiday
+                                                          .Permession_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -555,7 +559,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : Another Holiday not approved for this user!") {
+                                                      Holiday
+                                                          .Another_Holiday_NOT_APPROVED) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -837,7 +842,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 11),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                11)),
                                                     maxLines: 2,
                                                   ),
                                                 ],
@@ -936,7 +943,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
-                                                                fontSize: 13),
+                                                                fontSize:
+                                                                    setResponsiveFontSize(
+                                                                        13)),
                                                           ),
                                                         ],
                                                       ),
@@ -1041,7 +1050,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
-                                                                fontSize: 13),
+                                                                fontSize:
+                                                                    setResponsiveFontSize(
+                                                                        13)),
                                                           ),
                                                         ],
                                                       ),
@@ -1561,9 +1572,11 @@ class VacationCardHeader extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Text(
+              AutoSizeText(
                 header,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: setResponsiveFontSize(13)),
               ),
             ],
           ),

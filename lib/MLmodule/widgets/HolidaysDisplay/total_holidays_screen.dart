@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                 ),
           Container(
               child: widget._nameController.text == ""
-                  ? Text(
+                  ? AutoSizeText(
                       "برجاء اختيار اسم المستخدم",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -103,14 +104,14 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? Text(
+                                            ? AutoSizeText(
                                                 "لا يوجد نتائج للبحث",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
                                                 "لا يوجد اجازات لهذا المستخدم",
                                                 style: TextStyle(
                                                     fontSize: 15,

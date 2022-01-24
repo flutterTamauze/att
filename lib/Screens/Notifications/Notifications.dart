@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 
@@ -59,11 +61,13 @@ class NotificationItem extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     value.notification.length != 0
                         ? "الأشعارات"
                         : "لا يوجد اشعارات ",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: setResponsiveFontSize(17)),
                   ),
                 ),
                 SizedBox(
@@ -77,7 +81,7 @@ class NotificationItem extends StatelessWidget {
                     shrinkWrap: true,
                     primary: true,
                     itemBuilder: (context, index) {
-                      var notifiyProv = value.notification[index];
+                      final notifiyProv = value.notification[index];
 
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 3),
@@ -302,7 +306,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                     color: Colors.white,
                                   ),
                                 ),
-                                Text(
+                                AutoSizeText(
                                   widget.datetime,
                                   style: TextStyle(
                                       color: Colors.grey,
@@ -310,7 +314,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                           allowFontScalingSelf: true),
                                       fontWeight: FontWeight.w400),
                                 ),
-                                Text(
+                                AutoSizeText(
                                   widget.notifiTime ?? "",
                                   style: TextStyle(
                                       color: Colors.grey,
@@ -331,7 +335,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                 Container(
                                   child: Directionality(
                                     textDirection: ui.TextDirection.rtl,
-                                    child: Text(
+                                    child: AutoSizeText(
                                       widget.notificationTitle,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -347,7 +351,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                 Container(
                                   child: Directionality(
                                     textDirection: ui.TextDirection.rtl,
-                                    child: Text(
+                                    child: AutoSizeText(
                                       widget.notoficationSubtitle,
                                       style: TextStyle(
                                           color: Colors.grey[300],

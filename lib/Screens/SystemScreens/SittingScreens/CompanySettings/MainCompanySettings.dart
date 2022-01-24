@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,7 +51,7 @@ class _CompanySettingsState extends State<CompanySettings> {
   CompanyData comProvider;
   @override
   void initState() {
-    var now = DateTime.now();
+    final now = DateTime.now();
     userProvider = Provider.of<UserData>(context, listen: false);
     comProvider = Provider.of<CompanyData>(context, listen: false);
     fromDate = DateTime(now.year, now.month, now.day - 1);
@@ -191,7 +192,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            AutoSizeText(
                               "اعدادات الحضور و الأنصراف",
                               style: TextStyle(
                                   fontSize: ScreenUtil()
@@ -213,7 +214,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                       Container(
                                         alignment: Alignment.center,
                                         height: 50.h,
-                                        child: Text(
+                                        child: AutoSizeText(
                                           "سماحية التأخير (دقيقة)",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -286,7 +287,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("سماحية تسجيل الحضور"),
+                                AutoSizeText("سماحية تسجيل الحضور"),
                                 Directionality(
                                   textDirection: ui.TextDirection.rtl,
                                   child: Align(
@@ -313,7 +314,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                     Alignment.centerRight,
                                                 child: Row(
                                                   children: [
-                                                    Text(
+                                                    AutoSizeText(
                                                       "ساعات",
                                                       textAlign:
                                                           TextAlign.right,
@@ -325,7 +326,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                     SizedBox(
                                                       width: 5,
                                                     ),
-                                                    Text(
+                                                    AutoSizeText(
                                                       x,
                                                       textAlign:
                                                           TextAlign.right,
@@ -356,7 +357,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("سماحية تسجيل الأنصراف"),
+                                AutoSizeText("سماحية تسجيل الأنصراف"),
                                 Directionality(
                                   textDirection: ui.TextDirection.rtl,
                                   child: Align(
@@ -383,7 +384,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                     Alignment.centerRight,
                                                 child: Row(
                                                   children: [
-                                                    Text("ساعات",
+                                                    AutoSizeText("ساعات",
                                                         textAlign:
                                                             TextAlign.right,
                                                         style: TextStyle(
@@ -395,7 +396,7 @@ class _CompanySettingsState extends State<CompanySettings> {
                                                     SizedBox(
                                                       width: 5,
                                                     ),
-                                                    Text(
+                                                    AutoSizeText(
                                                       x,
                                                       textAlign:
                                                           TextAlign.right,
@@ -575,13 +576,13 @@ class _CompanySettingsState extends State<CompanySettings> {
                                           return RoundedLoadingIndicator();
                                         });
 
-                                    var userProvider = Provider.of<UserData>(
+                                    final userProvider = Provider.of<UserData>(
                                         context,
                                         listen: false);
-                                    var comProvider = Provider.of<CompanyData>(
-                                        context,
-                                        listen: false);
-                                    var msg = await Provider.of<DaysOffData>(
+                                    final comProvider =
+                                        Provider.of<CompanyData>(context,
+                                            listen: false);
+                                    final msg = await Provider.of<DaysOffData>(
                                             context,
                                             listen: false)
                                         .editDaysOffApi(

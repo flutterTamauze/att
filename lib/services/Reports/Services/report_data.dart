@@ -410,6 +410,8 @@ class ReportsData with ChangeNotifier {
     List<DailyReportUnit> newReportList;
     print("site id $siteId");
     if (await isConnectedToInternet()) {
+      isLoading = true;
+      notifyListeners();
       final response = await http.get(
           Uri.parse(
               "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
@@ -445,6 +447,7 @@ class ReportsData with ChangeNotifier {
                 .toList();
 
             dailyReport.attendListUnits = [...newReportList];
+            isLoading = false;
             notifyListeners();
             print("message ${dailyReport.isHoliday}");
             return decodedRes["message"];
@@ -461,6 +464,7 @@ class ReportsData with ChangeNotifier {
           dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
 
           dailyReport.attendListUnits.clear();
+          isLoading = false;
           notifyListeners();
           print("message ${dailyReport.isHoliday}");
           return "holiday";

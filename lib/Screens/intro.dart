@@ -123,7 +123,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Center(
-                              child: Text(
+                              child: AutoSizeText(
                                 "ابدأ",
                                 style: TextStyle(
                                     color: Colors.black,
@@ -267,7 +267,7 @@ class IntroContent extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
+                                    AutoSizeText(
                                       ". وداعا لمشاكل الصيانة و الأعطال",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -291,7 +291,7 @@ class IntroContent extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
+                                    AutoSizeText(
                                       ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -316,7 +316,7 @@ class IntroContent extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
+                                    AutoSizeText(
                                       ". وداعا للروتين و التأخير",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -343,7 +343,7 @@ class IntroContent extends StatelessWidget {
                                   children: [
                                     Directionality(
                                       textDirection: ui.TextDirection.rtl,
-                                      child: Text(
+                                      child: AutoSizeText(
                                         "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO .",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -366,7 +366,7 @@ class IntroContent extends StatelessWidget {
                               ],
                             ))
                           : FadeIn(
-                              child: Text(title,
+                              child: AutoSizeText(title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: setResponsiveFontSize(14),

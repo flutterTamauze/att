@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_summary_table_end.dart';
 
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermessionRow.dart';
@@ -46,12 +48,12 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                 ),
           Container(
               child: widget._nameController.text == ""
-                  ? Text(
+                  ? AutoSizeText(
                       "برجاء اختيار اسم المستخدم",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: ColorManager.primary,
-                          fontSize: 15),
+                          fontSize: setResponsiveFontSize(15)),
                     )
                   : DataTablePermessionHeader()),
           widget._nameController.text == ""
@@ -98,17 +100,21 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? Text(
+                                            ? AutoSizeText(
                                                 "لا يوجد نتائج للبحث",
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Text(
+                                            : AutoSizeText(
                                                 "لا يوجد اذونات لهذا المستخدم",
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ));

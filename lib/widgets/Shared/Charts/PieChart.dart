@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 
 class LateReportPieChart extends StatefulWidget {
@@ -24,12 +26,12 @@ class LateReportPieChartState extends State {
             child: Column(
               children: [
                 Container(
-                  child: Text(
+                  child: AutoSizeText(
                     "تحليل بيانات الموظفين عن فترة",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.orange[600],
-                        fontSize: 16),
+                        fontSize: setResponsiveFontSize(16)),
                   ),
                 ),
                 Expanded(
@@ -76,7 +78,7 @@ class LateReportPieChartState extends State {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red[600]),
                   ),
-                  Text(
+                  AutoSizeText(
                     " الغياب",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
@@ -92,7 +94,7 @@ class LateReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.orange)),
-                  Text(
+                  AutoSizeText(
                     " التأخير",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
@@ -108,7 +110,7 @@ class LateReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.green[600])),
-                  Text(
+                  AutoSizeText(
                     "الأنتظام",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
@@ -128,7 +130,7 @@ class LateReportPieChartState extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    var reportsData = Provider.of<ReportsData>(context);
+    final reportsData = Provider.of<ReportsData>(context);
     return List.generate(3, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;

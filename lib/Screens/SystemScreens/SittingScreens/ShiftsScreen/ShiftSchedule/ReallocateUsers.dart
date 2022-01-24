@@ -270,13 +270,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(widget.isEdit
+                                                  AutoSizeText(widget.isEdit
                                                       ? shifts[index]
                                                       : daysofflist
                                                           .reallocateUsers[
                                                               index]
                                                           .shiftname),
-                                                  Text(widget.isEdit
+                                                  AutoSizeText(widget.isEdit
                                                       ? sites[index]
                                                       : daysofflist
                                                           .reallocateUsers[
@@ -557,7 +557,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 16)),
+                                              fontSize:
+                                                  setResponsiveFontSize(16))),
                                     ],
                                   ),
                                   Divider()

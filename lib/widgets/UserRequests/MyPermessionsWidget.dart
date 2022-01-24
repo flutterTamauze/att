@@ -86,7 +86,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 widget.createdOn.toString().substring(0, 11),
                               ),
                               FaIcon(
@@ -115,7 +115,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                         ],
                       ),
                     ),
-                    title: Text(
+                    title: AutoSizeText(
                       widget.orderNum,
                     ),
                     children: [
@@ -135,10 +135,11 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
+                                              AutoSizeText(
                                                 "نوع الأذن : ${widget.permessionType == 1 ? "تأخير عن الحضور" : "انصراف مبكر"} ",
                                                 style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize:
+                                                      setResponsiveFontSize(14),
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -149,7 +150,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                 widget.desc == ""
                                                     ? Container()
                                                     : Container(
-                                                        child: Text(
+                                                        child: AutoSizeText(
                                                           "تفاصيل الطلب : ${widget.desc}",
                                                           textAlign:
                                                               TextAlign.right,
@@ -166,10 +167,12 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                     ? Container()
                                                     : Divider()
                                               ],
-                                              Text(
+                                              AutoSizeText(
                                                   "تاريخ الأذن : ${widget.date.toString().substring(0, 11)}"),
                                               Divider(),
-                                              Text(widget.permessionType == 1
+                                              AutoSizeText(widget
+                                                          .permessionType ==
+                                                      1
                                                   ? "اذن حتى الساعة : ${amPmChanger(int.parse(widget.duration))}"
                                                   : "اذن من الساعة : ${amPmChanger(int.parse(widget.duration))}"),
                                               widget.desc != null
@@ -191,14 +194,15 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                                     padding: EdgeInsets.only(
                                                                         bottom:
                                                                             10.h),
-                                                                    child: Text(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "سبب الرفض : ${widget.adminComment}",
                                                                       textAlign:
                                                                           TextAlign
                                                                               .right,
                                                                       style: TextStyle(
-                                                                          fontSize:
-                                                                              14,
+                                                                          fontSize: setResponsiveFontSize(
+                                                                              14),
                                                                           fontWeight: FontWeight
                                                                               .w700,
                                                                           color:
@@ -245,10 +249,12 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                           Alignment.centerRight,
                                                       padding: EdgeInsets.only(
                                                           bottom: 5),
-                                                      child: Text(
+                                                      child: AutoSizeText(
                                                         'تم ارسال الطلب برجاء انتظار الرد',
                                                         style: TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize:
+                                                              setResponsiveFontSize(
+                                                                  15),
                                                           color:
                                                               Colors.grey[700],
                                                           fontWeight:

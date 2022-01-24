@@ -1,8 +1,10 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
@@ -40,11 +42,11 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      Text(
+                      AutoSizeText(
                         "تنبية !",
                         style: TextStyle(
                             color: Colors.orange,
-                            fontSize: 18,
+                            fontSize: setResponsiveFontSize(18),
                             fontWeight: FontWeight.bold),
                       ),
                       Divider(
@@ -53,7 +55,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          AutoSizeText(
                             "نعتذر لقد تم انتهاء اشتراك الشركة بتاريخ",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
@@ -61,13 +63,13 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          AutoSizeText(
                             _companyService.suspentionTime
                                 .toString()
                                 .substring(0, 11),
                             style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 15,
+                                fontSize: setResponsiveFontSize(15),
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 2),
                           ),
@@ -77,7 +79,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                           RoundedButton(
                               title: "إغلاق",
                               onPressed: () async {
-                                FirebaseMessaging _firebaseMessaging =
+                                final FirebaseMessaging _firebaseMessaging =
                                     FirebaseMessaging.instance;
                                 bool isError = false;
                                 await _firebaseMessaging

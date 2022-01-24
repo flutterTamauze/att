@@ -131,15 +131,16 @@ class UserHolidaysData with ChangeNotifier {
 
   getPendingCompanyHolidays(int companyId, String userToken) async {
     if (pageIndex == 0) {
-      pendingCompanyHolidays = [];
+      pendingCompanyHolidays.clear();
     } else {
       paginatedIsLoading = true;
       notifyListeners();
     }
-    pageIndex++;
+
     final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
     final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     final bool isConnected = await networkInfoImp.isConnected;
+    pageIndex++;
     if (isConnected) {
       final response = await http.get(
           Uri.parse(
@@ -148,12 +149,8 @@ class UserHolidaysData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print("permessions");
-      print(response.request.url);
-      print(response.statusCode);
-
-      print("holidays");
-      print(response.body);
+      print("$pageIndex after call ");
+      log(response.body);
       final decodedResp = json.decode(response.body);
       if (decodedResp["message"] == "Success") {
         final permessionsObj = jsonDecode(response.body)['data'] as List;

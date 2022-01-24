@@ -460,14 +460,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                           Icons.search,
                                                           color: Colors.grey,
                                                         ),
-                                                        hintStyle:
-                                                            TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
+                                                        hintStyle: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize:
+                                                                setResponsiveFontSize(
+                                                                    15),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
                                                         hintText:
                                                             "اختر بأسم البلد او الرقم الدولى",
                                                         border: OutlineInputBorder(
@@ -568,14 +568,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                           Icons.search,
                                                           color: Colors.grey,
                                                         ),
-                                                        hintStyle:
-                                                            TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
+                                                        hintStyle: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize:
+                                                                setResponsiveFontSize(
+                                                                    15),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
                                                         hintText:
                                                             "اختر بأسم البلد او الرقم الدولى",
                                                         border: OutlineInputBorder(
@@ -835,7 +835,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               timeInSecForIosWeb: 1,
                                               backgroundColor: Colors.green,
                                               textColor: Colors.white,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                           Provider.of<SiteData>(context,
                                                   listen: false)
                                               .setSiteValue("كل المواقع");
@@ -854,7 +855,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER,
                                               textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                         } else if (msg == "user exists") {
                                           Fluttertoast.showToast(
                                               msg:
@@ -864,7 +866,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER,
                                               textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                         } else if (msg == "Limit Reached") {
                                           Fluttertoast.showToast(
                                               msg:
@@ -883,7 +886,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER,
                                               textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                         } else if (msg == "noInternet") {
                                           Fluttertoast.showToast(
                                               msg:
@@ -893,7 +897,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               backgroundColor: Colors.red,
                                               gravity: ToastGravity.CENTER,
                                               textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                         } else {
                                           Fluttertoast.showToast(
                                               msg: "خطأ في اضافة المستخدم",
@@ -902,7 +907,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               gravity: ToastGravity.CENTER,
                                               backgroundColor: Colors.red,
                                               textColor: Colors.black,
-                                              fontSize: 16.0);
+                                              fontSize:
+                                                  setResponsiveFontSize(16));
                                         }
                                       }
                                     }
@@ -983,7 +989,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       "اضافة من جهات الاتصال",
                                       maxLines: 1,
                                       style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: setResponsiveFontSize(15),
                                           decoration: TextDecoration.underline,
                                           color: Colors.orange),
                                     ),

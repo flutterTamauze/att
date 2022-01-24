@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -30,6 +32,7 @@ import 'package:qr_users/widgets/XlsxExportButton.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class DailyReportScreen extends StatefulWidget {
   DailyReportScreen();
@@ -48,9 +51,27 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   DateTime selectedDate;
   DateTime today;
   int siteID;
+  var percent = 0;
+  Timer timer;
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    percent = 0;
+    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      setState(() {
+        percent += 2;
+        print(percent);
+        if (percent >= 65) {
+          timer.cancel();
+        }
+      });
+    });
     date = apiFormatter.format(DateTime.now());
     getDailyReport(siteId, date, context);
     selectedDateString = DateTime.now().toString();
@@ -197,9 +218,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-                                  return LoadingIndicator();
+                                  return ProgressBar(percent, 70, 60);
                                 case ConnectionState.done:
                                   log("data ${snapshot.data}");
+
+                                  timer.cancel();
                                   return Column(
                                     children: [
                                       Container(
@@ -516,5 +539,48 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
         MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
         (Route<dynamic> route) => false);
     return Future.value(false);
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  final int percent;
+  final int maxValue;
+  final int maxPercent;
+
+  ProgressBar(this.percent, this.maxValue, this.maxPercent);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Container(
+            width: 400,
+            height: 300,
+            child: Lottie.asset("resources/kiteLoader.json"),
+          ),
+          AutoSizeText(
+            percent > maxPercent ? "على وشك الأنتهاء " : "برجاء الأنتظار ",
+            style: TextStyle(
+                fontSize: setResponsiveFontSize(17),
+                fontWeight: FontWeight.w700),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: FAProgressBar(
+                currentValue: percent,
+                backgroundColor: Colors.grey[200],
+                maxValue: maxValue,
+                progressColor: ColorManager.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

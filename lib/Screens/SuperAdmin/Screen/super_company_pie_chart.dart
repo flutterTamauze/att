@@ -108,7 +108,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                           width: 35.w,
                                           height: 25.h,
                                           child: Center(
-                                            child: Text(
+                                            child: AutoSizeText(
                                               userData.superCompaniesChartModel
                                                   .totalEmp
                                                   .toString(),

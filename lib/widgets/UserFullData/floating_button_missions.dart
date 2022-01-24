@@ -1,8 +1,10 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/missions_summary_table_end.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,11 +63,12 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                   ? LoadingIndicator()
                                   : Column(
                                       children: [
-                                        Text(
+                                        AutoSizeText(
                                           "مأموريات المستخدم",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              fontSize:
+                                                  setResponsiveFontSize(20)),
                                         ),
                                         Divider(),
                                         SizedBox(
@@ -101,7 +104,8 @@ class FadeInMissionsFAbutton extends StatelessWidget {
                                                       return userMissionsList
                                                               .isEmpty
                                                           ? Center(
-                                                              child: Text(
+                                                              child:
+                                                                  AutoSizeText(
                                                               "لا يوجد مأموريات لهذا المستخدم",
                                                               style: TextStyle(
                                                                   fontSize: 15,

@@ -102,7 +102,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 child: InternationalPhoneNumberInput(
                                   textStyle: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15),
+                                      fontSize: setResponsiveFontSize(15)),
                                   isEnabled: true,
                                   locale: "ar",
                                   countries: [
@@ -162,7 +162,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       ),
                                       hintStyle: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: 15,
+                                          fontSize: setResponsiveFontSize(15),
                                           fontWeight: FontWeight.w700),
                                       hintText:
                                           "اختر بأسم البلد او الرقم الدولى",
@@ -605,7 +605,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 height: 10.h,
                               ),
                               reSend
-                                  ? Text(
+                                  ? AutoSizeText(
                                       timerText,
                                       style: TextStyle(
                                           fontSize: setResponsiveFontSize(17),
@@ -943,32 +943,5 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
         });
       }
     });
-  }
-}
-
-class Countdown extends AnimatedWidget {
-  Countdown({Key key, this.animation}) : super(key: key, listenable: animation);
-  Animation<int> animation;
-
-  @override
-  build(BuildContext context) {
-    Duration clockTimer = Duration(seconds: animation.value);
-
-    String timerText =
-        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
-
-    print('animation.value  ${animation.value} ');
-    print('inMinutes ${clockTimer.inMinutes.toString()}');
-    print('inSeconds ${clockTimer.inSeconds.toString()}');
-    print(
-        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
-
-    return Text(
-      "$timerText",
-      style: TextStyle(
-        fontSize: 110,
-        color: Theme.of(context).primaryColor,
-      ),
-    );
   }
 }

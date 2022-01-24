@@ -118,7 +118,7 @@ class UserDataFieldInReport extends StatelessWidget {
             Expanded(
                 child: Container(
               height: 20.h,
-              child: Text(
+              child: AutoSizeText(
                 text ?? "",
                 maxLines: 1,
                 style: TextStyle(

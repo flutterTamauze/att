@@ -295,10 +295,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                AutoSizeText(
                                   "تاريخ التعيين",
                                 ),
-                                Text(DateFormat('yMMMd')
+                                AutoSizeText(DateFormat('yMMMd')
                                     .format(userProv.createdOn)
                                     .toString())
                               ],
@@ -325,7 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
+                                child: AutoSizeText(
                                   "تغير كلمة السر ",
                                   style: TextStyle(
                                       color: ColorManager.primary,

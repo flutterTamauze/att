@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,7 +93,7 @@ class NotificationPressedOptions extends StatelessWidget {
           SizedBox(
             width: 8.w,
           ),
-          Text(
+          AutoSizeText(
             title,
             textAlign: TextAlign.right,
             style: TextStyle(

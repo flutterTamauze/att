@@ -170,8 +170,8 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                   Provider.of<SiteData>(context)
                                                           .siteValue !=
                                                       "كل المواقع"
-                                              ? Text("لا يوجد مناوبات")
-                                              : Text("كل المناوبات"),
+                                              ? AutoSizeText("لا يوجد مناوبات")
+                                              : AutoSizeText("كل المناوبات"),
                                           value: prov.siteValue == "كل المواقع"
                                               ? null
                                               : shiftData.shifts.isEmpty
@@ -344,7 +344,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                             top: 20,
                                             bottom: 14),
                                         errorStyle: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: setResponsiveFontSize(13),
                                           height: 0.7,
                                         ),
                                         errorMaxLines: 4),

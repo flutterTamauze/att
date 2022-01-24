@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -319,7 +320,8 @@ class MyListTile extends StatelessWidget {
                                                 fontWeight: FontWeight.w700,
                                                 letterSpacing: 1,
                                                 height: 2,
-                                                fontSize: 14),
+                                                fontSize:
+                                                    setResponsiveFontSize(14)),
                                             textAlign: TextAlign.right,
                                           ),
                                         ),
@@ -400,9 +402,10 @@ class MyListTile extends StatelessWidget {
                             phoneNum1,
                             maxLines: 1,
                             style: TextStyle(
-                                color: Colors.orange[700],
-                                fontWeight: FontWeight.w700,
-                                fontSize: 17),
+                              color: Colors.orange[700],
+                              fontWeight: FontWeight.w700,
+                              fontSize: setResponsiveFontSize(17),
+                            ),
                           ),
                         ),
                       ],
@@ -434,7 +437,7 @@ class MyListTile extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.orange[700],
                                 fontWeight: FontWeight.w700,
-                                fontSize: 17),
+                                fontSize: setResponsiveFontSize(17)),
                           ),
                         ),
                       ],

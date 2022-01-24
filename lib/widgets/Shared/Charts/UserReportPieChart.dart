@@ -80,7 +80,7 @@ class UserReportPieChartState extends State {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red[600]),
                   ),
-                  Text(
+                  AutoSizeText(
                     " الغياب",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
@@ -96,7 +96,7 @@ class UserReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.orange)),
-                  Text(
+                  AutoSizeText(
                     "التأخير",
                     style: TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
@@ -113,7 +113,7 @@ class UserReportPieChartState extends State {
                       height: 20,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.green[600])),
-                  Text(
+                  AutoSizeText(
                     "الانتظام ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -200,7 +200,7 @@ class UserReportPieChartState extends State {
             title: (100 -
                     (((reportsData.userAttendanceReport.totalAbsentDay) /
                                 ((reportsData.userAttendanceReport
-                                     .userAttendListUnits.length)) *
+                                    .userAttendListUnits.length)) *
                                 100)
                             .toDouble() +
                         ((reportsData.userAttendanceReport.totalLateDay) /

@@ -1,9 +1,11 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -70,7 +72,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
+                          AutoSizeText(
                             widget.createdOn.substring(0, 11),
                           ),
                           widget.isAdmin
@@ -86,7 +88,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                     ],
                   ),
                 ),
-                title: Text(
+                title: AutoSizeText(
                   widget.userName,
                 ),
                 children: [
@@ -104,25 +106,25 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                               children: [
                                 widget.vacationDaysCount[1]
                                         .isBefore(widget.vacationDaysCount[0])
-                                    ? Text(
+                                    ? AutoSizeText(
                                         " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: setResponsiveFontSize(14),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       )
-                                    : Text(
+                                    : AutoSizeText(
                                         "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: setResponsiveFontSize(14),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                 Divider(),
-                                Text(
+                                AutoSizeText(
                                   "نوع الأجازة : ${widget.holidayType == 1 ? "عارضة" : widget.holidayType == 3 ? "مرضية" : "رصيد اجازات"} ",
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: setResponsiveFontSize(14),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -130,11 +132,12 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                 widget.comments != null
                                     ? widget.comments == ""
                                         ? Container()
-                                        : Text(
+                                        : AutoSizeText(
                                             "تفاصيل الطلب : ${widget.comments}",
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize:
+                                                  setResponsiveFontSize(14),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           )

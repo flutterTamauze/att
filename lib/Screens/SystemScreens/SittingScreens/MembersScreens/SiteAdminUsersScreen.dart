@@ -129,7 +129,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                             top: 20,
                                             bottom: 14),
                                         errorStyle: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: setResponsiveFontSize(13),
                                           height: 0.7,
                                         ),
                                         errorMaxLines: 4),
@@ -305,7 +305,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                           print(holder);
                                           prov.setDropDownShift(holder);
                                         },
-                                        hint: Text("كل المناوبات"),
+                                        hint: AutoSizeText("كل المناوبات"),
                                         value: value
                                             .shiftsList[prov.dropDownShiftIndex]
                                             .shiftName
@@ -664,7 +664,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                   height: 50.h,
                                                                                   child: Padding(
                                                                                     padding: const EdgeInsets.all(10.0),
-                                                                                    child: Text(
+                                                                                    child: AutoSizeText(
                                                                                       value.userSearchMember[index].username,
                                                                                     ),
                                                                                   ),
@@ -781,7 +781,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         timeInSecForIosWeb: 1,
                                                                                         backgroundColor: Colors.green,
                                                                                         textColor: Colors.white,
-                                                                                        fontSize: 16.0,
+                                                                                        fontSize: setResponsiveFontSize(16),
                                                                                       );
                                                                                     } else {
                                                                                       Fluttertoast.showToast(
@@ -791,7 +791,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         timeInSecForIosWeb: 1,
                                                                                         backgroundColor: Colors.red,
                                                                                         textColor: Colors.black,
-                                                                                        fontSize: 16.0,
+                                                                                        fontSize: setResponsiveFontSize(16),
                                                                                       );
                                                                                     }
                                                                                     Navigator.pop(context);

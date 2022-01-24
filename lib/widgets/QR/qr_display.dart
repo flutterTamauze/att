@@ -90,7 +90,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             Container(
                                               child: Column(
                                                 children: [
-                                                  Text(
+                                                  AutoSizeText(
                                                     DateFormat('hh:mm:s ')
                                                         .format(
                                                             countryDateTime),
@@ -105,7 +105,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                   SizedBox(
                                                     height: 5,
                                                   ),
-                                                  Text(
+                                                  AutoSizeText(
                                                     DateTime.now()
                                                         .toString()
                                                         .substring(0, 11),
@@ -160,7 +160,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             ),
                                             Column(
                                               children: [
-                                                Text(
+                                                AutoSizeText(
                                                   shiftApiConsumer
                                                       .qrShift.shiftName,
                                                   style: TextStyle(

@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
@@ -141,7 +143,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                       value: x,
                                       child: Align(
                                         alignment: Alignment.center,
-                                        child: Text(
+                                        child: AutoSizeText(
                                           x,
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
@@ -179,10 +181,10 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           ),
                         ),
                       ),
-                      Text(
+                      AutoSizeText(
                         "عرض طلبات",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: setResponsiveFontSize(17),
                           fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.right,
@@ -251,7 +253,8 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               : filteredOrderData == null ||
                                       filteredOrderData.isEmpty
                                   ? Center(
-                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                      child: AutoSizeText(
+                                          "لا يوجد طلب بهذا الرقم"),
                                     )
                                   : ExpandedOrderTile(
                                       isAdmin: false,
@@ -306,7 +309,8 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                               : filteredPermessions == null ||
                                       filteredPermessions.isEmpty
                                   ? Center(
-                                      child: Text("لا يوجد طلب بهذا الرقم"),
+                                      child: AutoSizeText(
+                                          "لا يوجد طلب بهذا الرقم"),
                                     )
                                   : UserPermessionListView(
                                       permessionsList: filteredPermessions,

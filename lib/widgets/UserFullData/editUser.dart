@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //Update Kotlin to '1.3.50' to '1.4.21'
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
 
@@ -82,14 +83,14 @@ class _EditMemberState extends State<EditMember> {
 
           if (msg == "Success") {
             Fluttertoast.showToast(
-                    msg: "تم تعديل المستخدم بنجاح",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0)
-                .then((value) {
+              msg: "تم تعديل المستخدم بنجاح",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: setResponsiveFontSize(16),
+            ).then((value) {
               if (Provider.of<UserData>(context, listen: false).user.id ==
                   widget.member.id) {
                 // Provider.of<UserData>(context, listen: false).siteName =
@@ -98,10 +99,10 @@ class _EditMemberState extends State<EditMember> {
                 //         .name;
               }
             }).then((value) => Navigator.of(context).push(
-                      new MaterialPageRoute(
-                        builder: (context) => UsersScreen(-1, false, ""),
-                      ),
-                    ));
+                  new MaterialPageRoute(
+                    builder: (context) => UsersScreen(-1, false, ""),
+                  ),
+                ));
 
             // setState(() {
             //   edit = false;
@@ -114,7 +115,7 @@ class _EditMemberState extends State<EditMember> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(16));
           } else if (msg == "not exist") {
             Fluttertoast.showToast(
                 msg: "خطأ في تعديل المستخدم:المستخدم غير موجود",
@@ -123,7 +124,7 @@ class _EditMemberState extends State<EditMember> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(16));
           } else if (msg == "failed") {
             Fluttertoast.showToast(
                 msg: "خطأ في تعديل المستخدم",
@@ -132,7 +133,7 @@ class _EditMemberState extends State<EditMember> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(16));
           } else if (msg == "noInternet") {
             Fluttertoast.showToast(
                 msg: "خطأ في تعديل المستخدم:لايوجد اتصال بالانترنت",
@@ -141,7 +142,7 @@ class _EditMemberState extends State<EditMember> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(16));
           } else {
             Fluttertoast.showToast(
                 msg: "خطأ في تعديل المستخدم",
@@ -150,7 +151,7 @@ class _EditMemberState extends State<EditMember> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(16));
           }
           Navigator.pop(context);
           Navigator.pop(context);

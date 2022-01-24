@@ -293,7 +293,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 padding: EdgeInsets.all(5),
                                                 alignment:
                                                     Alignment.centerRight,
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   "تم اختيار $dateDifference يوم ",
                                                   style: TextStyle(
                                                       color: Colors.grey,
@@ -337,7 +337,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       child: Align(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text(
+                                                        child: AutoSizeText(
                                                           x,
                                                           textAlign:
                                                               TextAlign.right,
@@ -536,7 +536,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 "نوع الأذن",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 11),
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            11)),
                                                 maxLines: 2,
                                               ),
                                             ],
@@ -586,7 +588,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             child: Align(
                                                               alignment: Alignment
                                                                   .centerRight,
-                                                              child: Text(
+                                                              child:
+                                                                  AutoSizeText(
                                                                 x,
                                                                 textAlign:
                                                                     TextAlign
@@ -622,12 +625,14 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   padding: EdgeInsets.all(10),
                                                   child: Row(
                                                     children: [
-                                                      Text(
+                                                      AutoSizeText(
                                                         "تاريخ الأذن",
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: 13),
+                                                            fontSize:
+                                                                setResponsiveFontSize(
+                                                                    13)),
                                                       ),
                                                     ],
                                                   ),
@@ -717,7 +722,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   padding: EdgeInsets.all(10),
                                                   child: Row(
                                                     children: [
-                                                      Text(
+                                                      AutoSizeText(
                                                         selectedPermession ==
                                                                 "تأخير عن الحضور"
                                                             ? "اذن حتى الساعة"
@@ -725,7 +730,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: 13),
+                                                            fontSize:
+                                                                setResponsiveFontSize(
+                                                                    13)),
                                                       ),
                                                     ],
                                                   ),
@@ -1059,7 +1066,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                               value.shifts[holder].shiftId;
                                         }
                                       },
-                                      hint: Text("كل المناوبات"),
+                                      hint: AutoSizeText("كل المناوبات"),
                                       value:
                                           widget.prov.siteValue == "كل المواقع"
                                               ? null
@@ -1209,9 +1216,11 @@ class VacationCardHeader extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Text(
+              AutoSizeText(
                 header,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: setResponsiveFontSize(13)),
               ),
             ],
           ),

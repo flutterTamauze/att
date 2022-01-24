@@ -28,7 +28,7 @@ class SinglePieChartItem extends StatelessWidget {
           const SizedBox(
             width: 5,
           ),
-          Text(count),
+          AutoSizeText(count),
           Expanded(
             child: Container(),
           ),

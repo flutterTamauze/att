@@ -89,7 +89,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 widget.createdDate.substring(0, 11),
                               ),
                               FaIcon(
@@ -118,7 +118,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                         ],
                       ),
                     ),
-                    title: Text(
+                    title: AutoSizeText(
                       widget.orderNum,
                     ),
                     children: [
@@ -145,24 +145,28 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                             widget.vacationDaysCount[1]
                                                     .isBefore(widget
                                                         .vacationDaysCount[0])
-                                                ? Text(
+                                                ? AutoSizeText(
                                                     " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                                     style: TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              14),
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
                                                   )
-                                                : Text(
+                                                : AutoSizeText(
                                                     "مدة الأجازة : من ${widget.vacationDaysCount[0].toString().substring(0, 11)} إلي ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
                                                     style: TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              14),
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
                                                   ),
                                             Divider(),
-                                            Text(
+                                            AutoSizeText(
                                               "نوع الأجازة : ${getVacationType(widget.holidayType)} ",
                                               style: TextStyle(
                                                 fontSize:
@@ -178,7 +182,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                     ? Container()
                                                     : Container(
                                                         width: 300.w,
-                                                        child: Text(
+                                                        child: AutoSizeText(
                                                           "تفاصيل الطلب : ${widget.comments}",
                                                           textAlign:
                                                               TextAlign.right,
@@ -209,7 +213,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                                       .only(
                                                                           bottom:
                                                                               10.h),
-                                                                  child: Text(
+                                                                  child:
+                                                                      AutoSizeText(
                                                                     "سبب الرفض : ${widget.adminComment}",
                                                                     textAlign:
                                                                         TextAlign
@@ -262,10 +267,12 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                         Alignment.centerRight,
                                                     padding: EdgeInsets.only(
                                                         bottom: 5),
-                                                    child: Text(
+                                                    child: AutoSizeText(
                                                       'تم ارسال الطلب برجاء انتظار الرد',
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                15),
                                                         color: Colors.grey[700],
                                                         fontWeight:
                                                             FontWeight.w500,

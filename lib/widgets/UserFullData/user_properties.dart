@@ -235,7 +235,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                 AutoSizeText(
                                   "السماح للمستخدم بالتسجيل بالبطاقة",
                                   style: TextStyle(
-                                      fontSize: setResponsiveFontSize(13)),
+                                      fontSize: setResponsiveFontSize(15)),
                                 ),
                                 Container(
                                   width: 20.w,
@@ -279,10 +279,10 @@ class _UserPropertiesState extends State<UserProperties> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                AutoSizeText(
                                   "عدم الظهور في التقرير",
                                   style: TextStyle(
-                                      fontSize: setResponsiveFontSize(13)),
+                                      fontSize: setResponsiveFontSize(15)),
                                 ),
                                 Container(
                                   width: 20.w,

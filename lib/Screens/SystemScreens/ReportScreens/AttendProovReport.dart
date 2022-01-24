@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -335,7 +336,7 @@ class DisplayAttendProofList extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
           child: Row(
             children: [
-              Text(attendProofList.username,
+              AutoSizeText(attendProofList.username,
                   style: TextStyle(fontWeight: FontWeight.w600)),
               Expanded(
                 child: Container(),

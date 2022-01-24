@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,8 +42,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future getDaysOff() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvider = Provider.of<CompanyData>(context, listen: false);
 
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
@@ -51,8 +52,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserData>(context, listen: false);
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvier = Provider.of<CompanyData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
         onWillPop: onWillPop,
@@ -179,10 +180,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: Icons.person,
                             onTap: () async {
                               if (userProvider.user.userType == 2) {
-                                var siteShiftData = Provider.of<SiteShiftsData>(
-                                    context,
-                                    listen: false);
-                                var siteProv = Provider.of<SiteData>(context,
+                                final siteShiftData =
+                                    Provider.of<SiteShiftsData>(context,
+                                        listen: false);
+                                final siteProv = Provider.of<SiteData>(context,
                                     listen: false);
 
                                 if (userProvider.user.userType == 4 ||
@@ -227,21 +228,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       .setSiteValue("كل المواقع");
                                   Provider.of<SiteData>(context, listen: false)
                                       .setDropDownIndex(0);
-                                  if (Provider.of<SiteData>(context,
-                                          listen: false)
-                                      .sitesList
-                                      .isEmpty) {
-                                    await Provider.of<SiteData>(context,
-                                            listen: false)
-                                        .getSitesByCompanyId(
-                                      comProvier.com.id,
-                                      userProvider.user.userToken,
-                                      context,
-                                    )
-                                        .then((value) async {
-                                      print("Got Sites");
-                                    });
-                                  }
 
                                   Navigator.of(context).push(
                                     new MaterialPageRoute(
@@ -329,11 +315,11 @@ class ServiceTile extends StatelessWidget {
           color: Colors.orange,
         ),
         onTap: onTap,
-        title: Text(
+        title: AutoSizeText(
           title,
           textAlign: TextAlign.right,
         ),
-        subtitle: Text(
+        subtitle: AutoSizeText(
           subTitle,
           textAlign: TextAlign.right,
         ),
@@ -362,7 +348,7 @@ class CustomRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
+            AutoSizeText(
               model.dayName,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),

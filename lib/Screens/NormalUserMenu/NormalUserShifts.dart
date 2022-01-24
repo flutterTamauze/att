@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
@@ -28,17 +29,17 @@ class UserCurrentShifts extends StatefulWidget {
 
 String amPmChanger(int intTime) {
   int hours = (intTime ~/ 100);
-  int min = intTime - (hours * 100);
+  final int min = intTime - (hours * 100);
 
-  var ampm = hours >= 12 ? 'PM' : 'AM';
+  final ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours != 0 ? hours : 12; //
 
-  String hoursStr =
+  final String hoursStr =
       hours < 10 ? '0$hours' : hours.toString(); // the hour '0' should be '12'
-  String minStr = min < 10 ? '0$min' : min.toString();
+  final String minStr = min < 10 ? '0$min' : min.toString();
 
-  var strTime = '$hoursStr:$minStr$ampm';
+  final strTime = '$hoursStr:$minStr$ampm';
 
   return strTime;
 }
@@ -68,7 +69,8 @@ int shifttime = 1300;
 class _UserCurrentShiftsState extends State<UserCurrentShifts> {
   @override
   void initState() {
-    Shift userShift = Provider.of<ShiftApi>(context, listen: false).userShift;
+    final Shift userShift =
+        Provider.of<ShiftApi>(context, listen: false).userShift;
 
     _timeInController.text = amPmChanger(userShift.shiftStartTime);
     _timeOutController.text = amPmChanger(userShift.shiftEndTime);
@@ -93,10 +95,10 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
     print("current id");
     print(id);
 
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
     print(list.length);
 
-    List<Shift> currentShift =
+    final List<Shift> currentShift =
         list.where((element) => element.shiftId == id).toList();
     return currentShift[0].shiftName;
   }
@@ -104,17 +106,17 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
   String getSiteNameById(
     int id,
   ) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
     print(list.length);
 
-    List<Site> currentSite = list.where((element) => element.id == id).toList();
+    final List<Site> currentSite =
+        list.where((element) => element.id == id).toList();
     return currentSite[0].name;
   }
 
   @override
   Widget build(BuildContext context) {
-    var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-    var shiftDate =
+    final shiftDate =
         Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
     return Scaffold(
         endDrawer: NotificationItem(),
@@ -165,7 +167,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Text(
+                                  AutoSizeText(
                                     "مناوباتى المجدولة",
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600),
@@ -180,20 +182,21 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text("من",
+                                          AutoSizeText("من",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: ColorManager.primary)),
-                                          Text(shiftDate.scheduleFromTime
+                                          AutoSizeText(shiftDate
+                                              .scheduleFromTime
                                               .toString()
                                               .substring(0, 11)),
-                                          Text(
+                                          AutoSizeText(
                                             "الى",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: ColorManager.primary),
                                           ),
-                                          Text(shiftDate.scheduleToTime
+                                          AutoSizeText(shiftDate.scheduleToTime
                                               .toString()
                                               .substring(0, 11)),
                                         ],
@@ -310,27 +313,27 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(weekDays[currentIndex],
+                      AutoSizeText(weekDays[currentIndex],
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              fontSize: setResponsiveFontSize(13),
                               color: ColorManager.primary)),
                       Container(
                         alignment: Alignment.center,
-                        child: Text(
+                        child: AutoSizeText(
                           sitename,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 13,
+                            fontSize: setResponsiveFontSize(13),
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Text(
+                      AutoSizeText(
                         shiftname,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 13,
+                          fontSize: setResponsiveFontSize(13),
                         ),
                       ),
                     ],
@@ -400,7 +403,7 @@ class ExpansionUserShiftTile extends StatelessWidget {
                   SizedBox(
                     width: 5,
                   ),
-                  Text(
+                  AutoSizeText(
                     title,
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:device_info/device_info.dart';
 
@@ -12,6 +13,7 @@ import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/MLmodule/recognition_services/FaceDetectorPainter.dart';
 
 import 'package:image/image.dart' as img;
@@ -134,7 +136,7 @@ class TakePictureScreenState extends State<CameraPicker>
     final Size imageSize = Size(cameraController.value.previewSize.height,
         cameraController.value.previewSize.width);
 
-    CustomPainter customPainter =
+    final CustomPainter customPainter =
         FaceDetectorPainter(imageSize, scannResult, cameraLensDirection);
 
     return CustomPaint(
@@ -144,7 +146,7 @@ class TakePictureScreenState extends State<CameraPicker>
 
   File image;
   Future<File> testCompressAndGetFile({File file, String targetPath}) async {
-    var result = await FlutterImageCompress.compressAndGetFile(
+    final result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
       quality: 30,
@@ -154,9 +156,9 @@ class TakePictureScreenState extends State<CameraPicker>
   }
 
   void _predict() async {
-    img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
+    final img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
     print(imageInput.data);
-    var pred = _classifier.predict(imageInput);
+    final pred = _classifier.predict(imageInput);
     print("pred $pred");
     setState(() {
       this.category = pred;
@@ -304,7 +306,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                               image = File(newPath);
                                             });
 
-                                          File imgCompressed =
+                                          final File imgCompressed =
                                               await testCompressAndGetFile(
                                                   file: img,
                                                   targetPath: newPath);
@@ -344,7 +346,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                               Future.delayed(
                                                   const Duration(seconds: 3),
                                                   () async {
-                                                var msg = await Provider.of<
+                                                final msg = await Provider.of<
                                                             UserData>(context,
                                                         listen: false)
                                                     .attendByCard(
@@ -353,218 +355,254 @@ class TakePictureScreenState extends State<CameraPicker>
                                                         cardCode: widget.qrText,
                                                         image: imgCompressed);
                                                 print(msg);
-                                                if (msg ==
-                                                    "Success : successfully registered") {
-                                                  Fluttertoast.showToast(
-                                                      msg: "تم التسجيل بنجاح",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.orange,
-                                                      textColor: Colors.white);
-                                                } else if (msg ==
-                                                    "Failed : You can't attend outside your company!") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "لا يمكنك التسجيل لشخص خارج شركتك",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Success : already registered attend") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "لقد تم تسجيل الحضور من قبل",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      textColor: Colors.orange);
-                                                } else if (msg ==
-                                                    "Success : already registered leave") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "لقد تم تسجيل الأنصراف من قبل",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      textColor: Colors.orange);
-                                                } else if (msg ==
-                                                    "Success : User was not proof") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "you can't register now during shift!") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "لا يمكن التسجيل بمناوبتك الأن",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Sorry : You have an external mission today!") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "لم يتم التسجيل: لديك مأمورية خارجية ",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      textColor: Colors.orange);
-                                                } else if (msg ==
-                                                    "Sorry : Today is an official vacation!") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          " لم يتم التسجيل : عطلة رسمية",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "noInternet") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Sorry : You have an holiday today!") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          " لم يتم التسجيل: اجازة شخصية",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg == "off") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg == "mock") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : Invaild Qrcode Index was outside the bounds of the array.") {
-                                                  await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: كود غير صحيح",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Fail : Using another attend method") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : You are not allowed to sign by card! ") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "ليس مصرح لك التسجيل بالبطاقة",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : Mac address not match") {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : Location not found") {
-                                                  await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : User Id not valid") {
-                                                  await Fluttertoast.showToast(
-                                                      msg:
-                                                          "خطأ فى التسجيل: كود غير صحيح",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
-                                                } else if (msg ==
-                                                    "Failed : Out of shift time") {
-                                                  await Fluttertoast.showToast(
-                                                      msg:
-                                                          "التسجيل غير متاح الأن",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.orange,
-                                                      textColor: Colors.black);
-                                                } else {
-                                                  await Fluttertoast.showToast(
-                                                      msg: "خطأ فى التسجيل",
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.black);
+
+                                                switch (msg) {
+                                                  case "Success : successfully registered":
+                                                    Fluttertoast.showToast(
+                                                        msg: "تم التسجيل بنجاح",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.orange,
+                                                        textColor:
+                                                            Colors.white);
+                                                    break;
+                                                  case "Failed : You can't attend outside your company!":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لا يمكنك التسجيل لشخص خارج شركتك",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Success : already registered attend":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لقد تم تسجيل الحضور من قبل",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.black,
+                                                        textColor:
+                                                            Colors.orange);
+
+                                                    break;
+                                                  case "Success : already registered leave":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لقد تم تسجيل الأنصراف من قبل",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.black,
+                                                        textColor:
+                                                            Colors.orange);
+                                                    break;
+                                                  case "Fail : You can't register leave now":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لا يمكنك تسجيل الإنصراف الأن",
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                    break;
+                                                  case "Success : User was not proof":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "you can't register now during shift!":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لا يمكن التسجيل بمناوبتك الأن",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Sorry : You have an external mission today!":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "لم يتم التسجيل: لديك مأمورية خارجية ",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.black,
+                                                        textColor:
+                                                            Colors.orange);
+                                                    break;
+                                                  case "Sorry : Today is an official vacation!":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            " لم يتم التسجيل : عطلة رسمية",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "noInternet":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: لا يوجد اتصال بالانترنت",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Sorry : You have an holiday today!":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            " لم يتم التسجيل: اجازة شخصية",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+
+                                                  case "off":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "mock":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : Invaild Qrcode Index was outside the bounds of the array.":
+                                                    await Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: كود غير صحيح",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Fail : Using another attend method":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : You are not allowed to sign by card! ":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "ليس مصرح لك التسجيل بالبطاقة",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : Mac address not match":
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : Location not found":
+                                                    await Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : User Id not valid":
+                                                    await Fluttertoast.showToast(
+                                                        msg:
+                                                            "خطأ فى التسجيل: كود غير صحيح",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  case "Failed : Out of shift time":
+                                                    await Fluttertoast.showToast(
+                                                        msg:
+                                                            "التسجيل غير متاح الأن",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.orange,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
+                                                  default:
+                                                    Fluttertoast.showToast(
+                                                        msg: "خطأ فى التسجيل",
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
                                                 }
+
                                                 Navigator.of(context)
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
@@ -622,10 +660,11 @@ class TakePictureScreenState extends State<CameraPicker>
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
+                            AutoSizeText(
                               "... برجاء انتظار انتهاء عملية المسح ",
                               style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w700),
+                                  fontSize: setResponsiveFontSize(18),
+                                  fontWeight: FontWeight.w700),
                             )
                           ],
                         ),

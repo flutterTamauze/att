@@ -13,6 +13,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -479,10 +480,10 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                           0
                                                                       ? Center(
                                                                           child:
-                                                                              Text(
+                                                                              AutoSizeText(
                                                                             "لا يوجد نتائج للبحث",
                                                                             style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: setResponsiveFontSize(17)),
                                                                           ),
                                                                         )
                                                                       : Container(
@@ -581,7 +582,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                           height: 50.h,
                                                                                           child: Padding(
                                                                                             padding: const EdgeInsets.all(10.0),
-                                                                                            child: Text(
+                                                                                            child: AutoSizeText(
                                                                                               value.userSearchMember[index].username,
                                                                                             ),
                                                                                           ),
