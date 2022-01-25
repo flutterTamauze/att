@@ -450,6 +450,7 @@ class ReportsData with ChangeNotifier {
             isLoading = false;
             notifyListeners();
             print("message ${dailyReport.isHoliday}");
+            await Future.delayed(const Duration(milliseconds: 800), () {});
             return decodedRes["message"];
           } else {
             if (decodedRes["message"] == "Success : Official Vacation Day")
@@ -468,16 +469,7 @@ class ReportsData with ChangeNotifier {
           notifyListeners();
           print("message ${dailyReport.isHoliday}");
           return "holiday";
-        }
-        // else if (decodedRes["message"] == "Success : Official Vacation Day") {
-        //   dailyReport.officialHoliday =
-        //       decodedRes["data"]["officialVactionName"];
-        //   dailyReport.attendListUnits.clear();
-        //   notifyListeners();
-
-        //   return "officialHoliday";
-        // }
-        else {
+        } else {
           return "wrong";
         }
       }
@@ -601,6 +593,8 @@ class ReportsData with ChangeNotifier {
     List<LateAbsenceReportUnit> newReportList;
     if (await isConnectedToInternet()) {
       try {
+        isLoading = true;
+        notifyListeners();
         final response = await http.get(
             Uri.parse(
                 "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
@@ -639,7 +633,9 @@ class ReportsData with ChangeNotifier {
                 .toList();
 
             lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
+            isLoading = false;
             notifyListeners();
+            await Future.delayed(const Duration(milliseconds: 1500), () {});
 
             return "Success";
           } else if (decodedRes["message"] ==

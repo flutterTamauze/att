@@ -64,6 +64,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     super.initState();
     percent = 0;
     timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
+        setState(() {
+          percent = 300;
+        });
+      }
       setState(() {
         percent += 3;
         print(percent);

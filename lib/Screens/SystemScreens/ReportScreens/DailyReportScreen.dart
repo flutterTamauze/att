@@ -64,6 +64,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     super.initState();
     percent = 0;
     timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
+        setState(() {
+          percent = 100;
+        });
+      }
       setState(() {
         percent += 2;
         print(percent);
@@ -75,15 +80,15 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     date = apiFormatter.format(DateTime.now());
     getDailyReport(siteId, date, context);
     selectedDateString = DateTime.now().toString();
-    var now = DateTime.now();
+    final now = DateTime.now();
     today = DateTime(now.year, now.month, now.day);
     selectedDate = DateTime(now.year, now.month, now.day);
   }
 
   int getSiteIndex(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -98,7 +103,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
 
   void _onRefresh() async {
     print("starrt refresh");
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
     print("refresh");
     setState(() {
       isLoading = true;
@@ -246,7 +251,8 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                         hintColor: Colors.black,
                                                         onChange:
                                                             (value) async {
-                                                          var lastRec = siteId;
+                                                          final lastRec =
+                                                              siteId;
 
                                                           siteId = getSiteIndex(
                                                               value);
