@@ -169,10 +169,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                         child: Container(
                           height: 20.h,
                           child: AutoSizeText(
-                            Provider.of<UserData>(context, listen: true)
-                                    .loggedIn
-                                ? getTranslated(context, "إنهاء")
-                                : getTranslated(context, "تخطى"),
+                            getTranslated(context, "تخطى"),
                             maxLines: 1,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -296,7 +293,7 @@ class IntroContent extends StatelessWidget {
                                 Row(
                                   children: [
                                     Container(
-                                      width: 400.w,
+                                      width: 380.w,
                                       child: AutoSizeText(
                                         getTranslated(context,
                                             ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية"),
@@ -354,7 +351,7 @@ class IntroContent extends StatelessWidget {
                                 Row(
                                   children: [
                                     Container(
-                                      width: 400.w,
+                                      width: 380.w,
                                       child: AutoSizeText(
                                         getTranslated(context,
                                             "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO ."),

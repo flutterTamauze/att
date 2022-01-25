@@ -990,8 +990,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 getTranslated(
                                                                     context,
                                                                     "تأخير عن الحضور")
-                                                            ? "اذن حتى الساعة"
-                                                            : "اذن من الساعة",
+                                                            ? getTranslated(
+                                                                context,
+                                                                "اذن حتى الساعة")
+                                                            : getTranslated(
+                                                                context,
+                                                                "اذن من الساعة",
+                                                              ),
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,

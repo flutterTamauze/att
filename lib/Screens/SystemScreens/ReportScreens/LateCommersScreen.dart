@@ -528,9 +528,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                 "Date is older than company date"
                                             ? Expanded(
                                                 child: CenterMessageText(
-                                                    message:
-                                                        "التاريخ قبل إنشاء الشركة"),
-                                              )
+                                                    message: getTranslated(
+                                                context,
+                                                "التاريخ قبل إنشاء الشركة",
+                                              )))
                                             : Expanded(
                                                 child: Container(
                                                   color: Colors.white,

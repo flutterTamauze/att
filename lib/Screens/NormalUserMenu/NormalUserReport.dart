@@ -193,10 +193,11 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                           // selectedDuration = kCalcDateDifferance(
                                                           //     fromDate.toString(), toDate.toString());
                                                           // selectedDuration += 1;
-                                                          String fromText =
-                                                              " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                          String toText =
-                                                              " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                                          final String
+                                                              fromText =
+                                                              " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                                          final String toText =
+                                                              " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
                                                           newString =
                                                               "$fromText $toText";
                                                         });

@@ -493,7 +493,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                       DateTime.december,
                                                       31),
                                                   //controller: _endTimeController,
-                                                  textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       fontSize: ScreenUtil().setSp(
                                                           14,
@@ -760,6 +759,17 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                       backgroundColor:
                                                           Colors.red);
                                                 }
+                                              } else if (value ==
+                                                  "Failed : Another Holiday not approved for this user!") {
+                                                Fluttertoast.showToast(
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                    msg:
+                                                        "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    backgroundColor:
+                                                        Colors.red);
                                               } else if (value ==
                                                   "Failed : There are an holiday approved in this period!") {
                                                 Fluttertoast.showToast(

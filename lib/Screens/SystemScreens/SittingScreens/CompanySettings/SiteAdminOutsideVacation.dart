@@ -308,8 +308,10 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       height: 5,
                                     ),
                                     VacationCardHeader(
-                                      header: "نوع الأجازة",
-                                    ),
+                                        header: getTranslated(
+                                      context,
+                                      "نوع الأجازة",
+                                    )),
                                     Padding(
                                       padding: EdgeInsets.only(right: 5.w),
                                       child: Align(
@@ -352,7 +354,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   selectedReason = value;
-                                                  if (value != "عارضة") {
+                                                  if (value !=
+                                                      getTranslated(
+                                                          context, "عارضة")) {
                                                     _dateController.text = "";
                                                     newString = "";
                                                     tomorrow = DateTime(
@@ -402,17 +406,21 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                     .text,
                                                             fromDate: fromDate,
                                                             toDate:
-                                                                picked.length == 2
+                                                                picked.length ==
+                                                                        2
                                                                     ? toDate
                                                                     : fromDate,
-                                                            holidayType:
-                                                                selectedReason ==
-                                                                        "عارضة"
-                                                                    ? 1
-                                                                    : selectedReason ==
-                                                                            "مرضية"
-                                                                        ? 2
-                                                                        : 3,
+                                                            holidayType: selectedReason ==
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "عارضة")
+                                                                ? 1
+                                                                : selectedReason ==
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "مرضية")
+                                                                    ? 2
+                                                                    : 3,
                                                             createdOnDate:
                                                                 DateTime.now(),
                                                             holidayStatus: 3),
@@ -462,8 +470,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   } else if (value ==
                                                       "Failed : There are external mission in this period!") {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "لا يمكن وضع الأجازة : يوجد مأمورية خارجية",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن وضع الأجازة : يوجد مأمورية خارجية"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         toastLength:

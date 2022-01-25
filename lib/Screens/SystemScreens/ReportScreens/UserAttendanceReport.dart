@@ -70,8 +70,9 @@ class _UserAttendanceReportScreenState
 
   String dateToString = "";
   String dateFromString = "";
-
+  String fromText;
   String selectedId = "";
+  String toText;
   Site siteData;
   DateTime yesterday;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
@@ -84,6 +85,17 @@ class _UserAttendanceReportScreenState
     } else {
       return false;
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    fromText =
+        " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
+    toText =
+        " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
+    _dateController.text = "$fromText $toText";
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -124,12 +136,6 @@ class _UserAttendanceReportScreenState
 
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
-
-    final String fromText =
-        " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
-    final String toText =
-        " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
-    _dateController.text = "$fromText $toText";
 
     if (widget.name != "") {
       _nameController.text = widget.name;

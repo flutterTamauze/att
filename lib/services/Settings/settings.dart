@@ -57,8 +57,9 @@ class Settings {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              title: 'إعادة ضبط بيانات مستخدم',
-              content: "هل تريد اعادة ضبط بيانات هاتف المستخدم؟");
+              title: getTranslated(context, 'إعادة ضبط بيانات مستخدم'),
+              content: getTranslated(
+                  context, "هل تريد اعادة ضبط بيانات هاتف المستخدم؟"));
         });
   }
 

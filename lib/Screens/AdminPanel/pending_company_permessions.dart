@@ -155,6 +155,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                           permessionType:
                                               pending.permessionType,
                                           userName: pending.user.toString(),
+                                          createdOn: pending.createdOn
+                                              .toString()
+                                              .substring(0, 11),
                                           duration: pending.duration
                                               .replaceAll(":", ""),
                                           onRefused: () {
@@ -167,7 +170,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                       comment = e;
                                                     },
                                                     hint: getTranslated(
-                                                        context, "سبب الرفض"),
+                                                      context,
+                                                      "سبب الرفض",
+                                                    ),
                                                     onPressed: () async {
                                                       Navigator.pop(context);
                                                       showDialog(
@@ -246,11 +251,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                     },
                                                     content: getTranslated(
                                                         context,
-                                                        getTranslated(context,
-                                                            "تأكيد رفض الأذن")),
+                                                        "تأكيد رفض الأذن"),
                                                     onCancel: () {},
                                                     title:
-                                                        "${getTranslated(context, "رفض  طلب ")} ${pendingList.pendingCompanyPermessions[index].user} ",
+                                                        "${getTranslated(context, "رفض  طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
                                                   );
                                                 });
                                           },

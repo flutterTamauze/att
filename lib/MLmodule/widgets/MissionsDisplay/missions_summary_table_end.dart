@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 
 class MissionsSummaryTableEnd extends StatelessWidget {
@@ -35,7 +36,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20.h,
                   child: AutoSizeText(
-                    ' : الإجمالى',
+                    ' : ${getTranslated(context, "الإجمالى")} ',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -63,7 +64,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20,
                   child: AutoSizeText(
-                    ' : مأمورية خارجية ',
+                    ' : ${getTranslated(context, "مأمورية خارجية")}',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -91,7 +92,7 @@ class MissionsSummaryTableEnd extends StatelessWidget {
                 Container(
                   height: 20.h,
                   child: AutoSizeText(
-                    ' :  مأمورية داخلية',
+                    ' : ${getTranslated(context, "مأمورية داخلية")}',
                     maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,

@@ -270,8 +270,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                           flex: 1,
                                           child: UserDataField(
                                               icon: Icons.phone,
-                                              text: plusSignPhone(
-                                                  userData.phoneNumber)),
+                                              text: userData.phoneNumber),
                                         ),
                                         Expanded(
                                           flex: 1,

@@ -459,30 +459,24 @@ class UserData with ChangeNotifier {
   }
 
   Future getSuperCompanyChart(String token, int comID) async {
-    if (await isConnectedToInternet("www.google.com")) {
-      var response =
-          await SuperCompaniesChartRepo().getSuperCharts(token, comID);
+    var response = await SuperCompaniesChartRepo().getSuperCharts(token, comID);
 
-      if (response is Faliure) {
-        print("faliure occured");
-        return response;
+    if (response is Faliure) {
+      print("faliure occured");
+      return response;
+    } else {
+      print(response);
+      final decodedRes = json.decode(response);
+      if (decodedRes["message"] == "Success") {
+        superCompaniesChartModel =
+            SuperCompaniesChartModel.fromJson(decodedRes["data"]);
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] == "Success : No data") {
+        return "No data";
       } else {
-        print(response);
-        final decodedRes = json.decode(response);
-        if (decodedRes["message"] == "Success") {
-          superCompaniesChartModel =
-              SuperCompaniesChartModel.fromJson(decodedRes["data"]);
-          notifyListeners();
-          return "Success";
-        } else if (decodedRes["message"] == "Success : No data") {
-          return "No data";
-        } else {
-          return "fail";
-        }
+        return "fail";
       }
-    }
-    {
-      return "noInternet";
     }
   }
 

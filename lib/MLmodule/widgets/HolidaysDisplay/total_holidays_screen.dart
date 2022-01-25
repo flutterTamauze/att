@@ -116,7 +116,10 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                                         FontWeight.bold),
                                               )
                                             : AutoSizeText(
-                                                "لا يوجد اجازات لهذا المستخدم",
+                                                getTranslated(
+                                                  context,
+                                                  "لا يوجد اجازات لهذا المستخدم",
+                                                ),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:

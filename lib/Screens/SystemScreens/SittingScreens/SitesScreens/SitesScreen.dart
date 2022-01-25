@@ -44,11 +44,8 @@ class _SitesScreenState extends State<SitesScreen> {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  Timer searchOnStoppedTyping;
   _onChangeHandler(value) {
-    setState(() {
-      search(value);
-    });
+    search(value);
   }
 
   getIndexBySiteName(String name) {
@@ -64,7 +61,7 @@ class _SitesScreenState extends State<SitesScreen> {
 
   search(text) {
     print(text);
-    List<Site> sites = Provider.of<SiteShiftsData>(context, listen: false)
+    final List<Site> sites = Provider.of<SiteShiftsData>(context, listen: false)
         .sites
         .where((element) =>
             element.name.contains(text.toLowerCase()) ||
@@ -73,7 +70,9 @@ class _SitesScreenState extends State<SitesScreen> {
     if (sites.isEmpty) {
       filteredSites.clear();
     } else {
-      filteredSites = sites;
+      setState(() {
+        filteredSites = sites;
+      });
     }
   }
 

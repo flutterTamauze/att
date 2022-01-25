@@ -1,62 +1,71 @@
 import 'dart:developer';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
+
+import '../main.dart';
+import 'networkInfo.dart';
 
 class NetworkApi {
-  final timeOutDuration = Duration(seconds: 20);
+  final timeOutDuration = Duration(seconds: 50);
 
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
       [body]) async {
     var res;
+    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
 
-    DateTime preTime = DateTime.now();
-    switch (requestType) {
-      case RequestType.GET:
-        res = await _get(endPoint, headers);
-        break;
-      case RequestType.PUT:
-        res = await _put(endPoint, headers);
-        break;
-      case RequestType.DELETE:
-        res = await _delete(endPoint, headers);
-        break;
-      case RequestType.POST:
-        res = await _post(endPoint, headers, body: body);
-        break;
+    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+    final bool isConnected = await networkInfoImp.isConnected;
+    if (isConnected) {
+      try {
+        print("There is a connection");
+
+        final DateTime preTime = DateTime.now();
+        switch (requestType) {
+          case RequestType.GET:
+            res = await _get(endPoint, headers);
+            break;
+          case RequestType.PUT:
+            res = await _put(endPoint, headers);
+            break;
+          case RequestType.DELETE:
+            res = await _delete(endPoint, headers);
+            break;
+          case RequestType.POST:
+            res = await _post(endPoint, headers, body: body);
+            break;
+        }
+        final DateTime postTime = DateTime.now();
+        print(
+            "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
+
+        print("not faliure");
+        log("Response body : ${res.body}");
+        return res.body;
+      } on TimeoutException catch (e) {
+        print("timeout occured $e");
+        Navigator.pop(navigatorKey.currentState.overlay.context);
+        weakInternetConnection(navigatorKey.currentState.overlay.context);
+      }
     }
-    DateTime postTime = DateTime.now();
-    print(
-        "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-    print("not faliure");
-
-    return res.body;
+    return Faliure(errorResponse: "NO INTERNET", code: NO_INTERNET);
   }
 
   Future<http.Response> _get(endPoint, headers) async {
     return await http
         .get(Uri.parse(endPoint), headers: headers)
         .timeout(timeOutDuration);
-  }
-
-  Future<bool> isConnectedToInternet(String url) async {
-    try {
-      final result = await InternetAddress.lookup(url);
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-        return true;
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-      return false;
-    }
-    return false;
   }
 
   // ignore: unused_element

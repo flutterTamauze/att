@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'dart:developer';
 import 'dart:ui' as ui;
@@ -176,8 +177,9 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                         .length ==
                                                     0
                                                 ? CenterMessageText(
-                                                    message:
-                                                        "لا يوجد إثباتات حضور فى هذا اليوم")
+                                                    message: getTranslated(
+                                                        context,
+                                                        "لا يوجد إثباتات حضور فى هذا اليوم"))
                                                 : reportsData.isLoading
                                                     ? Center(
                                                         child:

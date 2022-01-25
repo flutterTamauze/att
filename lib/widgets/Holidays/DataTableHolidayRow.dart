@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
 class DataTableHolidayRow extends StatelessWidget {
@@ -23,11 +24,11 @@ class DataTableHolidayRow extends StatelessWidget {
                     height: 30.h,
                     child: Center(
                       child: Container(
-                        alignment: Alignment.centerRight,
                         height: 40.h,
                         width: 50,
                         child: AutoSizeText(
-                          getVacationType(_holidays.holidayType),
+                          getTranslated(
+                              context, getVacationType(_holidays.holidayType)),
                           maxLines: 2,
                           style: TextStyle(
                             fontSize: ScreenUtil()

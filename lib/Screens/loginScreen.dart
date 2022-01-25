@@ -57,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return Scaffold(
-      endDrawer: NotificationItem(),
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
@@ -86,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               Column(
                                 children: <Widget>[
                                   TextFormField(
-                                    textAlign: TextAlign.right,
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (_) =>
                                         FocusScope.of(context).nextFocus(),
@@ -147,7 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontSize: ScreenUtil().setSp(17,
                                                 allowFontScalingSelf: true),
                                             fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.right,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                           hintText: getTranslated(
@@ -158,24 +155,51 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(
-                                          // Based on passwordVisible state choose the icon
-                                          _passwordVisible
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                          color: Colors.grey,
-                                        ),
-                                        onPressed: () {
-                                          // Update the state i.e. toogle the state of passwordVisible variable
-                                          setState(() {
-                                            _passwordVisible =
-                                                !_passwordVisible;
-                                            FocusScope.of(context)
-                                                .requestFocus();
-                                          });
-                                        },
-                                      ),
+                                      !Provider.of<PermissionHan>(context,
+                                                  listen: false)
+                                              .isEnglishLocale()
+                                          ? Positioned(
+                                              left: 30.w,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  // Based on passwordVisible state choose the icon
+                                                  _passwordVisible
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                    FocusScope.of(context)
+                                                        .requestFocus();
+                                                  });
+                                                },
+                                              ),
+                                            )
+                                          : Positioned(
+                                              right: 30.w,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  // Based on passwordVisible state choose the icon
+                                                  _passwordVisible
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                    FocusScope.of(context)
+                                                        .requestFocus();
+                                                  });
+                                                },
+                                              ),
+                                            ),
                                     ],
                                   ),
                                   SizedBox(
