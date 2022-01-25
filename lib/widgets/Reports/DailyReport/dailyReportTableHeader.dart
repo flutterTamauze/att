@@ -63,8 +63,10 @@ class AttendProovTableHeader extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                DataTableHeaderTitles("التوقيت", ColorManager.primary),
-                DataTableHeaderTitles("حالة الإثبات", ColorManager.primary),
+                DataTableHeaderTitles(
+                    getTranslated(context, "التوقيت"), ColorManager.primary),
+                DataTableHeaderTitles(getTranslated(context, "حالة الإثبات"),
+                    ColorManager.primary),
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -80,7 +82,7 @@ class AttendProovTableHeader extends StatelessWidget {
                   child: Container(
                 height: 20,
                 child: AutoSizeText(
-                  'الاسم',
+                  getTranslated(context, "الأسم"),
                   maxLines: 1,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,

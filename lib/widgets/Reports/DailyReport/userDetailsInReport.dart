@@ -57,6 +57,13 @@ class UserDetailsInReport extends StatelessWidget {
                                   fit: BoxFit.fill,
                                   image: NetworkImage(
                                     '$imageUrl${userData.userImageURL}',
+                                    headers: {
+                                      "Authorization": "Bearer " +
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken
+                                    },
                                   ),
                                 ),
                                 shape: BoxShape.circle,

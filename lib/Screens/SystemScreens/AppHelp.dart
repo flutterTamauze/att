@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
@@ -61,7 +62,7 @@ class _AppHelpPageState extends State<AppHelpPage> {
                   child: currentProgress != 100
                       ? Column(
                           children: [
-                            Text(
+                            AutoSizeText(
                               "جارى تحميل الصفحة %$currentProgress",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

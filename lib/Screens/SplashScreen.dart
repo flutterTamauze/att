@@ -49,13 +49,13 @@ class _SplashScreenState extends State<SplashScreen>
   FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
   Future checkSharedUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> userData = (prefs.getStringList('userData') ?? null);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> userData = (prefs.getStringList('userData') ?? null);
     print(userData);
     if (userData == null || userData.isEmpty) {
       await reverse("", 1);
     } else {
-      var value = await login(userName: userData[0], password: userData[1]);
+      final value = await login(userName: userData[0], password: userData[1]);
 
       print("VALUE OF USER $value");
       //  Provider.of<DaysOffData>(context, listen: false).getDaysOff(
@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   checkAttendProovStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("notifCategory") == 'attend') {
       Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
     }
@@ -113,8 +113,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var cachedUserData = (prefs.getStringList('allUserData') ?? null);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final cachedUserData = (prefs.getStringList('allUserData') ?? null);
     if (cachedUserData == null || cachedUserData.isEmpty) {
       print('null');
     } else {
@@ -236,7 +236,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   initPlatformState() async {
-    var code = await hawawi.Push.getAAID();
+    final code = await hawawi.Push.getAAID();
     await hawawi.Push.getToken(code);
     hawawi.Push.getTokenStream.listen(_onTokenEvent).onData((data) {
       Provider.of<UserData>(context, listen: false).hawawiToken = data;
@@ -245,7 +245,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   HuaweiServices huaweiServices = HuaweiServices();
   fillHuaweiToken() async {
-    bool isHuawei = await huaweiServices.isHuaweiDevice();
+    final bool isHuawei = await huaweiServices.isHuaweiDevice();
     if (isHuawei) {
       log("iS HUAWEI IS SUCCESS");
       await initPlatformState();

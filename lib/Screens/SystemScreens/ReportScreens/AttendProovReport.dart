@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,7 +47,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
     date = apiFormatter.format(DateTime.now());
     getReportData(date);
     selectedDateString = DateTime.now().toString();
-    var now = DateTime.now();
+    final now = DateTime.now();
     today = DateTime(now.year, now.month, now.day);
     selectedDate = DateTime(now.year, now.month, now.day);
   }
@@ -63,20 +64,31 @@ class _AttendProofReportState extends State<AttendProofReport> {
   }
 
   getReportData(date) async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var apiId = userProvider.user.userType == 3
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final apiId = userProvider.user.userType == 3
         ? userProvider.user.id
         : Provider.of<CompanyData>(context, listen: false).com.id;
     await Provider.of<ReportsData>(context, listen: false)
-        .getDailyAttendProofReport(userProvider.user.userToken, apiId, date,
-            context, userProvider.user.userType);
+        .getDailyAttendProofReport(
+      userProvider.user.userToken,
+      apiId,
+      date,
+      context,
+    );
+  }
+
+  int calculateDateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
   }
 
   final SlidableController slidableController = SlidableController();
   @override
   Widget build(BuildContext context) {
-    var comDate = Provider.of<CompanyData>(context, listen: false);
-    var reprotData = Provider.of<ReportsData>(context, listen: true);
+    final comDate = Provider.of<CompanyData>(context, listen: false);
+    final reprotData = Provider.of<ReportsData>(context, listen: true);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       floatingActionButton: MultipleFloatingButtonsNoADD(),
@@ -85,229 +97,216 @@ class _AttendProofReportState extends State<AttendProofReport> {
       body: Consumer<ReportsData>(
         builder: (context, reportsData, child) {
           return Container(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onPanDown: (_) {
-                FocusScope.of(context).unfocus();
-              },
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Header(
-                        goUserHomeFromMenu: false,
-                        nav: false,
-                        goUserMenu: false,
-                      ),
-                      Expanded(
-                        child: FutureBuilder(
-                            future: reportsData.futureListener,
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                  return LoadingIndicator();
-                                case ConnectionState.done:
-                                  log(snapshot.data);
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10.w),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Header(
+                      goUserHomeFromMenu: false,
+                      nav: false,
+                      goUserMenu: false,
+                    ),
+                    Expanded(
+                      child: FutureBuilder(
+                          future: reportsData.futureListener,
+                          builder: (context, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return LoadingIndicator();
+                              case ConnectionState.done:
+                                log(snapshot.data);
+                                return Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w),
+                                          child: Container(
                                             child: Container(
-                                              child: Directionality(
-                                                textDirection:
-                                                    ui.TextDirection.rtl,
-                                                child: Container(
-                                                  child: Theme(
-                                                      data: clockTheme,
-                                                      child:
-                                                          SingleDayDatePicker(
-                                                        firstDate: comDate
-                                                            .com.createdOn,
-                                                        lastDate:
-                                                            DateTime.now(),
-                                                        selectedDateString:
-                                                            selectedDateString,
-                                                        functionPicker:
-                                                            (value) {
-                                                          if (value != date) {
-                                                            date = value;
-                                                            selectedDateString =
-                                                                date;
-                                                            setState(() {
-                                                              getReportData(
-                                                                  date);
-                                                              selectedDate =
-                                                                  DateTime.parse(
-                                                                      selectedDateString);
-                                                            });
-                                                          }
-                                                        },
-                                                      )),
-                                                ),
-                                              ),
+                                              child: Theme(
+                                                  data: clockTheme,
+                                                  child: SingleDayDatePicker(
+                                                    firstDate:
+                                                        comDate.com.createdOn,
+                                                    lastDate: DateTime.now(),
+                                                    selectedDateString:
+                                                        selectedDateString,
+                                                    functionPicker: (value) {
+                                                      if (value != date) {
+                                                        date = value;
+                                                        selectedDateString =
+                                                            date;
+                                                        setState(() {
+                                                          getReportData(date);
+                                                          selectedDate =
+                                                              DateTime.parse(
+                                                                  selectedDateString);
+                                                        });
+                                                      }
+                                                    },
+                                                  )),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: SmallDirectoriesHeader(
-                                              Lottie.asset(
-                                                  "resources/report.json",
-                                                  repeat: false),
-                                              "إثباتات الحضور",
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      orangeDivider,
-                                      AttendProovTableHeader(),
-                                      orangeDivider,
-                                      Expanded(
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: reportsData.attendProofList
-                                                        .length ==
-                                                    0
-                                                ? CenterMessageText(
-                                                    message: getTranslated(
-                                                        context,
-                                                        "لا يوجد إثباتات حضور فى هذا اليوم"))
-                                                : reportsData.isLoading
-                                                    ? Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              Colors.orange,
-                                                        ),
-                                                      )
-                                                    : SmartRefresher(
-                                                        onRefresh: _onRefresh,
-                                                        controller:
-                                                            refreshController,
-                                                        enablePullDown: true,
-                                                        header:
-                                                            WaterDropMaterialHeader(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.orange,
-                                                        ),
-                                                        child: ListView.builder(
-                                                          physics:
-                                                              AlwaysScrollableScrollPhysics(),
-                                                          itemCount: reportsData
-                                                              .attendProofList
-                                                              .length,
-                                                          itemBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  int index) {
-                                                            return Slidable(
-                                                              enabled: !reprotData
-                                                                  .attendProofList[
-                                                                      index]
-                                                                  .isAttended,
-                                                              actionExtentRatio:
-                                                                  0.10,
-                                                              closeOnScroll:
-                                                                  true,
-                                                              controller:
-                                                                  slidableController,
-                                                              actionPane:
-                                                                  SlidableDrawerActionPane(),
-                                                              secondaryActions: [
-                                                                ZoomIn(
-                                                                    child:
-                                                                        InkWell(
-                                                                  child:
-                                                                      Container(
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .all(7),
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom:
-                                                                            10.h),
-                                                                    decoration: BoxDecoration(
-                                                                        shape: BoxShape
-                                                                            .circle,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        border: Border.all(
-                                                                            width:
-                                                                                2,
-                                                                            color:
-                                                                                Colors.red)),
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .delete,
-                                                                      size: 18,
-                                                                      color: Colors
-                                                                          .red,
-                                                                    ),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    return showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return reprotData.isLoading
-                                                                              ? Center(
-                                                                                  child: CircularProgressIndicator(
-                                                                                    backgroundColor: Colors.orange,
-                                                                                  ),
-                                                                                )
-                                                                              : RoundedAlert(
-                                                                                  onPressed: () async {
-                                                                                    Navigator.pop(context);
-                                                                                    String msg = await Provider.of<ReportsData>(context, listen: false).deleteAttendProofFromReport(Provider.of<UserData>(context, listen: false).user.userToken, reportsData.attendProofList[index].id, index);
-                                                                                    if (msg == "Success : AttendProof Deleted!") {
-                                                                                      Fluttertoast.showToast(msg: "تم حذف الإثبات بنجاح", backgroundColor: Colors.green);
-                                                                                    } else {
-                                                                                      Fluttertoast.showToast(msg: "خطأ في حذف الإثبات", backgroundColor: Colors.red);
-                                                                                    }
-                                                                                  },
-                                                                                  content: "هل تريد مسح الإثبات",
-                                                                                  onCancel: () {},
-                                                                                  title: "حذف الإثبات",
-                                                                                );
-                                                                        });
-                                                                  },
-                                                                )),
-                                                              ],
-                                                              child:
-                                                                  DisplayAttendProofList(
-                                                                attendProofList:
-                                                                    reportsData
-                                                                            .attendProofList[
-                                                                        index],
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 15.h),
+                                          child: SmallDirectoriesHeader(
+                                            Lottie.asset(
+                                                "resources/report.json",
+                                                repeat: false),
+                                            getTranslated(
+                                                context, "إثباتات الحضور"),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    orangeDivider,
+                                    AttendProovTableHeader(),
+                                    orangeDivider,
+                                    Expanded(
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: reportsData
+                                                    .attendProofList.length ==
+                                                0
+                                            ? CenterMessageText(
+                                                message: getTranslated(context,
+                                                    "لا يوجد إثباتات حضور فى هذا اليوم"))
+                                            : reportsData.isLoading
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                  )
+                                                : SmartRefresher(
+                                                    onRefresh: _onRefresh,
+                                                    controller:
+                                                        refreshController,
+                                                    enablePullDown: true,
+                                                    header:
+                                                        WaterDropMaterialHeader(
+                                                      color: Colors.white,
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                    ),
+                                                    child: ListView.builder(
+                                                      physics:
+                                                          AlwaysScrollableScrollPhysics(),
+                                                      itemCount: reportsData
+                                                          .attendProofList
+                                                          .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return Slidable(
+                                                          enabled: !reprotData
+                                                              .attendProofList[
+                                                                  index]
+                                                              .isAttended,
+                                                          actionExtentRatio:
+                                                              0.10,
+                                                          closeOnScroll: true,
+                                                          controller:
+                                                              slidableController,
+                                                          actionPane:
+                                                              SlidableDrawerActionPane(),
+                                                          secondaryActions: [
+                                                            ZoomIn(
+                                                              child: InkWell(
+                                                                  child:
+                                                                      InkWell(
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              7),
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          bottom:
+                                                                              10.h),
+                                                                  decoration: BoxDecoration(
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      border: Border.all(
+                                                                          width:
+                                                                              2,
+                                                                          color:
+                                                                              Colors.red)),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 18,
+                                                                    color: Colors
+                                                                        .red,
+                                                                  ),
+                                                                ),
+                                                                onTap: () {
+                                                                  return showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return reprotData.isLoading
+                                                                            ? Center(
+                                                                                child: CircularProgressIndicator(
+                                                                                  backgroundColor: Colors.orange,
+                                                                                ),
+                                                                              )
+                                                                            : RoundedAlert(
+                                                                                onPressed: () async {
+                                                                                  Navigator.pop(context);
+                                                                                  final String msg = await Provider.of<ReportsData>(context, listen: false).deleteAttendProofFromReport(Provider.of<UserData>(context, listen: false).user.userToken, reportsData.attendProofList[index].id, index);
+                                                                                  if (msg == "Success : AttendProof Deleted!") {
+                                                                                    Fluttertoast.showToast(msg: "تم حذف الإثبات بنجاح", backgroundColor: Colors.green);
+                                                                                  } else if (msg == "Fail : Proof created by another user") {
+                                                                                    Fluttertoast.showToast(msg: "لا يمكنك حذف طلب تسجيل حضور لم تقم بإنشاؤه", backgroundColor: Colors.red, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER);
+                                                                                  } else {
+                                                                                    Fluttertoast.showToast(msg: "خطأ في حذف الإثبات", backgroundColor: Colors.red);
+                                                                                  }
+                                                                                },
+                                                                                content: "هل تريد مسح الإثبات",
+                                                                                onCancel: () {},
+                                                                                title: "حذف الإثبات",
+                                                                              );
+                                                                      });
+                                                                },
+                                                              )),
+                                                            )
+                                                          ],
+                                                          child:
+                                                              DisplayAttendProofList(
+                                                            attendProofList:
+                                                                reportsData
+                                                                        .attendProofList[
+                                                                    index],
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
                                       ),
-                                    ],
-                                  );
-                                default:
-                                  return Center(child: LoadingIndicator());
-                              }
-                            }),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                                    ),
+                                  ],
+                                );
+                              default:
+                                return Center(child: LoadingIndicator());
+                            }
+                          }),
+                    ),
+                  ],
+                ),
+              ],
             ),
           );
         },
@@ -329,7 +328,7 @@ class DisplayAttendProofList extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
           child: Row(
             children: [
-              Text(attendProofList.username,
+              AutoSizeText(attendProofList.username,
                   style: TextStyle(fontWeight: FontWeight.w600)),
               Expanded(
                 child: Container(),

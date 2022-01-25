@@ -71,10 +71,10 @@
     "المدة من / الى":"Duration from / to",
     "قم بأدخال التفاصيل هنا":"Enter the details here",
     "حفظ الطلب":"Save Request",
-    "عارضة":"Casual Vacation",
-    "مرضية":"Sick Leave Vacation",
+    "عارضة":"Casual",
+    "مرضية":"Sick Leave",
     "مرضى":"Sick Leave",
-    "رصيد اجازات":"Balance Vacation",
+    "رصيد اجازات":"Balance",
     "مدة الأجازة":"Holiday Duration",
     "تأخير عن الحضور":"Late Attend",
     "انصراف مبكر":"Early Leave", 
@@ -95,7 +95,8 @@
     "لا يوجد اذونات لهذا المستخدم":"There are no permessions for this user",
     "مدة المأمورية":"Mission Duration",
     "يوم":"Day",
-    "إثباتات الحضور":   "إثباتات الحضور",
+    "إثباتات الحضور"
+    :   "Attend Proofs",
     "الموقع و المناوبة للمأمورية":"Site & Shift for the mission",
     "نوع المأمورية":"Mission Type",
     "لا يوجد اذونات لم يتم الرد عليها":"There Are No Unanswered Permissions",
@@ -142,6 +143,7 @@
  "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم":"The activation code has been successfully sent to your phone number",
  "الأسم":"Name","مجموع الخصومات":"Total Deductions", "عطلة اسبوعية":         "Week Holiday",
  "الغياب":"Absence", "عطلة رسمية":"Official Holiday",
+ "حالة الإثبات":"Proofs Status",
  "لا يوجد تسجيلات بهذا اليوم":"No records found for this day",
  "المستخدم لم يكن مقيدا فى هذة الفترة":"User wasn't created at this period",
  "الخصومات":"Deductions","لا يوجد تسجيلات: يوم اجازة":"There are no records : Holiday",
@@ -467,8 +469,17 @@
  :"Reseted Successfully",
  "تمت اضافة الجدولة بنجاح"
  :"Mission added successfully",
- "برجاء ادخال البيانات المطلوبة":"Please enter the needed data"
-
+ "برجاء ادخال البيانات المطلوبة":"Please enter the needed data",
+ "خطا في التعديل":"Error occured while editing",
+ "تم التعديل بنجاح":"Edited successfully",
+ "التوقيت":"Timing",
+ "برجاء الأنتظار"
+ :"Please Wait",
+ "على وشك الأنتهاء":"Almost Done",
+ "اضغط للمحاولة مره اخرى":"Press to try again",
+ "برجاء تفعيل الموقع الجغرافى للهاتف":"Please activate the geographical location of the phone",
+ "برجاء تفعيل تصريح الموقع الجغرافي"
+ :"Please enable geolocation permission."
 
     }
     

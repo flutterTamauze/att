@@ -135,7 +135,7 @@ class MemberData with ChangeNotifier {
     print(
         "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId");
     loadingSearch = true;
-    var response = await http.get(
+    final response = await http.get(
         Uri.parse(
             "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId"),
         headers: {
@@ -145,10 +145,10 @@ class MemberData with ChangeNotifier {
     userSearchMember = [];
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var decodedRes = json.decode(response.body);
+      final decodedRes = json.decode(response.body);
       print(response.body);
       if (decodedRes["message"] == "Success") {
-        var memberObjJson = jsonDecode(response.body)['data'] as List;
+        final memberObjJson = jsonDecode(response.body)['data'] as List;
         if (membersList.isEmpty) {
           Provider.of<ReportsData>(context, listen: false)
               .userAttendanceReport
@@ -191,7 +191,7 @@ class MemberData with ChangeNotifier {
 
   getUserById(String id, String userToken) async {
     try {
-      var response = await http.get(
+      final response = await http.get(
           Uri.parse(
             "$baseURL/api/Users/GetUser/$id",
           ),
@@ -202,10 +202,10 @@ class MemberData with ChangeNotifier {
       isLoading = true;
       notifyListeners();
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
 
         if (decodedRes["message"] == "Success") {
-          var memberObjJson = jsonDecode(response.body)['data'];
+          final memberObjJson = jsonDecode(response.body)['data'];
           singleMember = Member.fullDataMemberFromJson(memberObjJson);
           print("success");
 
@@ -303,11 +303,11 @@ class MemberData with ChangeNotifier {
         });
         print(response.statusCode);
         if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           log(response.body);
 
           if (decodedRes["message"] == "Success") {
-            var memberObjJson = jsonDecode(response.body)['data'] as List;
+            final memberObjJson = jsonDecode(response.body)['data'] as List;
             if (memberObjJson.isEmpty) {
               keepRetriving = false;
               notifyListeners();
@@ -343,7 +343,7 @@ class MemberData with ChangeNotifier {
   allowMemberAttendByCard(
       String userID, bool allowValue, String userToken) async {
     try {
-      var response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
+      final response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
           body: json.encode({
             "usersId": [userID],
             "value": allowValue
@@ -360,7 +360,7 @@ class MemberData with ChangeNotifier {
 
   exludeUserFromReport(String userID, bool allowValue, String userToken) async {
     try {
-      var response = await http.put(
+      final response = await http.put(
           Uri.parse("$baseURL/api/Users/excludeFromReport"),
           body: json.encode({
             "usersId": [userID],
@@ -401,10 +401,10 @@ class MemberData with ChangeNotifier {
             Provider.of<UserData>(context, listen: false).user.userToken;
         await getAllSiteMembersApi(siteId, userToken, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
-          var memberObjJson = jsonDecode(response.body)['data'] as List;
+          final memberObjJson = jsonDecode(response.body)['data'] as List;
           memberNewList = memberObjJson
               .map((memberJson) => Member.fromJson(memberJson))
               .toList();
@@ -449,7 +449,7 @@ class MemberData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
 
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
 
         if (decodedRes["message"] == "Success : User Device Reset Success") {
@@ -498,7 +498,7 @@ class MemberData with ChangeNotifier {
               Provider.of<UserData>(context, listen: false).user.userToken;
           await deleteMember(id, listIndex, userToken, context);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "Success : User Deleted Successfully") {
@@ -550,7 +550,7 @@ class MemberData with ChangeNotifier {
               Provider.of<UserData>(context, listen: false).user.userToken;
           await addMember(member, userToken, context, roleName);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "User created successfully!") {
@@ -604,13 +604,13 @@ class MemberData with ChangeNotifier {
               Provider.of<UserData>(context, listen: false).user.userToken;
           await editMember(member, id, userToken, context, roleName);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
           print(member.salary);
           if (decodedRes["message"] == "Success : User Updated Successfully ") {
             membersList[id] = member;
 
-            var membersListId = findMemberInMembersList(member.id);
+            final membersListId = findMemberInMembersList(member.id);
 
             membersList[membersListId] = member;
             membersListScreenDropDownSearch = [...membersList];

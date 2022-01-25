@@ -45,13 +45,13 @@ class DailyReportUnit {
         return "-";
       } else {
         print(time);
-        double hoursDouble = time / 60.0;
-        int h = hoursDouble.toInt();
+        final double hoursDouble = time / 60.0;
+        final int h = hoursDouble.toInt();
         print(h);
-        double minDouble = time.toDouble() % 60;
-        int m = minDouble.toInt();
+        final double minDouble = time.toDouble() % 60;
+        final int m = minDouble.toInt();
         print(m);
-        NumberFormat formatter = new NumberFormat("00");
+        final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
     }
@@ -73,20 +73,20 @@ class DailyReportUnit {
         case "-":
           return "-";
         default:
-          int intTime = int.parse(time.replaceAll(":", ""));
+          final int intTime = int.parse(time.replaceAll(":", ""));
           int hours = (intTime ~/ 100);
-          int min = intTime - (hours * 100);
+          final int min = intTime - (hours * 100);
 
-          var ampm = hours >= 12 ? 'pm' : 'am';
+          final ampm = hours >= 12 ? 'pm' : 'am';
           hours = hours % 12;
           hours = hours != 0 ? hours : 12; //
 
-          String hoursStr = hours < 10
+          final String hoursStr = hours < 10
               ? '0$hours'
               : hours.toString(); // the hour '0' should be '12'
-          String minStr = min < 10 ? '0$min' : min.toString();
+          final String minStr = min < 10 ? '0$min' : min.toString();
 
-          var strTime = '$hoursStr:$minStr';
+          final strTime = '$hoursStr:$minStr';
 
           return strTime;
       }
@@ -94,8 +94,8 @@ class DailyReportUnit {
 
     String amOrPm(String time) {
       if (time != "-" && time.toString().contains(":")) {
-        int intTime = int.parse(time.replaceAll(":", ""));
-        int hours = (intTime ~/ 100);
+        final int intTime = int.parse(time.replaceAll(":", ""));
+        final int hours = (intTime ~/ 100);
 
         return hours >= 12 ? 'pm' : 'am';
       } else {
@@ -185,13 +185,13 @@ class LateAbsenceReportUnit {
         return "-";
       } else {
         print(time);
-        double hoursDouble = time / 60.0;
-        int h = hoursDouble.toInt();
+        final double hoursDouble = time / 60.0;
+        final int h = hoursDouble.toInt();
         print(h);
-        double minDouble = time.toDouble() % 60;
-        int m = minDouble.toInt();
+        final double minDouble = time.toDouble() % 60;
+        final int m = minDouble.toInt();
         print(m);
-        NumberFormat formatter = new NumberFormat("00");
+        final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
     }
@@ -229,20 +229,20 @@ class UserAttendanceReportUnit {
   factory UserAttendanceReportUnit.fromJson(dynamic json) {
     String amPmChanger(String time) {
       if (time != "-" && time.toString().contains(":") && time != null) {
-        int intTime = int.parse(time.replaceAll(":", ""));
+        final int intTime = int.parse(time.replaceAll(":", ""));
         int hours = (intTime ~/ 100);
-        int min = intTime - (hours * 100);
+        final int min = intTime - (hours * 100);
 
-        var ampm = hours >= 12 ? 'pm' : 'am';
+        final ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours != 0 ? hours : 12; //
 
-        String hoursStr = hours < 10
+        final String hoursStr = hours < 10
             ? '0$hours'
             : hours.toString(); // the hour '0' should be '12'
-        String minStr = min < 10 ? '0$min' : min.toString();
+        final String minStr = min < 10 ? '0$min' : min.toString();
 
-        var strTime = '$hoursStr:$minStr';
+        final strTime = '$hoursStr:$minStr';
 
         return strTime;
       } else {
@@ -252,8 +252,8 @@ class UserAttendanceReportUnit {
 
     String amOrPm(String time) {
       if (time != "-" && time.toString().contains(":")) {
-        int intTime = int.parse(time.replaceAll(":", ""));
-        int hours = (intTime ~/ 100);
+        final int intTime = int.parse(time.replaceAll(":", ""));
+        final int hours = (intTime ~/ 100);
 
         return hours >= 12 ? 'pm' : 'am';
       } else {
@@ -266,13 +266,13 @@ class UserAttendanceReportUnit {
         return "-";
       } else {
         print(time);
-        double hoursDouble = time / 60.0;
-        int h = hoursDouble.toInt();
+        final double hoursDouble = time / 60.0;
+        final int h = hoursDouble.toInt();
         print(h);
-        double minDouble = time.toDouble() % 60;
-        int m = minDouble.toInt();
+        final double minDouble = time.toDouble() % 60;
+        final int m = minDouble.toInt();
         print(m);
-        NumberFormat formatter = new NumberFormat("00");
+        final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
     }
@@ -314,7 +314,7 @@ class ReportsData with ChangeNotifier {
       String token, int id, int attendProofIndex) async {
     isLoading = true;
     notifyListeners();
-    var response = await http.delete(
+    final response = await http.delete(
       Uri.parse("$baseURL/api/AttendProof/DeleteAttendProof?id=$id"),
       headers: {
         'Content-type': 'application/json',
@@ -323,10 +323,11 @@ class ReportsData with ChangeNotifier {
     );
     isLoading = false;
     print(response.body);
-    attendProofList.removeAt(attendProofIndex);
 
-    print(response.statusCode);
-    print(response.body);
+    if (jsonDecode(response.body)["message"] ==
+        "Success : AttendProof Deleted!") {
+      attendProofList.removeAt(attendProofIndex);
+    }
     notifyListeners();
     return jsonDecode(response.body)["message"];
   }
@@ -350,32 +351,24 @@ class ReportsData with ChangeNotifier {
     return "fail";
   }
 
-  getDailyAttendProofReport(String userToken, var apiId, String date,
-      BuildContext context, int userType) {
+  getDailyAttendProofReport(
+      String userToken, var apiId, String date, BuildContext context) {
     futureListener = getDailyAttendProofApi(
       userToken,
       apiId,
-      userType,
       date,
       context,
     );
     return futureListener;
   }
 
-  Future<String> getDailyAttendProofApi(String userToken, var apiId,
-      int userType, String date, BuildContext context) async {
+  Future<String> getDailyAttendProofApi(
+      String userToken, var apiId, String date, BuildContext context) async {
     if (await isConnectedToInternet()) {
-      print(date);
-      print(apiId);
       String url;
-      if (userType == 3) {
-        url =
-            "$baseURL/api/AttendProof/GetProofbyCreatedUserId/$date&pageIndex=1&pageSize=50";
-      } else {
-        url =
-            "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50";
-      }
-      print(url);
+      url =
+          "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50";
+
       final response = await http.get(
           Uri.parse(
             url,
@@ -385,12 +378,11 @@ class ReportsData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
       print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
-          var reportObjJson = jsonDecode(response.body)['data'] as List;
+          final reportObjJson = jsonDecode(response.body)['data'] as List;
 
           attendProofList = reportObjJson
               .map((reportJson) => AttendProofModel.fromJson(reportJson))
@@ -418,6 +410,8 @@ class ReportsData with ChangeNotifier {
     List<DailyReportUnit> newReportList;
     print("site id $siteId");
     if (await isConnectedToInternet()) {
+      isLoading = true;
+      notifyListeners();
       final response = await http.get(
           Uri.parse(
               "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
@@ -425,15 +419,14 @@ class ReportsData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print(response.statusCode);
-      log(response.body);
+
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =
             Provider.of<UserData>(context, listen: false).user.userToken;
         await getDailyReportUnitsApi(userToken, siteId, date, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success" ||
             decodedRes["message"] == "Success : Official Vacation Day" ||
@@ -446,7 +439,7 @@ class ReportsData with ChangeNotifier {
                 decodedRes["data"]["officialVactionName"];
           }
           if (decodedRes["data"]["users"] != null) {
-            var reportObjJson =
+            final reportObjJson =
                 jsonDecode(response.body)['data']['users'] as List;
 
             newReportList = reportObjJson
@@ -454,8 +447,10 @@ class ReportsData with ChangeNotifier {
                 .toList();
 
             dailyReport.attendListUnits = [...newReportList];
+            isLoading = false;
             notifyListeners();
             print("message ${dailyReport.isHoliday}");
+            await Future.delayed(const Duration(milliseconds: 800), () {});
             return decodedRes["message"];
           } else {
             if (decodedRes["message"] == "Success : Official Vacation Day")
@@ -470,19 +465,11 @@ class ReportsData with ChangeNotifier {
           dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
 
           dailyReport.attendListUnits.clear();
+          isLoading = false;
           notifyListeners();
           print("message ${dailyReport.isHoliday}");
           return "holiday";
-        }
-        // else if (decodedRes["message"] == "Success : Official Vacation Day") {
-        //   dailyReport.officialHoliday =
-        //       decodedRes["data"]["officialVactionName"];
-        //   dailyReport.attendListUnits.clear();
-        //   notifyListeners();
-
-        //   return "officialHoliday";
-        // }
-        else {
+        } else {
           return "wrong";
         }
       }
@@ -502,13 +489,13 @@ class ReportsData with ChangeNotifier {
 
   String getTimeToString(int time) {
     print(time);
-    double hoursDouble = time / 60.0;
-    int h = hoursDouble.toInt();
+    final double hoursDouble = time / 60.0;
+    final int h = hoursDouble.toInt();
     print(h);
-    double minDouble = time.toDouble() % 60;
-    int m = minDouble.toInt();
+    final double minDouble = time.toDouble() % 60;
+    final int m = minDouble.toInt();
     print(m);
-    NumberFormat formatter = new NumberFormat("00");
+    final NumberFormat formatter = new NumberFormat("00");
     return "${formatter.format(h)}:${formatter.format(m)}";
   }
 
@@ -534,7 +521,7 @@ class ReportsData with ChangeNotifier {
         await getUserReportUnitsApi(
             userToken, userId, dateFrom, dateTo, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         isLoading = false;
         print(response.body);
 
@@ -554,7 +541,7 @@ class ReportsData with ChangeNotifier {
               decodedRes["data"]["totalDeduction"] + 0.0 as double;
           userAttendanceReport.totalDeductionAbsent =
               decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
-          var reportObjJson =
+          final reportObjJson =
               jsonDecode(response.body)['data']['userDayAttends'] as List;
           userAttendanceReport.totalOfficialVacation =
               decodedRes["data"]["totalOffcialVacation"] as int;
@@ -606,6 +593,8 @@ class ReportsData with ChangeNotifier {
     List<LateAbsenceReportUnit> newReportList;
     if (await isConnectedToInternet()) {
       try {
+        isLoading = true;
+        notifyListeners();
         final response = await http.get(
             Uri.parse(
                 "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
@@ -621,7 +610,7 @@ class ReportsData with ChangeNotifier {
           await getLateAbsenceReportApi(
               userToken, siteId, dateFrom, dateTo, context);
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           log(response.body);
 
           if (decodedRes["message"] == "Success") {
@@ -636,7 +625,7 @@ class ReportsData with ChangeNotifier {
               lateAbsenceReport.isDayOff = false;
             }
 
-            var reportObjJson = jsonDecode(response.body)['data']
+            final reportObjJson = jsonDecode(response.body)['data']
                 ['userLateAbsentReport'] as List;
 
             newReportList = reportObjJson
@@ -644,7 +633,9 @@ class ReportsData with ChangeNotifier {
                 .toList();
 
             lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
+            isLoading = false;
             notifyListeners();
+            await Future.delayed(const Duration(milliseconds: 1500), () {});
 
             return "Success";
           } else if (decodedRes["message"] ==

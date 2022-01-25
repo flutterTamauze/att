@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/UserMissions/CompanyMissions.dart';
 
 class DataTableMissionRow extends StatelessWidget {
@@ -29,7 +30,9 @@ class DataTableMissionRow extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   height: 30.h,
                   child: AutoSizeText(
-                    isExternal() ? "خارجية" : "داخلية",
+                    isExternal()
+                        ? getTranslated(context, "خارجية")
+                        : getTranslated(context, "داخلية"),
                     maxLines: 2,
                     style: TextStyle(
                       fontSize:

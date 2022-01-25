@@ -50,9 +50,10 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                   ? Text(
                       getTranslated(context, "برجاء اختيار اسم مستخدم"),
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: ColorManager.primary,
-                          fontSize: 15),
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.primary,
+                        fontSize: setResponsiveFontSize(15),
+                      ),
                     )
                   : DataTableMissionHeader()),
           widget._nameController.text == ""
@@ -103,7 +104,9 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                                                 getTranslated(context,
                                                     "لا يوجد نتائج للبحث"),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )

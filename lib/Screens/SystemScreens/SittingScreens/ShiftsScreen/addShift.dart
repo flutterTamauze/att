@@ -120,25 +120,25 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
   String amPmChanger(int intTime) {
     int hours = (intTime ~/ 100);
-    int min = intTime - (hours * 100);
+    final int min = intTime - (hours * 100);
 
-    var ampm = hours >= 12 ? 'PM' : 'AM';
+    final ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours != 0 ? hours : 12; //
 
-    String hoursStr = hours < 10
+    final String hoursStr = hours < 10
         ? '0$hours'
         : hours.toString(); // the hour '0' should be '12'
-    String minStr = min < 10 ? '0$min' : min.toString();
+    final String minStr = min < 10 ? '0$min' : min.toString();
 
-    var strTime = '$hoursStr:$minStr$ampm';
+    final strTime = '$hoursStr:$minStr$ampm';
 
     return strTime;
   }
 
   TimeOfDay intToTimeOfDay(int time) {
-    int hours = (time ~/ 100);
-    int min = time - (hours * 100);
+    final int hours = (time ~/ 100);
+    final int min = time - (hours * 100);
     return TimeOfDay(hour: hours, minute: min);
   }
 
@@ -223,20 +223,20 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
   String getTimeToString(int time) {
     print(time);
-    double hoursDouble = time / 100.0;
-    int h = hoursDouble.toInt();
+    final double hoursDouble = time / 100.0;
+    final int h = hoursDouble.toInt();
     print(h);
-    double minDouble = time.toDouble() % 100;
-    int m = minDouble.toInt();
+    final double minDouble = time.toDouble() % 100;
+    final int m = minDouble.toInt();
     print(m);
-    NumberFormat formatter = new NumberFormat("00");
+    final NumberFormat formatter = new NumberFormat("00");
     return "${formatter.format(h)}:${formatter.format(m)}";
   }
 
   bool compareShiftTime(TimeOfDay startTime, TimeOfDay endTime) {
-    int startNumber = (startTime.hour * 60) + startTime.minute;
-    int endNumber = (endTime.hour * 60) + endTime.minute;
-    int difference = (endNumber - startNumber).abs();
+    final int startNumber = (startTime.hour * 60) + startTime.minute;
+    final int endNumber = (endTime.hour * 60) + endTime.minute;
+    final int difference = (endNumber - startNumber).abs();
     log(difference.toString());
     if (difference >= 180)
       return true;
@@ -248,8 +248,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvider = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvider = Provider.of<CompanyData>(context, listen: false);
 
     return WillPopScope(
       onWillPop: onWillPop,
@@ -372,7 +372,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                 onTap:
                                                                     () async {
                                                                   if (edit) {
-                                                                    var from =
+                                                                    final from =
                                                                         await showTimePicker(
                                                                       context:
                                                                           context,
@@ -390,11 +390,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                         );
                                                                       },
                                                                     );
-                                                                    MaterialLocalizations
+                                                                    final MaterialLocalizations
                                                                         localizations =
                                                                         MaterialLocalizations.of(
                                                                             context);
-                                                                    String
+                                                                    final String
                                                                         formattedTime =
                                                                         localizations.formatTimeOfDay(
                                                                             from,
@@ -500,7 +500,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                 onTap:
                                                                     () async {
                                                                   if (edit) {
-                                                                    var to =
+                                                                    final to =
                                                                         await showTimePicker(
                                                                       context:
                                                                           context,
@@ -518,11 +518,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                         );
                                                                       },
                                                                     );
-                                                                    MaterialLocalizations
+                                                                    final MaterialLocalizations
                                                                         localizations =
                                                                         MaterialLocalizations.of(
                                                                             context);
-                                                                    String
+                                                                    final String
                                                                         formattedTime2 =
                                                                         localizations.formatTimeOfDay(
                                                                             to,
@@ -750,26 +750,26 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                               padding: const EdgeInsets.all(15),
                               child: RoundedButton(
                                 onPressed: () async {
-                                  DateTime now = DateTime.now();
-                                  TimeOfDay t = fromPicked;
-                                  TimeOfDay tt = toPicked;
-                                  TimeOfDay sunT = sunFromT;
-                                  TimeOfDay sunTT = sunToT;
-                                  TimeOfDay monT = monFromT;
-                                  TimeOfDay monTT = monToT;
-                                  TimeOfDay tuesT = tuesFromT;
-                                  TimeOfDay tuesTT = tuesToT;
-                                  TimeOfDay wedT = wedFromT;
-                                  TimeOfDay wedTT = wedToT;
-                                  TimeOfDay thurT = thuFromT;
-                                  TimeOfDay thurTT = thuToT;
-                                  TimeOfDay friT = friFromT;
-                                  TimeOfDay friTT = friToT;
+                                  final DateTime now = DateTime.now();
+                                  final TimeOfDay t = fromPicked;
+                                  final TimeOfDay tt = toPicked;
+                                  final TimeOfDay sunT = sunFromT;
+                                  final TimeOfDay sunTT = sunToT;
+                                  final TimeOfDay monT = monFromT;
+                                  final TimeOfDay monTT = monToT;
+                                  final TimeOfDay tuesT = tuesFromT;
+                                  final TimeOfDay tuesTT = tuesToT;
+                                  final TimeOfDay wedT = wedFromT;
+                                  final TimeOfDay wedTT = wedToT;
+                                  final TimeOfDay thurT = thuFromT;
+                                  final TimeOfDay thurTT = thuToT;
+                                  final TimeOfDay friT = friFromT;
+                                  final TimeOfDay friTT = friToT;
 
-                                  DateTime dateFrom = DateTime(now.year,
+                                  final DateTime dateFrom = DateTime(now.year,
                                       now.month, now.day, t.hour, t.minute);
 
-                                  DateTime dateTo = DateTime(now.year,
+                                  final DateTime dateTo = DateTime(now.year,
                                       now.month, now.day, tt.hour, tt.minute);
                                   sunFrom = DateTime(now.year, now.month,
                                       now.day, sunT.hour, sunT.minute);
@@ -798,7 +798,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   friTo = DateTime(now.year, now.month, now.day,
                                       friTT.hour, friTT.minute);
 
-                                  var startInt = int.parse(DateFormat("HH:mm")
+                                  final startInt = int.parse(DateFormat("HH:mm")
                                       .format(dateFrom)
                                       .replaceAll(":", ""));
                                   startString =
@@ -825,7 +825,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                   _tuesFrom =
                                       DateFormat("HH:mm").format(tuesFrom);
                                   _tuesTo = DateFormat("HH:mm").format(tuesTo);
-                                  var endInt = int.parse(DateFormat("HH:mm")
+                                  final endInt = int.parse(DateFormat("HH:mm")
                                       .format(dateTo)
                                       .replaceAll(":", ""));
 
@@ -949,7 +949,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         builder: (BuildContext context) {
           return RoundedLoadingIndicator();
         });
-    var user = Provider.of<UserData>(context, listen: false).user;
+    final user = Provider.of<UserData>(context, listen: false).user;
     bool mondayCheck = compareShiftTime(monFromT, monToT),
         sundayCheck = compareShiftTime(sunFromT, sunToT),
         tuesCheck = compareShiftTime(tuesFromT, tuesToT),
@@ -972,32 +972,33 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           toastLength: Toast.LENGTH_LONG);
       Navigator.pop(context);
     } else {
-      var msg = await Provider.of<ShiftsData>(context, listen: false).editShift(
-          Shift(
-            fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
-            fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
-            monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
-            mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
-            sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
-            sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
-            thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
-            thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
-            tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
-            tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
-            wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
-            wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
-            shiftStartTime: int.parse(startString.replaceAll(":", "")),
-            shiftEndTime: int.parse(endString.replaceAll(":", "")),
-            shiftName: _title.text,
-            shiftId: widget.shift.shiftId,
-            siteID: Provider.of<SiteShiftsData>(context, listen: false)
-                .siteShiftList[siteId]
-                .siteId,
-          ),
-          widget.id,
-          user.userToken,
-          context,
-          widget.siteIndex);
+      final msg =
+          await Provider.of<ShiftsData>(context, listen: false).editShift(
+              Shift(
+                fridayShiftenTime: int.parse(_friTo.replaceAll(":", "")),
+                fridayShiftstTime: int.parse(_friFrom.replaceAll(":", "")),
+                monShiftstTime: int.parse(_monFrom.replaceAll(":", "")),
+                mondayShiftenTime: int.parse(_monTo.replaceAll(":", "")),
+                sunShiftenTime: int.parse(_sunTo.replaceAll(":", "")),
+                sunShiftstTime: int.parse(_sunFrom.replaceAll(":", "")),
+                thursdayShiftenTime: int.parse(_thuTo.replaceAll(":", "")),
+                thursdayShiftstTime: int.parse(_thuFrom.replaceAll(":", "")),
+                tuesdayShiftenTime: int.parse(_tuesTo.replaceAll(":", "")),
+                tuesdayShiftstTime: int.parse(_tuesFrom.replaceAll(":", "")),
+                wednesDayShiftenTime: int.parse(_wedTo.replaceAll(":", "")),
+                wednesDayShiftstTime: int.parse(_wedFrom.replaceAll(":", "")),
+                shiftStartTime: int.parse(startString.replaceAll(":", "")),
+                shiftEndTime: int.parse(endString.replaceAll(":", "")),
+                shiftName: _title.text,
+                shiftId: widget.shift.shiftId,
+                siteID: Provider.of<SiteShiftsData>(context, listen: false)
+                    .siteShiftList[siteId]
+                    .siteId,
+              ),
+              widget.id,
+              user.userToken,
+              context,
+              widget.siteIndex);
 
       if (msg == "Success") {
         Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
@@ -1069,7 +1070,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           return RoundedLoadingIndicator();
         });
 
-    var user = Provider.of<UserData>(context, listen: false).user;
+    final user = Provider.of<UserData>(context, listen: false).user;
     bool mondayCheck = compareShiftTime(monFromT, monToT),
         sundayCheck = compareShiftTime(sunFromT, sunToT),
         tuesCheck = compareShiftTime(tuesFromT, tuesToT),
@@ -1173,8 +1174,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   }
 
   int getSiteId(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].name) {
         return i;
@@ -1184,9 +1185,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   }
 
   int getSiteListIndex(int siteId) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteId == list[i].siteId) {
         return i;
@@ -1437,7 +1438,7 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                           padding: const EdgeInsets.all(5.0),
                           child: GestureDetector(
                             onTap: () {},
-                            child: Text(
+                            child: AutoSizeText(
                               "يجب ان لا تقل المدة عن 4 ساعات",
                               style: TextStyle(
                                   color: Colors.red,

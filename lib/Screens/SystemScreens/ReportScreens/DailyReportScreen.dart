@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -31,6 +33,7 @@ import 'package:qr_users/widgets/XlsxExportButton.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class DailyReportScreen extends StatefulWidget {
   DailyReportScreen();
@@ -49,21 +52,44 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   DateTime selectedDate;
   DateTime today;
   int siteID;
+  var percent = 0;
+  Timer timer;
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    percent = 0;
+    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
+        setState(() {
+          percent = 100;
+        });
+      }
+      setState(() {
+        percent += 2;
+        print(percent);
+        if (percent >= 65) {
+          timer.cancel();
+        }
+      });
+    });
     date = apiFormatter.format(DateTime.now());
     getDailyReport(siteId, date, context);
     selectedDateString = DateTime.now().toString();
-    var now = DateTime.now();
+    final now = DateTime.now();
     today = DateTime(now.year, now.month, now.day);
     selectedDate = DateTime(now.year, now.month, now.day);
   }
 
   int getSiteIndex(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -78,7 +104,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
 
   void _onRefresh() async {
     print("starrt refresh");
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
     print("refresh");
     setState(() {
       isLoading = true;
@@ -196,9 +222,11 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-                                  return LoadingIndicator();
+                                  return ProgressBar(percent, 70, 60);
                                 case ConnectionState.done:
                                   log("data ${snapshot.data}");
+
+                                  timer.cancel();
                                   return Column(
                                     children: [
                                       Container(
@@ -222,7 +250,8 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                         hintColor: Colors.black,
                                                         onChange:
                                                             (value) async {
-                                                          var lastRec = siteId;
+                                                          final lastRec =
+                                                              siteId;
 
                                                           siteId = getSiteIndex(
                                                               value);
@@ -522,5 +551,50 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
         MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
         (Route<dynamic> route) => false);
     return Future.value(false);
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  final int percent;
+  final int maxValue;
+  final int maxPercent;
+
+  ProgressBar(this.percent, this.maxValue, this.maxPercent);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Container(
+            width: 400,
+            height: 300,
+            child: Lottie.asset("resources/kiteLoader.json"),
+          ),
+          AutoSizeText(
+            percent > maxPercent
+                ? getTranslated(context, "على وشك الأنتهاء")
+                : getTranslated(context, "برجاء الأنتظار"),
+            style: TextStyle(
+                fontSize: setResponsiveFontSize(17),
+                fontWeight: FontWeight.w700),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: FAProgressBar(
+                currentValue: percent,
+                backgroundColor: Colors.grey[200],
+                maxValue: maxValue,
+                progressColor: ColorManager.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

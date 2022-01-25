@@ -117,7 +117,8 @@ class UserData with ChangeNotifier {
         }
       } else {
         bool isError = false;
-        String isnull = await firebaseMessaging.getToken().catchError((e) {
+        final String isnull =
+            await firebaseMessaging.getToken().catchError((e) {
           token = "null";
           isError = true;
         });
@@ -169,7 +170,7 @@ class UserData with ChangeNotifier {
               Provider.of<CompanyData>(context, listen: false);
           if (isSuperAdmin) {
             print(decodedRes['superAdminCompanies']);
-            var obJson = decodedRes['superAdminCompanies'] as List;
+            final obJson = decodedRes['superAdminCompanies'] as List;
             superCompaniesList.add(SuperCompaniesModel(
                 companyId: comProv.com.id, companyName: comProv.com.nameAr));
             final List<SuperCompaniesModel> tempComp = obJson
@@ -178,7 +179,7 @@ class UserData with ChangeNotifier {
             superCompaniesList.addAll(tempComp);
           } else if (isTdsAdmin || isTechnicalSupport) {
             print(decodedRes['tdsadminCompanies']);
-            var obJson = decodedRes['tdsadminCompanies'] as List;
+            final obJson = decodedRes['tdsadminCompanies'] as List;
 
             superCompaniesList = obJson
                 .map((json) => SuperCompaniesModel.fromJson(json))
@@ -269,7 +270,7 @@ class UserData with ChangeNotifier {
             ),
             headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
         print(response.body);
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
 
         if (decodedRes["message"] == "Verification code send to account ") {
           notifyListeners();
@@ -301,7 +302,7 @@ class UserData with ChangeNotifier {
             ),
             headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
 
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(decodedRes["message"]);
 
         if (decodedRes["message"] == "Password Updated Successfully ") {
@@ -362,7 +363,7 @@ class UserData with ChangeNotifier {
         await request.send().then((response) async {
           response.stream.transform(utf8.decoder).listen((value) {
             print(value);
-            Map<String, dynamic> responesDedoded = json.decode(value);
+            final Map<String, dynamic> responesDedoded = json.decode(value);
             msg = responesDedoded['message'];
             print("msg is $msg");
           });
@@ -459,7 +460,8 @@ class UserData with ChangeNotifier {
   }
 
   Future getSuperCompanyChart(String token, int comID) async {
-    var response = await SuperCompaniesChartRepo().getSuperCharts(token, comID);
+    final response =
+        await SuperCompaniesChartRepo().getSuperCharts(token, comID);
 
     if (response is Faliure) {
       print("faliure occured");
@@ -484,22 +486,24 @@ class UserData with ChangeNotifier {
     String data = "";
     print("uploading image..$id...");
     print(_image.path);
-    var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
-    var length = await _image.length();
+    final stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
+    final length = await _image.length();
 
-    var uri = Uri.parse("$baseURL/api/Users/UpdateImage/$id");
+    final uri = Uri.parse("$baseURL/api/Users/UpdateImage/$id");
 
-    var request = new http.MultipartRequest("PUT", uri);
-    Map<String, String> headers = {'Authorization': "Bearer ${user.userToken}"};
+    final request = new http.MultipartRequest("PUT", uri);
+    final Map<String, String> headers = {
+      'Authorization': "Bearer ${user.userToken}"
+    };
     request.headers.addAll(headers);
-    var multipartFile = new http.MultipartFile('file', stream, length,
+    final multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(_image.path));
     request.files.add(multipartFile);
 
     await request.send().then((response) async {
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        Map<String, dynamic> responesDedoded = json.decode(value);
+        final Map<String, dynamic> responesDedoded = json.decode(value);
 
         if (responesDedoded['message'] == "Success : Image updated success") {
           print(responesDedoded['message']);
@@ -516,7 +520,7 @@ class UserData with ChangeNotifier {
   }
 
   Future<String> updateProfileImgFile(String imgPath) async {
-    File _image = File(imgPath);
+    final File _image = File(imgPath);
     print(_image.lengthSync());
     var url = "";
 
@@ -564,7 +568,7 @@ class UserData with ChangeNotifier {
             });
         print(response.body);
         isLoading = false;
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         print(decodedRes["message"]);
         notifyListeners();
@@ -583,7 +587,7 @@ class UserData with ChangeNotifier {
   }
 
   Future<String> changePassword(String password) async {
-    String imei = await getDeviceUUID();
+    final String imei = await getDeviceUUID();
     print("${user.id} -----edit-- $password --- mac$imei ");
 
     if (await isConnectedToInternet("www.google.com")) {
@@ -598,7 +602,7 @@ class UserData with ChangeNotifier {
               'Authorization': "Bearer ${user.userToken}"
             });
 
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.statusCode);
         print(response.body);
         print(decodedRes["message"]);
@@ -651,7 +655,7 @@ class UserData with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     // await checkPermissions();
-    HuaweiServices _huawei = HuaweiServices();
+    final HuaweiServices _huawei = HuaweiServices();
     bool enabled = true;
     bool isHawawi = false;
     if (Platform.isAndroid) {
@@ -667,7 +671,7 @@ class UserData with ChangeNotifier {
     // && pos[0] != null
     if (Platform.isIOS) {
       if (enabled) {
-        bool isMock = await detectJailBreak();
+        final bool isMock = await detectJailBreak();
 
         if (!isMock) {
           await Geolocator.getCurrentPosition(
@@ -685,7 +689,7 @@ class UserData with ChangeNotifier {
         return 2;
       }
     } else {
-      HuaweiServices _huawei = HuaweiServices();
+      final HuaweiServices _huawei = HuaweiServices();
       if (isHawawi) {
         await _huawei.getHuaweiCurrentLocation().then((currentLoc) {
           _currentHawawiLocation = currentLoc;
@@ -694,7 +698,7 @@ class UserData with ChangeNotifier {
         return 0;
       } else {
         if (enabled) {
-          bool isMockLocation = await TrustLocation.isMockLocation;
+          final bool isMockLocation = await TrustLocation.isMockLocation;
 
           if (!isMockLocation) {
             await Geolocator.getCurrentPosition(

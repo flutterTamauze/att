@@ -62,73 +62,66 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                   thickness: 1,
                   color: ColorManager.primary,
                 ),
-          Directionality(
-            textDirection: ui.TextDirection.rtl,
-            child: Expanded(
-                child: FutureBuilder(
-                    future: widget.getHoliday,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.orange,
-                          ),
-                        );
-                      } else {
-                        return widget._nameController.text == ""
-                            ? Container()
-                            : holidayProv.singleUserHoliday.isNotEmpty
-                                ? ListView.builder(
-                                    itemCount:
-                                        holidayProv.singleUserHoliday.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return holidayProv
-                                                  .singleUserHoliday[index]
-                                                  .holidayStatus ==
-                                              1
-                                          ? Column(
-                                              children: [
-                                                DataTableHolidayRow(holidayProv
-                                                    .singleUserHoliday[index]),
-                                                Divider(
-                                                  thickness: 1,
-                                                )
-                                              ],
-                                            )
-                                          : Container();
-                                    })
-                                : Center(
-                                    child: Provider.of<MemberData>(context)
-                                            .loadingSearch
-                                        ? Container()
-                                        : Provider.of<MemberData>(context)
-                                                .userSearchMember
-                                                .isEmpty
-                                            ? AutoSizeText(
-                                                getTranslated(context,
-                                                    "لا يوجد نتائج للبحث"),
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        setResponsiveFontSize(
-                                                            15),
-                                                    fontWeight:
-                                                        FontWeight.bold),
+          Expanded(
+              child: FutureBuilder(
+                  future: widget.getHoliday,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                    } else {
+                      return widget._nameController.text == ""
+                          ? Container()
+                          : holidayProv.singleUserHoliday.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount:
+                                      holidayProv.singleUserHoliday.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return holidayProv.singleUserHoliday[index]
+                                                .holidayStatus ==
+                                            1
+                                        ? Column(
+                                            children: [
+                                              DataTableHolidayRow(holidayProv
+                                                  .singleUserHoliday[index]),
+                                              Divider(
+                                                thickness: 1,
                                               )
-                                            : AutoSizeText(
-                                                getTranslated(
-                                                  context,
-                                                  "لا يوجد اجازات لهذا المستخدم",
-                                                ),
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ));
-                        ;
-                      }
-                    })),
-          ),
+                                            ],
+                                          )
+                                        : Container();
+                                  })
+                              : Center(
+                                  child: Provider.of<MemberData>(context)
+                                          .loadingSearch
+                                      ? Container()
+                                      : Provider.of<MemberData>(context)
+                                              .userSearchMember
+                                              .isEmpty
+                                          ? AutoSizeText(
+                                              getTranslated(context,
+                                                  "لا يوجد نتائج للبحث"),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      setResponsiveFontSize(15),
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : AutoSizeText(
+                                              getTranslated(
+                                                context,
+                                                "لا يوجد اجازات لهذا المستخدم",
+                                              ),
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ));
+                      ;
+                    }
+                  })),
           widget._nameController.text == ""
               ? Container()
               : Divider(thickness: 1, color: ColorManager.primary),

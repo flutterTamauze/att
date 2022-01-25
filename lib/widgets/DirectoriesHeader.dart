@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/constants.dart';
 
 class DirectoriesHeader extends StatelessWidget {
   final lottie;
@@ -47,7 +48,7 @@ class DirectoriesHeader extends StatelessWidget {
               style: TextStyle(
                 color: Colors.orange,
                 fontWeight: FontWeight.w600,
-                fontSize: 20,
+                fontSize: setResponsiveFontSize(20),
               )),
         ),
       ],
@@ -87,7 +88,7 @@ class SmallDirectoriesHeader extends StatelessWidget {
                   color: Colors.orange,
                   fontWeight: FontWeight.w600,
                   fontSize:
-                      ScreenUtil().setSp(20, allowFontScalingSelf: true))),
+                      ScreenUtil().setSp(19, allowFontScalingSelf: true))),
         ),
       ],
     );

@@ -226,7 +226,7 @@ class _ShiftsDropDownState extends State<ShiftsDropDown> {
               child: DropdownButton(
                 hint: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
+                  child: AutoSizeText(
                     "لا يوجد مناوبات",
                     textAlign: TextAlign.right,
                   ),

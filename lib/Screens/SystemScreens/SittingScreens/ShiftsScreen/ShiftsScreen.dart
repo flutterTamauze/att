@@ -910,7 +910,7 @@ class FromToShiftDisplay extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.centerRight,
-            child: Text(
+            child: AutoSizeText(
               weekDay,
             ),
           ),

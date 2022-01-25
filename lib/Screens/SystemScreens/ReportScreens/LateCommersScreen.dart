@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:animate_do/animate_do.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -48,25 +50,45 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   DateTime fromDate;
   DateTime yesterday;
   Site siteData;
-
+  var percent = 0;
+  Timer timer;
   String diff;
   var isLoading = false;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-
-    String fromText =
+    final String fromText =
         " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
-    String toText =
+    final String toText =
         " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
 
     _dateController.text = "$fromText $toText";
     super.didChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   void initState() {
     super.initState();
-    var now = DateTime.now();
+    percent = 0;
+    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
+        setState(() {
+          percent = 300;
+        });
+      }
+      setState(() {
+        percent += 3;
+        print(percent);
+        if (percent >= 295) {
+          timer.cancel();
+        }
+      });
+    });
+    final now = DateTime.now();
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     toDate = DateTime(now.year, now.month, now.day - 1);
@@ -75,7 +97,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       fromDate = DateTime(now.year, now.month - 1,
           Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     }
-    var comProv = Provider.of<CompanyData>(context, listen: false);
+    final comProv = Provider.of<CompanyData>(context, listen: false);
     if (fromDate.isBefore(comProv.com.createdOn)) {
       fromDate = comProv.com.createdOn;
     }
@@ -87,7 +109,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
 
   getData(int siteIndex) async {
     int siteID;
-    UserData userProvider = Provider.of<UserData>(context, listen: false);
+    final UserData userProvider = Provider.of<UserData>(context, listen: false);
 
     if (userProvider.user.userType != 2) {
       siteID = Provider.of<SiteShiftsData>(context, listen: false)
@@ -105,9 +127,9 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   }
 
   int getSiteId(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -120,8 +142,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   int siteId = 0;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
     print("val $val");
-    DateTime maxDate = currentDate.add(Duration(days: 31));
-    DateTime minDate = currentDate.subtract(Duration(days: 31));
+    final DateTime maxDate = currentDate.add(Duration(days: 31));
+    final DateTime minDate = currentDate.subtract(Duration(days: 31));
 
     if (val.isBefore(maxDate) && val.isAfter(minDate)) {
       return true;
@@ -135,7 +157,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     final userDataProvider = Provider.of<UserData>(context, listen: false);
-    var comProv = Provider.of<CompanyData>(context, listen: false);
+    final comProv = Provider.of<CompanyData>(context, listen: false);
     return Consumer<ReportsData>(builder: (context, reportsData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -144,12 +166,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
           backgroundColor: Colors.white,
           body: Container(
             child: GestureDetector(
-              onTap: () {
-                print(reportsData.lateAbsenceReport.lateRatio);
-                print(comProv.com.createdOn);
-                print(fromDate);
-                print(comProv.com.legalComDate);
-              },
+              onTap: () {},
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();
@@ -273,18 +290,20 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                               if (snapshot.hasData) {
                                 switch (snapshot.connectionState) {
                                   case ConnectionState.waiting:
-                                    return Container(
-                                      color: Colors.white,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          backgroundColor: Colors.white,
-                                          valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  Colors.orange),
-                                        ),
-                                      ),
+                                    return Center(
+                                      child: Platform.isIOS
+                                          ? CupertinoActivityIndicator(
+                                              radius: 20,
+                                            )
+                                          : CircularProgressIndicator(
+                                              backgroundColor: Colors.white,
+                                              valueColor:
+                                                  new AlwaysStoppedAnimation<
+                                                      Color>(Colors.orange),
+                                            ),
                                     );
                                   case ConnectionState.done:
+                                    timer.cancel();
                                     return Column(
                                       children: [
                                         Container(
@@ -346,9 +365,9 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                         fromDate = picked.first;
                                                         toDate = picked.last;
 
-                                                        String fromText =
+                                                        final String fromText =
                                                             " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                        String toText =
+                                                        final String toText =
                                                             " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
                                                         newString =
                                                             "$fromText $toText";
@@ -367,10 +386,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                             apiFormatter
                                                                 .format(toDate);
 
-                                                        var user = Provider.of<
-                                                                    UserData>(
-                                                                context,
-                                                                listen: false)
+                                                        final user = Provider
+                                                                .of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
                                                             .user;
                                                         if (user.userType ==
                                                             2) {
@@ -493,7 +513,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                               siteIdIndex]
                                                           .siteId;
 
-                                                      var userToken =
+                                                      final userToken =
                                                           Provider.of<UserData>(
                                                                   context,
                                                                   listen: false)
@@ -655,18 +675,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                     );
                                 }
                               }
-                              return Center(
-                                child: Platform.isIOS
-                                    ? CupertinoActivityIndicator(
-                                        radius: 20,
-                                      )
-                                    : CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.orange),
-                                      ),
-                              );
+
+                              return ProgressBar(percent, 300, 290);
                             }),
                       ),
                     ],

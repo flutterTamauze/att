@@ -490,7 +490,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         widget.member.id)
                                                     .then((value) {
                                                   if (value ==
-                                                      "Success : Holiday Created!") {
+                                                      Holiday.Success) {
                                                     Fluttertoast.showToast(
                                                             msg: getTranslated(
                                                                 context,
@@ -527,7 +527,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       );
                                                     }
                                                   } else if (value ==
-                                                      "Failed : There are external mission in this period!") {
+                                                      Holiday
+                                                          .External_Mission_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         msg:
                                                             "لا يمكن وضع الأجازة : يوجد مأمورية خارجية",
@@ -538,7 +539,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an holiday approved in this period!") {
+                                                      Holiday
+                                                          .Holiday_Approved_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -549,7 +551,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an internal Mission in this period!") {
+                                                      Holiday
+                                                          .Internal_Mission_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
@@ -560,13 +563,26 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         backgroundColor:
                                                             Colors.red);
                                                   } else if (value ==
-                                                      "Failed : There are an permission in this period!") {
+                                                      Holiday
+                                                          .Permession_InThis_Period) {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
                                                         msg: getTranslated(
                                                             context,
                                                             "لا يمكن طلب الاجازة : يوجد طلب اذن"),
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        backgroundColor:
+                                                            Colors.red);
+                                                  } else if (value ==
+                                                      Holiday
+                                                          .Another_Holiday_NOT_APPROVED) {
+                                                    Fluttertoast.showToast(
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        msg:
+                                                            "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
