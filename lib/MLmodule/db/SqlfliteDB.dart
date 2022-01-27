@@ -24,9 +24,9 @@ class DatabaseHelper {
   }
   //Initializting the database opening a path with the directory.
   initializedDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, _dbName);
-    var myOwnDb = await openDatabase(path, version: 1, onCreate: _onCreate);
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final String path = join(directory.path, _dbName);
+    final myOwnDb = await openDatabase(path, version: 1, onCreate: _onCreate);
     return myOwnDb;
   }
 
@@ -48,7 +48,7 @@ class DatabaseHelper {
   //////////////////////notifications//////
   Future<int> insertNotification(
       NotificationMessage notificationMessage, BuildContext context) async {
-    int id = await _database
+    final int id = await _database
         .insert(_notificationTableName, notificationMessage.toMap(),
             conflictAlgorithm: ConflictAlgorithm.replace)
         .catchError((e) {
@@ -102,8 +102,9 @@ class DatabaseHelper {
       bool databaseDeleted = false;
 
       try {
-        Directory documentsDirectory = await getApplicationDocumentsDirectory();
-        String path = join(documentsDirectory.path, _dbName);
+        final Directory documentsDirectory =
+            await getApplicationDocumentsDirectory();
+        final String path = join(documentsDirectory.path, _dbName);
         _database = null;
         await deleteDatabase(path).whenComplete(() {
           databaseDeleted = true;
@@ -153,7 +154,7 @@ class DatabaseHelper {
 
   Future<void> readMessage(int value, int id) async {
     try {
-      int updateCount = await _database.rawUpdate(
+      final int updateCount = await _database.rawUpdate(
           'UPDATE $_notificationTableName  SET $_notificationColMsgSeen = ? WHERE $_notificationColId=? ',
           [value, id]);
 

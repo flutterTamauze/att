@@ -63,8 +63,8 @@ void main() async {
 }
 
 void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
-  String data = remoteMessage.data;
-  var decodedResponse = json.decode(data);
+  final String data = remoteMessage.data;
+  final decodedResponse = json.decode(data);
   print(data);
 
   hawawi.Push.localNotification({
@@ -105,10 +105,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 huaweiHandler() async {
-  HuaweiServices _huawei = HuaweiServices();
+  final HuaweiServices _huawei = HuaweiServices();
   if (await _huawei.isHuaweiDevice()) {
     await hawawi.Push.turnOnPush();
-    bool backgroundMessageHandler =
+    final bool backgroundMessageHandler =
         await hawawi.Push.registerBackgroundMessageHandler(
             backgroundMessageCallback);
     print("backgroundMessageHandler registered: $backgroundMessageHandler");
