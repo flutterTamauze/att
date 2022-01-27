@@ -413,8 +413,7 @@ class UserHolidaysData with ChangeNotifier {
         },
       );
       loadingHolidaysDetails = false;
-      print(response.statusCode);
-      print(response.request.url);
+      log(userId);
       log(response.body);
       final decodedResponse = json.decode(response.body);
       if (decodedResponse["message"] == "Success") {

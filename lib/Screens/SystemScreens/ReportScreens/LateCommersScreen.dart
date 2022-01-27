@@ -7,11 +7,13 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -47,36 +49,26 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   int selectedDuration;
   DateTime toDate;
   DateTime fromDate;
+  bool showTable;
   DateTime yesterday;
   Site siteData;
   var percent = 0;
   Timer timer;
   String diff;
+  final _visableNotifier = ValueNotifier<bool>(true);
   var isLoading = false;
   @override
   void dispose() {
-    // TODO: implement dispose
-    timer.cancel();
+    _visableNotifier.dispose();
+    if (percent != 0) timer.cancel();
     super.dispose();
   }
 
   void initState() {
     super.initState();
-    percent = 0;
-    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
-      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
-        setState(() {
-          percent = 300;
-        });
-      }
-      setState(() {
-        percent += 3;
-        print(percent);
-        if (percent >= 295) {
-          timer.cancel();
-        }
-      });
-    });
+    siteIdIndex = getSiteIndexBySiteID(
+        Provider.of<UserData>(context, listen: false).user.userSiteId);
+    showTable = false;
     final now = DateTime.now();
     fromDate = DateTime(now.year, now.month,
         Provider.of<CompanyData>(context, listen: false).com.legalComDate);
@@ -99,7 +91,29 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
         " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
 
     _dateController.text = "$fromText $toText";
-    getData(siteIdIndex);
+    // getData(siteIdIndex);
+  }
+
+  void setFBvisability(bool show) {
+    _visableNotifier.value = show;
+  }
+
+  loadProgressIndicator() {
+    percent = 0;
+    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
+        setState(() {
+          percent = 300;
+        });
+      }
+      setState(() {
+        percent += 3;
+        print(percent);
+        if (percent >= 295) {
+          timer.cancel();
+        }
+      });
+    });
   }
 
   getData(int siteIndex) async {
@@ -121,7 +135,19 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
         context);
   }
 
-  int getSiteId(String siteName) {
+  int getSiteIndexBySiteID(int siteId) {
+    final list =
+        Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
+    final int index = list.length;
+    for (int i = 0; i < index; i++) {
+      if (siteId == list[i].siteId) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  int getSiteIndexBySiteName(String siteName) {
     final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     final int index = list.length;
@@ -156,544 +182,486 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     return Consumer<ReportsData>(builder: (context, reportsData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
-        child: Scaffold(
-          endDrawer: NotificationItem(),
-          backgroundColor: Colors.white,
-          body: Container(
-            child: GestureDetector(
-              onTap: () {},
-              behavior: HitTestBehavior.opaque,
-              onPanDown: (_) {
-                FocusScope.of(context).unfocus();
+        child: NotificationListener(
+          onNotification: (notificationInfo) {
+            if (notificationInfo is ScrollStartNotification) {
+              print("scroll");
+              setFBvisability(false);
+            } else if (notificationInfo is ScrollEndNotification) {
+              print("ended scolling");
+              setFBvisability(true);
+            }
+            return true;
+          },
+          child: Scaffold(
+            floatingActionButton: ValueListenableBuilder(
+              valueListenable: _visableNotifier,
+              builder: (context, value, child) {
+                return Visibility(
+                    visible: value,
+                    child: FadeIn(
+                        duration: Duration(seconds: 1),
+                        child: MultipleFloatingButtonsNoADD()));
               },
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Header(
-                        nav: false,
-                        goUserMenu: false,
-                        goUserHomeFromMenu: false,
-                      ),
-                      Directionality(
-                        textDirection: ui.TextDirection.rtl,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SmallDirectoriesHeader(
-                              Lottie.asset("resources/report.json",
-                                  repeat: false),
-                              "تقرير التأخير و الغياب",
-                            ),
-                            Container(
-                                child: FutureBuilder(
-                                    future: Provider.of<ReportsData>(context,
-                                            listen: true)
-                                        .futureListener,
-                                    builder: (context, snapshot) {
-                                      switch (snapshot.connectionState) {
-                                        case ConnectionState.waiting:
-                                          return Container();
-                                        case ConnectionState.done:
-                                          return !reportsData
-                                                  .lateAbsenceReport.isDayOff
-                                              ? reportsData
-                                                          .lateAbsenceReport
-                                                          .lateAbsenceReportUnitList
-                                                          .length !=
-                                                      0
-                                                  ? isLoading
-                                                      ? Container()
-                                                      : Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return Dialog(
-                                                                      shape: RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10.0)),
-                                                                      child:
-                                                                          Container(
-                                                                        height:
-                                                                            300.h,
-                                                                        width: double
-                                                                            .infinity,
-                                                                        child:
-                                                                            FadeInRight(
-                                                                          child: Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: ZoomIn(child: LateReportPieChart())),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                );
-                                                              },
-                                                              child: Icon(
-                                                                FontAwesomeIcons
-                                                                    .chartBar,
-                                                                color: Colors
-                                                                    .orange,
-                                                              ),
-                                                            ),
-                                                            XlsxExportButton(
-                                                              reportType: 1,
-                                                              title:
-                                                                  "تقرير التأخير و الغياب",
-                                                              day:
-                                                                  _dateController
-                                                                      .text,
-                                                              site: userDataProvider
-                                                                          .user
-                                                                          .userType ==
-                                                                      2
-                                                                  ? ""
-                                                                  //  Provider.of<
-                                                                  //             UserData>(
-                                                                  //         context,
-                                                                  //         listen:
-                                                                  //             false)
-                                                                  //     .siteName
-                                                                  : Provider.of<
-                                                                              SiteShiftsData>(
-                                                                          context)
-                                                                      .siteShiftList[
-                                                                          siteIdIndex]
-                                                                      .siteName,
-                                                            ),
-                                                          ],
-                                                        )
-                                                  : Container()
-                                              : Container();
-                                        default:
-                                          return Container();
-                                      }
-                                    }))
-                          ],
+            ),
+            endDrawer: NotificationItem(),
+            backgroundColor: Colors.white,
+            body: Container(
+              child: GestureDetector(
+                onTap: () {},
+                behavior: HitTestBehavior.opaque,
+                onPanDown: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Header(
+                          nav: false,
+                          goUserMenu: false,
+                          goUserHomeFromMenu: false,
                         ),
-                      ),
-                      Expanded(
-                        child: FutureBuilder(
-                            future:
-                                Provider.of<ReportsData>(context, listen: true)
-                                    .futureListener,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.waiting:
-                                    return Center(
-                                      child: Platform.isIOS
-                                          ? CupertinoActivityIndicator(
-                                              radius: 20,
-                                            )
-                                          : CircularProgressIndicator(
-                                              backgroundColor: Colors.white,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
-                                            ),
-                                    );
-                                  case ConnectionState.done:
-                                    timer.cancel();
-                                    return Column(
-                                      children: [
-                                        Container(
-                                            child: Theme(
-                                          data: clockTheme1,
-                                          child: Builder(
-                                            builder: (context) {
-                                              return InkWell(
-                                                  onTap: () async {
-                                                    final List<DateTime>
-                                                        picked =
-                                                        await DateRagePicker.showDatePicker(
-                                                            context: context,
-                                                            initialFirstDate:
-                                                                fromDate,
-                                                            initialLastDate:
-                                                                toDate,
-                                                            selectableDayPredicate:
-                                                                (day) =>
-                                                                    datePickerPeriodAvailable(
-                                                                        fromDate,
-                                                                        day),
-                                                            firstDate: DateTime(
-                                                                comProv
-                                                                        .com
-                                                                        .createdOn
-                                                                        .year -
-                                                                    1,
-                                                                comProv
-                                                                    .com
-                                                                    .createdOn
-                                                                    .month,
-                                                                comProv
-                                                                    .com
-                                                                    .createdOn
-                                                                    .day),
-                                                            lastDate:
-                                                                yesterday);
-
-                                                    if (picked.last
-                                                            .difference(
-                                                                picked.first)
-                                                            .inDays >
-                                                        31) {
-                                                      print(picked.last
-                                                          .difference(
-                                                              picked.first)
-                                                          .inDays);
-                                                      Fluttertoast.showToast(
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          msg:
-                                                              "يجب ان يتم اختيار اقل من 32 يوم",
-                                                          backgroundColor:
-                                                              Colors.red);
-                                                    } else {
-                                                      var newString = "";
-                                                      setState(() {
-                                                        fromDate = picked.first;
-                                                        toDate = picked.last;
-
-                                                        final String fromText =
-                                                            " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                        final String toText =
-                                                            " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
-                                                        newString =
-                                                            "$fromText $toText";
-                                                      });
-
-                                                      if (_dateController
-                                                              .text !=
-                                                          newString) {
-                                                        _dateController.text =
-                                                            newString;
-
-                                                        dateFromString =
-                                                            apiFormatter.format(
-                                                                fromDate);
-                                                        dateToString =
-                                                            apiFormatter
-                                                                .format(toDate);
-
-                                                        final user = Provider
-                                                                .of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .user;
-                                                        if (user.userType ==
-                                                            2) {
-                                                          await Provider.of<
-                                                                      ReportsData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getLateAbsenceReport(
-                                                                  user.userToken,
-                                                                  user.userSiteId,
-                                                                  dateFromString,
-                                                                  dateToString,
-                                                                  context);
-                                                        } else {
-                                                          await Provider.of<
-                                                                      ReportsData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .getLateAbsenceReport(
-                                                                  user
-                                                                      .userToken,
-                                                                  Provider.of<SiteShiftsData>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .siteShiftList[
-                                                                          siteIdIndex]
-                                                                      .siteId,
-                                                                  dateFromString,
-                                                                  dateToString,
-                                                                  context);
-                                                        }
-                                                      }
-                                                    }
-                                                  },
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        ui.TextDirection.rtl,
-                                                    child: Container(
-                                                      // width: 330,
-                                                      width:
-                                                          getkDeviceWidthFactor(
-                                                              context, 330),
-                                                      child: IgnorePointer(
-                                                        child: TextFormField(
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          controller:
-                                                              _dateController,
-                                                          decoration:
-                                                              kTextFieldDecorationFromTO
-                                                                  .copyWith(
-                                                                      hintText:
-                                                                          'المدة من / إلى',
-                                                                      prefixIcon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .calendar_today_rounded,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      )),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ));
-                                            },
-                                          ),
-                                        )),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    3 ||
-                                                Provider.of<UserData>(context,
-                                                            listen: false)
-                                                        .user
-                                                        .userType ==
-                                                    4
-                                            ? Container(
-                                                // width: 330,
-                                                width: getkDeviceWidthFactor(
-                                                    context, 345),
-                                                child: SiteDropdown(
-                                                  edit: true,
-                                                  list: Provider.of<
-                                                              SiteShiftsData>(
-                                                          context)
-                                                      .siteShiftList,
-                                                  colour: Colors.white,
-                                                  icon: Icons.location_on,
-                                                  borderColor: Colors.black,
-                                                  hint: "الموقع",
-                                                  hintColor: Colors.black,
-                                                  onChange: (value) async {
-                                                    // print()
-                                                    siteIdIndex =
-                                                        getSiteId(value);
-                                                    if (siteId !=
-                                                        Provider.of<SiteShiftsData>(
-                                                                context,
-                                                                listen: false)
-                                                            .siteShiftList[
-                                                                siteIdIndex]
-                                                            .siteId) {
-                                                      siteId = Provider.of<
-                                                                  SiteShiftsData>(
-                                                              context,
-                                                              listen: false)
-                                                          .siteShiftList[
-                                                              siteIdIndex]
-                                                          .siteId;
-
-                                                      final userToken =
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .userToken;
-                                                      setState(() {});
-
-                                                      await Provider.of<
-                                                                  ReportsData>(
-                                                              context,
-                                                              listen: false)
-                                                          .getLateAbsenceReport(
-                                                              userToken,
-                                                              siteId,
-                                                              dateFromString,
-                                                              dateToString,
-                                                              context);
-                                                    }
-                                                    print(value);
-                                                  },
-                                                  selectedvalue: Provider.of<
-                                                              SiteShiftsData>(
-                                                          context)
-                                                      .siteShiftList[
-                                                          siteIdIndex]
-                                                      .siteName,
-                                                  textColor: Colors.orange,
-                                                ),
-                                              )
-                                            : Container(),
-                                        snapshot.data ==
-                                                "Date is older than company date"
-                                            ? Expanded(
-                                                child: CenterMessageText(
-                                                    message:
-                                                        "التاريخ قبل إنشاء الشركة"),
-                                              )
-                                            : Expanded(
-                                                child: Container(
-                                                  color: Colors.white,
-                                                  child: Directionality(
-                                                      textDirection:
-                                                          ui.TextDirection.rtl,
-                                                      child: !reportsData
-                                                              .lateAbsenceReport
-                                                              .isDayOff
-                                                          ? reportsData
-                                                                      .lateAbsenceReport
-                                                                      .lateAbsenceReportUnitList
-                                                                      .length !=
-                                                                  0
-                                                              ? Column(
-                                                                  children: [
-                                                                    Divider(
-                                                                      thickness:
-                                                                          1,
-                                                                      color: Colors
-                                                                              .orange[
-                                                                          600],
-                                                                    ),
-                                                                    DataTableHeader(),
-                                                                    Divider(
-                                                                      thickness:
-                                                                          1,
-                                                                      color: Colors
-                                                                              .orange[
-                                                                          600],
-                                                                    ),
-                                                                    Expanded(
+                        Directionality(
+                          textDirection: ui.TextDirection.rtl,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SmallDirectoriesHeader(
+                                Lottie.asset("resources/report.json",
+                                    repeat: false),
+                                "تقرير التأخير و الغياب",
+                              ),
+                              Container(
+                                  child: FutureBuilder(
+                                      future: Provider.of<ReportsData>(context,
+                                              listen: true)
+                                          .futureListener,
+                                      builder: (context, snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.waiting:
+                                            return Container();
+                                          case ConnectionState.done:
+                                            return !reportsData
+                                                    .lateAbsenceReport.isDayOff
+                                                ? reportsData
+                                                            .lateAbsenceReport
+                                                            .lateAbsenceReportUnitList
+                                                            .length !=
+                                                        0
+                                                    ? isLoading
+                                                        ? Container()
+                                                        : Row(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0)),
                                                                         child:
                                                                             Container(
-                                                                      child:
-                                                                          Stack(
-                                                                        children: [
-                                                                          ListView.builder(
-                                                                              itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
-                                                                              itemBuilder: (BuildContext context, int index) {
-                                                                                return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
-                                                                              }),
-                                                                          Positioned(
-                                                                              child: Container(width: 110, height: 1000, child: MultipleFloatingButtonsNoADD()),
-                                                                              bottom: 0,
-                                                                              left: 0),
-                                                                        ],
-                                                                      ),
-                                                                    )),
-                                                                    Directionality(
-                                                                        textDirection: ui
-                                                                            .TextDirection
-                                                                            .rtl,
-                                                                        child:
-                                                                            DataTableEnd(
-                                                                          lateRatio: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .lateRatio,
-                                                                          absenceRatio: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .absentRatio,
-                                                                          totalDeduction: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .totalDecutionForAllUsers,
-                                                                        ))
-                                                                  ],
-                                                                )
-                                                              : Center(
-                                                                  child:
-                                                                      Container(
-                                                                    height: 20,
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      "لا يوجد تسجيلات بهذا الموقع",
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: TextStyle(
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf:
-                                                                                  true),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                          : Center(
-                                                              child: Container(
-                                                                height: 20,
-                                                                child:
-                                                                    AutoSizeText(
-                                                                  "لا يوجد تسجيلات: يوم اجازة",
-                                                                  maxLines: 1,
-                                                                  style: TextStyle(
-                                                                      fontSize: ScreenUtil().setSp(
-                                                                          16,
-                                                                          allowFontScalingSelf:
-                                                                              true),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700),
+                                                                          height:
+                                                                              300.h,
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              FadeInRight(
+                                                                            child:
+                                                                                Padding(padding: const EdgeInsets.all(8.0), child: ZoomIn(child: LateReportPieChart())),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                child: Icon(
+                                                                  FontAwesomeIcons
+                                                                      .chartBar,
+                                                                  color: Colors
+                                                                      .orange,
                                                                 ),
                                                               ),
-                                                            )),
-                                                ),
-                                              )
-                                      ],
-                                    );
-                                  default:
-                                    return Center(
-                                      child: Platform.isIOS
-                                          ? CupertinoActivityIndicator(
-                                              radius: 20,
-                                            )
-                                          : CircularProgressIndicator(
-                                              backgroundColor: Colors.white,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
-                                            ),
-                                    );
-                                }
-                              }
+                                                              XlsxExportButton(
+                                                                reportType: 1,
+                                                                title:
+                                                                    "تقرير التأخير و الغياب",
+                                                                day:
+                                                                    _dateController
+                                                                        .text,
+                                                                site: userDataProvider
+                                                                            .user
+                                                                            .userType ==
+                                                                        2
+                                                                    ? ""
+                                                                    //  Provider.of<
+                                                                    //             UserData>(
+                                                                    //         context,
+                                                                    //         listen:
+                                                                    //             false)
+                                                                    //     .siteName
+                                                                    : Provider.of<SiteShiftsData>(
+                                                                            context)
+                                                                        .siteShiftList[
+                                                                            siteIdIndex]
+                                                                        .siteName,
+                                                              ),
+                                                            ],
+                                                          )
+                                                    : Container()
+                                                : Container();
+                                          default:
+                                            return Container();
+                                        }
+                                      }))
+                            ],
+                          ),
+                        ),
+                        Container(
+                            child: Theme(
+                          data: clockTheme1,
+                          child: Builder(
+                            builder: (context) {
+                              return InkWell(
+                                  onTap: () async {
+                                    final List<DateTime> picked =
+                                        await DateRagePicker.showDatePicker(
+                                            context: context,
+                                            initialFirstDate: fromDate,
+                                            initialLastDate: toDate,
+                                            selectableDayPredicate: (day) =>
+                                                datePickerPeriodAvailable(
+                                                    fromDate, day),
+                                            firstDate: DateTime(
+                                                comProv.com.createdOn.year - 1,
+                                                comProv.com.createdOn.month,
+                                                comProv.com.createdOn.day),
+                                            lastDate: yesterday);
 
-                              return ProgressBar(percent, 300, 290);
-                            }),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    left: 5.0.w,
-                    top: 5.0.h,
-                    child: Container(
-                      width: 50.w,
-                      height: 50.h,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => NavScreenTwo(2)),
-                              (Route<dynamic> route) => false);
-                        },
+                                    if (picked.last
+                                            .difference(picked.first)
+                                            .inDays >
+                                        31) {
+                                      print(picked.last
+                                          .difference(picked.first)
+                                          .inDays);
+                                      Fluttertoast.showToast(
+                                          gravity: ToastGravity.CENTER,
+                                          msg:
+                                              "يجب ان يتم اختيار اقل من 32 يوم",
+                                          backgroundColor: Colors.red);
+                                    } else {
+                                      var newString = "";
+                                      setState(() {
+                                        fromDate = picked.first;
+                                        toDate = picked.last;
+
+                                        final String fromText =
+                                            " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+                                        final String toText =
+                                            " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+                                        newString = "$fromText $toText";
+                                      });
+
+                                      if (_dateController.text != newString) {
+                                        _dateController.text = newString;
+
+                                        dateFromString =
+                                            apiFormatter.format(fromDate);
+                                        dateToString =
+                                            apiFormatter.format(toDate);
+
+                                        final user = Provider.of<UserData>(
+                                                context,
+                                                listen: false)
+                                            .user;
+                                      }
+                                    }
+                                  },
+                                  child: Directionality(
+                                    textDirection: ui.TextDirection.rtl,
+                                    child: Container(
+                                      // width: 330,
+                                      width:
+                                          getkDeviceWidthFactor(context, 330),
+                                      child: IgnorePointer(
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                          textInputAction: TextInputAction.next,
+                                          controller: _dateController,
+                                          decoration: kTextFieldDecorationFromTO
+                                              .copyWith(
+                                                  hintText: 'المدة من / إلى',
+                                                  prefixIcon: Icon(
+                                                    Icons
+                                                        .calendar_today_rounded,
+                                                    color: Colors.orange,
+                                                  )),
+                                        ),
+                                      ),
+                                    ),
+                                  ));
+                            },
+                          ),
+                        )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Provider.of<UserData>(context, listen: false)
+                                        .user
+                                        .userType ==
+                                    3 ||
+                                Provider.of<UserData>(context, listen: false)
+                                        .user
+                                        .userType ==
+                                    4
+                            ? Container(
+                                // width: 330,
+                                width: getkDeviceWidthFactor(context, 345),
+                                child: SiteDropdown(
+                                  edit: true,
+                                  list: Provider.of<SiteShiftsData>(context)
+                                      .siteShiftList,
+                                  colour: Colors.white,
+                                  icon: Icons.location_on,
+                                  borderColor: Colors.black,
+                                  hint: "الموقع",
+                                  hintColor: Colors.black,
+                                  onChange: (value) async {
+                                    // print()
+                                    siteIdIndex = getSiteIndexBySiteName(value);
+                                    if (siteId !=
+                                        Provider.of<SiteShiftsData>(context,
+                                                listen: false)
+                                            .siteShiftList[siteIdIndex]
+                                            .siteId) {
+                                      siteId = Provider.of<SiteShiftsData>(
+                                              context,
+                                              listen: false)
+                                          .siteShiftList[siteIdIndex]
+                                          .siteId;
+
+                                      final userToken = Provider.of<UserData>(
+                                              context,
+                                              listen: false)
+                                          .user
+                                          .userToken;
+                                      setState(() {});
+
+                                      // await Provider.of<
+                                      //             ReportsData>(
+                                      //         context,
+                                      //         listen: false)
+                                      //     .getLateAbsenceReport(
+                                      //         userToken,
+                                      //         siteId,
+                                      //         dateFromString,
+                                      //         dateToString,
+                                      //         context);
+                                    }
+                                    print(value);
+                                  },
+                                  selectedvalue:
+                                      Provider.of<SiteShiftsData>(context)
+                                          .siteShiftList[siteIdIndex]
+                                          .siteName,
+                                  textColor: Colors.orange,
+                                ),
+                              )
+                            : Container(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 170.w,
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(0),
+                                side: MaterialStateProperty.all(BorderSide(
+                                    width: 1, color: ColorManager.primary)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)))),
+                            onPressed: () async {
+                              loadProgressIndicator();
+                              setState(() {
+                                getData(siteIdIndex);
+                                showTable = true;
+                              });
+                            },
+                            child: Center(
+                              child: Container(
+                                width: 160.w,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(FontAwesomeIcons.eye,
+                                        color: ColorManager.accentColor),
+                                    AutoSizeText(
+                                      "عرض التقرير",
+                                      style: TextStyle(
+                                          color: ColorManager.accentColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: setResponsiveFontSize(16)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: FutureBuilder(
+                              future: Provider.of<ReportsData>(context,
+                                      listen: true)
+                                  .futureListener,
+                              builder: (context, snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return ProgressBar(percent, 300, 290);
+                                  case ConnectionState.done:
+                                    if (percent != 0) {
+                                      timer.cancel();
+                                    }
+                                    return showTable
+                                        ? Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 10.h,
+                                              ),
+                                              snapshot.data ==
+                                                      "Date is older than company date"
+                                                  ? Expanded(
+                                                      child: CenterMessageText(
+                                                          message:
+                                                              "التاريخ قبل إنشاء الشركة"),
+                                                    )
+                                                  : Expanded(
+                                                      child: Container(
+                                                        color: Colors.white,
+                                                        child: Directionality(
+                                                            textDirection: ui
+                                                                .TextDirection
+                                                                .rtl,
+                                                            child: !reportsData
+                                                                    .lateAbsenceReport
+                                                                    .isDayOff
+                                                                ? reportsData
+                                                                            .lateAbsenceReport
+                                                                            .lateAbsenceReportUnitList
+                                                                            .length !=
+                                                                        0
+                                                                    ? Column(
+                                                                        children: [
+                                                                          Divider(
+                                                                            thickness:
+                                                                                1,
+                                                                            color:
+                                                                                Colors.orange[600],
+                                                                          ),
+                                                                          DataTableHeader(),
+                                                                          Divider(
+                                                                            thickness:
+                                                                                1,
+                                                                            color:
+                                                                                Colors.orange[600],
+                                                                          ),
+                                                                          Expanded(
+                                                                              child: Container(
+                                                                            child:
+                                                                                Stack(
+                                                                              children: [
+                                                                                ListView.builder(
+                                                                                    itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
+                                                                                    itemBuilder: (BuildContext context, int index) {
+                                                                                      return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
+                                                                                    }),
+                                                                              ],
+                                                                            ),
+                                                                          )),
+                                                                          Directionality(
+                                                                              textDirection: ui.TextDirection.rtl,
+                                                                              child: DataTableEnd(
+                                                                                lateRatio: reportsData.lateAbsenceReport.lateRatio,
+                                                                                absenceRatio: reportsData.lateAbsenceReport.absentRatio,
+                                                                                totalDeduction: reportsData.lateAbsenceReport.totalDecutionForAllUsers,
+                                                                              ))
+                                                                        ],
+                                                                      )
+                                                                    : Center(
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              20,
+                                                                          child:
+                                                                              AutoSizeText(
+                                                                            "لا يوجد تسجيلات بهذا الموقع",
+                                                                            maxLines:
+                                                                                1,
+                                                                            style:
+                                                                                TextStyle(fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                : Center(
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          20,
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        "لا يوجد تسجيلات: يوم اجازة",
+                                                                        maxLines:
+                                                                            1,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                            fontWeight: FontWeight.w700),
+                                                                      ),
+                                                                    ),
+                                                                  )),
+                                                      ),
+                                                    )
+                                            ],
+                                          )
+                                        : Container();
+                                  default:
+                                    return Container();
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      left: 5.0.w,
+                      top: 5.0.h,
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => NavScreenTwo(2)),
+                                (Route<dynamic> route) => false);
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -72,6 +72,7 @@ class _UserAttendanceReportScreenState
 
   String selectedId = "";
   Site siteData;
+  bool showSearchIcon = true;
   DateTime yesterday;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
     print("val $val");
@@ -87,6 +88,7 @@ class _UserAttendanceReportScreenState
 
   @override
   void initState() {
+    showSearchIcon = true;
     final userProv = Provider.of<UserData>(context, listen: false).user;
     final DateTime companyDate =
         Provider.of<CompanyData>(context, listen: false).com.createdOn;
@@ -175,7 +177,6 @@ class _UserAttendanceReportScreenState
   final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    print("build triggereed");
     final userToken = Provider.of<UserData>(context, listen: false);
     final comData = Provider.of<CompanyData>(context, listen: false).com;
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -187,15 +188,18 @@ class _UserAttendanceReportScreenState
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          _nameController.text == ""
-              ? FocusScope.of(context).unfocus()
-              : SystemChannels.textInput.invokeMethod('TextInput.hide');
+          print(showSearchIcon);
+          FocusScope.of(context).unfocus();
+          // _nameController.text == ""
+          //     ? FocusScope.of(context).unfocus()
+          //     : SystemChannels.textInput.invokeMethod('TextInput.hide');
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
           backgroundColor: Colors.white,
           body: Container(
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -397,8 +401,6 @@ class _UserAttendanceReportScreenState
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500),
-                                              textInputAction:
-                                                  TextInputAction.next,
                                               controller: _dateController,
                                               decoration:
                                                   kTextFieldDecorationFromTO
@@ -475,41 +477,169 @@ class _UserAttendanceReportScreenState
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          width: 340.w,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Provider.of<MemberData>(context)
-                                    .loadingSearch
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                    color: Colors.orange,
-                                  ))
-                                : searchTextField =
-                                    AutoCompleteTextField<SearchMember>(
-                                    key: key,
-                                    clearOnSubmit: false,
-                                    focusNode: focusNode,
-                                    controller: _nameController,
-                                    suggestions:
-                                        Provider.of<MemberData>(context)
-                                            .userSearchMember,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16,
-                                            allowFontScalingSelf: true),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                    decoration:
-                                        kTextFieldDecorationFromTO.copyWith(
-                                            hintStyle: TextStyle(
-                                                fontSize: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf: true),
-                                                color: Colors.grey.shade700,
-                                                fontWeight: FontWeight.w500),
-                                            hintText: 'الأسم',
-                                            suffixIcon: InkWell(
-                                              onTap: () {
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 340.w,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Provider.of<MemberData>(context)
+                                        .loadingSearch
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                        color: Colors.orange,
+                                      ))
+                                    : searchTextField =
+                                        AutoCompleteTextField<SearchMember>(
+                                        key: key,
+                                        clearOnSubmit: false,
+                                        focusNode: focusNode,
+                                        controller: _nameController,
+                                        suggestions:
+                                            Provider.of<MemberData>(context)
+                                                .userSearchMember,
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                        decoration:
+                                            kTextFieldDecorationFromTO.copyWith(
+                                                hintStyle: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        16,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: Colors.grey.shade700,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                hintText: 'الأسم',
+                                                prefixIcon: Icon(
+                                                  Icons.person,
+                                                  color: Colors.orange,
+                                                )),
+                                        itemFilter: (item, query) {
+                                          return item.username
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase());
+                                        },
+                                        itemSorter: (a, b) {
+                                          return a.username
+                                              .compareTo(b.username);
+                                        },
+                                        textSubmitted: (data) {
+                                          print(data);
+                                          setState(() {
+                                            showSearchIcon = false;
+                                            searchInList(
+                                                _nameController.text,
+                                                userDataProvider
+                                                            .user.userType ==
+                                                        2
+                                                    ? userDataProvider
+                                                        .user.userSiteId
+                                                    : -1,
+                                                Provider.of<CompanyData>(
+                                                        context,
+                                                        listen: false)
+                                                    .com
+                                                    .id);
+                                          });
+                                          print("print start");
+                                        },
+                                        textInputAction: TextInputAction.search,
+                                        itemSubmitted: (item) async {
+                                          if (_nameController.text !=
+                                              item.username) {
+                                            setState(() {
+                                              searchTextField
+                                                  .textField
+                                                  .controller
+                                                  .text = item.username;
+                                              showSearchIcon = false;
+                                            });
+                                            selectedId = item.id;
+
+                                            await Provider.of<ReportsData>(
+                                                    context,
+                                                    listen: false)
+                                                .getUserReportUnits(
+                                                    userToken.user.userToken,
+                                                    item.id,
+                                                    dateFromString,
+                                                    dateToString,
+                                                    context);
+                                          }
+                                        },
+                                        itemBuilder: (context, item) {
+                                          // ui for the autocompelete row
+                                          return Directionality(
+                                            textDirection: ui.TextDirection.rtl,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                right: 10,
+                                                bottom: 5,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 10.w,
+                                                      ),
+                                                      Container(
+                                                        height: 20,
+                                                        child: AutoSizeText(
+                                                          item.username,
+                                                          maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: TextStyle(
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(16,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.grey,
+                                                    thickness: 1,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ),
+                            Provider.of<MemberData>(context).loadingSearch
+                                ? Container()
+                                : Positioned(
+                                    left: 10.w,
+                                    top: 12.h,
+                                    child: showSearchIcon
+                                        ? InkWell(
+                                            onTap: () {
+                                              if (_nameController.text.length <
+                                                  3) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "يجب ان لا يقل البحث عن 3 احرف",
+                                                    backgroundColor: Colors.red,
+                                                    gravity:
+                                                        ToastGravity.CENTER);
+                                              } else {
                                                 setState(() {
+                                                  showSearchIcon = false;
                                                   searchInList(
                                                       _nameController.text,
                                                       userDataProvider.user
@@ -524,89 +654,36 @@ class _UserAttendanceReportScreenState
                                                           .com
                                                           .id);
                                                 });
-                                              },
-                                              child: Icon(
-                                                Icons.search,
-                                                color: Colors.orange,
-                                              ),
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.person,
+                                              }
+                                            },
+                                            child: Icon(
+                                              Icons.search,
                                               color: Colors.orange,
-                                            )),
-                                    itemFilter: (item, query) {
-                                      return item.username
-                                          .toLowerCase()
-                                          .contains(query.toLowerCase());
-                                    },
-                                    itemSorter: (a, b) {
-                                      return a.username.compareTo(b.username);
-                                    },
-                                    itemSubmitted: (item) async {
-                                      if (_nameController.text !=
-                                          item.username) {
-                                        setState(() {
-                                          searchTextField.textField.controller
-                                              .text = item.username;
-                                        });
-                                        selectedId = item.id;
-
-                                        await Provider.of<ReportsData>(context,
-                                                listen: false)
-                                            .getUserReportUnits(
-                                                userToken.user.userToken,
-                                                item.id,
-                                                dateFromString,
-                                                dateToString,
-                                                context);
-                                      }
-                                    },
-                                    itemBuilder: (context, item) {
-                                      // ui for the autocompelete row
-                                      return Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            right: 10,
-                                            bottom: 5,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 10.w,
-                                                  ),
-                                                  Container(
-                                                    height: 20,
-                                                    child: AutoSizeText(
-                                                      item.username,
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(16,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Divider(
-                                                color: Colors.grey,
-                                                thickness: 1,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ),
+                                            ),
+                                          )
+                                        : InkWell(
+                                            onTap: () {
+                                              if (_nameController.text.length <
+                                                  3) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "يجب ان لا يقل البحث عن 3 احرف",
+                                                    backgroundColor: Colors.red,
+                                                    gravity:
+                                                        ToastGravity.CENTER);
+                                              } else {
+                                                setState(() {
+                                                  _nameController.clear();
+                                                  showSearchIcon = true;
+                                                });
+                                              }
+                                            },
+                                            child: Icon(
+                                              FontAwesomeIcons.times,
+                                              color: Colors.orange,
+                                            ),
+                                          ))
+                          ],
                         ),
                         SizedBox(
                           height: 10.h,
