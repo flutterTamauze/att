@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,9 +50,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   int selectedDuration;
   DateTime toDate;
   DateTime fromDate;
-  bool showTable;
+  bool showTable, showViewTableButton = true;
   DateTime yesterday;
   Site siteData;
+  ScrollController _scrollController = ScrollController();
   var percent = 0;
   Timer timer;
   String diff;
@@ -184,13 +186,16 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
         onWillPop: onWillPop,
         child: NotificationListener(
           onNotification: (notificationInfo) {
-            if (notificationInfo is ScrollStartNotification) {
-              print("scroll");
-              setFBvisability(false);
-            } else if (notificationInfo is ScrollEndNotification) {
-              print("ended scolling");
-              setFBvisability(true);
+            if (showTable) {
+              if (_scrollController.position.userScrollDirection ==
+                  ScrollDirection.reverse) {
+                setFBvisability(false);
+              } else if (_scrollController.position.userScrollDirection ==
+                  ScrollDirection.forward) {
+                setFBvisability(true);
+              }
             }
+
             return true;
           },
           child: Scaffold(
@@ -361,7 +366,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                       setState(() {
                                         fromDate = picked.first;
                                         toDate = picked.last;
-
+                                        showTable = false;
+                                        showViewTableButton = true;
                                         final String fromText =
                                             " من ${DateFormat('yMMMd').format(fromDate).toString()}";
                                         final String toText =
@@ -376,11 +382,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             apiFormatter.format(fromDate);
                                         dateToString =
                                             apiFormatter.format(toDate);
-
-                                        final user = Provider.of<UserData>(
-                                                context,
-                                                listen: false)
-                                            .user;
                                       }
                                     }
                                   },
@@ -449,12 +450,10 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                           .siteShiftList[siteIdIndex]
                                           .siteId;
 
-                                      final userToken = Provider.of<UserData>(
-                                              context,
-                                              listen: false)
-                                          .user
-                                          .userToken;
-                                      setState(() {});
+                                      setState(() {
+                                        showTable = false;
+                                        showViewTableButton = true;
+                                      });
 
                                       // await Provider.of<
                                       //             ReportsData>(
@@ -478,45 +477,50 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                               )
                             : Container(),
                         const SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                        Container(
-                          width: 170.w,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                side: MaterialStateProperty.all(BorderSide(
-                                    width: 1, color: ColorManager.primary)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)))),
-                            onPressed: () async {
-                              loadProgressIndicator();
-                              setState(() {
-                                getData(siteIdIndex);
-                                showTable = true;
-                              });
-                            },
-                            child: Center(
-                              child: Container(
-                                width: 160.w,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(FontAwesomeIcons.eye,
-                                        color: ColorManager.accentColor),
-                                    AutoSizeText(
-                                      "عرض التقرير",
-                                      style: TextStyle(
-                                          color: ColorManager.accentColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: setResponsiveFontSize(16)),
-                                    ),
-                                  ],
+                        Visibility(
+                          visible: showViewTableButton,
+                          child: Container(
+                            width: 170.w,
+                            child: OutlinedButton(
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(0),
+                                  side: MaterialStateProperty.all(BorderSide(
+                                      width: 1, color: ColorManager.primary)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.transparent),
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)))),
+                              onPressed: () async {
+                                loadProgressIndicator();
+                                setState(() {
+                                  getData(siteIdIndex);
+                                  showTable = true;
+                                  showViewTableButton = false;
+                                });
+                              },
+                              child: Center(
+                                child: Container(
+                                  width: 160.w,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Icon(FontAwesomeIcons.eye,
+                                          color: ColorManager.accentColor),
+                                      AutoSizeText(
+                                        "عرض التقرير",
+                                        style: TextStyle(
+                                            color: ColorManager.accentColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize:
+                                                setResponsiveFontSize(16)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -584,6 +588,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                                 Stack(
                                                                               children: [
                                                                                 ListView.builder(
+                                                                                    controller: _scrollController,
                                                                                     itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
                                                                                     itemBuilder: (BuildContext context, int index) {
                                                                                       return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);

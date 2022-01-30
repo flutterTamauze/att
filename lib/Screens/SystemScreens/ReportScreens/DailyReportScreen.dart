@@ -50,7 +50,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   int siteIndex = 0;
   Site siteData;
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
-  bool showTable = false, showFB = true;
+  bool showTable = false, showFB = true, showViewTableButton = true;
   String date;
   String selectedDateString;
   DateTime selectedDate;
@@ -175,16 +175,21 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          print(selectedDate);
+          print(showViewTableButton);
         },
         child: NotificationListener(
           onNotification: (notificationInfo) {
-            if (notificationInfo is ScrollStartNotification) {
-              print("scroll");
+            if (_scrollController.position.userScrollDirection ==
+                ScrollDirection.reverse) {
               setFBvisability(false);
-            } else if (notificationInfo is ScrollEndNotification) {
-              print("ended scolling");
+              //the setState function
+            } else if (_scrollController.position.userScrollDirection ==
+                ScrollDirection.forward) {
               setFBvisability(true);
+              //setState function
+            } else if (_scrollController.position.pixels ==
+                _scrollController.position.maxScrollExtent) {
+              setFBvisability(false);
             }
             return true;
           },
@@ -290,18 +295,13 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                           hint: "الموقع",
                                           hintColor: Colors.black,
                                           onChange: (value) async {
-                                            // final lastRec = siteIndex;
-
                                             siteIndex =
                                                 getSiteIndexBySiteName(value);
 
-                                            // if (lastRec != siteIndex) {
-                                            //   setState(() {});
-                                            //   // getDailyReport(
-                                            //   //     siteIndex,
-                                            //   //     date,
-                                            //   //     context);
-                                            // }
+                                            setState(() {
+                                              showViewTableButton = true;
+                                              showTable = false;
+                                            });
                                           },
                                           selectedvalue:
                                               Provider.of<SiteShiftsData>(
@@ -343,6 +343,9 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                           selectedDate =
                                                               DateTime.parse(
                                                                   selectedDateString);
+                                                          showViewTableButton =
+                                                              true;
+                                                          showTable = false;
                                                         });
                                                         // getDailyReport(siteIndex,
                                                         //     date, context);
@@ -371,48 +374,52 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                     },
                                   )),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                        Container(
-                          width: 170.w,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                side: MaterialStateProperty.all(BorderSide(
-                                    width: 1, color: ColorManager.primary)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)))),
-                            onPressed: () {
-                              loadProgressIndicator();
-                              setState(() {
-                                getDailyReport(siteIndex, date, context);
-                                showTable = true;
-                              });
-                            },
-                            child: Center(
-                              child: Container(
-                                width: 160.w,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(FontAwesomeIcons.eye,
-                                        color: ColorManager.accentColor),
-                                    AutoSizeText(
-                                      "عرض التقرير",
-                                      style: TextStyle(
-                                          color: ColorManager.accentColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: setResponsiveFontSize(16)),
+                        Visibility(
+                          visible: showViewTableButton,
+                          child: Container(
+                            width: 170.w,
+                            child: OutlinedButton(
+                                style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(0),
+                                    side: MaterialStateProperty.all(BorderSide(
+                                        width: 1, color: ColorManager.primary)),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.transparent),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)))),
+                                onPressed: () {
+                                  loadProgressIndicator();
+                                  setState(() {
+                                    getDailyReport(siteIndex, date, context);
+                                    showTable = true;
+                                    showViewTableButton = false;
+                                  });
+                                },
+                                child: Center(
+                                  child: Container(
+                                    width: 160.w,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Icon(FontAwesomeIcons.eye,
+                                            color: ColorManager.accentColor),
+                                        AutoSizeText(
+                                          "عرض التقرير",
+                                          style: TextStyle(
+                                              color: ColorManager.accentColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize:
+                                                  setResponsiveFontSize(16)),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  ),
+                                )),
                           ),
                         ),
                         Expanded(
@@ -508,28 +515,17 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                           DataTableHeader(),
                                                                           orangeDivider,
                                                                           Expanded(
-                                                                              child: SmartRefresher(
-                                                                            onRefresh:
-                                                                                _onRefresh,
-                                                                            controller:
-                                                                                refreshController,
-                                                                            header:
-                                                                                WaterDropMaterialHeader(
-                                                                              color: Colors.white,
-                                                                              backgroundColor: Colors.orange,
-                                                                            ),
-                                                                            child: snapshot.data == "Date is older than company date"
-                                                                                ? CenterMessageText(
-                                                                                    message: "التاريخ قبل إنشاء الشركة",
-                                                                                  )
-                                                                                : ListView.builder(
-                                                                                    controller: _scrollController,
-                                                                                    physics: AlwaysScrollableScrollPhysics(),
-                                                                                    itemCount: reportsData.dailyReport.attendListUnits.length,
-                                                                                    itemBuilder: (BuildContext context, int index) {
-                                                                                      return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
-                                                                                    }),
-                                                                          )),
+                                                                              child: snapshot.data == "Date is older than company date"
+                                                                                  ? CenterMessageText(
+                                                                                      message: "التاريخ قبل إنشاء الشركة",
+                                                                                    )
+                                                                                  : ListView.builder(
+                                                                                      controller: _scrollController,
+                                                                                      physics: AlwaysScrollableScrollPhysics(),
+                                                                                      itemCount: reportsData.dailyReport.attendListUnits.length,
+                                                                                      itemBuilder: (BuildContext context, int index) {
+                                                                                        return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
+                                                                                      })),
                                                                           !isToday(selectedDate)
                                                                               ? snapshot.data == "Success"
                                                                                   ? DailyReportTableEnd(totalAbsents: reportsData.dailyReport.totalAbsent.toString(), totalAttend: reportsData.dailyReport.totalAttend.toString())
@@ -620,12 +616,12 @@ class ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 50),
       child: Column(
         children: [
           Container(
-            width: 400,
-            height: 300,
+            width: 400.w,
+            height: 300.h,
             child: Lottie.asset("resources/kiteLoader.json"),
           ),
           AutoSizeText(
@@ -635,7 +631,7 @@ class ProgressBar extends StatelessWidget {
                 fontWeight: FontWeight.w700),
           ),
           SizedBox(
-            height: 30,
+            height: 30.h,
           ),
           Center(
             child: Padding(
