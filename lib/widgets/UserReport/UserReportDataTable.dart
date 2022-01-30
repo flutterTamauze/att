@@ -114,19 +114,22 @@ class UserReportDataTableRow extends StatelessWidget {
                                           ? "غير مقيد"
                                           : userAttendanceReportUnit.timeIn ==
                                                   "1"
-                                              ? "عارضة"
-                                              : userAttendanceReportUnit
-                                                          .timeIn ==
+                                              ? getTranslated(context, "عارضة")
+                                              : userAttendanceReportUnit.timeIn ==
                                                       "2"
-                                                  ? "مرضى"
+                                                  ? getTranslated(
+                                                      context, "مرضى")
                                                   : userAttendanceReportUnit
                                                               .timeIn ==
                                                           "3"
-                                                      ? "رصيد اجازات"
+                                                      ? getTranslated(context,
+                                                          "رصيد اجازات")
                                                       : userAttendanceReportUnit
                                                                   .timeIn ==
                                                               "4"
-                                                          ? "مأمورية خارجية"
+                                                          ? getTranslated(
+                                                              context,
+                                                              "مأمورية خارجية")
                                                           : userAttendanceReportUnit
                                                                   .timeIn ??
                                                               "-",

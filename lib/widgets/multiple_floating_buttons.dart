@@ -42,9 +42,9 @@ class MultipleFloatingButtons extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left:
-            Provider.of<PermissionHan>(context).isEnglishLocale() ? 20.w : 0.w,
+            Provider.of<PermissionHan>(context).isEnglishLocale() ? 10.w : 0.w,
         right:
-            Provider.of<PermissionHan>(context).isEnglishLocale() ? 0.w : 20.w,
+            Provider.of<PermissionHan>(context).isEnglishLocale() ? 0.w : 10.w,
       ),
       child: SpeedDial(
         overlayOpacity: 0,
@@ -238,7 +238,7 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20.w),
+      padding: EdgeInsets.only(left: 10.w),
       child: SpeedDial(
         overlayOpacity: 0,
         animatedIcon: AnimatedIcons.menu_close,

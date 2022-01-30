@@ -396,10 +396,8 @@ class UserPermessionsData with ChangeNotifier {
           },
         );
         permessionDetailLoading = false;
-        print("response");
-        print(userId);
+        log(userId);
         log(response.body);
-        log(response.statusCode.toString());
         final decodedResponse = json.decode(response.body);
         if (decodedResponse["message"] == "Success") {
           final permessionsObj =

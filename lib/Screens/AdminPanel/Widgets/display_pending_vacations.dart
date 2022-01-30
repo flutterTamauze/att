@@ -9,6 +9,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
@@ -182,13 +183,22 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                   ),
                   Provider.of<UserHolidaysData>(context).loadingHolidaysDetails
                       ? Container()
-                      : Positioned(
-                          bottom: 15.h,
-                          left: 10.w,
-                          child: FadeInVacPermFloatingButton(
-                              radioVal2: 1,
-                              comingFromAdminPanel: true,
-                              memberId: widget.userId))
+                      : !Provider.of<PermissionHan>(context, listen: false)
+                              .isEnglishLocale()
+                          ? Positioned(
+                              bottom: 15.h,
+                              left: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 0,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
+                          : Positioned(
+                              bottom: 15.h,
+                              right: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 0,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
                 ],
               )
             ],

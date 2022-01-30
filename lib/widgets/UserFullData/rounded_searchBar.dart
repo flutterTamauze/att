@@ -418,7 +418,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                       ],
                     ),
                   )
-                : Directionality(
+                : Directionality( 
                     textDirection: ui.TextDirection.rtl,
                     child: Align(
                       alignment: Alignment.centerRight,

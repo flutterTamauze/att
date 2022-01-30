@@ -68,6 +68,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
   }
 
   void _onRefresh() async {
+    Provider.of<UserHolidaysData>(context, listen: false).pageIndex = 0;
+    Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
+    Provider.of<UserHolidaysData>(context, listen: false).keepRetriving = true;
     setState(() {
       getPendingHolidays();
     });

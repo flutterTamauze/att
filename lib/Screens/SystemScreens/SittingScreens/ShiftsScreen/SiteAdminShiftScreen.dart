@@ -89,7 +89,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
   }
 
   getData(int siteId) async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
     loadShift = Provider.of<ShiftsData>(context, listen: false)
         .getShiftsBySiteId(siteId, userProvider.user.userToken, context);
     // await fillList();
@@ -102,8 +102,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
 
   bool isLoading = false;
   int getSiteName(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].name) {
         return i;
@@ -132,12 +132,10 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                       Header(nav: false),
 
                       ///Title
-                      Directionality(
-                        textDirection: ui.TextDirection.rtl,
-                        child: SmallDirectoriesHeader(
-                            Lottie.asset("resources/shiftLottie.json",
-                                repeat: false),
-                            "دليل المناوبات"),
+                      SmallDirectoriesHeader(
+                        Lottie.asset("resources/shiftLottie.json",
+                            repeat: false),
+                        getTranslated(context, "دليل المناوبات"),
                       ),
 
                       Expanded(
@@ -210,7 +208,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                                                                       index],
                                                                   onTapDelete:
                                                                       () {
-                                                                    var token = Provider.of<UserData>(
+                                                                    final token = Provider.of<UserData>(
                                                                             context,
                                                                             listen:
                                                                                 false)
@@ -229,7 +227,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                                                                                     builder: (BuildContext context) {
                                                                                       return RoundedLoadingIndicator();
                                                                                     });
-                                                                                var msg = await shiftsData.deleteShift(value.shiftsList[index].shiftId, token, index, context);
+                                                                                final msg = await shiftsData.deleteShift(value.shiftsList[index].shiftId, token, index, context);
 
                                                                                 if (msg == "Success") {
                                                                                   Navigator.pop(context);
@@ -390,25 +388,25 @@ class _ShiftTileState extends State<ShiftTile> {
 
   String amPmChanger(int intTime) {
     int hours = (intTime ~/ 100);
-    int min = intTime - (hours * 100);
+    final int min = intTime - (hours * 100);
 
-    var ampm = hours >= 12 ? 'PM' : 'AM';
+    final ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours != 0 ? hours : 12; //
 
-    String hoursStr = hours < 10
+    final String hoursStr = hours < 10
         ? '0$hours'
         : hours.toString(); // the hour '0' should be '12'
-    String minStr = min < 10 ? '0$min' : min.toString();
+    final String minStr = min < 10 ? '0$min' : min.toString();
 
-    var strTime = '$hoursStr:$minStr$ampm';
+    final strTime = '$hoursStr:$minStr$ampm';
 
     return strTime;
   }
 
   Widget build(BuildContext context) {
-    var siteProv = Provider.of<SiteData>(context, listen: false);
-    var shiftProv = Provider.of<ShiftsData>(context, listen: false);
+    final siteProv = Provider.of<SiteData>(context, listen: false);
+    final shiftProv = Provider.of<ShiftsData>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: InkWell(
@@ -419,101 +417,98 @@ class _ShiftTileState extends State<ShiftTile> {
             ? Container()
             : Card(
                 elevation: 3,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Container(
-                      width: double.infinity.w,
-                      height: 60.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: ScreenUtil()
-                                      .setSp(35, allowFontScalingSelf: true),
-                                  color: Colors.orange,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    width: double.infinity.w,
+                    height: 60.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today_rounded,
+                                size: ScreenUtil()
+                                    .setSp(35, allowFontScalingSelf: true),
+                                color: Colors.orange,
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Container(
+                                child: AutoSizeText(
+                                  widget.shift.shiftName,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16,
+                                          allowFontScalingSelf: true),
+                                      fontWeight: FontWeight.w600),
                                 ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Container(
-                                  child: AutoSizeText(
-                                    widget.shift.shiftName,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          InkWell(
-                            onTap: () async {
-                              siteProv.setDropDownShift(
-                                  widget.index); //الموقع علي حسب ال اندكس اللي
-                              siteProv.setSiteValue(widget.siteName);
-                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
-                              siteProv.setDropDownIndex(widget.siteIndex);
-                              siteProv.fillCurrentShiftID(widget.shift.shiftId);
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            siteProv.setDropDownShift(
+                                widget.index); //الموقع علي حسب ال اندكس اللي
+                            siteProv.setSiteValue(widget.siteName);
+                            siteProv.fillCurrentShiftID(widget.shift.shiftId);
+                            siteProv.setDropDownIndex(widget.siteIndex);
+                            siteProv.fillCurrentShiftID(widget.shift.shiftId);
 
-                              print("finding matching shifts");
-                              print(siteProv.currentSiteName);
-                              var index = getSiteName(siteProv.currentSiteName);
-                              print(index);
-                              // Provider.of<SiteShiftsData>(context,
-                              //         listen: false)
-                              //     .getShiftsList(
-                              //         Provider.of<SiteShiftsData>(context,
-                              //                 listen: false)
-                              //             .siteShiftList[index]
-                              //             .siteName,
-                              //         true);
+                            print("finding matching shifts");
+                            print(siteProv.currentSiteName);
+                            final index = getSiteName(siteProv.currentSiteName);
+                            print(index);
+                            // Provider.of<SiteShiftsData>(context,
+                            //         listen: false)
+                            //     .getShiftsList(
+                            //         Provider.of<SiteShiftsData>(context,
+                            //                 listen: false)
+                            //             .siteShiftList[index]
+                            //             .siteName,
+                            //         true);
 
-                              siteProv.setDropDownShift(
-                                  widget.index); //+1 lw feh all shifts
+                            siteProv.setDropDownShift(
+                                widget.index); //+1 lw feh all shifts
 
-                              Navigator.of(context).push(
-                                new MaterialPageRoute(
-                                  builder: (context) => SiteAdminUserScreen(
-                                      widget.siteIndex,
-                                      true,
-                                      widget.shift.shiftName),
-                                ),
-                              );
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.orange, width: 1)),
-                                padding: EdgeInsets.all(9),
-                                child: Icon(
-                                  Icons.person,
-                                  size: 18,
-                                  color: Colors.orange,
-                                )),
-                          )
-                          // CircularIconButton(
-                          //     icon: Icons.person,
-                          //     onTap: () {
-                          //       Navigator.of(context).push(
-                          //         new MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               UsersScreen(widget.index + 1),
-                          //         ),
-                          //       );
-                          //     },
-                          //   ),
-                        ],
-                      ),
+                            Navigator.of(context).push(
+                              new MaterialPageRoute(
+                                builder: (context) => SiteAdminUserScreen(
+                                    widget.siteIndex,
+                                    true,
+                                    widget.shift.shiftName),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.orange, width: 1)),
+                              padding: EdgeInsets.all(9),
+                              child: Icon(
+                                Icons.person,
+                                size: 18,
+                                color: Colors.orange,
+                              )),
+                        )
+                        // CircularIconButton(
+                        //     icon: Icons.person,
+                        //     onTap: () {
+                        //       Navigator.of(context).push(
+                        //         new MaterialPageRoute(
+                        //           builder: (context) =>
+                        //               UsersScreen(widget.index + 1),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                      ],
                     ),
                   ),
                 )),
@@ -522,9 +517,9 @@ class _ShiftTileState extends State<ShiftTile> {
   }
 
   int getSiteName(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -534,126 +529,122 @@ class _ShiftTileState extends State<ShiftTile> {
   }
 
   showShiftDetails() {
-    String end = amPmChanger(widget.shift.shiftEndTime);
-    String start = amPmChanger(widget.shift.shiftStartTime);
+    final String end = amPmChanger(widget.shift.shiftEndTime);
+    final String start = amPmChanger(widget.shift.shiftStartTime);
 
-    String sunSt = amPmChanger(widget.shift.sunShiftstTime);
-    String sunEn = amPmChanger(widget.shift.sunShiftenTime);
-    String monSt = amPmChanger(widget.shift.monShiftstTime);
-    String monEn = amPmChanger(widget.shift.mondayShiftenTime);
-    String tuesSt = amPmChanger(widget.shift.tuesdayShiftstTime);
-    String tuesEnd = amPmChanger(widget.shift.tuesdayShiftenTime);
-    String wedSt = amPmChanger(widget.shift.wednesDayShiftstTime);
-    String wedEn = amPmChanger(widget.shift.wednesDayShiftenTime);
-    String thuSt = amPmChanger(widget.shift.thursdayShiftstTime);
-    String thuEn = amPmChanger(widget.shift.thursdayShiftenTime);
-    String friSt = amPmChanger(widget.shift.fridayShiftstTime);
-    String friEn = amPmChanger(widget.shift.fridayShiftenTime);
+    final String sunSt = amPmChanger(widget.shift.sunShiftstTime);
+    final String sunEn = amPmChanger(widget.shift.sunShiftenTime);
+    final String monSt = amPmChanger(widget.shift.monShiftstTime);
+    final String monEn = amPmChanger(widget.shift.mondayShiftenTime);
+    final String tuesSt = amPmChanger(widget.shift.tuesdayShiftstTime);
+    final String tuesEnd = amPmChanger(widget.shift.tuesdayShiftenTime);
+    final String wedSt = amPmChanger(widget.shift.wednesDayShiftstTime);
+    final String wedEn = amPmChanger(widget.shift.wednesDayShiftenTime);
+    final String thuSt = amPmChanger(widget.shift.thursdayShiftstTime);
+    final String thuEn = amPmChanger(widget.shift.thursdayShiftenTime);
+    final String friSt = amPmChanger(widget.shift.fridayShiftstTime);
+    final String friEn = amPmChanger(widget.shift.fridayShiftenTime);
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          var daysOff = Provider.of<DaysOffData>(context).weak;
+          final daysOff = Provider.of<DaysOffData>(context).weak;
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
-              child: Directionality(
-                textDirection: ui.TextDirection.rtl,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 650.h,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            DirectoriesHeader(
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(40.0),
-                                child: Lottie.asset(
-                                    "resources/shiftLottie.json",
-                                    repeat: false),
-                              ),
-                              widget.shift.shiftName,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 650.h,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(
+                        children: [
+                          DirectoriesHeader(
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40.0),
+                              child: Lottie.asset("resources/shiftLottie.json",
+                                  repeat: false),
                             ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 10.0.h,
-                                      ),
-                                      FromToShiftDisplay(
-                                        start: start,
-                                        end: end,
-                                        weekDay: weekDays[0],
-                                      ),
-                                      FromToShiftDisplay(
-                                        start: sunSt,
-                                        end: sunEn,
-                                        weekDay: weekDays[1],
-                                      ),
-                                      FromToShiftDisplay(
-                                          start: monSt,
-                                          end: monEn,
-                                          weekDay: weekDays[2]),
-                                      FromToShiftDisplay(
-                                          start: tuesSt,
-                                          end: tuesEnd,
-                                          weekDay: weekDays[3]),
-                                      FromToShiftDisplay(
-                                          start: wedSt,
-                                          end: wedEn,
-                                          weekDay: weekDays[4]),
-                                      FromToShiftDisplay(
-                                          start: thuSt,
-                                          end: thuEn,
-                                          weekDay: weekDays[5]),
-                                      FromToShiftDisplay(
-                                          start: friSt,
-                                          end: friEn,
-                                          weekDay: weekDays[6]),
-                                    ],
-                                  ),
+                            widget.shift.shiftName,
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      height: 10.0.h,
+                                    ),
+                                    FromToShiftDisplay(
+                                      start: start,
+                                      end: end,
+                                      weekDay: weekDays[0],
+                                    ),
+                                    FromToShiftDisplay(
+                                      start: sunSt,
+                                      end: sunEn,
+                                      weekDay: weekDays[1],
+                                    ),
+                                    FromToShiftDisplay(
+                                        start: monSt,
+                                        end: monEn,
+                                        weekDay: weekDays[2]),
+                                    FromToShiftDisplay(
+                                        start: tuesSt,
+                                        end: tuesEnd,
+                                        weekDay: weekDays[3]),
+                                    FromToShiftDisplay(
+                                        start: wedSt,
+                                        end: wedEn,
+                                        weekDay: weekDays[4]),
+                                    FromToShiftDisplay(
+                                        start: thuSt,
+                                        end: thuEn,
+                                        weekDay: weekDays[5]),
+                                    FromToShiftDisplay(
+                                        start: friSt,
+                                        end: friEn,
+                                        weekDay: weekDays[6]),
+                                  ],
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 5.0.w,
-                      top: 5.0.h,
-                      child: Container(
-                        width: 50.w,
-                        height: 50.h,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.orange,
-                            size: ScreenUtil()
-                                .setSp(25, allowFontScalingSelf: true),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 5.0.w,
+                    top: 5.0.h,
+                    child: Container(
+                      width: 50.w,
+                      height: 50.h,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.orange,
+                          size: ScreenUtil()
+                              .setSp(25, allowFontScalingSelf: true),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ));
         });
   }

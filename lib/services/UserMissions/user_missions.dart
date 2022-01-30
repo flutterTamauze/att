@@ -98,6 +98,7 @@ class MissionsData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer $userToken"
             });
+        log(userId);
         log(response.body);
         missionsLoading = false;
         final decodedResp = json.decode(response.body);

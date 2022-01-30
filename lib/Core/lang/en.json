@@ -123,6 +123,7 @@
 "التسجيل ببطاقة التعريف الشخصية":"Register By ID Card",
 "تسجيل الانصراف من":"Leave Registeration From",
 "تأكيد الموافقة على الأذن":"Permission confirmation",
+"تسجيل الأنصراف":"Register Leave",
  "الأحد":"Sunday"
  , "الأثنين":"Monday",
  "الثلاثاء":"Tuesday",
@@ -141,9 +142,12 @@
  "تم ارسال رمز التفعيل على الهاتف و البريد الإلكترونى الخاص بكم":
  "The activation code has been sent to your phone and e-mail.",
  "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم":"The activation code has been successfully sent to your phone number",
- "الأسم":"Name","مجموع الخصومات":"Total Deductions", "عطلة اسبوعية":         "Week Holiday",
+ "الأسم":"Name","مجموع الخصومات":"Total Deductions", "عطلة اسبوعية":         "Weekend",
  "الغياب":"Absence", "عطلة رسمية":"Official Holiday",
  "حالة الإثبات":"Proofs Status",
+ "تسجيل ببطاقة التعريف الشخصية"
+ :"Attend by id card",
+
  "لا يوجد تسجيلات بهذا اليوم":"No records found for this day",
  "المستخدم لم يكن مقيدا فى هذة الفترة":"User wasn't created at this period",
  "الخصومات":"Deductions","لا يوجد تسجيلات: يوم اجازة":"There are no records : Holiday",
@@ -207,11 +211,24 @@
 "تعديل عطلة":"Edit Vacation",
 "سماحية التأخير (دقيقة)":"Late Tolerance (minutes)",
 "سماحية تسجيل الحضور":"Attend Register Tolerance",
+"تسجيل الحضور"
+:"Register Attend",
+"خطأ : برجاء التقاط صورة حقيقية":
+"Fail : Please take a real photo",
+"حذف العطلة":
+"Delete Vacation",
+"... برجاء انتظار انتهاء عملية المسح":
+"Please wait for the scanning process to finish ...",
+"لا يمكنك التسجيل لشخص خارج شركتك":"You cannot register for someone outside your company!",
+"برجاء تصوير وجهك بوضوح":"Please photograph your face clearly",
+"خطا : تم التعرف علي اكثر من وجة":"Failed : More than one face identified",
+"لم يتم التسجيل : اجازة شخصية":"Failed : Personal Vacation",
 "سماحية تسجيل الأنصراف":"Leave Register Tolerance "
 , "0-30 دقيقة":
     "0-30 Minutes" ,"لا يوجد نتائج للبحث":"No search results found",
     "ساعات":"Hours",
     "الأنتظام":"InTime",
+    "لا يمكنك تسجيل الإنصراف الأن":"You can't regsiter leave now",
     "تحليل بيانات الموظف":"User Information Analysis",
     "اعادة ضبط هاتف المستخدم":"Reset User Phone",
 "جدولة المناوبات":"Schedule Shifts",
@@ -291,11 +308,17 @@
     "حذف الطلب":"Delete Request",
     "تعليق الأدمن":"Admin Comment",
     "سبب الرفض":"Reason of refuse",
+    "هل تريد حذف":"Do you want to delete",
+    "تم حذف العطلة بنجاح":
+    "Vacation deleted successfully",
+    "خطأ في حذف العطلة":"Error deleting vacation","لا يمكنك حذف طلب تسجيل حضور لم تقم بإنشاؤه":
+    "You cannot delete an attendance request that you did not create",
     "تم حفظ الصورة بنجاح":"The image has been saved",
     "خطأ في التعديل: لا يوجد اتصال بالانترنت":"Edit Error: No internet connection",
     "خطأ في حفظ الصورة":"Error saving the image",
     "خطأ في الحذف : لا يوجد اتصال بالانترنت":"Delete Error: No internet connection",
     "تم الحذف بنجاح":"Deleted Successfully",
+    "تم حذف الإثبات بنجاح":"Proof has been deleted successfully",
     "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا"
     :"خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nPlease remove shifts first",
     "إزالة موقع":"Remove Site",
@@ -491,9 +514,14 @@
  :"Please enable geolocation permission.",
  "الحد الاقصى للمواقع"
  :"Maximum sites limit",
+ "-":"-",
 "الحد الاقصى للمستخدمين"
 :"Maximum users limit",
-"اضغط للمحاولة مره اخرى":"Press to try again"
+"اضغط للمحاولة مره اخرى":"Press to try again",
+"عرض التقرير":"Display Report",
+"يجب ان يتم اختيار اقل من 32 يوم":
+"Less than 32 days must be selected",
+"غير مقيد بعد":"Not yet registered"
 
     }
     

@@ -406,24 +406,27 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                                     if (msg ==
                                                                         "Success") {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "تم حذف العطلة بنجاح",
+                                                                          msg: getTranslated(
+                                                                              context,
+                                                                              "تم حذف العطلة بنجاح"),
                                                                           backgroundColor:
                                                                               Colors.green);
                                                                     } else {
                                                                       Fluttertoast.showToast(
-                                                                          msg:
-                                                                              "خطأ في حذف العطلة",
+                                                                          msg: getTranslated(
+                                                                              context,
+                                                                              "خطأ في حذف العطلة"),
                                                                           backgroundColor:
                                                                               Colors.red);
                                                                     }
                                                                   },
                                                                   content:
-                                                                      "هل تريد مسح : ${vactionProv.vactionList[index].vacationName}؟",
+                                                                      "${getTranslated(context, "هل تريد حذف")}  : ${vactionProv.vactionList[index].vacationName}؟",
                                                                   onCancel:
                                                                       () {},
-                                                                  title:
-                                                                      "حذف العطلة",
+                                                                  title: getTranslated(
+                                                                      context,
+                                                                      "حذف العطلة"),
                                                                 );
                                                         });
                                                   },

@@ -234,10 +234,21 @@ class _DataTableRowState extends State<DataTableRow> {
                                                             true),
                                                   ),
                                             Container(
+                                              width: getTranslated(
+                                                          context,
+                                                          widget.attendUnit
+                                                              .timeIn) ==
+                                                      null
+                                                  ? 35.w
+                                                  : 50.w,
                                               child: AutoSizeText(
-                                                widget.attendUnit.timeIn,
+                                                getTranslated(
+                                                        context,
+                                                        widget.attendUnit
+                                                            .timeIn) ??
+                                                    widget.attendUnit.timeIn,
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
+                                                    fontWeight: FontWeight.w500,
                                                     fontSize: ScreenUtil().setSp(
                                                         13,
                                                         allowFontScalingSelf:
