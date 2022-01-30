@@ -345,7 +345,6 @@ class MyListTile extends StatelessWidget {
                 child: Container(
                   height: 20,
                   child: AutoSizeText(title,
-                      textAlign: TextAlign.right,
                       style: TextStyle(
                           color: Color(0xFF3b3c40),
                           fontSize: ScreenUtil()

@@ -352,6 +352,15 @@
 "يجب ان لا يقل البحث عن 3 احرف":
 "Search must be at least 3 characters long"
 ,
+"شارك التطبيق":
+"Share App",
+
+"قيم التطبيق"
+:"Rate App",
+"للشكاوى و المقترحات":
+"Complaints & Suggestions",
+"دليل الأستخدام"
+:"User's Manual",
 "تم تعديل المستخدم بنجاح"
 :"User edited successfully",
 "خطأ في تعديل المستخدم: رقم الهاتف مستخدم مسبقا":
@@ -476,10 +485,15 @@
  "برجاء الأنتظار"
  :"Please Wait",
  "على وشك الأنتهاء":"Almost Done",
- "اضغط للمحاولة مره اخرى":"Press to try again",
+ 
  "برجاء تفعيل الموقع الجغرافى للهاتف":"Please activate the geographical location of the phone",
  "برجاء تفعيل تصريح الموقع الجغرافي"
- :"Please enable geolocation permission."
+ :"Please enable geolocation permission.",
+ "الحد الاقصى للمواقع"
+ :"Maximum sites limit",
+"الحد الاقصى للمستخدمين"
+:"Maximum users limit",
+"اضغط للمحاولة مره اخرى":"Press to try again"
 
     }
     

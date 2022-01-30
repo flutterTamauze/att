@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
@@ -188,14 +189,14 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                 ),
                                 AboutCompanyTextField(
                                   title:
-                                      " ${comProvider.companySites}  الحد الاقصى للمواقع ",
+                                      " ${comProvider.companySites}  ${getTranslated(context, "الحد الاقصى للمواقع")} ",
                                 ),
                                 SizedBox(
                                   height: 10.0.h,
                                 ),
                                 AboutCompanyTextField(
                                   title:
-                                      " ${comProvider.companyUsers}  الحد الاقصى للمستخدمين",
+                                      " ${comProvider.companyUsers}  ${getTranslated(context, "الحد الاقصى للمستخدمين")}",
                                 ),
                                 SizedBox(
                                   height: 10.0.h,
@@ -243,7 +244,6 @@ class AboutCompanyTextField extends StatelessWidget {
           fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true)),
       enabled: false,
       textInputAction: TextInputAction.next,
-      textAlign: TextAlign.right,
       decoration: kTextFieldDecorationWhite.copyWith(
           hintText: title,
           hintStyle: TextStyle(color: Colors.black),

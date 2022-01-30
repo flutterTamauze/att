@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
@@ -152,10 +153,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                       child: Container(
                                                         height: 20,
                                                         child: AutoSizeText(
-                                                            "شارك التطبيق",
+                                                            getTranslated(
+                                                                context,
+                                                                "شارك التطبيق"),
                                                             maxLines: 1,
-                                                            textAlign:
-                                                                TextAlign.right,
                                                             style: TextStyle(
                                                                 color: Color(
                                                                     0xFF3b3c40),
@@ -194,7 +195,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                           height: 10.0.h,
                                         ),
                                         MyListTile(
-                                          title: "قيم التطبيق",
+                                          title: getTranslated(
+                                              context, "قيم التطبيق"),
                                           rotated: false,
                                           icon: FontAwesomeIcons.googlePlay,
                                           link:
@@ -205,13 +207,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                         ),
                                         MyListTile(
                                           rotated: true,
-                                          title: 'للشكاوى و المقترحات',
+                                          title: getTranslated(
+                                              context, 'للشكاوى و المقترحات'),
                                           icon: Icons.email,
                                           link: 'mailto:chilango@tamauzeds.com',
                                         ),
                                         MyListTile(
                                           rotated: true,
-                                          title: 'دليل الأستخدام',
+                                          title: getTranslated(
+                                              context, 'دليل الأستخدام'),
                                           icon: Icons.info,
                                           link: 'help',
                                         ),
@@ -306,7 +310,6 @@ class MyListTile extends StatelessWidget {
                   height: 20,
                   child: AutoSizeText(title,
                       maxLines: 1,
-                      textAlign: TextAlign.right,
                       style: TextStyle(
                           color: Color(0xFF3b3c40),
                           fontSize: ScreenUtil()
