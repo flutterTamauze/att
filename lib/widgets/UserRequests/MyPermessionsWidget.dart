@@ -87,7 +87,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 widget.createdOn.toString().substring(0, 11),
                               ),
                               FaIcon(
@@ -116,7 +116,7 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                         ],
                       ),
                     ),
-                    title: Text(
+                    title: AutoSizeText(
                       widget.orderNum,
                     ),
                     children: [

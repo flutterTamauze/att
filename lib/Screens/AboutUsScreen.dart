@@ -407,9 +407,10 @@ class MyListTile extends StatelessWidget {
                             phoneNum1,
                             maxLines: 1,
                             style: TextStyle(
-                                color: Colors.orange[700],
-                                fontWeight: FontWeight.w700,
-                                fontSize: 17),
+                              color: Colors.orange[700],
+                              fontWeight: FontWeight.w700,
+                              fontSize: setResponsiveFontSize(17),
+                            ),
                           ),
                         ),
                       ],
@@ -441,7 +442,7 @@ class MyListTile extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.orange[700],
                                 fontWeight: FontWeight.w700,
-                                fontSize: 17),
+                                fontSize: setResponsiveFontSize(17)),
                           ),
                         ),
                       ],

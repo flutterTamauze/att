@@ -9,7 +9,6 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/ErrorScreen.dart';
 
-import 'package:qr_users/Screens/SystemScreens/SittingScreens//MembersScreens/UsersScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/SiteAdminUsersScreen.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/ShiftsScreen.dart';
@@ -19,7 +18,6 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
@@ -31,6 +29,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/Settings/LanguageSettings.dart';
 
 import 'CompanySettings/MainCompanySettings.dart';
+import 'MembersScreens/UsersScreen.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -54,13 +53,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Locale currentLocal =
-        Provider.of<PermissionHan>(context, listen: false).locale;
-    final UserData userDataProvider =
-        Provider.of<UserData>(context, listen: false);
-    final UserData userProvider = Provider.of<UserData>(context, listen: false);
-    final CompanyData comProvier =
-        Provider.of<CompanyData>(context, listen: false);
+    final userDataProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvier = Provider.of<CompanyData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
         onWillPop: onWillPop,
@@ -337,10 +332,10 @@ class ServiceTile extends StatelessWidget {
           color: Colors.orange,
         ),
         onTap: onTap,
-        title: Text(
+        title: AutoSizeText(
           title,
         ),
-        subtitle: Text(
+        subtitle: AutoSizeText(
           subTitle,
         ),
         leading: Icon(

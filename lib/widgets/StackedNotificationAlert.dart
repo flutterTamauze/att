@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,7 +50,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
   bool isloading = false;
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<UserData>(context, listen: false).user;
+    final user = Provider.of<UserData>(context, listen: false).user;
 
     return Stack(
       children: [

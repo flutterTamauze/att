@@ -13,6 +13,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -73,14 +74,14 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   void didChangeDependencies() {
-    var memberData = Provider.of<MemberData>(context, listen: false);
+    final memberData = Provider.of<MemberData>(context, listen: false);
     memberData.allPageIndex = 0;
     memberData.byShiftPageIndex = 0;
     memberData.bySitePageIndex = 0;
     memberData.keepRetriving = true;
 
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
       if (mounted)
         Provider.of<SiteData>(context, listen: false)
@@ -132,8 +133,8 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   getData() async {
-    var userProvider = Provider.of<UserData>(context);
-    var comProvier = Provider.of<CompanyData>(context);
+    final userProvider = Provider.of<UserData>(context);
+    final comProvier = Provider.of<CompanyData>(context);
 
     if (widget.selectedIndex != -1) {
       print("widget index");
@@ -177,7 +178,7 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
-    intlPhone.PhoneNumber result =
+    final intlPhone.PhoneNumber result =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             phoneNumberEdit);
     return [result.isoCode, result.dialCode];
@@ -203,9 +204,9 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   int getSiteIndex(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -223,8 +224,8 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   Widget build(BuildContext context) {
-    var companyProv = Provider.of<CompanyData>(context, listen: false);
-    var siteProv = Provider.of<SiteShiftsData>(context, listen: false);
+    final companyProv = Provider.of<CompanyData>(context, listen: false);
+    final siteProv = Provider.of<SiteShiftsData>(context, listen: false);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Consumer<MemberData>(builder: (context, memberData, child) {
@@ -353,7 +354,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                     },
                                                     searchFun: (value) {
                                                       int siteiD = -1;
-                                                      int siteindex =
+                                                      final int siteindex =
                                                           getSiteIndex(Provider
                                                                   .of<SiteData>(
                                                                       context,
@@ -402,11 +403,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                             .clear();
                                                       });
 
-                                                      var userProvider =
+                                                      final userProvider =
                                                           Provider.of<UserData>(
                                                               context,
                                                               listen: false);
-                                                      var id =
+                                                      final id =
                                                           settings.getsiteIndex(
                                                               context, value);
                                                       if (id != siteIndex) {
@@ -481,7 +482,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                             getTranslated(context,
                                                                                 "لا يوجد نتائج للبحث"),
                                                                             style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: setResponsiveFontSize(17)),
                                                                           ),
                                                                         )
                                                                       : Container(
@@ -535,7 +536,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                                 return RoundedLoadingIndicator();
                                                                                               });
                                                                                           await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
-                                                                                          var phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
+                                                                                          final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
 
                                                                                           Navigator.of(context).push(
                                                                                             new MaterialPageRoute(

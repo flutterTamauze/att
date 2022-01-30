@@ -9,6 +9,7 @@ import 'package:open_file/open_file.dart' as open_file;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
@@ -30,7 +31,7 @@ var path;
 
 void _getDownloadStorage() async {
   if (Platform.isIOS) {
-    Directory directory = await getApplicationDocumentsDirectory();
+    final Directory directory = await getApplicationDocumentsDirectory();
     path = directory.path;
     print("path is : $path");
   } else if (Platform.isAndroid) {
@@ -74,7 +75,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.black,
-                fontSize: 16.0);
+                fontSize: setResponsiveFontSize(17));
           }
         }
       },
@@ -85,17 +86,17 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
     try {
       switch (widget.reportType) {
         case 0:
-          String freePath = await getUniqueFileName("DailyReport");
+          final String freePath = await getUniqueFileName("DailyReport");
           await generateDailyReportExcel(freePath);
           await open_file.OpenFile.open("$path/$freePath");
           break;
         case 1:
-          String freePath = await getUniqueFileName("Late-AbsenceReport");
+          final String freePath = await getUniqueFileName("Late-AbsenceReport");
           await generateAbsenceReportExcel(freePath);
           await open_file.OpenFile.open("$path/$freePath");
           break;
         case 2:
-          String freePath = await getUniqueFileName("UserReport");
+          final String freePath = await getUniqueFileName("UserReport");
           await generateUserReportExcel(freePath);
           await open_file.OpenFile.open("$path/$freePath");
           break;
@@ -210,10 +211,10 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
     sheet.getRangeByName('B13:G13').cellStyle.fontSize = 10;
     sheet.getRangeByName('B13:G13').cellStyle.bold = true;
 
-    var reportProvider =
+    final reportProvider =
         Provider.of<ReportsData>(context, listen: false).dailyReport;
 
-    var length = reportProvider.attendListUnits.length;
+    final length = reportProvider.attendListUnits.length;
     var lastIndex = 14;
 
     for (int i = lastIndex; i < (lastIndex + length); i++) {
@@ -408,10 +409,10 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       sheet.getRangeByName('B13:G13').cellStyle.fontSize = 10;
       sheet.getRangeByName('B13:G13').cellStyle.bold = true;
 
-      var reportProvider =
+      final reportProvider =
           Provider.of<ReportsData>(context, listen: false).lateAbsenceReport;
 
-      var length = reportProvider.lateAbsenceReportUnitList.length;
+      final length = reportProvider.lateAbsenceReportUnitList.length;
       var lastIndex = 14;
 
       for (int i = lastIndex; i < (lastIndex + length); i++) {
@@ -540,7 +541,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: setResponsiveFontSize(16));
     } catch (e) {
       print(e);
     }
@@ -548,7 +549,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
   Future<void> generateUserReportExcel(String freePath) async {
     try {
-      var reportProvider =
+      final reportProvider =
           Provider.of<ReportsData>(context, listen: false).userAttendanceReport;
 
       //Create a Excel document.
@@ -647,7 +648,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       sheet.getRangeByName('B13:G13').cellStyle.fontSize = 10;
       sheet.getRangeByName('B13:G13').cellStyle.bold = true;
 
-      var length = reportProvider.userAttendListUnits.length;
+      final length = reportProvider.userAttendListUnits.length;
       var lastIndex = 14;
 
       for (int i = lastIndex; i < (lastIndex + length); i++) {

@@ -37,6 +37,10 @@ class RoundBorderedImage extends StatelessWidget {
           borderRadius: BorderRadius.circular(75.0),
           child: CachedNetworkImage(
             imageUrl: imageUrl,
+            httpHeaders: {
+              "Authorization": "Bearer " +
+                  Provider.of<UserData>(context, listen: false).user.userToken
+            },
             fit: BoxFit.cover,
             placeholder: (context, url) => Platform.isIOS
                 ? CupertinoActivityIndicator(

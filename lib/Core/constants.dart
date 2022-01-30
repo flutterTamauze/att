@@ -15,7 +15,7 @@ const androidDownloadLink =
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.114:8010";
+const localURL = "http://192.168.0.105:8010";
 const huaweiAppId = "104665933";
 const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
@@ -32,9 +32,9 @@ List<String> weekDays = [
   "الجمعة"
 ];
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 1, 16);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 1, 24);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 1, 16);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 1, 24);
 //ERRORS
 const USER_INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -81,7 +81,7 @@ successfullDelete(BuildContext context) {
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.green,
     textColor: Colors.white,
-    fontSize: 16.0,
+    fontSize: setResponsiveFontSize(16),
   );
 }
 
@@ -143,7 +143,7 @@ noInternetConnectionToast(BuildContext context) {
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.red,
     textColor: Colors.black,
-    fontSize: 16.0,
+    fontSize: setResponsiveFontSize(16),
   );
 }
 
@@ -155,7 +155,7 @@ unSuccessfullDelete(BuildContext context) {
     timeInSecForIosWeb: 1,
     backgroundColor: Colors.red,
     textColor: Colors.black,
-    fontSize: 16.0,
+    fontSize: setResponsiveFontSize(16),
   );
 }
 

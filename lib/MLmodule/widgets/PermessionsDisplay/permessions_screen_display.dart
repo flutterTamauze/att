@@ -105,7 +105,9 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                                 getTranslated(context,
                                                     "لا يوجد نتائج للبحث"),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
@@ -115,7 +117,9 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                                   "لا يوجد اذونات لهذا المستخدم",
                                                 ),
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            15),
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ));

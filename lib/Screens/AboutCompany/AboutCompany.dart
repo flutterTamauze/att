@@ -94,6 +94,14 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(60.0),
                                             child: CachedNetworkImage(
+                                              httpHeaders: {
+                                                "Authorization": "Bearer " +
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken
+                                              },
                                               imageUrl:
                                                   Provider.of<CompanyData>(
                                                           context,

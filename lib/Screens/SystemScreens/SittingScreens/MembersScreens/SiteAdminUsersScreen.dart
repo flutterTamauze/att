@@ -767,7 +767,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         timeInSecForIosWeb: 1,
                                                                                         backgroundColor: Colors.green,
                                                                                         textColor: Colors.white,
-                                                                                        fontSize: 16.0,
+                                                                                        fontSize: setResponsiveFontSize(16),
                                                                                       );
                                                                                     } else {
                                                                                       Fluttertoast.showToast(
@@ -777,7 +777,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         timeInSecForIosWeb: 1,
                                                                                         backgroundColor: Colors.red,
                                                                                         textColor: Colors.black,
-                                                                                        fontSize: 16.0,
+                                                                                        fontSize: setResponsiveFontSize(16),
                                                                                       );
                                                                                     }
                                                                                     Navigator.pop(context);
@@ -1041,6 +1041,13 @@ class _MemberTileState extends State<MemberTile> {
                                 fit: BoxFit.fill,
                                 image: NetworkImage(
                                   '$imageUrl${widget.user.userImageURL}',
+                                  headers: {
+                                    "Authorization": "Bearer " +
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken
+                                  },
                                 ),
                               ),
                             ),
@@ -1112,6 +1119,13 @@ class _MemberTileState extends State<MemberTile> {
                                       fit: BoxFit.fill,
                                       image: NetworkImage(
                                         '$imageUrl${widget.user.userImageURL}',
+                                        headers: {
+                                          "Authorization": "Bearer " +
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken
+                                        },
                                       ),
                                     ),
                                     shape: BoxShape.circle,

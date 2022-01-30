@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -35,7 +36,7 @@ class AppButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            AutoSizeText(
               text,
               style: TextStyle(color: Colors.white),
             ),

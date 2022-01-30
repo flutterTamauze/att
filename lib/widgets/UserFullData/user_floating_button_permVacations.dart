@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/holiday_summary_table_end.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/DataTablePermessionHeader.dart';
@@ -91,10 +92,10 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
             showDialog(
               context: navigatorKey.currentState.overlay.context,
               builder: (context) {
-                List<UserHolidays> provList =
+                final List<UserHolidays> provList =
                     Provider.of<UserHolidaysData>(context, listen: true)
                         .singleUserHoliday;
-                var permessionsList = Provider.of<UserPermessionsData>(
+                final permessionsList = Provider.of<UserPermessionsData>(
                   context,
                 ).singleUserPermessions;
                 return FlipInY(
@@ -126,7 +127,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                           : getTranslated(
                                               context, "اذونات المستخدم"),
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: setResponsiveFontSize(20),
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Divider(),

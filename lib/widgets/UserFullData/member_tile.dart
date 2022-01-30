@@ -280,7 +280,17 @@ class _MemberTileState extends State<MemberTile> {
                                     },
                                     fit: BoxFit.fill,
                                     image: NetworkImage(
-                                      '$imageUrl${widget.user.userImageURL}',
+                                      '$imageUrl${widget.user.userImageURL}'
+                                              .contains("null")
+                                          ? '$imageUrl${widget.user.normalizedName}.png'
+                                          : '$imageUrl${widget.user.userImageURL}',
+                                      headers: {
+                                        "Authorization": "Bearer " +
+                                            Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userToken
+                                      },
                                     ),
                                   ),
                                 ),
@@ -350,6 +360,13 @@ class _MemberTileState extends State<MemberTile> {
                                       fit: BoxFit.fill,
                                       image: NetworkImage(
                                         '$imageUrl${widget.user.userImageURL}',
+                                        headers: {
+                                          "Authorization": "Bearer " +
+                                              Provider.of<UserData>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .userToken
+                                        },
                                       ),
                                     ),
                                     shape: BoxShape.circle,

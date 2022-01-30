@@ -3,8 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/services/user_data.dart';
 
 class AttendDetails {
   showAttendByCameraDetails({
@@ -84,6 +86,14 @@ class AttendDetails {
                                                     '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
                                                         "A.jpg",
                                                     fit: BoxFit.cover,
+                                                    headers: {
+                                                      "Authorization": "Bearer " +
+                                                          Provider.of<UserData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .user
+                                                              .userToken
+                                                    },
                                                     loadingBuilder: (BuildContext
                                                             context,
                                                         Widget child,
@@ -163,6 +173,14 @@ class AttendDetails {
                                                   child: Image.network(
                                                     '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
                                                         "L.jpg", //L for leave
+                                                    headers: {
+                                                      "Authorization": "Bearer " +
+                                                          Provider.of<UserData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .user
+                                                              .userToken
+                                                    },
                                                     fit: BoxFit.cover,
                                                     loadingBuilder: (BuildContext
                                                             context,

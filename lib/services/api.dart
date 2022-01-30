@@ -73,7 +73,7 @@ class ShiftApi with ChangeNotifier {
           if (Platform.isIOS) {
             try {
               if (enabled) {
-                bool isMock = await detectJailBreak();
+                final bool isMock = await detectJailBreak();
 
                 if (!isMock) {
                   await Geolocator.getCurrentPosition(
@@ -99,7 +99,7 @@ class ShiftApi with ChangeNotifier {
             }
           } else {
             if (enabled) {
-              bool isMockLocation = await TrustLocation.isMockLocation;
+              final bool isMockLocation = await TrustLocation.isMockLocation;
 
               if (!isMockLocation) {
                 await Geolocator.getCurrentPosition(
@@ -152,7 +152,7 @@ class ShiftApi with ChangeNotifier {
   }
 
   getShiftByShiftId(int shiftID, String usertoken) async {
-    var response = await http.get(
+    final response = await http.get(
       Uri.parse("$baseURL/api/Shifts/$shiftID"),
       headers: {
         'Content-type': 'application/json',
@@ -163,7 +163,7 @@ class ShiftApi with ChangeNotifier {
     print(response.body);
     print(jsonDecode(response.body)["message"]);
     if (jsonDecode(response.body)["message"] == "Success") {
-      var shiftObjJson = jsonDecode(response.body)['data'];
+      final shiftObjJson = jsonDecode(response.body)['data'];
       userShift = Shift.fromJson(shiftObjJson);
       print(userShift.shiftId);
       notifyListeners();

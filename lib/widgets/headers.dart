@@ -232,6 +232,12 @@ class Header extends StatelessWidget {
                           .com
                           .logo,
                       fit: BoxFit.cover,
+                      httpHeaders: {
+                        "Authorization": "Bearer " +
+                            Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userToken
+                      },
                       placeholder: (context, url) => Platform.isIOS
                           ? CupertinoActivityIndicator(
                               radius: 20,
@@ -415,6 +421,13 @@ class SuperadminHeader extends StatelessWidget {
                                       .user
                                       .userImage,
                                   fit: BoxFit.cover,
+                                  httpHeaders: {
+                                    "Authorization": "Bearer " +
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken
+                                  },
                                   placeholder: (context, url) => Platform.isIOS
                                       ? CupertinoActivityIndicator(
                                           radius: 20,
@@ -516,6 +529,12 @@ class SuperadminHeader extends StatelessWidget {
                       imageUrl: Provider.of<CompanyData>(context, listen: true)
                           .com
                           .logo,
+                      httpHeaders: {
+                        "Authorization": "Bearer " +
+                            Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userToken
+                      },
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Platform.isIOS
                           ? CupertinoActivityIndicator(
@@ -610,7 +629,7 @@ class ProfileHeader extends StatelessWidget {
                             ),
                             Container(
                               padding: EdgeInsets.only(right: 5.w),
-                              child: Text(
+                              child: AutoSizeText(
                                   Provider.of<UserData>(context, listen: false)
                                       .user
                                       .name,
@@ -830,6 +849,13 @@ class NewHeader extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(75.0),
                               child: CachedNetworkImage(
+                                httpHeaders: {
+                                  "Authorization": "Bearer " +
+                                      Provider.of<UserData>(context,
+                                              listen: false)
+                                          .user
+                                          .userToken
+                                },
                                 imageUrl: cachedUserData[2],
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => Platform.isIOS
@@ -875,6 +901,12 @@ class NewHeader extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(color: Colors.black),
                   child: CachedNetworkImage(
+                    httpHeaders: {
+                      "Authorization": "Bearer " +
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userToken
+                    },
                     imageUrl: cachedUserData[4],
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Platform.isIOS

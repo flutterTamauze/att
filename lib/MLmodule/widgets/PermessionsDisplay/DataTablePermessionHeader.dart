@@ -8,22 +8,19 @@ import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart
 class DataTablePermessionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: ui.TextDirection.rtl,
-      child: Container(
-          child: Row(
-        children: [
-          DataTableHeaderTitles(
-              getTranslated(context, "نوع الأذن"), Colors.orange),
-          DataTableHeaderTitles(
-              getTranslated(
-                context,
-                "التاريخ",
-              ),
-              Colors.orange),
-          DataTableHeaderTitles(getTranslated(context, "الوقت"), Colors.orange),
-        ],
-      )),
-    );
+    return Container(
+        child: Row(
+      children: [
+        DataTableHeaderTitles(
+            getTranslated(context, "نوع الأذن"), Colors.orange),
+        DataTableHeaderTitles(
+            getTranslated(
+              context,
+              "التاريخ",
+            ),
+            Colors.orange),
+        DataTableHeaderTitles(getTranslated(context, "الوقت"), Colors.orange),
+      ],
+    ));
   }
 }

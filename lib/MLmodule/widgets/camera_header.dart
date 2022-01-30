@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CameraHeader extends StatelessWidget {
@@ -25,7 +26,7 @@ class CameraHeader extends StatelessWidget {
               child: Center(child: Icon(Icons.arrow_back)),
             ),
           ),
-          Text(
+          AutoSizeText(
             title,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),

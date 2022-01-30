@@ -30,17 +30,17 @@ class UserCurrentShifts extends StatefulWidget {
 
 String amPmChanger(int intTime) {
   int hours = (intTime ~/ 100);
-  int min = intTime - (hours * 100);
+  final int min = intTime - (hours * 100);
 
-  var ampm = hours >= 12 ? 'PM' : 'AM';
+  final ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours != 0 ? hours : 12; //
 
-  String hoursStr =
+  final String hoursStr =
       hours < 10 ? '0$hours' : hours.toString(); // the hour '0' should be '12'
-  String minStr = min < 10 ? '0$min' : min.toString();
+  final String minStr = min < 10 ? '0$min' : min.toString();
 
-  var strTime = '$hoursStr:$minStr$ampm';
+  final strTime = '$hoursStr:$minStr$ampm';
 
   return strTime;
 }
@@ -70,7 +70,8 @@ int shifttime = 1300;
 class _UserCurrentShiftsState extends State<UserCurrentShifts> {
   @override
   void initState() {
-    Shift userShift = Provider.of<ShiftApi>(context, listen: false).userShift;
+    final Shift userShift =
+        Provider.of<ShiftApi>(context, listen: false).userShift;
 
     _timeInController.text = amPmChanger(userShift.shiftStartTime);
     _timeOutController.text = amPmChanger(userShift.shiftEndTime);
@@ -95,10 +96,10 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
     print("current id");
     print(id);
 
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
     print(list.length);
 
-    List<Shift> currentShift =
+    final List<Shift> currentShift =
         list.where((element) => element.shiftId == id).toList();
     return currentShift[0].shiftName;
   }
@@ -106,17 +107,17 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
   String getSiteNameById(
     int id,
   ) {
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
     print(list.length);
 
-    List<Site> currentSite = list.where((element) => element.id == id).toList();
+    final List<Site> currentSite =
+        list.where((element) => element.id == id).toList();
     return currentSite[0].name;
   }
 
   @override
   Widget build(BuildContext context) {
-    var daysofflist = Provider.of<DaysOffData>(context, listen: true);
-    var shiftDate =
+    final shiftDate =
         Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
     return Scaffold(
         endDrawer: NotificationItem(),

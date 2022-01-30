@@ -90,7 +90,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 widget.createdDate.substring(0, 11),
                               ),
                               FaIcon(
@@ -119,7 +119,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                         ],
                       ),
                     ),
-                    title: Text(
+                    title: AutoSizeText(
                       widget.orderNum,
                     ),
                     children: [
@@ -177,7 +177,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                       textAlign:
                                                           TextAlign.right,
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                15),
                                                         color: Colors.grey[700],
                                                         fontWeight:
                                                             FontWeight.w500,

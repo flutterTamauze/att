@@ -47,10 +47,13 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AutoSizeText(
-                  "اختر لغة التطبيق",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
+                  getTranslated(
+                    context,
+                    "اختر لغة التطبيق",
                   ),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: setResponsiveFontSize(15)),
                 ),
                 Divider(),
                 Container(

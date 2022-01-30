@@ -52,7 +52,7 @@ class _CompanySettingsState extends State<CompanySettings> {
   CompanyData comProvider;
   @override
   void initState() {
-    var now = DateTime.now();
+    final now = DateTime.now();
     userProvider = Provider.of<UserData>(context, listen: false);
     comProvider = Provider.of<CompanyData>(context, listen: false);
     fromDate = DateTime(now.year, now.month, now.day - 1);
@@ -572,7 +572,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                                           userProvider.user.userToken, context);
                                   if (msg == "Success") {
                                     Fluttertoast.showToast(
-                                        msg: "تم التعديل بنجاح",
+                                        msg: getTranslated(
+                                            context, "تم التعديل بنجاح"),
                                         gravity: ToastGravity.CENTER,
                                         toastLength: Toast.LENGTH_SHORT,
                                         timeInSecForIosWeb: 1,
@@ -583,7 +584,8 @@ class _CompanySettingsState extends State<CompanySettings> {
                                     Navigator.pop(context);
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "خطا في التعديل",
+                                        msg: getTranslated(
+                                            context, "خطا في التعديل"),
                                         gravity: ToastGravity.CENTER,
                                         toastLength: Toast.LENGTH_SHORT,
                                         timeInSecForIosWeb: 1,

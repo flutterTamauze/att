@@ -166,6 +166,14 @@ class _ScanPageState extends State<ScanPage> {
             backgroundColor: Colors.red,
             textColor: Colors.black);
         break;
+      case "Fail : You can't register leave now":
+        Fluttertoast.showToast(
+            msg: "لا يمكنك تسجيل الإنصراف الأن",
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.red,
+            textColor: Colors.black);
+        break;
       case "Failed : Mac address not match":
         Fluttertoast.showToast(
             msg: getTranslated(context,

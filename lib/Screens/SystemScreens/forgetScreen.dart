@@ -103,7 +103,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 child: InternationalPhoneNumberInput(
                                   textStyle: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15),
+                                      fontSize: setResponsiveFontSize(15)),
                                   isEnabled: true,
                                   countries: [
                                     "EG",
@@ -162,7 +162,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       ),
                                       hintStyle: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: 15,
+                                          fontSize: setResponsiveFontSize(15),
                                           fontWeight: FontWeight.w700),
                                       hintText:
                                           "اختر بأسم البلد او الرقم الدولى",
@@ -611,7 +611,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 height: 10.h,
                               ),
                               reSend
-                                  ? Text(
+                                  ? AutoSizeText(
                                       timerText,
                                       style: TextStyle(
                                           fontSize: setResponsiveFontSize(17),

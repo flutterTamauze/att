@@ -42,7 +42,7 @@ class RoundedAlert extends StatelessWidget {
                           title,
                           maxLines: 1,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: setResponsiveFontSize(18),
                               height: 1.8,
                               color: Colors.orange,
                               fontWeight: FontWeight.w900),
@@ -59,7 +59,7 @@ class RoundedAlert extends StatelessWidget {
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: setResponsiveFontSize(14),
                                 fontWeight: FontWeight.w900),
                             textAlign: TextAlign.center,
                           ),
@@ -163,7 +163,7 @@ class RoundedAlertWithComment extends StatelessWidget {
                           title,
                           maxLines: 1,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: setResponsiveFontSize(18),
                               height: 1.8,
                               color: Colors.orange,
                               fontWeight: FontWeight.w900),
@@ -199,7 +199,7 @@ class RoundedAlertWithComment extends StatelessWidget {
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: setResponsiveFontSize(14),
                                 fontWeight: FontWeight.w900),
                             textAlign: TextAlign.center,
                           ),
@@ -312,7 +312,7 @@ class RoundedAlertEn extends StatelessWidget {
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: setResponsiveFontSize(14),
                                 fontWeight: FontWeight.w900),
                             textAlign: TextAlign.center,
                           ),
@@ -336,10 +336,9 @@ class RoundedAlertEn extends StatelessWidget {
                             child: AutoSizeText(
                               "Yes",
                               style: TextStyle(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: setResponsiveFontSize(17)),
                             ),
                           ),
                         ),
@@ -361,10 +360,9 @@ class RoundedAlertEn extends StatelessWidget {
                             child: AutoSizeText("No",
                                 maxLines: 1,
                                 style: TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                )),
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: setResponsiveFontSize(17))),
                           ),
                         ),
                       ),
@@ -410,7 +408,7 @@ class _PermissionAlertState extends State<PermissionAlert> {
                     widget.title,
                     maxLines: 1,
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize: setResponsiveFontSize(18),
                         color: Colors.orange,
                         fontWeight: FontWeight.w900),
                   ),
@@ -426,7 +424,7 @@ class _PermissionAlertState extends State<PermissionAlert> {
                       maxLines: 1,
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: setResponsiveFontSize(14),
                           fontWeight: FontWeight.w900),
                       textAlign: TextAlign.center,
                     ),
@@ -647,7 +645,7 @@ class RoundAlertUpgrade extends StatelessWidget {
                           title,
                           maxLines: 1,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: setResponsiveFontSize(18),
                               color: Colors.orange,
                               fontWeight: FontWeight.w900),
                         ),
@@ -665,7 +663,7 @@ class RoundAlertUpgrade extends StatelessWidget {
                             maxLines: 2,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: setResponsiveFontSize(14),
                                 height: 1.5,
                                 fontWeight: FontWeight.w600),
                             textAlign: TextAlign.center,
@@ -690,10 +688,9 @@ class RoundAlertUpgrade extends StatelessWidget {
                           "تحديث",
                           maxLines: 1,
                           style: TextStyle(
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          ),
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: setResponsiveFontSize(17)),
                         ),
                       ),
                     ),

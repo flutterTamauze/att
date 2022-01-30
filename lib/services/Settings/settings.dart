@@ -17,7 +17,7 @@ import '../user_data.dart';
 
 class Settings {
   resetMacAddress(BuildContext context, String userid) async {
-    var memberData = Provider.of<MemberData>(context);
+    final memberData = Provider.of<MemberData>(context);
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -28,7 +28,7 @@ class Settings {
                     builder: (BuildContext context) {
                       return RoundedLoadingIndicator();
                     });
-                var token = Provider.of<UserData>(context, listen: false)
+                final token = Provider.of<UserData>(context, listen: false)
                     .user
                     .userToken;
                 if (await memberData.resetMemberMac(userid, token, context) ==
@@ -65,7 +65,7 @@ class Settings {
 
   deleteUser(BuildContext context, String userId, int listIndex,
       String username) async {
-    var memberData = Provider.of<MemberData>(context, listen: false);
+    final memberData = Provider.of<MemberData>(context, listen: false);
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -78,7 +78,7 @@ class Settings {
                       builder: (BuildContext context) {
                         return RoundedLoadingIndicator();
                       });
-                  var token = Provider.of<UserData>(context, listen: false)
+                  final token = Provider.of<UserData>(context, listen: false)
                       .user
                       .userToken;
                   if (await memberData.deleteMember(
@@ -105,8 +105,8 @@ class Settings {
   }
 
   int getsiteIndex(BuildContext context, String sitename) {
-    var list = Provider.of<SiteShiftsData>(context, listen: false).sites;
-    int index = list.length;
+    final list = Provider.of<SiteShiftsData>(context, listen: false).sites;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (sitename == list[i].name) {
         return i;

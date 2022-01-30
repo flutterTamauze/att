@@ -21,6 +21,10 @@ class UserPrfileImageWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(70.w),
         child: CachedNetworkImage(
+            httpHeaders: {
+              "Authorization": "Bearer " +
+                  Provider.of<UserData>(context, listen: false).user.userToken
+            },
             placeholder: (context, url) => Center(
                   child: CircularProgressIndicator(
                       backgroundColor: Colors.white,

@@ -17,7 +17,7 @@ class VacationData with ChangeNotifier {
       String token, int id, int vacationIndex) async {
     isLoading = true;
     notifyListeners();
-    var response = await http.delete(
+    final response = await http.delete(
       Uri.parse("$baseURL/api/OfficialVacations/Del_OfficialVacationbyId/$id"),
       headers: {
         'Content-type': 'application/json',
@@ -38,7 +38,7 @@ class VacationData with ChangeNotifier {
       Vacation vacation, String token, int companyId, int vacationCount) async {
     isLoading = true;
     notifyListeners();
-    var response = await http.post(
+    final response = await http.post(
         Uri.parse("$baseURL/api/OfficialVacations/Add/$vacationCount"),
         headers: {
           'Content-type': 'application/json',
@@ -61,7 +61,7 @@ class VacationData with ChangeNotifier {
       int vacationIndex, Vacation vacation, String token) async {
     isLoading = true;
     notifyListeners();
-    var response = await http.put(
+    final response = await http.put(
         Uri.parse("$baseURL/api/OfficialVacations/Edit/${vacation.vacationId}"),
         headers: {
           'Content-type': 'application/json',
@@ -103,18 +103,18 @@ class VacationData with ChangeNotifier {
     isLoading = true;
     print(DateTime.now().year);
     notifyListeners();
-    var response = await http.get(
+    final response = await http.get(
         Uri.parse(
             "$baseURL/api/OfficialVacations/GetAllVacationsByCompanyId/$companyId/${DateTime.now().year}"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $token"
         });
-    var decodedRes = json.decode(response.body);
+    final decodedRes = json.decode(response.body);
     print(decodedRes);
     isLoading = false;
     if (jsonDecode(response.body)["message"] == "Success") {
-      var vacObjJson = jsonDecode(response.body)['data'] as List;
+      final vacObjJson = jsonDecode(response.body)['data'] as List;
       vactionList = vacObjJson.map((json) => Vacation.fromJson(json)).toList();
       copyVacationList = vactionList;
 

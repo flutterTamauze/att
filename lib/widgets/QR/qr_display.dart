@@ -91,7 +91,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             Container(
                                               child: Column(
                                                 children: [
-                                                  Text(
+                                                  AutoSizeText(
                                                     DateFormat('hh:mm:s ')
                                                         .format(
                                                             countryDateTime),
@@ -106,7 +106,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                   SizedBox(
                                                     height: 5,
                                                   ),
-                                                  Text(
+                                                  AutoSizeText(
                                                     DateTime.now()
                                                         .toString()
                                                         .substring(0, 11),
@@ -161,7 +161,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             ),
                                             Column(
                                               children: [
-                                                Text(
+                                                AutoSizeText(
                                                   shiftApiConsumer
                                                       .qrShift.shiftName,
                                                   style: TextStyle(
@@ -329,7 +329,8 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                           : Container(
                               height: 20,
                               child: AutoSizeText(
-                                "برجاء تفعيل الموقع الجغرافى للهاتف ",
+                                getTranslated(context,
+                                    "برجاء تفعيل الموقع الجغرافى للهاتف"),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 style: TextStyle(
@@ -341,7 +342,8 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                       : Container(
                           height: 20,
                           child: AutoSizeText(
-                            "برجاء تفعيل تصريح الموقع الجغرافي ",
+                            getTranslated(
+                                context, "برجاء تفعيل تصريح الموقع الجغرافي"),
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -362,7 +364,10 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                         Container(
                           height: 20,
                           child: AutoSizeText(
-                            "لا يوجد اتصال بالانترنت ",
+                            getTranslated(
+                              context,
+                              "لا يوجد اتصال بالانترنت",
+                            ),
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(

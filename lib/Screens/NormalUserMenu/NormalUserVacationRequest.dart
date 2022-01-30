@@ -14,8 +14,8 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -78,7 +78,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
     selectedDateString = null;
     dateDifference = null;
     _dateController.text = "";
-    var now = DateTime.now();
+    final now = DateTime.now();
     commentController.text = "";
     fromDate = DateTime(now.year, now.month, now.day);
     toDate = DateTime(
@@ -98,7 +98,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   var newString = "";
   @override
   Widget build(BuildContext context) {
-    var userdata = Provider.of<UserData>(context, listen: false).user;
+    final userdata = Provider.of<UserData>(context, listen: false).user;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -702,13 +702,13 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     userdata.userToken,
                                                     userdata.id)
                                                 .then((value) {
-                                              if (value ==
-                                                  "Success : Holiday Created!") {
+                                              if (value == Holiday.Success) {
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     if (userdata.osType == 3) {
-                                                      HuaweiServices _huawei =
+                                                      final HuaweiServices
+                                                          _huawei =
                                                           HuaweiServices();
                                                       _huawei.huaweiSendToTopic(
                                                           "طلب أجازة",
@@ -746,7 +746,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   },
                                                 );
                                               } else if (value ==
-                                                  "Failed : There are external mission in this period!") {
+                                                  Holiday
+                                                      .Internal_Mission_InThis_Period) {
                                                 {
                                                   Fluttertoast.showToast(
                                                       toastLength:
@@ -760,7 +761,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                           Colors.red);
                                                 }
                                               } else if (value ==
-                                                  "Failed : Another Holiday not approved for this user!") {
+                                                  Holiday
+                                                      .Another_Holiday_NOT_APPROVED) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -771,7 +773,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an holiday approved in this period!") {
+                                                  Holiday
+                                                      .Holiday_Approved_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -782,7 +785,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an internal Mission in this period!") {
+                                                  Holiday
+                                                      .Internal_Mission_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -793,7 +797,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     backgroundColor:
                                                         Colors.red);
                                               } else if (value ==
-                                                  "Failed : There are an permission in this period!") {
+                                                  Holiday
+                                                      .Permession_InThis_Period) {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
@@ -965,7 +970,7 @@ class RadioButtonWidg extends StatelessWidget {
             onchannge(value);
           },
         ),
-        Text(title),
+        AutoSizeText(title),
       ],
     );
   }
