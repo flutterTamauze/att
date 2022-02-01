@@ -12,6 +12,7 @@ import '../../main.dart';
 class AttendProof {
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
+    print(userId);
     final response = await http.post(
       Uri.parse("$baseURL/api/AttendProof/AddAttendProof?userid=$userId"),
       headers: {

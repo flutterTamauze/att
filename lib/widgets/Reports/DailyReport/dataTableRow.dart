@@ -82,7 +82,7 @@ class _DataTableRowState extends State<DataTableRow> {
                             .user
                             .userToken);
                 Navigator.pop(context);
-                var userData = Provider.of<MemberData>(context, listen: false)
+                final userData = Provider.of<MemberData>(context, listen: false)
                     .singleMember;
                 showDialog(
                   context: context,
@@ -97,7 +97,7 @@ class _DataTableRowState extends State<DataTableRow> {
                     builder: (BuildContext context) {
                       return RoundedLoadingIndicator();
                     });
-                var now = DateTime.now();
+                final now = DateTime.now();
                 final int legalDay =
                     Provider.of<CompanyData>(context, listen: false)
                         .com
@@ -330,7 +330,7 @@ class _DataTableRowState extends State<DataTableRow> {
                                 child: InkWell(
                                   onTap: () {
                                     if (widget.attendUnit.attendType == 1) {
-                                      AttendDetails attendDetails =
+                                      final AttendDetails attendDetails =
                                           AttendDetails();
                                       // ignore: cascade_invocations
                                       attendDetails.showAttendByCameraDetails(

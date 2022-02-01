@@ -99,8 +99,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
     _selectedDateString = tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
     _today = DateTime.now();
-    sleectedMember =
-        Provider.of<MemberData>(context, listen: false).membersList[0].name;
+    // sleectedMember =
+    //     Provider.of<MemberData>(context, listen: false).membersList[0].name;
     selectedReason = widget.holidayTitles.first;
     selectedPermession = widget.permessionTitles.first;
     super.initState();
@@ -293,8 +293,6 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                             ? Container()
                                             : Container(
                                                 padding: EdgeInsets.all(5),
-                                                alignment:
-                                                    Alignment.centerRight,
                                                 child: Text(
                                                   "${getTranslated(context, "تم اختيار")}$dateDifference ${getTranslated(context, "يوم")} ",
                                                   style: TextStyle(
@@ -313,63 +311,52 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                     )),
                                     Padding(
                                       padding: EdgeInsets.only(right: 5.w),
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            alignment: Alignment.topRight,
-                                            padding: EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(width: 1)),
-                                            width: 150.w,
-                                            height: 40.h,
-                                            child: DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                              elevation: 2,
-                                              isExpanded: true,
-                                              items: widget.holidayTitles
-                                                  .map((String x) {
-                                                return DropdownMenuItem<String>(
-                                                    value: x,
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Text(
-                                                        x,
-                                                        textAlign:
-                                                            TextAlign.right,
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.orange,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                    ));
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  selectedReason = value;
-                                                  if (value !=
-                                                      getTranslated(
-                                                          context, "عارضة")) {
-                                                    _dateController.text = "";
-                                                    newString = "";
-                                                    tomorrow = DateTime(
-                                                        DateTime.now().year,
-                                                        DateTime.now().month,
-                                                        DateTime.now().day + 1);
-                                                    _today = DateTime.now();
-                                                    toDate = tomorrow;
-                                                  }
-                                                });
-                                              },
-                                              value: selectedReason,
-                                            )),
-                                          ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(width: 1)),
+                                          width: 400.w,
+                                          height: 40.h,
+                                          child: DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                            elevation: 2,
+                                            isExpanded: true,
+                                            items: widget.holidayTitles
+                                                .map((String x) {
+                                              return DropdownMenuItem<String>(
+                                                  value: x,
+                                                  child: Text(
+                                                    x,
+                                                    style: TextStyle(
+                                                        color: Colors.orange,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ));
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedReason = value;
+                                                if (value !=
+                                                    getTranslated(
+                                                        context, "عارضة")) {
+                                                  _dateController.text = "";
+                                                  newString = "";
+                                                  tomorrow = DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day + 1);
+                                                  _today = DateTime.now();
+                                                  toDate = tomorrow;
+                                                }
+                                              });
+                                            },
+                                            value: selectedReason,
+                                          )),
                                         ),
                                       ),
                                     ),
@@ -556,58 +543,44 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                alignment: Alignment.topRight,
-                                                padding:
-                                                    EdgeInsets.only(right: 10),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border:
-                                                        Border.all(width: 1)),
-                                                width: 200.w,
-                                                height: 40.h,
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                        child: DropdownButton(
-                                                  elevation: 2,
-                                                  isExpanded: true,
-                                                  items: widget.permessionTitles
-                                                      .map((String x) {
-                                                    return DropdownMenuItem<
-                                                            String>(
-                                                        value: x,
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child: Text(
-                                                            x,
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .orange,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ));
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedPermession =
-                                                          value;
-                                                    });
-                                                  },
-                                                  value: selectedPermession,
-                                                )),
-                                              ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(width: 1)),
+                                              width: 400.w,
+                                              height: 40.h,
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                elevation: 2,
+                                                isExpanded: true,
+                                                items: widget.permessionTitles
+                                                    .map((String x) {
+                                                  return DropdownMenuItem<
+                                                          String>(
+                                                      value: x,
+                                                      child: AutoSizeText(
+                                                        x,
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ));
+                                                }).toList(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedPermession = value;
+                                                  });
+                                                },
+                                                value: selectedPermession,
+                                              )),
                                             ),
                                           ),
                                           Divider(),
@@ -657,7 +630,6 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       DateTime.december,
                                                       31),
                                                   //controller: _endTimeController,
-                                                  textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       fontSize: ScreenUtil().setSp(
                                                           14,
@@ -1001,7 +973,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                         .map(
                                           (value) => DropdownMenuItem(
                                               child: Container(
-                                                  alignment: Alignment.topRight,
                                                   height: 20.h,
                                                   child: AutoSizeText(
                                                     value.shiftName,
@@ -1081,7 +1052,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                 items: widget.list
                                     .map((value) => DropdownMenuItem(
                                           child: Container(
-                                            alignment: Alignment.topRight,
                                             height: 20,
                                             child: AutoSizeText(
                                               value.name,

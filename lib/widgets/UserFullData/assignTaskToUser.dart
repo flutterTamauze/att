@@ -28,7 +28,7 @@ class AssignTaskToUser extends StatelessWidget {
               AutoSizeText(
                 taskName,
                 style: TextStyle(
-                    height: 1.5.h, fontSize: setResponsiveFontSize(14)),
+                    height: 1.5.h, fontSize: setResponsiveFontSize(13)),
               ),
               Container(
                 width: 25.w,

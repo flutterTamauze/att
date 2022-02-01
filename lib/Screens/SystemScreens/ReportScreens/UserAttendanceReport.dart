@@ -666,23 +666,10 @@ class _UserAttendanceReportScreenState
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                  if (_nameController
-                                                          .text.length <
-                                                      3) {
-                                                    Fluttertoast.showToast(
-                                                        msg: getTranslated(
-                                                            context,
-                                                            "يجب ان لا يقل البحث عن 3 احرف"),
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        gravity: ToastGravity
-                                                            .CENTER);
-                                                  } else {
-                                                    setState(() {
-                                                      _nameController.clear();
-                                                      showSearchIcon = true;
-                                                    });
-                                                  }
+                                                  setState(() {
+                                                    _nameController.clear();
+                                                    showSearchIcon = true;
+                                                  });
                                                 },
                                                 child: Icon(
                                                   FontAwesomeIcons.times,
@@ -735,23 +722,10 @@ class _UserAttendanceReportScreenState
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                  if (_nameController
-                                                          .text.length <
-                                                      3) {
-                                                    Fluttertoast.showToast(
-                                                        msg: getTranslated(
-                                                            context,
-                                                            "يجب ان لا يقل البحث عن 3 احرف"),
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        gravity: ToastGravity
-                                                            .CENTER);
-                                                  } else {
-                                                    setState(() {
-                                                      _nameController.clear();
-                                                      showSearchIcon = true;
-                                                    });
-                                                  }
+                                                  setState(() {
+                                                    _nameController.clear();
+                                                    showSearchIcon = true;
+                                                  });
                                                 },
                                                 child: Icon(
                                                   FontAwesomeIcons.times,
