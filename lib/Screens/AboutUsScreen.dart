@@ -62,7 +62,8 @@ class AboutUsScreen extends StatelessWidget {
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
                                                   width: 2.w,
-                                                  color: Color(0xffFF7E00),
+                                                  color:
+                                                      const Color(0xffFF7E00),
                                                 ),
                                               ),
                                               child: CircleAvatar(

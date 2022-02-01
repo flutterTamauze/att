@@ -9,7 +9,7 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 class HolidaySummaryTableEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var permProv = Provider.of<UserHolidaysData>(context);
+    final permProv = Provider.of<UserHolidaysData>(context);
     return Container(
       child: Container(
         height: 50.h,

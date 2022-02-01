@@ -70,7 +70,7 @@ abstract class Classifier {
   }
 
   TensorImage _preProcess() {
-    int cropSize = min(_inputImage.height, _inputImage.width);
+    final int cropSize = min(_inputImage.height, _inputImage.width);
     return ImageProcessorBuilder()
         .add(ResizeWithCropOrPadOp(cropSize, cropSize))
         .add(ResizeOp(
@@ -96,13 +96,12 @@ abstract class Classifier {
 
     final runs = DateTime.now().millisecondsSinceEpoch;
 
-
     interpreter.run(_inputImage.buffer, _outputBuffer.getBuffer());
     final run = DateTime.now().millisecondsSinceEpoch - runs;
 
     print('Time to run inference: $run ms');
 
-    Map<String, double> labeledProb = TensorLabel.fromList(
+    final Map<String, double> labeledProb = TensorLabel.fromList(
             labels, _probabilityProcessor.process(_outputBuffer))
         .getMapWithFloatValue();
 
@@ -119,7 +118,7 @@ abstract class Classifier {
 }
 
 MapEntry<String, double> getTopProbability(Map<String, double> labeledProb) {
-  var pq = PriorityQueue<MapEntry<String, double>>(compare);
+  final pq = PriorityQueue<MapEntry<String, double>>(compare);
   pq.addAll(labeledProb.entries);
 
   return pq.first;

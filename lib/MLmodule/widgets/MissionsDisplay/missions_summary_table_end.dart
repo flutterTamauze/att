@@ -9,7 +9,7 @@ import 'package:qr_users/services/UserMissions/user_missions.dart';
 class MissionsSummaryTableEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var permProv = Provider.of<MissionsData>(context);
+    final permProv = Provider.of<MissionsData>(context);
     return Container(
       child: Container(
         height: 50.h,

@@ -205,76 +205,70 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                       Icons.alarm,
                       color: Colors.orange[600],
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Directionality(
-                                textDirection: ui.TextDirection.rtl,
-                                child: Consumer<ShiftsData>(
-                                  builder: (context, value, child) {
-                                    return DropdownButton(
-                                      isExpanded: true,
-                                      underline: const SizedBox(),
-                                      elevation: 5,
-                                      items: widget.list
-                                          .map((value) => DropdownMenuItem(
-                                                child: Container(
-                                                  alignment: Alignment.topRight,
-                                                  height: 20,
-                                                  child: AutoSizeText(
-                                                    value.name,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
+                    Container(
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: Consumer<ShiftsData>(
+                                builder: (context, value, child) {
+                                  return DropdownButton(
+                                    isExpanded: true,
+                                    underline: const SizedBox(),
+                                    elevation: 5,
+                                    items: widget.list
+                                        .map((value) => DropdownMenuItem(
+                                              child: Container(
+                                                alignment: Alignment.topRight,
+                                                height: 20,
+                                                child: AutoSizeText(
+                                                  value.name,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          12,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                      fontWeight:
+                                                          FontWeight.w700),
                                                 ),
-                                                value: value.name,
-                                              ))
-                                          .toList(),
-                                      onChanged: (v) async {
-                                        Provider.of<SiteShiftsData>(context,
-                                                listen: false)
-                                            .getShiftsList(v, true);
-                                        prov.setDropDownShift(0);
+                                              ),
+                                              value: value.name,
+                                            ))
+                                        .toList(),
+                                    onChanged: (v) async {
+                                      Provider.of<SiteShiftsData>(context,
+                                              listen: false)
+                                          .getShiftsList(v, true);
+                                      prov.setDropDownShift(0);
 
-                                        widget.dropdownFun(v);
-                                        if (v != "كل المواقع") {
-                                          prov.setDropDownIndex(prov
-                                                  .dropDownSitesStrings
-                                                  .indexOf(v) -
-                                              1);
+                                      widget.dropdownFun(v);
+                                      if (v != "كل المواقع") {
+                                        prov.setDropDownIndex(prov
+                                                .dropDownSitesStrings
+                                                .indexOf(v) -
+                                            1);
 
-                                          print(v);
-                                        } else {
-                                          prov.setDropDownIndex(0);
-                                        }
+                                        print(v);
+                                      } else {
+                                        prov.setDropDownIndex(0);
+                                      }
 
-                                        prov.setSiteValue(v);
-                                        print(prov.dropDownSitesStrings);
-                                      },
-                                      value: widget.dropdownValue,
-                                    );
-                                  },
-                                ),
+                                      prov.setSiteValue(v);
+                                      print(prov.dropDownSitesStrings);
+                                    },
+                                    value: widget.dropdownValue,
+                                  );
+                                },
                               ),
-                              const Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: Colors.grey,
-                              )
-                            ],
-                          ),
+                            ),
+                            const Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Colors.grey,
+                            )
+                          ],
                         ),
                       ),
                     ),

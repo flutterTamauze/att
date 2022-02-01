@@ -20,7 +20,7 @@ import '../../../Core/constants.dart';
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
   final Future getHoliday;
-  DisplayHolidays(this._nameController, this.getHoliday);
+  const DisplayHolidays(this._nameController, this.getHoliday);
   @override
   _DisplayHolidaysState createState() => _DisplayHolidaysState();
 }
@@ -104,14 +104,14 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                         : Provider.of<MemberData>(context)
                                                 .userSearchMember
                                                 .isEmpty
-                                            ? AutoSizeText(
+                                            ? const AutoSizeText(
                                                 "لا يوجد نتائج للبحث",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : AutoSizeText(
+                                            : const AutoSizeText(
                                                 "لا يوجد اجازات لهذا المستخدم",
                                                 style: TextStyle(
                                                     fontSize: 15,

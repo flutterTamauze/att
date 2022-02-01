@@ -63,14 +63,14 @@ class RoundedSearchBarSiteAdmin extends StatefulWidget {
 
 class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
   String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
+    final int len = phoneNum.length;
     return "+ ${phoneNum.substring(0, len - 1)}";
   }
 
   bool showSearchButton = true;
 
   Widget build(BuildContext context) {
-    var prov = Provider.of<SiteData>(context, listen: false);
+    final prov = Provider.of<SiteData>(context, listen: false);
     return GestureDetector(
       onTap: () => print(prov.dropDownSitesIndex),
       child: Container(
@@ -85,10 +85,10 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                     Expanded(
                       flex: 4,
                       child: Container(
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           height: 44.0.h,
                           child: Stack(
-                            overflow: Overflow.visible,
+                            clipBehavior: Clip.none,
                             children: [
                               TextFormField(
                                 onFieldSubmitted: (_) async {
@@ -168,13 +168,14 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                 height: 44.h,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: Color(0xff4a4a4a), width: 1.0),
-                                  borderRadius: BorderRadius.only(
+                                      color: const Color(0xff4a4a4a),
+                                      width: 1.0),
+                                  borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10)),
                                   color: Colors.orange[500],
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.search,
                                   color: Colors.white,
                                 ),
@@ -190,13 +191,14 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                   height: 44.h,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Color(0xff4a4a4a), width: 1.0),
-                                    borderRadius: BorderRadius.only(
+                                        color: const Color(0xff4a4a4a),
+                                        width: 1.0),
+                                    borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         bottomLeft: Radius.circular(10)),
                                     color: Colors.orange[500],
                                   ),
-                                  child: Icon(FontAwesomeIcons.times,
+                                  child: const Icon(FontAwesomeIcons.times,
                                       color: Colors.white),
                                 ),
                               ),
@@ -206,7 +208,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -254,7 +256,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                           print(v);
                                           prov.setShiftValue(v);
 
-                                          List<String> x = [];
+                                          final List<String> x = [];
 
                                           value.shiftsList.forEach((element) {
                                             x.add(element.shiftName);
@@ -305,7 +307,8 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                           print(holder);
                                           prov.setDropDownShift(holder);
                                         },
-                                        hint: AutoSizeText("كل المناوبات"),
+                                        hint:
+                                            const AutoSizeText("كل المناوبات"),
                                         value: value
                                             .shiftsList[prov.dropDownShiftIndex]
                                             .shiftName
@@ -315,7 +318,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                   },
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 height: 1,
                                 thickness: 1,
                                 color: Colors.grey,
@@ -325,7 +328,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Icon(Icons.alarm, color: ColorManager.primary),
@@ -376,8 +379,8 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
     Provider.of<MemberData>(context, listen: false).byShiftPageIndex = 0;
     Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
     Provider.of<MemberData>(context, listen: false).keepRetriving = true;
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
       if (mounted) if (Provider.of<UserData>(context, listen: false)
               .user
@@ -411,8 +414,8 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   }
 
   getData() async {
-    var userProvider = Provider.of<UserData>(context);
-    var comProvier = Provider.of<CompanyData>(context);
+    final userProvider = Provider.of<UserData>(context);
+    final comProvier = Provider.of<CompanyData>(context);
 
     await Provider.of<ShiftsData>(context, listen: false)
         .getShifts(comProvier.com.id, userProvider.user.userToken, context,
@@ -433,8 +436,9 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   }
 
   int getsiteIndex(String siteName) {
-    var list = Provider.of<SiteData>(context, listen: false).dropDownSitesList;
-    int index = list.length;
+    final list =
+        Provider.of<SiteData>(context, listen: false).dropDownSitesList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].name) {
         return i;
@@ -444,7 +448,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
-    intlPhone.PhoneNumber result =
+    final intlPhone.PhoneNumber result =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             phoneNumberEdit);
     return [result.isoCode, result.dialCode];
@@ -472,7 +476,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    var prov = Provider.of<SiteData>(context, listen: false);
     return Consumer<MemberData>(builder: (context, memberData, child) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -524,14 +527,14 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                   color: Colors.white,
                                   child: Center(
                                     child: Platform.isIOS
-                                        ? CupertinoActivityIndicator(
+                                        ? const CupertinoActivityIndicator(
                                             radius: 20,
                                           )
-                                        : CircularProgressIndicator(
+                                        : const CircularProgressIndicator(
                                             backgroundColor: Colors.white,
                                             valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.orange),
                                           ),
                                   ),
                                 );
@@ -551,7 +554,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                               .loadingShifts ==
                                           false) {
                                     Timer(
-                                      Duration(milliseconds: 1),
+                                      const Duration(milliseconds: 1),
                                       () => _scrollController.jumpTo(
                                           _scrollController
                                                   .position.maxScrollExtent -
@@ -709,7 +712,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         builder: (BuildContext context) {
                                                                                           return RoundedLoadingIndicator();
                                                                                         });
-                                                                                    var token = Provider.of<UserData>(context, listen: false).user.userToken;
+                                                                                    final token = Provider.of<UserData>(context, listen: false).user.userToken;
                                                                                     if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
                                                                                       Navigator.pop(context);
                                                                                       successfullDelete();
@@ -736,7 +739,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                         print(memberData
                                                                             .membersListScreenDropDownSearch[index]
                                                                             .phoneNumber);
-                                                                        var phone = await getPhoneInEdit(memberData.membersListScreenDropDownSearch[index].phoneNumber[0] !=
+                                                                        final phone = await getPhoneInEdit(memberData.membersListScreenDropDownSearch[index].phoneNumber[0] !=
                                                                                 "+"
                                                                             ? "+${memberData.membersListScreenDropDownSearch[index].phoneNumber}"
                                                                             : memberData.membersListScreenDropDownSearch[index].phoneNumber);
@@ -771,7 +774,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                         builder: (BuildContext context) {
                                                                                           return RoundedLoadingIndicator();
                                                                                         });
-                                                                                    var token = Provider.of<UserData>(context, listen: false).user.userToken;
+                                                                                    final token = Provider.of<UserData>(context, listen: false).user.userToken;
                                                                                     if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, token, context) == "Success") {
                                                                                       Navigator.pop(context);
                                                                                       Fluttertoast.showToast(
@@ -834,14 +837,14 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                 default:
                                   return Center(
                                     child: Platform.isIOS
-                                        ? CupertinoActivityIndicator(
+                                        ? const CupertinoActivityIndicator(
                                             radius: 20,
                                           )
-                                        : CircularProgressIndicator(
+                                        : const CircularProgressIndicator(
                                             backgroundColor: Colors.white,
                                             valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.orange),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.orange),
                                           ),
                                   );
                               }
@@ -851,7 +854,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                           ? Provider.of<MemberData>(context).isLoading
                               ? Column(
                                   children: [
-                                    Center(
+                                    const Center(
                                         child: CupertinoActivityIndicator(
                                       radius: 15,
                                     )),
@@ -913,7 +916,8 @@ class MemberTile extends StatefulWidget {
   final Function onTapDelete;
   final Function onResetMac;
 
-  MemberTile({this.user, this.onTapEdit, this.onTapDelete, this.onResetMac});
+  const MemberTile(
+      {this.user, this.onTapEdit, this.onTapDelete, this.onResetMac});
 
   @override
   _MemberTileState createState() => _MemberTileState();
@@ -921,7 +925,7 @@ class MemberTile extends StatefulWidget {
 
 class _MemberTileState extends State<MemberTile> {
   String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
+    final int len = phoneNum.length;
     if (phoneNum[0] == "+") {
       return " ${phoneNum.substring(1, len)}+";
     } else {
@@ -930,12 +934,12 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   int getSiteListIndex(int fShiftId) {
-    var fsiteIndex = Provider.of<ShiftsData>(context, listen: false)
+    final fsiteIndex = Provider.of<ShiftsData>(context, listen: false)
         .shiftsList[fShiftId]
         .siteID;
 
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (fsiteIndex == list[i].id) {
         return i;
@@ -945,8 +949,8 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   String getShiftName() {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (list[i].shiftId == widget.user.shiftId) {
         return list[i].shiftName;
@@ -956,8 +960,8 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   int getShiftListIndex(int shiftId) {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftId == list[i].shiftId) {
         return i;
@@ -1040,7 +1044,7 @@ class _MemberTileState extends State<MemberTile> {
                                           child: CircularProgressIndicator(
                                         backgroundColor: Colors.white,
                                         valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
+                                            const AlwaysStoppedAnimation<Color>(
                                                 Colors.orange),
                                         value: loadingProgress
                                                     .expectedTotalBytes !=
@@ -1094,7 +1098,8 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   showUserDetails(Member member) {
-    var userType = Provider.of<UserData>(context, listen: false).user.userType;
+    final userType =
+        Provider.of<UserData>(context, listen: false).user.userType;
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -1126,7 +1131,7 @@ class _MemberTileState extends State<MemberTile> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     width: 1,
-                                    color: Color(0xffFF7E00),
+                                    color: const Color(0xffFF7E00),
                                   ),
                                 ),
                                 child: Container(
@@ -1148,10 +1153,11 @@ class _MemberTileState extends State<MemberTile> {
                                       ),
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                          width: 2, color: Color(0xffFF7E00))),
+                                          width: 2,
+                                          color: const Color(0xffFF7E00))),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 3,
                               ),
                               Container(
@@ -1271,7 +1277,7 @@ class _MemberTileState extends State<MemberTile> {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.close,
                               color: Colors.orange,
                               size: 25,
@@ -1289,7 +1295,7 @@ class _MemberTileState extends State<MemberTile> {
                             onTap: () {
                               widget.onResetMac();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.repeat,
                               color: Colors.orange,
                               size: 25,

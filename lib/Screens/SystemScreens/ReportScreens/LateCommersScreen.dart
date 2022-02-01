@@ -7,6 +7,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'DailyReportScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -454,11 +455,12 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                               listen: false)
                                           .siteShiftList[siteIdIndex]
                                           .siteId;
-
-                                      setState(() {
-                                        showTable = false;
-                                        showViewTableButton = true;
-                                      });
+                                      if (currentSiteName != value) {
+                                        setState(() {
+                                          showTable = false;
+                                          showViewTableButton = true;
+                                        });
+                                      }
 
                                       // await Provider.of<
                                       //             ReportsData>(

@@ -58,7 +58,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                         child: Container(
                           height: (MediaQuery.of(context).size.height) / 2.75,
                           width: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.orange,
                           ),
                         ),
@@ -68,7 +68,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                         child: Container(
                           height: (MediaQuery.of(context).size.height) / 2.8,
                           width: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.black,
                           ),
                           child: Center(
@@ -86,7 +86,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             width: 1,
-                                            color: Color(0xffFF7E00),
+                                            color: const Color(0xffFF7E00),
                                           ),
                                           shape: BoxShape.circle,
                                         ),
@@ -110,12 +110,12 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                                                       .logo,
                                               fit: BoxFit.fill,
                                               placeholder: (context, url) =>
-                                                  Center(
-                                                child: CircularProgressIndicator(
+                                                  const Center(
+                                                child: const CircularProgressIndicator(
                                                     backgroundColor:
                                                         Colors.white,
                                                     valueColor:
-                                                        new AlwaysStoppedAnimation<
+                                                        const AlwaysStoppedAnimation<
                                                                 Color>(
                                                             Colors.orange)),
                                               ),
@@ -159,7 +159,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return LoadingIndicator();
+                            return const LoadingIndicator();
                           }
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -216,7 +216,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
               child: IconButton(
                 icon: Icon(
                   Icons.chevron_left,
-                  color: Color(0xffF89A41),
+                  color: const Color(0xffF89A41),
                   size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
                 ),
                 onPressed: () {
@@ -246,8 +246,8 @@ class AboutCompanyTextField extends StatelessWidget {
       textAlign: TextAlign.right,
       decoration: kTextFieldDecorationWhite.copyWith(
           hintText: title,
-          hintStyle: TextStyle(color: Colors.black),
-          suffixIcon: Icon(
+          hintStyle: const TextStyle(color: Colors.black),
+          suffixIcon: const Icon(
             Icons.title,
             color: Colors.orange,
           )),

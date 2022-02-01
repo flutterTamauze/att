@@ -28,13 +28,13 @@ class AppTextField extends StatelessWidget {
         border: InputBorder.none,
         filled: true,
         fillColor: Colors.grey[200],
-        enabledBorder: new OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: const BorderRadius.all(
             const Radius.circular(10.0),
           ),
         ),
-        focusedBorder: new OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: const BorderRadius.all(
             const Radius.circular(10.0),

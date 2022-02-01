@@ -17,6 +17,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
@@ -73,14 +74,14 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   void didChangeDependencies() {
-    var memberData = Provider.of<MemberData>(context, listen: false);
-    memberData.allPageIndex = 0;
-    memberData.byShiftPageIndex = 0;
-    memberData.bySitePageIndex = 0;
-    memberData.keepRetriving = true;
+    locator.locator<MemberData>().allPageIndex = 0;
+    locator.locator<MemberData>().allPageIndex = 0;
+    locator.locator<MemberData>().byShiftPageIndex = 0;
+    locator.locator<MemberData>().bySitePageIndex = 0;
+    locator.locator<MemberData>().keepRetriving = true;
 
-    var userProvider = Provider.of<UserData>(context, listen: false);
-    var comProvier = Provider.of<CompanyData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
+    final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
       if (mounted)
         Provider.of<SiteData>(context, listen: false)
@@ -132,8 +133,8 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   getData() async {
-    var userProvider = Provider.of<UserData>(context);
-    var comProvier = Provider.of<CompanyData>(context);
+    final userProvider = Provider.of<UserData>(context);
+    final comProvier = Provider.of<CompanyData>(context);
 
     if (widget.selectedIndex != -1) {
       print("widget index");
@@ -177,7 +178,7 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
-    intlPhone.PhoneNumber result =
+    final intlPhone.PhoneNumber result =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             phoneNumberEdit);
     return [result.isoCode, result.dialCode];
@@ -203,9 +204,9 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   int getSiteIndex(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -223,8 +224,8 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   Widget build(BuildContext context) {
-    var companyProv = Provider.of<CompanyData>(context, listen: false);
-    var siteProv = Provider.of<SiteShiftsData>(context, listen: false);
+    final companyProv = Provider.of<CompanyData>(context, listen: false);
+    final siteProv = Provider.of<SiteShiftsData>(context, listen: false);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Consumer<MemberData>(builder: (context, memberData, child) {
@@ -271,12 +272,12 @@ class _UsersScreenState extends State<UsersScreen> {
                                     color: Colors.white,
                                     child: Center(
                                       child: Platform.isIOS
-                                          ? CupertinoActivityIndicator()
-                                          : CircularProgressIndicator(
+                                          ? const CupertinoActivityIndicator()
+                                          : const CircularProgressIndicator(
                                               backgroundColor: Colors.white,
                                               valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.orange),
                                             ),
                                     ),
                                   );
@@ -298,14 +299,14 @@ class _UsersScreenState extends State<UsersScreen> {
                                             color: Colors.white,
                                             child: Center(
                                               child: Platform.isIOS
-                                                  ? CupertinoActivityIndicator(
+                                                  ? const CupertinoActivityIndicator(
                                                       radius: 20,
                                                     )
-                                                  : CircularProgressIndicator(
+                                                  : const CircularProgressIndicator(
                                                       backgroundColor:
                                                           Colors.white,
                                                       valueColor:
-                                                          new AlwaysStoppedAnimation<
+                                                          AlwaysStoppedAnimation<
                                                                   Color>(
                                                               Colors.orange),
                                                     ),
@@ -327,7 +328,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                         .loadingShifts ==
                                                     false) {
                                               Timer(
-                                                Duration(milliseconds: 1),
+                                                const Duration(milliseconds: 1),
                                                 () => _scrollController.jumpTo(
                                                     _scrollController.position
                                                             .maxScrollExtent -
@@ -356,7 +357,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                     },
                                                     searchFun: (value) {
                                                       int siteiD = -1;
-                                                      int siteindex =
+                                                      final int siteindex =
                                                           getSiteIndex(Provider
                                                                   .of<SiteData>(
                                                                       context,
@@ -405,11 +406,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                                             .clear();
                                                       });
 
-                                                      var userProvider =
+                                                      final userProvider =
                                                           Provider.of<UserData>(
                                                               context,
                                                               listen: false);
-                                                      var id =
+                                                      final id =
                                                           settings.getsiteIndex(
                                                               context, value);
                                                       if (id != siteIndex) {
@@ -519,14 +520,14 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                       actionExtentRatio: 0.10,
                                                                                       closeOnScroll: true,
                                                                                       controller: slidableController,
-                                                                                      actionPane: SlidableDrawerActionPane(),
+                                                                                      actionPane: const SlidableDrawerActionPane(),
                                                                                       secondaryActions: [
                                                                                         ZoomIn(
                                                                                             child: InkWell(
                                                                                           child: Container(
-                                                                                            padding: EdgeInsets.all(7),
+                                                                                            padding: const EdgeInsets.all(7),
                                                                                             decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.orange)),
-                                                                                            child: Icon(
+                                                                                            child: const Icon(
                                                                                               Icons.edit,
                                                                                               size: 18,
                                                                                               color: Colors.orange,
@@ -539,7 +540,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                                   return RoundedLoadingIndicator();
                                                                                                 });
                                                                                             await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
-                                                                                            var phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
+                                                                                            final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
 
                                                                                             Navigator.of(context).push(
                                                                                               new MaterialPageRoute(
@@ -561,9 +562,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                             : ZoomIn(
                                                                                                 child: InkWell(
                                                                                                 child: Container(
-                                                                                                  padding: EdgeInsets.all(7),
+                                                                                                  padding: const EdgeInsets.all(7),
                                                                                                   decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.red)),
-                                                                                                  child: Icon(
+                                                                                                  child: const Icon(
                                                                                                     Icons.delete,
                                                                                                     size: 18,
                                                                                                     color: Colors.red,
@@ -596,7 +597,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                           )
                                                         : snapshot.data ==
                                                                 "noInternet"
-                                                            ? CenterMessageText(
+                                                            ? const CenterMessageText(
                                                                 message:
                                                                     "لا يوجد اتصال بالأنترنت")
                                                             : memberData.membersList
@@ -612,7 +613,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                         controller: _scrollController,
                                                                         itemCount: memberData.membersListScreenDropDownSearch.length,
                                                                         itemBuilder: (BuildContext context, int index) {
-                                                                          Member
+                                                                          final Member
                                                                               user =
                                                                               memberData.membersListScreenDropDownSearch[index];
                                                                           return MemberTile(
@@ -668,14 +669,14 @@ class _UsersScreenState extends State<UsersScreen> {
                                           default:
                                             return Center(
                                               child: Platform.isIOS
-                                                  ? CupertinoActivityIndicator(
+                                                  ? const CupertinoActivityIndicator(
                                                       radius: 20,
                                                     )
-                                                  : CircularProgressIndicator(
+                                                  : const CircularProgressIndicator(
                                                       backgroundColor:
                                                           Colors.white,
                                                       valueColor:
-                                                          new AlwaysStoppedAnimation<
+                                                          AlwaysStoppedAnimation<
                                                                   Color>(
                                                               Colors.orange),
                                                     ),
@@ -689,7 +690,7 @@ class _UsersScreenState extends State<UsersScreen> {
                             ? Provider.of<MemberData>(context).isLoading
                                 ? Column(
                                     children: [
-                                      Center(
+                                      const Center(
                                           child: CupertinoActivityIndicator(
                                         radius: 15,
                                       )),

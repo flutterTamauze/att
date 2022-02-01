@@ -31,11 +31,11 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
 
   @override
   Widget build(BuildContext context) {
-    var comMissionProv = Provider.of<MissionsData>(context, listen: false);
+    final comMissionProv = Provider.of<MissionsData>(context, listen: false);
     return Expanded(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           widget._nameController.text == ""
@@ -68,7 +68,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                     future: widget._getMission,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Colors.orange,
                           ),
@@ -86,7 +86,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                                         children: [
                                           DataTableMissionRow(comMissionProv
                                               .singleUserMissionsList[index]),
-                                          Divider(
+                                          const Divider(
                                             thickness: 1,
                                           )
                                         ],

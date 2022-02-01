@@ -60,7 +60,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   int getShiftIndex() {
     int holder = 0;
-    List<String> x = [];
+    final List<String> x = [];
     print(Provider.of<SiteData>(context, listen: false).currentShiftName);
     Provider.of<SiteShiftsData>(context, listen: false)
         .shifts
@@ -79,7 +79,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   getSiteIndex(siteId) {
-    var sites = Provider.of<SiteShiftsData>(context, listen: false).sites;
+    final sites = Provider.of<SiteShiftsData>(context, listen: false).sites;
     for (int i = 0; i < sites.length; i++) {
       if (siteId == sites[i].id) {
         return i - 1;
@@ -145,10 +145,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   fillTextField() async {
     if (widget.isEdit) {
-      print("edit screen");
-      print(widget.member.siteName);
-      print(widget.member.shiftName);
-      print(widget.member.shiftId);
       edit = true;
       Provider.of<SiteShiftsData>(context, listen: false)
           .getShiftsList(widget.member.siteName, false);
@@ -194,8 +190,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var siteData = Provider.of<SiteData>(context, listen: false);
-    var siteShiftData = Provider.of<SiteShiftsData>(context);
+    final siteData = Provider.of<SiteData>(context, listen: false);
+    final siteShiftData = Provider.of<SiteShiftsData>(context);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return WillPopScope(
@@ -218,20 +214,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       .dropDownShifts[i]
                       .shiftName);
                 }
-                // print(Provider.of<SiteShiftsData>(context, listen: false)
-                //     .dropDownShifts
-                //     .length);
+
                 print(Provider.of<SiteData>(context, listen: false)
                     .dropDownShiftIndex);
-                // print(Provider.of<SiteShiftsData>(context, listen: false)
-                //     .dropDownShifts[shiftIndex]
-                //     .shiftId);
-                // print(Provider.of<SiteShiftsData>(context, listen: false)
-                //     .dropDownShifts[
-                //         Provider.of<SiteData>(context, listen: false)
-                //             .currentShiftIndex]
-
-                //     .shiftName);
               },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
@@ -264,7 +249,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   ? Container(
                                       height: 80.h,
                                       width: 80.w,
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           border: Border.all(
@@ -288,7 +273,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                 height: 10.h,
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30.0),
                                 child: Form(
                                   key: _formKey,
                                   child: Column(
@@ -311,12 +297,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                                 hintText: 'اسم المستخدم',
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                   Icons.person,
                                                   color: Colors.orange,
                                                 )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       TextFormField(
@@ -335,12 +321,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                                 hintText: 'الوظيفة',
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                   Icons.title,
                                                   color: Colors.orange,
                                                 )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       TextFormField(
@@ -349,10 +335,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text != "") {
-                                            Pattern pattern =
+                                            const Pattern pattern =
                                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+\.[a-zA-Z]+";
 
-                                            RegExp regex = new RegExp(pattern);
+                                            final RegExp regex =
+                                                new RegExp(pattern);
                                             if (!regex.hasMatch(text))
                                               return 'البريد الإلكترونى غير صحيح';
                                           } else if (text.length == 0) {
@@ -366,12 +353,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                                 hintText: 'البريد الالكترونى',
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                   Icons.email,
                                                   color: Colors.orange,
                                                 )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       widget.isEdit
@@ -412,7 +399,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                         .copyWith(
                                                             hintText:
                                                                 "رقم الهاتف",
-                                                            suffixIcon: Icon(
+                                                            suffixIcon:
+                                                                const Icon(
                                                               Icons.phone,
                                                               color:
                                                                   Colors.orange,
@@ -432,7 +420,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 },
                                                 spaceBetweenSelectorAndTextField:
                                                     0,
-                                                selectorConfig: SelectorConfig(
+                                                selectorConfig:
+                                                    const SelectorConfig(
                                                   showFlags: true,
                                                   useEmoji: true,
                                                   setSelectorButtonAsPrefixIcon:
@@ -448,7 +437,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                     InputDecoration(
                                                         focusedBorder: OutlineInputBorder(
                                                             borderSide:
-                                                                BorderSide(
+                                                                const BorderSide(
                                                                     color: Colors
                                                                         .grey,
                                                                     width: 1),
@@ -456,7 +445,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         5.0)),
-                                                        prefixIcon: Icon(
+                                                        prefixIcon: const Icon(
                                                           Icons.search,
                                                           color: Colors.grey,
                                                         ),
@@ -479,8 +468,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 textFieldController:
                                                     _phoneController,
                                                 formatInput: true,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
+                                                keyboardType:
+                                                    const TextInputType
+                                                            .numberWithOptions(
                                                         signed: true,
                                                         decimal: true),
                                                 inputBorder: OutlineInputBorder(
@@ -523,7 +513,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                         .copyWith(
                                                             hintText:
                                                                 "رقم الهاتف",
-                                                            suffixIcon: Icon(
+                                                            suffixIcon:
+                                                                const Icon(
                                                               Icons.phone,
                                                               color:
                                                                   Colors.orange,
@@ -540,7 +531,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 },
                                                 spaceBetweenSelectorAndTextField:
                                                     0,
-                                                selectorConfig: SelectorConfig(
+                                                selectorConfig:
+                                                    const SelectorConfig(
                                                   showFlags: true,
                                                   useEmoji: true,
                                                   setSelectorButtonAsPrefixIcon:
@@ -556,7 +548,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                     InputDecoration(
                                                         focusedBorder: OutlineInputBorder(
                                                             borderSide:
-                                                                BorderSide(
+                                                                const BorderSide(
                                                                     color: Colors
                                                                         .grey,
                                                                     width: 1),
@@ -564,7 +556,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         5.0)),
-                                                        prefixIcon: Icon(
+                                                        prefixIcon: const Icon(
                                                           Icons.search,
                                                           color: Colors.grey,
                                                         ),
@@ -587,8 +579,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 textFieldController:
                                                     _phoneController,
                                                 formatInput: true,
-                                                keyboardType: TextInputType
-                                                    .numberWithOptions(
+                                                keyboardType:
+                                                    const TextInputType
+                                                            .numberWithOptions(
                                                         signed: true,
                                                         decimal: true),
                                                 inputBorder: OutlineInputBorder(
@@ -599,7 +592,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                     number) {},
                                               ),
                                             ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       TextFormField(
@@ -618,12 +611,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                                 hintText: 'المرتب',
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                   Icons.money,
                                                   color: Colors.orange,
                                                 )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       IgnorePointer(
@@ -653,7 +646,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           textColor: Colors.orange,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       IgnorePointer(
@@ -692,7 +685,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           textColor: Colors.orange,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10.0,
                                       ),
                                       IgnorePointer(
@@ -753,7 +746,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               RoundedButton(
@@ -780,7 +773,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               return RoundedLoadingIndicator();
                                             });
 
-                                        var token = Provider.of<UserData>(
+                                        final token = Provider.of<UserData>(
                                                 context,
                                                 listen: false)
                                             .user
@@ -792,7 +785,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                         Provider.of<SiteData>(context,
                                                 listen: false)
                                             .setDropDownShift(0);
-                                        String msg = await Provider.of<MemberData>(
+                                        final String msg = await Provider.of<MemberData>(
                                                 context,
                                                 listen: false)
                                             .addMember(
@@ -1033,7 +1026,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
     //   phoneNumber = "+20$phoneNumber";
     // }
     print(widget.editiableDial);
-    intlPhone.PhoneNumber number3 =
+    final intlPhone.PhoneNumber number3 =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             "+${widget.editiableDial}$phoneNumber");
 
@@ -1052,7 +1045,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
         phoneNumber = "+20$phoneNumber";
       }
       print(number.isoCode);
-      intlPhone.PhoneNumber number2 =
+      final intlPhone.PhoneNumber number2 =
           await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
               phoneNumber, number.isoCode);
       print(number.isoCode);
@@ -1069,7 +1062,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
         phoneNumber = "+20$phoneNumber";
       }
       print(number.isoCode);
-      intlPhone.PhoneNumber number2 =
+      final intlPhone.PhoneNumber number2 =
           await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
               phoneNumber, editNumber.isoCode);
       print(number.isoCode);
@@ -1085,9 +1078,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   int getSiteId(String siteName) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (siteName == list[i].siteName) {
         return i;
@@ -1112,9 +1105,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
   // }
 
   int getShiftListIndex(int shiftId) {
-    var list =
+    final list =
         Provider.of<SiteShiftsData>(context, listen: false).dropDownShifts;
-    int index = list.length;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftId == list[i].shiftId) {
         return i;
@@ -1125,8 +1118,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   int getShiftid(String shiftName) {
     print("shiftName getShiftId $shiftName");
-    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
-    int index = list.length;
+    final list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (shiftName == list[i].shiftName) {
         return i;
@@ -1136,8 +1129,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   int getRoleId(String role) {
-    var rolesList = Provider.of<MemberData>(context, listen: false).rolesList;
-    int index = rolesList.length;
+    final rolesList = Provider.of<MemberData>(context, listen: false).rolesList;
+    final int index = rolesList.length;
     for (int i = 0; i < index; i++) {
       if (role == rolesList[i]) {
         return i;
@@ -1186,7 +1179,7 @@ class LocationTile extends StatelessWidget {
   final Function onTapLocation;
   final Function onTapEdit;
   final Function onTapDelete;
-  LocationTile(
+  const LocationTile(
       {this.title, this.onTapEdit, this.onTapDelete, this.onTapLocation});
 
   @override
@@ -1209,7 +1202,7 @@ class LocationTile extends StatelessWidget {
                         icon: Icons.delete,
                         onTap: onTapDelete,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       CircularIconButton(
@@ -1230,9 +1223,10 @@ class LocationTile extends StatelessWidget {
                       AutoSizeText(
                         title,
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                            fontSize: setResponsiveFontSize(16),
+                            fontWeight: FontWeight.w600),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         size: 40,
                         color: Colors.orange,
@@ -1251,13 +1245,13 @@ class CircularIconButton extends StatelessWidget {
   final IconData icon;
   final onTap;
 
-  CircularIconButton({this.icon, this.onTap});
+  const CircularIconButton({this.icon, this.onTap});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
         ),
         child: CircleAvatar(
