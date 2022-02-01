@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -47,12 +46,12 @@ class RoundedSearchBar extends StatefulWidget {
 class _RoundedSearchBarState extends State<RoundedSearchBar> {
   bool showSearchButton = true;
   String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
+    final int len = phoneNum.length;
     return "+ ${phoneNum.substring(0, len - 1)}";
   }
 
   Widget build(BuildContext context) {
-    var prov = Provider.of<SiteData>(context, listen: true);
+    final prov = Provider.of<SiteData>(context, listen: true);
 
     return GestureDetector(
       onTap: () => print("prov.dropDownSitesIndex"),
@@ -130,7 +129,6 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                             Provider.of<MemberData>(context,
                                                     listen: false)
                                                 .keepRetriving = true;
-                                            log("ad ${prov.dropDownSitesIndex.toString()}");
                                             Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
                                                 shiftData.shifts[holder].shiftId ==
                                                         -100
@@ -184,7 +182,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                   );
                                 },
                               ),
-                              Divider(
+                              const Divider(
                                 height: 1,
                                 thickness: 1,
                                 color: Colors.grey,
@@ -194,7 +192,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Icon(
@@ -208,70 +206,67 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                       flex: 1,
                       child: Container(
                         child: Center(
-                          child: Column(
-                            children: [
-                              Consumer<ShiftsData>(
-                                builder: (context, value, child) {
-                                  return DropdownButton(
-                                    isExpanded: true,
-                                    underline: SizedBox(),
-                                    elevation: 5,
-                                    items: widget.list
-                                        .map((value) => DropdownMenuItem(
-                                              child: Container(
-                                                alignment: Alignment.topRight,
-                                                height: 20,
-                                                child: AutoSizeText(
-                                                  value.name,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          12,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
+                          child: Column(children: [
+                            Consumer<ShiftsData>(
+                              builder: (context, value, child) {
+                                return DropdownButton(
+                                  isExpanded: true,
+                                  underline: SizedBox(),
+                                  elevation: 5,
+                                  items: widget.list
+                                      .map((value) => DropdownMenuItem(
+                                            child: Container(
+                                              alignment: Alignment.topRight,
+                                              height: 20,
+                                              child: AutoSizeText(
+                                                value.name,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: ScreenUtil().setSp(
+                                                        12,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontWeight:
+                                                        FontWeight.w700),
                                               ),
-                                              value: value.name,
-                                            ))
-                                        .toList(),
-                                    onChanged: (v) async {
-                                      Provider.of<SiteShiftsData>(context,
-                                              listen: false)
-                                          .getShiftsList(v, true);
-                                      prov.setDropDownShift(0);
+                                            ),
+                                            value: value.name,
+                                          ))
+                                      .toList(),
+                                  onChanged: (v) async {
+                                    Provider.of<SiteShiftsData>(context,
+                                            listen: false)
+                                        .getShiftsList(v, true);
+                                    prov.setDropDownShift(0);
 
-                                      widget.dropdownFun(v);
-                                      if (v != "كل المواقع") {
-                                        prov.setDropDownIndex(prov
-                                                .dropDownSitesStrings
-                                                .indexOf(v) -
-                                            1);
+                                    widget.dropdownFun(v);
+                                    if (v != "كل المواقع") {
+                                      prov.setDropDownIndex(
+                                          prov.dropDownSitesStrings.indexOf(v) -
+                                              1);
 
-                                        print(v);
-                                      } else {
-                                        prov.setDropDownIndex(0);
-                                      }
+                                      print(v);
+                                    } else {
+                                      prov.setDropDownIndex(0);
+                                    }
 
-                                      prov.setSiteValue(v);
-                                      print(prov.dropDownSitesStrings);
-                                    },
-                                    value: widget.dropdownValue,
-                                  );
-                                },
-                              ),
-                              Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: Colors.grey,
-                              )
-                            ],
-                          ),
+                                    prov.setSiteValue(v);
+                                    print(prov.dropDownSitesStrings);
+                                  },
+                                  value: widget.dropdownValue,
+                                );
+                              },
+                            ),
+                            const Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Colors.grey,
+                            )
+                          ]),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Icon(
@@ -282,7 +277,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Provider.of<PermissionHan>(context, listen: false).isEnglishLocale()
@@ -418,7 +413,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                       ],
                     ),
                   )
-                : Directionality( 
+                : Directionality(
                     textDirection: ui.TextDirection.rtl,
                     child: Align(
                       alignment: Alignment.centerRight,

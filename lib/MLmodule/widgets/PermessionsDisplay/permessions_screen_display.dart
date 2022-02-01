@@ -32,13 +32,13 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
 
   @override
   Widget build(BuildContext context) {
-    var permessionProv =
+    final permessionProv =
         Provider.of<UserPermessionsData>(context, listen: false);
 
     return Expanded(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           widget._nameController.text == ""
@@ -70,7 +70,7 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                     future: widget.getAllPermessions,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Colors.orange,
                           ),
@@ -88,7 +88,7 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                         children: [
                                           DataTablePermessionRow(permessionProv
                                               .singleUserPermessions[index]),
-                                          Divider(
+                                          const Divider(
                                             thickness: 1,
                                           )
                                         ],

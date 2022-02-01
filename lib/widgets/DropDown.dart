@@ -37,17 +37,21 @@ class _SiteDropdownState extends State<SiteDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       height: 50.h,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.w,
-        ),
+        padding: const EdgeInsets.only(top: 6, right: 10, left: 5),
         child: Row(
           children: [
-            Icon(Icons.arrow_drop_down),
+            const Icon(Icons.arrow_drop_down),
             Expanded(
               child: DropdownButton(
+                underline: const Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                  height: 3,
+                ),
+                isDense: true,
                 icon: Icon(
                   widget.icon,
                   color: Colors.orange,
@@ -63,7 +67,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
                             child: Padding(
                               padding: const EdgeInsets.only(right: 5),
                               child: Container(
-                                height: 20.h,
+                                height: 25.h,
                                 child: AutoSizeText(
                                   x.siteName,
                                   maxLines: 1,
@@ -135,7 +139,7 @@ class _RoundedBorderDropdownState extends State<RoundedBorderDropdown> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: [
-            Icon(Icons.arrow_drop_down),
+            const Icon(Icons.arrow_drop_down),
             Expanded(
               child: DropdownButton(
                 icon: Icon(
@@ -158,7 +162,7 @@ class _RoundedBorderDropdownState extends State<RoundedBorderDropdown> {
                                 child: AutoSizeText(
                                   x,
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -221,15 +225,12 @@ class _ShiftsDropDownState extends State<ShiftsDropDown> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: [
-            Icon(Icons.arrow_drop_down),
+            const Icon(Icons.arrow_drop_down),
             Expanded(
               child: DropdownButton(
-                hint: Align(
-                  alignment: Alignment.centerRight,
-                  child: AutoSizeText(
-                    "لا يوجد مناوبات",
-                    textAlign: TextAlign.right,
-                  ),
+                hint: AutoSizeText(
+                  "لا يوجد مناوبات",
+                  textAlign: TextAlign.right,
                 ),
                 icon: Icon(
                   widget.icon,
@@ -250,7 +251,7 @@ class _ShiftsDropDownState extends State<ShiftsDropDown> {
                                 child: AutoSizeText(
                                   x.shiftName,
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
                                 ),

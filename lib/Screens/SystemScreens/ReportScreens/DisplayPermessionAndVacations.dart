@@ -514,7 +514,6 @@ class _VacationAndPermessionsReportState
                               searchTextField.textField.controller.text =
                                   userName;
                               radioVal2 = value;
-                              log("list length ${Provider.of<UserHolidaysData>(context, listen: false).singleUserHoliday.length}");
                               if (Provider.of<UserHolidaysData>(context,
                                           listen: false)
                                       .singleUserHoliday

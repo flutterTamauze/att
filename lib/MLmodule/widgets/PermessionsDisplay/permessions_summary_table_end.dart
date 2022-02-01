@@ -10,7 +10,7 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 class PermessionsSummaryTableEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var permProv = Provider.of<UserPermessionsData>(context);
+    final permProv = Provider.of<UserPermessionsData>(context);
     return Container(
       child: Container(
         height: 50.h,

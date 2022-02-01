@@ -36,7 +36,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   intlPhone.PhoneNumber number =
       intlPhone.PhoneNumber(dialCode: "+20", isoCode: "EG");
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
   var isLoading = false;
 
   String signature;
@@ -61,7 +60,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     child: Container(
                       height: (MediaQuery.of(context).size.height) / 1.5,
                       child: Padding(
-                        padding: EdgeInsets.all(25.0),
+                        padding: const EdgeInsets.all(25.0),
                         child: Form(
                           key: _forgetFormKey,
                           child: Column(
@@ -93,7 +92,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 decoration: kTextFieldDecorationWhite.copyWith(
                                     hintText:
                                         getTranslated(context, "اسم المستخدم"),
-                                    prefixIcon: Icon(
+                                    prefixIcon: const Icon(
                                       Icons.person,
                                       color: Colors.orange,
                                     )),
@@ -142,7 +141,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     if (value) {}
                                   },
                                   spaceBetweenSelectorAndTextField: 0,
-                                  selectorConfig: SelectorConfig(
+                                  selectorConfig: const SelectorConfig(
                                     showFlags: true,
                                     useEmoji: true,
                                     setSelectorButtonAsPrefixIcon: true,
@@ -152,11 +151,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                   autoValidateMode: AutovalidateMode.disabled,
                                   searchBoxDecoration: InputDecoration(
                                       focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                               color: Colors.grey, width: 1),
                                           borderRadius:
                                               BorderRadius.circular(5.0)),
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.search,
                                         color: Colors.grey,
                                       ),
@@ -164,16 +163,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                           color: Colors.grey,
                                           fontSize: setResponsiveFontSize(15),
                                           fontWeight: FontWeight.w700),
-                                      hintText:
-                                          "اختر بأسم البلد او الرقم الدولى",
+                                      hintText: getTranslated(context,
+                                          "اختر بأسم البلد او الرقم الدولى"),
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(5.0))),
                                   initialValue: number,
                                   textFieldController: _phoneController,
                                   formatInput: true,
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          signed: true, decimal: true),
                                   inputBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -215,7 +215,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               child: IconButton(
                 icon: Icon(
                   Icons.chevron_right,
-                  color: Color(0xffF89A41),
+                  color: const Color(0xffF89A41),
                   size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
                 ),
                 onPressed: () {
@@ -263,8 +263,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في تغيير كلمة المرور',
-                    content: "لا يوجد اتصال بالانترنت");
+                    title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
+                    content: getTranslated(context, "لا يوجد اتصال بالانترنت"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -278,7 +278,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في تغيير كلمة المرور',
+                    title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
                     content: "رقم المستخدم غير موجود");
               }).then((value) {
             setState(() {
@@ -337,7 +337,7 @@ class ForgetSetPassword extends StatefulWidget {
   final userName;
   final email;
 
-  ForgetSetPassword(this.userName, this.email);
+  const ForgetSetPassword(this.userName, this.email);
 
   @override
   _ForgetSetPasswordState createState() => _ForgetSetPasswordState();
@@ -354,7 +354,6 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   var reSend = true;
   var _passwordVisible = true;
   var _rePasswordVisible = true;
-  int _counter = 0;
   AnimationController _controller;
   int levelClock = 180;
 
@@ -378,7 +377,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
       '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
 
   startTimeout([int milliseconds]) {
-    var duration = interval;
+    final duration = interval;
     Timer.periodic(duration, (timer) {
       setState(() {
         print(timer.tick);
@@ -413,7 +412,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                     child: Container(
                       height: (MediaQuery.of(context).size.height) / 1.5,
                       child: Padding(
-                        padding: EdgeInsets.all(25.0),
+                        padding: const EdgeInsets.all(25.0),
                         child: Form(
                           key: _setPasswordFormKey,
                           child: Column(
@@ -439,7 +438,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 decoration: kTextFieldDecorationWhite.copyWith(
                                   hintText:
                                       getTranslated(context, 'رمز التفعيل'),
-                                  suffixIcon: Icon(
+                                  suffixIcon: const Icon(
                                     Icons.lock_clock,
                                     color: Colors.orange,
                                   ),
@@ -455,9 +454,9 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                     return getTranslated(context, "مطلوب");
                                   } else if (text.length >= 8 &&
                                       text.length <= 12) {
-                                    Pattern pattern =
+                                    const Pattern pattern =
                                         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                                    RegExp regex = new RegExp(pattern);
+                                    final RegExp regex = new RegExp(pattern);
                                     if (!regex.hasMatch(text)) {
                                       return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
                                     } else {
@@ -479,7 +478,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 decoration: kTextFieldDecorationWhite.copyWith(
                                   hintText:
                                       getTranslated(context, 'كلمة المرور'),
-                                  suffixIcon: Icon(
+                                  suffixIcon: const Icon(
                                     Icons.lock,
                                     color: Colors.orange,
                                   ),
@@ -526,7 +525,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 decoration: kTextFieldDecorationWhite.copyWith(
                                   hintText: getTranslated(
                                       context, 'تأكيد كلمة المرور'),
-                                  suffixIcon: Icon(
+                                  suffixIcon: const Icon(
                                     Icons.lock,
                                     color: Colors.orange,
                                   ),
@@ -551,11 +550,11 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                 height: 30.0.h,
                               ),
                               isLoading
-                                  ? Center(
+                                  ? const Center(
                                       child: CircularProgressIndicator(
                                         backgroundColor: Colors.white,
                                         valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
+                                            const AlwaysStoppedAnimation<Color>(
                                                 Colors.orange),
                                       ),
                                     )
@@ -634,16 +633,18 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   }
 
   textChanger() {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
 
     ///check if he pressed back twich in the 2 seconds duration
-    if (now.difference(currentBackPressTime) > Duration(seconds: 10)) {
+    if (now.difference(currentBackPressTime) > const Duration(seconds: 10)) {
       currentBackPressTime = now;
       forgetFunction();
     } else {
       Fluttertoast.showToast(
-          msg:
-              "يرجى الانتظار قليلا للحصول على رمز التفعيل قبل إعادة المحاولة مرة أخرى",
+          msg: getTranslated(
+            context,
+            "يرجى الانتظار قليلا للحصول على رمز التفعيل قبل إعادة المحاولة مرة أخرى",
+          ),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -772,7 +773,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                       Navigator.pop(context);
                     },
                     title: 'خطأ في تغيير كلمة المرور',
-                    content: "لا يوجد اتصال بالانترنت");
+                    content: getTranslated(context, "لا يوجد اتصال بالانترنت"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -836,7 +837,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   }
 
   loginFunction() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await Provider.of<UserData>(context, listen: false)
         .loginPost(widget.userName, _passwordController.text, context, true)

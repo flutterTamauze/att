@@ -21,7 +21,7 @@ import '../../../Core/constants.dart';
 class DisplayHolidays extends StatefulWidget {
   final TextEditingController _nameController;
   final Future getHoliday;
-  DisplayHolidays(this._nameController, this.getHoliday);
+  const DisplayHolidays(this._nameController, this.getHoliday);
   @override
   _DisplayHolidaysState createState() => _DisplayHolidaysState();
 }
@@ -32,12 +32,12 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
 
   @override
   Widget build(BuildContext context) {
-    var holidayProv = Provider.of<UserHolidaysData>(context, listen: false);
+    final holidayProv = Provider.of<UserHolidaysData>(context, listen: false);
 
     return Expanded(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           widget._nameController.text == ""
@@ -67,7 +67,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                   future: widget.getHoliday,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.orange,
                         ),
@@ -88,7 +88,7 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                             children: [
                                               DataTableHolidayRow(holidayProv
                                                   .singleUserHoliday[index]),
-                                              Divider(
+                                              const Divider(
                                                 thickness: 1,
                                               )
                                             ],
@@ -115,11 +115,10 @@ class _DisplayHolidaysState extends State<DisplayHolidays> {
                                                 context,
                                                 "لا يوجد اجازات لهذا المستخدم",
                                               ),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold),
                                             ));
-                      ;
                     }
                   })),
           widget._nameController.text == ""

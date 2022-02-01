@@ -35,7 +35,7 @@ class Settings {
                     "Success") {
                   Navigator.pop(context);
                   Fluttertoast.showToast(
-                    msg: "تم اعادة الضبط بنجاح",
+                    msg: getTranslated(context, "تم اعادة الضبط بنجاح"),
                     gravity: ToastGravity.CENTER,
                     toastLength: Toast.LENGTH_SHORT,
                     timeInSecForIosWeb: 1,
@@ -69,38 +69,34 @@ class Settings {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: RoundedAlert(
-                onPressed: () async {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return RoundedLoadingIndicator();
-                      });
-                  final token = Provider.of<UserData>(context, listen: false)
-                      .user
-                      .userToken;
-                  if (await memberData.deleteMember(
-                          userId, listIndex, token, context) ==
-                      "Success") {
-                    successfullDelete(context);
-                    log("going to users screen");
-                    await Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UsersScreen(-1, false, ""),
-                        ));
-                  } else {
-                    unSuccessfullDelete(context);
-                  }
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                title: getTranslated(context, 'إزالة مستخدم'),
-                content:
-                    "${getTranslated(context, "هل تريد إزالة")}$username ؟"),
-          );
+          return RoundedAlert(
+              onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return RoundedLoadingIndicator();
+                    });
+                final token = Provider.of<UserData>(context, listen: false)
+                    .user
+                    .userToken;
+                if (await memberData.deleteMember(
+                        userId, listIndex, token, context) ==
+                    "Success") {
+                  successfullDelete(context);
+                  log("going to users screen");
+                  await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UsersScreen(-1, false, ""),
+                      ));
+                } else {
+                  unSuccessfullDelete(context);
+                }
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              title: getTranslated(context, 'إزالة مستخدم'),
+              content: "${getTranslated(context, "هل تريد إزالة")}$username ؟");
         });
   }
 

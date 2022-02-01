@@ -30,7 +30,7 @@ class MultipleFloatingButtons extends StatelessWidget {
   final IconData mainIconData;
   final int siteId;
   final int shiftIndex;
-  MultipleFloatingButtons(
+  const MultipleFloatingButtons(
       {this.comingFromShifts,
       this.shiftName,
       @required this.mainIconData,

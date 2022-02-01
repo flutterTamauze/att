@@ -8,17 +8,17 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final _dbName = "cache.db";
+  static const _dbName = "cache.db";
   static Database _database;
   /////////Notifications///////
-  static final _notificationTableName = "NotificationTable";
-  static final _notificationColTitle = "title";
-  static final _notificationColMsgSeen = "seen";
-  static final _notificationColMsg = "message";
-  static final _notificationColMessageTime = "timeMessage";
-  static final _notificationColDate = "date";
-  static final _notificationColId = "id";
-  static final _notificationColCategory = "category";
+  static const _notificationTableName = "NotificationTable";
+  static const _notificationColTitle = "title";
+  static const _notificationColMsgSeen = "seen";
+  static const _notificationColMsg = "message";
+  static const _notificationColMessageTime = "timeMessage";
+  static const _notificationColDate = "date";
+  static const _notificationColId = "id";
+  static const _notificationColCategory = "category";
   DatabaseHelper() {
     database;
   }

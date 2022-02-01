@@ -121,7 +121,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
             : "داخلية";
     selectedReason = widget.holidayTitles.first;
     selectedPermession = widget.permessionTitles.first;
-    var now = DateTime.now();
+    final now = DateTime.now();
     fromText = "";
     toText = "";
 
@@ -326,7 +326,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 width: 365.w,
                                                 child: IgnorePointer(
                                                   child: TextFormField(
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.w500),
@@ -341,7 +341,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                         context,
                                                                         "المدة من / الى"),
                                                                 prefixIcon:
-                                                                    Icon(
+                                                                    const Icon(
                                                                   Icons
                                                                       .calendar_today_rounded,
                                                                   color: Colors
@@ -353,7 +353,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                         },
                                       ),
                                     )),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     dateDifference != null
@@ -365,13 +365,13 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Alignment.centerRight,
                                                 child: Text(
                                                   "${getTranslated(context, "تم اختيار")} $dateDifference ${getTranslated(context, "يوم")} ",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
                                                           FontWeight.w300),
                                                 ))
                                         : Container(),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     VacationCardHeader(
@@ -398,12 +398,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                               return DropdownMenuItem<String>(
                                                   value: x,
                                                   child: Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10),
                                                     child: AutoSizeText(
                                                       x,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.orange,
                                                           fontWeight:
                                                               FontWeight.w500),
@@ -530,8 +530,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       Holiday
                                                           .External_Mission_InThis_Period) {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            "لا يمكن وضع الأجازة : يوجد مأمورية خارجية",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "لا يمكن وضع الأجازة : يوجد مأمورية خارجية"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         toastLength:
@@ -544,8 +545,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يوجد اجازة تم الموافقة عليها فى هذه الفترة"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -556,8 +558,10 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "لا يمكن وضع الاجازة : يوجد مأمورية داخلية",
+                                                        msg: getTranslated(
+                                                          context,
+                                                          "لا يمكن وضع الاجازة : يوجد مأمورية داخلية",
+                                                        ),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -581,8 +585,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة"),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -668,7 +673,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                           header: getTranslated(
                                               context, "مدة المأمورية"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Container(
@@ -699,9 +704,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       fromDate = picked.first;
                                                       toDate = picked.last;
                                                       isPicked = true;
-                                                      String fromText =
+                                                      final String fromText =
                                                           " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
-                                                      String toText =
+                                                      final String toText =
                                                           " ${getTranslated(context, "إلى")}  ${DateFormat('yMMMd').format(toDate).toString()}";
                                                       newString =
                                                           "$fromText $toText";
@@ -742,7 +747,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                         context,
                                                                         'المدة من / إلى'),
                                                                 prefixIcon:
-                                                                    Icon(
+                                                                    const Icon(
                                                                   Icons
                                                                       .calendar_today_rounded,
                                                                   color: Colors
@@ -764,7 +769,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 Provider.of<MissionsData>(
                                                         context)
                                                     .isLoading
-                                            ? Center(
+                                            ? const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                                   backgroundColor:
@@ -778,8 +783,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           context, "خارجية")) {
                                                     if (isPicked == false) {
                                                       Fluttertoast.showToast(
-                                                          msg:
-                                                              "برجاء ادخال المدة",
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "برجاء ادخال المدة"),
                                                           backgroundColor:
                                                               Colors.red);
                                                     } else {
@@ -879,13 +885,14 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               String>(
                                                           value: x,
                                                           child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
                                                                     horizontal:
                                                                         10),
                                                             child: AutoSizeText(
                                                               x,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .orange,
                                                                   fontWeight:
@@ -967,7 +974,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       decoration: kTextFieldDecorationTime
                                                           .copyWith(
                                                               hintStyle:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -978,7 +985,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                   getTranslated(
                                                                       context,
                                                                       'اليوم'),
-                                                              prefixIcon: Icon(
+                                                              prefixIcon:
+                                                                  const Icon(
                                                                 Icons
                                                                     .access_time,
                                                                 color: Colors
@@ -1032,7 +1040,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     builder: (context) {
                                                       return InkWell(
                                                           onTap: () async {
-                                                            var to =
+                                                            final to =
                                                                 await showTimePicker(
                                                               context: context,
                                                               initialTime:
@@ -1085,7 +1093,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               child:
                                                                   TextFormField(
                                                                 enabled: false,
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Colors
                                                                         .black,
                                                                     fontWeight:
@@ -1102,7 +1110,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                             context,
                                                                             'الوقت'),
                                                                         prefixIcon:
-                                                                            Icon(
+                                                                            const Icon(
                                                                           Icons
                                                                               .alarm,
                                                                           color:
@@ -1161,8 +1169,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         widget.member.id);
                                                     if (msg == "success") {
                                                       Fluttertoast.showToast(
-                                                              msg:
-                                                                  "تم إضافة الأذن بنجاح",
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "تم إضافة الأذن بنجاح"),
                                                               backgroundColor:
                                                                   Colors.green,
                                                               gravity:
@@ -1297,7 +1306,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
         Container(
           height: 60.h,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
                 Flexible(
@@ -1314,7 +1323,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                     : false,
                                 child: DropdownButton(
                                     isExpanded: true,
-                                    underline: SizedBox(),
+                                    underline: const SizedBox(),
                                     elevation: 5,
                                     items: value.shifts
                                         .map(
@@ -1337,7 +1346,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                         .toList(),
                                     onChanged: (v) async {
                                       if (widget.selectedVal != "كل المواقع") {
-                                        List<String> x = [];
+                                        final List<String> x = [];
 
                                         value.shifts.forEach((element) {
                                           x.add(element.shiftName);
@@ -1373,7 +1382,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                               );
                             },
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -1383,14 +1392,14 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Icon(
                   Icons.alarm,
                   color: Colors.orange[600],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Flexible(
@@ -1403,7 +1412,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                             builder: (context, value, child) {
                               return DropdownButton(
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 elevation: 5,
                                 items: widget.list
                                     .map((value) => DropdownMenuItem(

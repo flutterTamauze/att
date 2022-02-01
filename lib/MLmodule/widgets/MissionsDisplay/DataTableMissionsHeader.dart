@@ -33,7 +33,7 @@ class SingleUserMissionHeader extends StatelessWidget {
       textDirection: ui.TextDirection.rtl,
       child: Container(
           height: 50.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: Colors.orange,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),

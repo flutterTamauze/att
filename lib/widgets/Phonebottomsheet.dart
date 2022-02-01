@@ -18,7 +18,7 @@ class PhoneBottomSheet extends StatelessWidget {
     return Container(
       color: Colors.black,
       height: 120.h,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           InkWell(
@@ -38,7 +38,7 @@ class PhoneBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           InkWell(

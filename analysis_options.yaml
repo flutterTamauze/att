@@ -6,3 +6,8 @@ linter:
     - unnecessary_brace_in_string_interps
     - cascade_invocations
     - prefer_final_locals
+    - prefer_const_declarations
+    - prefer_contains
+    - prefer_const_constructors_in_immutables
+    - prefer_const_constructors
+

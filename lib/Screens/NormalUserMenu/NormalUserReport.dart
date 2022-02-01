@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:animate_do/animate_do.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
@@ -56,24 +55,47 @@ class _NormalUserReportState extends State<NormalUserReport> {
   String selectedId = "";
   Site siteData;
   DateTime yesterday;
+  void didChangeDependencies() {
+    final String fromText =
+        " ${getTranslated(context, "من")} ${DateFormat('yMMMd').format(fromDate).toString()}";
+    final String toText =
+        " ${getTranslated(context, "إلى")} ${DateFormat('yMMMd').format(toDate).toString()}";
+
+    _dateController.text = "$fromText $toText";
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
     super.initState();
 
-    var now = DateTime.now();
-    int legalDay =
+    final now = DateTime.now();
+    final int legalDay =
         Provider.of<CompanyData>(context, listen: false).com.legalComDate;
+    fromDate = DateTime(now.year, now.month,
+        Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     toDate = DateTime(now.year, now.month, now.day - 1);
-    fromDate = DateTime(DateTime.now().year, DateTime.now().month, legalDay);
+    yesterday = DateTime(now.year, now.month, now.day - 1);
+    if (toDate.isBefore(fromDate)) {
+      fromDate = DateTime(now.year, now.month - 1,
+          Provider.of<CompanyData>(context, listen: false).com.legalComDate);
+    }
+    final comProv = Provider.of<CompanyData>(context, listen: false);
+    if (fromDate.isBefore(comProv.com.createdOn)) {
+      fromDate = comProv.com.createdOn;
+    }
+    dateFromString = apiFormatter.format(fromDate);
+    dateToString = apiFormatter.format(toDate);
 
     yesterday = DateTime(now.year, now.month, now.day - 1);
 
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
 
-    String fromText = " من ${DateFormat('yMMMd').format(fromDate).toString()}";
-    String toText = " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
+    final String fromText =
+        " من ${DateFormat('yMMMd').format(fromDate).toString()}";
+    final String toText =
+        " إلى ${DateFormat('yMMMd').format(toDate).toString()}";
 
     _dateController.text = "$fromText $toText";
 
@@ -121,18 +143,15 @@ class _NormalUserReportState extends State<NormalUserReport> {
                           nav: false,
                           goUserMenu: false,
                         ),
-                        Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SmallDirectoriesHeader(
-                                Lottie.asset("resources/report.json",
-                                    repeat: false),
-                                getTranslated(context, "تقرير الحضور"),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SmallDirectoriesHeader(
+                              Lottie.asset("resources/report.json",
+                                  repeat: false),
+                              getTranslated(context, "تقرير الحضور"),
+                            ),
+                          ],
                         ),
                         Expanded(
                           child: FutureBuilder(
@@ -146,13 +165,13 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                       color: Colors.white,
                                       child: Center(
                                         child: Platform.isIOS
-                                            ? CupertinoActivityIndicator(
+                                            ? const CupertinoActivityIndicator(
                                                 radius: 20,
                                               )
-                                            : CircularProgressIndicator(
+                                            : const CircularProgressIndicator(
                                                 backgroundColor: Colors.white,
                                                 valueColor:
-                                                    new AlwaysStoppedAnimation<
+                                                    AlwaysStoppedAnimation<
                                                         Color>(Colors.orange),
                                               ),
                                       ),
@@ -242,7 +261,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                           child: IgnorePointer(
                                                             child:
                                                                 TextFormField(
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .black,
                                                                   fontWeight:
@@ -259,7 +278,7 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                           context,
                                                                           "المدة من / إلى"),
                                                                       prefixIcon:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .calendar_today_rounded,
                                                                         color: Colors
@@ -287,13 +306,13 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                       color: Colors.white,
                                                       child: Center(
                                                         child: Platform.isIOS
-                                                            ? CupertinoActivityIndicator()
-                                                            : CircularProgressIndicator(
+                                                            ? const CupertinoActivityIndicator()
+                                                            : const CircularProgressIndicator(
                                                                 backgroundColor:
                                                                     Colors
                                                                         .white,
                                                                 valueColor:
-                                                                    new AlwaysStoppedAnimation<
+                                                                    const AlwaysStoppedAnimation<
                                                                             Color>(
                                                                         Colors
                                                                             .orange),
@@ -334,8 +353,8 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                                 child: Container(
                                                                                     child: snapshot.data == "user created after period"
                                                                                         ? Container(
-                                                                                            child: Center(
-                                                                                              child: Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                            child: const Center(
+                                                                                              child: const Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
                                                                                             ),
                                                                                           )
                                                                                         : ListView.builder(
@@ -388,7 +407,10 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                     height: 20,
                                                                     child:
                                                                         AutoSizeText(
-                                                                      "لا يوجد تسجيلات: يوم اجازة",
+                                                                      getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تسجيلات: يوم اجازة",
+                                                                      ),
                                                                       maxLines:
                                                                           1,
                                                                       style: TextStyle(
@@ -407,13 +429,13 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                             ],
                                                           );
                                                   default:
-                                                    return Center(
+                                                    return const Center(
                                                       child:
-                                                          CircularProgressIndicator(
+                                                          const CircularProgressIndicator(
                                                         backgroundColor:
                                                             Colors.white,
                                                         valueColor:
-                                                            new AlwaysStoppedAnimation<
+                                                            const AlwaysStoppedAnimation<
                                                                     Color>(
                                                                 Colors.orange),
                                                       ),

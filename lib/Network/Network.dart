@@ -1,22 +1,17 @@
-import 'dart:developer';
-
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
-import 'dart:io';
-import 'dart:convert';
+
 import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
-import 'package:qr_users/widgets/roundedAlert.dart';
 
 import '../main.dart';
 import 'networkInfo.dart';
 
 class NetworkApi {
-  final timeOutDuration = Duration(seconds: 50);
+  final timeOutDuration = const Duration(seconds: 40);
 
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
@@ -49,13 +44,13 @@ class NetworkApi {
         print(
             "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-        print("not faliure");
-        log("Response body : ${res.body}");
+        // print("not faliure");
+        // log("Response body : ${res.body}");
         return res.body;
       } on TimeoutException catch (e) {
         print("timeout occured $e");
-        Navigator.pop(navigatorKey.currentState.overlay.context);
         weakInternetConnection(navigatorKey.currentState.overlay.context);
+        return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       }
     }
 

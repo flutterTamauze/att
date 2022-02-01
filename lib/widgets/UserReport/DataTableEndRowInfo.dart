@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DataTableEndRowInfo extends StatelessWidget {
-  DataTableEndRowInfo({@required this.info, @required this.infoTitle});
+  const DataTableEndRowInfo({@required this.info, @required this.infoTitle});
 
   final info;
   final String infoTitle;

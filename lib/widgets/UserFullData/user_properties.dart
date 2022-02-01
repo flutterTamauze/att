@@ -184,7 +184,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                           "Success") {
                                         Navigator.pop(context);
                                         Fluttertoast.showToast(
-                                          msg: "تم اعادة الضبط بنجاح",
+                                          msg: getTranslated(
+                                              context, "تم اعادة الضبط بنجاح"),
                                           gravity: ToastGravity.CENTER,
                                           toastLength: Toast.LENGTH_SHORT,
                                           timeInSecForIosWeb: 1,
@@ -194,7 +195,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                         );
                                       } else {
                                         Fluttertoast.showToast(
-                                          msg: "خطأ في اعادة الضبط",
+                                          msg: getTranslated(
+                                              context, "خطأ في اعادة الضبط"),
                                           gravity: ToastGravity.CENTER,
                                           toastLength: Toast.LENGTH_SHORT,
                                           timeInSecForIosWeb: 1,
@@ -561,11 +563,9 @@ class _UserPropertiesState extends State<UserProperties> {
                                   sendFcmMessage(
                                           topicName: "",
                                           userToken: widget.user.fcmToken,
-                                          title: getTranslated(
-                                              context, "اثبات حضور"),
+                                          title: "اثبات حضور",
                                           category: "attend",
-                                          message: getTranslated(context,
-                                              "برجاء اثبات حضورك الأن"))
+                                          message: "برجاء اثبات حضورك الأن")
                                       .then((value) {
                                     if (value) {
                                       Fluttertoast.showToast(

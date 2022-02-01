@@ -14,12 +14,12 @@ class LoadingIndicator extends StatelessWidget {
       color: Colors.white,
       child: Center(
         child: Platform.isIOS
-            ? CupertinoActivityIndicator(
+            ? const CupertinoActivityIndicator(
                 radius: 20,
               )
-            : CircularProgressIndicator(
+            : const CircularProgressIndicator(
                 backgroundColor: Colors.white,
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.orange),
               ),
       ),
     );

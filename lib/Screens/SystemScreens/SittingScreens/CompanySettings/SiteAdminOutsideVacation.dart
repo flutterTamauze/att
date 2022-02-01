@@ -187,7 +187,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       header:
                                           getTranslated(context, "مدة الأجازة"),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Container(
@@ -258,7 +258,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 width: 365.w,
                                                 child: IgnorePointer(
                                                   child: TextFormField(
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.w500),
@@ -273,7 +273,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                         context,
                                                                         "المدة من / الى"),
                                                                 prefixIcon:
-                                                                    Icon(
+                                                                    const Icon(
                                                                   Icons
                                                                       .calendar_today_rounded,
                                                                   color: Colors
@@ -285,23 +285,24 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                         },
                                       ),
                                     )),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     dateDifference != null
                                         ? fromText == ""
                                             ? Container()
                                             : Container(
-                                                padding: EdgeInsets.all(5),
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 child: Text(
                                                   "${getTranslated(context, "تم اختيار")}$dateDifference ${getTranslated(context, "يوم")} ",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
                                                           FontWeight.w300),
                                                 ))
                                         : Container(),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     VacationCardHeader(
@@ -330,9 +331,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 .map((String x) {
                                               return DropdownMenuItem<String>(
                                                   value: x,
-                                                  child: Text(
+                                                  child: AutoSizeText(
                                                     x,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.orange,
                                                         fontWeight:
                                                             FontWeight.w500),
@@ -369,7 +370,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                             Provider.of<UserHolidaysData>(
                                                     context)
                                                 .isLoading
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             backgroundColor: Colors.orange)
                                         : RoundedButton(
                                             onPressed: () async {
@@ -470,8 +471,10 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        msg: getTranslated(
+                                                          context,
+                                                          "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        ),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -532,7 +535,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   context, "نوع الأذن"),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 11),
+                                                  fontSize:
+                                                      setResponsiveFontSize(
+                                                          11)),
                                               maxLines: 2,
                                             ),
                                           ],
@@ -546,8 +551,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
@@ -566,7 +572,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       value: x,
                                                       child: AutoSizeText(
                                                         x,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color:
                                                                 Colors.orange,
                                                             fontWeight:
@@ -583,11 +589,11 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                               )),
                                             ),
                                           ),
-                                          Divider(),
+                                          const Divider(),
                                           Card(
                                             elevation: 5,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
                                                   Text(
@@ -596,14 +602,16 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 13),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: Container(
                                               child: Theme(
                                                 data: clockTheme,
@@ -643,7 +651,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       kTextFieldDecorationTime
                                                           .copyWith(
                                                               hintStyle:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -651,7 +659,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                     .black,
                                                               ),
                                                               hintText: 'اليوم',
-                                                              prefixIcon: Icon(
+                                                              prefixIcon:
+                                                                  const Icon(
                                                                 Icons
                                                                     .access_time,
                                                                 color: Colors
@@ -749,7 +758,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         child: IgnorePointer(
                                                           child: TextFormField(
                                                             enabled: false,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontWeight:
@@ -765,7 +774,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                     hintText:
                                                                         'الوقت',
                                                                     prefixIcon:
-                                                                        Icon(
+                                                                        const Icon(
                                                                       Icons
                                                                           .alarm,
                                                                       color: Colors
@@ -822,8 +831,10 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     widget.member.id);
                                                 if (msg == "success") {
                                                   Fluttertoast.showToast(
-                                                          msg:
-                                                              "تم إضافة الأذن بنجاح",
+                                                          msg: getTranslated(
+                                                            context,
+                                                            "تم إضافة الأذن بنجاح",
+                                                          ),
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
@@ -916,7 +927,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
 
 class SitesAndMissionsWidg extends StatefulWidget {
   final Function onchannge;
-  SitesAndMissionsWidg({
+  const SitesAndMissionsWidg({
     this.onchannge,
     Key key,
     @required this.prov,
@@ -945,7 +956,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
             "الموقع و المناوبة للمأمورية",
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Container(
@@ -967,7 +978,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                     : false,
                                 child: DropdownButton(
                                     isExpanded: true,
-                                    underline: SizedBox(),
+                                    underline: const SizedBox(),
                                     elevation: 5,
                                     items: value.shifts
                                         .map(
@@ -1017,7 +1028,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                               );
                             },
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -1027,14 +1038,14 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Icon(
                   Icons.alarm,
                   color: ColorManager.primary,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Flexible(
@@ -1047,7 +1058,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                             builder: (context, value, child) {
                               return DropdownButton(
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 elevation: 5,
                                 items: widget.list
                                     .map((value) => DropdownMenuItem(
@@ -1131,7 +1142,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
 
 class VacationCardHeader extends StatelessWidget {
   final String header;
-  VacationCardHeader({
+  const VacationCardHeader({
     this.header,
     Key key,
   }) : super(key: key);
@@ -1141,12 +1152,14 @@ class VacationCardHeader extends StatelessWidget {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Text(
+            AutoSizeText(
               header,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: setResponsiveFontSize(13)),
             ),
           ],
         ),

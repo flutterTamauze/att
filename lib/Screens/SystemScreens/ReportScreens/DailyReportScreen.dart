@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ui' as ui;
-import 'dart:math' as math;
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +14,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
@@ -30,7 +27,6 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableRow.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/Shared/Single_day_datePicker.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/XlsxExportButton.dart';
@@ -40,7 +36,7 @@ import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class DailyReportScreen extends StatefulWidget {
-  DailyReportScreen();
+  const DailyReportScreen();
 
   @override
   _DailyReportScreenState createState() => _DailyReportScreenState();
@@ -53,7 +49,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
   bool showTable = false, showFB = true, showViewTableButton = true;
   String date;
-  String selectedDateString;
+  String selectedDateString, currentSiteName = "";
   DateTime selectedDate;
   DateTime today;
   ScrollController _scrollController = ScrollController();
@@ -77,6 +73,12 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     showTable = false;
     siteIndex = getSiteIndexBySiteId(
         Provider.of<UserData>(context, listen: false).user.userSiteId);
+    if (Provider.of<UserData>(context, listen: false).user.userType != 2) {
+      currentSiteName = Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[siteIndex]
+          .siteName;
+    }
+
     date = apiFormatter.format(DateTime.now());
     // getDailyReport(siteIndex, date, context);
     selectedDateString = DateTime.now().toString();
@@ -111,7 +113,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
 
   loadProgressIndicator() {
     percent = 0;
-    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+    timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
         setState(() {
           percent = 100;
@@ -131,7 +133,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
     _visableNotifier.value = show;
   }
 
-  @override
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -176,7 +177,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          print(showViewTableButton);
+          print(currentSiteName);
         },
         child: NotificationListener(
           onNotification: (notificationInfo) {
@@ -204,7 +205,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                 return Visibility(
                     visible: value,
                     child: FadeIn(
-                        duration: Duration(seconds: 1),
+                        duration: const Duration(seconds: 1),
                         child: MultipleFloatingButtonsNoADD()));
               },
             ),
@@ -226,61 +227,59 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                           nav: false,
                           goUserMenu: false,
                         ),
-                        Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SmallDirectoriesHeader(
-                                Lottie.asset("resources/report.json",
-                                    repeat: false),
-                                getTranslated(context, "تقرير الحضور اليومى"),
-                              ),
-                              showTable
-                                  ? Container(
-                                      child: FutureBuilder(
-                                          future: reportsData.futureListener,
-                                          builder: (context, snapshot) {
-                                            switch (snapshot.connectionState) {
-                                              case ConnectionState.waiting:
-                                                return Container();
-                                              case ConnectionState.done:
-                                                return Row(
-                                                  children: [
-                                                    !reportsData.dailyReport
-                                                                .isHoliday ||
-                                                            reportsData
-                                                                    .dailyReport
-                                                                    .attendListUnits
-                                                                    .length !=
-                                                                0
-                                                        ? isLoading
-                                                            ? Container()
-                                                            : XlsxExportButton(
-                                                                reportType: 0,
-                                                                title: getTranslated(
-                                                                    context,
-                                                                    "تقرير الحضور اليومى"),
-                                                                site: userType ==
-                                                                        2
-                                                                    ? ""
-                                                                    : Provider.of<SiteShiftsData>(
-                                                                            context)
-                                                                        .siteShiftList[
-                                                                            siteIndex]
-                                                                        .siteName,
-                                                                day: date,
-                                                              )
-                                                        : Container(),
-                                                  ],
-                                                );
-                                              default:
-                                                return Container();
-                                            }
-                                          }))
-                                  : Container()
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SmallDirectoriesHeader(
+                              Lottie.asset("resources/report.json",
+                                  repeat: false),
+                              getTranslated(context, "تقرير الحضور اليومى"),
+                            ),
+                            showTable
+                                ? Container(
+                                    child: FutureBuilder(
+                                        future: reportsData.futureListener,
+                                        builder: (context, snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.waiting:
+                                              return Container();
+                                            case ConnectionState.done:
+                                              return Row(
+                                                children: [
+                                                  !reportsData.dailyReport
+                                                              .isHoliday ||
+                                                          reportsData
+                                                                  .dailyReport
+                                                                  .attendListUnits
+                                                                  .length !=
+                                                              0
+                                                      ? isLoading
+                                                          ? Container()
+                                                          : XlsxExportButton(
+                                                              reportType: 0,
+                                                              title: getTranslated(
+                                                                  context,
+                                                                  "تقرير الحضور اليومى"),
+                                                              site: userType ==
+                                                                      2
+                                                                  ? ""
+                                                                  : Provider.of<
+                                                                              SiteShiftsData>(
+                                                                          context)
+                                                                      .siteShiftList[
+                                                                          siteIndex]
+                                                                      .siteName,
+                                                              day: date,
+                                                            )
+                                                      : Container(),
+                                                ],
+                                              );
+                                            default:
+                                              return Container();
+                                          }
+                                        }))
+                                : Container()
+                          ],
                         ),
                         Container(
                             height: 40.h,
@@ -305,8 +304,13 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                 getSiteIndexBySiteName(value);
 
                                             setState(() {
-                                              showViewTableButton = true;
-                                              showTable = false;
+                                              if (currentSiteName != value) {
+                                                print(
+                                                    "current $currentSiteName value $value");
+                                                currentSiteName = value;
+                                                showViewTableButton = true;
+                                                showTable = false;
+                                              }
                                             });
                                           },
                                           selectedvalue:
@@ -323,39 +327,35 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                       Expanded(
                                         flex: 8,
                                         child: Container(
-                                          child: Container(
-                                            padding: EdgeInsets.all(6),
-                                            child: Theme(
-                                                data: clockTheme,
-                                                child: SingleDayDatePicker(
-                                                  firstDate: DateTime(
-                                                      comDate.com.createdOn.year -
-                                                          1,
-                                                      comDate
-                                                          .com.createdOn.month,
-                                                      comDate
-                                                          .com.createdOn.day),
-                                                  lastDate: DateTime.now(),
-                                                  selectedDateString:
-                                                      selectedDateString,
-                                                  functionPicker: (value) {
-                                                    if (value != date) {
-                                                      date = value;
-                                                      selectedDateString = date;
-                                                      setState(() {
-                                                        selectedDate =
-                                                            DateTime.parse(
-                                                                selectedDateString);
-                                                        showViewTableButton =
-                                                            true;
-                                                        showTable = false;
-                                                      });
-                                                      // getDailyReport(siteIndex,
-                                                      //     date, context);
-                                                    }
-                                                  },
-                                                )),
-                                          ),
+                                          padding: const EdgeInsets.all(6),
+                                          child: Theme(
+                                              data: clockTheme,
+                                              child: SingleDayDatePicker(
+                                                firstDate: DateTime(
+                                                    comDate.com.createdOn.year -
+                                                        1,
+                                                    comDate.com.createdOn.month,
+                                                    comDate.com.createdOn.day),
+                                                lastDate: DateTime.now(),
+                                                selectedDateString:
+                                                    selectedDateString,
+                                                functionPicker: (value) {
+                                                  if (value != date) {
+                                                    date = value;
+                                                    selectedDateString = date;
+                                                    setState(() {
+                                                      selectedDate =
+                                                          DateTime.parse(
+                                                              selectedDateString);
+                                                      showViewTableButton =
+                                                          true;
+                                                      showTable = false;
+                                                    });
+                                                    // getDailyReport(siteIndex,
+                                                    //     date, context);
+                                                  }
+                                                },
+                                              )),
                                         ),
                                       ),
                                     ],
@@ -369,31 +369,26 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                         setState(() {
                                           date = value;
                                           selectedDateString = date;
+                                          showViewTableButton = true;
+                                          showTable = false;
                                         });
                                         // getDailyReport(siteIndex,
                                         //     date, context);
                                       }
                                     },
                                   )),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        showViewTableButton
+                            ? SizedBox(
+                                height: 20.h,
+                              )
+                            : Container(),
                         Visibility(
                           visible: showViewTableButton,
-                          child: Container(
-                            width: 170.w,
-                            child: OutlinedButton(
-                                style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    side: MaterialStateProperty.all(BorderSide(
-                                        width: 1, color: ColorManager.primary)),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.transparent),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)))),
-                                onPressed: () {
+                          child: Expanded(
+                            flex: 9,
+                            child: Center(
+                              child: InkWell(
+                                onTap: () {
                                   loadProgressIndicator();
                                   setState(() {
                                     getDailyReport(siteIndex, date, context);
@@ -401,27 +396,35 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                     showViewTableButton = false;
                                   });
                                 },
-                                child: Center(
-                                  child: Container(
-                                    width: 160.w,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(FontAwesomeIcons.eye,
-                                            color: ColorManager.accentColor),
-                                        AutoSizeText(
-                                          getTranslated(context, "عرض التقرير"),
-                                          style: TextStyle(
-                                              color: ColorManager.accentColor,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize:
-                                                  setResponsiveFontSize(16)),
-                                        ),
-                                      ],
-                                    ),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(5),
+                                  width: 150.w,
+                                  height: 50.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2,
+                                          color: ColorManager.primary),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        getTranslated(context, "عرض التقرير"),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Container(
+                                          width: 2,
+                                          height: 80.h,
+                                          color: ColorManager.primary),
+                                      const Icon(FontAwesomeIcons.fileAlt)
+                                    ],
                                   ),
-                                )),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         Expanded(
@@ -432,7 +435,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                   case ConnectionState.waiting:
                                     return ProgressBar(percent, 70, 60);
                                   case ConnectionState.done:
-                                    log("data ${snapshot.data}");
+                                    // log("data ${snapshot.data}");
                                     if (percent != 0) {
                                       timer.cancel();
                                     }
@@ -448,7 +451,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                   onRefresh: _onRefresh,
                                                   controller: refreshController,
                                                   header:
-                                                      WaterDropMaterialHeader(
+                                                      const WaterDropMaterialHeader(
                                                     color: Colors.white,
                                                     backgroundColor:
                                                         Colors.orange,
@@ -515,7 +518,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                 message:
                                                                     getTranslated(
                                                                         context,
-                                                                        "لا يوجد تسجيلات : عطلة اسبوعية"),
+                                                                        "لا يوجد تسجيلات: عطلة اسبوعية"),
                                                               )
                                                             : snapshot.data !=
                                                                     "wrong"
@@ -531,7 +534,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                 )
                                                                               : ListView.builder(
                                                                                   controller: _scrollController,
-                                                                                  physics: AlwaysScrollableScrollPhysics(),
+                                                                                  physics: const AlwaysScrollableScrollPhysics(),
                                                                                   itemCount: reportsData.dailyReport.attendListUnits.length,
                                                                                   itemBuilder: (BuildContext context, int index) {
                                                                                     return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
@@ -555,7 +558,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                               ? Container()
                                                                               : snapshot.data == "Success : Official Vacation Day"
                                                                                   ? DailyReportTodayTableEnd(
-                                                                                      titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
+                                                                                      titleHeader: "عطلة رسمية :",
                                                                                       title: reportsData.dailyReport.officialHoliday,
                                                                                     )
                                                                                   : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed"
@@ -567,11 +570,10 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                     ],
                                                                   )
                                                                 : CenterMessageText(
-                                                                    message:
-                                                                        getTranslated(
-                                                                    context,
-                                                                    "لا يوجد تسجيلات بهذا اليوم",
-                                                                  )),
+                                                                    message: getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تسجيلات بهذا اليوم"),
+                                                                  ),
                                                   ),
                                                 ),
                                               )
@@ -625,7 +627,7 @@ class ProgressBar extends StatelessWidget {
   final int maxValue;
   final int maxPercent;
 
-  ProgressBar(this.percent, this.maxValue, this.maxPercent);
+  const ProgressBar(this.percent, this.maxValue, this.maxPercent);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -639,7 +641,7 @@ class ProgressBar extends StatelessWidget {
           ),
           AutoSizeText(
             percent > maxPercent
-                ? getTranslated(context, "على وشك الأنتهاء")
+                ? getTranslated(context, "على وشك الأنتهاء ")
                 : getTranslated(context, "برجاء الأنتظار"),
             style: TextStyle(
                 fontSize: setResponsiveFontSize(17),

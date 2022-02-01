@@ -29,7 +29,7 @@ class RoundBorderedImage extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 1,
-            color: Color(0xffFF7E00),
+            color: const Color(0xffFF7E00),
           ),
           shape: BoxShape.circle,
         ),
@@ -43,13 +43,13 @@ class RoundBorderedImage extends StatelessWidget {
             },
             fit: BoxFit.cover,
             placeholder: (context, url) => Platform.isIOS
-                ? CupertinoActivityIndicator(
+                ? const CupertinoActivityIndicator(
                     radius: 20,
                   )
-                : CircularProgressIndicator(
+                : const CircularProgressIndicator(
                     backgroundColor: Colors.white,
                     valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.orange),
+                        const AlwaysStoppedAnimation<Color>(Colors.orange),
                   ),
             errorWidget: (context, url, error) =>
                 Provider.of<UserData>(context, listen: true).changedWidget,

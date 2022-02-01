@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -16,8 +15,6 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
-import 'package:qr_users/services/company.dart';
-import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -169,7 +166,7 @@ class ReportTile extends StatelessWidget {
   final String subTitle;
   final icon;
   final onTap;
-  ReportTile({this.title, this.subTitle, this.icon, this.onTap});
+  const ReportTile({this.title, this.subTitle, this.icon, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +211,7 @@ class AdminPanelTile extends StatelessWidget {
   // final String requestsCount;
   final icon;
   final onTap;
-  AdminPanelTile({
+  const AdminPanelTile({
     this.title,
     this.subTitle,
     this.icon,

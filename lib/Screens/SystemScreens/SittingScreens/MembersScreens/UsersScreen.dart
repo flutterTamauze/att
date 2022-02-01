@@ -18,6 +18,7 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
@@ -92,7 +93,7 @@ class _UsersScreenState extends State<UsersScreen> {
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        log("reached end of list");
+        // log("reached end of list");
 
         if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
           print("entered");
@@ -269,12 +270,12 @@ class _UsersScreenState extends State<UsersScreen> {
                                     color: Colors.white,
                                     child: Center(
                                       child: Platform.isIOS
-                                          ? CupertinoActivityIndicator()
-                                          : CircularProgressIndicator(
+                                          ? const CupertinoActivityIndicator()
+                                          : const CircularProgressIndicator(
                                               backgroundColor: Colors.white,
                                               valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.orange),
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.orange),
                                             ),
                                     ),
                                   );
@@ -296,14 +297,14 @@ class _UsersScreenState extends State<UsersScreen> {
                                             color: Colors.white,
                                             child: Center(
                                               child: Platform.isIOS
-                                                  ? CupertinoActivityIndicator(
+                                                  ? const CupertinoActivityIndicator(
                                                       radius: 20,
                                                     )
-                                                  : CircularProgressIndicator(
+                                                  : const CircularProgressIndicator(
                                                       backgroundColor:
                                                           Colors.white,
                                                       valueColor:
-                                                          new AlwaysStoppedAnimation<
+                                                          AlwaysStoppedAnimation<
                                                                   Color>(
                                                               Colors.orange),
                                                     ),
@@ -325,7 +326,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                         .loadingShifts ==
                                                     false) {
                                               Timer(
-                                                Duration(milliseconds: 1),
+                                                const Duration(milliseconds: 1),
                                                 () => _scrollController.jumpTo(
                                                     _scrollController.position
                                                             .maxScrollExtent -
@@ -604,7 +605,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                         controller: _scrollController,
                                                                         itemCount: memberData.membersListScreenDropDownSearch.length,
                                                                         itemBuilder: (BuildContext context, int index) {
-                                                                          Member
+                                                                          final Member
                                                                               user =
                                                                               memberData.membersListScreenDropDownSearch[index];
                                                                           return MemberTile(
@@ -664,14 +665,14 @@ class _UsersScreenState extends State<UsersScreen> {
                                           default:
                                             return Center(
                                               child: Platform.isIOS
-                                                  ? CupertinoActivityIndicator(
+                                                  ? const CupertinoActivityIndicator(
                                                       radius: 20,
                                                     )
-                                                  : CircularProgressIndicator(
+                                                  : const CircularProgressIndicator(
                                                       backgroundColor:
                                                           Colors.white,
                                                       valueColor:
-                                                          new AlwaysStoppedAnimation<
+                                                          AlwaysStoppedAnimation<
                                                                   Color>(
                                                               Colors.orange),
                                                     ),
@@ -685,7 +686,7 @@ class _UsersScreenState extends State<UsersScreen> {
                             ? Provider.of<MemberData>(context).isLoading
                                 ? Column(
                                     children: [
-                                      Center(
+                                      const Center(
                                           child: CupertinoActivityIndicator(
                                         radius: 15,
                                       )),

@@ -23,8 +23,8 @@ class DataBaseService {
 
   /// loads a simple json file.
   Future loadDB() async {
-    var tempDir = await getApplicationDocumentsDirectory();
-    String _embPath = tempDir.path + '/emb.json';
+    final tempDir = await getApplicationDocumentsDirectory();
+    final String _embPath = tempDir.path + '/emb.json';
 
     jsonFile = new File(_embPath);
 
@@ -37,7 +37,7 @@ class DataBaseService {
   /// [Data]: Face representation for Machine Learning model
   Future saveData(String user, String password, List modelData) async {
     print("saving data");
-    String userAndPass = user + ':' + password;
+    final String userAndPass = user + ':' + password;
     _db[userAndPass] = modelData;
 
     log(modelData.toString());

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +32,7 @@ import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'GetitLocator/locator.dart';
 import 'enums/connectivity_status.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -44,6 +46,8 @@ Map<String, String> channelMap = {
   "description": "notifications",
 };
 HuaweiServices huaweiServices = HuaweiServices();
+InitLocator locator = InitLocator();
+GetIt getIt = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -56,11 +60,10 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  cameras = await availableCameras();
   if (Platform.isAndroid) {
     await _channel.invokeMethod('createNotificationChannel', channelMap);
   }
-
+  locator.intalizeLocator();
   runApp(MyApp());
 }
 
@@ -152,53 +155,53 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CompanyData(),
+          create: (context) => getIt<CompanyData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => DaysOffData(),
+          create: (context) => getIt<DaysOffData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ReportsData(),
+          create: (context) => getIt<ReportsData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ShiftsData(),
+          create: (context) => getIt<ShiftsData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => MemberData(),
+          create: (context) => getIt<MemberData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UserData(),
+          create: (context) => getIt<UserData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => SiteData(),
+          create: (context) => getIt<SiteData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ShiftApi(),
+          create: (context) => getIt<ShiftApi>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => PermissionHan(),
+          create: (context) => getIt<PermissionHan>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => VacationData(),
+          create: (context) => getIt<VacationData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UserPermessionsData(),
+          create: (context) => getIt<UserPermessionsData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => NotificationDataService(),
+          create: (context) => getIt<NotificationDataService>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UserHolidaysData(),
+          create: (context) => getIt<UserHolidaysData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => MissionsData(),
+          create: (context) => getIt<MissionsData>(),
         ),
         ChangeNotifierProvider(
-          create: (context) => SiteShiftsData(),
+          create: (context) => getIt<SiteShiftsData>(),
         )
       ],
       child: ScreenUtilInit(
-        designSize: Size(392.72, 807.27),
+        designSize: const Size(392.72, 807.27),
         builder: () {
           return StreamProvider<ConnectivityStatus>(
               create: (context) =>
@@ -212,7 +215,10 @@ class _MyAppState extends State<MyApp> {
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
                     ],
-                    supportedLocales: [Locale('en', 'US'), Locale('ar', 'SA')],
+                    supportedLocales: [
+                      const Locale('en', 'US'),
+                      const Locale('ar', 'SA')
+                    ],
                     localeResolutionCallback: (locale, supportedLocales) {
                       for (var supportedLocale in supportedLocales) {
                         if (supportedLocale.languageCode ==

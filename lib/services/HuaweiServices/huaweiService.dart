@@ -18,9 +18,9 @@ class HuaweiServices {
     await firebaseMessaging.getToken().catchError((e) {
       isFirebaseSupported = false;
     });
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    String deviceType = androidInfo.manufacturer;
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    final String deviceType = androidInfo.manufacturer;
     if ((deviceType == "HUAWEI" ||
             deviceType == "Huawei" ||
             deviceType == "huawei") &&
@@ -32,16 +32,17 @@ class HuaweiServices {
 
   Future<Location> getHuaweiCurrentLocation() async {
     try {
-      FusedLocationProviderClient locationService =
+      final FusedLocationProviderClient locationService =
           FusedLocationProviderClient();
-      LocationRequest locationRequest = LocationRequest();
-      LocationSettingsRequest locationSettingsRequest = LocationSettingsRequest(
+      final LocationRequest locationRequest = LocationRequest();
+      final LocationSettingsRequest locationSettingsRequest =
+          LocationSettingsRequest(
         requests: <LocationRequest>[locationRequest],
         needBle: true,
         alwaysShow: true,
       );
 
-      Location location = await locationService.getLastLocation();
+      final Location location = await locationService.getLastLocation();
       return location;
     } catch (e) {
       print(e.toString());
@@ -50,7 +51,7 @@ class HuaweiServices {
   }
 
   Future<String> getAccessToken() async {
-    var response = await http.post(
+    final response = await http.post(
       Uri.parse(
         "https://oauth-login.cloud.huawei.com/oauth2/v3/token",
       ),
@@ -66,10 +67,10 @@ class HuaweiServices {
 
   huaweiSendToTopic(String title, String desc, String topicName) async {
     try {
-      log("sending huawei topic post");
+      // log("sending huawei topic post");
 
-      var tokenAccess = await getAccessToken();
-      var response = await http.post(
+      final tokenAccess = await getAccessToken();
+      final response = await http.post(
           Uri.parse(
               "https://push-api.cloud.huawei.com/v1/$huaweiAppId/messages:send"),
           headers: {
@@ -94,7 +95,7 @@ class HuaweiServices {
             }
           }));
       log(response.body);
-      log("finshed sending..");
+      // log("finshed sending..");
     } catch (e) {
       print(e);
     }
@@ -102,16 +103,16 @@ class HuaweiServices {
 
   huaweiPostNotification(
       deviceToken, String title, String desc, String category) async {
-    var mData = {
+    final mData = {
       "pushtype": 1,
       "pushbody": {"title": title, "description": desc, "category": category},
       "params": {"title": title, "description": desc}
     };
     try {
-      log("sending huawei post");
+      // log("sending huawei post");
 
-      var tokenAccess = await getAccessToken();
-      var response = await http.post(
+      final tokenAccess = await getAccessToken();
+      final response = await http.post(
           Uri.parse(
               "https://push-api.cloud.huawei.com/v1/$huaweiAppId/messages:send"),
           headers: {

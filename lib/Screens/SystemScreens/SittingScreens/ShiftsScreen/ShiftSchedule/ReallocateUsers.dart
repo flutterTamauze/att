@@ -56,7 +56,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   @override
   void initState() {
     if (widget.isEdit) {
-      var scheduleList = Provider.of<ShiftsData>(context, listen: false)
+      final scheduleList = Provider.of<ShiftsData>(context, listen: false)
           .firstAvailableSchedule;
       _fromDate = scheduleList.scheduleFromTime;
       _toDate = scheduleList.scheduleToTime;
@@ -65,7 +65,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
       _dateController.text = "$_fromText $_toText";
       print("length");
     } else {
-      var now = DateTime.now();
+      final now = DateTime.now();
       _dateController.text = "";
       _fromDate = DateTime(now.year, now.month, now.day);
       _toDate = DateTime(
@@ -95,15 +95,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   TextEditingController _dateController = TextEditingController();
 
   int getShiftid(String shiftName) {
-    var list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
-    List<Shifts> currentShift =
+    final list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
+    final List<Shifts> currentShift =
         list.where((element) => element.shiftName == shiftName).toList();
     return currentShift[0].shiftId;
   }
 
   int getsiteIDbyName(String siteName) {
-    var list = Provider.of<SiteShiftsData>(context, listen: false).sites;
-    List<Site> currentSite =
+    final list = Provider.of<SiteShiftsData>(context, listen: false).sites;
+    final List<Site> currentSite =
         list.where((element) => element.name == siteName).toList();
     return currentSite[0].id;
   }
@@ -112,9 +112,9 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
   Widget build(BuildContext context) {
     var selectedVal;
     if (userProvider.user.userType != 2) {
-      var prov = Provider.of<SiteShiftsData>(context, listen: false);
+      final prov = Provider.of<SiteShiftsData>(context, listen: false);
       selectedVal = prov.sites[1].name;
-      var list = Provider.of<SiteShiftsData>(context, listen: true).sites;
+      final list = Provider.of<SiteShiftsData>(context, listen: true).sites;
     } else {
       selectedVal = "";
     }
@@ -166,7 +166,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                           header:
                               "${getTranslated(context, "جدولة المناوبات للمستخدم")}: ${widget.member.name} ",
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Container(
@@ -294,10 +294,10 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                           builder: (context,
                                                               setState) {
                                                             return Container(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          10),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      10),
                                                               height: 200.h,
                                                               width: double
                                                                   .infinity,
@@ -305,12 +305,14 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                 children: [
                                                                   Container(
                                                                       padding:
-                                                                          EdgeInsets.all(
+                                                                          const EdgeInsets.all(
                                                                               20),
                                                                       child:
                                                                           AutoSizeText(
-                                                                        "اختر الموقع و المناوبة",
-                                                                        style: TextStyle(
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "اختر الموقع و المناوبة"),
+                                                                        style: const TextStyle(
                                                                             color:
                                                                                 Colors.orange,
                                                                             fontWeight: FontWeight.w600),
@@ -356,7 +358,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                             onChanged: (v) async {
                                                                                               int holder;
                                                                                               if (selectedVal != "كل المواقع") {
-                                                                                                List<String> x = [];
+                                                                                                final List<String> x = [];
 
                                                                                                 value.shifts.forEach((element) {
                                                                                                   x.add(element.shiftName);
@@ -377,7 +379,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                             );
                                                                                       },
                                                                                     ),
-                                                                                    Divider(
+                                                                                    const Divider(
                                                                                       height: 1,
                                                                                       thickness: 1,
                                                                                       color: Colors.grey,
@@ -387,7 +389,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             width:
                                                                                 10,
                                                                           ),
@@ -396,7 +398,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                             color:
                                                                                 ColorManager.primary,
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             width:
                                                                                 20,
                                                                           ),
@@ -452,7 +454,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                         );
                                                                                       },
                                                                                     ),
-                                                                                    Divider(
+                                                                                    const Divider(
                                                                                       height: 1,
                                                                                       thickness: 1,
                                                                                       color: Colors.grey,
@@ -462,7 +464,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             width:
                                                                                 5,
                                                                           ),
@@ -475,7 +477,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  Spacer(),
+                                                                  const Spacer(),
                                                                   Padding(
                                                                     padding: EdgeInsets.only(
                                                                         bottom:
@@ -483,10 +485,10 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                     child: RoundedButton(
                                                                         title: getTranslated(context, "حفظ"),
                                                                         onPressed: () async {
-                                                                          String
+                                                                          final String
                                                                               shiftName =
                                                                               Provider.of<SiteShiftsData>(context, listen: false).shifts[prov.dropDownShiftIndex].shiftName;
-                                                                          String
+                                                                          final String
                                                                               siteName =
                                                                               Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex].siteName;
                                                                           if (widget
@@ -528,14 +530,18 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   child: Container(
                                                     width: 20.w,
                                                     height: 20.h,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.orange,
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            color:
+                                                                Colors.orange,
+                                                            shape: BoxShape
+                                                                .circle),
+                                                    child: const Icon(
                                                       Icons.edit,
                                                       size: 15,
                                                     ),
-                                                    padding: EdgeInsets.all(1),
+                                                    padding:
+                                                        const EdgeInsets.all(1),
                                                   ),
                                                 ))
                                         ],
@@ -550,7 +556,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   setResponsiveFontSize(16))),
                                     ],
                                   ),
-                                  Divider()
+                                  const Divider()
                                 ],
                               ),
                             );
@@ -561,7 +567,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                     ),
                   ),
                   shiftProv.isLoading
-                      ? Center(
+                      ? const Center(
                           child: CircularProgressIndicator(
                           backgroundColor: Colors.orange,
                         ))
@@ -582,11 +588,12 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                               builder: (BuildContext context) {
                                                 return RoundedAlert(
                                                   onPressed: () async {
-                                                    String msg = await Provider
-                                                            .of<ShiftsData>(
+                                                    final String msg =
+                                                        await Provider.of<
+                                                                    ShiftsData>(
                                                                 context,
                                                                 listen: false)
-                                                        .deleteShiftScheduleById(
+                                                            .deleteShiftScheduleById(
                                                       scheduleList.id,
                                                       Provider.of<UserData>(
                                                               context,
@@ -597,15 +604,18 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                     Navigator.pop(context);
                                                     if (msg == "Success") {
                                                       Fluttertoast.showToast(
-                                                          msg:
-                                                              "تم حذف  الجدولة بنجاح",
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "تم حذف الجدولة بنجاح"),
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
                                                               .CENTER);
                                                     } else {
                                                       Fluttertoast.showToast(
-                                                          msg: "خطأ فى الحذف",
+                                                          msg: getTranslated(
+                                                              context,
+                                                              "خطأ فى الحذف"),
                                                           backgroundColor:
                                                               Colors.red,
                                                           gravity: ToastGravity
@@ -614,10 +624,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
 
                                                     Navigator.pop(context);
                                                   },
-                                                  content:
-                                                      "هل تريد حذف الجدولة",
+                                                  content: getTranslated(
+                                                      context,
+                                                      getTranslated(context,
+                                                          "هل تريد حذف الجدولة")),
                                                   onCancel: () {},
-                                                  title: "حذف الجدولة",
+                                                  title: getTranslated(
+                                                      context, "حذف الجدولة"),
                                                 );
                                               });
                                         }),
@@ -628,12 +641,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                       if (_fromText == null ||
                                           _toText == null) {
                                         Fluttertoast.showToast(
-                                            msg: "برجاء ادخال المدة",
+                                            msg: getTranslated(
+                                              context,
+                                              "برجاء ادخال المدة",
+                                            ),
                                             gravity: ToastGravity.CENTER,
                                             backgroundColor: Colors.red);
                                       } else {
                                         if (widget.isEdit) {
-                                          String msg = await Provider.of<
+                                          final String msg = await Provider.of<
                                                       ShiftsData>(context,
                                                   listen: false)
                                               .editShiftSchedule(
@@ -654,8 +670,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             Navigator.pop(context);
                                           } else if (msg == "less than today") {
                                             Fluttertoast.showToast(
-                                                msg:
-                                                    "خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة",
+                                                msg: getTranslated(context,
+                                                    "خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة"),
                                                 gravity: ToastGravity.CENTER,
                                                 toastLength: Toast.LENGTH_LONG,
                                                 backgroundColor: Colors.red);

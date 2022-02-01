@@ -282,7 +282,8 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                                                       child: Container(
                                                         height: 50,
                                                         child: AutoSizeText(
-                                                          "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
+                                                          getTranslated(context,
+                                                              "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة"),
                                                           maxLines: 1,
                                                           textAlign:
                                                               TextAlign.center,

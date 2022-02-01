@@ -25,11 +25,11 @@ class UserPrfileImageWidget extends StatelessWidget {
               "Authorization": "Bearer " +
                   Provider.of<UserData>(context, listen: false).user.userToken
             },
-            placeholder: (context, url) => Center(
+            placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.orange)),
+                          const AlwaysStoppedAnimation<Color>(Colors.orange)),
                 ),
             fit: BoxFit.cover,
             imageUrl:

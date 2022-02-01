@@ -124,11 +124,11 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                     child: Provider.of<UserHolidaysData>(
                       context,
                     ).loadingHolidaysDetails
-                        ? LoadingIndicator()
+                        ? const LoadingIndicator()
                         : Card(
                             elevation: 5,
                             child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 10),
                               child: Row(
                                 mainAxisAlignment:
@@ -143,18 +143,20 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                           ? AutoSizeText(
                                               " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize:
+                                                    setResponsiveFontSize(14),
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             )
                                           : AutoSizeText(
                                               "${getTranslated(context, "مدة الأجازة")} : ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)} ${getTranslated(context, "إلى")} ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize:
+                                                    setResponsiveFontSize(14),
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                      Divider(),
+                                      const Divider(),
                                       AutoSizeText(
                                         "${getTranslated(context, "نوع الأجازة ")}: ${getTranslated(context, getVacationType(widget.holidayType))} ",
                                         style: TextStyle(
@@ -243,8 +245,8 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                             )
                                           : Container(
                                               alignment: Alignment.centerRight,
-                                              padding:
-                                                  EdgeInsets.only(bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
                                               child: AutoSizeText(
                                                 getTranslated(context,
                                                     'تم ارسال الطلب برجاء انتظار الرد'),
@@ -257,7 +259,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                               ),
                                             ),
                                       widget.status == 1
-                                          ? Divider()
+                                          ? const Divider()
                                           : Container(),
                                       widget.status == 1
                                           ? Container(
@@ -337,14 +339,14 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                             });
                       },
                       child: Container(
-                        padding: EdgeInsets.all(1),
+                        padding: const EdgeInsets.all(1),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(width: 2, color: Colors.red)),
                         child: Icon(
                           FontAwesomeIcons.times,
                           color: Colors.red,
-                          size: 15,
+                          size: setResponsiveFontSize(15),
                         ),
                       ),
                     ),

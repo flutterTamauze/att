@@ -766,8 +766,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 Fluttertoast.showToast(
                                                     toastLength:
                                                         Toast.LENGTH_LONG,
-                                                    msg:
-                                                        "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة",
+                                                    msg: getTranslated(context,
+                                                        "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة"),
                                                     gravity:
                                                         ToastGravity.CENTER,
                                                     backgroundColor:
