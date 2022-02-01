@@ -32,12 +32,15 @@ class UserDetailsInReport extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
+            height: 600.h,
+            width: 600,
             child: StatefulBuilder(
               builder: (context, setState) {
                 return Stack(
                   children: [
                     Container(
                       height: 600.h,
+                      width: 600,
                       child: Column(children: [
                         Container(
                           width: 100.w,

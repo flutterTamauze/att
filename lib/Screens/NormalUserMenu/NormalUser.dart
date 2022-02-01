@@ -84,7 +84,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
             );
           }),
       ReportTile(
-          title: getTranslated(context, "تقرير الحضور / الأنصراف عن فترة"),
+          title: getTranslated(context, "الطلبات"),
           subTitle: getTranslated(context, "طلب اذن / اجازة"),
           icon: Icons.person,
           onTap: () {

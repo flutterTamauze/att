@@ -34,8 +34,8 @@ class DailyReportUnit {
       this.timeOut,
       this.lateTime,
       this.attendType,
-      this.userAttendPictureURL,
-      this.userLeavePictureURL,
+      // this.userAttendPictureURL,
+      // this.userLeavePictureURL,
       this.timeInIcon,
       this.timeOutIcon});
 
@@ -113,7 +113,7 @@ class DailyReportUnit {
       lateTime: getTimeToString(json['late'] as int),
       attendType: (json['userAttendType']),
       // userAttendPictureURL: json['userAttendPicture'] ?? "",
-      userLeavePictureURL: json['userLeavePicture'] ?? "",
+      // userLeavePictureURL: json['userLeavePicture'] ?? "",
     );
   }
 }
@@ -409,8 +409,8 @@ class ReportsData with ChangeNotifier {
       String userToken, int siteId, String date, BuildContext context) async {
     List<DailyReportUnit> newReportList;
     print("site id $siteId");
+    isLoading = true;
     if (await isConnectedToInternet()) {
-      isLoading = true;
       notifyListeners();
       final response = await http.get(
           Uri.parse(
@@ -591,10 +591,10 @@ class ReportsData with ChangeNotifier {
       String dateTo, BuildContext context) async {
     print("siteId $siteId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<LateAbsenceReportUnit> newReportList;
+    isLoading = true;
+    notifyListeners();
     if (await isConnectedToInternet()) {
       try {
-        isLoading = true;
-        notifyListeners();
         final response = await http.get(
             Uri.parse(
                 "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),

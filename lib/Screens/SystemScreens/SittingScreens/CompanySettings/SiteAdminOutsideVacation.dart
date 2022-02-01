@@ -101,6 +101,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
     _today = DateTime.now();
     sleectedMember =
         Provider.of<MemberData>(context, listen: false).membersList[0].name;
+    selectedReason = widget.holidayTitles.first;
+    selectedPermession = widget.permessionTitles.first;
     super.initState();
   }
 
@@ -148,38 +150,35 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                           ),
                           VacationCardHeader(
                             header:
-                                "${getTranslated(context, "تسجيل طلب للمستخدم")}: ${widget.member.name}",
+                                "${getTranslated(context, "تسجيل طلب للمستخدم :")} ${widget.member.name}",
                           ),
                           VacationCardHeader(
                             header: getTranslated(context, "نوع الطلب"),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioValue,
-                                  radioVal: 3,
-                                  title: getTranslated(context, "أذن"),
-                                  onchannge: (value) {
-                                    setState(() {
-                                      widget.radioValue = value;
-                                    });
-                                  },
-                                ),
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioValue,
-                                  radioVal: 1,
-                                  title: getTranslated(context, "اجازة"),
-                                  onchannge: (value) {
-                                    setState(() {
-                                      widget.radioValue = value;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              RadioButtonWidg(
+                                radioVal2: widget.radioValue,
+                                radioVal: 3,
+                                title: getTranslated(context, "أذن"),
+                                onchannge: (value) {
+                                  setState(() {
+                                    widget.radioValue = value;
+                                  });
+                                },
+                              ),
+                              RadioButtonWidg(
+                                radioVal2: widget.radioValue,
+                                radioVal: 1,
+                                title: getTranslated(context, "اجازة"),
+                                onchannge: (value) {
+                                  setState(() {
+                                    widget.radioValue = value;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                           widget.radioValue == 1
                               ? Column(

@@ -9,6 +9,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
@@ -48,7 +49,6 @@ class _ExpandedPendingPermessionsState
     extends State<ExpandedPendingPermessions> {
   @override
   Widget build(BuildContext context) {
-    var pendingList = Provider.of<UserPermessionsData>(context);
     return Theme(
       data: Theme.of(context).copyWith(
           accentColor: Colors.orange, unselectedWidgetColor: Colors.black),
@@ -187,13 +187,22 @@ class _ExpandedPendingPermessionsState
                   Provider.of<UserPermessionsData>(context)
                           .permessionDetailLoading
                       ? Container()
-                      : Positioned(
-                          bottom: 15.h,
-                          left: 10.w,
-                          child: FadeInVacPermFloatingButton(
-                              radioVal2: 0,
-                              comingFromAdminPanel: true,
-                              memberId: widget.userId))
+                      : !Provider.of<PermissionHan>(context, listen: false)
+                              .isEnglishLocale()
+                          ? Positioned(
+                              bottom: 15.h,
+                              left: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 0,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
+                          : Positioned(
+                              bottom: 15.h,
+                              right: 10.w,
+                              child: FadeInVacPermFloatingButton(
+                                  radioVal2: 0,
+                                  comingFromAdminPanel: true,
+                                  memberId: widget.userId))
                 ],
               )
             ],

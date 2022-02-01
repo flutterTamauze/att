@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/user_data.dart';
 
 class AttendDetails {
@@ -43,7 +44,8 @@ class AttendDetails {
                                 child: Container(
                                   height: 20.h,
                                   child: AutoSizeText(
-                                    "تسجيل ببطاقة التعريف الشخصية",
+                                    getTranslated(context,
+                                        "تسجيل ببطاقة التعريف الشخصية"),
                                     maxLines: 1,
                                     style: TextStyle(
                                         color: Colors.orange,
@@ -133,7 +135,8 @@ class AttendDetails {
                                           Container(
                                             height: 20,
                                             child: AutoSizeText(
-                                              "تسجيل الحضور",
+                                              getTranslated(
+                                                  context, "تسجيل الحضور"),
                                               maxLines: 1,
                                             ),
                                           )
@@ -221,7 +224,8 @@ class AttendDetails {
                                           Container(
                                             height: 20,
                                             child: AutoSizeText(
-                                              "تسجيل الانصراف",
+                                              getTranslated(
+                                                  context, "تسجيل الانصراف"),
                                               maxLines: 1,
                                             ),
                                           )

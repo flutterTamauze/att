@@ -229,6 +229,7 @@ class MemberData with ChangeNotifier {
       BuildContext context, int shiftId) {
     String url = "";
     isLoading = true;
+    print("loading $isLoading");
     if (shiftId != -1) {
       byShiftPageIndex++;
       loadingShifts = true;

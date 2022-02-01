@@ -26,6 +26,7 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets//XlsxExportButton.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -74,6 +75,7 @@ class _UserAttendanceReportScreenState
   String selectedId = "";
   String toText;
   Site siteData;
+  bool showSearchIcon = true;
   DateTime yesterday;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
     print("val $val");
@@ -100,6 +102,7 @@ class _UserAttendanceReportScreenState
 
   @override
   void initState() {
+    showSearchIcon = true;
     final userProv = Provider.of<UserData>(context, listen: false).user;
     final DateTime companyDate =
         Provider.of<CompanyData>(context, listen: false).com.createdOn;
@@ -182,7 +185,6 @@ class _UserAttendanceReportScreenState
   final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    print("build triggereed");
     final userToken = Provider.of<UserData>(context, listen: false);
     final comData = Provider.of<CompanyData>(context, listen: false).com;
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -194,15 +196,18 @@ class _UserAttendanceReportScreenState
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          _nameController.text == ""
-              ? FocusScope.of(context).unfocus()
-              : SystemChannels.textInput.invokeMethod('TextInput.hide');
+          print(showSearchIcon);
+          FocusScope.of(context).unfocus();
+          // _nameController.text == ""
+          //     ? FocusScope.of(context).unfocus()
+          //     : SystemChannels.textInput.invokeMethod('TextInput.hide');
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
           backgroundColor: Colors.white,
           body: Container(
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -347,8 +352,8 @@ class _UserAttendanceReportScreenState
                                               .inDays);
                                           Fluttertoast.showToast(
                                               gravity: ToastGravity.CENTER,
-                                              msg:
-                                                  "يجب ان يتم اختيار اقل من 32 يوم",
+                                              msg: getTranslated(context,
+                                                  "يجب ان يتم اختيار اقل من 32 يوم"),
                                               backgroundColor: Colors.red);
                                         } else {
                                           var newString = "";
@@ -392,27 +397,29 @@ class _UserAttendanceReportScreenState
                                           }
                                         }
                                       },
-                                      child: Container(
-                                        width: 330.w,
-                                        child: IgnorePointer(
-                                          child: TextFormField(
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            controller: _dateController,
-                                            decoration:
-                                                kTextFieldDecorationFromTO
-                                                    .copyWith(
-                                                        hintText: getTranslated(
-                                                            context,
-                                                            "المدة من / الى"),
-                                                        prefixIcon: Icon(
-                                                          Icons
-                                                              .calendar_today_rounded,
-                                                          color: Colors.orange,
-                                                        )),
+                                      child: Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Container(
+                                          width: 330.w,
+                                          child: IgnorePointer(
+                                            child: TextFormField(
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500),
+                                              controller: _dateController,
+                                              decoration:
+                                                  kTextFieldDecorationFromTO
+                                                      .copyWith(
+                                                          hintText: getTranslated(
+                                                              context,
+                                                              'المدة من / إلى'),
+                                                          prefixIcon: Icon(
+                                                            Icons
+                                                                .calendar_today_rounded,
+                                                            color:
+                                                                Colors.orange,
+                                                          )),
+                                            ),
                                           ),
                                         ),
                                       ));
@@ -476,129 +483,282 @@ class _UserAttendanceReportScreenState
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          width: 340.w,
-                          child: Provider.of<MemberData>(context).loadingSearch
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                  backgroundColor: Colors.orange,
-                                ))
-                              : searchTextField =
-                                  AutoCompleteTextField<SearchMember>(
-                                  key: key,
-                                  clearOnSubmit: false,
-                                  focusNode: focusNode,
-                                  controller: _nameController,
-                                  suggestions: Provider.of<MemberData>(context)
-                                      .userSearchMember,
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                  decoration:
-                                      kTextFieldDecorationFromTO.copyWith(
-                                          hintStyle: TextStyle(
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.grey.shade700,
-                                              fontWeight: FontWeight.w500),
-                                          hintText:
-                                              getTranslated(context, 'الأسم'),
-                                          suffixIcon: InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                searchInList(
-                                                    _nameController.text,
-                                                    userDataProvider.user
-                                                                .userType ==
-                                                            2
-                                                        ? userDataProvider
-                                                            .user.userSiteId
-                                                        : -1,
-                                                    Provider.of<CompanyData>(
-                                                            context,
-                                                            listen: false)
-                                                        .com
-                                                        .id);
-                                              });
-                                            },
-                                            child: Icon(
-                                              Icons.search,
-                                              color: Colors.orange,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 340.w,
+                              child: Provider.of<MemberData>(context)
+                                      .loadingSearch
+                                  ? Center(
+                                      child: CircularProgressIndicator(
+                                      backgroundColor: Colors.orange,
+                                    ))
+                                  : searchTextField =
+                                      AutoCompleteTextField<SearchMember>(
+                                      key: key,
+                                      clearOnSubmit: false,
+                                      focusNode: focusNode,
+                                      controller: _nameController,
+                                      suggestions:
+                                          Provider.of<MemberData>(context)
+                                              .userSearchMember,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                      decoration:
+                                          kTextFieldDecorationFromTO.copyWith(
+                                              hintStyle: TextStyle(
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  color: Colors.grey.shade700,
+                                                  fontWeight: FontWeight.w500),
+                                              hintText: getTranslated(
+                                                  context, 'الأسم'),
+                                              prefixIcon: Icon(
+                                                Icons.person,
+                                                color: Colors.orange,
+                                              )),
+                                      itemFilter: (item, query) {
+                                        return item.username
+                                            .toLowerCase()
+                                            .contains(query.toLowerCase());
+                                      },
+                                      itemSorter: (a, b) {
+                                        return a.username.compareTo(b.username);
+                                      },
+                                      textSubmitted: (data) {
+                                        print(data);
+                                        setState(() {
+                                          showSearchIcon = false;
+                                          searchInList(
+                                              _nameController.text,
+                                              userDataProvider.user.userType ==
+                                                      2
+                                                  ? userDataProvider
+                                                      .user.userSiteId
+                                                  : -1,
+                                              Provider.of<CompanyData>(context,
+                                                      listen: false)
+                                                  .com
+                                                  .id);
+                                        });
+                                        print("print start");
+                                      },
+                                      textInputAction: TextInputAction.search,
+                                      itemSubmitted: (item) async {
+                                        if (_nameController.text !=
+                                            item.username) {
+                                          setState(() {
+                                            searchTextField.textField.controller
+                                                .text = item.username;
+                                            showSearchIcon = false;
+                                          });
+                                          selectedId = item.id;
+
+                                          await Provider.of<ReportsData>(
+                                                  context,
+                                                  listen: false)
+                                              .getUserReportUnits(
+                                                  userToken.user.userToken,
+                                                  item.id,
+                                                  dateFromString,
+                                                  dateToString,
+                                                  context);
+                                        }
+                                      },
+                                      itemBuilder: (context, item) {
+                                        // ui for the autocompelete row
+                                        return Directionality(
+                                          textDirection: ui.TextDirection.rtl,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 10,
+                                              bottom: 5,
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 10.w,
+                                                    ),
+                                                    Container(
+                                                      height: 20,
+                                                      child: AutoSizeText(
+                                                        item.username,
+                                                        maxLines: 1,
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(16,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Divider(
+                                                  color: Colors.grey,
+                                                  thickness: 1,
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          prefixIcon: Icon(
-                                            Icons.person,
-                                            color: Colors.orange,
-                                          )),
-                                  itemFilter: (item, query) {
-                                    return item.username
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase());
-                                  },
-                                  itemSorter: (a, b) {
-                                    return a.username.compareTo(b.username);
-                                  },
-                                  itemSubmitted: (item) async {
-                                    if (_nameController.text != item.username) {
-                                      setState(() {
-                                        searchTextField.textField.controller
-                                            .text = item.username;
-                                      });
-                                      selectedId = item.id;
-
-                                      await Provider.of<ReportsData>(context,
-                                              listen: false)
-                                          .getUserReportUnits(
-                                              userToken.user.userToken,
-                                              item.id,
-                                              dateFromString,
-                                              dateToString,
-                                              context);
-                                    }
-                                  },
-                                  itemBuilder: (context, item) {
-                                    // ui for the autocompelete row
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 10,
-                                        bottom: 5,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 10.w,
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: AutoSizeText(
-                                                  item.username,
-                                                  maxLines: 1,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      fontSize: ScreenUtil().setSp(
-                                                          16,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                        );
+                                      },
+                                    ),
+                            ),
+                            !Provider.of<PermissionHan>(context, listen: false)
+                                    .isEnglishLocale()
+                                ? Provider.of<MemberData>(context).loadingSearch
+                                    ? Container()
+                                    : Positioned(
+                                        left: 10.w,
+                                        top: 12.h,
+                                        child: showSearchIcon
+                                            ? InkWell(
+                                                onTap: () {
+                                                  if (_nameController
+                                                          .text.length <
+                                                      3) {
+                                                    Fluttertoast.showToast(
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يجب ان لا يقل البحث عن 3 احرف"),
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    setState(() {
+                                                      showSearchIcon = false;
+                                                      searchInList(
+                                                          _nameController.text,
+                                                          userDataProvider.user
+                                                                      .userType ==
+                                                                  2
+                                                              ? userDataProvider
+                                                                  .user
+                                                                  .userSiteId
+                                                              : -1,
+                                                          Provider.of<CompanyData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .com
+                                                              .id);
+                                                    });
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  Icons.search,
+                                                  color: Colors.orange,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Divider(
-                                            color: Colors.grey,
-                                            thickness: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  if (_nameController
+                                                          .text.length <
+                                                      3) {
+                                                    Fluttertoast.showToast(
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يجب ان لا يقل البحث عن 3 احرف"),
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    setState(() {
+                                                      _nameController.clear();
+                                                      showSearchIcon = true;
+                                                    });
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  FontAwesomeIcons.times,
+                                                  color: Colors.orange,
+                                                ),
+                                              ))
+                                : Provider.of<MemberData>(context).loadingSearch
+                                    ? Container()
+                                    : Positioned(
+                                        right: 10.w,
+                                        top: 12.h,
+                                        child: showSearchIcon
+                                            ? InkWell(
+                                                onTap: () {
+                                                  if (_nameController
+                                                          .text.length <
+                                                      3) {
+                                                    Fluttertoast.showToast(
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يجب ان لا يقل البحث عن 3 احرف"),
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    setState(() {
+                                                      showSearchIcon = false;
+                                                      searchInList(
+                                                          _nameController.text,
+                                                          userDataProvider.user
+                                                                      .userType ==
+                                                                  2
+                                                              ? userDataProvider
+                                                                  .user
+                                                                  .userSiteId
+                                                              : -1,
+                                                          Provider.of<CompanyData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .com
+                                                              .id);
+                                                    });
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  Icons.search,
+                                                  color: Colors.orange,
+                                                ),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  if (_nameController
+                                                          .text.length <
+                                                      3) {
+                                                    Fluttertoast.showToast(
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "يجب ان لا يقل البحث عن 3 احرف"),
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        gravity: ToastGravity
+                                                            .CENTER);
+                                                  } else {
+                                                    setState(() {
+                                                      _nameController.clear();
+                                                      showSearchIcon = true;
+                                                    });
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  FontAwesomeIcons.times,
+                                                  color: Colors.orange,
+                                                ),
+                                              ))
+                          ],
                         ),
                         SizedBox(
                           height: 10.h,

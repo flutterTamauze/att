@@ -103,7 +103,7 @@ class NotificationDataService with ChangeNotifier {
   }
 
   void getInitialNotification(BuildContext context) async {
-    var initialNotification = await hawawi.Push.getInitialNotification();
+    final initialNotification = await hawawi.Push.getInitialNotification();
     print("getInitialNotification: " + initialNotification.toString());
     if (initialNotification.toString().contains("اثبات حضور")) {
       print("YES IT CONTAINS !");
@@ -119,7 +119,8 @@ class NotificationDataService with ChangeNotifier {
       sound: true,
     );
 
-    NotificationSettings settings = await firebaseMessaging.requestPermission(
+    final NotificationSettings settings =
+        await firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -138,9 +139,9 @@ class NotificationDataService with ChangeNotifier {
       log("huawei message recieved ");
       // NotificationDataService dataService = NotificationDataService();
       // dataService.showAttendanceCheckDialog(context);
-      String data = _onMessageReceived.data;
+      final String data = _onMessageReceived.data;
 
-      var decodedResponse = json.decode(data);
+      final decodedResponse = json.decode(data);
       print(decodedResponse["pushbody"]);
       if (decodedResponse["pushbody"]["category"] == "attend") {
         showAttendanceCheckDialog(context);
@@ -201,7 +202,7 @@ class NotificationDataService with ChangeNotifier {
       // print(counter);
       if (event.data["category"] == "internalMission") {
         print("revieved internalMission ");
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
         final List<String> userData = (prefs.getStringList('userData') ?? null);
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context, true)

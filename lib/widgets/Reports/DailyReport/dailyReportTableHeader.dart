@@ -63,34 +63,37 @@ class AttendProovTableHeader extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                DataTableHeaderTitles(
-                    getTranslated(context, "التوقيت"), ColorManager.primary),
-                DataTableHeaderTitles(getTranslated(context, "حالة الإثبات"),
-                    ColorManager.primary),
+                Container(
+                    width: 160.w,
+                    child: Center(
+                        child: Container(
+                      height: 20,
+                      child: AutoSizeText(
+                        getTranslated(context, "الأسم"),
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                            color: ColorManager.primary),
+                      ),
+                    ))),
                 Expanded(
                   flex: 2,
                   child: Container(
                     height: 50.h,
                   ),
                 ),
+                DataTableHeaderTitles(getTranslated(context, "حالة الإثبات"),
+                    ColorManager.primary),
+                SizedBox(
+                  width: 10,
+                ),
+                DataTableHeaderTitles(
+                    getTranslated(context, "التوقيت"), ColorManager.primary),
               ],
             ),
           ),
-          Container(
-              width: 160.w,
-              child: Center(
-                  child: Container(
-                height: 20,
-                child: AutoSizeText(
-                  getTranslated(context, "الأسم"),
-                  maxLines: 1,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      color: ColorManager.primary),
-                ),
-              ))),
         ],
       ),
     ));

@@ -156,7 +156,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                               child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          'انصراف',
+                          getTranslated(context, 'انصراف'),
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(

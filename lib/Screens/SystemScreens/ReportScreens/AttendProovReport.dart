@@ -220,8 +220,6 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                           secondaryActions: [
                                                             ZoomIn(
                                                               child: InkWell(
-                                                                  child:
-                                                                      InkWell(
                                                                 child:
                                                                     Container(
                                                                   padding:
@@ -268,20 +266,20 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                                                   Navigator.pop(context);
                                                                                   final String msg = await Provider.of<ReportsData>(context, listen: false).deleteAttendProofFromReport(Provider.of<UserData>(context, listen: false).user.userToken, reportsData.attendProofList[index].id, index);
                                                                                   if (msg == "Success : AttendProof Deleted!") {
-                                                                                    Fluttertoast.showToast(msg: "تم حذف الإثبات بنجاح", backgroundColor: Colors.green);
+                                                                                    Fluttertoast.showToast(msg: getTranslated(context, "تم حذف الإثبات بنجاح"), backgroundColor: Colors.green);
                                                                                   } else if (msg == "Fail : Proof created by another user") {
-                                                                                    Fluttertoast.showToast(msg: "لا يمكنك حذف طلب تسجيل حضور لم تقم بإنشاؤه", backgroundColor: Colors.red, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER);
+                                                                                    Fluttertoast.showToast(msg: getTranslated(context, "لا يمكنك حذف طلب تسجيل حضور لم تقم بإنشاؤه"), backgroundColor: Colors.red, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER);
                                                                                   } else {
-                                                                                    Fluttertoast.showToast(msg: "خطأ في حذف الإثبات", backgroundColor: Colors.red);
+                                                                                    Fluttertoast.showToast(msg: getTranslated(context, "خطأ في حذف الإثبات"), backgroundColor: Colors.red);
                                                                                   }
                                                                                 },
-                                                                                content: "هل تريد مسح الإثبات",
+                                                                                content: getTranslated(context, "هل تريد حذف الإثبات"),
                                                                                 onCancel: () {},
-                                                                                title: "حذف الإثبات",
+                                                                                title: getTranslated(context, "حذف الإثبات"),
                                                                               );
                                                                       });
                                                                 },
-                                                              )),
+                                                              ),
                                                             )
                                                           ],
                                                           child:
@@ -349,11 +347,11 @@ class DisplayAttendProofList extends StatelessWidget {
                             color: Colors.red,
                             size: 25,
                           ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(attendProofList.time,
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                    )
+                    SizedBox(
+                      width: 10,
+                    ),
+                    AutoSizeText(attendProofList.time,
+                        style: TextStyle(fontWeight: FontWeight.w600))
                   ],
                 ),
               )
