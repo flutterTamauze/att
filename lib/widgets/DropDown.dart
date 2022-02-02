@@ -36,59 +36,66 @@ class SiteDropdown extends StatefulWidget {
 class _SiteDropdownState extends State<SiteDropdown> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(),
-      height: 50.h,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.w,
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.arrow_drop_down),
-            Expanded(
-              child: DropdownButton(
-                icon: Icon(
-                  widget.icon,
-                  color: Colors.orange,
-                ),
-                elevation: 2,
-                isExpanded: true,
-                items: widget.list.map((SiteShiftsModel x) {
-                  return DropdownMenuItem<String>(
-                      value: x.siteName,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: Container(
-                                height: 20.h,
-                                child: AutoSizeText(
-                                  x.siteName,
-                                  maxLines: 1,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        decoration: const BoxDecoration(),
+        height: 50.h,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 6, right: 10, left: 5),
+          child: Row(
+            children: [
+              const Icon(Icons.arrow_drop_down),
+              Expanded(
+                child: DropdownButton(
+                  underline: const Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                    height: 3,
+                  ),
+                  isDense: true,
+                  icon: Icon(
+                    widget.icon,
+                    color: Colors.orange,
+                  ),
+                  elevation: 2,
+                  isExpanded: true,
+                  items: widget.list.map((SiteShiftsModel x) {
+                    return DropdownMenuItem<String>(
+                        value: x.siteName,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Container(
+                                  height: 25.h,
+                                  child: AutoSizeText(
+                                    x.siteName,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontSize: setResponsiveFontSize(14),
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.right,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ));
-                }).toList(),
-                onChanged: (value) {
-                  widget.onChange(value);
-                  setState(() {
-                    widget.selectedvalue = value;
-                  });
-                },
-                value: widget.selectedvalue,
+                          ],
+                        ));
+                  }).toList(),
+                  onChanged: (value) {
+                    widget.onChange(value);
+                    setState(() {
+                      widget.selectedvalue = value;
+                    });
+                  },
+                  value: widget.selectedvalue,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

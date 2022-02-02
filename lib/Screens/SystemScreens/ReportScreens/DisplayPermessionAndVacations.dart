@@ -111,7 +111,7 @@ class _VacationAndPermessionsReportState
                     child: Directionality(
                       textDirection: TextDirection.rtl,
                       child: Provider.of<MemberData>(context).loadingSearch
-                          ? Center(
+                          ? const Center(
                               child: CircularProgressIndicator(
                               color: Colors.orange,
                             ))
@@ -351,7 +351,7 @@ class _VacationAndPermessionsReportState
                                             ),
                                           ],
                                         ),
-                                        Divider(
+                                        const Divider(
                                           color: Colors.grey,
                                           thickness: 1,
                                         ),
@@ -400,7 +400,7 @@ class _VacationAndPermessionsReportState
                                       });
                                     }
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.search,
                                     color: Colors.orange,
                                   ),
@@ -412,7 +412,7 @@ class _VacationAndPermessionsReportState
                                       showSearchIcon = true;
                                     });
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     FontAwesomeIcons.times,
                                     color: Colors.orange,
                                   ),
@@ -432,80 +432,93 @@ class _VacationAndPermessionsReportState
                           title: "المأموريات",
                           onchannge: (value) {
                             setState(() {
-                              searchTextField.textField.controller.text =
-                                  userName;
+                              if (!showSearchIcon) {
+                                searchTextField.textField.controller.text =
+                                    userName;
+                              }
                               radioVal2 = value;
-                              if (Provider.of<MissionsData>(context,
+                              if (_nameController.text.isNotEmpty) {
+                                if (Provider.of<MissionsData>(context,
+                                            listen: false)
+                                        .singleUserMissionsList
+                                        .isEmpty &&
+                                    _sendMissionRequest == false) {
+                                  _sendMissionRequest = true;
+                                  getMission = Provider.of<MissionsData>(
+                                          context,
                                           listen: false)
-                                      .singleUserMissionsList
-                                      .isEmpty &&
-                                  _sendMissionRequest == false) {
-                                _sendMissionRequest = true;
-                                getMission = Provider.of<MissionsData>(context,
-                                        listen: false)
-                                    .getSingleUserMissions(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
+                                      .getSingleUserMissions(
+                                          userId,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                }
                               }
                             });
                           },
                         ),
                         RadioButtonWidg(
-                          radioVal2: radioVal2,
-                          radioVal: 1,
-                          title: "الأجازات",
-                          onchannge: (value) {
-                            setState(() {
-                              searchTextField.textField.controller.text =
-                                  userName;
-                              radioVal2 = value;
-                              if (Provider.of<UserHolidaysData>(context,
-                                          listen: false)
-                                      .singleUserHoliday
-                                      .isEmpty &&
-                                  _sendVacationRequest == false) {
-                                _sendVacationRequest = true;
-                                getHoliday = Provider.of<UserHolidaysData>(
-                                        context,
-                                        listen: false)
-                                    .getSingleUserHoliday(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
-                              }
-                            });
-                          },
-                        ),
+                            radioVal2: radioVal2,
+                            radioVal: 1,
+                            title: "الأجازات",
+                            onchannge: (value) {
+                              setState(() {
+                                if (!showSearchIcon) {
+                                  searchTextField.textField.controller.text =
+                                      userName;
+                                }
+
+                                radioVal2 = value;
+                                if (_nameController.text.isNotEmpty) {
+                                  if (Provider.of<UserHolidaysData>(context,
+                                              listen: false)
+                                          .singleUserHoliday
+                                          .isEmpty &&
+                                      _sendVacationRequest == false) {
+                                    _sendVacationRequest = true;
+                                    getHoliday = Provider.of<UserHolidaysData>(
+                                            context,
+                                            listen: false)
+                                        .getSingleUserHoliday(
+                                            userId,
+                                            Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userToken);
+                                  }
+                                }
+                              });
+                            }),
                         RadioButtonWidg(
                           radioVal2: radioVal2,
                           radioVal: 3,
                           title: "الأذونات",
                           onchannge: (value) {
                             setState(() {
-                              print(userName);
-                              searchTextField.textField.controller.text =
-                                  userName;
+                              if (!showSearchIcon) {
+                                searchTextField.textField.controller.text =
+                                    userName;
+                              }
+
                               radioVal2 = value;
-                              if (Provider.of<UserPermessionsData>(context,
+                              if (_nameController.text.isNotEmpty) {
+                                if (Provider.of<UserPermessionsData>(context,
+                                            listen: false)
+                                        .singleUserPermessions
+                                        .isEmpty &&
+                                    _sendPermRequest == false) {
+                                  _sendPermRequest = true;
+                                  getPerm = Provider.of<UserPermessionsData>(
+                                          context,
                                           listen: false)
-                                      .singleUserPermessions
-                                      .isEmpty &&
-                                  _sendPermRequest == false) {
-                                _sendPermRequest = true;
-                                getPerm = Provider.of<UserPermessionsData>(
-                                        context,
-                                        listen: false)
-                                    .getSingleUserPermession(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
+                                      .getSingleUserPermession(
+                                          userId,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                }
                               }
                             });
                           },

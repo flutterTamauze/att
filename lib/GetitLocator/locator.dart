@@ -1,12 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/VacationData.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
@@ -46,5 +48,9 @@ class InitLocator {
     locator.registerLazySingleton(() => MissionsData());
     // ignore: cascade_invocations
     locator.registerLazySingleton(() => SiteData());
+    // ignore: cascade_invocations
+    locator.registerLazySingleton(() => UserPermessionsData());
+    // ignore: cascade_invocations
+    locator.registerLazySingleton(() => DaysOffData());
   }
 }

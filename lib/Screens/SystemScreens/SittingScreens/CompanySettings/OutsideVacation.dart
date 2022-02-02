@@ -140,15 +140,18 @@ class _OutsideVacationState extends State<OutsideVacation> {
         },
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-          floatingActionButton: widget.radioValue == 2
-              ? FadeInMissionsFAbutton(
-                  memberId: widget.member.id,
-                )
-              : FadeInVacPermFloatingButton(
+          // floatingActionButton: widget.radioValue == 2
+          //     ? FadeInMissionsFAbutton(
+          //         memberId: widget.member.id,
+          //       )
+          //     :
+          floatingActionButton: widget.radioValue != 2
+              ? FadeInVacPermFloatingButton(
                   radioVal2: widget.radioValue,
                   comingFromAdminPanel: false,
                   memberId: widget.member.id,
-                ),
+                )
+              : Container(),
           endDrawer: NotificationItem(),
           body: Container(
             width: MediaQuery.of(context).size.width,
