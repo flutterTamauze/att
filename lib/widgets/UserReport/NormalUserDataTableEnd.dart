@@ -10,19 +10,20 @@ class NormalUserDataTableEnd extends StatelessWidget {
   final absentsDays;
   final lateDays;
   final lateDuration;
-  NormalUserDataTableEnd({this.absentsDays, this.lateDays, this.lateDuration});
+  const NormalUserDataTableEnd(
+      {this.absentsDays, this.lateDays, this.lateDuration});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.orange,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(15),
             bottomLeft: Radius.circular(15),
           )),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Container(
           height: 50.h,
           child: Row(

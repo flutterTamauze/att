@@ -431,7 +431,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           print('Edit Done ');
                                         });
                                         Fluttertoast.showToast(
-                                            msg: "خطأ في حفظ البيانات",
+                                            msg: getTranslated(
+                                              context,
+                                              "خطأ في حفظ البيانات",
+                                            ),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -445,7 +448,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   }
                                 },
                                 child: userData.isLoading
-                                    ? Center(
+                                    ? const Center(
                                         child: CircularProgressIndicator(),
                                       )
                                     : Container(
@@ -454,7 +457,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(25),
                                             color: Colors.orange),
-                                        padding: EdgeInsets.all(15),
+                                        padding: const EdgeInsets.all(15),
                                         child: Center(
                                           child: Container(
                                             height: 20,
@@ -487,7 +490,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               onTap: () {
                 Navigator.maybePop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.chevron_left,
                 color: Colors.orange,
                 size: 40,
@@ -506,7 +509,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           .userImage
           .contains("DefualtImage")) {
         Fluttertoast.showToast(
-            msg: 'برجاء التقاط صورة شخصية للوجة اولا',
+            msg: getTranslated(context, 'برجاء التقاط صورة شخصية للوجة اولا'),
             backgroundColor: Colors.red,
             toastLength: Toast.LENGTH_LONG);
       } else {

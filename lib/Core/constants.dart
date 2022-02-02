@@ -15,7 +15,7 @@ const androidDownloadLink =
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.105:8010";
+const localURL = "http://192.168.0.118:8010";
 const huaweiAppId = "104665933";
 const huaweiSecret =
     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
@@ -46,7 +46,7 @@ Future<bool> onWillPop() {
   final DateTime now = DateTime.now();
 
   if (_currentBackPressTime == null ||
-      now.difference(_currentBackPressTime) > Duration(seconds: 2)) {
+      now.difference(_currentBackPressTime) > const Duration(seconds: 2)) {
     _currentBackPressTime = now;
     Fluttertoast.showToast(
       msg: "اضغط مره اخرى للخروج من التطبيق",
@@ -193,7 +193,7 @@ String getVacationType(int holidayType) {
 
 class DetialsTextField extends StatelessWidget {
   final TextEditingController commentController;
-  DetialsTextField(
+  const DetialsTextField(
     this.commentController,
   );
   @override
@@ -212,20 +212,23 @@ class DetialsTextField extends StatelessWidget {
           cursorColor: Colors.orange,
           maxLines: null,
           decoration: InputDecoration(
-            errorStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            errorStyle:
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Colors.orange),
+              borderSide: const BorderSide(width: 2, color: Colors.orange),
             ),
-            disabledBorder: OutlineInputBorder(
+            disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey, width: 4)),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
+                borderSide: const BorderSide(color: Colors.grey, width: 0)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey, width: 0)),
-            hintStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                borderSide: const BorderSide(color: Colors.grey, width: 0)),
+            hintStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: setResponsiveFontSize(14)),
             hintText: getTranslated(context, "قم بأدخال التفاصيل هنا"),
           ),
         ),
@@ -237,14 +240,14 @@ class DetialsTextField extends StatelessWidget {
 ThemeData clockTheme = ThemeData.dark().copyWith(
   primaryColor: Colors.black,
   accentColor: Colors.white,
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     primary: Colors.orange,
     onPrimary: Colors.black,
     surface: Colors.black,
     onSurface: Colors.white,
   ),
   highlightColor: Colors.orange,
-  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+  buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
   dialogBackgroundColor: Colors.black87,
 );
 
@@ -252,13 +255,13 @@ ThemeData clockTheme1 = ThemeData.dark().copyWith(
   backgroundColor: Colors.black,
   primaryColor: Colors.black,
   accentColor: Colors.orange,
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     primary: Colors.orange,
     onPrimary: Colors.black,
     surface: Colors.black,
     onSurface: Colors.white,
   ),
-  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+  buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
   dialogBackgroundColor: Colors.black87,
 );
 const kTextFieldDecorationWhite = InputDecoration(
@@ -335,9 +338,6 @@ const kTextFieldDecorationTime = InputDecoration(
   filled: true,
 //  contentPadding: EdgeInsets.symmetric(),
   enabledBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey),
-  ),
-  focusedBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.grey),
   ),
 );

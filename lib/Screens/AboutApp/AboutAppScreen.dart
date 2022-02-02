@@ -20,8 +20,6 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
-  String _filePath;
-  bool _isLoading = false;
   String progress;
   Dio dio;
   @override
@@ -50,7 +48,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: (MediaQuery.of(context).size.height) /
                                       2.75,
                                   width: double.infinity,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.orange,
                                   ),
                                 ),
@@ -61,7 +59,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: (MediaQuery.of(context).size.height) /
                                       2.8,
                                   width: double.infinity,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.black,
                                   ),
                                   child: Center(
@@ -76,14 +74,16 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
                                                   width: 1.w,
-                                                  color: Color(0xffFF7E00),
+                                                  color:
+                                                      const Color(0xffFF7E00),
                                                 ),
                                               ),
                                               child: CircleAvatar(
                                                 radius: 60,
                                                 child: Container(
                                                   width: 200.w,
-                                                  decoration: BoxDecoration(
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     color: Colors.black,
                                                     // image: DecorationImage(
                                                     //   image: headerImage,
@@ -158,7 +158,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                                 "شارك التطبيق"),
                                                             maxLines: 1,
                                                             style: TextStyle(
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xFF3b3c40),
                                                                 fontSize: ScreenUtil()
                                                                     .setSp(16,
@@ -181,7 +181,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                             Alignment.center,
                                                         child: IconButton(
                                                           onPressed: () {},
-                                                          icon: Icon(
+                                                          icon: const Icon(
                                                             Icons.share,
                                                             color: Color(
                                                                 0xFF3b3c40),
@@ -244,7 +244,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     child: IconButton(
                         icon: Icon(
                           Icons.chevron_left,
-                          color: Color(0xffF89A41),
+                          color: const Color(0xffF89A41),
                           size: ScreenUtil()
                               .setSp(40, allowFontScalingSelf: true),
                         ),
@@ -263,7 +263,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 class AboutUsCard extends StatelessWidget {
   final Widget child;
 
-  AboutUsCard({this.child});
+  const AboutUsCard({this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +281,7 @@ class MyListTile extends StatelessWidget {
   final IconData icon;
   final String link;
   final bool rotated;
-  MyListTile({this.title, this.icon, this.link, this.rotated});
+  const MyListTile({this.title, this.icon, this.link, this.rotated});
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +311,7 @@ class MyListTile extends StatelessWidget {
                   child: AutoSizeText(title,
                       maxLines: 1,
                       style: TextStyle(
-                          color: Color(0xFF3b3c40),
+                          color: const Color(0xFF3b3c40),
                           fontSize: ScreenUtil()
                               .setSp(16, allowFontScalingSelf: true),
                           fontWeight: FontWeight.bold)),
@@ -345,7 +345,7 @@ class CircletTile extends StatelessWidget {
   final IconData icon;
   final String link;
   final iconColor;
-  CircletTile({this.icon, this.link, this.iconColor});
+  const CircletTile({this.icon, this.link, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -360,7 +360,7 @@ class CircletTile extends StatelessWidget {
         },
         icon: Icon(
           icon,
-          color: Color(0xffFF7E00),
+          color: const Color(0xffFF7E00),
         ),
       ),
     );

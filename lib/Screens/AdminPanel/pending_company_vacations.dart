@@ -57,7 +57,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        log("reached end of list");
+        // log("reached end of list");
 
         if (Provider.of<UserHolidaysData>(context, listen: false)
             .keepRetriving) {
@@ -110,14 +110,13 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                           color: Colors.white,
                           child: Center(
                             child: Platform.isIOS
-                                ? CupertinoActivityIndicator(
+                                ? const CupertinoActivityIndicator(
                                     radius: 20,
                                   )
-                                : CircularProgressIndicator(
+                                : const CircularProgressIndicator(
                                     backgroundColor: Colors.white,
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            Colors.orange),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.orange),
                                   ),
                           ),
                         ),
@@ -137,7 +136,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                               : SmartRefresher(
                                   onRefresh: _onRefresh,
                                   controller: refreshController,
-                                  header: WaterDropMaterialHeader(
+                                  header: const WaterDropMaterialHeader(
                                     color: Colors.white,
                                     backgroundColor: Colors.orange,
                                   ),
@@ -243,15 +242,17 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           } else if (msg ==
                                                               "Fail : User not found") {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ فى بيانات المستخدم",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ فى بيانات المستخدم"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           } else if (msg ==
                                                               "Fail: holiday time out!") {
                                                             Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ فى الموافقة : انتهى وقت الرد",
+                                                                msg: getTranslated(
+                                                                    context,
+                                                                    "خطأ فى الموافقة : انتهى وقت الرد"),
                                                                 gravity:
                                                                     ToastGravity
                                                                         .CENTER,
@@ -355,11 +356,16 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                     Colors.red);
                                                           } else if (msg ==
                                                               "Fail: holiday time out!") {
-                                                            Fluttertoast.showToast(
-                                                                msg:
-                                                                    "خطأ فى الرفض : انتهى وقت الرد",
-                                                                backgroundColor:
-                                                                    Colors.red);
+                                                            Fluttertoast
+                                                                .showToast(
+                                                                    msg:
+                                                                        getTranslated(
+                                                                      context,
+                                                                      "خطأ فى الرفض : انتهى وقت الرد",
+                                                                    ),
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red);
                                                           } else {
                                                             Fluttertoast.showToast(
                                                                 msg: getTranslated(
@@ -397,7 +403,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                   ? Provider.of<UserHolidaysData>(context).paginatedIsLoading
                       ? Column(
                           children: [
-                            Center(
+                            const Center(
                                 child: CupertinoActivityIndicator(
                               radius: 15,
                             )),

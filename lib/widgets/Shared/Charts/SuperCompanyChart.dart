@@ -47,7 +47,7 @@ class SuperCompanyChartState extends State {
   }
 
   List<PieChartSectionData> showingSections(BuildContext context) {
-    var ratio =
+    final ratio =
         Provider.of<UserData>(context, listen: false).superCompaniesChartModel;
     return (!ratio.isHoliday && !ratio.isOfficialVac)
         ? List.generate(4, (i) {

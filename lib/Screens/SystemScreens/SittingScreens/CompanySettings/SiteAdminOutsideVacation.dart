@@ -99,8 +99,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
     _selectedDateString = tomorrow.toString();
     yesterday = DateTime(now.year, DateTime.december, 30);
     _today = DateTime.now();
-    sleectedMember =
-        Provider.of<MemberData>(context, listen: false).membersList[0].name;
+    // sleectedMember =
+    //     Provider.of<MemberData>(context, listen: false).membersList[0].name;
     selectedReason = widget.holidayTitles.first;
     selectedPermession = widget.permessionTitles.first;
     super.initState();
@@ -187,7 +187,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       header:
                                           getTranslated(context, "مدة الأجازة"),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Container(
@@ -258,7 +258,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                 width: 365.w,
                                                 child: IgnorePointer(
                                                   child: TextFormField(
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.w500),
@@ -273,7 +273,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                         context,
                                                                         "المدة من / الى"),
                                                                 prefixIcon:
-                                                                    Icon(
+                                                                    const Icon(
                                                                   Icons
                                                                       .calendar_today_rounded,
                                                                   color: Colors
@@ -285,25 +285,24 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                         },
                                       ),
                                     )),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     dateDifference != null
                                         ? fromText == ""
                                             ? Container()
                                             : Container(
-                                                padding: EdgeInsets.all(5),
-                                                alignment:
-                                                    Alignment.centerRight,
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 child: Text(
                                                   "${getTranslated(context, "تم اختيار")}$dateDifference ${getTranslated(context, "يوم")} ",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
                                                           FontWeight.w300),
                                                 ))
                                         : Container(),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     VacationCardHeader(
@@ -313,63 +312,52 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                     )),
                                     Padding(
                                       padding: EdgeInsets.only(right: 5.w),
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            alignment: Alignment.topRight,
-                                            padding: EdgeInsets.only(right: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(width: 1)),
-                                            width: 150.w,
-                                            height: 40.h,
-                                            child: DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                              elevation: 2,
-                                              isExpanded: true,
-                                              items: widget.holidayTitles
-                                                  .map((String x) {
-                                                return DropdownMenuItem<String>(
-                                                    value: x,
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Text(
-                                                        x,
-                                                        textAlign:
-                                                            TextAlign.right,
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.orange,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                    ));
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  selectedReason = value;
-                                                  if (value !=
-                                                      getTranslated(
-                                                          context, "عارضة")) {
-                                                    _dateController.text = "";
-                                                    newString = "";
-                                                    tomorrow = DateTime(
-                                                        DateTime.now().year,
-                                                        DateTime.now().month,
-                                                        DateTime.now().day + 1);
-                                                    _today = DateTime.now();
-                                                    toDate = tomorrow;
-                                                  }
-                                                });
-                                              },
-                                              value: selectedReason,
-                                            )),
-                                          ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(width: 1)),
+                                          width: 400.w,
+                                          height: 40.h,
+                                          child: DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                            elevation: 2,
+                                            isExpanded: true,
+                                            items: widget.holidayTitles
+                                                .map((String x) {
+                                              return DropdownMenuItem<String>(
+                                                  value: x,
+                                                  child: AutoSizeText(
+                                                    x,
+                                                    style: const TextStyle(
+                                                        color: Colors.orange,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ));
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedReason = value;
+                                                if (value !=
+                                                    getTranslated(
+                                                        context, "عارضة")) {
+                                                  _dateController.text = "";
+                                                  newString = "";
+                                                  tomorrow = DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day + 1);
+                                                  _today = DateTime.now();
+                                                  toDate = tomorrow;
+                                                }
+                                              });
+                                            },
+                                            value: selectedReason,
+                                          )),
                                         ),
                                       ),
                                     ),
@@ -382,7 +370,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                             Provider.of<UserHolidaysData>(
                                                     context)
                                                 .isLoading
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             backgroundColor: Colors.orange)
                                         : RoundedButton(
                                             onPressed: () async {
@@ -483,8 +471,10 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     Fluttertoast.showToast(
                                                         toastLength:
                                                             Toast.LENGTH_LONG,
-                                                        msg:
-                                                            "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        msg: getTranslated(
+                                                          context,
+                                                          "يوجد اجازة تم الموافقة عليها فى هذه الفترة",
+                                                        ),
                                                         gravity:
                                                             ToastGravity.CENTER,
                                                         backgroundColor:
@@ -545,7 +535,9 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   context, "نوع الأذن"),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 11),
+                                                  fontSize:
+                                                      setResponsiveFontSize(
+                                                          11)),
                                               maxLines: 2,
                                             ),
                                           ],
@@ -556,65 +548,52 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Padding(
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                alignment: Alignment.topRight,
-                                                padding:
-                                                    EdgeInsets.only(right: 10),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border:
-                                                        Border.all(width: 1)),
-                                                width: 200.w,
-                                                height: 40.h,
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                        child: DropdownButton(
-                                                  elevation: 2,
-                                                  isExpanded: true,
-                                                  items: widget.permessionTitles
-                                                      .map((String x) {
-                                                    return DropdownMenuItem<
-                                                            String>(
-                                                        value: x,
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child: Text(
-                                                            x,
-                                                            textAlign:
-                                                                TextAlign.right,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .orange,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ));
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedPermession =
-                                                          value;
-                                                    });
-                                                  },
-                                                  value: selectedPermession,
-                                                )),
-                                              ),
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(width: 1)),
+                                              width: 400.w,
+                                              height: 40.h,
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                elevation: 2,
+                                                isExpanded: true,
+                                                items: widget.permessionTitles
+                                                    .map((String x) {
+                                                  return DropdownMenuItem<
+                                                          String>(
+                                                      value: x,
+                                                      child: AutoSizeText(
+                                                        x,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ));
+                                                }).toList(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedPermession = value;
+                                                  });
+                                                },
+                                                value: selectedPermession,
+                                              )),
                                             ),
                                           ),
-                                          Divider(),
+                                          const Divider(),
                                           Card(
                                             elevation: 5,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
                                                   Text(
@@ -623,14 +602,16 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 13),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: Container(
                                               child: Theme(
                                                 data: clockTheme,
@@ -657,7 +638,6 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       DateTime.december,
                                                       31),
                                                   //controller: _endTimeController,
-                                                  textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       fontSize: ScreenUtil().setSp(
                                                           14,
@@ -671,7 +651,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       kTextFieldDecorationTime
                                                           .copyWith(
                                                               hintStyle:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -679,7 +659,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                     .black,
                                                               ),
                                                               hintText: 'اليوم',
-                                                              prefixIcon: Icon(
+                                                              prefixIcon:
+                                                                  const Icon(
                                                                 Icons
                                                                     .access_time,
                                                                 color: Colors
@@ -777,7 +758,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         child: IgnorePointer(
                                                           child: TextFormField(
                                                             enabled: false,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontWeight:
@@ -793,7 +774,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                     hintText:
                                                                         'الوقت',
                                                                     prefixIcon:
-                                                                        Icon(
+                                                                        const Icon(
                                                                       Icons
                                                                           .alarm,
                                                                       color: Colors
@@ -850,8 +831,10 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                     widget.member.id);
                                                 if (msg == "success") {
                                                   Fluttertoast.showToast(
-                                                          msg:
-                                                              "تم إضافة الأذن بنجاح",
+                                                          msg: getTranslated(
+                                                            context,
+                                                            "تم إضافة الأذن بنجاح",
+                                                          ),
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
@@ -944,7 +927,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
 
 class SitesAndMissionsWidg extends StatefulWidget {
   final Function onchannge;
-  SitesAndMissionsWidg({
+  const SitesAndMissionsWidg({
     this.onchannge,
     Key key,
     @required this.prov,
@@ -973,7 +956,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
             "الموقع و المناوبة للمأمورية",
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Container(
@@ -995,13 +978,12 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                     : false,
                                 child: DropdownButton(
                                     isExpanded: true,
-                                    underline: SizedBox(),
+                                    underline: const SizedBox(),
                                     elevation: 5,
                                     items: value.shifts
                                         .map(
                                           (value) => DropdownMenuItem(
                                               child: Container(
-                                                  alignment: Alignment.topRight,
                                                   height: 20.h,
                                                   child: AutoSizeText(
                                                     value.shiftName,
@@ -1046,7 +1028,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                               );
                             },
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -1056,14 +1038,14 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Icon(
                   Icons.alarm,
                   color: ColorManager.primary,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Flexible(
@@ -1076,12 +1058,11 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                             builder: (context, value, child) {
                               return DropdownButton(
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 elevation: 5,
                                 items: widget.list
                                     .map((value) => DropdownMenuItem(
                                           child: Container(
-                                            alignment: Alignment.topRight,
                                             height: 20,
                                             child: AutoSizeText(
                                               value.name,
@@ -1161,7 +1142,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
 
 class VacationCardHeader extends StatelessWidget {
   final String header;
-  VacationCardHeader({
+  const VacationCardHeader({
     this.header,
     Key key,
   }) : super(key: key);
@@ -1171,12 +1152,14 @@ class VacationCardHeader extends StatelessWidget {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Text(
+            AutoSizeText(
               header,
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: setResponsiveFontSize(13)),
             ),
           ],
         ),

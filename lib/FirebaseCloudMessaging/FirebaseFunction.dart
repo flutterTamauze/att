@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final String serverToken =
+const String serverToken =
     // ignore: lines_longer_than_80_chars
     'AAAAn_TIyyQ:APA91bFfj4S4VEA7ZU3zegTqeNwEODrGePKF7Wh-OsOeJCSb326VxWZ0OER7gV3irug0BJB4IXr_MNgkNtwpjeU58vVmQNByntX_hQDxD8bzFDC94txSITHBzXt22cTkRaq5B4VsrRmX';
 
@@ -90,7 +90,7 @@ Future<bool> sendFcmDataOnly(
   try {
     final String toParams = "/topics/" + topicName;
 
-    final url = 'https://fcm.googleapis.com/fcm/send';
+    const url = 'https://fcm.googleapis.com/fcm/send';
     final header = {
       "Content-Type": "application/json",
       "Authorization": "key=$serverToken",

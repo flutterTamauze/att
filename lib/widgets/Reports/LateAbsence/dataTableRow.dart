@@ -69,7 +69,6 @@ class DataTableRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      alignment: Alignment.centerRight,
                       height: 40.h,
                       width: 144.w,
                       child: AutoSizeText(

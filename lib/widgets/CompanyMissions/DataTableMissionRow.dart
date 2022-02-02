@@ -9,7 +9,7 @@ import 'package:qr_users/services/UserMissions/CompanyMissions.dart';
 class DataTableMissionRow extends StatelessWidget {
   final CompanyMissions _holidays;
 
-  DataTableMissionRow(this._holidays);
+  const DataTableMissionRow(this._holidays);
   bool isExternal() {
     if (_holidays.sitename == "" || _holidays.sitename == null) {
       return true;

@@ -159,7 +159,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                   if (snapshot
                                                           .connectionState ==
                                                       ConnectionState.waiting) {
-                                                    return Center(
+                                                    return const Center(
                                                       child:
                                                           CircularProgressIndicator(
                                                         backgroundColor:
@@ -175,7 +175,9 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                               "لا يوجد اجازات لهذا المستخدم",
                                                             ),
                                                             style: TextStyle(
-                                                                fontSize: 15,
+                                                                fontSize:
+                                                                    setResponsiveFontSize(
+                                                                        15),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -192,7 +194,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                                   DataTableHolidayRow(
                                                                       provList[
                                                                           index]),
-                                                                  Divider(
+                                                                  const Divider(
                                                                     thickness:
                                                                         1,
                                                                   )
@@ -208,7 +210,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                   if (snapshot
                                                           .connectionState ==
                                                       ConnectionState.waiting) {
-                                                    return Center(
+                                                    return const Center(
                                                       child:
                                                           CircularProgressIndicator(
                                                         backgroundColor:
@@ -224,7 +226,9 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                                 context,
                                                                 "لا يوجد اذونات لهذا المستخدم"),
                                                             style: TextStyle(
-                                                                fontSize: 15,
+                                                                fontSize:
+                                                                    setResponsiveFontSize(
+                                                                        15),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -242,7 +246,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                                   DataTablePermessionRow(
                                                                       permessionsList[
                                                                           index]),
-                                                                  Divider(
+                                                                  const Divider(
                                                                     thickness:
                                                                         1,
                                                                   )

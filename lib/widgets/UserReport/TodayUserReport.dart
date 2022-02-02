@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'UserReportTableHeader.dart';
@@ -29,7 +28,7 @@ class TodayUserReport extends StatelessWidget {
                       horizontal: 20.0.w,
                       vertical: 20.0.h,
                     ),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                     content: Container(
                       height: 100.h,

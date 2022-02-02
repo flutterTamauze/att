@@ -7,6 +7,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'DailyReportScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -45,8 +46,7 @@ class LateAbsenceScreen extends StatefulWidget {
 
 class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
-  String dateToString = "";
-  String dateFromString = "";
+  String dateFromString = "", currentSiteName = "", dateToString = "";
   TextEditingController _dateController = TextEditingController();
   int selectedDuration;
   DateTime toDate;
@@ -82,6 +82,11 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
     super.initState();
     siteIdIndex = getSiteIndexBySiteID(
         Provider.of<UserData>(context, listen: false).user.userSiteId);
+    if (Provider.of<UserData>(context, listen: false).user.userType != 2) {
+      currentSiteName = Provider.of<SiteShiftsData>(context, listen: false)
+          .siteShiftList[siteIdIndex]
+          .siteName;
+    }
     showTable = false;
     final now = DateTime.now();
     fromDate = DateTime(now.year, now.month,
@@ -114,7 +119,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
 
   loadProgressIndicator() {
     percent = 0;
-    timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
+    timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
         setState(() {
           percent = 300;
@@ -177,8 +182,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   int siteId = 0;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
     print("val $val");
-    final DateTime maxDate = currentDate.add(Duration(days: 31));
-    final DateTime minDate = currentDate.subtract(Duration(days: 31));
+    final DateTime maxDate = currentDate.add(const Duration(days: 31));
+    final DateTime minDate = currentDate.subtract(const Duration(days: 31));
 
     if (val.isBefore(maxDate) && val.isAfter(minDate)) {
       return true;
@@ -217,7 +222,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                 return Visibility(
                     visible: value,
                     child: FadeIn(
-                        duration: Duration(seconds: 1),
+                        duration: const Duration(seconds: 1),
                         child: MultipleFloatingButtonsNoADD()));
               },
             ),
@@ -240,107 +245,105 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                           goUserMenu: false,
                           goUserHomeFromMenu: false,
                         ),
-                        Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SmallDirectoriesHeader(
-                                Lottie.asset("resources/report.json",
-                                    repeat: false),
-                                getTranslated(
-                                    context, "تقرير التأخير و الغياب"),
-                              ),
-                              Container(
-                                  child: FutureBuilder(
-                                      future: Provider.of<ReportsData>(context,
-                                              listen: true)
-                                          .futureListener,
-                                      builder: (context, snapshot) {
-                                        switch (snapshot.connectionState) {
-                                          case ConnectionState.waiting:
-                                            return Container();
-                                          case ConnectionState.done:
-                                            return !reportsData
-                                                    .lateAbsenceReport.isDayOff
-                                                ? reportsData
-                                                            .lateAbsenceReport
-                                                            .lateAbsenceReportUnitList
-                                                            .length !=
-                                                        0
-                                                    ? isLoading
-                                                        ? Container()
-                                                        : Row(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Dialog(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10.0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SmallDirectoriesHeader(
+                              Lottie.asset("resources/report.json",
+                                  repeat: false),
+                              getTranslated(context, "تقرير التأخير و الغياب"),
+                            ),
+                            Container(
+                                child: FutureBuilder(
+                                    future: Provider.of<ReportsData>(context,
+                                            listen: true)
+                                        .futureListener,
+                                    builder: (context, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.waiting:
+                                          return Container();
+                                        case ConnectionState.done:
+                                          return !reportsData
+                                                  .lateAbsenceReport.isDayOff
+                                              ? reportsData
+                                                          .lateAbsenceReport
+                                                          .lateAbsenceReportUnitList
+                                                          .length !=
+                                                      0
+                                                  ? isLoading
+                                                      ? Container()
+                                                      : Row(
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return Dialog(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10.0)),
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            300.h,
+                                                                        width: double
+                                                                            .infinity,
                                                                         child:
-                                                                            Container(
-                                                                          height:
-                                                                              300.h,
-                                                                          width:
-                                                                              double.infinity,
-                                                                          child:
-                                                                              FadeInRight(
-                                                                            child:
-                                                                                Padding(padding: const EdgeInsets.all(8.0), child: ZoomIn(child: LateReportPieChart())),
-                                                                          ),
+                                                                            FadeInRight(
+                                                                          child: Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: ZoomIn(child: LateReportPieChart())),
                                                                         ),
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                child: Icon(
-                                                                  FontAwesomeIcons
-                                                                      .chartBar,
-                                                                  color: Colors
-                                                                      .orange,
-                                                                ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: const Icon(
+                                                                FontAwesomeIcons
+                                                                    .chartBar,
+                                                                color: Colors
+                                                                    .orange,
                                                               ),
-                                                              XlsxExportButton(
-                                                                reportType: 1,
-                                                                title: getTranslated(
-                                                                    context,
-                                                                    "تقرير التأخير و الغياب"),
-                                                                day:
-                                                                    _dateController
-                                                                        .text,
-                                                                site: userDataProvider
-                                                                            .user
-                                                                            .userType ==
-                                                                        2
-                                                                    ? ""
-                                                                    //  Provider.of<
-                                                                    //             UserData>(
-                                                                    //         context,
-                                                                    //         listen:
-                                                                    //             false)
-                                                                    //     .siteName
-                                                                    : Provider.of<SiteShiftsData>(
-                                                                            context)
-                                                                        .siteShiftList[
-                                                                            siteIdIndex]
-                                                                        .siteName,
-                                                              ),
-                                                            ],
-                                                          )
-                                                    : Container()
-                                                : Container();
-                                          default:
-                                            return Container();
-                                        }
-                                      }))
-                            ],
-                          ),
+                                                            ),
+                                                            XlsxExportButton(
+                                                              reportType: 1,
+                                                              title: getTranslated(
+                                                                  context,
+                                                                  "تقرير التأخير و الغياب"),
+                                                              day:
+                                                                  _dateController
+                                                                      .text,
+                                                              site: userDataProvider
+                                                                          .user
+                                                                          .userType ==
+                                                                      2
+                                                                  ? ""
+                                                                  //  Provider.of<
+                                                                  //             UserData>(
+                                                                  //         context,
+                                                                  //         listen:
+                                                                  //             false)
+                                                                  //     .siteName
+                                                                  : Provider.of<
+                                                                              SiteShiftsData>(
+                                                                          context)
+                                                                      .siteShiftList[
+                                                                          siteIdIndex]
+                                                                      .siteName,
+                                                            ),
+                                                          ],
+                                                        )
+                                                  : Container()
+                                              : Container();
+                                        default:
+                                          return Container();
+                                      }
+                                    }))
+                          ],
                         ),
                         Container(
                             child: Theme(
@@ -399,30 +402,24 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                       }
                                     }
                                   },
-                                  child: Directionality(
-                                    textDirection: ui.TextDirection.rtl,
-                                    child: Container(
-                                      // width: 330,
-                                      width:
-                                          getkDeviceWidthFactor(context, 330),
-                                      child: IgnorePointer(
-                                        child: TextFormField(
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                          textInputAction: TextInputAction.next,
-                                          controller: _dateController,
-                                          decoration: kTextFieldDecorationFromTO
-                                              .copyWith(
-                                                  hintText: getTranslated(
-                                                      context,
-                                                      'المدة من / إلى'),
-                                                  prefixIcon: Icon(
-                                                    Icons
-                                                        .calendar_today_rounded,
-                                                    color: Colors.orange,
-                                                  )),
-                                        ),
+                                  child: Container(
+                                    // width: 330,
+                                    width: getkDeviceWidthFactor(context, 330),
+                                    child: IgnorePointer(
+                                      child: TextFormField(
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                        textInputAction: TextInputAction.next,
+                                        controller: _dateController,
+                                        decoration:
+                                            kTextFieldDecorationFromTO.copyWith(
+                                                hintText: getTranslated(
+                                                    context, 'المدة من / إلى'),
+                                                prefixIcon: const Icon(
+                                                  Icons.calendar_today_rounded,
+                                                  color: Colors.orange,
+                                                )),
                                       ),
                                     ),
                                   ));
@@ -465,11 +462,12 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                               listen: false)
                                           .siteShiftList[siteIdIndex]
                                           .siteId;
-
-                                      setState(() {
-                                        showTable = false;
-                                        showViewTableButton = true;
-                                      });
+                                      if (currentSiteName != value) {
+                                        setState(() {
+                                          showTable = false;
+                                          showViewTableButton = true;
+                                        });
+                                      }
 
                                       // await Provider.of<
                                       //             ReportsData>(
@@ -497,44 +495,42 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                         ),
                         Visibility(
                           visible: showViewTableButton,
-                          child: Container(
-                            width: 170.w,
-                            child: OutlinedButton(
-                              style: ButtonStyle(
-                                  elevation: MaterialStateProperty.all(0),
-                                  side: MaterialStateProperty.all(BorderSide(
-                                      width: 1, color: ColorManager.primary)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                  shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)))),
-                              onPressed: () async {
-                                loadProgressIndicator();
-                                setState(() {
-                                  getData(siteIdIndex);
-                                  showTable = true;
-                                  showViewTableButton = false;
-                                });
-                              },
-                              child: Center(
+                          child: Expanded(
+                            flex: 9,
+                            child: Center(
+                              child: InkWell(
+                                onTap: () {
+                                  loadProgressIndicator();
+                                  setState(() {
+                                    getData(siteIdIndex);
+                                    showTable = true;
+                                    showViewTableButton = false;
+                                  });
+                                },
                                 child: Container(
-                                  width: 160.w,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(5),
+                                  width: 150.w,
+                                  height: 50.h,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2,
+                                          color: ColorManager.primary),
+                                      borderRadius: BorderRadius.circular(10)),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Icon(FontAwesomeIcons.eye,
-                                          color: ColorManager.accentColor),
                                       AutoSizeText(
                                         getTranslated(context, "عرض التقرير"),
-                                        style: TextStyle(
-                                            color: ColorManager.accentColor,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize:
-                                                setResponsiveFontSize(16)),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
+                                      Container(
+                                          width: 2,
+                                          height: 80.h,
+                                          color: ColorManager.primary),
+                                      const Icon(FontAwesomeIcons.fileAlt)
                                     ],
                                   ),
                                 ),
@@ -572,72 +568,57 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                   : Expanded(
                                                       child: Container(
                                                         color: Colors.white,
-                                                        child: Directionality(
-                                                            textDirection: ui
-                                                                .TextDirection
-                                                                .rtl,
-                                                            child: !reportsData
-                                                                    .lateAbsenceReport
-                                                                    .isDayOff
-                                                                ? reportsData
-                                                                            .lateAbsenceReport
-                                                                            .lateAbsenceReportUnitList
-                                                                            .length !=
-                                                                        0
-                                                                    ? Column(
-                                                                        children: [
-                                                                          Divider(
-                                                                            thickness:
-                                                                                1,
-                                                                            color:
-                                                                                Colors.orange[600],
-                                                                          ),
-                                                                          DataTableHeader(),
-                                                                          Divider(
-                                                                            thickness:
-                                                                                1,
-                                                                            color:
-                                                                                Colors.orange[600],
-                                                                          ),
-                                                                          Expanded(
-                                                                              child: Container(
-                                                                            child:
-                                                                                Stack(
-                                                                              children: [
-                                                                                ListView.builder(
-                                                                                    controller: _scrollController,
-                                                                                    itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
-                                                                                    itemBuilder: (BuildContext context, int index) {
-                                                                                      return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
-                                                                                    }),
-                                                                              ],
-                                                                            ),
-                                                                          )),
-                                                                          Directionality(
-                                                                              textDirection: ui.TextDirection.rtl,
-                                                                              child: DataTableEnd(
-                                                                                lateRatio: reportsData.lateAbsenceReport.lateRatio,
-                                                                                absenceRatio: reportsData.lateAbsenceReport.absentRatio,
-                                                                                totalDeduction: reportsData.lateAbsenceReport.totalDecutionForAllUsers,
-                                                                              ))
-                                                                        ],
-                                                                      )
-                                                                    : Center(
-                                                                        child:
-                                                                            Container(
-                                                                          height:
-                                                                              20,
+                                                        child: !reportsData
+                                                                .lateAbsenceReport
+                                                                .isDayOff
+                                                            ? reportsData
+                                                                        .lateAbsenceReport
+                                                                        .lateAbsenceReportUnitList
+                                                                        .length !=
+                                                                    0
+                                                                ? Column(
+                                                                    children: [
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .orange[600],
+                                                                      ),
+                                                                      DataTableHeader(),
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .orange[600],
+                                                                      ),
+                                                                      Expanded(
                                                                           child:
-                                                                              AutoSizeText(
-                                                                            getTranslated(context,
-                                                                                "لا يوجد تسجيلات بهذا الموقع"),
-                                                                            maxLines:
-                                                                                1,
-                                                                            style:
-                                                                                TextStyle(fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
-                                                                          ),
+                                                                              Container(
+                                                                        child:
+                                                                            Stack(
+                                                                          children: [
+                                                                            ListView.builder(
+                                                                                controller: _scrollController,
+                                                                                itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
+                                                                                itemBuilder: (BuildContext context, int index) {
+                                                                                  return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
+                                                                                }),
+                                                                          ],
                                                                         ),
+                                                                      )),
+                                                                      DataTableEnd(
+                                                                        lateRatio: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .lateRatio,
+                                                                        absenceRatio: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .absentRatio,
+                                                                        totalDeduction: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .totalDecutionForAllUsers,
                                                                       )
+                                                                    ],
+                                                                  )
                                                                 : Center(
                                                                     child:
                                                                         Container(
@@ -647,7 +628,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                           AutoSizeText(
                                                                         getTranslated(
                                                                             context,
-                                                                            "لا يوجد تسجيلات: يوم اجازة"),
+                                                                            "لا يوجد تسجيلات بهذا الموقع"),
                                                                         maxLines:
                                                                             1,
                                                                         style: TextStyle(
@@ -656,7 +637,27 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                                             fontWeight: FontWeight.w700),
                                                                       ),
                                                                     ),
-                                                                  )),
+                                                                  )
+                                                            : Center(
+                                                                child:
+                                                                    Container(
+                                                                  height: 20,
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تسجيلات: يوم اجازة"),
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                       ),
                                                     )
                                             ],

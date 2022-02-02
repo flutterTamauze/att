@@ -5,6 +5,7 @@ import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
+import '../../../main.dart';
 import '../../Sites_data.dart';
 
 getDailyReport(int siteIndex, String date, BuildContext context) async {
@@ -18,12 +19,13 @@ getDailyReport(int siteIndex, String date, BuildContext context) async {
     if (Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList
         .isEmpty) {
-      await Provider.of<SiteData>(context, listen: false)
+      await locator
+          .locator<SiteData>()
           .getSitesByCompanyId(
-        comProvider.com.id,
-        userProvider.user.userToken,
-        context,
-      )
+            comProvider.com.id,
+            userProvider.user.userToken,
+            context,
+          )
           .then((value) {
         print("SiteIndex $siteIndex");
       });

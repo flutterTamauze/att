@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:math';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,12 +9,12 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
-import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/GetitLocator/locator.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
-import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -26,8 +24,6 @@ import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../Core/constants.dart';
 
 // var cron1;
 // var cron2;
@@ -67,7 +63,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       if (mounted) {
         final userDataProvider = Provider.of<UserData>(context, listen: false);
-        CompanySettingsService _companyService = CompanySettingsService();
+        final CompanySettingsService _companyService = CompanySettingsService();
 
         if (userDataProvider.user.userType == 0) {
           _companyService

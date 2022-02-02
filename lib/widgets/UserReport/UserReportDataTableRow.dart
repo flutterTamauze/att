@@ -10,7 +10,7 @@ import 'package:qr_users/services/Reports/Services/report_data.dart';
 class UserDataTableRow extends StatelessWidget {
   final UserAttendanceReportUnit userAttendanceReportUnit;
 
-  UserDataTableRow(this.userAttendanceReportUnit);
+  const UserDataTableRow(this.userAttendanceReportUnit);
 
   @override
   Widget build(BuildContext context) {

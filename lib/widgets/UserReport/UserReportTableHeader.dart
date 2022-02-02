@@ -101,7 +101,8 @@ class UserReportTableHeader extends StatelessWidget {
 
 class SingleUserReportTableHeader extends StatelessWidget {
   final String lateTime, attendTime, leaveTime;
-  SingleUserReportTableHeader({this.attendTime, this.lateTime, this.leaveTime});
+  const SingleUserReportTableHeader(
+      {this.attendTime, this.lateTime, this.leaveTime});
   @override
   Widget build(BuildContext context) {
     return Container(

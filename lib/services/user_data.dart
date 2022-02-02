@@ -135,7 +135,6 @@ class UserData with ChangeNotifier {
         print("faliure occured");
         return response.code;
       } else {
-        log(response);
         print("not faliure");
         // log(response);
         decodedRes = json.decode(response);
@@ -169,7 +168,6 @@ class UserData with ChangeNotifier {
           final CompanyData comProv =
               Provider.of<CompanyData>(context, listen: false);
           if (isSuperAdmin) {
-            print(decodedRes['superAdminCompanies']);
             final obJson = decodedRes['superAdminCompanies'] as List;
             superCompaniesList.add(SuperCompaniesModel(
                 companyId: comProv.com.id, companyName: comProv.com.nameAr));
@@ -237,7 +235,7 @@ class UserData with ChangeNotifier {
                 Provider.of<UserData>(context, listen: false).user.userSiteId);
           }
 
-          log("user type ${(user.userType)}");
+          // log("user type ${(user.userType)}");
           if (user.userType == 4 || user.userType == 3) {
             print("getting super chart");
             await Provider.of<UserData>(context, listen: false)
@@ -329,7 +327,7 @@ class UserData with ChangeNotifier {
     }
 
     print(image.lengthSync());
-    log("image ${image.path}");
+    // log("image ${image.path}");
     String msg;
     print("card code $cardCode");
     print("qr code : $qrCode");
@@ -338,7 +336,7 @@ class UserData with ChangeNotifier {
       if (locationService == 0) {
         final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
         final length = await image.length();
-        final uri = Uri.parse("$baseURL/api/AttendLogin");
+        final uri = Uri.parse("$localURL/api/AttendLogin");
 
         final request = new http.MultipartRequest("POST", uri);
         final Map<String, String> headers = {
@@ -365,6 +363,7 @@ class UserData with ChangeNotifier {
             print(value);
             final Map<String, dynamic> responesDedoded = json.decode(value);
             msg = responesDedoded['message'];
+            log(responesDedoded.toString());
             print("msg is $msg");
           });
         }).catchError((e) {

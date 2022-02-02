@@ -227,7 +227,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                   child: Container(
                                                     height: 50.h,
                                                     child: AutoSizeText(
-                                                      "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة",
+                                                      getTranslated(context,
+                                                          "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة"),
                                                       maxLines: 2,
                                                       textAlign:
                                                           TextAlign.center,

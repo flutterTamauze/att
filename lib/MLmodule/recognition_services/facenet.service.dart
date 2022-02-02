@@ -43,7 +43,7 @@ class FaceNetService {
                 tflite.TfLiteGpuInferencePriority.auto,
                 tflite.TfLiteGpuInferencePriority.auto));
 
-        var interpreterOptions = tflite.InterpreterOptions()
+        final interpreterOptions = tflite.InterpreterOptions()
           ..addDelegate(gpuDelegateV2);
         this._interpreter = await tflite.Interpreter.fromAsset(
             'mobilefacenet.tflite',
@@ -53,7 +53,7 @@ class FaceNetService {
         final gpuDelegate = GpuDelegate(
           options: GpuDelegateOptions(true, TFLGpuDelegateWaitType.active),
         );
-        var interpreterOptions = tflite.InterpreterOptions()
+        final interpreterOptions = tflite.InterpreterOptions()
           ..addDelegate(gpuDelegate);
         this._interpreter = await tflite.Interpreter.fromAsset(
                 'mobilefacenet.tflite',
@@ -96,11 +96,11 @@ class FaceNetService {
   /// [face]: face detected
   List _preProcess(CameraImage image, Face faceDetected) {
     // crops the face 💇
-    imglib.Image croppedImage = _cropFace(image, faceDetected);
-    imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
+    final imglib.Image croppedImage = _cropFace(image, faceDetected);
+    final imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
 
     // transforms the cropped face to array data
-    Float32List imageAsList = imageToByteListFloat32(img);
+    final Float32List imageAsList = imageToByteListFloat32(img);
     return imageAsList;
   }
 
@@ -108,11 +108,11 @@ class FaceNetService {
   /// [cameraImage]: current image
   /// [face]: face detected
   _cropFace(CameraImage image, Face faceDetected) {
-    imglib.Image convertedImage = _convertCameraImage(image);
-    double x = faceDetected.boundingBox.left - 10.0;
-    double y = faceDetected.boundingBox.top - 10.0;
-    double w = faceDetected.boundingBox.width + 10.0;
-    double h = faceDetected.boundingBox.height + 10.0;
+    final imglib.Image convertedImage = _convertCameraImage(image);
+    final double x = faceDetected.boundingBox.left - 10.0;
+    final double y = faceDetected.boundingBox.top - 10.0;
+    final double w = faceDetected.boundingBox.width + 10.0;
+    final double h = faceDetected.boundingBox.height + 10.0;
     return imglib.copyCrop(
         convertedImage, x.round(), y.round(), w.round(), h.round());
   }
@@ -120,9 +120,9 @@ class FaceNetService {
   /// converts ___CameraImage___ type to ___Image___ type
   /// [image]: image to be converted
   imglib.Image _convertCameraImage(CameraImage image) {
-    int width = image.width;
-    int height = image.height;
-    var img = imglib.Image(width, height);
+    final int width = image.width;
+    final int height = image.height;
+    final img = imglib.Image(width, height);
     const int hexFF = 0xFF000000;
     final int uvyButtonStride = image.planes[1].bytesPerRow;
     final int uvPixelStride = image.planes[1].bytesPerPixel;
@@ -134,27 +134,27 @@ class FaceNetService {
         final yp = image.planes[0].bytes[index];
         final up = image.planes[1].bytes[uvIndex];
         final vp = image.planes[2].bytes[uvIndex];
-        int r = (yp + vp * 1436 / 1024 - 179).round().clamp(0, 255);
-        int g = (yp - up * 46549 / 131072 + 44 - vp * 93604 / 131072 + 91)
+        final int r = (yp + vp * 1436 / 1024 - 179).round().clamp(0, 255);
+        final int g = (yp - up * 46549 / 131072 + 44 - vp * 93604 / 131072 + 91)
             .round()
             .clamp(0, 255);
-        int b = (yp + up * 1814 / 1024 - 227).round().clamp(0, 255);
+        final int b = (yp + up * 1814 / 1024 - 227).round().clamp(0, 255);
         img.data[index] = hexFF | (b << 16) | (g << 8) | r;
       }
     }
-    var img1 = imglib.copyRotate(img, -90);
+    final img1 = imglib.copyRotate(img, -90);
     return img1;
   }
 
   Float32List imageToByteListFloat32(imglib.Image image) {
     /// input size = 112
-    var convertedBytes = Float32List(1 * 112 * 112 * 3);
-    var buffer = Float32List.view(convertedBytes.buffer);
+    final convertedBytes = Float32List(1 * 112 * 112 * 3);
+    final buffer = Float32List.view(convertedBytes.buffer);
     int pixelIndex = 0;
 
     for (var i = 0; i < 112; i++) {
       for (var j = 0; j < 112; j++) {
-        var pixel = image.getPixel(j, i);
+        final pixel = image.getPixel(j, i);
 
         /// mean: 128
         /// std: 128
@@ -169,7 +169,7 @@ class FaceNetService {
   /// searchs the result in the DDBB (this function should be performed by Backend)
   /// [predictedData]: Array that represents the face by the MobileFaceNet model
   double _searchResult(List predictedData) {
-    Map<String, dynamic> data = _dataBaseService.db;
+    final Map<String, dynamic> data = _dataBaseService.db;
 
     /// if no faces saved
     if (data?.length == 0) {

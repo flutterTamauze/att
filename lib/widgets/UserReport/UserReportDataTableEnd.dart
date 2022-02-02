@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class UserReprotDataTableEnd extends StatelessWidget {
   final UserAttendanceReport _attendanceReport;
 
-  UserReprotDataTableEnd(
+  const UserReprotDataTableEnd(
     this._attendanceReport,
   );
 
@@ -21,7 +21,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
         Provider.of<PermissionHan>(context, listen: false).isEnglishLocale();
     return Column(
       children: [
-        Divider(
+        const Divider(
           thickness: 1,
           color: Colors.orange,
         ),
@@ -61,7 +61,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

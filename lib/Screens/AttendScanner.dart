@@ -108,7 +108,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Failed : You can't attend outside your company!":
         Fluttertoast.showToast(
-            msg: "لا يمكنك التسجيل لشخص خارج شركتك",
+            msg: getTranslated(context, "لا يمكنك التسجيل لشخص خارج شركتك"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -160,7 +160,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Sorry : You have an holiday today!":
         Fluttertoast.showToast(
-            msg: " لم يتم التسجيل: اجازة شخصية",
+            msg: getTranslated(context, "لم يتم التسجيل : اجازة شخصية"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
@@ -168,7 +168,7 @@ class _ScanPageState extends State<ScanPage> {
         break;
       case "Fail : You can't register leave now":
         Fluttertoast.showToast(
-            msg: "لا يمكنك تسجيل الإنصراف الأن",
+            msg: getTranslated(context, "لا يمكنك تسجيل الإنصراف الأن"),
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,

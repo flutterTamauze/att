@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import '../../Core/constants.dart';
@@ -11,7 +12,7 @@ class SingleDayDatePicker extends StatelessWidget {
   final String selectedDateString;
   final Function functionPicker;
   final DateTime firstDate, lastDate;
-  SingleDayDatePicker(
+  const SingleDayDatePicker(
       {this.functionPicker,
       this.selectedDateString,
       this.firstDate,
@@ -35,15 +36,14 @@ class SingleDayDatePicker extends StatelessWidget {
         type: DateTimePickerType.date,
         firstDate: firstDate,
         lastDate: lastDate,
-        textAlign: TextAlign.right,
         decoration: kTextFieldDecorationTime.copyWith(
             hintStyle: TextStyle(
               fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
               fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
-            hintText: 'اليوم',
-            prefixIcon: Icon(
+            hintText: getTranslated(context, 'اليوم'),
+            suffixIcon: const Icon(
               Icons.access_time,
               color: Colors.orange,
             )),

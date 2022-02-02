@@ -590,7 +590,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                           TextFormField(
                                                                         enabled:
                                                                             edit,
-                                                                        style: TextStyle(
+                                                                        style: const TextStyle(
                                                                             color:
                                                                                 Colors.black,
                                                                             fontWeight: FontWeight.w500),
@@ -600,7 +600,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                             _timeOutController,
                                                                         decoration: kTextFieldDecorationFromTO.copyWith(
                                                                             hintText: getTranslated(context, "إلى"),
-                                                                            prefixIcon: Icon(
+                                                                            prefixIcon: const Icon(
                                                                               Icons.alarm,
                                                                               color: Colors.orange,
                                                                             )),
@@ -965,8 +965,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         !wednCheck ||
         !friCheck) {
       Fluttertoast.showToast(
-          msg:
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات ",
+          msg: getTranslated(context,
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات"),
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);
@@ -1010,7 +1010,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           edit = false;
         });
         Fluttertoast.showToast(
-                msg: "تم تعديل المناوبة بنجاح",
+                msg: getTranslated(
+                  context,
+                  "تم تعديل المناوبة بنجاح",
+                ),
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 1,
@@ -1023,7 +1026,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 (Route<dynamic> route) => false));
       } else if (msg == "exists") {
         Fluttertoast.showToast(
-            msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
+            msg: getTranslated(context,
+                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -1032,7 +1036,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
       } else if (msg == "failed") {
         Fluttertoast.showToast(
-            msg: "خطأ في تعديل المناوبة",
+            msg: getTranslated(context, "خطأ في تعديل المناوبة"),
             toastLength: Toast.LENGTH_SHORT,
             timeInSecForIosWeb: 1,
             gravity: ToastGravity.CENTER,
@@ -1041,7 +1045,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
       } else if (msg == "noInternet") {
         Fluttertoast.showToast(
-            msg: "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت",
+            msg: getTranslated(
+                context, "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت"),
             toastLength: Toast.LENGTH_SHORT,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
@@ -1087,8 +1092,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         !wednCheck ||
         !friCheck) {
       Fluttertoast.showToast(
-          msg:
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات",
+          msg: getTranslated(context,
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات"),
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);
@@ -1121,7 +1126,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
       if (msg == "Success") {
         Fluttertoast.showToast(
-            msg: "تمت إضافة المناوبة بنجاح",
+            msg: getTranslated(context, "تمت إضافة المناوبة بنجاح"),
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -1135,7 +1140,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             (Route<dynamic> route) => false);
       } else if (msg == "exists") {
         Fluttertoast.showToast(
-            msg: "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع",
+            msg: getTranslated(context,
+                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"),
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -1144,7 +1150,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
       } else if (msg == "failed") {
         Fluttertoast.showToast(
-            msg: "خطأ في اضافة المناوبة",
+            msg: getTranslated(context, "خطأ في اضافة المناوبة"),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -1153,7 +1159,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
       } else if (msg == "noInternet") {
         Fluttertoast.showToast(
-            msg: "خطأ في اضافة المناوبة:لايوجد اتصال بالانترنت",
+            msg: getTranslated(
+                context, "خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت"),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -1210,13 +1217,13 @@ class CircularIconButton extends StatelessWidget {
   final IconData icon;
   final onTap;
 
-  CircularIconButton({this.icon, this.onTap});
+  const CircularIconButton({this.icon, this.onTap});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
         ),
         child: CircleAvatar(
@@ -1304,9 +1311,9 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                   );
                                 },
                               );
-                              MaterialLocalizations localizations =
+                              final MaterialLocalizations localizations =
                                   MaterialLocalizations.of(context);
-                              String formattedTime =
+                              final String formattedTime =
                                   localizations.formatTimeOfDay(from,
                                       alwaysUse24HourFormat: false);
 
@@ -1339,8 +1346,9 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                   controller: widget.timeInController,
                                   decoration:
                                       kTextFieldDecorationFromTO.copyWith(
-                                          hintText: 'من',
-                                          prefixIcon: Icon(
+                                          hintText:
+                                              getTranslated(context, 'من'),
+                                          prefixIcon: const Icon(
                                             Icons.alarm,
                                             color: Colors.orange,
                                           )),
@@ -1378,9 +1386,9 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                   );
                                 },
                               );
-                              MaterialLocalizations localizations =
+                              final MaterialLocalizations localizations =
                                   MaterialLocalizations.of(context);
-                              String formattedTime2 =
+                              final String formattedTime2 =
                                   localizations.formatTimeOfDay(to,
                                       alwaysUse24HourFormat: false);
                               if (to != null) {
@@ -1411,8 +1419,9 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                                   controller: widget.timeOutController,
                                   decoration:
                                       kTextFieldDecorationFromTO.copyWith(
-                                          hintText: 'الى',
-                                          prefixIcon: Icon(
+                                          hintText:
+                                              getTranslated(context, 'إلى'),
+                                          prefixIcon: const Icon(
                                             Icons.alarm,
                                             color: Colors.orange,
                                           )),
@@ -1439,8 +1448,9 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                           child: GestureDetector(
                             onTap: () {},
                             child: AutoSizeText(
-                              "يجب ان لا تقل المدة عن 4 ساعات",
-                              style: TextStyle(
+                              getTranslated(
+                                  context, "يجب ان لا تقل المدة عن 4 ساعات"),
+                              style: const TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -1449,13 +1459,13 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                       )
                     : Container()
             : Container(),
-        SizedBox(
+        const SizedBox(
           height: 2,
         ),
-        Divider(
+        const Divider(
           thickness: 1,
         ),
-        SizedBox(
+        const SizedBox(
           height: 2,
         ),
       ],

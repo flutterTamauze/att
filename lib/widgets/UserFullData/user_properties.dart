@@ -184,7 +184,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                           "Success") {
                                         Navigator.pop(context);
                                         Fluttertoast.showToast(
-                                          msg: "تم اعادة الضبط بنجاح",
+                                          msg: getTranslated(
+                                              context, "تم اعادة الضبط بنجاح"),
                                           gravity: ToastGravity.CENTER,
                                           toastLength: Toast.LENGTH_SHORT,
                                           timeInSecForIosWeb: 1,
@@ -194,7 +195,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                         );
                                       } else {
                                         Fluttertoast.showToast(
-                                          msg: "خطأ في اعادة الضبط",
+                                          msg: getTranslated(
+                                              context, "خطأ في اعادة الضبط"),
                                           gravity: ToastGravity.CENTER,
                                           toastLength: Toast.LENGTH_SHORT,
                                           timeInSecForIosWeb: 1,
@@ -232,7 +234,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                   "السماح للمستخدم بالتسجيل بالبطاقة",
                                 ),
                                 style: TextStyle(
-                                    fontSize: setResponsiveFontSize(14)),
+                                    fontSize: setResponsiveFontSize(13)),
                               ),
                               Container(
                                 width: 20.w,
@@ -279,7 +281,7 @@ class _UserPropertiesState extends State<UserProperties> {
                               AutoSizeText(
                                 getTranslated(context, "عدم الظهور فى التقرير"),
                                 style: TextStyle(
-                                    fontSize: setResponsiveFontSize(14)),
+                                    fontSize: setResponsiveFontSize(13)),
                               ),
                               Container(
                                 width: 20.w,
@@ -504,49 +506,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                   widget.user.fcmToken,
                                   userDataProvider.id)
                               .then((value) {
-                            print("VAlue $value");
+                            print("value $value");
                             switch (value) {
-                              case "success":
-                                HuaweiServices _huawei = HuaweiServices();
-                                if (widget.user.osType == 3) {
-                                  _huawei.huaweiPostNotification(
-                                      widget.user.fcmToken,
-                                      "اثبات حضور",
-                                      "برجاء اثبات حضورك الأن",
-                                      "attend");
-                                  Fluttertoast.showToast(
-                                      msg: getTranslated(
-                                          context, "تم الأرسال بنجاح"),
-                                      backgroundColor: Colors.green,
-                                      gravity: ToastGravity.CENTER);
-                                } else
-                                  sendFcmMessage(
-                                          topicName: "",
-                                          userToken: widget.user.fcmToken,
-                                          title: getTranslated(
-                                              context, "اثبات حضور"),
-                                          category: "attend",
-                                          message: getTranslated(context,
-                                              "برجاء اثبات حضورك الأن"))
-                                      .then((value) {
-                                    if (value) {
-                                      Fluttertoast.showToast(
-                                          msg: getTranslated(
-                                              context, "تم الأرسال بنجاح"),
-                                          backgroundColor: Colors.green,
-                                          gravity: ToastGravity.CENTER);
-                                    } else {
-                                      if (value) {
-                                        Fluttertoast.showToast(
-                                            msg: getTranslated(
-                                                context, "خطأ فى الأرسال"),
-                                            backgroundColor: Colors.red,
-                                            gravity: ToastGravity.CENTER);
-                                      }
-                                    }
-                                  });
-                                break;
-
                               case "fail shift":
                                 Fluttertoast.showToast(
                                     msg: getTranslated(context,
@@ -584,8 +545,37 @@ class _UserPropertiesState extends State<UserProperties> {
                               case "fail":
                                 errorToast(context);
                                 break;
-                              default:
-                                errorToast(context);
+
+                              case "success":
+                                HuaweiServices _huawei = HuaweiServices();
+                                if (widget.user.osType == 3) {
+                                  _huawei.huaweiPostNotification(
+                                      widget.user.fcmToken,
+                                      "اثبات حضور",
+                                      "برجاء اثبات حضورك الأن",
+                                      "attend");
+                                  Fluttertoast.showToast(
+                                      msg: getTranslated(
+                                          context, "تم الأرسال بنجاح"),
+                                      backgroundColor: Colors.green,
+                                      gravity: ToastGravity.CENTER);
+                                } else
+                                  sendFcmMessage(
+                                          topicName: "",
+                                          userToken: widget.user.fcmToken,
+                                          title: "اثبات حضور",
+                                          category: "attend",
+                                          message: "برجاء اثبات حضورك الأن")
+                                      .then((value) {
+                                    if (value) {
+                                      Fluttertoast.showToast(
+                                          msg: getTranslated(
+                                              context, "تم الأرسال بنجاح"),
+                                          backgroundColor: Colors.green,
+                                          gravity: ToastGravity.CENTER);
+                                    }
+                                  });
+                                break;
                             }
                           }).then((value) => Navigator.pop(context));
                         })

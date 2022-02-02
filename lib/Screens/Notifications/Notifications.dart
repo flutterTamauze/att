@@ -39,8 +39,9 @@ class NotificationItem extends StatelessWidget {
       child:
           Consumer<NotificationDataService>(builder: (context, value, child) {
         return ClipRRect(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(35), topLeft: Radius.circular(35)),
+          borderRadius: const BorderRadius.only(
+              bottomLeft: const Radius.circular(35),
+              topLeft: Radius.circular(35)),
           child: Container(
             color: Colors.black,
             height: MediaQuery.of(context).size.height,
@@ -54,10 +55,10 @@ class NotificationItem extends StatelessWidget {
                     child: Container(
                         width: 110.w,
                         height: 110.h,
-                        child: UserPrfileImageWidget()),
+                        child: const UserPrfileImageWidget()),
                   ),
                 ),
-                Divider(
+                const Divider(
                   color: Colors.white,
                 ),
                 Center(
@@ -82,7 +83,7 @@ class NotificationItem extends StatelessWidget {
                       final notifiyProv = value.notification[index];
 
                       return Container(
-                        margin: EdgeInsets.symmetric(vertical: 3),
+                        margin: const EdgeInsets.symmetric(vertical: 3),
                         child: InkWell(
                           onTap: () async {
                             await db.readMessage(1, notifiyProv.id);
@@ -184,7 +185,7 @@ class NotificationItem extends StatelessWidget {
                         .notification
                         .isEmpty
                     ? Container()
-                    : Divider(
+                    : const Divider(
                         thickness: 1,
                         color: Colors.white,
                       ),
@@ -220,7 +221,7 @@ class NotificationItem extends StatelessWidget {
                                     );
                                   });
                             },
-                            child: FaIcon(
+                            child: const FaIcon(
                               FontAwesomeIcons.trash,
                               color: Colors.white,
                             )),
@@ -306,7 +307,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                       },
                                     );
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.menu_sharp,
                                     color: Colors.white,
                                   ),
@@ -352,7 +353,7 @@ class _NotificationsDataState extends State<NotificationsData>
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 3),
+                                const SizedBox(height: 3),
                                 Container(
                                   child: Directionality(
                                     textDirection: ui.TextDirection.rtl,
@@ -373,7 +374,7 @@ class _NotificationsDataState extends State<NotificationsData>
                       ),
                       color: widget.isSeen == 1
                           ? Colors.black45
-                          : Color(0XFF2C2C2C).withOpacity(0.4)),
+                          : const Color(0XFF2C2C2C).withOpacity(0.4)),
                 ),
               ),
               Container(

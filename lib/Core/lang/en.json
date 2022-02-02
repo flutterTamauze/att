@@ -123,6 +123,7 @@
 "التسجيل ببطاقة التعريف الشخصية":"Register By ID Card",
 "تسجيل الانصراف من":"Leave Registeration From",
 "تأكيد الموافقة على الأذن":"Permission confirmation",
+"تسجيل طلب للمستخدم :":"Assign request for :",
 "تسجيل الأنصراف":"Register Leave",
  "الأحد":"Sunday"
  , "الأثنين":"Monday",
@@ -165,6 +166,7 @@
  "كل المواقع":"All Sites",
  "الرئيسية":"Home",
  "التسجيل":"Register",
+ "خطأ في اعادة الضبط":"Reset failed",
  "إضافة مستخدم":"Add User",
  "كل المناوبات":"All Shifts",
  "اسم المستخدم":"Username",
@@ -400,6 +402,10 @@
 :"Do you want to save the edit?",
 "تم اضافة المستخدم بنجاح"
 :"User has been added successfully",
+"البريد الإلكترونى غير صحيح":
+"Invalid Email Address",
+"اختر بأسم البلد او الرقم الدولى":"Choose the name of the country or the international number",
+"يجب ان لا يتخطي البريد الإلكترونى عن 80 حرف":"Email should not exceed 80 characters",
 "خطأ في اضافة المستخدم : رقم الهاتف  مستخدم مسبقا"
 :"Error adding user: The phone number is already used",
 "خطأ في اضافة المستخدم : المستخدم موجود بالفعل"
@@ -521,7 +527,31 @@
 "عرض التقرير":"Display Report",
 "يجب ان يتم اختيار اقل من 32 يوم":
 "Less than 32 days must be selected",
-"غير مقيد بعد":"Not yet registered"
+"غير مقيد بعد":"Not yet registered",
+"يجب ان لا يتخطي البريد الإلكترةني عن 80 حرف":"Email should not exceed 80 characters",
+"يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة":"There is a vacation that has not been approved during this period",
+"تم تعديل المناوبة بنجاح":"Shift edited successfully",
+
+"خطأ في تعديل المناوبة":"Edit failed","خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت":"Edit failed : No internet connection",
+"يجب ان لا تقل المدة عن 4 ساعات":"Duration should not be less than 4 hours",
+"خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات":"Error: The time specified between the start and end of the shift\n must be greater than three hours"
+,"خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت":"Failed to add shift : No internet connection",
+"تم إضافة الأذن بنجاح":"Permession added successfully",
+"لا يمكن وضع الاجازة : يوجد مأمورية داخلية":"The holiday cannot be set: there is an internal mission",
+"يرجى الانتظار قليلا للحصول على رمز التفعيل قبل إعادة المحاولة مرة أخرى":"Please wait a bit to get the activation code before trying again",
+"تم حذف  الجدولة بنجاح":
+"Schedule deleted successfully","حذف الجدولة":"Delete Schedule",
+"هل تريد حذف الجدولة":"Do you want to delete this schedule",
+"تم حذف الجدولة بنجاح":"Schedule deleted successfully"
+, "خطأ فى الحذف":"Delete failed",
+"اختر الموقع و المناوبة":
+"Choose location and shift",
+"خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة":"Error: Today's date is less than the start of the schedule date",
+"لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة":"There are no shifts at this site\nPlease add a shift",
+"تم تغيير كلمة المرور بنجاح"
+:"Password changed successfully","خطأ في تغيير كلمة المرور":"Failed to change password",
+"رقم المستخدم غير موجود":"User number not exist"
+
 
     }
     
