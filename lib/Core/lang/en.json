@@ -324,6 +324,12 @@
     "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا"
     :"خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nPlease remove shifts first",
     "إزالة موقع":"Remove Site",
+    "حذف الإثبات":
+    "Delete Proof",
+"هل تريد حذف الإثبات":
+"Do you want to delete the proof ?",
+"خطأ في حذف الإثبات":
+"Error deleting the proof",
     "هل تريد إزالة":"Do you want to remove",
     "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"
     :"Delete error: This shift contains users. Please delete users first"

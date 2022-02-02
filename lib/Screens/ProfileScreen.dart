@@ -44,13 +44,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   GalleryMode _galleryMode = GalleryMode.image;
   List<Media> _listImagePaths = List();
   String encryptUserName(String userName) {
-    var output = [];
+    final output = [];
 
-    String encCode = "@QnhU64!z&9#Ke84hfogueb748%H&*@DghJ!kwfJLp&@A3z%s7";
-    String cUserId = "TECH/$userName/XSec";
+    final String encCode = "@QnhU64!z&9#Ke84hfogueb748%H&*@DghJ!kwfJLp&@A3z%s7";
+    final String cUserId = "TECH/$userName/XSec";
 
     for (var i = 0; i < cUserId.length; i++) {
-      var charCode = cUserId.codeUnitAt(i) ^ encCode.codeUnitAt(i);
+      final charCode = cUserId.codeUnitAt(i) ^ encCode.codeUnitAt(i);
       output.add(new String.fromCharCode(charCode));
     }
     print(output.length);
@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<File> testCompressAndGetFile({File file, String targetPath}) async {
-    var result = await FlutterImageCompress.compressAndGetFile(
+    final result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
       quality: 30,
@@ -79,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userProv = Provider.of<UserData>(context, listen: false).user;
+    final userProv = Provider.of<UserData>(context, listen: false).user;
     return Scaffold(
       body: Stack(
         children: [
@@ -104,11 +104,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .userToken
                       },
                       fit: BoxFit.fill,
-                      placeholder: (context, url) => Center(
+                      placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(
                             backgroundColor: Colors.white,
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.orange)),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.orange)),
                       ),
                       errorWidget: (context, url, error) =>
                           Provider.of<UserData>(context, listen: true)
@@ -123,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         Container(
-                          height: getkDeviceHeightFactor(context, 200.h),
+                          height: 200.h,
                           child: Center(
                             child: Container(
                               decoration: BoxDecoration(
@@ -155,9 +155,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(
                           height: 5.h,
-                        ),
-                        SizedBox(
-                          height: 10.h,
                         ),
                         UserDataField(
                           icon: Icons.title,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
@@ -46,6 +48,7 @@ class NetworkApi {
 
         // print("not faliure");
         // log("Response body : ${res.body}");
+        log(res.body);
         return res.body;
       } on TimeoutException catch (e) {
         print("timeout occured $e");

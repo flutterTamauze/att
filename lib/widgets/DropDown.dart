@@ -78,7 +78,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
                                 ),
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ));
                 }).toList(),

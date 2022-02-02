@@ -357,8 +357,11 @@ const kTextFieldDecorationFromTO = InputDecoration(
   isDense: true,
   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
   hintText: 'Enter a value',
-  hintStyle:
-      TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w500),
+  hintStyle: TextStyle(
+    color: Colors.black,
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  ),
   fillColor: Colors.white,
   filled: true,
   disabledBorder: OutlineInputBorder(
