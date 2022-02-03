@@ -1,34 +1,34 @@
 import 'dart:developer';
 import 'dart:ui' as ui;
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//Update Kotlin to '1.3.50' to '1.4.21'
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart'
+    as intlPhone;
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UsersScreen.dart';
-import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/Sites_data.dart';
-import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/UserFullData/editUser.dart';
 import 'package:qr_users/widgets/headers.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart'
-    as intlPhone;
+
+import 'UsersScreen.dart';
 
 class AddUserScreen extends StatefulWidget {
   final Member member;

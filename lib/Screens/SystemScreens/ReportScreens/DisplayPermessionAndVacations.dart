@@ -111,8 +111,8 @@ class _VacationAndPermessionsReportState
                   Container(
                     width: 330.w,
                     child: Provider.of<MemberData>(context).loadingSearch
-                        ? Center(
-                            child: CircularProgressIndicator(
+                        ? const Center(
+                            child: const CircularProgressIndicator(
                             backgroundColor: Colors.orange,
                           ))
                         : searchTextField = AutoCompleteTextField<SearchMember>(
@@ -168,7 +168,7 @@ class _VacationAndPermessionsReportState
                                 //     color: Colors.orange,
                                 //   ),
                                 // ),
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.person,
                                   color: Colors.orange,
                                 )),
@@ -333,7 +333,6 @@ class _VacationAndPermessionsReportState
                                           child: AutoSizeText(
                                             item.username,
                                             maxLines: 1,
-                                            textAlign: TextAlign.right,
                                             style: TextStyle(
                                                 fontSize: ScreenUtil().setSp(16,
                                                     allowFontScalingSelf: true),
@@ -343,7 +342,7 @@ class _VacationAndPermessionsReportState
                                         ),
                                       ],
                                     ),
-                                    Divider(
+                                    const Divider(
                                       color: Colors.grey,
                                       thickness: 1,
                                     ),
@@ -484,23 +483,28 @@ class _VacationAndPermessionsReportState
                           title: getTranslated(context, "المأموريات"),
                           onchannge: (value) {
                             setState(() {
-                              searchTextField.textField.controller.text =
-                                  userName;
+                              if (!showSearchIcon) {
+                                searchTextField.textField.controller.text =
+                                    userName;
+                              }
                               radioVal2 = value;
-                              if (Provider.of<MissionsData>(context,
+                              if (_nameController.text.isNotEmpty) {
+                                if (Provider.of<MissionsData>(context,
+                                            listen: false)
+                                        .singleUserMissionsList
+                                        .isEmpty &&
+                                    _sendMissionRequest == false) {
+                                  _sendMissionRequest = true;
+                                  getMission = Provider.of<MissionsData>(
+                                          context,
                                           listen: false)
-                                      .singleUserMissionsList
-                                      .isEmpty &&
-                                  _sendMissionRequest == false) {
-                                _sendMissionRequest = true;
-                                getMission = Provider.of<MissionsData>(context,
-                                        listen: false)
-                                    .getSingleUserMissions(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
+                                      .getSingleUserMissions(
+                                          userId,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                }
                               }
                             });
                           },
@@ -511,24 +515,29 @@ class _VacationAndPermessionsReportState
                           title: getTranslated(context, "الأجازات"),
                           onchannge: (value) {
                             setState(() {
-                              searchTextField.textField.controller.text =
-                                  userName;
+                              if (!showSearchIcon) {
+                                searchTextField.textField.controller.text =
+                                    userName;
+                              }
+
                               radioVal2 = value;
-                              if (Provider.of<UserHolidaysData>(context,
+                              if (_nameController.text.isNotEmpty) {
+                                if (Provider.of<UserHolidaysData>(context,
+                                            listen: false)
+                                        .singleUserHoliday
+                                        .isEmpty &&
+                                    _sendVacationRequest == false) {
+                                  _sendVacationRequest = true;
+                                  getHoliday = Provider.of<UserHolidaysData>(
+                                          context,
                                           listen: false)
-                                      .singleUserHoliday
-                                      .isEmpty &&
-                                  _sendVacationRequest == false) {
-                                _sendVacationRequest = true;
-                                getHoliday = Provider.of<UserHolidaysData>(
-                                        context,
-                                        listen: false)
-                                    .getSingleUserHoliday(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
+                                      .getSingleUserHoliday(
+                                          userId,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                }
                               }
                             });
                           },
@@ -539,25 +548,29 @@ class _VacationAndPermessionsReportState
                           title: getTranslated(context, "الأذونات"),
                           onchannge: (value) {
                             setState(() {
-                              print(userName);
-                              searchTextField.textField.controller.text =
-                                  userName;
+                              if (!showSearchIcon) {
+                                searchTextField.textField.controller.text =
+                                    userName;
+                              }
+
                               radioVal2 = value;
-                              if (Provider.of<UserPermessionsData>(context,
+                              if (_nameController.text.isNotEmpty) {
+                                if (Provider.of<UserPermessionsData>(context,
+                                            listen: false)
+                                        .singleUserPermessions
+                                        .isEmpty &&
+                                    _sendPermRequest == false) {
+                                  _sendPermRequest = true;
+                                  getPerm = Provider.of<UserPermessionsData>(
+                                          context,
                                           listen: false)
-                                      .singleUserPermessions
-                                      .isEmpty &&
-                                  _sendPermRequest == false) {
-                                _sendPermRequest = true;
-                                getPerm = Provider.of<UserPermessionsData>(
-                                        context,
-                                        listen: false)
-                                    .getSingleUserPermession(
-                                        userId,
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken);
+                                      .getSingleUserPermession(
+                                          userId,
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken);
+                                }
                               }
                             });
                           },

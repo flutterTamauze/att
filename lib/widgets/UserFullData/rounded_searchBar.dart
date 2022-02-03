@@ -165,7 +165,8 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                 Provider.of<SiteData>(context)
                                                         .siteValue !=
                                                     "كل المواقع"
-                                            ? AutoSizeText("لا يوجد مناوبات")
+                                            ? AutoSizeText(getTranslated(
+                                                context, "لا يوجد مناوبات"))
                                             : AutoSizeText(getTranslated(
                                                 context, "كل المناوبات")),
                                         value: prov.siteValue == "كل المواقع"
@@ -199,7 +200,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                       Icons.alarm,
                       color: Colors.orange[600],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Flexible(
@@ -211,7 +212,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                               builder: (context, value, child) {
                                 return DropdownButton(
                                   isExpanded: true,
-                                  underline: SizedBox(),
+                                  underline: const SizedBox(),
                                   elevation: 5,
                                   items: widget.list
                                       .map((value) => DropdownMenuItem(
@@ -307,13 +308,14 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                     height: 44.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xff4a4a4a), width: 1.0),
-                                      borderRadius: BorderRadius.only(
+                                          color: const Color(0xff4a4a4a),
+                                          width: 1.0),
+                                      borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           bottomLeft: Radius.circular(10)),
                                       color: Colors.orange[500],
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.search,
                                       color: Colors.white,
                                     ),
@@ -329,14 +331,15 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                       height: 44.h,
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Color(0xff4a4a4a),
+                                            color: const Color(0xff4a4a4a),
                                             width: 1.0),
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10)),
+                                            bottomLeft:
+                                                const Radius.circular(10)),
                                         color: Colors.orange[500],
                                       ),
-                                      child: Icon(FontAwesomeIcons.times,
+                                      child: const Icon(FontAwesomeIcons.times,
                                           color: Colors.white),
                                     ),
                                   ),
@@ -345,7 +348,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                         Expanded(
                           flex: 4,
                           child: Container(
-                              decoration: BoxDecoration(),
+                              decoration: const BoxDecoration(),
                               height: 44.0.h,
                               child: Stack(
                                 overflow: Overflow.visible,
@@ -385,13 +388,14 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                 allowFontScalingSelf: true,
                                               ),
                                             ),
-                                            fillColor: Color(0xFFE9E9E9),
-                                            contentPadding: EdgeInsets.only(
-                                                left: 11,
-                                                right: 13,
-                                                top: 20,
-                                                bottom: 14),
-                                            errorStyle: TextStyle(
+                                            fillColor: const Color(0xFFE9E9E9),
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    left: 11,
+                                                    right: 13,
+                                                    top: 20,
+                                                    bottom: 14),
+                                            errorStyle: const TextStyle(
                                               fontSize: 13,
                                               height: 0.7,
                                             ),
@@ -422,10 +426,10 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                           Expanded(
                             flex: 4,
                             child: Container(
-                                decoration: BoxDecoration(),
+                                decoration: const BoxDecoration(),
                                 height: 44.0.h,
                                 child: Stack(
-                                  overflow: Overflow.visible,
+                                  clipBehavior: Clip.none,
                                   children: [
                                     TextFormField(
                                       onFieldSubmitted: (_) async {
@@ -510,14 +514,14 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                       height: 44.h,
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Color(0xff4a4a4a),
+                                            color: const Color(0xff4a4a4a),
                                             width: 1.0),
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(10),
                                             bottomLeft: Radius.circular(10)),
                                         color: Colors.orange[500],
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.search,
                                         color: Colors.white,
                                       ),
@@ -533,14 +537,15 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                         height: 44.h,
                                         decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Color(0xff4a4a4a),
+                                              color: const Color(0xff4a4a4a),
                                               width: 1.0),
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               bottomLeft: Radius.circular(10)),
                                           color: Colors.orange[500],
                                         ),
-                                        child: Icon(FontAwesomeIcons.times,
+                                        child: const Icon(
+                                            FontAwesomeIcons.times,
                                             color: Colors.white),
                                       ),
                                     ),

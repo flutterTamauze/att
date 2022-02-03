@@ -65,18 +65,15 @@ class SiteShiftsData with ChangeNotifier {
   getAllSitesAndShifts(int companyId, String userToken) async {
     siteShiftList.clear();
     sites.clear();
-    final DateTime preTime = DateTime.now();
     final response = await http
         .get(Uri.parse(("$baseURL/api/Company/$companyId")), headers: {
       'Authorization': "Bearer $userToken",
       "Accept": "application/json"
     });
-    log(response.body);
+
     print("get all siteshift response code ${response.statusCode}");
     final decodedResponse = json.decode(response.body);
-    final DateTime postTime = DateTime.now();
-    print(
-        "SiteShiftData Request Code : ${response.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
+
     if (response.statusCode == 200) {
       if (decodedResponse["message"] == "Success") {
         final responseObj = jsonDecode(response.body)['data'] as List;
@@ -85,7 +82,6 @@ class SiteShiftsData with ChangeNotifier {
           ...responseObj.map((json) => SiteShiftsModel.fromJson(json)).toList()
         ];
         // log("got all the needed data successfully !! ${siteShiftList.length}");
-        print(siteShiftList.length);
         if (sites.isEmpty) {
           for (int i = 0; i < siteShiftList.length; i++) {
             sites.add(Site(
@@ -97,7 +93,6 @@ class SiteShiftsData with ChangeNotifier {
           );
         }
 
-        print(sites.length);
         notifyListeners();
       }
     }

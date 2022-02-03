@@ -90,9 +90,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
     setState(() {
       isLoading = true;
     });
-    // await getData(Provider.of<SiteShiftsData>(context, listen: false)
-    //     .siteShiftList[siteId]
-    //     .siteId);
+    await (Provider.of<SiteShiftsData>(context, listen: false)
+        .getShiftsList(siteName, false));
 
     setState(() {
       isLoading = false;
@@ -243,210 +242,183 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                     ),
                                                   ),
                                                 )
-                                              : ListView.builder(
-                                                  itemCount: value
-                                                      .dropDownShifts.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return ShiftTile(
-                                                      shifts:
-                                                          value.dropDownShifts[
+                                              : SmartRefresher(
+                                                  onRefresh: _onRefresh,
+                                                  controller: refreshController,
+                                                  enablePullDown: true,
+                                                  header:
+                                                      WaterDropMaterialHeader(
+                                                    color: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  ),
+                                                  child: ListView.builder(
+                                                      itemCount: value
+                                                          .dropDownShifts
+                                                          .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return ShiftTile(
+                                                          shifts: value
+                                                                  .dropDownShifts[
                                                               index],
-                                                      slidableController:
-                                                          slidableController,
-                                                      siteName: value
-                                                          .dropDownShifts[index]
-                                                          .shiftName,
-                                                      siteIndex: siteId,
-                                                      index: index,
-                                                      // shift: value
-                                                      //     .shifts[index],
-                                                      onTapDelete: () {
-                                                        final token =
-                                                            Provider.of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
-                                                                .userToken;
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return RoundedAlert(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return RoundedLoadingIndicator();
-                                                                        });
-                                                                    var msg = await shiftsData.deleteShift(
-                                                                        value
-                                                                            .dropDownShifts[index]
-                                                                            .shiftId,
-                                                                        token,
-                                                                        index,
-                                                                        context);
-
-                                                                    if (msg ==
-                                                                        "Success") {
-                                                                      Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
-                                                                          Provider.of<SiteShiftsData>(context, listen: false)
-                                                                              .siteShiftList[widget.siteIndex]
-                                                                              .siteName,
-                                                                          false);
-                                                                      // Navigator.pop(context);
-                                                                      Fluttertoast.showToast(
-                                                                          msg: getTranslated(context,
-                                                                              "تم الحذف بنجاح"),
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          backgroundColor: Colors
-                                                                              .green,
-                                                                          gravity: ToastGravity
-                                                                              .CENTER,
-                                                                          textColor: Colors
-                                                                              .white,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf: true));
-                                                                    } else if (msg ==
-                                                                        "hasData") {
-                                                                      Fluttertoast.showToast(
-                                                                          msg: getTranslated(context,
-                                                                              "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"),
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          gravity: ToastGravity
-                                                                              .CENTER,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          backgroundColor: Colors
-                                                                              .red,
-                                                                          textColor: Colors
-                                                                              .black,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf: true));
-                                                                    } else if (msg ==
-                                                                        "failed") {
-                                                                      Fluttertoast.showToast(
-                                                                          msg: getTranslated(context,
-                                                                              "خطأ في الحذف"),
-                                                                          gravity: ToastGravity
-                                                                              .CENTER,
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          backgroundColor: Colors
-                                                                              .red,
-                                                                          textColor: Colors
-                                                                              .black,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf: true));
-                                                                    } else if (msg ==
-                                                                        "noInternet") {
-                                                                      Fluttertoast.showToast(
-                                                                          msg: getTranslated(context,
-                                                                              "خطأ في الحذف : لا يوجد اتصال بالانترنت"),
-                                                                          gravity: ToastGravity
-                                                                              .CENTER,
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          backgroundColor: Colors
-                                                                              .red,
-                                                                          textColor: Colors
-                                                                              .black,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf: true));
-                                                                    } else {
-                                                                      Fluttertoast.showToast(
-                                                                          msg: getTranslated(context,
-                                                                              "خطأ في الحذف"),
-                                                                          gravity: ToastGravity
-                                                                              .CENTER,
-                                                                          toastLength: Toast
-                                                                              .LENGTH_SHORT,
-                                                                          timeInSecForIosWeb:
-                                                                              1,
-                                                                          backgroundColor: Colors
-                                                                              .red,
-                                                                          textColor: Colors
-                                                                              .black,
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf: true));
-                                                                    }
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  title: getTranslated(
-                                                                      context,
-                                                                      'إزالة مناوبة'),
-                                                                  content:
-                                                                      "${getTranslated(context, "هل تريد إزالة")} ${value.dropDownShifts[index].shiftName} ؟");
-                                                            });
-                                                      },
-                                                      onTapEdit: () async {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return RoundedLoadingIndicator();
-                                                            });
-                                                        await Provider.of<
-                                                                    ShiftApi>(
-                                                                context,
-                                                                listen: false)
-                                                            .getShiftByShiftId(
-                                                                value
-                                                                    .dropDownShifts[
-                                                                        index]
-                                                                    .shiftId,
+                                                          slidableController:
+                                                              slidableController,
+                                                          siteName: value
+                                                              .dropDownShifts[
+                                                                  index]
+                                                              .shiftName,
+                                                          siteIndex: siteId,
+                                                          index: index,
+                                                          // shift: value
+                                                          //     .shifts[index],
+                                                          onTapDelete: () {
+                                                            final token =
                                                                 Provider.of<UserData>(
                                                                         context,
                                                                         listen:
                                                                             false)
                                                                     .user
-                                                                    .userToken);
+                                                                    .userToken;
+                                                            return showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return RoundedAlert(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        showDialog(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (BuildContext context) {
+                                                                              return RoundedLoadingIndicator();
+                                                                            });
+                                                                        var msg = await shiftsData.deleteShift(
+                                                                            value.dropDownShifts[index].shiftId,
+                                                                            token,
+                                                                            index,
+                                                                            context);
 
-                                                        Navigator.pop(context);
+                                                                        if (msg ==
+                                                                            "Success") {
+                                                                          Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+                                                                              Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[widget.siteIndex].siteName,
+                                                                              false);
+                                                                          // Navigator.pop(context);
+                                                                          Fluttertoast.showToast(
+                                                                              msg: getTranslated(context, "تم الحذف بنجاح"),
+                                                                              toastLength: Toast.LENGTH_SHORT,
+                                                                              timeInSecForIosWeb: 1,
+                                                                              backgroundColor: Colors.green,
+                                                                              gravity: ToastGravity.CENTER,
+                                                                              textColor: Colors.white,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                        } else if (msg ==
+                                                                            "hasData") {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: getTranslated(context, "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"),
+                                                                              toastLength: Toast.LENGTH_SHORT,
+                                                                              gravity: ToastGravity.CENTER,
+                                                                              timeInSecForIosWeb: 1,
+                                                                              backgroundColor: Colors.red,
+                                                                              textColor: Colors.black,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                        } else if (msg ==
+                                                                            "failed") {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: getTranslated(context, "خطأ في الحذف"),
+                                                                              gravity: ToastGravity.CENTER,
+                                                                              toastLength: Toast.LENGTH_SHORT,
+                                                                              timeInSecForIosWeb: 1,
+                                                                              backgroundColor: Colors.red,
+                                                                              textColor: Colors.black,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                        } else if (msg ==
+                                                                            "noInternet") {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: getTranslated(context, "خطأ في الحذف : لا يوجد اتصال بالانترنت"),
+                                                                              gravity: ToastGravity.CENTER,
+                                                                              toastLength: Toast.LENGTH_SHORT,
+                                                                              timeInSecForIosWeb: 1,
+                                                                              backgroundColor: Colors.red,
+                                                                              textColor: Colors.black,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                        } else {
+                                                                          Fluttertoast.showToast(
+                                                                              msg: getTranslated(context, "خطأ في الحذف"),
+                                                                              gravity: ToastGravity.CENTER,
+                                                                              toastLength: Toast.LENGTH_SHORT,
+                                                                              timeInSecForIosWeb: 1,
+                                                                              backgroundColor: Colors.red,
+                                                                              textColor: Colors.black,
+                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+                                                                        }
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      title: getTranslated(
+                                                                          context,
+                                                                          'إزالة مناوبة'),
+                                                                      content:
+                                                                          "${getTranslated(context, "هل تريد إزالة")} ${value.dropDownShifts[index].shiftName} ؟");
+                                                                });
+                                                          },
+                                                          onTapEdit: () async {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return RoundedLoadingIndicator();
+                                                                });
+                                                            await Provider.of<
+                                                                        ShiftApi>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .getShiftByShiftId(
+                                                                    value
+                                                                        .dropDownShifts[
+                                                                            index]
+                                                                        .shiftId,
+                                                                    Provider.of<UserData>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .user
+                                                                        .userToken);
 
-                                                        Navigator.of(context)
-                                                            .push(
-                                                          new MaterialPageRoute(
-                                                            builder: (context) => AddShiftScreen(
-                                                                Provider.of<ShiftApi>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .userShift,
-                                                                index,
-                                                                true,
-                                                                siteId,
-                                                                widget
-                                                                    .siteIndex),
-                                                          ),
+                                                            Navigator.pop(
+                                                                context);
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                              new MaterialPageRoute(
+                                                                builder: (context) => AddShiftScreen(
+                                                                    Provider.of<ShiftApi>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .userShift,
+                                                                    index,
+                                                                    true,
+                                                                    siteId,
+                                                                    widget
+                                                                        .siteIndex),
+                                                              ),
+                                                            );
+                                                          },
                                                         );
-                                                      },
-                                                    );
-                                                  }));
+                                                      }),
+                                                ));
                                 },
                               ),
                             ],
@@ -483,7 +455,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                   Provider.of<UserData>(context, listen: false).user.userType ==
                           4
                       ? MultipleFloatingButtons(
-                          mainTitle: "إضافة مناوبة",
+                          mainTitle: getTranslated(context, "إضافة مناوبة"),
                           shiftName: "",
                           siteId: siteId,
                           comingFromShifts: false,

@@ -372,6 +372,11 @@ class SiteData with ChangeNotifier {
                     shifts: [], siteId: newSite.id, siteName: newSite.name));
             sitesList.add(newSite);
             dropDownSitesList.add(newSite);
+            Provider.of<SiteShiftsData>(context, listen: false).sites.add(Site(
+                id: newSite.id,
+                lat: newSite.lat,
+                long: newSite.long,
+                name: newSite.name));
             filSitesStringsList(context);
             await sendFcmDataOnly(
                 category: "reloadData",

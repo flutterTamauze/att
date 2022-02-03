@@ -85,20 +85,18 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: SmallDirectoriesHeader(
-                                  Lottie.asset("resources/locaitonss.json",
-                                      repeat: false),
-                                  (!widget.isEdit)
-                                      ? "إضافة مواقع"
-                                      : "تعديل المواقع"),
-                            ),
+                            SmallDirectoriesHeader(
+                                Lottie.asset("resources/locaitonss.json",
+                                    repeat: false),
+                                (!widget.isEdit)
+                                    ? getTranslated(context, "إضافة مواقع")
+                                    : "تعديل مواقع"),
                             SizedBox(
                               height: 30.h,
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -108,7 +106,6 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       enabled: edit,
                                       onFieldSubmitted: (_) {},
                                       textInputAction: TextInputAction.done,
-                                      textAlign: TextAlign.right,
                                       validator: (text) {
                                         if (text.length == 0) {
                                           return getTranslated(
@@ -121,7 +118,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       controller: _title,
                                       decoration:
                                           kTextFieldDecorationWhite.copyWith(
-                                              hintText: 'اسم الموقع',
+                                              hintText: getTranslated(
+                                                  context, 'اسم الموقع'),
                                               suffixIcon: Icon(
                                                 Icons.title,
                                                 color: Colors.orange,
@@ -146,7 +144,6 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                         child: TextFormField(
                                           enabled: false,
                                           textInputAction: TextInputAction.next,
-                                          textAlign: TextAlign.right,
                                           controller: _lat,
                                           decoration: kTextFieldDecorationWhite
                                               .copyWith(
@@ -177,7 +174,6 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                         child: TextFormField(
                                           enabled: false,
                                           textInputAction: TextInputAction.next,
-                                          textAlign: TextAlign.right,
                                           controller: _long,
                                           decoration: kTextFieldDecorationWhite
                                               .copyWith(
@@ -211,12 +207,12 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                               context,
                                               listen: false)
                                           .com;
-                                      var userToken = Provider.of<UserData>(
+                                      final userToken = Provider.of<UserData>(
                                               context,
                                               listen: false)
                                           .user
                                           .userToken;
-                                      var msg = await Provider.of<SiteData>(
+                                      final msg = await Provider.of<SiteData>(
                                               context,
                                               listen: false)
                                           .addSite(

@@ -324,6 +324,12 @@
     "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا"
     :"خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nPlease remove shifts first",
     "إزالة موقع":"Remove Site",
+    "حذف الإثبات":
+    "Delete Proof",
+"هل تريد حذف الإثبات":
+"Do you want to delete the proof ?",
+"خطأ في حذف الإثبات":
+"Error deleting the proof",
     "هل تريد إزالة":"Do you want to remove",
     "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"
     :"Delete error: This shift contains users. Please delete users first"
@@ -449,6 +455,7 @@
 "اثبات حضور":"Attend Proof",
 "برجاء اثبات حضورك قبل انتهاء الوقت المحدد"
 :"برجاء اثبات حضورك قبل انتهاء الوقت المحدد",
+
 "تم اثبات الحضور بنجاح"
 :"Attendance has been confirmed",
 "اثبات"
@@ -531,10 +538,11 @@
 "يجب ان لا يتخطي البريد الإلكترةني عن 80 حرف":"Email should not exceed 80 characters",
 "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة":"There is a vacation that has not been approved during this period",
 "تم تعديل المناوبة بنجاح":"Shift edited successfully",
-
+"تمت إضافة المناوبة بنجاح"
+:"Shift added successfully",
 "خطأ في تعديل المناوبة":"Edit failed","خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت":"Edit failed : No internet connection",
 "يجب ان لا تقل المدة عن 4 ساعات":"Duration should not be less than 4 hours",
-"خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات":"Error: The time specified between the start and end of the shift\n must be greater than three hours"
+"خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من اربع ساعات":"Error: The time specified between the start and end of the shift\n must be greater than four hours"
 ,"خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت":"Failed to add shift : No internet connection",
 "تم إضافة الأذن بنجاح":"Permession added successfully",
 "لا يمكن وضع الاجازة : يوجد مأمورية داخلية":"The holiday cannot be set: there is an internal mission",
@@ -550,8 +558,23 @@
 "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة":"There are no shifts at this site\nPlease add a shift",
 "تم تغيير كلمة المرور بنجاح"
 :"Password changed successfully","خطأ في تغيير كلمة المرور":"Failed to change password",
-"رقم المستخدم غير موجود":"User number not exist"
-
+"رقم المستخدم غير موجود":"User number not exist",
+"اسم الموقع":"Site name",
+"إضافة مواقع":
+"Add Sites" , 
+"تعديل مواقع"
+:"Edit Sites",
+"إضافة مناوبة":
+"Add Shift",
+"تعديل المناوبة":"Edit Shift",
+"لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا":
+"There are no shifts for this site ,Please add shift first",
+"تعديل مناوبة":"Edit Shift",
+"تم اضافة الموقع بنجاح":"Site added successfully"
+,"اسم المناوبة":
+"Shift name",
+"يجب ان لا يزيد اسم المناوبة عن 25 حرف":"Shift name must not exceed 25 characters",
+"برجاء العلم ان مواعيد المناوبة من":"Please note that the shift timings are from "
 
     }
     
