@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/LateCommersScreen.dart';
@@ -164,9 +165,9 @@ class ReportTile extends StatelessWidget {
           ),
         ),
         subtitle: Container(
-          height: 20,
           child: AutoSizeText(
             subTitle,
+            style: TextStyle(fontSize: setResponsiveFontSize(13)),
             maxLines: 1,
           ),
         ),

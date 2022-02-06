@@ -24,74 +24,47 @@ class DataTableMissionRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-              height: 30.h,
-              child: Center(
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  height: 30.h,
-                  child: AutoSizeText(
-                    isExternal()
-                        ? getTranslated(context, "خارجية")
-                        : getTranslated(context, "داخلية"),
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontSize:
-                          ScreenUtil().setSp(14, allowFontScalingSelf: true),
-                    ),
-                  ),
-                ),
-              )),
-          Container(
-            height: 35.h,
-            child: Center(
               child: Container(
-                alignment: Alignment.center,
-                height: 20.h,
-                child: AutoSizeText(
-                  _holidays.fromdate.toString().substring(0, 11),
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize:
-                        ScreenUtil().setSp(13, allowFontScalingSelf: true),
-                  ),
-                  textAlign: TextAlign.center,
+            width: 60.w,
+            child: AutoSizeText(
+              isExternal()
+                  ? getTranslated(context, "خارجية")
+                  : getTranslated(context, "داخلية"),
+              maxLines: 2,
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(14, allowFontScalingSelf: true),
+              ),
+            ),
+          )),
+          Container(
+            child: Container(
+              child: AutoSizeText(
+                _holidays.fromdate.toString().substring(0, 11),
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(13, allowFontScalingSelf: true),
                 ),
               ),
             ),
           ),
           _holidays.fromdate.isBefore(_holidays.toDate)
               ? Container(
-                  height: 30.h,
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 20.h,
-                      child: AutoSizeText(
-                        _holidays.toDate.toString().substring(0, 11),
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: ScreenUtil()
-                              .setSp(13, allowFontScalingSelf: true),
-                        ),
-                      ),
+                  child: AutoSizeText(
+                    _holidays.toDate.toString().substring(0, 11),
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize:
+                          ScreenUtil().setSp(13, allowFontScalingSelf: true),
                     ),
                   ),
                 )
               : Container(
-                  height: 35.h,
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 20.h,
-                      child: AutoSizeText(
-                        _holidays.fromdate.toString().substring(0, 11),
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: ScreenUtil()
-                              .setSp(13, allowFontScalingSelf: true),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                  child: AutoSizeText(
+                    _holidays.fromdate.toString().substring(0, 11),
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize:
+                          ScreenUtil().setSp(13, allowFontScalingSelf: true),
                     ),
                   ),
                 ),

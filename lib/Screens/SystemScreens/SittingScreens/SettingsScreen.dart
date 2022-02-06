@@ -93,7 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       getTranslated(context, "ادارة المواقع"),
                                   icon: Icons.location_on,
                                   onTap: () async {
-                                    var bool = await userDataProvider
+                                    final bool = await userDataProvider
                                         .isConnectedToInternet(
                                             "www.google.com");
                                     if (bool) {
@@ -169,10 +169,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               icon: Icons.person,
                               onTap: () async {
                                 if (userProvider.user.userType == 2) {
-                                  var siteShiftData =
+                                  final siteShiftData =
                                       Provider.of<SiteShiftsData>(context,
                                           listen: false);
-                                  var siteProv = Provider.of<SiteData>(context,
+                                  final siteProv = Provider.of<SiteData>(
+                                      context,
                                       listen: false);
 
                                   if (userProvider.user.userType == 4 ||
@@ -193,7 +194,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                                   siteProv.setDropDownShift(
                                       0); //الموقع علي حسب ال اندكس اللي
+                                  // ignore: cascade_invocations
                                   siteProv.setDropDownShift(0);
+                                  // ignore: cascade_invocations
                                   siteProv.setDropDownIndex(
                                       userDataProvider.user.userSiteId);
 
@@ -206,45 +209,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ),
                                   );
                                 } else {
-                                  var networkStatus = await userDataProvider
-                                      .isConnectedToInternet("www.google.com");
-                                  if (networkStatus) {
-                                    Provider.of<SiteData>(context,
-                                            listen: false)
-                                        .setSiteValue("كل المواقع");
-                                    Provider.of<SiteData>(context,
-                                            listen: false)
-                                        .setDropDownIndex(0);
-                                    if (Provider.of<SiteData>(context,
-                                            listen: false)
-                                        .sitesList
-                                        .isEmpty) {
-                                      await Provider.of<SiteData>(context,
-                                              listen: false)
-                                          .getSitesByCompanyId(
-                                        comProvier.com.id,
-                                        userProvider.user.userToken,
-                                        context,
-                                      )
-                                          .then((value) async {
-                                        print("Got Sites");
-                                      });
-                                    }
-
-                                    Navigator.of(context).push(
-                                      new MaterialPageRoute(
-                                        builder: (context) =>
-                                            UsersScreen(-1, false, ""),
-                                      ),
-                                    );
-                                  } else {
-                                    Navigator.of(context).push(
-                                      new MaterialPageRoute(
-                                        builder: (context) => ErrorScreen(
-                                            "لا يوجد اتصال بالانترنت", false),
-                                      ),
-                                    );
-                                  }
+                                  Navigator.of(context).push(
+                                    new MaterialPageRoute(
+                                      builder: (context) =>
+                                          UsersScreen(-1, false, ""),
+                                    ),
+                                  );
                                 }
                               }),
                           userProvider.user.userType == 2
@@ -256,7 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       context, "ادارة اعدادات الشركة"),
                                   icon: Icons.settings,
                                   onTap: () async {
-                                    var bool = await userDataProvider
+                                    final bool = await userDataProvider
                                         .isConnectedToInternet(
                                             "www.google.com");
                                     if (bool) {

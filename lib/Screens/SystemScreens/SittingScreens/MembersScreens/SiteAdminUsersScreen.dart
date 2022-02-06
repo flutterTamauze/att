@@ -28,6 +28,7 @@ import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -527,7 +528,9 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                               }
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-
+                                  return const Center(
+                                    child: const LoadingIndicator(),
+                                  );
                                 case ConnectionState.done:
                                   if (Provider.of<MemberData>(context)
                                               .allPageIndex !=
@@ -539,13 +542,18 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                       Provider.of<MemberData>(context)
                                               .loadingShifts ==
                                           false) {
-                                    Timer(
-                                      const Duration(milliseconds: 1),
-                                      () => _scrollController.jumpTo(
-                                          _scrollController
-                                                  .position.maxScrollExtent -
-                                              10),
-                                    );
+                                    if (Provider.of<UserData>(context)
+                                            .user
+                                            .userType !=
+                                        2) {
+                                      Timer(
+                                        const Duration(milliseconds: 1),
+                                        () => _scrollController.jumpTo(
+                                            _scrollController
+                                                    .position.maxScrollExtent -
+                                                10),
+                                      );
+                                    }
                                   }
                                   return Column(
                                     children: [

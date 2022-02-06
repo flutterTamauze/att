@@ -91,8 +91,9 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                   Lottie.asset("resources/locaitonss.json",
                                       repeat: false),
                                   (!widget.isEdit)
-                                      ? "إضافة مواقع"
-                                      : "تعديل المواقع"),
+                                      ? getTranslated(context, "إضافة موقع")
+                                      : getTranslated(
+                                          context, "تعديل المواقع")),
                             ),
                             SizedBox(
                               height: 30.h,

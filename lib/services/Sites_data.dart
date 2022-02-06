@@ -370,6 +370,11 @@ class SiteData with ChangeNotifier {
                 .siteShiftList
                 .add(SiteShiftsModel(
                     shifts: [], siteId: newSite.id, siteName: newSite.name));
+            Provider.of<SiteShiftsData>(context, listen: false).sites.add(Site(
+                lat: newSite.lat,
+                long: newSite.long,
+                id: newSite.id,
+                name: newSite.name));
             sitesList.add(newSite);
             dropDownSitesList.add(newSite);
             filSitesStringsList(context);

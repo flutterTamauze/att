@@ -56,13 +56,41 @@ class ShiftApi with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     try {
-      HuaweiServices _huawi = HuaweiServices();
+      final HuaweiServices _huawi = HuaweiServices();
       if (Platform.isAndroid) {
         if (await _huawi.isHuaweiDevice()) {
           await _huawi.getHuaweiCurrentLocation().then((value) {
             currentHuaweiLocation = value;
           });
           return 0;
+        } else {
+          if (await Permission.location.isGranted) {
+            bool enabled = false;
+            enabled = await Geolocator.isLocationServiceEnabled();
+            if (enabled) {
+              final bool isMockLocation = await TrustLocation.isMockLocation;
+
+              if (!isMockLocation) {
+                await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.best)
+                    .then((Position position) {
+                  print("position : $position");
+                  currentPosition = position;
+                }).catchError((e) {
+                  print(e);
+                });
+                return 0;
+              } else {
+                if (firstCall == true) {
+                  return 1;
+                } else {
+                  return 2;
+                }
+              }
+            } else {
+              return 2;
+            }
+          }
         }
       } else {
         if (await Permission.location.isGranted) {
@@ -96,30 +124,6 @@ class ShiftApi with ChangeNotifier {
               }
             } catch (e) {
               print(e);
-            }
-          } else {
-            if (enabled) {
-              final bool isMockLocation = await TrustLocation.isMockLocation;
-
-              if (!isMockLocation) {
-                await Geolocator.getCurrentPosition(
-                        desiredAccuracy: LocationAccuracy.best)
-                    .then((Position position) {
-                  print("position : $position");
-                  currentPosition = position;
-                }).catchError((e) {
-                  print(e);
-                });
-                return 0;
-              } else {
-                if (firstCall == true) {
-                  return 1;
-                } else {
-                  return 2;
-                }
-              }
-            } else {
-              return 2;
             }
           }
         } else {
@@ -179,11 +183,14 @@ class ShiftApi with ChangeNotifier {
       List<Shift> shiftsList;
       bool isHawawi = false;
       int isMoc;
-      HuaweiServices _huawi = HuaweiServices();
+      final HuaweiServices _huawi = HuaweiServices();
       if (Platform.isAndroid) {
         isHawawi = await _huawi.isHuaweiDevice();
         if (isHawawi) {
           isMoc = 0;
+        } else {
+          print("going to see current loc");
+          isMoc = await getCurrentLocation();
         }
       } else {
         isMoc = await getCurrentLocation();

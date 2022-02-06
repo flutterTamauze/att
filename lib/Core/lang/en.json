@@ -152,7 +152,7 @@
  "لا يوجد تسجيلات بهذا اليوم":"No records found for this day",
  "المستخدم لم يكن مقيدا فى هذة الفترة":"User wasn't created at this period",
  "الخصومات":"Deductions","لا يوجد تسجيلات: يوم اجازة":"There are no records : Holiday",
- "برجاء اختيار اسم مستخدم":"Please choose a username",
+
  "تقرير الأجازات و المأموريات":"Missions & Holidays Report",
  "المأموريات":"Missions", "لا يوجد تسجيلات : عطلة اسبوعية":"There are no records : Week Holiday",
  "لا يوجد تسجيلات : عطلة رسمية":"There are no records : Official Vacation",
@@ -556,7 +556,13 @@
 "لا يوجد مناوبات بهذا الموقع\nبرجاء اضافة مناوبة":"There are no shifts at this site\nPlease add a shift",
 "تم تغيير كلمة المرور بنجاح"
 :"Password changed successfully","خطأ في تغيير كلمة المرور":"Failed to change password",
-"رقم المستخدم غير موجود":"User number not exist"
+"رقم المستخدم غير موجود":"User number not exist",
+"تعديل المواقع":"Edit sites",
+"إغلاق":"Close",
+"نعتذر لقد تم انتهاء اشتراك الشركة بتاريخ":
+"Sorry, the company's subscription date has expired on",
+"تنبية !":"Attention !",
+"برجاء اختيار اسم المستخدم":"Please choose a username"
 
 
     }

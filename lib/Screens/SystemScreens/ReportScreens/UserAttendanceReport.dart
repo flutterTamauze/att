@@ -892,7 +892,7 @@ class _UserAttendanceReportScreenState
                                         height: 20,
                                         child: AutoSizeText(
                                           getTranslated(context,
-                                              "برجاء اختيار اسم مستخدم"),
+                                              "برجاء اختيار اسم المستخدم"),
                                           maxLines: 1,
                                           style: TextStyle(
                                               color: Colors.orange,

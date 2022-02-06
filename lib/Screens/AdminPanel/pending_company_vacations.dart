@@ -25,7 +25,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'Widgets/display_pending_vacations.dart';
 
 class PendingCompanyVacations extends StatefulWidget {
-  PendingCompanyVacations();
+  const PendingCompanyVacations();
 
   @override
   _PendingCompanyVacationsState createState() =>
@@ -143,7 +143,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                   child: ListView.builder(
                                     controller: _scrollController,
                                     itemBuilder: (context, index) {
-                                      var pending = pendingList
+                                      final pending = pendingList
                                           .pendingCompanyHolidays[index];
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -182,7 +182,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                         onPressed: () async {
                                                           Navigator.pop(
                                                               context);
-                                                          String msg = await pendingList.acceptOrRefusePendingVacation(
+                                                          final String msg = await pendingList.acceptOrRefusePendingVacation(
                                                               1,
                                                               pending
                                                                   .holidayNumber,
@@ -200,7 +200,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
 
                                                           if (msg ==
                                                               "Success : Updated!") {
-                                                            HuaweiServices
+                                                            final HuaweiServices
                                                                 _huawei =
                                                                 HuaweiServices();
                                                             if (pending
@@ -291,7 +291,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                         onPressed: () async {
                                                           Navigator.pop(
                                                               context);
-                                                          String msg = await pendingList.acceptOrRefusePendingVacation(
+                                                          final String msg = await pendingList.acceptOrRefusePendingVacation(
                                                               2,
                                                               pending
                                                                   .holidayNumber,
@@ -309,7 +309,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
 
                                                           if (msg ==
                                                               "Success : Updated!") {
-                                                            HuaweiServices
+                                                            final HuaweiServices
                                                                 _huawei =
                                                                 HuaweiServices();
                                                             if (pending

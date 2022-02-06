@@ -102,7 +102,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            PendingCompanyPermessions(),
+                                            const PendingCompanyPermessions(),
                                       ));
                                 });
                           },

@@ -5,13 +5,15 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+import 'package:qr_users/services/permissions_data.dart';
 
 class DataTableHolidayRow extends StatelessWidget {
   final UserHolidays _holidays;
 
   DataTableHolidayRow(this._holidays);
-
+  final bool isEnglish = locator.locator<PermissionHan>().isEnglishLocale();
   @override
   Widget build(BuildContext context) {
     return _holidays.holidayType == 4
@@ -21,76 +23,49 @@ class DataTableHolidayRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                    height: 30.h,
-                    child: Center(
-                      child: Container(
-                        height: 40.h,
-                        width: 50,
-                        child: AutoSizeText(
-                          getTranslated(
-                              context, getVacationType(_holidays.holidayType)),
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontSize: ScreenUtil()
-                                .setSp(14, allowFontScalingSelf: true),
-                          ),
-                        ),
-                      ),
-                    )),
+                  child: AutoSizeText(
+                    getTranslated(
+                        context, getVacationType(_holidays.holidayType)),
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize:
+                          ScreenUtil().setSp(13, allowFontScalingSelf: true),
+                    ),
+                  ),
+                ),
                 Padding(
-                  padding: EdgeInsets.only(right: 20.w),
+                  padding: !isEnglish
+                      ? EdgeInsets.only(right: 20.w)
+                      : EdgeInsets.only(left: 20.w),
                   child: Container(
-                    height: 35.h,
-                    child: Center(
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 20.h,
-                        child: AutoSizeText(
-                          _holidays.fromDate.toString().substring(0, 11),
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: ScreenUtil()
-                                .setSp(13, allowFontScalingSelf: true),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                    child: AutoSizeText(
+                      _holidays.fromDate.toString().substring(0, 11),
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize:
+                            ScreenUtil().setSp(13, allowFontScalingSelf: true),
                       ),
                     ),
                   ),
                 ),
                 _holidays.fromDate.isBefore(_holidays.toDate)
                     ? Container(
-                        height: 30.h,
-                        child: Center(
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 20.h,
-                            child: AutoSizeText(
-                              _holidays.toDate.toString().substring(0, 11),
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: ScreenUtil()
-                                    .setSp(13, allowFontScalingSelf: true),
-                              ),
-                            ),
+                        child: AutoSizeText(
+                          _holidays.toDate.toString().substring(0, 11),
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: ScreenUtil()
+                                .setSp(13, allowFontScalingSelf: true),
                           ),
                         ),
                       )
                     : Container(
-                        height: 35.h,
-                        child: Center(
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 20.h,
-                            child: AutoSizeText(
-                              _holidays.fromDate.toString().substring(0, 11),
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: ScreenUtil()
-                                    .setSp(13, allowFontScalingSelf: true),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                        child: AutoSizeText(
+                          _holidays.fromDate.toString().substring(0, 11),
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: ScreenUtil()
+                                .setSp(13, allowFontScalingSelf: true),
                           ),
                         ),
                       ),

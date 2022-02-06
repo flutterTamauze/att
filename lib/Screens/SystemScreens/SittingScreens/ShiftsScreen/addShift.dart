@@ -282,15 +282,12 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: SmallDirectoriesHeader(
-                                  Lottie.asset("resources/shiftLottie.json",
-                                      repeat: false),
-                                  (!widget.isEdit)
-                                      ? "إضافة مناوبة"
-                                      : "تعديل المناوبة"),
-                            ),
+                            SmallDirectoriesHeader(
+                                Lottie.asset("resources/shiftLottie.json",
+                                    repeat: false),
+                                (!widget.isEdit)
+                                    ? "إضافة مناوبة"
+                                    : "تعديل المناوبة"),
                             SizedBox(
                               height: 30.h,
                             ),
@@ -329,7 +326,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                       TextFormField(
                                         onFieldSubmitted: (_) {},
                                         textInputAction: TextInputAction.next,
-                                        textAlign: TextAlign.right,
                                         validator: (text) {
                                           if (text.length == 0) {
                                             return getTranslated(
@@ -343,277 +339,281 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
                                                 hintText: 'اسم المناوبة',
-                                                suffixIcon: Icon(
+                                                suffixIcon: const Icon(
                                                   Icons.title,
                                                   color: Colors.orange,
                                                 )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       widget.isEdit
                                           ? Container()
-                                          : Directionality(
-                                              textDirection:
-                                                  ui.TextDirection.rtl,
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 50.h,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                          child: Theme(
-                                                        data: clockTheme,
-                                                        child: Builder(
-                                                          builder: (context) {
-                                                            return InkWell(
-                                                                onTap:
-                                                                    () async {
-                                                                  if (edit) {
-                                                                    final from =
-                                                                        await showTimePicker(
-                                                                      context:
-                                                                          context,
-                                                                      initialTime:
-                                                                          fromPicked,
-                                                                      builder: (BuildContext
-                                                                              context,
-                                                                          Widget
-                                                                              child) {
-                                                                        return MediaQuery(
-                                                                          data:
-                                                                              MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-                                                                          child:
-                                                                              child,
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                    final MaterialLocalizations
-                                                                        localizations =
-                                                                        MaterialLocalizations.of(
-                                                                            context);
-                                                                    final String
-                                                                        formattedTime =
-                                                                        localizations.formatTimeOfDay(
-                                                                            from,
+                                          : Container(
+                                              width: double.infinity,
+                                              height: 50.h,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                        child: Theme(
+                                                      data: clockTheme,
+                                                      child: Builder(
+                                                        builder: (context) {
+                                                          return InkWell(
+                                                              onTap: () async {
+                                                                if (edit) {
+                                                                  final from =
+                                                                      await showTimePicker(
+                                                                    context:
+                                                                        context,
+                                                                    initialTime:
+                                                                        fromPicked,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        Widget
+                                                                            child) {
+                                                                      return MediaQuery(
+                                                                        data: MediaQuery.of(context).copyWith(
                                                                             alwaysUse24HourFormat:
-                                                                                false);
+                                                                                false),
+                                                                        child:
+                                                                            child,
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                  final MaterialLocalizations
+                                                                      localizations =
+                                                                      MaterialLocalizations.of(
+                                                                          context);
+                                                                  final String
+                                                                      formattedTime =
+                                                                      localizations.formatTimeOfDay(
+                                                                          from,
+                                                                          alwaysUse24HourFormat:
+                                                                              false);
 
-                                                                    if (from !=
-                                                                        null) {
-                                                                      fromPicked =
-                                                                          from;
-                                                                      if (!widget
-                                                                              .isEdit &&
-                                                                          intializeFromControllers !=
-                                                                              false) {
-                                                                        sunFromT =
-                                                                            fromPicked;
-                                                                        sunTimeInController.text =
-                                                                            "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        monFromT =
-                                                                            fromPicked;
-                                                                        monTimeInController.text =
-                                                                            "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        tuesFromT =
-                                                                            fromPicked;
-                                                                        tuesTimeInController.text =
-                                                                            "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        wedFromT =
-                                                                            fromPicked;
-                                                                        wedTimeInController.text =
-                                                                            "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        thuFromT =
-                                                                            fromPicked;
-                                                                        thuTimeInController.text =
-                                                                            "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        friFromT =
-                                                                            fromPicked;
-                                                                        friTimeInController.text =
+                                                                  if (from !=
+                                                                      null) {
+                                                                    fromPicked =
+                                                                        from;
+                                                                    if (!widget
+                                                                            .isEdit &&
+                                                                        intializeFromControllers !=
+                                                                            false) {
+                                                                      sunFromT =
+                                                                          fromPicked;
+                                                                      sunTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                      monFromT =
+                                                                          fromPicked;
+                                                                      monTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                      tuesFromT =
+                                                                          fromPicked;
+                                                                      tuesTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                      wedFromT =
+                                                                          fromPicked;
+                                                                      wedTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                      thuFromT =
+                                                                          fromPicked;
+                                                                      thuTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                      friFromT =
+                                                                          fromPicked;
+                                                                      friTimeInController
+                                                                              .text =
+                                                                          "${fromPicked.format(context).replaceAll(" ", "")}";
+                                                                    }
+
+                                                                    setState(
+                                                                        () {
+                                                                      if (Platform
+                                                                          .isIOS) {
+                                                                        _timeInController.text =
+                                                                            formattedTime;
+                                                                      } else {
+                                                                        _timeInController.text =
                                                                             "${fromPicked.format(context).replaceAll(" ", "")}";
                                                                       }
-
-                                                                      setState(
-                                                                          () {
-                                                                        if (Platform
-                                                                            .isIOS) {
-                                                                          _timeInController.text =
-                                                                              formattedTime;
-                                                                        } else {
-                                                                          _timeInController.text =
-                                                                              "${fromPicked.format(context).replaceAll(" ", "")}";
-                                                                        }
-                                                                        intializeFromControllers =
-                                                                            false;
-                                                                      });
-                                                                    }
+                                                                      intializeFromControllers =
+                                                                          false;
+                                                                    });
                                                                   }
-                                                                },
+                                                                }
+                                                              },
+                                                              child: Container(
                                                                 child:
-                                                                    Directionality(
-                                                                  textDirection:
-                                                                      ui.TextDirection
-                                                                          .rtl,
+                                                                    IgnorePointer(
                                                                   child:
-                                                                      Container(
-                                                                    child:
-                                                                        IgnorePointer(
-                                                                      child:
-                                                                          TextFormField(
-                                                                        enabled:
-                                                                            edit,
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.w500),
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        controller:
-                                                                            _timeInController,
-                                                                        decoration: kTextFieldDecorationFromTO.copyWith(
-                                                                            hintText: 'من',
-                                                                            prefixIcon: Icon(
+                                                                      TextFormField(
+                                                                    enabled:
+                                                                        edit,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    controller:
+                                                                        _timeInController,
+                                                                    decoration: kTextFieldDecorationFromTO
+                                                                        .copyWith(
+                                                                            hintText:
+                                                                                'من',
+                                                                            prefixIcon:
+                                                                                Icon(
                                                                               Icons.alarm,
                                                                               color: Colors.orange,
                                                                             )),
-                                                                      ),
-                                                                    ),
                                                                   ),
-                                                                ));
-                                                          },
-                                                        ),
-                                                      )),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5.w,
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                          child: Theme(
-                                                        data: clockTheme,
-                                                        child: Builder(
-                                                          builder: (context) {
-                                                            return InkWell(
-                                                                onTap:
-                                                                    () async {
-                                                                  if (edit) {
-                                                                    final to =
-                                                                        await showTimePicker(
-                                                                      context:
-                                                                          context,
-                                                                      initialTime:
-                                                                          toPicked,
-                                                                      builder: (BuildContext
-                                                                              context,
-                                                                          Widget
-                                                                              child) {
-                                                                        return MediaQuery(
-                                                                          data:
-                                                                              MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-                                                                          child:
-                                                                              child,
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                    final MaterialLocalizations
-                                                                        localizations =
-                                                                        MaterialLocalizations.of(
-                                                                            context);
-                                                                    final String
-                                                                        formattedTime2 =
-                                                                        localizations.formatTimeOfDay(
-                                                                            to,
+                                                                ),
+                                                              ));
+                                                        },
+                                                      ),
+                                                    )),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                        child: Theme(
+                                                      data: clockTheme,
+                                                      child: Builder(
+                                                        builder: (context) {
+                                                          return InkWell(
+                                                              onTap: () async {
+                                                                if (edit) {
+                                                                  final to =
+                                                                      await showTimePicker(
+                                                                    context:
+                                                                        context,
+                                                                    initialTime:
+                                                                        toPicked,
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        Widget
+                                                                            child) {
+                                                                      return MediaQuery(
+                                                                        data: MediaQuery.of(context).copyWith(
                                                                             alwaysUse24HourFormat:
-                                                                                false);
-                                                                    if (to !=
-                                                                        null) {
-                                                                      toPicked =
-                                                                          to;
-                                                                      if (!widget
-                                                                              .isEdit &&
-                                                                          intializeToControllers !=
-                                                                              false) {
-                                                                        sunToT =
-                                                                            toPicked;
-                                                                        sunTimeOutController.text =
-                                                                            "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        monToT =
-                                                                            toPicked;
-                                                                        monTimeOutController.text =
-                                                                            "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        tuesToT =
-                                                                            toPicked;
-                                                                        tuesTimeOutController.text =
-                                                                            "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        wedToT =
-                                                                            toPicked;
-                                                                        wedTimeOutController.text =
-                                                                            "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        thuToT =
-                                                                            toPicked;
-                                                                        thuTimeOutController.text =
-                                                                            "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        friToT =
-                                                                            toPicked;
-                                                                        friTimeOutController.text =
+                                                                                false),
+                                                                        child:
+                                                                            child,
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                  final MaterialLocalizations
+                                                                      localizations =
+                                                                      MaterialLocalizations.of(
+                                                                          context);
+                                                                  final String
+                                                                      formattedTime2 =
+                                                                      localizations.formatTimeOfDay(
+                                                                          to,
+                                                                          alwaysUse24HourFormat:
+                                                                              false);
+                                                                  if (to !=
+                                                                      null) {
+                                                                    toPicked =
+                                                                        to;
+                                                                    if (!widget
+                                                                            .isEdit &&
+                                                                        intializeToControllers !=
+                                                                            false) {
+                                                                      sunToT =
+                                                                          toPicked;
+                                                                      sunTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                      monToT =
+                                                                          toPicked;
+                                                                      monTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                      tuesToT =
+                                                                          toPicked;
+                                                                      tuesTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                      wedToT =
+                                                                          toPicked;
+                                                                      wedTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                      thuToT =
+                                                                          toPicked;
+                                                                      thuTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                      friToT =
+                                                                          toPicked;
+                                                                      friTimeOutController
+                                                                              .text =
+                                                                          "${toPicked.format(context).replaceAll(" ", "")}";
+                                                                    }
+                                                                    setState(
+                                                                        () {
+                                                                      if (Platform
+                                                                          .isIOS) {
+                                                                        _timeOutController.text =
+                                                                            formattedTime2;
+                                                                      } else {
+                                                                        _timeOutController.text =
                                                                             "${toPicked.format(context).replaceAll(" ", "")}";
                                                                       }
-                                                                      setState(
-                                                                          () {
-                                                                        if (Platform
-                                                                            .isIOS) {
-                                                                          _timeOutController.text =
-                                                                              formattedTime2;
-                                                                        } else {
-                                                                          _timeOutController.text =
-                                                                              "${toPicked.format(context).replaceAll(" ", "")}";
-                                                                        }
-                                                                        intializeToControllers =
-                                                                            false;
-                                                                      });
-                                                                    }
+                                                                      intializeToControllers =
+                                                                          false;
+                                                                    });
                                                                   }
-                                                                },
+                                                                }
+                                                              },
+                                                              child: Container(
                                                                 child:
-                                                                    Directionality(
-                                                                  textDirection:
-                                                                      ui.TextDirection
-                                                                          .rtl,
+                                                                    IgnorePointer(
                                                                   child:
-                                                                      Container(
-                                                                    child:
-                                                                        IgnorePointer(
-                                                                      child:
-                                                                          TextFormField(
-                                                                        enabled:
-                                                                            edit,
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.w500),
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        controller:
-                                                                            _timeOutController,
-                                                                        decoration: kTextFieldDecorationFromTO.copyWith(
-                                                                            hintText: getTranslated(context, "إلى"),
-                                                                            prefixIcon: const Icon(
+                                                                      TextFormField(
+                                                                    enabled:
+                                                                        edit,
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    controller:
+                                                                        _timeOutController,
+                                                                    decoration: kTextFieldDecorationFromTO
+                                                                        .copyWith(
+                                                                            hintText: getTranslated(context,
+                                                                                "إلى"),
+                                                                            prefixIcon:
+                                                                                const Icon(
                                                                               Icons.alarm,
                                                                               color: Colors.orange,
                                                                             )),
-                                                                      ),
-                                                                    ),
                                                                   ),
-                                                                ));
-                                                          },
-                                                        ),
-                                                      )),
-                                                    ),
-                                                  ],
-                                                ),
+                                                                ),
+                                                              ));
+                                                        },
+                                                      ),
+                                                    )),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                       SizedBox(
@@ -1333,26 +1333,21 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                               }
                             }
                           },
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Container(
-                              child: IgnorePointer(
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                  textInputAction: TextInputAction.next,
-                                  controller: widget.timeInController,
-                                  decoration:
-                                      kTextFieldDecorationFromTO.copyWith(
-                                          hintText:
-                                              getTranslated(context, 'من'),
-                                          prefixIcon: const Icon(
-                                            Icons.alarm,
-                                            color: Colors.orange,
-                                          )),
-                                ),
+                          child: Container(
+                            child: IgnorePointer(
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontSize: setResponsiveFontSize(14),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                                textInputAction: TextInputAction.next,
+                                controller: widget.timeInController,
+                                decoration: kTextFieldDecorationFromTO.copyWith(
+                                    hintText: getTranslated(context, 'من'),
+                                    prefixIcon: const Icon(
+                                      Icons.alarm,
+                                      color: Colors.orange,
+                                    )),
                               ),
                             ),
                           ));
@@ -1406,26 +1401,21 @@ class _AdvancedShiftPickerState extends State<AdvancedShiftPicker> {
                               }
                             }
                           },
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Container(
-                              child: IgnorePointer(
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: setResponsiveFontSize(14),
-                                      fontWeight: FontWeight.w500),
-                                  textInputAction: TextInputAction.next,
-                                  controller: widget.timeOutController,
-                                  decoration:
-                                      kTextFieldDecorationFromTO.copyWith(
-                                          hintText:
-                                              getTranslated(context, 'إلى'),
-                                          prefixIcon: const Icon(
-                                            Icons.alarm,
-                                            color: Colors.orange,
-                                          )),
-                                ),
+                          child: Container(
+                            child: IgnorePointer(
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: setResponsiveFontSize(14),
+                                    fontWeight: FontWeight.w500),
+                                textInputAction: TextInputAction.next,
+                                controller: widget.timeOutController,
+                                decoration: kTextFieldDecorationFromTO.copyWith(
+                                    hintText: getTranslated(context, 'إلى'),
+                                    prefixIcon: const Icon(
+                                      Icons.alarm,
+                                      color: Colors.orange,
+                                    )),
                               ),
                             ),
                           ));

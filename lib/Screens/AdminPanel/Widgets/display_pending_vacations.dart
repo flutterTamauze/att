@@ -13,6 +13,7 @@ import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 class ExpandedPendingVacation extends StatefulWidget {
   final String response, userName, adminComment, userId;
@@ -22,7 +23,7 @@ class ExpandedPendingVacation extends StatefulWidget {
   final List<DateTime> vacationDaysCount;
   final String date, createdOn;
   final bool isAdmin;
-  ExpandedPendingVacation({
+  const ExpandedPendingVacation({
     this.comments,
     this.userName,
     this.onAccept,
@@ -56,12 +57,17 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
           child: ExpansionTile(
             onExpansionChanged: (value) async {
               if (value) {
+                showDialog(
+                  context: context,
+                  builder: (context) => RoundedLoadingIndicator(),
+                );
                 await Provider.of<UserHolidaysData>(context, listen: false)
                     .getPendingHolidayDetailsByID(
                         (widget.holidayId),
                         Provider.of<UserData>(context, listen: false)
                             .user
                             .userToken);
+                Navigator.pop(context);
               }
             },
             trailing: Container(
@@ -77,7 +83,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                       ),
                       widget.isAdmin
                           ? Container()
-                          : FaIcon(
+                          : const FaIcon(
                               FontAwesomeIcons.hourglass,
                               color: Colors.orange,
                               size: 15,
@@ -94,93 +100,102 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
             children: [
               Stack(
                 children: [
-                  SlideInDown(
-                    child: Card(
-                      elevation: 5,
-                      child: Container(
-                        width: 300.w,
-                        margin: EdgeInsets.all(15),
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            widget.vacationDaysCount[1]
-                                    .isBefore(widget.vacationDaysCount[0])
-                                ? AutoSizeText(
-                                    " ${getTranslated(context, "مدة الأجازة ")}: ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
-                                    style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  )
-                                : AutoSizeText(
-                                    " ${getTranslated(context, "مدة الأجازة ")}: ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)} ${getTranslated(context, "إلى")} ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
+                  Provider.of<UserHolidaysData>(context).loadingHolidaysDetails
+                      ? Container()
+                      : SlideInDown(
+                          child: Card(
+                            elevation: 5,
+                            child: Container(
+                              width: 300.w,
+                              margin: const EdgeInsets.all(15),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  widget.vacationDaysCount[1]
+                                          .isBefore(widget.vacationDaysCount[0])
+                                      ? AutoSizeText(
+                                          " ${getTranslated(context, "مدة الأجازة ")}: ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
+                                          style: TextStyle(
+                                            fontSize: setResponsiveFontSize(14),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      : AutoSizeText(
+                                          " ${getTranslated(context, "مدة الأجازة ")}: ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)} ${getTranslated(context, "إلى")} ${widget.vacationDaysCount[1].toString().substring(0, 11)}",
+                                          style: TextStyle(
+                                            fontSize: setResponsiveFontSize(14),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                  const Divider(),
+                                  AutoSizeText(
+                                    "${getTranslated(context, "نوع الأجازة")}: ${widget.holidayType == 1 ? getTranslated(context, "عارضة") : widget.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")} ",
                                     style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                            Divider(),
-                            AutoSizeText(
-                              "${getTranslated(context, "نوع الأجازة")}: ${widget.holidayType == 1 ? getTranslated(context, "عارضة") : widget.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")} ",
-                              style: TextStyle(
-                                fontSize: setResponsiveFontSize(14),
-                                fontWeight: FontWeight.w500,
+                                  widget.comments == ""
+                                      ? Container()
+                                      : const Divider(),
+                                  widget.comments != null
+                                      ? widget.comments == ""
+                                          ? Container()
+                                          : AutoSizeText(
+                                              "${getTranslated(context, "تفاصيل الطلب ")}: ${widget.comments}",
+                                              style: TextStyle(
+                                                fontSize:
+                                                    setResponsiveFontSize(14),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                      : Container(),
+                                  widget.comments != null
+                                      ? const Divider()
+                                      : Container(),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      // Text(
+                                      //   "قرارك",
+                                      //   style: TextStyle(
+                                      //       fontWeight: FontWeight.bold),
+                                      // ),
+                                      const Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () => widget.onAccept(),
+                                            child: const FaIcon(
+                                              FontAwesomeIcons.check,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20.w,
+                                          ),
+                                          InkWell(
+                                            onTap: () => widget.onRefused(),
+                                            child: const FaIcon(
+                                              FontAwesomeIcons.times,
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
-                            widget.comments == "" ? Container() : Divider(),
-                            widget.comments != null
-                                ? widget.comments == ""
-                                    ? Container()
-                                    : AutoSizeText(
-                                        "${getTranslated(context, "تفاصيل الطلب ")}: ${widget.comments}",
-                                        style: TextStyle(
-                                          fontSize: setResponsiveFontSize(14),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      )
-                                : Container(),
-                            widget.comments != null ? Divider() : Container(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              children: [
-                                // Text(
-                                //   "قرارك",
-                                //   style: TextStyle(
-                                //       fontWeight: FontWeight.bold),
-                                // ),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () => widget.onAccept(),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.check,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    InkWell(
-                                      onTap: () => widget.onRefused(),
-                                      child: FaIcon(
-                                        FontAwesomeIcons.times,
-                                        color: Colors.red,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   Provider.of<UserHolidaysData>(context).loadingHolidaysDetails
                       ? Container()
                       : !Provider.of<PermissionHan>(context, listen: false)

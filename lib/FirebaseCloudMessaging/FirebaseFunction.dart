@@ -19,9 +19,7 @@ Future<bool> sendFcmMessage(
   try {
     final String toParams = "/topics/" + topicName;
     print("user token $userToken");
-    // print(await firebaseMessaging.getToken());
-    // firebaseMessaging.unsubscribeFromTopic("nekaba");
-    // print(toParams);
+
     const url = 'https://fcm.googleapis.com/fcm/send';
     final header = {
       "Content-Type": "application/json",

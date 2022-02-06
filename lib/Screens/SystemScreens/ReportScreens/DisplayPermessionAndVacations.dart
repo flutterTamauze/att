@@ -134,40 +134,6 @@ class _VacationAndPermessionsReportState
                                     color: Colors.grey.shade700,
                                     fontWeight: FontWeight.w500),
                                 hintText: getTranslated(context, 'الأسم'),
-                                // suffixIcon: InkWell(
-                                //   onTap: () {
-                                //     setState(() {
-                                //       if (_nameController.text.length >= 3) {
-                                //         if (userProv.user.userType == 2) {
-                                //           searchInList(
-                                //               _nameController.text,
-                                //               userProv.user.userSiteId,
-                                //               Provider.of<CompanyData>(context,
-                                //                       listen: false)
-                                //                   .com
-                                //                   .id);
-                                //         } else {
-                                //           searchInList(
-                                //               _nameController.text,
-                                //               -1,
-                                //               Provider.of<CompanyData>(context,
-                                //                       listen: false)
-                                //                   .com
-                                //                   .id);
-                                //         }
-                                //       } else {
-                                //         Fluttertoast.showToast(
-                                //             msg: "يجب ان لا يقل البحث عن 3 احرف",
-                                //             backgroundColor: Colors.red,
-                                //             gravity: ToastGravity.CENTER);
-                                //       }
-                                //     });
-                                //   },
-                                //   child: Icon(
-                                //     Icons.search,
-                                //     color: Colors.orange,
-                                //   ),
-                                // ),
                                 prefixIcon: const Icon(
                                   Icons.person,
                                   color: Colors.orange,
@@ -204,7 +170,6 @@ class _VacationAndPermessionsReportState
                                           .id);
                                 }
                               });
-                              print("print start");
                             },
                             itemSubmitted: (item) async {
                               _sendVacationRequest = false;
@@ -230,8 +195,7 @@ class _VacationAndPermessionsReportState
                                   searchTextField.textField.controller.text =
                                       item.username;
                                 });
-                                print("user id");
-                                print(item.id);
+
                                 userId = item.id;
                                 final userProvider = Provider.of<UserData>(
                                     context,
@@ -394,7 +358,7 @@ class _VacationAndPermessionsReportState
                                           });
                                         }
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.search,
                                         color: Colors.orange,
                                       ),
@@ -406,7 +370,7 @@ class _VacationAndPermessionsReportState
                                           showSearchIcon = true;
                                         });
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         FontAwesomeIcons.times,
                                         color: Colors.orange,
                                       ),
@@ -451,7 +415,7 @@ class _VacationAndPermessionsReportState
                                           });
                                         }
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.search,
                                         color: Colors.orange,
                                       ),
@@ -463,122 +427,118 @@ class _VacationAndPermessionsReportState
                                           showSearchIcon = true;
                                         });
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         FontAwesomeIcons.times,
                                         color: Colors.orange,
                                       ),
                                     ))
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 20.w),
-                child: Stack(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        RadioButtonWidg(
-                          radioVal2: radioVal2,
-                          radioVal: 2,
-                          title: getTranslated(context, "المأموريات"),
-                          onchannge: (value) {
-                            setState(() {
-                              if (!showSearchIcon) {
-                                searchTextField.textField.controller.text =
-                                    userName;
-                              }
-                              radioVal2 = value;
-                              if (_nameController.text.isNotEmpty) {
-                                if (Provider.of<MissionsData>(context,
-                                            listen: false)
-                                        .singleUserMissionsList
-                                        .isEmpty &&
-                                    _sendMissionRequest == false) {
-                                  _sendMissionRequest = true;
-                                  getMission = Provider.of<MissionsData>(
-                                          context,
+              Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      RadioButtonWidg(
+                        radioVal2: radioVal2,
+                        radioVal: 2,
+                        title: getTranslated(context, "المأموريات"),
+                        onchannge: (value) {
+                          setState(() {
+                            if (!showSearchIcon) {
+                              searchTextField.textField.controller.text =
+                                  userName;
+                            }
+                            radioVal2 = value;
+                            if (_nameController.text.isNotEmpty) {
+                              if (Provider.of<MissionsData>(context,
                                           listen: false)
-                                      .getSingleUserMissions(
-                                          userId,
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .user
-                                              .userToken);
-                                }
+                                      .singleUserMissionsList
+                                      .isEmpty &&
+                                  _sendMissionRequest == false) {
+                                _sendMissionRequest = true;
+                                getMission = Provider.of<MissionsData>(context,
+                                        listen: false)
+                                    .getSingleUserMissions(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
                               }
-                            });
-                          },
-                        ),
-                        RadioButtonWidg(
-                          radioVal2: radioVal2,
-                          radioVal: 1,
-                          title: getTranslated(context, "الأجازات"),
-                          onchannge: (value) {
-                            setState(() {
-                              if (!showSearchIcon) {
-                                searchTextField.textField.controller.text =
-                                    userName;
-                              }
+                            }
+                          });
+                        },
+                      ),
+                      RadioButtonWidg(
+                        radioVal2: radioVal2,
+                        radioVal: 1,
+                        title: getTranslated(context, "الأجازات"),
+                        onchannge: (value) {
+                          setState(() {
+                            if (!showSearchIcon) {
+                              searchTextField.textField.controller.text =
+                                  userName;
+                            }
 
-                              radioVal2 = value;
-                              if (_nameController.text.isNotEmpty) {
-                                if (Provider.of<UserHolidaysData>(context,
-                                            listen: false)
-                                        .singleUserHoliday
-                                        .isEmpty &&
-                                    _sendVacationRequest == false) {
-                                  _sendVacationRequest = true;
-                                  getHoliday = Provider.of<UserHolidaysData>(
-                                          context,
+                            radioVal2 = value;
+                            if (_nameController.text.isNotEmpty) {
+                              if (Provider.of<UserHolidaysData>(context,
                                           listen: false)
-                                      .getSingleUserHoliday(
-                                          userId,
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .user
-                                              .userToken);
-                                }
+                                      .singleUserHoliday
+                                      .isEmpty &&
+                                  _sendVacationRequest == false) {
+                                _sendVacationRequest = true;
+                                getHoliday = Provider.of<UserHolidaysData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserHoliday(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
                               }
-                            });
-                          },
-                        ),
-                        RadioButtonWidg(
-                          radioVal2: radioVal2,
-                          radioVal: 3,
-                          title: getTranslated(context, "الأذونات"),
-                          onchannge: (value) {
-                            setState(() {
-                              if (!showSearchIcon) {
-                                searchTextField.textField.controller.text =
-                                    userName;
-                              }
+                            }
+                          });
+                        },
+                      ),
+                      RadioButtonWidg(
+                        radioVal2: radioVal2,
+                        radioVal: 3,
+                        title: getTranslated(context, "الأذونات"),
+                        onchannge: (value) {
+                          setState(() {
+                            if (!showSearchIcon) {
+                              searchTextField.textField.controller.text =
+                                  userName;
+                            }
 
-                              radioVal2 = value;
-                              if (_nameController.text.isNotEmpty) {
-                                if (Provider.of<UserPermessionsData>(context,
-                                            listen: false)
-                                        .singleUserPermessions
-                                        .isEmpty &&
-                                    _sendPermRequest == false) {
-                                  _sendPermRequest = true;
-                                  getPerm = Provider.of<UserPermessionsData>(
-                                          context,
+                            radioVal2 = value;
+                            if (_nameController.text.isNotEmpty) {
+                              if (Provider.of<UserPermessionsData>(context,
                                           listen: false)
-                                      .getSingleUserPermession(
-                                          userId,
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .user
-                                              .userToken);
-                                }
+                                      .singleUserPermessions
+                                      .isEmpty &&
+                                  _sendPermRequest == false) {
+                                _sendPermRequest = true;
+                                getPerm = Provider.of<UserPermessionsData>(
+                                        context,
+                                        listen: false)
+                                    .getSingleUserPermession(
+                                        userId,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
                               }
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
               radioVal2 == 3
                   ? DisplayPermessions(_nameController, getPerm)
