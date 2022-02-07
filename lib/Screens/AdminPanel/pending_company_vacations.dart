@@ -220,10 +220,12 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                     .context,
                                                                 "طلب اجازة",
                                                               ),
-                                                              message:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "تم الموافقة على طلب الأجازة"));
+                                                              message: getTranslated(
+                                                                  navigatorKey
+                                                                      .currentState
+                                                                      .overlay
+                                                                      .context,
+                                                                  "تم الموافقة على طلب الأجازة"));
 
                                                           Fluttertoast.showToast(
                                                               msg: getTranslated(
