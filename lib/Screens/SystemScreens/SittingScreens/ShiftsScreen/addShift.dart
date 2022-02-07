@@ -286,8 +286,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                 Lottie.asset("resources/shiftLottie.json",
                                     repeat: false),
                                 (!widget.isEdit)
-                                    ? "إضافة مناوبة"
-                                    : "تعديل المناوبة"),
+                                    ? getTranslated(context, "إضافة مناوبة")
+                                    : getTranslated(context, "تعديل المناوبة")),
                             SizedBox(
                               height: 30.h,
                             ),
@@ -331,14 +331,16 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                             return getTranslated(
                                                 context, "مطلوب");
                                           } else if (text.length > 25) {
-                                            return "يجب ان لا يزيد اسم المناوبة عن 25 حرف";
+                                            return getTranslated(context,
+                                                "يجب ان لا يزيد اسم المناوبة عن 25 حرف");
                                           }
                                           return null;
                                         },
                                         controller: _title,
                                         decoration:
                                             kTextFieldDecorationWhite.copyWith(
-                                                hintText: 'اسم المناوبة',
+                                                hintText: getTranslated(
+                                                    context, 'اسم المناوبة'),
                                                 suffixIcon: const Icon(
                                                   Icons.title,
                                                   color: Colors.orange,
@@ -469,8 +471,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                         _timeInController,
                                                                     decoration: kTextFieldDecorationFromTO
                                                                         .copyWith(
-                                                                            hintText:
-                                                                                'من',
+                                                                            hintText: getTranslated(context,
+                                                                                'من'),
                                                                             prefixIcon:
                                                                                 Icon(
                                                                               Icons.alarm,
@@ -847,9 +849,12 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                               onPressed: () async {
                                                 addShiftFun();
                                               },
-                                              title: "اضافة مناوبة",
+                                              title: getTranslated(
+                                                context,
+                                                "إضافة مناوبة",
+                                              ),
                                               content:
-                                                  " برجاء العلم ان مواعيد المناوية من $startString \n إلي $endString",
+                                                  " ${getTranslated(context, "برجاء العلم ان مواعيد المناوبة من")} $startString \n ${getTranslated(context, "إلي")} $endString",
                                             );
                                           },
                                         );
@@ -876,9 +881,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          title: "تعديل مناوبة",
+                                                          title: getTranslated(
+                                                              context,
+                                                              "تعديل مناوبة"),
                                                           content:
-                                                              " برجاء العلم ان مواعيد المناوبة من $startString \n إلي $endString",
+                                                              " ${getTranslated(context, "برجاء العلم ان مواعيد المناوبة من")} $startString \n ${getTranslated(context, "إلي")} $endString",
                                                         );
                                                       },
                                                     );
@@ -966,7 +973,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         !friCheck) {
       Fluttertoast.showToast(
           msg: getTranslated(context,
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات"),
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من اربع ساعات"),
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);
@@ -1093,7 +1100,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         !friCheck) {
       Fluttertoast.showToast(
           msg: getTranslated(context,
-              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من ثلاث ساعات"),
+              "خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من اربع ساعات"),
           backgroundColor: Colors.red,
           gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_LONG);
@@ -1126,18 +1133,17 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
 
       if (msg == "Success") {
         Fluttertoast.showToast(
-            msg: getTranslated(context, "تمت إضافة المناوبة بنجاح"),
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
-
-        await Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => ShiftsScreen(siteId, -1, siteId)),
-            (Route<dynamic> route) => false);
+                msg: getTranslated(context, "تمت إضافة المناوبة بنجاح"),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
+            .then((value) => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => ShiftsScreen(siteId, -1, siteId)),
+                (Route<dynamic> route) => false));
       } else if (msg == "exists") {
         Fluttertoast.showToast(
             msg: getTranslated(context,

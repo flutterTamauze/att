@@ -69,7 +69,7 @@ class AttendDetails {
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 width: 2.w,
-                                                color: Color(0xffFF7E00),
+                                                color: const Color(0xffFF7E00),
                                               ),
                                             ),
                                             child: CircleAvatar(
@@ -77,7 +77,7 @@ class AttendDetails {
                                               radius: 40,
                                               child: Container(
                                                 width: 80.w,
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: ClipRRect(
@@ -109,7 +109,7 @@ class AttendDetails {
                                                           backgroundColor:
                                                               Colors.white,
                                                           valueColor:
-                                                              new AlwaysStoppedAnimation<
+                                                              const AlwaysStoppedAnimation<
                                                                       Color>(
                                                                   Colors
                                                                       .orange),
@@ -158,7 +158,7 @@ class AttendDetails {
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 width: 2.w,
-                                                color: Color(0xffFF7E00),
+                                                color: const Color(0xffFF7E00),
                                               ),
                                             ),
                                             child: CircleAvatar(
@@ -166,7 +166,7 @@ class AttendDetails {
                                               radius: 40,
                                               child: Container(
                                                 width: 80.w,
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: ClipRRect(
@@ -198,7 +198,7 @@ class AttendDetails {
                                                           backgroundColor:
                                                               Colors.white,
                                                           valueColor:
-                                                              new AlwaysStoppedAnimation<
+                                                              const AlwaysStoppedAnimation<
                                                                       Color>(
                                                                   Colors
                                                                       .orange),

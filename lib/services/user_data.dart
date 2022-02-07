@@ -99,156 +99,145 @@ class UserData with ChangeNotifier {
 
   Future<int> loginPost(String username, String password, BuildContext context,
       bool cacheLogin) async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    if (await networkInfoImp.isConnected) {
-      int userType;
-      var decodedRes;
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int userType;
+    var decodedRes;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      var token;
-      bool isHuawei = false;
+    var token;
+    bool isHuawei = false;
 
-      final HuaweiServices _huawei = HuaweiServices();
-      if (Platform.isAndroid) {
-        if (await _huawei.isHuaweiDevice()) {
-          token = hawawiToken;
-          isHuawei = true;
-        }
-      } else {
-        bool isError = false;
-        final String isnull =
-            await firebaseMessaging.getToken().catchError((e) {
-          token = "null";
-          isError = true;
-        });
-
-        if (isError == false) {
-          token = await firebaseMessaging.getToken();
-        }
+    final HuaweiServices _huawei = HuaweiServices();
+    if (Platform.isAndroid) {
+      if (await _huawei.isHuaweiDevice()) {
+        token = hawawiToken;
+        isHuawei = true;
       }
-      const rolesConstUrl =
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-      final response =
-          await MemberRepo().getMemberData(username, password, token, isHuawei);
-      if (response is Faliure) {
-        print("faliure occured");
-        return response.code;
-      } else {
-        print("not faliure");
-        // log(response);
-        decodedRes = json.decode(response);
-
-        if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return -2;
-        } else if (decodedRes["message"] ==
-            "Fail : This Company is suspended") {
-          return -4;
-        }
-        final Map<String, dynamic> decodedToken =
-            JwtDecoder.decode(decodedRes["token"]);
-        isSuperAdmin =
-            decodedToken[rolesConstUrl].toString().contains("SuperAdmin");
-        isTdsAdmin =
-            decodedToken[rolesConstUrl].toString().contains("TDS_Admin");
-        isTechnicalSupport =
-            decodedToken[rolesConstUrl].toString().contains("TDSTechSupport");
-
-        if (decodedRes["message"] == "Success : ") {
-          changedPassword = decodedRes["userData"]["changedPassword"] as bool;
-          user = User.fromJson(decodedRes);
-          final companyId = decodedRes["companyData"]["id"];
-          await Provider.of<CompanyData>(context, listen: false)
-              .getCompanyDataFromLogin(decodedRes);
-          final String comImageFilePath =
-              "$imageUrl${decodedRes["companyData"]["logo"]}";
-
-          final String userImage = user.userImage;
-          final CompanyData comProv =
-              Provider.of<CompanyData>(context, listen: false);
-          if (isSuperAdmin) {
-            final obJson = decodedRes['superAdminCompanies'] as List;
-            superCompaniesList.add(SuperCompaniesModel(
-                companyId: comProv.com.id, companyName: comProv.com.nameAr));
-            final List<SuperCompaniesModel> tempComp = obJson
-                .map((json) => SuperCompaniesModel.fromJson(json))
-                .toList();
-            superCompaniesList.addAll(tempComp);
-          } else if (isTdsAdmin || isTechnicalSupport) {
-            print(decodedRes['tdsadminCompanies']);
-            final obJson = decodedRes['tdsadminCompanies'] as List;
-
-            superCompaniesList = obJson
-                .map((json) => SuperCompaniesModel.fromJson(json))
-                .toList();
-          } else if (user.userType == 4 || user.userType == 3) {
-            Provider.of<SiteShiftsData>(context, listen: false)
-                .getAllSitesAndShifts(companyId, user.userToken);
-          }
-
-          final List<String> userData = [
-            user.name,
-            user.userJob,
-            userImage,
-            decodedRes["companyData"]["nameAr"],
-            comImageFilePath
-          ];
-          prefs.setStringList("allUserData", userData);
-
-          loggedIn = true;
-          final List<String> notifyList =
-              await prefs.getStringList('bgNotifyList');
-          print("notifi status :$notifyList ");
-
-          if (notifyList != null && notifyList.length != 0) {
-            await db.insertNotification(
-                NotificationMessage(
-                    category: notifyList[0],
-                    dateTime: notifyList[1],
-                    message: notifyList[2],
-                    messageSeen: 0,
-                    timeOfMessage: notifyList[4],
-                    title: notifyList[3]),
-                context);
-          }
-          if (cacheLogin) {
-            await initializeNotification(context);
-          } else {
-            Provider.of<NotificationDataService>(context, listen: false)
-                .notification
-                .clear();
-            await db.clearNotifications();
-          }
-
-          userType = user.userType;
-          prefs.setStringList(('bgNotifyList'), []);
-          if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
-            return 6;
-          } else if (userType == 2) {
-            print("get site admin shifts");
-            Provider.of<ShiftsData>(context, listen: false).getShifts(
-                Provider.of<UserData>(context, listen: false).user.userSiteId,
-                Provider.of<UserData>(context, listen: false).user.userToken,
-                context,
-                userType,
-                Provider.of<UserData>(context, listen: false).user.userSiteId);
-          }
-
-          // log("user type ${(user.userType)}");
-          if (user.userType == 4 || user.userType == 3) {
-            print("getting super chart");
-            await Provider.of<UserData>(context, listen: false)
-                .getSuperCompanyChart(user.userToken, companyId);
-          }
-          notifyListeners();
-          return user.userType;
-        }
-      }
-      return NO_INTERNET;
     } else {
-      return NO_INTERNET;
+      bool isError = false;
+      final String isnull = await firebaseMessaging.getToken().catchError((e) {
+        token = "null";
+        isError = true;
+      });
+
+      if (isError == false) {
+        token = await firebaseMessaging.getToken();
+      }
     }
+    const rolesConstUrl =
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+    final response =
+        await MemberRepo().getMemberData(username, password, token, isHuawei);
+    if (response is Faliure) {
+      print("faliure occured");
+      return response.code;
+    } else {
+      print("not faliure");
+      // log(response);
+      decodedRes = json.decode(response);
+
+      if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return -2;
+      } else if (decodedRes["message"] == "Fail : This Company is suspended") {
+        return -4;
+      }
+      final Map<String, dynamic> decodedToken =
+          JwtDecoder.decode(decodedRes["token"]);
+      isSuperAdmin =
+          decodedToken[rolesConstUrl].toString().contains("SuperAdmin");
+      isTdsAdmin = decodedToken[rolesConstUrl].toString().contains("TDS_Admin");
+      isTechnicalSupport =
+          decodedToken[rolesConstUrl].toString().contains("TDSTechSupport");
+
+      if (decodedRes["message"] == "Success : ") {
+        changedPassword = decodedRes["userData"]["changedPassword"] as bool;
+        user = User.fromJson(decodedRes);
+        final companyId = decodedRes["companyData"]["id"];
+        await Provider.of<CompanyData>(context, listen: false)
+            .getCompanyDataFromLogin(decodedRes);
+        final String comImageFilePath =
+            "$imageUrl${decodedRes["companyData"]["logo"]}";
+
+        final String userImage = user.userImage;
+        final CompanyData comProv =
+            Provider.of<CompanyData>(context, listen: false);
+        if (isSuperAdmin) {
+          final obJson = decodedRes['superAdminCompanies'] as List;
+          superCompaniesList.add(SuperCompaniesModel(
+              companyId: comProv.com.id, companyName: comProv.com.nameAr));
+          final List<SuperCompaniesModel> tempComp =
+              obJson.map((json) => SuperCompaniesModel.fromJson(json)).toList();
+          superCompaniesList.addAll(tempComp);
+        } else if (isTdsAdmin || isTechnicalSupport) {
+          print(decodedRes['tdsadminCompanies']);
+          final obJson = decodedRes['tdsadminCompanies'] as List;
+
+          superCompaniesList =
+              obJson.map((json) => SuperCompaniesModel.fromJson(json)).toList();
+        } else if (user.userType == 4 || user.userType == 3) {
+          Provider.of<SiteShiftsData>(context, listen: false)
+              .getAllSitesAndShifts(companyId, user.userToken);
+        }
+
+        final List<String> userData = [
+          user.name,
+          user.userJob,
+          userImage,
+          decodedRes["companyData"]["nameAr"],
+          comImageFilePath
+        ];
+        prefs.setStringList("allUserData", userData);
+
+        loggedIn = true;
+        final List<String> notifyList =
+            await prefs.getStringList('bgNotifyList');
+        print("notifi status :$notifyList ");
+
+        if (notifyList != null && notifyList.length != 0) {
+          await db.insertNotification(
+              NotificationMessage(
+                  category: notifyList[0],
+                  dateTime: notifyList[1],
+                  message: notifyList[2],
+                  messageSeen: 0,
+                  timeOfMessage: notifyList[4],
+                  title: notifyList[3]),
+              context);
+        }
+        if (cacheLogin) {
+          await initializeNotification(context);
+        } else {
+          Provider.of<NotificationDataService>(context, listen: false)
+              .notification
+              .clear();
+          await db.clearNotifications();
+        }
+
+        userType = user.userType;
+        prefs.setStringList(('bgNotifyList'), []);
+        if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
+          return 6;
+        } else if (userType == 2) {
+          print("get site admin shifts");
+          Provider.of<ShiftsData>(context, listen: false).getShifts(
+              Provider.of<UserData>(context, listen: false).user.userSiteId,
+              Provider.of<UserData>(context, listen: false).user.userToken,
+              context,
+              userType,
+              Provider.of<UserData>(context, listen: false).user.userSiteId);
+        }
+
+        // log("user type ${(user.userType)}");
+        if (user.userType == 4 || user.userType == 3) {
+          print("getting super chart");
+          await Provider.of<UserData>(context, listen: false)
+              .getSuperCompanyChart(user.userToken, companyId);
+        }
+        notifyListeners();
+        return user.userType;
+      }
+    }
+    return NO_INTERNET;
   }
 
   initializeNotification(BuildContext context) async {

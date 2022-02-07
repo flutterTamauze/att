@@ -52,7 +52,7 @@ class NetworkApi {
         return res.body;
       } on TimeoutException catch (e) {
         print("timeout occured $e");
-        weakInternetConnection(navigatorKey.currentState.overlay.context);
+        noInternetDialog(navigatorKey.currentState.overlay.context);
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       }
     }

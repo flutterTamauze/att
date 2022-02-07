@@ -70,14 +70,18 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
               child: ExpansionTile(
                 onExpansionChanged: (value) async {
                   if (value) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => RoundedLoadingIndicator(),
+                    );
                     await Provider.of<UserHolidaysData>(context, listen: false)
                         .getHolidayDetailsByID(
                             int.parse(widget.orderNum),
                             Provider.of<UserData>(context, listen: false)
                                 .user
                                 .userToken);
+                    Navigator.pop(context);
                   }
-                  print(widget.holidayType);
                 },
                 initiallyExpanded: widget.isAdmin,
                 trailing: Container(
@@ -124,7 +128,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                     child: Provider.of<UserHolidaysData>(
                       context,
                     ).loadingHolidaysDetails
-                        ? const LoadingIndicator()
+                        ? Container()
                         : Card(
                             elevation: 5,
                             child: Container(
@@ -141,7 +145,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                       widget.vacationDaysCount[1].isBefore(
                                               widget.vacationDaysCount[0])
                                           ? AutoSizeText(
-                                              " مدة الأجازة : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
+                                              " ${getTranslated(context, "مدة الأجازة")} : يوم ${widget.vacationDaysCount[0].toString().substring(0, 11)}",
                                               style: TextStyle(
                                                 fontSize:
                                                     setResponsiveFontSize(14),
@@ -166,7 +170,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                       ),
                                       widget.comments == ""
                                           ? Container()
-                                          : Divider(),
+                                          : const Divider(),
                                       widget.comments != null
                                           ? widget.comments == ""
                                               ? Container()
@@ -183,7 +187,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                                 )
                                           : Container(),
                                       widget.comments != null
-                                          ? Divider()
+                                          ? const Divider()
                                           : Container(),
                                       widget.status != 3
                                           ? Column(
@@ -307,7 +311,7 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                               return RoundedAlert(
                                 onPressed: () async {
                                   Navigator.pop(context);
-                                  String msg =
+                                  final String msg =
                                       await Provider.of<UserHolidaysData>(
                                               context,
                                               listen: false)

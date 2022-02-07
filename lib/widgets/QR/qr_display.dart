@@ -30,26 +30,26 @@ Timer _timer;
 class _QrAttendDisplayState extends State<QrAttendDisplay> {
   String countryDate;
   DateTime countryDateTime;
-  getTimeZone() {
-    final String dateString =
-        DateTime.now().toString().substring(0, 11) + "" + countryDate;
-    print("setting country date time");
-    countryDateTime = DateTime.parse(dateString);
-    log(countryDateTime.toString());
-    if (mounted) {
-      print("countrycode");
-      print(countryDate);
-      if (countryDate != null) {
-        _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-          if (mounted) {
-            setState(() {
-              countryDateTime = countryDateTime.add(Duration(seconds: 1));
-            });
-          }
-        });
-      }
-    }
-  }
+  // getTimeZone() {
+  //   final String dateString =
+  //       DateTime.now().toString().substring(0, 11) + "" + countryDate;
+  //   print("setting country date time");
+  //   countryDateTime = DateTime.parse(dateString);
+  //   log(countryDateTime.toString());
+  //   if (mounted) {
+  //     print("countrycode");
+  //     print(countryDate);
+  //     if (countryDate != null) {
+  //       _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+  //         if (mounted) {
+  //           setState(() {
+  //             countryDateTime = countryDateTime.add(Duration(seconds: 1));
+  //           });
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
         Provider.of<ShiftApi>(context, listen: false).currentCountryDate;
     super.initState();
     if (countryDate != null) {
-      getTimeZone();
+      // getTimeZone();
     }
   }
 
@@ -68,8 +68,8 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    HuaweiServices _huawei = HuaweiServices();
-    var shiftApiConsumer = Provider.of<ShiftApi>(context);
+    final HuaweiServices _huawei = HuaweiServices();
+    final shiftApiConsumer = Provider.of<ShiftApi>(context);
 
     // var shiftDataProvider =
     //     Provider.of<ShiftApi>(context, listen: true).currentShift;
@@ -91,39 +91,39 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                             Container(
                                               child: Column(
                                                 children: [
-                                                  AutoSizeText(
-                                                    DateFormat('hh:mm:s ')
-                                                        .format(
-                                                            countryDateTime),
-                                                    style: TextStyle(
-                                                        letterSpacing: 4,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize:
-                                                            setResponsiveFontSize(
-                                                                24)),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  AutoSizeText(
-                                                    DateTime.now()
-                                                        .toString()
-                                                        .substring(0, 11),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        letterSpacing: 2,
-                                                        fontSize:
-                                                            setResponsiveFontSize(
-                                                                17)),
-                                                  ),
+                                                  // AutoSizeText(
+                                                  //   DateFormat('hh:mm:s ')
+                                                  //       .format(
+                                                  //           countryDateTime),
+                                                  //   style: TextStyle(
+                                                  //       letterSpacing: 4,
+                                                  //       fontWeight:
+                                                  //           FontWeight.w700,
+                                                  //       fontSize:
+                                                  //           setResponsiveFontSize(
+                                                  //               24)),
+                                                  // ),
+                                                  // const SizedBox(
+                                                  //   height: 5,
+                                                  // ),
+                                                  // AutoSizeText(
+                                                  //   DateTime.now()
+                                                  //       .toString()
+                                                  //       .substring(0, 11),
+                                                  //   style: TextStyle(
+                                                  //       fontWeight:
+                                                  //           FontWeight.w600,
+                                                  //       letterSpacing: 2,
+                                                  //       fontSize:
+                                                  //           setResponsiveFontSize(
+                                                  //               17)),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
+                                            // const SizedBox(
+                                            //   height: 10,
+                                            // ),
                                             Container(
                                               height: 210.h,
                                               child: Center(
@@ -152,7 +152,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                     "تسجيل عن طريق مسح الكود"),
                                                 maxLines: 1,
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black),
                                               ),
                                             ),
@@ -164,12 +164,12 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                 AutoSizeText(
                                                   shiftApiConsumer
                                                       .qrShift.shiftName,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.orange,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 6,
                                                 ),
                                                 AutoSizeText(
@@ -221,7 +221,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                                                             backgroundColor:
                                                                 Colors.white,
                                                             valueColor:
-                                                                new AlwaysStoppedAnimation<
+                                                                const AlwaysStoppedAnimation<
                                                                         Color>(
                                                                     Colors
                                                                         .orange),

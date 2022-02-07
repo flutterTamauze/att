@@ -22,11 +22,13 @@ import 'package:qr_users/MLmodule/recognition_services/UtilsScanner.dart';
 import 'package:qr_users/MLmodule/recognition_services/classifier.dart';
 import 'package:qr_users/MLmodule/recognition_services/quant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
+import '../../../main.dart';
 import 'NavScreenPartTwo.dart';
 
 const shift = (0xFF << 24);
@@ -71,13 +73,14 @@ class TakePictureScreenState extends State<CameraPicker>
       cameraController = CameraController(widget.camera,
           Platform.isIOS ? ResolutionPreset.high : ResolutionPreset.low);
 
-      faceDetector = GoogleVision.instance.faceDetector(FaceDetectorOptions(
-          enableClassification: true,
-          minFaceSize: 0.1,
-          enableTracking: true,
-          enableContours: true,
-          enableLandmarks: true,
-          mode: FaceDetectorMode.accurate));
+      faceDetector = GoogleVision.instance.faceDetector(
+          const FaceDetectorOptions(
+              enableClassification: true,
+              minFaceSize: 0.1,
+              enableTracking: true,
+              enableContours: true,
+              enableLandmarks: true,
+              mode: FaceDetectorMode.accurate));
 
       await cameraController.initialize();
       cameraController.startImageStream((imageFromStream) {
@@ -109,7 +112,7 @@ class TakePictureScreenState extends State<CameraPicker>
           currentCameraImage = imageFromStream;
         }
       }).whenComplete(() => Future.delayed(
-                  Duration(
+                  const Duration(
                     milliseconds: 100,
                   ), () {
                 _isDetecting = false;
@@ -200,8 +203,10 @@ class TakePictureScreenState extends State<CameraPicker>
                   child: SafeArea(
                     child: IconButton(
                       icon: Icon(
-                        Icons.chevron_left,
-                        color: Color(0xffF89A41),
+                        locator.locator<PermissionHan>().isEnglishLocale()
+                            ? Icons.chevron_left
+                            : Icons.chevron_right,
+                        color: const Color(0xffF89A41),
                         size: 40,
                       ),
                       onPressed: () {
@@ -225,7 +230,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                 scannResult[0].headEulerAngleY < -10
                             ? Container()
                             : Container(
-                                margin: EdgeInsets.only(bottom: 80),
+                                margin: const EdgeInsets.only(bottom: 80),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -234,15 +239,15 @@ class TakePictureScreenState extends State<CameraPicker>
                                         child: Container(
                                           width: 70.w,
                                           height: 70.h,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Colors.transparent,
                                           ),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(15),
-                                            child: Image(
-                                              image: AssetImage(
+                                            child: const Image(
+                                              image: const AssetImage(
                                                   "resources/imageface.jpeg"),
                                             ),
                                           ),
@@ -262,12 +267,12 @@ class TakePictureScreenState extends State<CameraPicker>
                                           } catch (e) {
                                             print(e);
                                           }
-                                          await Future.delayed(
-                                              Duration(milliseconds: 500));
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 500));
                                           await cameraController
                                               .stopImageStream();
-                                          await Future.delayed(
-                                              Duration(milliseconds: 200));
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 200));
                                           File img;
                                           await cameraController
                                               .takePicture()
@@ -501,6 +506,20 @@ class TakePictureScreenState extends State<CameraPicker>
                                                         textColor:
                                                             Colors.black);
                                                     break;
+                                                  case "Failed : You are not allowed to sign by card! ":
+                                                    Fluttertoast.showToast(
+                                                        msg: getTranslated(
+                                                            context,
+                                                            "ليس مصرح لك التسجيل بالبطاقة"),
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor:
+                                                            Colors.black);
+                                                    break;
                                                   case "Fail : Using another attend method":
                                                     Fluttertoast.showToast(
                                                         msg: getTranslated(
@@ -615,6 +634,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                                         textColor:
                                                             Colors.black);
                                                     break;
+
                                                   default:
                                                     Fluttertoast.showToast(
                                                         msg: getTranslated(
@@ -684,7 +704,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                     "resources/PersonScanning.json"),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             AutoSizeText(
@@ -706,8 +726,10 @@ class TakePictureScreenState extends State<CameraPicker>
                   child: SafeArea(
                     child: IconButton(
                       icon: Icon(
-                        Icons.chevron_left,
-                        color: Color(0xffF89A41),
+                        locator.locator<PermissionHan>().isEnglishLocale()
+                            ? Icons.chevron_left
+                            : Icons.chevron_right,
+                        color: const Color(0xffF89A41),
                         size: 40,
                       ),
                       onPressed: () {

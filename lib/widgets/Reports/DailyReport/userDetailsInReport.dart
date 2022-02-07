@@ -28,7 +28,7 @@ class UserDetailsInReport extends StatelessWidget {
   Widget build(BuildContext context) {
     return ZoomIn(
       child: AlertDialog(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         content: Container(
           height: 600,

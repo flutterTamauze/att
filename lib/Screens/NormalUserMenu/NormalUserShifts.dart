@@ -140,7 +140,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                         getTranslated(context, "مناوباتى")),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ExpansionUserShiftTile(
@@ -160,12 +160,13 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                   FontAwesomeIcons.clock,
                                   color: ColorManager.primary,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 AutoSizeText(
                                   getTranslated(context, "مناوباتى المجدولة"),
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
@@ -303,14 +304,12 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                               fontSize: setResponsiveFontSize(15),
                               color: ColorManager.primary)),
                       Container(
-                        alignment: Alignment.center,
                         child: AutoSizeText(
                           sitename,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: setResponsiveFontSize(13),
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                       AutoSizeText(
@@ -323,7 +322,7 @@ class FeatureScheduleShiftCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 Row(
                   children: [
                     Expanded(

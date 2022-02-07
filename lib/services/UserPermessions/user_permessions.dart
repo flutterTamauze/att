@@ -11,7 +11,11 @@ import 'package:qr_users/Network/networkInfo.dart';
 import '../../main.dart';
 
 class UserPermessions {
-  String user, permessionDescription, adminResponse, approvedByUserId;
+  String user,
+      permessionDescription,
+      adminResponse,
+      approvedByUserId,
+      userImage;
   int permessionStatus; //1=>accept , //2 refused , //3 waiting..
   int permessionId, osType;
   String userID;
@@ -34,6 +38,7 @@ class UserPermessions {
       this.approvedByUserId,
       this.createdOn,
       this.approvedDate,
+      this.userImage,
       this.permessionId});
 
   factory UserPermessions.fromJson(dynamic json) {
@@ -64,6 +69,7 @@ class UserPermessions {
         userID: json['userId'] ?? "",
         permessionId: json["id"],
         permessionStatus: json["status"],
+        userImage: "$imageUrl${json["userImage"]}",
         createdOn: DateTime.tryParse(json["createdOn"]),
         user: json["userName"]);
   }

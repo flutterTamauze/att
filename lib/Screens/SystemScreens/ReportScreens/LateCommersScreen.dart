@@ -272,70 +272,72 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                       0
                                                   ? isLoading
                                                       ? Container()
-                                                      : Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return Dialog(
-                                                                      shape: RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10.0)),
-                                                                      child:
-                                                                          Container(
-                                                                        height:
-                                                                            300.h,
-                                                                        width: double
-                                                                            .infinity,
+                                                      : Visibility(
+                                                          visible: showTable,
+                                                          child: Row(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0)),
                                                                         child:
-                                                                            FadeInRight(
-                                                                          child: Padding(
-                                                                              padding: const EdgeInsets.all(8.0),
-                                                                              child: ZoomIn(child: LateReportPieChart())),
+                                                                            Container(
+                                                                          height:
+                                                                              300.h,
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              FadeInRight(
+                                                                            child:
+                                                                                Padding(padding: const EdgeInsets.all(8.0), child: ZoomIn(child: LateReportPieChart())),
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                );
-                                                              },
-                                                              child: const Icon(
-                                                                FontAwesomeIcons
-                                                                    .chartBar,
-                                                                color: Colors
-                                                                    .orange,
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  FontAwesomeIcons
+                                                                      .chartBar,
+                                                                  color: Colors
+                                                                      .orange,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            XlsxExportButton(
-                                                              reportType: 1,
-                                                              title: getTranslated(
-                                                                  context,
-                                                                  "تقرير التأخير و الغياب"),
-                                                              day:
-                                                                  _dateController
-                                                                      .text,
-                                                              site: userDataProvider
-                                                                          .user
-                                                                          .userType ==
-                                                                      2
-                                                                  ? ""
-                                                                  //  Provider.of<
-                                                                  //             UserData>(
-                                                                  //         context,
-                                                                  //         listen:
-                                                                  //             false)
-                                                                  //     .siteName
-                                                                  : Provider.of<
-                                                                              SiteShiftsData>(
-                                                                          context)
-                                                                      .siteShiftList[
-                                                                          siteIdIndex]
-                                                                      .siteName,
-                                                            ),
-                                                          ],
+                                                              XlsxExportButton(
+                                                                reportType: 1,
+                                                                title: getTranslated(
+                                                                    context,
+                                                                    "تقرير التأخير و الغياب"),
+                                                                day:
+                                                                    _dateController
+                                                                        .text,
+                                                                site: userDataProvider
+                                                                            .user
+                                                                            .userType ==
+                                                                        2
+                                                                    ? ""
+                                                                    //  Provider.of<
+                                                                    //             UserData>(
+                                                                    //         context,
+                                                                    //         listen:
+                                                                    //             false)
+                                                                    //     .siteName
+                                                                    : Provider.of<SiteShiftsData>(
+                                                                            context)
+                                                                        .siteShiftList[
+                                                                            siteIdIndex]
+                                                                        .siteName,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         )
                                                   : Container()
                                               : Container();

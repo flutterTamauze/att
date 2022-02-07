@@ -113,7 +113,7 @@ class _VacationAndPermessionsReportState
                     child: Provider.of<MemberData>(context).loadingSearch
                         ? const Center(
                             child: const CircularProgressIndicator(
-                            color: Colors.orange,
+                            backgroundColor: Colors.orange,
                           ))
                         : searchTextField = AutoCompleteTextField<SearchMember>(
                             key: key,

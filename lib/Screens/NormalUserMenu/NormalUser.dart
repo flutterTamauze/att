@@ -130,32 +130,24 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           icon: FontAwesomeIcons.clock,
           onTap: () async {
             final user = Provider.of<UserData>(context, listen: false).user;
-            final DataConnectionChecker dataConnectionChecker =
-                DataConnectionChecker();
-            final NetworkInfoImp networkInfoImp =
-                NetworkInfoImp(dataConnectionChecker);
-            final bool isConnected = await networkInfoImp.isConnected;
-            if (isConnected) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RoundedLoadingIndicator();
-                  });
-              await Provider.of<ShiftsData>(context, listen: false)
-                  .getFirstAvailableSchedule(user.userToken, user.id);
 
-              await Provider.of<ShiftApi>(context, listen: false)
-                  .getShiftByShiftId(user.userShiftId, user.userToken);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RoundedLoadingIndicator();
+                });
+            await Provider.of<ShiftsData>(context, listen: false)
+                .getFirstAvailableSchedule(user.userToken, user.id);
 
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                new MaterialPageRoute(
-                  builder: (context) => UserCurrentShifts(),
-                ),
-              );
-            } else {
-              return weakInternetConnection(context);
-            }
+            await Provider.of<ShiftApi>(context, listen: false)
+                .getShiftByShiftId(user.userShiftId, user.userToken);
+
+            Navigator.pop(context);
+            Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (context) => UserCurrentShifts(),
+              ),
+            );
           }),
     ];
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -193,7 +185,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                           ),
                         ),
                         getTranslated(context, "حسابى")),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
 

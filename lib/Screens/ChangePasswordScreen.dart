@@ -17,6 +17,7 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 
 import 'package:qr_users/Screens/intro.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -29,6 +30,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 
 import '../Core/constants.dart';
+import '../main.dart';
 import 'Notifications/Notifications.dart';
 import 'SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
@@ -105,7 +107,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   Future<File> testCompressAndGetFile({File file, String targetPath}) async {
-    var result = await FlutterImageCompress.compressAndGetFile(
+    final result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
       quality: 30,
@@ -136,7 +138,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   _startUp() async {
-    List<CameraDescription> cameras = await availableCameras();
+    final List<CameraDescription> cameras = await availableCameras();
 
     /// takes the front camera
     cameraDescription = cameras.firstWhere(
@@ -187,12 +189,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               },
                               imageUrl: userData.user.userImage,
                               fit: BoxFit.fill,
-                              placeholder: (context, url) => Center(
+                              placeholder: (context, url) => const Center(
                                 child: CircularProgressIndicator(
                                     backgroundColor: Colors.white,
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            Colors.orange)),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.orange)),
                               ),
                               errorWidget: (context, url, error) =>
                                   Provider.of<UserData>(context, listen: true)
@@ -212,7 +213,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 bottom: 120.h,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    File result = await Navigator.push(
+                                    final File result = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => CameraPicker(
@@ -224,7 +225,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     await cameraPick(result);
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Color(0xffFF7E00),
                                     ),
@@ -272,11 +273,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                         return getTranslated(context, "مطلوب");
                                       } else if (text.length >= 8 &&
                                           text.length <= 12) {
-                                        Pattern pattern =
+                                        const Pattern pattern =
                                             r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                                        RegExp regex = new RegExp(pattern);
+                                        final RegExp regex =
+                                            new RegExp(pattern);
                                         if (!regex.hasMatch(text)) {
-                                          return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                          return getTranslated(context,
+                                              "كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة");
                                         } else {
                                           return null;
                                         }
@@ -289,8 +292,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (_) =>
                                         FocusScope.of(context).nextFocus(),
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                     ),
                                     obscureText: _passwordVisible,
@@ -299,27 +301,47 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       hintText:
                                           getTranslated(context, 'كلمة المرور'),
                                       fillColor: Colors.white,
-                                      suffixIcon: Icon(
+                                      suffixIcon: const Icon(
                                         Icons.lock,
                                         color: Colors.orange,
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(
-                                      // Based on passwordVisible state choose the icon
-                                      _passwordVisible
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _passwordVisible = !_passwordVisible;
-                                        FocusScope.of(context).requestFocus();
-                                      });
-                                    },
-                                  ),
+                                  !Provider.of<PermissionHan>(context,
+                                              listen: false)
+                                          .isEnglishLocale()
+                                      ? Positioned(
+                                          left: 30.w,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              // Based on passwordVisible state choose the icon
+                                              _passwordVisible
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: Colors.grey,
+                                            ),
+                                            onPressed: () {
+                                              // Update the state i.e. toogle the state of passwordVisible variable
+                                              setState(() {
+                                                _passwordVisible =
+                                                    !_passwordVisible;
+                                                FocusScope.of(context)
+                                                    .requestFocus();
+                                              });
+                                            },
+                                          ),
+                                        )
+                                      : Positioned(
+                                          right: 30.w,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              // Based on passwordVisible state choose the icon
+                                              _passwordVisible
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: Colors.grey,
+                                            ),
+                                          ))
                                 ],
                               ),
                               SizedBox(
@@ -334,18 +356,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     },
                                     controller: _rePasswordController,
                                     textInputAction: TextInputAction.done,
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                     ),
                                     validator: (text) {
                                       if (text.length >= 8 &&
                                           text.length <= 12) {
-                                        Pattern pattern =
+                                        const Pattern pattern =
                                             r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                                        RegExp regex = new RegExp(pattern);
+                                        final RegExp regex =
+                                            new RegExp(pattern);
                                         if (!regex.hasMatch(text)) {
-                                          return 'كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                          return getTranslated(context,
+                                              "كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة");
                                         } else if (text !=
                                             _passwordController.text) {
                                           return getTranslated(context,
@@ -368,29 +391,48 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       hintText: getTranslated(
                                           context, 'تأكيد كلمة المرور'),
                                       fillColor: Colors.white,
-                                      suffixIcon: Icon(
+                                      suffixIcon: const Icon(
                                         Icons.lock,
                                         color: Colors.orange,
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(
-                                      // Based on passwordVisible state choose the icon
-                                      _repasswordVisible
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      // Update the state i.e. toogle the state of passwordVisible variable
-                                      setState(() {
-                                        _repasswordVisible =
-                                            !_repasswordVisible;
-                                        FocusScope.of(context).requestFocus();
-                                      });
-                                    },
-                                  ),
+                                  !Provider.of<PermissionHan>(context,
+                                              listen: false)
+                                          .isEnglishLocale()
+                                      ? Positioned(
+                                          left: 30.w,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              // Based on passwordVisible state choose the icon
+                                              _repasswordVisible
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: Colors.grey,
+                                            ),
+                                            onPressed: () {
+                                              // Update the state i.e. toogle the state of passwordVisible variable
+                                              setState(() {
+                                                _repasswordVisible =
+                                                    !_repasswordVisible;
+                                                FocusScope.of(context)
+                                                    .requestFocus();
+                                              });
+                                            },
+                                          ),
+                                        )
+                                      : Positioned(
+                                          right: 30.w,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              // Based on passwordVisible state choose the icon
+                                              _repasswordVisible
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: Colors.grey,
+                                            ),
+                                            onPressed: () {},
+                                          ))
                                 ],
                               ),
                               SizedBox(
@@ -403,9 +445,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   } else {
                                     if (_profileFormKey.currentState
                                         .validate()) {
-                                      SharedPreferences prefs =
+                                      final SharedPreferences prefs =
                                           await SharedPreferences.getInstance();
-                                      var msg = await Provider.of<UserData>(
+                                      final msg = await Provider.of<UserData>(
                                               context,
                                               listen: false)
                                           .editProfile(
@@ -486,16 +528,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
             ),
             Positioned(
+                left: 0,
                 child: InkWell(
-              onTap: () {
-                Navigator.maybePop(context);
-              },
-              child: const Icon(
-                Icons.chevron_left,
-                color: Colors.orange,
-                size: 40,
-              ),
-            ))
+                  onTap: () {
+                    Navigator.maybePop(context);
+                  },
+                  child: Icon(
+                    locator.locator<PermissionHan>().isEnglishLocale()
+                        ? Icons.chevron_left
+                        : Icons.chevron_right,
+                    color: Colors.orange,
+                    size: 40,
+                  ),
+                ))
           ],
         ),
       );
@@ -522,7 +567,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
 
         try {
-          var msg = await Provider.of<UserData>(context, listen: false)
+          final msg = await Provider.of<UserData>(context, listen: false)
               .changePassword(_passwordController.text);
 
           print(msg);
@@ -533,7 +578,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 final storage = new FlutterSecureStorage();
                 final DeviceInfoPlugin deviceInfoPlugin =
                     new DeviceInfoPlugin();
-                var data = await deviceInfoPlugin.iosInfo;
+                final data = await deviceInfoPlugin.iosInfo;
                 final String chainValue = await storage.read(key: "deviceMac");
 
                 print(

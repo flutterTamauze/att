@@ -16,10 +16,12 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../main.dart';
 import 'SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -239,8 +241,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SafeArea(
               child: IconButton(
                 icon: Icon(
-                  Icons.chevron_left,
-                  color: Color(0xffF89A41),
+                  locator.locator<PermissionHan>().isEnglishLocale()
+                      ? Icons.chevron_left
+                      : Icons.chevron_right,
+                  color: const Color(0xffF89A41),
                   size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
                 ),
                 onPressed: () {

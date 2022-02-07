@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Core/constants.dart';
+import '../../main.dart';
 
 class CompanyProfileScreen extends StatefulWidget {
   @override
@@ -216,7 +218,9 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
             child: SafeArea(
               child: IconButton(
                 icon: Icon(
-                  Icons.chevron_left,
+                  locator.locator<PermissionHan>().isEnglishLocale()
+                      ? Icons.chevron_left
+                      : Icons.chevron_right,
                   color: const Color(0xffF89A41),
                   size: ScreenUtil().setSp(40, allowFontScalingSelf: true),
                 ),

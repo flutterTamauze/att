@@ -54,7 +54,6 @@ dependencies:
   fluttertoast: ^7.1.6
   font_awesome_flutter: ^8.10.0
   geolocator: ^7.0.0
-  get_it: ^7.2.0
   google_maps_flutter: ^2.0.0
   google_ml_vision: ^0.0.7
   http: ^0.13.0
@@ -84,6 +83,7 @@ dependencies:
   typicons_flutter: ^0.3.1
   url_launcher: ^6.0.0
   webview_flutter: null
+  get_it: 
 dev_dependencies:
   flutter_test:
     sdk: flutter

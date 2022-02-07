@@ -706,7 +706,8 @@ class RoundedAlertOkOnly extends StatelessWidget {
   final String content;
   final Function onPressed;
 
-  RoundedAlertOkOnly({this.title, this.content, @required this.onPressed});
+  const RoundedAlertOkOnly(
+      {this.title, this.content, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -729,7 +730,7 @@ class RoundedAlertOkOnly extends StatelessWidget {
                         child: AutoSizeText(
                           title,
                           maxLines: 1,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.orange,
                               fontWeight: FontWeight.w900),
@@ -779,7 +780,7 @@ class RoundedAlertOkOnly extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: setResponsiveFontSize(17),
                               ),
                             ),
                           ),

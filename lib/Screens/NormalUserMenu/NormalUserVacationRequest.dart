@@ -14,8 +14,8 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
-
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
+
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';

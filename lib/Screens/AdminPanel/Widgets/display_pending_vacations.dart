@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/Screens/AdminPanel/Widgets/userImageExpanstionTile.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -16,27 +18,17 @@ import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 class ExpandedPendingVacation extends StatefulWidget {
-  final String response, userName, adminComment, userId;
-  final String comments;
-  final int holidayType, holidayId;
   final Function onAccept, onRefused;
   final List<DateTime> vacationDaysCount;
-  final String date, createdOn;
+
   final bool isAdmin;
+  final UserHolidays userHolidays;
   const ExpandedPendingVacation({
-    this.comments,
-    this.userName,
     this.onAccept,
-    this.holidayId,
     this.onRefused,
     this.vacationDaysCount,
-    this.holidayType,
     this.isAdmin,
-    this.adminComment,
-    this.response,
-    this.date,
-    this.createdOn,
-    this.userId,
+    this.userHolidays,
     Key key,
   }) : super(key: key);
 
@@ -55,6 +47,8 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
         padding: const EdgeInsets.all(4.0),
         child: Container(
           child: ExpansionTile(
+            leading:
+                LeadingExpanstionImage(image: widget.userHolidays.userImage),
             onExpansionChanged: (value) async {
               if (value) {
                 showDialog(
@@ -63,7 +57,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                 );
                 await Provider.of<UserHolidaysData>(context, listen: false)
                     .getPendingHolidayDetailsByID(
-                        (widget.holidayId),
+                        (widget.userHolidays.holidayNumber),
                         Provider.of<UserData>(context, listen: false)
                             .user
                             .userToken);
@@ -75,27 +69,27 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      AutoSizeText(
-                        widget.createdOn.substring(0, 11),
-                      ),
-                      widget.isAdmin
-                          ? Container()
-                          : const FaIcon(
-                              FontAwesomeIcons.hourglass,
-                              color: Colors.orange,
-                              size: 15,
-                            )
-                    ],
+                  AutoSizeText(
+                    widget.userHolidays.createdOnDate
+                        .toString()
+                        .substring(0, 11),
+                    style: TextStyle(fontSize: setResponsiveFontSize(14)),
                   ),
+                  widget.isAdmin
+                      ? Container()
+                      : const FaIcon(
+                          FontAwesomeIcons.hourglass,
+                          color: Colors.orange,
+                          size: 15,
+                        ),
+                  Expanded(child: Container()),
                   Container(width: 3, color: Colors.orange),
                 ],
               ),
             ),
             title: AutoSizeText(
-              widget.userName,
+              widget.userHolidays.userName,
+              style: TextStyle(fontSize: setResponsiveFontSize(15)),
             ),
             children: [
               Stack(
@@ -131,20 +125,22 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                         ),
                                   const Divider(),
                                   AutoSizeText(
-                                    "${getTranslated(context, "نوع الأجازة")}: ${widget.holidayType == 1 ? getTranslated(context, "عارضة") : widget.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")} ",
+                                    "${getTranslated(context, "نوع الأجازة")}: ${widget.userHolidays.holidayType == 1 ? getTranslated(context, "عارضة") : widget.userHolidays.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")} ",
                                     style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  widget.comments == ""
+                                  widget.userHolidays.holidayDescription == ""
                                       ? Container()
                                       : const Divider(),
-                                  widget.comments != null
-                                      ? widget.comments == ""
+                                  widget.userHolidays.holidayDescription != null
+                                      ? widget.userHolidays
+                                                  .holidayDescription ==
+                                              ""
                                           ? Container()
                                           : AutoSizeText(
-                                              "${getTranslated(context, "تفاصيل الطلب ")}: ${widget.comments}",
+                                              "${getTranslated(context, "تفاصيل الطلب ")}: ${widget.userHolidays.holidayDescription}",
                                               style: TextStyle(
                                                 fontSize:
                                                     setResponsiveFontSize(14),
@@ -152,7 +148,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                               ),
                                             )
                                       : Container(),
-                                  widget.comments != null
+                                  widget.userHolidays.holidayDescription != null
                                       ? const Divider()
                                       : Container(),
                                   const SizedBox(
@@ -206,14 +202,14 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 0,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userId))
+                                  memberId: widget.userHolidays.userName))
                           : Positioned(
                               bottom: 15.h,
                               right: 10.w,
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 0,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userId))
+                                  memberId: widget.userHolidays.userName))
                 ],
               )
             ],

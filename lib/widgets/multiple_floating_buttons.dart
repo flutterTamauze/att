@@ -77,8 +77,10 @@ class MultipleFloatingButtons extends StatelessWidget {
                                 "كل المواقع") {
                           Fluttertoast.showToast(
                               backgroundColor: Colors.red,
-                              msg:
-                                  "لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا",
+                              msg: getTranslated(
+                                context,
+                                "لا يوجد مناوبات بهذا الموقع برجاء إضافة مناوبة اولا",
+                              ),
                               gravity: ToastGravity.CENTER);
                         } else {
                           Navigator.push(
@@ -131,6 +133,7 @@ class MultipleFloatingButtons extends StatelessWidget {
                         );
                         break;
                       case "إضافة مناوبة":
+                      case "Add Shift":
                         Navigator.push(
                             context,
                             MaterialPageRoute(

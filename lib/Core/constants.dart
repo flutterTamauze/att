@@ -125,8 +125,8 @@ weakInternetConnection(BuildContext context) {
             onPressed: () {
               Navigator.pop(context);
             },
-            title: "الأتصال بالأنترنت ضعيف",
-            content: "برجاء اعادة المحاولة مرة اخرى");
+            title: getTranslated(context, "الأتصال بالأنترنت ضعيف"),
+            content: getTranslated(context, "برجاء اعادة المحاولة مرة اخرى"));
       });
 }
 

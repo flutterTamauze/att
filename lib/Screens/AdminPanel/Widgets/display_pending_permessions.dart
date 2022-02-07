@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/Screens/AdminPanel/Widgets/userImageExpanstionTile.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -16,28 +19,22 @@ import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
-  final String desc, userName, adminComment, duration, userId;
+  final StringConversionSinkMixin adminComment;
   final int id, index;
   Function onAccept;
   Function onRefused;
   bool isAdmin = false;
-  final int permessionType;
-  final String date, createdOn;
+
+  final UserPermessions userPermessions;
 
   ExpandedPendingPermessions({
-    this.userName,
-    this.permessionType,
     this.id,
     this.onRefused,
     this.onAccept,
     this.isAdmin,
-    this.duration,
+    this.userPermessions,
     this.adminComment,
-    this.desc,
-    this.date,
-    this.userId,
     this.index,
-    this.createdOn,
     Key key,
   }) : super(key: key);
 
@@ -57,6 +54,9 @@ class _ExpandedPendingPermessionsState
         padding: const EdgeInsets.all(4.0),
         child: Container(
           child: ExpansionTile(
+            leading: LeadingExpanstionImage(
+              image: widget.userPermessions.userImage,
+            ),
             onExpansionChanged: (value) async {
               if (value) {
                 showDialog(
@@ -84,7 +84,11 @@ class _ExpandedPendingPermessionsState
                         padding: const EdgeInsets.only(top: 10),
                         child: Center(
                           child: AutoSizeText(
-                            widget.createdOn.substring(0, 11),
+                            widget.userPermessions.createdOn
+                                .toString()
+                                .substring(0, 11),
+                            style:
+                                TextStyle(fontSize: setResponsiveFontSize(14)),
                           ),
                         ),
                       ),
@@ -103,7 +107,8 @@ class _ExpandedPendingPermessionsState
             ),
             title: Container(
               child: AutoSizeText(
-                widget.userName,
+                widget.userPermessions.user,
+                style: TextStyle(fontSize: setResponsiveFontSize(15)),
               ),
             ),
             children: [
@@ -124,20 +129,26 @@ class _ExpandedPendingPermessionsState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AutoSizeText(
-                                    "${getTranslated(context, "نوع الأذن")}: ${widget.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")} ",
+                                    "${getTranslated(context, "نوع الأذن")}: ${widget.userPermessions.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")} ",
                                     style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  widget.desc == ""
+                                  widget.userPermessions
+                                              .permessionDescription ==
+                                          ""
                                       ? Container()
                                       : const Divider(),
-                                  widget.desc != null
-                                      ? widget.desc == ""
+                                  widget.userPermessions
+                                              .permessionDescription !=
+                                          null
+                                      ? widget.userPermessions
+                                                  .permessionDescription ==
+                                              ""
                                           ? Container()
                                           : AutoSizeText(
-                                              "${getTranslated(context, "تفاصيل الطلب ")} : ${widget.desc}",
+                                              "${getTranslated(context, "تفاصيل الطلب ")} : ${widget.userPermessions.permessionDescription}",
                                               style: TextStyle(
                                                 fontSize:
                                                     setResponsiveFontSize(14),
@@ -145,18 +156,26 @@ class _ExpandedPendingPermessionsState
                                               ),
                                             )
                                       : Container(),
-                                  widget.desc != null
-                                      ? widget.desc == ""
+                                  widget.userPermessions
+                                              .permessionDescription !=
+                                          null
+                                      ? widget.userPermessions
+                                                  .permessionDescription ==
+                                              ""
                                           ? Container()
                                           : const Divider()
                                       : Container(),
                                   AutoSizeText(
-                                      "${getTranslated(context, "تاريخ الأذن ")}: ${widget.date.substring(0, 11)}"),
+                                      "${getTranslated(context, "تاريخ الأذن ")}: ${widget.userPermessions.date.toString().substring(0, 11)}"),
                                   const Divider(),
-                                  AutoSizeText(widget.permessionType == 1
-                                      ? "${getTranslated(context, "اذن حتى الساعة")}: ${amPmChanger(int.parse(widget.duration))}"
-                                      : "${getTranslated(context, "اذن من الساعة")}: ${amPmChanger(int.parse(widget.duration))}"),
-                                  widget.desc != null
+                                  AutoSizeText(widget
+                                              .userPermessions.permessionType ==
+                                          1
+                                      ? "${getTranslated(context, "اذن حتى الساعة")}: ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"
+                                      : "${getTranslated(context, "اذن من الساعة")}: ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"),
+                                  widget.userPermessions
+                                              .permessionDescription !=
+                                          null
                                       ? const Divider()
                                       : Container(),
                                   const SizedBox(
@@ -211,14 +230,14 @@ class _ExpandedPendingPermessionsState
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 0,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userId))
+                                  memberId: widget.userPermessions.userID))
                           : Positioned(
                               bottom: 15.h,
                               right: 10.w,
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 0,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userId))
+                                  memberId: widget.userPermessions.userID))
                 ],
               )
             ],

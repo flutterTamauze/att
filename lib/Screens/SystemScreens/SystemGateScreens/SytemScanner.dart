@@ -5,10 +5,13 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/permissions_data.dart';
 
+import '../../../main.dart';
 import 'CameraPickerScreen.dart';
 
 const frontCamera = 'FRONT CAMERA';
@@ -40,6 +43,10 @@ class _SystemScanPageState extends State<SystemScanPage> {
     super.initState();
   }
 
+  flipCamera() async {
+    await controller.flipCamera();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +65,9 @@ class _SystemScanPageState extends State<SystemScanPage> {
             child: SafeArea(
               child: IconButton(
                 icon: Icon(
-                  Icons.chevron_left,
+                  locator.locator<PermissionHan>().isEnglishLocale()
+                      ? Icons.chevron_left
+                      : Icons.chevron_right,
                   color: Colors.white,
                   size: 40,
                 ),
@@ -69,6 +78,20 @@ class _SystemScanPageState extends State<SystemScanPage> {
                 },
               ),
             ),
+          ),
+          Positioned(
+            bottom: 4.0,
+            right: 4.0,
+            child: SafeArea(
+                child: FloatingActionButton(
+              backgroundColor: ColorManager.primary,
+              onPressed: () {
+                flipCamera();
+              },
+              child: const Icon(
+                Icons.swap_horizontal_circle_sharp,
+              ),
+            )),
           ),
         ],
       ),

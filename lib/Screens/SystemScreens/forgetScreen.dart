@@ -458,7 +458,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                                         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
                                     final RegExp regex = new RegExp(pattern);
                                     if (!regex.hasMatch(text)) {
-                                      return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                      return getTranslated(context,
+                                          "كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة");
                                     } else {
                                       return null;
                                     }

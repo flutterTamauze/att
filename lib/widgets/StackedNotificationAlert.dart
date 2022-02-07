@@ -65,25 +65,25 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 50.h,
+                      height: 40.h,
                     ),
                     InkWell(
                       onTap: () async {},
-                      child: Text(
+                      child: AutoSizeText(
                         widget.notificationTitle,
                         style: TextStyle(
                             color: Colors.orange,
-                            fontSize: setResponsiveFontSize(17),
+                            fontSize: setResponsiveFontSize(15),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Divider(),
-                    Text(widget.notificationContent),
+                    const Divider(),
+                    AutoSizeText(widget.notificationContent),
                     SizedBox(
                       height: 20.h,
                     ),
                     isloading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.orange,
                             ),
@@ -181,12 +181,14 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
             )),
         Positioned(
             right: 125.w,
-            top: widget.popWidget ? 170.h : 180.h,
+            top: widget.popWidget
+                ? MediaQuery.of(context).size.height / 3.5
+                : 180.h,
             child: Container(
               width: 150.w,
               height: 150.h,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(shape: BoxShape.circle),
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(shape: BoxShape.circle),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(60),
                 child: Lottie.asset(widget.lottieAsset,

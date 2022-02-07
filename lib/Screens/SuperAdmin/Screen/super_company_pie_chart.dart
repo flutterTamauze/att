@@ -159,7 +159,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                         .toString(),
                                   ),
                                 ],
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 SinglePieChartItem(
@@ -249,7 +249,7 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 ),
                               )
                             : Container(),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Provider.of<SiteData>(context, listen: false)

@@ -50,9 +50,9 @@ class _UserOrdersViewState extends State<UserOrdersView> {
 
   @override
   Widget build(BuildContext context) {
-    List<UserHolidays> provList =
+    final List<UserHolidays> provList =
         Provider.of<UserHolidaysData>(context, listen: true).singleUserHoliday;
-    var permessionsList = Provider.of<UserPermessionsData>(
+    final permessionsList = Provider.of<UserPermessionsData>(
       context,
     ).singleUserPermessions;
 
@@ -150,7 +150,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                             }).toList(),
                             onChanged: (value) {
                               if (value == getTranslated(context, "الأذونات")) {
-                                var userProvider = Provider.of<UserData>(
+                                final userProvider = Provider.of<UserData>(
                                     context,
                                     listen: false);
                                 if (Provider.of<UserPermessionsData>(context,
@@ -194,18 +194,19 @@ class _UserOrdersViewState extends State<UserOrdersView> {
 
                     setState(() {
                       if (widget.selectedOrder == "الأجازات") {
-                        List<UserHolidays> order = provList
+                        final List<UserHolidays> order = provList
                             .where((element) =>
                                 element.holidayNumber.toString() ==
                                 orderNumberController.text)
                             .toList();
                         filteredOrderData = order;
                       } else {
-                        List<UserPermessions> permessions = permessionsList
-                            .where((element) =>
-                                element.permessionId.toString() ==
-                                orderNumberController.text)
-                            .toList();
+                        final List<UserPermessions> permessions =
+                            permessionsList
+                                .where((element) =>
+                                    element.permessionId.toString() ==
+                                    orderNumberController.text)
+                                .toList();
                         filteredPermessions = permessions;
                       }
                     });
@@ -213,7 +214,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   controller: orderNumberController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: getTranslated(context, "البحث برقم الطلب"),
                       focusColor: Colors.orange,
                       focusedBorder: OutlineInputBorder(
@@ -226,7 +227,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.orange,
                             ),

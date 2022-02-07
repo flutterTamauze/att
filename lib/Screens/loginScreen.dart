@@ -124,11 +124,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context, "مطلوب");
                                           } else if (text.length >= 8 &&
                                               text.length <= 12) {
-                                            Pattern pattern =
+                                            final Pattern pattern =
                                                 r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                                            RegExp regex = new RegExp(pattern);
+                                            final RegExp regex =
+                                                new RegExp(pattern);
                                             if (!regex.hasMatch(text)) {
-                                              return ' كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة \n وعلامات ترقيم(!@#\$&*~) و رقم';
+                                              return getTranslated(context,
+                                                  "كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة");
                                             } else {
                                               return null;
                                             }
@@ -416,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
   loginFunction() async {
     Provider.of<UserData>(context, listen: false).getCurrentLocation();
     Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (mounted)
       setState(() {
         isLoading = true;
@@ -443,11 +445,10 @@ class _LoginScreenState extends State<LoginScreen> {
         print("VALUE OF USER");
         print(value);
         if (value == NO_INTERNET) {
-          return noInternetDialog(context).then((value) {
-            setState(() {
-              isLoading = false;
-            });
+          setState(() {
+            isLoading = false;
           });
+          // return noInternetDialog(context);
         } else if (value == null) {
           return showDialog(
               context: context,

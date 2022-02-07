@@ -102,7 +102,7 @@ class SitesDisplay extends StatelessWidget {
                           },
                           title: getTranslated(context, 'إزالة موقع'),
                           content:
-                              "${getTranslated(context, "هل تريد إزالة")}${sites[index + 1].name} ؟");
+                              "${getTranslated(context, "هل تريد إزالة")} ${sites[index + 1].name} ؟");
                     });
               },
               onTapEdit: () async {

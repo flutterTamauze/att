@@ -20,11 +20,10 @@ class UserOrdersListView extends StatefulWidget {
 }
 
 class _UserOrdersListViewState extends State<UserOrdersListView> {
-  @override
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
     if (widget.memberId == "" || widget.memberId == null) {
       Provider.of<UserHolidaysData>(context, listen: false)
           .getFutureSingleUserHoliday(
@@ -44,7 +43,7 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
       child: SmartRefresher(
         onRefresh: _onRefresh,
         enablePullDown: true,
-        header: WaterDropMaterialHeader(
+        header: const WaterDropMaterialHeader(
           color: Colors.white,
           backgroundColor: Colors.orange,
         ),
@@ -52,7 +51,7 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
         child: Provider.of<UserHolidaysData>(
           context,
         ).isLoading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : ListView.builder(

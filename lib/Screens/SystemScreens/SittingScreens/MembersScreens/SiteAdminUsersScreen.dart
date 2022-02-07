@@ -24,11 +24,13 @@ import 'package:qr_users/services/Settings/settings.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
 import 'package:qr_users/widgets/headers.dart';
@@ -78,136 +80,283 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
       child: Container(
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                        decoration: const BoxDecoration(),
-                        height: 44.0.h,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            TextFormField(
-                              onFieldSubmitted: (_) async {
-                                FocusScope.of(context).unfocus();
+            const SizedBox(
+              height: 10,
+            ),
+            Provider.of<PermissionHan>(context, listen: false).isEnglishLocale()
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (widget.textController.text.length < 3) {
+                                Fluttertoast.showToast(
+                                    msg: getTranslated(context,
+                                        "يجب ان لا يقل البحث عن 3 احرف"),
+                                    backgroundColor: Colors.red,
+                                    gravity: ToastGravity.CENTER);
+                              } else {
                                 setState(() {
                                   showSearchButton = false;
                                   widget.searchFun(widget.textController.text);
                                 });
-                              },
-                              onChanged: (String v) {
-                                print(v);
-                                if (v.isEmpty) {
-                                  widget.resetTextFieldFun();
-                                }
-                                print(showSearchButton);
-                                if (showSearchButton == false) {
+                              }
+                            },
+                            child: showSearchButton
+                                ? Container(
+                                    height: 44.h,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xff4a4a4a),
+                                          width: 1.0),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                      color: Colors.orange[500],
+                                    ),
+                                    child: const Icon(
+                                      Icons.search,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        showSearchButton = true;
+                                      });
+                                      widget.resetTextFieldFun();
+                                    },
+                                    child: Container(
+                                      height: 44.h,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xff4a4a4a),
+                                            width: 1.0),
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            bottomLeft:
+                                                const Radius.circular(10)),
+                                        color: Colors.orange[500],
+                                      ),
+                                      child: const Icon(FontAwesomeIcons.times,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                              decoration: const BoxDecoration(),
+                              height: 44.0.h,
+                              child: Stack(
+                                overflow: Overflow.visible,
+                                children: [
+                                  TextFormField(
+                                    onFieldSubmitted: (_) async {
+                                      FocusScope.of(context).unfocus();
+                                      setState(() {
+                                        showSearchButton = false;
+                                        widget.searchFun(
+                                            widget.textController.text);
+                                      });
+                                    },
+                                    onChanged: (String v) {
+                                      print(v);
+                                      if (v.isEmpty) {
+                                        widget.resetTextFieldFun();
+                                      }
+                                      print(showSearchButton);
+                                      if (showSearchButton == false) {
+                                        setState(() {
+                                          showSearchButton = true;
+                                        });
+                                      }
+                                    },
+                                    controller: widget.textController,
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true)),
+                                    decoration:
+                                        kTextFieldDecorationForSearch.copyWith(
+                                            hintText: getTranslated(
+                                                context, "اسم المستخدم"),
+                                            hintStyle: TextStyle(
+                                              fontSize: ScreenUtil().setSp(
+                                                setResponsiveFontSize(16),
+                                                allowFontScalingSelf: true,
+                                              ),
+                                            ),
+                                            fillColor: const Color(0xFFE9E9E9),
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    left: 11,
+                                                    right: 13,
+                                                    top: 20,
+                                                    bottom: 14),
+                                            errorStyle: const TextStyle(
+                                              fontSize: 13,
+                                              height: 0.7,
+                                            ),
+                                            errorMaxLines: 4),
+                                  ),
+                                  Positioned(
+                                    left: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      width: 1.3,
+                                      height: 50,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                    ),
+                                  )
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                  )
+                : Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                                decoration: const BoxDecoration(),
+                                height: 44.0.h,
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    TextFormField(
+                                      onFieldSubmitted: (_) async {
+                                        FocusScope.of(context).unfocus();
+                                        setState(() {
+                                          showSearchButton = false;
+                                          widget.searchFun(
+                                              widget.textController.text);
+                                        });
+                                      },
+                                      onChanged: (String v) {
+                                        print(v);
+                                        if (v.isEmpty) {
+                                          widget.resetTextFieldFun();
+                                        }
+                                        print(showSearchButton);
+                                        if (showSearchButton == false) {
+                                          setState(() {
+                                            showSearchButton = true;
+                                          });
+                                        }
+                                      },
+                                      controller: widget.textController,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true)),
+                                      decoration: kTextFieldDecorationForSearch
+                                          .copyWith(
+                                              hintText: getTranslated(
+                                                  context, "اسم المستخدم"),
+                                              hintStyle: TextStyle(
+                                                fontSize: ScreenUtil().setSp(
+                                                  16,
+                                                  allowFontScalingSelf: true,
+                                                ),
+                                              ),
+                                              fillColor: Color(0xFFE9E9E9),
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 11,
+                                                  right: 13,
+                                                  top: 20,
+                                                  bottom: 14),
+                                              errorStyle: TextStyle(
+                                                fontSize: 13,
+                                                height: 0.7,
+                                              ),
+                                              errorMaxLines: 4),
+                                    ),
+                                    Positioned(
+                                      left: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        width: 1.3,
+                                        height: 50,
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (widget.textController.text.length < 3) {
+                                  Fluttertoast.showToast(
+                                      msg: getTranslated(context,
+                                          "يجب ان لا يقل البحث عن 3 احرف"),
+                                      backgroundColor: Colors.red,
+                                      gravity: ToastGravity.CENTER);
+                                } else {
                                   setState(() {
-                                    showSearchButton = true;
+                                    showSearchButton = false;
+                                    widget
+                                        .searchFun(widget.textController.text);
                                   });
                                 }
                               },
-                              controller: widget.textController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true)),
-                              decoration:
-                                  kTextFieldDecorationForSearch.copyWith(
-                                      hintText: 'اسم المستخدم',
-                                      hintStyle: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16,
-                                            allowFontScalingSelf: true),
+                              child: showSearchButton
+                                  ? Container(
+                                      height: 44.h,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xff4a4a4a),
+                                            width: 1.0),
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10)),
+                                        color: Colors.orange[500],
                                       ),
-                                      fillColor: Color(0xFFE9E9E9),
-                                      contentPadding: EdgeInsets.only(
-                                          left: 11,
-                                          right: 13,
-                                          top: 20,
-                                          bottom: 14),
-                                      errorStyle: TextStyle(
-                                        fontSize: setResponsiveFontSize(13),
-                                        height: 0.7,
+                                      child: const Icon(
+                                        Icons.search,
+                                        color: Colors.white,
                                       ),
-                                      errorMaxLines: 4),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          showSearchButton = true;
+                                        });
+                                        widget.resetTextFieldFun();
+                                      },
+                                      child: Container(
+                                        height: 44.h,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xff4a4a4a),
+                                              width: 1.0),
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10)),
+                                          color: Colors.orange[500],
+                                        ),
+                                        child: const Icon(
+                                            FontAwesomeIcons.times,
+                                            color: Colors.white),
+                                      ),
+                                    ),
                             ),
-                            Positioned(
-                              left: 0,
-                              bottom: 0,
-                              child: Container(
-                                width: 1.3,
-                                height: 50,
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                              ),
-                            )
-                          ],
-                        )),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (widget.textController.text.length < 3) {
-                          Fluttertoast.showToast(
-                              msg: "يجب ان لا يقل البحث عن 3 احرف",
-                              backgroundColor: Colors.red,
-                              gravity: ToastGravity.CENTER);
-                        } else {
-                          setState(() {
-                            showSearchButton = false;
-                            widget.searchFun(widget.textController.text);
-                          });
-                        }
-                      },
-                      child: showSearchButton
-                          ? Container(
-                              height: 44.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color(0xff4a4a4a), width: 1.0),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10)),
-                                color: Colors.orange[500],
-                              ),
-                              child: const Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showSearchButton = true;
-                                });
-                                widget.resetTextFieldFun();
-                              },
-                              child: Container(
-                                height: 44.h,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xff4a4a4a),
-                                      width: 1.0),
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10)),
-                                  color: Colors.orange[500],
-                                ),
-                                child: const Icon(FontAwesomeIcons.times,
-                                    color: Colors.white),
-                              ),
-                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ),
             Container(
               child: Flexible(
                 child: Row(
@@ -369,6 +518,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
     Provider.of<MemberData>(context, listen: false).byShiftPageIndex = 0;
     Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
     Provider.of<MemberData>(context, listen: false).keepRetriving = true;
+    Provider.of<MemberData>(context, listen: false).membersList.clear();
     final userProvider = Provider.of<UserData>(context, listen: false);
     final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
@@ -423,18 +573,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
             .shiftsList[Provider.of<SiteData>(context, listen: false)
                 .dropDownShiftIndex]
             .shiftId);
-  }
-
-  int getsiteIndex(String siteName) {
-    final list =
-        Provider.of<SiteData>(context, listen: false).dropDownSitesList;
-    final int index = list.length;
-    for (int i = 0; i < index; i++) {
-      if (siteName == list[i].name) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
@@ -501,10 +639,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                             future:
                                 Provider.of<MemberData>(context).futureListener,
                             builder: (context, snapshot) {
-                              if ((!snapshot.hasData ||
-                                      snapshot.connectionState ==
-                                          ConnectionState.waiting) &&
-                                  Provider.of<MemberData>(context)
+                              if (Provider.of<MemberData>(context)
                                           .membersList
                                           .length ==
                                       0 &&
@@ -528,9 +663,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                               }
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-                                  return const Center(
-                                    child: const LoadingIndicator(),
-                                  );
+
                                 case ConnectionState.done:
                                   if (Provider.of<MemberData>(context)
                                               .allPageIndex !=
@@ -617,56 +750,58 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                         height:
                                                                             200.h)),
                                                               )
-                                                            : Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topCenter,
-                                                                width: double
-                                                                    .infinity,
-                                                                child: ListView
-                                                                    .builder(
-                                                                        itemCount: value
-                                                                            .userSearchMember
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (BuildContext context,
-                                                                                int index) {
-                                                                          return InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(
-                                                                                    builder: (context) => UserFullDataScreen(
-                                                                                      index: index,
-                                                                                      onResetMac: () {
-                                                                                        settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                      },
-                                                                                      onTapDelete: () {
-                                                                                        settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                      },
-                                                                                      siteIndex: siteIndex,
-                                                                                      userId: value.userSearchMember[index].id,
+                                                            : value.userSearchMember
+                                                                        .length ==
+                                                                    0
+                                                                ? CenterMessageText(
+                                                                    message: getTranslated(
+                                                                        context,
+                                                                        "لا يوجد نتائج للبحث"))
+                                                                : Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topCenter,
+                                                                    width: double
+                                                                        .infinity,
+                                                                    child: ListView
+                                                                        .builder(
+                                                                            itemCount:
+                                                                                value.userSearchMember.length,
+                                                                            itemBuilder: (BuildContext context, int index) {
+                                                                              return InkWell(
+                                                                                onTap: () {
+                                                                                  Navigator.push(
+                                                                                      context,
+                                                                                      MaterialPageRoute(
+                                                                                        builder: (context) => UserFullDataScreen(
+                                                                                          index: index,
+                                                                                          onResetMac: () {
+                                                                                            settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                          },
+                                                                                          onTapDelete: () {
+                                                                                            settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                          },
+                                                                                          siteIndex: siteIndex,
+                                                                                          userId: value.userSearchMember[index].id,
+                                                                                        ),
+                                                                                      ));
+                                                                                },
+                                                                                child: Card(
+                                                                                  elevation: 2,
+                                                                                  child: Container(
+                                                                                    alignment: Alignment.centerRight,
+                                                                                    width: double.infinity,
+                                                                                    height: 50.h,
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets.all(10.0),
+                                                                                      child: AutoSizeText(
+                                                                                        value.userSearchMember[index].username,
+                                                                                      ),
                                                                                     ),
-                                                                                  ));
-                                                                            },
-                                                                            child:
-                                                                                Card(
-                                                                              elevation: 2,
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                width: double.infinity,
-                                                                                height: 50.h,
-                                                                                child: Padding(
-                                                                                  padding: const EdgeInsets.all(10.0),
-                                                                                  child: AutoSizeText(
-                                                                                    value.userSearchMember[index].username,
                                                                                   ),
                                                                                 ),
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        }));
+                                                                              );
+                                                                            }));
                                                       },
                                                     )
                                                   : memberData.membersList

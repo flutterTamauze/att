@@ -200,56 +200,53 @@ class _OutsideVacationState extends State<OutsideVacation> {
                           ),
                           VacationCardHeader(
                             header:
-                                "${getTranslated(context, "تسجيل طلب للمستخدم")} ${widget.member.name}",
+                                "${getTranslated(context, "تسجيل طلب للمستخدم:")} ${widget.member.name}",
                           ),
                           VacationCardHeader(
                             header: getTranslated(context, "نوع الطلب"),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioValue,
-                                  radioVal: 3,
-                                  title: getTranslated(context, "أذن"),
-                                  onchannge: (value) {
-                                    setState(() {
-                                      _today = DateTime.now();
-                                      widget.radioValue = value;
-                                    });
-                                  },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RadioButtonWidg(
+                                radioVal2: widget.radioValue,
+                                radioVal: 3,
+                                title: getTranslated(context, "أذن"),
+                                onchannge: (value) {
+                                  setState(() {
+                                    _today = DateTime.now();
+                                    widget.radioValue = value;
+                                  });
+                                },
+                              ),
+                              RadioButtonWidg(
+                                radioVal2: widget.radioValue,
+                                radioVal: 1,
+                                title: getTranslated(context, "اجازة"),
+                                onchannge: (value) {
+                                  setState(() {
+                                    fromDate = widget.radioValue == 3
+                                        ? DateTime.now()
+                                        : tomorrow;
+                                    widget.radioValue = value;
+                                  });
+                                },
+                              ),
+                              RadioButtonWidg(
+                                radioVal: 2,
+                                radioVal2: widget.radioValue,
+                                title: getTranslated(
+                                  context,
+                                  "مأمورية",
                                 ),
-                                RadioButtonWidg(
-                                  radioVal2: widget.radioValue,
-                                  radioVal: 1,
-                                  title: getTranslated(context, "اجازة"),
-                                  onchannge: (value) {
-                                    setState(() {
-                                      fromDate = widget.radioValue == 3
-                                          ? DateTime.now()
-                                          : tomorrow;
-                                      widget.radioValue = value;
-                                    });
-                                  },
-                                ),
-                                RadioButtonWidg(
-                                  radioVal: 2,
-                                  radioVal2: widget.radioValue,
-                                  title: getTranslated(
-                                    context,
-                                    "مأمورية",
-                                  ),
-                                  onchannge: (value) {
-                                    // getSingleUserMission();
-                                    setState(() {
-                                      widget.radioValue = value;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                                onchannge: (value) {
+                                  // getSingleUserMission();
+                                  setState(() {
+                                    widget.radioValue = value;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                           widget.radioValue == 1
                               ? Column(

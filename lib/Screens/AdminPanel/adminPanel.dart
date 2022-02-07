@@ -15,11 +15,14 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/permissions_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
+
+import '../../main.dart';
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -196,7 +199,9 @@ class ReportTile extends StatelessWidget {
           ),
         ),
         leading: Icon(
-          Icons.chevron_left,
+          locator.locator<PermissionHan>().isEnglishLocale()
+              ? Icons.chevron_left
+              : Icons.chevron_right,
           size: ScreenUtil().setSp(35, allowFontScalingSelf: true),
           color: Colors.orange,
         ),

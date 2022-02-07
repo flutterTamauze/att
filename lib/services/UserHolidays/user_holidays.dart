@@ -18,7 +18,12 @@ import 'package:qr_users/services/user_data.dart';
 import '../../main.dart';
 
 class UserHolidays {
-  String userId, fcmToken, userName, holidayDescription, adminResponse;
+  String userId,
+      fcmToken,
+      userName,
+      holidayDescription,
+      adminResponse,
+      userImage;
   int holidayNumber,
       holidayStatus, //1=>accept , //2 refused , //3 waiting..
       holidayType,
@@ -38,6 +43,7 @@ class UserHolidays {
       this.osType,
       this.userId,
       this.approvedDate,
+      this.userImage,
       this.createdOnDate});
   factory UserHolidays.fromJson(dynamic json) {
     return UserHolidays(
@@ -51,6 +57,7 @@ class UserHolidays {
         holidayNumber: json["id"],
         fcmToken: json["fcmToken"],
         holidayDescription: json["desc"],
+        userImage: "$imageUrl${json["userImage"]}",
         // approvedDate: DateTime.tryParse(json["approvedDate"]) ?? DateTime.now(),
         osType: json["mobileOS"],
         createdOnDate: DateTime.tryParse(json["createdOn"]));

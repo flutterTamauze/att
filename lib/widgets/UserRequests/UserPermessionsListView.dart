@@ -22,7 +22,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {
-    var userProvider = Provider.of<UserData>(context, listen: false);
+    final userProvider = Provider.of<UserData>(context, listen: false);
 
     if (widget.memberId == "" || widget.memberId == null) {
       Provider.of<UserPermessionsData>(context, listen: false)
@@ -45,23 +45,15 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
             child: ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                var permList = widget.permessionsList[index];
+                final permList = widget.permessionsList[index];
                 return Column(
                   children: [
                     ExpandedPermessionsTile(
-                      approvedDate: permList.approvedDate,
                       isAdmin: false,
+                      userPermessions: permList,
                       currentIndex: index,
-                      createdOn: permList.createdOn,
-                      desc: permList.permessionDescription,
-                      date: permList.date,
-                      permessionType: permList.permessionType,
-                      orderNum: permList.permessionId.toString(),
-                      adminComment: permList.adminResponse,
-                      status: permList.permessionStatus,
-                      duration: permList.duration.replaceAll(":", ""),
                     ),
-                    Divider()
+                    const Divider()
                   ],
                 );
               },
@@ -74,35 +66,27 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
               controller: refreshController,
               onRefresh: _onRefresh,
               enablePullDown: true,
-              header: WaterDropMaterialHeader(
+              header: const WaterDropMaterialHeader(
                 color: Colors.white,
                 backgroundColor: Colors.orange,
               ),
               child: Provider.of<UserPermessionsData>(context, listen: true)
                       .isLoading
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        var permList = widget.permessionsList[index];
+                        final permList = widget.permessionsList[index];
                         return Column(
                           children: [
                             ExpandedPermessionsTile(
-                              approvedDate: permList.approvedDate,
+                              userPermessions: permList,
                               currentIndex: index,
                               isAdmin: widget.memberId == "" ? false : true,
-                              desc: permList.permessionDescription,
-                              date: permList.date,
-                              permessionType: permList.permessionType,
-                              orderNum: permList.permessionId.toString(),
-                              createdOn: permList.createdOn,
-                              adminComment: permList.adminResponse,
-                              status: permList.permessionStatus,
-                              duration: permList.duration.replaceAll(":", ""),
                             ),
-                            Divider()
+                            const Divider()
                           ],
                         );
                       },

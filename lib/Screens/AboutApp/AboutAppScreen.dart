@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/main.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
@@ -243,7 +245,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     color: Colors.black,
                     child: IconButton(
                         icon: Icon(
-                          Icons.chevron_left,
+                          locator.locator<PermissionHan>().isEnglishLocale()
+                              ? Icons.chevron_left
+                              : Icons.chevron_right,
                           color: const Color(0xffF89A41),
                           size: ScreenUtil()
                               .setSp(40, allowFontScalingSelf: true),

@@ -264,13 +264,13 @@ class _SplashScreenState extends State<SplashScreen>
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     //start Animation
     animationController.forward();
 
-    new Timer(new Duration(milliseconds: 1), () async {
+    new Timer(const Duration(milliseconds: 1), () async {
       await checkLanguage();
       await checkSharedUserData();
       await checkAttendProovStatus();
