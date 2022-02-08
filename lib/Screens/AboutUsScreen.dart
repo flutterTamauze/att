@@ -72,12 +72,9 @@ class AboutUsScreen extends StatelessWidget {
                                                 radius: 60,
                                                 child: Container(
                                                   width: 200.w,
-                                                  decoration: BoxDecoration(
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     color: Colors.white,
-                                                    // image: DecorationImage(
-                                                    //   image: headerImage,
-                                                    //   fit: BoxFit.fill,
-                                                    // ),
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: ClipRRect(
@@ -193,22 +190,22 @@ class AboutUsScreen extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              CircletTile(
+                                              const CircletTile(
                                                 link:
                                                     'https://www.facebook.com/Tamauze-Digital-Solutions-102590002279383/?ref=pages_you_manage',
                                                 icon: Typicons.social_facebook,
                                               ),
-                                              CircletTile(
+                                              const CircletTile(
                                                 link:
                                                     'https://twitter.com/TDS39064875',
                                                 icon: Typicons.social_twitter,
                                               ),
-                                              CircletTile(
+                                              const CircletTile(
                                                 link:
                                                     'https://www.instagram.com/socialtds24/',
                                                 icon: Typicons.social_instagram,
                                               ),
-                                              CircletTile(
+                                              const CircletTile(
                                                 link:
                                                     'https://www.youtube.com/channel/UCjcZRlnLQxzMw9iCAyVIQRA',
                                                 icon: Typicons.social_youtube,
@@ -454,7 +451,7 @@ class CircletTile extends StatelessWidget {
   final IconData icon;
   final String link;
   final iconColor;
-  CircletTile({this.icon, this.link, this.iconColor});
+  const CircletTile({this.icon, this.link, this.iconColor});
 
   @override
   Widget build(BuildContext context) {

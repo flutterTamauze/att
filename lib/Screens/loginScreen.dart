@@ -4,17 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/forgetScreen.dart';
 import 'package:qr_users/Core/constants.dart';
-import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/api.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Settings/LanguageSettings.dart';
@@ -25,7 +25,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../main.dart';
-import 'Notifications/Notifications.dart';
 import 'SuperAdmin/Screen/super_admin.dart';
 import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
@@ -38,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
   TextEditingController _uniIdController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool showLocalizationButton = true;
   @override
   var _passwordVisible = true;
   void initState() {
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     height: (MediaQuery.of(context).size.height) / 1.5,
                     child: Padding(
-                      padding: EdgeInsets.all(25.0),
+                      padding: const EdgeInsets.all(25.0),
                       child: Form(
                         key: _loginFormKey,
                         child: Center(
@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context, "اسم المستخدم"),
                                             suffixIcon: Icon(
                                               Icons.person,
-                                              color: Colors.orange,
+                                              color: ColorManager.primary,
                                             )),
                                   ),
                                   SizedBox(height: 10.0.h),
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context, "مطلوب");
                                           } else if (text.length >= 8 &&
                                               text.length <= 12) {
-                                            final Pattern pattern =
+                                            const Pattern pattern =
                                                 r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
                                             final RegExp regex =
                                                 new RegExp(pattern);
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             kTextFieldDecorationWhite.copyWith(
                                           hintText: getTranslated(
                                               context, 'كلمة المرور'),
-                                          suffixIcon: Icon(
+                                          suffixIcon: const Icon(
                                             Icons.lock,
                                             color: Colors.orange,
                                           ),
@@ -208,11 +208,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 30.0.h,
                                   ),
                                   isLoading
-                                      ? Center(
+                                      ? const Center(
                                           child: CircularProgressIndicator(
                                             backgroundColor: Colors.white,
                                             valueColor:
-                                                new AlwaysStoppedAnimation<
+                                                const AlwaysStoppedAnimation<
                                                     Color>(Colors.orange),
                                           ),
                                         )
@@ -253,126 +253,61 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(
                                     height: 15.h,
                                   ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        child: AutoSizeText(
-                                          getTranslated(context, "لغة التطبيق"),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        height: 40.h,
-                                        width: 60.w,
-                                        child: Container(
-                                          child: Container(
-                                            width: 60,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color: Colors.grey)),
-                                            child: DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                              elevation: 2,
-                                              icon: Visibility(
-                                                  visible: false,
-                                                  child: Icon(
-                                                      Icons.arrow_downward)),
-                                              onChanged: (value) {
-                                                print(value);
-                                                Locale _tempLocal;
-                                                switch (value) {
-                                                  case 'Ar':
-                                                    _tempLocal =
-                                                        Locale("ar", "SA");
-                                                    break;
-                                                  case 'En':
-                                                    _tempLocal =
-                                                        Locale("en", "US");
-                                                }
+                                  showLocalizationButton
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
                                                 setState(() {
-                                                  languageCode = value;
-                                                  Provider.of<PermissionHan>(
-                                                          context,
-                                                          listen: false)
-                                                      .setLocale(_tempLocal);
+                                                  showLocalizationButton =
+                                                      false;
                                                 });
-                                                print(
-                                                    "current local $_tempLocal");
-                                                setLocale(value == "En"
-                                                    ? "en"
-                                                    : "ar");
-                                                MyApp.setLocale(
-                                                    context, _tempLocal);
-                                                Fluttertoast.showToast(
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                    msg: value == "En"
-                                                        ? "Langugage has been saved successfully !"
-                                                        : "تم حفظ اللغة بنجاح");
                                               },
-                                              isExpanded: true,
-                                              value: languageCode,
-                                              items: [
-                                                DropdownMenuItem(
-                                                  child: FadeIn(
-                                                    child:
-                                                        LangugageDropdownItem(
-                                                      langugage: "Arabic",
-                                                      imagePath:
-                                                          "resources/EgyptFlag.png",
-                                                    ),
-                                                  ),
-                                                  value: "Ar",
-                                                ),
-                                                DropdownMenuItem(
-                                                  child: FadeIn(
-                                                    child:
-                                                        LangugageDropdownItem(
-                                                      langugage: "English",
-                                                      imagePath:
-                                                          "resources/EnglishFlag.png",
-                                                    ),
-                                                  ),
-                                                  value: "En",
-                                                )
-                                              ],
-                                            )),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-//                                  InkWell(
-//                                    onTap: () {
-//                                      Navigator.of(context).push(
-//                                        new MaterialPageRoute(
-//                                          builder: (context) =>
-//                                              GuestCompanyScreen(),
-//                                        ),
-//                                      );
-//                                    },
-//                                    child: AutoSizeText(
-//                                      "الدخول كزائر",
-//                                      style: TextStyle(
-//                                          fontSize: 15,
-//                                          decoration: TextDecoration.underline,
-//                                          color: Colors.orange),
-//                                    ),
-//                                  ),
+                                              child: AutoSizeText(
+                                                getTranslated(
+                                                    context, "تغير اللغة"),
+                                                style: boldStyle.copyWith(
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            14)),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            const Icon(FontAwesomeIcons.globe),
+                                          ],
+                                        )
+                                      : Stack(
+                                          children: [
+                                            ChangeLanguage(
+                                                locale:
+                                                    Provider.of<PermissionHan>(
+                                                                context,
+                                                                listen: false)
+                                                            .isEnglishLocale()
+                                                        ? "En"
+                                                        : "Ar"),
+                                            Positioned(
+                                                top: 5.h,
+                                                right: 10.w,
+                                                child: IconButton(
+                                                  icon: const Icon(
+                                                      FontAwesomeIcons.times),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      showLocalizationButton =
+                                                          true;
+                                                    });
+                                                  },
+                                                  color: ColorManager.primary,
+                                                ))
+                                          ],
+                                        )
+
+//
                                 ],
                               ),
                             ],
@@ -506,7 +441,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => NavScreenTwo(0),
+                builder: (context) => const NavScreenTwo(0),
               ));
         } else if (value == 6) {
           prefs.setStringList(

@@ -47,7 +47,7 @@ class _DisplayHolidaysState extends State<DisplayCompanyMissions> {
                 ),
           Container(
               child: widget._nameController.text == ""
-                  ? Text(
+                  ? AutoSizeText(
                       getTranslated(context, "برجاء اختيار اسم المستخدم"),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,

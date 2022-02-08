@@ -24,7 +24,6 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/UserFullData/editUser.dart';
 import 'package:qr_users/widgets/headers.dart';
-import 'package:flutter_screenutil/screen_util.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 

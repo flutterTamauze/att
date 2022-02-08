@@ -15,8 +15,8 @@ class CompanySites {
   }
   static List<ShiftsSites> parseItems(itemsJson) {
     // var list = itemsJson["goods"] as List;
-    var list = itemsJson["shifts"] as List;
-    List<ShiftsSites> itemsList =
+    final list = itemsJson["shifts"] as List;
+    final List<ShiftsSites> itemsList =
         list.map((data) => ShiftsSites.fromJson(data)).toList();
     return itemsList;
   }

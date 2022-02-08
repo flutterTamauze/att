@@ -13,16 +13,16 @@ import 'Notifications/Notifications.dart';
 
 class ErrorScreen2 extends StatelessWidget {
   final Widget child;
-  ErrorScreen2({this.child});
+  const ErrorScreen2({this.child});
   @override
   Widget build(BuildContext context) {
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.Wifi ||
         connectionStatus == ConnectivityStatus.Cellular) {
       print(connectionStatus);
       return child;
     }
-    var userData = Provider.of<UserData>(context);
+    final userData = Provider.of<UserData>(context);
     return GestureDetector(
       onTap: () => print(userData.cachedUserData.isNotEmpty),
       child: Scaffold(
@@ -81,7 +81,7 @@ class ErrorScreen2 extends StatelessWidget {
                           height: 40.h,
                         ),
                         userData.isLoading
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : Container()
                       ],
                     ),

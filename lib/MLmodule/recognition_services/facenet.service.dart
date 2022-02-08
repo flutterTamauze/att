@@ -178,6 +178,7 @@ class FaceNetService {
     }
     double minDist = 999;
     double currDist = 0.0;
+    // ignore: unused_local_variable
     String predRes;
 
     /// search the closest result 👓

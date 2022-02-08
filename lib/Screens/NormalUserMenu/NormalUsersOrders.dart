@@ -118,7 +118,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       getTranslated(context, "طلباتى")),
                 ],
               ),
-              Divider(),
+              const Divider(),
               Container(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -128,7 +128,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(width: 1)),
@@ -143,7 +143,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                                   value: x,
                                   child: AutoSizeText(
                                     x,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.orange,
                                         fontWeight: FontWeight.w500),
                                   ));
@@ -185,7 +185,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: TextField(
@@ -285,7 +285,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                             ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.orange,
+                              backgroundColor: ColorManager.primary,
                             ),
                           );
                         } else {

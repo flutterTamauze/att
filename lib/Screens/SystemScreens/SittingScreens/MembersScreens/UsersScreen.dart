@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -13,12 +11,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
@@ -75,11 +73,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   void didChangeDependencies() {
-    final memberData = Provider.of<MemberData>(context, listen: false);
-    memberData.allPageIndex = 0;
-    memberData.byShiftPageIndex = 0;
-    memberData.bySitePageIndex = 0;
-    memberData.keepRetriving = true;
+    Provider.of<MemberData>(context, listen: false).resetPagination();
 
     final userProvider = Provider.of<UserData>(context, listen: false);
     final comProvier = Provider.of<CompanyData>(context, listen: false);
@@ -517,17 +511,17 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                     actionExtentRatio: 0.10,
                                                                                     closeOnScroll: true,
                                                                                     controller: slidableController,
-                                                                                    actionPane: SlidableDrawerActionPane(),
+                                                                                    actionPane: const SlidableDrawerActionPane(),
                                                                                     secondaryActions: [
                                                                                       ZoomIn(
                                                                                           child: InkWell(
                                                                                         child: Container(
-                                                                                          padding: EdgeInsets.all(7),
+                                                                                          padding: const EdgeInsets.all(7),
                                                                                           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.orange)),
                                                                                           child: Icon(
                                                                                             Icons.edit,
                                                                                             size: 18,
-                                                                                            color: Colors.orange,
+                                                                                            color: ColorManager.primary,
                                                                                           ),
                                                                                         ),
                                                                                         onTap: () async {
@@ -551,9 +545,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                           : ZoomIn(
                                                                                               child: InkWell(
                                                                                               child: Container(
-                                                                                                padding: EdgeInsets.all(7),
+                                                                                                padding: const EdgeInsets.all(7),
                                                                                                 decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.red)),
-                                                                                                child: Icon(
+                                                                                                child: const Icon(
                                                                                                   Icons.delete,
                                                                                                   size: 18,
                                                                                                   color: Colors.red,
@@ -572,7 +566,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                         height: 50.h,
                                                                                         child: Padding(
                                                                                           padding: const EdgeInsets.all(10.0),
-                                                                                          child: Text(
+                                                                                          child: AutoSizeText(
                                                                                             value.userSearchMember[index].username,
                                                                                           ),
                                                                                         ),
@@ -727,7 +721,7 @@ class _UsersScreenState extends State<UsersScreen> {
     Provider.of<MemberData>(context, listen: false).bySitePageIndex = 0;
     Provider.of<MemberData>(context, listen: false).keepRetriving = true;
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(3)),
+        MaterialPageRoute(builder: (context) => const NavScreenTwo(3)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

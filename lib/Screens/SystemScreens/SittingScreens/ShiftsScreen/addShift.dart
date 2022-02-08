@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,8 @@ class AddShiftScreen extends StatefulWidget {
   final isEdit;
   final siteId;
   final siteIndex;
-  AddShiftScreen(this.shift, this.id, this.isEdit, this.siteId, this.siteIndex);
+  const AddShiftScreen(
+      this.shift, this.id, this.isEdit, this.siteId, this.siteIndex);
 
   @override
   _AddShiftScreenState createState() => _AddShiftScreenState();
@@ -248,8 +248,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    final userProvider = Provider.of<UserData>(context, listen: false);
-    final comProvider = Provider.of<CompanyData>(context, listen: false);
 
     return WillPopScope(
       onWillPop: onWillPop,
@@ -459,7 +457,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                       TextFormField(
                                                                     enabled:
                                                                         edit,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black,
                                                                         fontWeight:
@@ -474,7 +472,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                                                             hintText: getTranslated(context,
                                                                                 'من'),
                                                                             prefixIcon:
-                                                                                Icon(
+                                                                                const Icon(
                                                                               Icons.alarm,
                                                                               color: Colors.orange,
                                                                             )),

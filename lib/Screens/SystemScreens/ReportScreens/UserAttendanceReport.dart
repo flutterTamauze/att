@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/DailyReportScreen.dart';
@@ -79,8 +80,8 @@ class _UserAttendanceReportScreenState
   DateTime yesterday;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
     print("val $val");
-    final DateTime maxDate = currentDate.add(Duration(days: 31));
-    final DateTime minDate = currentDate.subtract(Duration(days: 31));
+    final DateTime maxDate = currentDate.add(const Duration(days: 31));
+    final DateTime minDate = currentDate.subtract(const Duration(days: 31));
 
     if (val.isBefore(maxDate) && val.isAfter(minDate)) {
       return true;
@@ -116,7 +117,7 @@ class _UserAttendanceReportScreenState
 
     super.initState();
     print("id $widget.id");
-    var now = DateTime.now();
+    final now = DateTime.now();
     selectedId = widget.id;
     toDate = DateTime(now.year, now.month, now.day - 1);
     fromDate = DateTime(now.year, now.month,
@@ -134,7 +135,6 @@ class _UserAttendanceReportScreenState
       fromDate = widget.userFromDate;
       toDate = widget.userToDate;
     }
-    final FocusNode focusNode = FocusNode();
     yesterday = DateTime(now.year, now.month, now.day - 1);
 
     dateFromString = apiFormatter.format(fromDate);
@@ -176,8 +176,6 @@ class _UserAttendanceReportScreenState
     }
     return -1;
   }
-
-  final _formKey = GlobalKey<FormState>();
 
   String msg = "";
   int siteId = 0;
@@ -277,7 +275,7 @@ class _UserAttendanceReportScreenState
                                                       },
                                                     );
                                                   },
-                                                  child: Icon(
+                                                  child: const Icon(
                                                     FontAwesomeIcons.chartBar,
                                                     color: Colors.orange,
                                                   ),
@@ -403,7 +401,7 @@ class _UserAttendanceReportScreenState
                                           width: 330.w,
                                           child: IgnorePointer(
                                             child: TextFormField(
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500),
                                               controller: _dateController,
@@ -413,7 +411,8 @@ class _UserAttendanceReportScreenState
                                                           hintText: getTranslated(
                                                               context,
                                                               'المدة من / إلى'),
-                                                          prefixIcon: Icon(
+                                                          prefixIcon:
+                                                              const Icon(
                                                             Icons
                                                                 .calendar_today_rounded,
                                                             color:
@@ -490,7 +489,7 @@ class _UserAttendanceReportScreenState
                               width: 340.w,
                               child: Provider.of<MemberData>(context)
                                       .loadingSearch
-                                  ? Center(
+                                  ? const Center(
                                       child: CircularProgressIndicator(
                                       backgroundColor: Colors.orange,
                                     ))
@@ -519,7 +518,7 @@ class _UserAttendanceReportScreenState
                                                   fontWeight: FontWeight.w500),
                                               hintText: getTranslated(
                                                   context, 'الأسم'),
-                                              prefixIcon: Icon(
+                                              prefixIcon: const Icon(
                                                 Icons.person,
                                                 color: Colors.orange,
                                               )),
@@ -607,7 +606,7 @@ class _UserAttendanceReportScreenState
                                                     ),
                                                   ],
                                                 ),
-                                                Divider(
+                                                const Divider(
                                                   color: Colors.grey,
                                                   thickness: 1,
                                                 ),
@@ -661,7 +660,7 @@ class _UserAttendanceReportScreenState
                                                 },
                                                 child: Icon(
                                                   Icons.search,
-                                                  color: Colors.orange,
+                                                  color: ColorManager.primary,
                                                 ),
                                               )
                                             : InkWell(
@@ -671,7 +670,7 @@ class _UserAttendanceReportScreenState
                                                     showSearchIcon = true;
                                                   });
                                                 },
-                                                child: Icon(
+                                                child: const Icon(
                                                   FontAwesomeIcons.times,
                                                   color: Colors.orange,
                                                 ),
@@ -715,7 +714,7 @@ class _UserAttendanceReportScreenState
                                                     });
                                                   }
                                                 },
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.search,
                                                   color: Colors.orange,
                                                 ),
@@ -727,7 +726,7 @@ class _UserAttendanceReportScreenState
                                                     showSearchIcon = true;
                                                   });
                                                 },
-                                                child: Icon(
+                                                child: const Icon(
                                                   FontAwesomeIcons.times,
                                                   color: Colors.orange,
                                                 ),
@@ -749,12 +748,12 @@ class _UserAttendanceReportScreenState
                                             color: Colors.white,
                                             child: Center(
                                               child: Platform.isIOS
-                                                  ? CupertinoActivityIndicator()
-                                                  : CircularProgressIndicator(
+                                                  ? const CupertinoActivityIndicator()
+                                                  : const CircularProgressIndicator(
                                                       backgroundColor:
                                                           Colors.white,
                                                       valueColor:
-                                                          new AlwaysStoppedAnimation<
+                                                          AlwaysStoppedAnimation<
                                                                   Color>(
                                                               Colors.orange),
                                                     ),
@@ -796,7 +795,7 @@ class _UserAttendanceReportScreenState
                                                                                   context,
                                                                                   "المستخدم لم يكن مقيدا فى هذة الفترة",
                                                                                 ),
-                                                                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                style: boldStyle),
                                                                           ),
                                                                         )
                                                                       : ListView.builder(
@@ -921,7 +920,8 @@ class _UserAttendanceReportScreenState
                             ? Navigator.pop(context)
                             : Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => NavScreenTwo(2)),
+                                    builder: (context) =>
+                                        const NavScreenTwo(2)),
                                 (Route<dynamic> route) => false);
                       },
                     ),
@@ -940,10 +940,10 @@ class _UserAttendanceReportScreenState
         ? Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DailyReportScreen(),
+              builder: (context) => const DailyReportScreen(),
             ))
         : Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
+            MaterialPageRoute(builder: (context) => const NavScreenTwo(2)),
             (Route<dynamic> route) => false);
     return Future.value(false);
   }
@@ -951,7 +951,7 @@ class _UserAttendanceReportScreenState
 
 List<Vacation> listAfterFilter(
     List<Vacation> vacationList, DateTime filterFrom, DateTime fliterTo) {
-  List<Vacation> output = [];
+  final List<Vacation> output = [];
   vacationList.forEach((element) {
     if (isDateBetweenTheRange(element, filterFrom, fliterTo)) {
       output.add(element);

@@ -276,7 +276,7 @@ class _ScanPageState extends State<ScanPage> {
     } else {
       Navigator.of(context)
           .pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => NavScreenTwo(0)),
+              MaterialPageRoute(builder: (context) => const NavScreenTwo(0)),
               (Route<dynamic> route) => false)
           .then((value) => controller.resumeCamera());
     }

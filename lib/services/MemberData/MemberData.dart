@@ -125,6 +125,13 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
+  resetPagination() {
+    allPageIndex = 0;
+    byShiftPageIndex = 0;
+    bySitePageIndex = 0;
+    keepRetriving = true;
+  }
+
   searchUsersList(String filter, String userToken, dynamic siteId,
       int companyId, BuildContext context) async {
     print(siteId);

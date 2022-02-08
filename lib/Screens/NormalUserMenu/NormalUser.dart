@@ -1,33 +1,23 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/Core/constants.dart';
-import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
-import 'package:qr_users/services/DaysOff.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/api.dart';
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserReport/TodayUserReport.dart';
-import 'package:qr_users/widgets/UserReport/UserReportTableHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 

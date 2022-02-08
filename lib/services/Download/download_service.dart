@@ -13,8 +13,8 @@ import '../user_data.dart';
 class DownloadService {
   Dio dio;
   var finalPath;
-  String _filePath;
-  bool _isLoading = false;
+  // String _filePath;
+  // bool _isLoading = false;
   String progress;
 
   checkReleaseDate(bool showApk, BuildContext context) {

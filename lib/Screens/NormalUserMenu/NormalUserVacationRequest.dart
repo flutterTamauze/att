@@ -7,13 +7,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
-import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -30,7 +30,6 @@ import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:ui' as ui;
 
 import '../../Core/constants.dart';
 
@@ -173,7 +172,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10),
                                           decoration: BoxDecoration(
                                               borderRadius:
@@ -189,11 +188,12 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 .map((String x) {
                                               return DropdownMenuItem<String>(
                                                   value: x,
-                                                  child: Text(
+                                                  child: AutoSizeText(
                                                     x,
                                                     textAlign: TextAlign.right,
                                                     style: TextStyle(
-                                                        color: Colors.orange,
+                                                        color: ColorManager
+                                                            .primary,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ));
@@ -222,7 +222,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                       header:
                                           getTranslated(context, "مدة الأجازة"),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Container(
@@ -296,7 +296,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 child: IgnorePointer(
                                                   child: TextFormField(
                                                     style: TextStyle(
-                                                        color: Colors.black,
+                                                        color: ColorManager
+                                                            .accentColor,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                     textInputAction:
@@ -316,7 +317,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             hintText: getTranslated(
                                                                 context,
                                                                 'المدة من / إلى'),
-                                                            prefixIcon: Icon(
+                                                            prefixIcon:
+                                                                const Icon(
                                                               Icons
                                                                   .calendar_today_rounded,
                                                               color:
@@ -328,21 +330,21 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         },
                                       ),
                                     )),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     dateDifference != null
                                         ? Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             alignment: Alignment.centerRight,
-                                            child: Text(
+                                            child: AutoSizeText(
                                               "${getTranslated(context, "تم اختيار")} $dateDifference ${getTranslated(context, "يوم")} ",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontWeight: FontWeight.w300),
                                             ))
                                         : Container(),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     DetialsTextField(
@@ -358,13 +360,13 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                     Card(
                                       elevation: 5,
                                       child: Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         child: Row(
                                           children: [
                                             AutoSizeText(
                                               getTranslated(
                                                   context, "نوع الأذن"),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 11),
                                               maxLines: 2,
@@ -392,8 +394,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Container(
-                                                padding:
-                                                    EdgeInsets.only(right: 10),
+                                                padding: const EdgeInsets.only(
+                                                    right: 10),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -413,15 +415,16 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             String>(
                                                         value: x,
                                                         child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   horizontal:
                                                                       10),
                                                           child: AutoSizeText(
                                                             x,
                                                             textAlign:
                                                                 TextAlign.start,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 color: Colors
                                                                     .orange,
                                                                 fontWeight:
@@ -441,27 +444,29 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               ),
                                             ),
                                           ),
-                                          Divider(),
+                                          const Divider(),
                                           Card(
                                             elevation: 5,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
-                                                  Text(
+                                                  AutoSizeText(
                                                     getTranslated(
                                                         context, "تاريخ الأذن"),
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 13),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: Container(
                                               child: Theme(
                                                 data: clockTheme,
@@ -506,7 +511,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                       kTextFieldDecorationTime
                                                           .copyWith(
                                                               hintStyle:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -517,7 +522,8 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                   getTranslated(
                                                                       context,
                                                                       "اليوم"),
-                                                              prefixIcon: Icon(
+                                                              prefixIcon:
+                                                                  const Icon(
                                                                 Icons
                                                                     .access_time,
                                                                 color: Colors
@@ -537,10 +543,10 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                           Card(
                                             elevation: 5,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
-                                                  Text(
+                                                  AutoSizeText(
                                                     selectedPermession ==
                                                             getTranslated(
                                                                 context,
@@ -552,7 +558,9 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        fontSize: 13),
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                13)),
                                                   ),
                                                 ],
                                               ),
@@ -568,7 +576,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 builder: (context) {
                                                   return InkWell(
                                                       onTap: () async {
-                                                        var to =
+                                                        final to =
                                                             await showTimePicker(
                                                           context: context,
                                                           initialTime: toPicked,
@@ -614,7 +622,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         child: IgnorePointer(
                                                           child: TextFormField(
                                                             enabled: false,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontWeight:
@@ -631,7 +639,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                         context,
                                                                         "الوقت"),
                                                                     prefixIcon:
-                                                                        Icon(
+                                                                        const Icon(
                                                                       Icons
                                                                           .alarm,
                                                                       color: Colors
@@ -655,7 +663,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                           Provider.of<UserPermessionsData>(context).isLoading ||
                                   Provider.of<UserHolidaysData>(context)
                                       .isLoading
-                              ? CircularProgressIndicator(
+                              ? const CircularProgressIndicator(
                                   backgroundColor: Colors.orange)
                               : Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -666,19 +674,12 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                         if (widget.radioVal == 1) //اجازة
                                         {
                                           if (picked != null) {
-                                            final DateTime now = DateTime.now();
-                                            final DateFormat format =
-                                                DateFormat(
-                                                    'dd-M-yyyy'); //4-2-2021
-                                            final String formatted =
-                                                format.format(now);
+//4-2-2021
                                             Provider.of<UserHolidaysData>(
                                                     context,
                                                     listen: false)
                                                 .addHoliday(
                                                     UserHolidays(
-                                                        createdOnDate:
-                                                            DateTime.now(),
                                                         holidayDescription:
                                                             commentController
                                                                 .text,
@@ -706,25 +707,15 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
-                                                    if (userdata.osType == 3) {
-                                                      final HuaweiServices
-                                                          _huawei =
-                                                          HuaweiServices();
-                                                      _huawei.huaweiSendToTopic(
-                                                          "طلب أجازة",
+                                                    sendFcmMessage(
+                                                      topicName:
+                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                      title: "طلب أجازة",
+                                                      category:
+                                                          "vacationRequest",
+                                                      message:
                                                           "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-                                                    } else {
-                                                      sendFcmMessage(
-                                                        topicName:
-                                                            "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                        title: "طلب أجازة",
-                                                        category:
-                                                            "vacationRequest",
-                                                        message:
-                                                            "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                      );
-                                                    }
+                                                    );
 
                                                     return StackedNotificaitonAlert(
                                                       repeatAnimation: false,
@@ -825,31 +816,34 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               timeOutController.text != "") {
                                             print(selectedDate);
                                             print(timeOutController.text);
-                                            String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
-                                                UserPermessions(
-                                                    createdOn: DateTime.now(),
-                                                    date: selectedDate,
-                                                    duration: formattedTime
-                                                        .replaceAll(":", ""),
-                                                    permessionType: selectedPermession ==
-                                                            getTranslated(
-                                                                context,
-                                                                "تأخير عن الحضور")
-                                                        ? 1
-                                                        : 2,
-                                                    permessionDescription:
-                                                        commentController.text == ""
-                                                            ? getTranslated(
-                                                                context,
-                                                                "لا يوجد تعليق")
-                                                            : commentController
-                                                                .text,
-                                                    user: userdata.name),
-                                                Provider.of<UserData>(context,
-                                                        listen: false)
-                                                    .user
-                                                    .userToken,
-                                                userdata.id);
+                                            final String msg = await Provider.of<UserPermessionsData>(
+                                                    context,
+                                                    listen: false)
+                                                .addUserPermession(
+                                                    UserPermessions(
+                                                        // createdOn: DateTime.now(),
+                                                        date: selectedDate,
+                                                        duration: formattedTime
+                                                            .replaceAll(
+                                                                ":", ""),
+                                                        permessionType:
+                                                            selectedPermession == getTranslated(context, "تأخير عن الحضور")
+                                                                ? 1
+                                                                : 2,
+                                                        permessionDescription:
+                                                            commentController.text == ""
+                                                                ? getTranslated(
+                                                                    context,
+                                                                    "لا يوجد تعليق")
+                                                                : commentController
+                                                                    .text,
+                                                        user: userdata.name),
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken,
+                                                    userdata.id);
                                             if (msg == "success") {
                                               return showDialog(
                                                 context: context,

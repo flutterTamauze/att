@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
@@ -14,11 +13,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'HomePage.dart';
 import 'loginScreen.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as ui;
 
 class PageIntro extends StatefulWidget {
   final int userType;
-  PageIntro({this.userType});
+  const PageIntro({this.userType});
 
   @override
   _PageIntroState createState() => _PageIntroState();
@@ -44,8 +42,8 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _pages = [
-      IntroContent(
+    final List<Widget> _pages = [
+      const IntroContent(
         title: "",
         imageUrl: "resources/introStart.json",
       ),
@@ -91,7 +89,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                               List<Widget>.generate(_pages.length - 1, (index) {
                             return AnimatedContainer(
                               margin: EdgeInsets.only(bottom: 29.h),
-                              duration: Duration(milliseconds: 100),
+                              duration: const Duration(milliseconds: 100),
                               height: 12.h,
                               width: index == _currentIndex ? 30.w : 20.w,
                               decoration: BoxDecoration(
@@ -117,19 +115,19 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                                                   .userType ==
                                               0
                                           ? HomePage()
-                                          : NavScreenTwo(0)
+                                          : const NavScreenTwo(0)
                                       : LoginScreen(),
                                 ));
                           },
                           child: Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Center(
                               child: AutoSizeText(
                                 getTranslated(
                                   context,
                                   "ابدأ",
                                 ),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -163,7 +161,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                                                   .userType ==
                                               0
                                           ? HomePage()
-                                          : NavScreenTwo(0)
+                                          : const NavScreenTwo(0)
                                       : LoginScreen(),
                             )),
                         child: Container(
@@ -229,7 +227,7 @@ class IntroContent extends StatelessWidget {
                   Positioned(
                     child: Center(
                       child: Container(
-                        padding: EdgeInsets.only(right: 5, top: 5),
+                        padding: const EdgeInsets.only(right: 5, top: 5),
                         height: 170.h,
                         child: Lottie.asset(
                           "resources/fire.json",
@@ -252,7 +250,7 @@ class IntroContent extends StatelessWidget {
                 child: ZoomIn(
                   child: Container(
                     width: 600.w,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border:
                             Border.all(width: 1, color: ColorManager.primary),
@@ -275,11 +273,11 @@ class IntroContent extends StatelessWidget {
                                                 setResponsiveFontSize(13)),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Colors.black,
                                           shape: BoxShape.circle),
                                       width: 5,
@@ -287,7 +285,7 @@ class IntroContent extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Row(
@@ -303,11 +301,11 @@ class IntroContent extends StatelessWidget {
                                                 setResponsiveFontSize(13)),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Colors.black,
                                           shape: BoxShape.circle),
                                       width: 5,
@@ -315,7 +313,7 @@ class IntroContent extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Row(
@@ -337,7 +335,7 @@ class IntroContent extends StatelessWidget {
                                       width: 10.w,
                                     ),
                                     Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Colors.black,
                                           shape: BoxShape.circle),
                                       width: 5,
@@ -345,7 +343,7 @@ class IntroContent extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Row(
@@ -361,11 +359,11 @@ class IntroContent extends StatelessWidget {
                                                 setResponsiveFontSize(13)),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Colors.black,
                                           shape: BoxShape.circle),
                                       width: 5,

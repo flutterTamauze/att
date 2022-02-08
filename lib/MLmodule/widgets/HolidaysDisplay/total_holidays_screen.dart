@@ -14,8 +14,6 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 
-import 'dart:ui' as ui;
-
 import '../../../Core/constants.dart';
 
 class DisplayHolidays extends StatefulWidget {

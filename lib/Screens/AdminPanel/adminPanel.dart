@@ -125,7 +125,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            PendingCompanyVacations(),
+                                            const PendingCompanyVacations(),
                                       ));
                                 });
                           },

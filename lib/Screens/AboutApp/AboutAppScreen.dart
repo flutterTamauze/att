@@ -334,7 +334,7 @@ class MyListTile extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(
                       icon,
-                      color: Color(0xFF3b3c40),
+                      color: const Color(0xFF3b3c40),
                     ),
                   ),
                 )),

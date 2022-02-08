@@ -5,17 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/AdminPanel/Widgets/userImageExpanstionTile.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
+import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
-import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
+
+import '../../../main.dart';
 
 class ExpandedPendingVacation extends StatefulWidget {
   final Function onAccept, onRefused;
@@ -47,8 +49,8 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
         padding: const EdgeInsets.all(4.0),
         child: Container(
           child: ExpansionTile(
-            leading:
-                LeadingExpanstionImage(image: widget.userHolidays.userImage),
+            // leading:
+            //     LeadingExpanstionImage(image: widget.userHolidays.userImage),
             onExpansionChanged: (value) async {
               if (value) {
                 showDialog(
@@ -65,24 +67,71 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
               }
             },
             trailing: Container(
-              width: 80.w,
+              width: 120.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  AutoSizeText(
-                    widget.userHolidays.createdOnDate
-                        .toString()
-                        .substring(0, 11),
-                    style: TextStyle(fontSize: setResponsiveFontSize(14)),
-                  ),
-                  widget.isAdmin
-                      ? Container()
-                      : const FaIcon(
-                          FontAwesomeIcons.hourglass,
-                          color: Colors.orange,
-                          size: 15,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: 90,
+                              child: AutoSizeText(
+                                "  ${widget.userHolidays.holidayType == 1 ? getTranslated(context, "عارضة") : widget.userHolidays.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")}",
+                                style: boldStyle.copyWith(
+                                    fontSize: setResponsiveFontSize(10)),
+                                textAlign: locator
+                                        .locator<PermissionHan>()
+                                        .isEnglishLocale()
+                                    ? TextAlign.right
+                                    : TextAlign.left,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Container(
+                              child: AutoSizeText(
+                                "  ${getTranslated(context, "من")} ${widget.vacationDaysCount[0].toString().substring(0, 11)} ",
+                                style: TextStyle(
+                                  fontSize: setResponsiveFontSize(14),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            !widget.vacationDaysCount[1]
+                                    .isBefore(widget.vacationDaysCount[0])
+                                ? Container(
+                                    child: AutoSizeText(
+                                      "  ${getTranslated(context, "إلى")} ${widget.vacationDaysCount[1].toString().substring(0, 11)} ",
+                                      style: TextStyle(
+                                        fontSize: setResponsiveFontSize(14),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  )
+                                : Container(),
+                          ],
                         ),
-                  Expanded(child: Container()),
+                      ),
+                      widget.isAdmin
+                          ? Container()
+                          : const FaIcon(
+                              FontAwesomeIcons.hourglass,
+                              color: Colors.orange,
+                              size: 15,
+                            )
+                    ],
+                  ),
                   Container(width: 3, color: Colors.orange),
                 ],
               ),
@@ -151,16 +200,18 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                   widget.userHolidays.holidayDescription != null
                                       ? const Divider()
                                       : Container(),
+                                  AutoSizeText(
+                                    "${getTranslated(context, "تاريخ إنشاء الطلب")}: ${widget.userHolidays.createdOnDate.toString().substring(0, 11)}",
+                                    style: TextStyle(
+                                      fontSize: setResponsiveFontSize(14),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Column(
                                     children: [
-                                      // Text(
-                                      //   "قرارك",
-                                      //   style: TextStyle(
-                                      //       fontWeight: FontWeight.bold),
-                                      // ),
                                       const Divider(),
                                       Row(
                                         mainAxisAlignment:

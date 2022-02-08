@@ -353,8 +353,8 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                                 child: Container(
                                                                                     child: snapshot.data == "user created after period"
                                                                                         ? Container(
-                                                                                            child: const Center(
-                                                                                              child: const Text("المستخدم لم يكن مقيدا فى هذة الفترة", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                            child: Center(
+                                                                                              child: AutoSizeText(getTranslated(context, "المستخدم لم يكن مقيدا فى هذة الفترة"), style: boldStyle),
                                                                                             ),
                                                                                           )
                                                                                         : ListView.builder(
@@ -385,10 +385,8 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                                                               "لا يوجد تسجيلات بهذا المستخدم"),
                                                                           maxLines:
                                                                               1,
-                                                                          style: TextStyle(
-                                                                              color: Colors.black,
-                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                                                                              fontWeight: FontWeight.bold),
+                                                                          style:
+                                                                              boldStyle,
                                                                         ),
                                                                       ),
                                                                     ],
@@ -446,11 +444,11 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                       ],
                                     );
                                   default:
-                                    return Center(
+                                    return const Center(
                                       child: CircularProgressIndicator(
                                         backgroundColor: Colors.white,
                                         valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
+                                            AlwaysStoppedAnimation<Color>(
                                                 Colors.orange),
                                       ),
                                     );
@@ -471,7 +469,8 @@ class _NormalUserReportState extends State<NormalUserReport> {
                                 ? Navigator.pop(context)
                                 : Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                        builder: (context) => NavScreenTwo(2)),
+                                        builder: (context) =>
+                                            const NavScreenTwo(2)),
                                     (Route<dynamic> route) => false);
                           },
                         ),

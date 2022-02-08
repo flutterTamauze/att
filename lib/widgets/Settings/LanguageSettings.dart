@@ -38,7 +38,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
             horizontal: 20.0.w,
             vertical: 20.0.h,
           ),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
             height: 100,
@@ -55,9 +55,9 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       fontWeight: FontWeight.w600,
                       fontSize: setResponsiveFontSize(15)),
                 ),
-                Divider(),
+                const Divider(),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -70,10 +70,10 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       Locale _tempLocal;
                       switch (value) {
                         case 'Ar':
-                          _tempLocal = Locale("ar", "SA");
+                          _tempLocal = const Locale("ar", "SA");
                           break;
                         case 'En':
-                          _tempLocal = Locale("en", "US");
+                          _tempLocal = const Locale("en", "US");
                       }
                       setState(() {
                         languageCode = value;
@@ -83,7 +83,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       print("current local $_tempLocal");
                       setLocale(value == "En" ? "en" : "ar");
                       MyApp.setLocale(context, _tempLocal);
-                      Navigator.pop(context);
+                      Navigator.maybePop(context);
                       Fluttertoast.showToast(
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.CENTER,
@@ -98,15 +98,15 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       DropdownMenuItem(
                         child: FadeIn(
                           child: LangugageDropdownItem(
-                            langugage: "Arabic",
-                            imagePath: "resources/EgyptFlag.png",
+                            langugage: getTranslated(context, "العربية"),
+                            imagePath: "resources/saudiFlag.png",
                           ),
                         ),
                         value: "Ar",
                       ),
                       DropdownMenuItem(
                         child: FadeIn(
-                          child: LangugageDropdownItem(
+                          child: const LangugageDropdownItem(
                             langugage: "English",
                             imagePath: "resources/EnglishFlag.png",
                           ),
@@ -133,14 +133,31 @@ class LangugageDropdownItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: 35,
-        alignment: Alignment.center,
-        height: 35,
-        decoration: BoxDecoration(
-            image:
-                DecorationImage(image: AssetImage(imagePath), fit: BoxFit.fill),
-            shape: BoxShape.circle),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            width: 35.w,
+            alignment: Alignment.center,
+            height: 35.h,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(imagePath), fit: BoxFit.fill),
+                shape: BoxShape.circle),
+          ),
+          Container(
+            child: const Text("-"),
+          ),
+          Container(
+            width: 100.w,
+            child: AutoSizeText(
+              langugage,
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: setResponsiveFontSize(15)),
+            ),
+          ),
+        ],
       ),
     );
   }

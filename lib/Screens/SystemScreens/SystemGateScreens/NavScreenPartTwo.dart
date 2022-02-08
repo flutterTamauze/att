@@ -1,11 +1,10 @@
 import 'dart:developer';
-import 'package:animate_do/animate_do.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/HomePage.dart';
@@ -22,11 +21,12 @@ import 'package:qr_users/widgets/Shared/Subscribtion_end_dialog.dart';
 import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:ui' as ui;
 
 class NavScreenTwo extends StatefulWidget {
   final int index;
 
-  NavScreenTwo(this.index);
+  const NavScreenTwo(this.index);
 
   @override
   _NavScreenTwoState createState() => _NavScreenTwoState(index);
@@ -81,7 +81,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
     current = getIndex;
     // initPlatformState();
     // initPlatformState();
-    var notificationProv =
+    final notificationProv =
         Provider.of<NotificationDataService>(context, listen: false);
     notificationProv.firebaseMessagingConfig(context);
     if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
@@ -116,7 +116,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       if (mounted) {
-        CompanySettingsService _companyService = CompanySettingsService();
+        final CompanySettingsService _companyService = CompanySettingsService();
         final userDataProvider = Provider.of<UserData>(context, listen: false);
         _companyService
             .isCompanySuspended(
@@ -166,9 +166,9 @@ class _NavScreenTwoState extends State<NavScreenTwo>
 
   @override
   Widget build(BuildContext context) {
-    var userData = Provider.of<UserData>(context);
+    final userData = Provider.of<UserData>(context);
     final userDataProvider = Provider.of<UserData>(context, listen: false);
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
     return connectionStatus == ConnectivityStatus.Offline &&
             userData.cachedUserData.isNotEmpty
         ? ErrorScreen2(
@@ -178,80 +178,83 @@ class _NavScreenTwoState extends State<NavScreenTwo>
             backgroundColor: Colors.white,
             drawer: DrawerI(),
             endDrawer: NotificationItem(),
-            bottomNavigationBar: CurvedNavigationBar(
-              color: Colors.black,
-              index: current,
-              backgroundColor: Colors.white,
-              onTap: (value) {
-                setState(() {
-                  current = value;
-                  _controller.jumpToPage(value);
-                });
-              },
-              items: userDataProvider.user.userType >= 2
-                  ? userDataProvider.user.userType == 4 ||
-                          userDataProvider.user.userType == 3 ||
-                          userDataProvider.user.userType == 2
-                      ? [
-                          Icon(
-                            Icons.home,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                          Icon(
-                            Icons.qr_code,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                          Icon(
-                            Icons.article_sharp,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                          Icon(
-                            Icons.settings,
-                            color: Colors.orange,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                          ),
-                        ]
-                      : [
-                          Icon(
-                            Icons.home,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                          Icon(
-                            Icons.qr_code,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                          Icon(
-                            Icons.article_sharp,
-                            size: ScreenUtil()
-                                .setSp(30, allowFontScalingSelf: true),
-                            color: Colors.orange,
-                          ),
-                        ]
-                  : [
-                      Icon(
-                        Icons.home,
-                        color: Colors.orange,
-                        size:
-                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                      ),
-                      Icon(
-                        Icons.qr_code,
-                        color: Colors.orange,
-                        size:
-                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                      ),
-                    ],
+            bottomNavigationBar: Directionality(
+              textDirection: ui.TextDirection.ltr,
+              child: CurvedNavigationBar(
+                color: ColorManager.accentColor,
+                index: current,
+                backgroundColor: ColorManager.backGroundColor,
+                onTap: (value) {
+                  setState(() {
+                    current = value;
+                    _controller.jumpToPage(value);
+                  });
+                },
+                items: userDataProvider.user.userType >= 2
+                    ? userDataProvider.user.userType == 4 ||
+                            userDataProvider.user.userType == 3 ||
+                            userDataProvider.user.userType == 2
+                        ? [
+                            Icon(
+                              Icons.home,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                            Icon(
+                              Icons.qr_code,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                            Icon(
+                              Icons.article_sharp,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                            Icon(
+                              Icons.settings,
+                              color: ColorManager.primary,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                            ),
+                          ]
+                        : [
+                            Icon(
+                              Icons.home,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                            Icon(
+                              Icons.qr_code,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                            Icon(
+                              Icons.article_sharp,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: ColorManager.primary,
+                            ),
+                          ]
+                    : [
+                        Icon(
+                          Icons.home,
+                          color: ColorManager.primary,
+                          size: ScreenUtil()
+                              .setSp(30, allowFontScalingSelf: true),
+                        ),
+                        Icon(
+                          Icons.qr_code,
+                          color: Colors.orange,
+                          size: ScreenUtil()
+                              .setSp(30, allowFontScalingSelf: true),
+                        ),
+                      ],
+              ),
             ),
             body: Stack(
               children: [
@@ -265,7 +268,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
                         itemBuilder: (context, index) {
                           return _screens[current];
                         },
-                        physics: new NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: _screens.length,
                         scrollDirection: Axis.horizontal,
                         controller: _controller,

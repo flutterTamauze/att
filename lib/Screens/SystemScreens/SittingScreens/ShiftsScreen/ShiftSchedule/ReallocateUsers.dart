@@ -15,7 +15,6 @@ import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
-import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:qr_users/services/Sites_data.dart';
@@ -26,11 +25,9 @@ import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
-import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/roundedButton.dart';
 
-import '../../../../../Core/constants.dart';
 import '../../../../../Core/constants.dart';
 
 class ReAllocateUsers extends StatefulWidget {
@@ -38,7 +35,7 @@ class ReAllocateUsers extends StatefulWidget {
   final bool isEdit;
   final int index;
 
-  ReAllocateUsers(
+  const ReAllocateUsers(
     this.member,
     this.isEdit,
     this.index,
@@ -223,7 +220,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                     width: 365.w,
                                     child: IgnorePointer(
                                       child: TextFormField(
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w500),
                                         textInputAction: TextInputAction.next,
@@ -232,7 +229,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             kTextFieldDecorationFromTO.copyWith(
                                                 hintText: getTranslated(
                                                     context, 'المدة من / إلى'),
-                                                prefixIcon: Icon(
+                                                prefixIcon: const Icon(
                                                   Icons.calendar_today_rounded,
                                                   color: Colors.orange,
                                                 )),
@@ -339,7 +336,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                       builder: (context, value, child) {
                                                                                         return DropdownButton(
                                                                                             isExpanded: true,
-                                                                                            underline: SizedBox(),
+                                                                                            underline: const SizedBox(),
                                                                                             elevation: 5,
                                                                                             items: value.shifts
                                                                                                 .map(
@@ -370,7 +367,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                                   prov.setDropDownShift(holder);
                                                                                                 });
 
-                                                                                                print("dropdown site index ${holder}");
+                                                                                                print("dropdown site index $holder");
                                                                                               }
                                                                                             },
                                                                                             value: value.shifts[prov.dropDownShiftIndex].shiftName
@@ -414,7 +411,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                                       builder: (context, value, child) {
                                                                                         return DropdownButton(
                                                                                           isExpanded: true,
-                                                                                          underline: SizedBox(),
+                                                                                          underline: const SizedBox(),
                                                                                           elevation: 5,
                                                                                           items: list
                                                                                               .map((value) => DropdownMenuItem(

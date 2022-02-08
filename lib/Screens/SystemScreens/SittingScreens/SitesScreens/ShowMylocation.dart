@@ -12,7 +12,7 @@ class ShowLocationMap extends StatefulWidget {
   final double long;
   final String title;
 
-  ShowLocationMap(this.lat, this.long, this.title);
+  const ShowLocationMap(this.lat, this.long, this.title);
 
   @override
   _ShowLocationMapState createState() => _ShowLocationMapState();
@@ -32,7 +32,7 @@ class _ShowLocationMapState extends State<ShowLocationMap> {
   addMarker() {
     setState(() {
       allMarkers.add(Marker(
-          markerId: MarkerId('myMarker'),
+          markerId: const MarkerId('myMarker'),
           onTap: () {
             print('Marker Tapped');
           },
@@ -118,7 +118,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
     print(widget.siteLong);
 // make sure to initialize before map loading
     BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(12, 12)),
+      const ImageConfiguration(size: Size(12, 12)),
       'resources/marker.png',
     ).then((d) {
       customIcon = d;
@@ -128,7 +128,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
   addMarker() {
     setState(() {
       allMarkers.add(Marker(
-          markerId: MarkerId('myMarker'),
+          markerId: const MarkerId('myMarker'),
           onTap: () {
             launch("google.navigation:q=${widget.siteLat},${widget.siteLong}");
           },
@@ -146,7 +146,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(15),
         topRight: Radius.circular(15),
         bottomRight: Radius.circular(15),
@@ -159,7 +159,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
             circles: Set.from(
               [
                 Circle(
-                  circleId: CircleId('currentCircle'),
+                  circleId: const CircleId('currentCircle'),
                   center: LatLng(widget.siteLat, widget.siteLong),
                   radius: 100,
                   fillColor: Colors.blue.shade100.withOpacity(0.5),

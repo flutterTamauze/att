@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
-import 'dart:ui' as ui;
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:qr_users/Core/colorManager.dart';
+import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
@@ -36,7 +37,7 @@ DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 2, 2);
 DateTime _currentBackPressTime;
 DateTime kiosReleaseDate = DateTime(DateTime.now().year, 2, 2);
 //ERRORS
-const USER_INVALID_RESPONSE = 100;
+const USER_INVALID_RESPONSE = 500;
 const NO_INTERNET = 101;
 const UNKNOWN_ERROR = 103;
 const NOT_FOUND = 404;
@@ -237,6 +238,13 @@ class DetialsTextField extends StatelessWidget {
   }
 }
 
+TextStyle boldStyle = TextStyle(
+    fontWeight: FontWeightManager.bold,
+    fontSize: setResponsiveFontSize(16),
+    color: ColorManager.accentColor);
+TextStyle extraBoldStyle = TextStyle(
+    fontWeight: FontWeightManager.extraBold,
+    fontSize: setResponsiveFontSize(20));
 ThemeData clockTheme = ThemeData.dark().copyWith(
   primaryColor: Colors.black,
   accentColor: Colors.white,

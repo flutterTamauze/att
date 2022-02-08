@@ -29,7 +29,6 @@ import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/UserFullData/user_data_fields.dart';
 import 'package:qr_users/widgets/UserFullData/user_properties_menu.dart';
@@ -153,7 +152,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                               decoration: const BoxDecoration(),
                               height: 44.0.h,
                               child: Stack(
-                                overflow: Overflow.visible,
+                                clipBehavior: Clip.none,
                                 children: [
                                   TextFormField(
                                     onFieldSubmitted: (_) async {
@@ -268,13 +267,15 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                                   allowFontScalingSelf: true,
                                                 ),
                                               ),
-                                              fillColor: Color(0xFFE9E9E9),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 11,
-                                                  right: 13,
-                                                  top: 20,
-                                                  bottom: 14),
-                                              errorStyle: TextStyle(
+                                              fillColor:
+                                                  const Color(0xFFE9E9E9),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 11,
+                                                      right: 13,
+                                                      top: 20,
+                                                      bottom: 14),
+                                              errorStyle: const TextStyle(
                                                 fontSize: 13,
                                                 height: 0.7,
                                               ),
@@ -482,6 +483,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
   }
 }
 
+// ignore: must_be_immutable
 class SiteAdminUserScreen extends StatefulWidget {
   final selectedIndex;
   var comingFromShifts = false;
@@ -997,7 +999,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                         onTap: () {
                           Navigator.of(context)
                               .pushReplacement(MaterialPageRoute(
-                            builder: (context) => NavScreenTwo(3),
+                            builder: (context) => const NavScreenTwo(3),
                           ));
                         },
                       ),
@@ -1024,7 +1026,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
 
   Future<bool> onWillPop() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(3)),
+        MaterialPageRoute(builder: (context) => const NavScreenTwo(3)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

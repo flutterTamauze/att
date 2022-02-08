@@ -24,10 +24,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 
-import 'dart:ui' as ui;
-
-import 'LocationTile.dart';
-
 class SitesScreen extends StatefulWidget {
   @override
   _SitesScreenState createState() => _SitesScreenState();
@@ -123,7 +119,7 @@ class _SitesScreenState extends State<SitesScreen> {
                                 },
                                 controller: _sitesController,
                                 decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     hintText: getTranslated(
                                         context, 'البحث بأسم الموقع'),
                                     focusColor: Colors.orange,
@@ -150,7 +146,7 @@ class _SitesScreenState extends State<SitesScreen> {
                                 ? Provider.of<SiteData>(context).isLoading
                                     ? Column(
                                         children: [
-                                          Center(
+                                          const Center(
                                               child: CupertinoActivityIndicator(
                                             radius: 15,
                                           )),
@@ -174,7 +170,8 @@ class _SitesScreenState extends State<SitesScreen> {
                             onTap: () {
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => NavScreenTwo(3)),
+                                      builder: (context) =>
+                                          const NavScreenTwo(3)),
                                   (Route<dynamic> route) => false);
                             },
                           ),
@@ -201,7 +198,7 @@ class _SitesScreenState extends State<SitesScreen> {
 
   Future<bool> onWillPop() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(3)),
+        MaterialPageRoute(builder: (context) => const NavScreenTwo(3)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

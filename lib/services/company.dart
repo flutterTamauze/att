@@ -146,7 +146,7 @@ class CompanyData extends ChangeNotifier {
     //await checkPermissions();
 
     if (Platform.isAndroid) {
-      HuaweiServices _huawei = HuaweiServices();
+      final HuaweiServices _huawei = HuaweiServices();
       bool isHawawi = false;
       if (Platform.isAndroid) {
         isHawawi = await _huawei.isHuaweiDevice();
@@ -171,7 +171,7 @@ class CompanyData extends ChangeNotifier {
         return 0;
       } else {
         if (enabled) {
-          bool isMockLocation = await TrustLocation.isMockLocation;
+          final bool isMockLocation = await TrustLocation.isMockLocation;
           // bool isEmulator= await FlutterIsEmulator.isDeviceAnEmulatorOrASimulator;
           if (!isMockLocation) {
             await Geolocator.getCurrentPosition(
@@ -190,14 +190,14 @@ class CompanyData extends ChangeNotifier {
         }
       }
     } else if (Platform.isIOS) {
-      bool enabled = await Geolocator.isLocationServiceEnabled();
+      final bool enabled = await Geolocator.isLocationServiceEnabled();
       print("company");
       print("enable locaiton : $enabled");
-      var pos = await TrustLocation.getLatLong;
+      final pos = await TrustLocation.getLatLong;
       print("--------------${pos[0]}------------");
       // && pos[0] != null
       if (enabled) {
-        bool isMockLocation = await detectJailBreak();
+        final bool isMockLocation = await detectJailBreak();
 
         if (!isMockLocation) {
           await Geolocator.getCurrentPosition(
@@ -230,7 +230,7 @@ class CompanyData extends ChangeNotifier {
               'x-api-key': _apiToken
             });
 
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
 
         if (decodedRes["message"] == "Success : ") {
@@ -292,12 +292,14 @@ class CompanyData extends ChangeNotifier {
     print(image.lengthSync());
     String msg;
     if (await isConnectedToInternet()) {
-      var stream = new http.ByteStream(Stream.castFrom(image.openRead()));
-      var length = await image.length();
-      var uri = Uri.parse("$baseURL/api/Company");
+      final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+      final length = await image.length();
+      final uri = Uri.parse("$baseURL/api/Company");
 
-      var request = new http.MultipartRequest("POST", uri);
-      Map<String, String> headers = {'Authorization': "Bearer $guestToken"};
+      final request = new http.MultipartRequest("POST", uri);
+      final Map<String, String> headers = {
+        'Authorization': "Bearer $guestToken"
+      };
       request.headers.addAll(headers);
 
       request.fields['NameAr'] = company.nameAr;
@@ -305,7 +307,7 @@ class CompanyData extends ChangeNotifier {
       request.fields['NormalizedName'] =
           company.nameEn.replaceAll(" ", "").toUpperCase();
 
-      var multipartFile = new http.MultipartFile('Logo', stream, length,
+      final multipartFile = new http.MultipartFile('Logo', stream, length,
           filename: basename(image.path));
       request.files.add(multipartFile);
       request.fields['CompanyEmail'] = company.email;
@@ -315,7 +317,7 @@ class CompanyData extends ChangeNotifier {
       await request.send().then((response) async {
         response.stream.transform(utf8.decoder).listen((value) async {
           print(value);
-          Map<String, dynamic> responesDedoded = json.decode(value);
+          final Map<String, dynamic> responesDedoded = json.decode(value);
 
           if (responesDedoded['message'] == "Creat Company Success") {
             //companyId
@@ -392,7 +394,7 @@ class CompanyData extends ChangeNotifier {
               'Authorization': "Bearer $token"
             });
 
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
         print(decodedRes["message"]);
         if (response.statusCode == 401) {
@@ -417,21 +419,21 @@ class CompanyData extends ChangeNotifier {
     String data = "";
     print("uploading image....");
 
-    var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
-    var length = await _image.length();
+    final stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
+    final length = await _image.length();
 
-    var uri = Uri.parse("$baseURL/api/Company/${com.id}");
+    final uri = Uri.parse("$baseURL/api/Company/${com.id}");
 
-    var request = new http.MultipartRequest("PUT", uri);
+    final request = new http.MultipartRequest("PUT", uri);
     request.headers.addAll({'Authorization': "Bearer $token"});
-    var multipartFile = new http.MultipartFile('logo', stream, length,
+    final multipartFile = new http.MultipartFile('logo', stream, length,
         filename: basename(_image.path));
     request.files.add(multipartFile);
 
     await request.send().then((response) async {
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        Map<String, dynamic> responesDedoded = json.decode(value);
+        final Map<String, dynamic> responesDedoded = json.decode(value);
 
         if (responesDedoded['message'] == "Success : Image updated success") {
           print(responesDedoded['message']);
@@ -448,7 +450,7 @@ class CompanyData extends ChangeNotifier {
   }
 
   Future<String> updateProfileImgFile(String imgPath, String token) async {
-    File _image = File(imgPath);
+    final File _image = File(imgPath);
     print(_image.lengthSync());
     var url = "";
 

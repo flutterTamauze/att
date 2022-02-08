@@ -23,13 +23,13 @@ class CompanySettingsService {
     this.leaveClearance,
   });
   getCompanySettingsTime(int comID, String userToken) async {
-    var response = await http
+    final response = await http
         .get(Uri.parse("$baseURL/api/Settings?CompanyId=$comID"), headers: {
       'Content-type': 'application/json',
       'Authorization': "Bearer $userToken"
     });
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       this.attendClearance = decodedResponse["data"]["attendClearance"];
       this.lateAllowance = decodedResponse["data"]["lateAllowance"];
@@ -40,7 +40,7 @@ class CompanySettingsService {
   }
 
   Future<bool> isCompanySuspended(int comID, String userToken) async {
-    var response = await NetworkApi().request(
+    final response = await NetworkApi().request(
       "$baseURL/api/Company/Status?companyId=$comID",
       RequestType.GET,
       {
@@ -52,7 +52,7 @@ class CompanySettingsService {
     if (response is Faliure) {
       return false;
     }
-    var decodedRes = json.decode(response);
+    final decodedRes = json.decode(response);
     if (decodedRes["message"] == "Success") {
       this.suspentionTime =
           DateTime.tryParse(decodedRes["data"]["endofSubScription"]);
@@ -73,7 +73,7 @@ class CompanySettingsService {
     print(attendClearance);
     print(leaveClearance);
     print(comID);
-    var response =
+    final response =
         await http.put(Uri.parse("$baseURL/api/Settings/Edit/$comID"),
             headers: {
               'Authorization': "Bearer $userToken",
@@ -88,7 +88,7 @@ class CompanySettingsService {
             }));
     print(response.statusCode);
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       return true;
     }

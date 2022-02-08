@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -17,7 +16,6 @@ import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
-import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Sites_data.dart';
@@ -30,7 +28,6 @@ import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import '../../../../Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:ui' as ui;
 
 class SiteAdminOutsideVacation extends StatefulWidget {
   final Member member;
@@ -83,7 +80,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
   void initState() {
     isPicked = false;
 
-    var now = DateTime.now();
+    final now = DateTime.now();
     fromText = "";
     toText = "";
 
@@ -315,7 +312,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10),
                                           decoration: BoxDecoration(
                                               borderRadius:
@@ -376,13 +373,13 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                             onPressed: () async {
                                               if (picked != null &&
                                                   picked.isNotEmpty) {
-                                                final DateTime now =
-                                                    DateTime.now();
-                                                final DateFormat format =
-                                                    DateFormat(
-                                                        'dd-M-yyyy'); //4-2-2021
-                                                final String formatted =
-                                                    format.format(now);
+                                                // final DateTime now =
+                                                //     DateTime.now();
+                                                // final DateFormat format =
+                                                //     DateFormat(
+                                                //         'dd-M-yyyy'); //4-2-2021
+                                                // final String formatted =
+                                                //     format.format(now);
                                                 Provider.of<UserHolidaysData>(
                                                         context,
                                                         listen: false)
@@ -408,8 +405,8 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                             "مرضية")
                                                                     ? 2
                                                                     : 3,
-                                                            createdOnDate:
-                                                                DateTime.now(),
+                                                            // createdOnDate:
+                                                            //     DateTime.now(),
                                                             holidayStatus: 3),
                                                         Provider.of<UserData>(
                                                                 context,
@@ -432,28 +429,16 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                         .whenComplete(() =>
                                                             Navigator.pop(
                                                                 context));
-                                                    HuaweiServices _huawei =
-                                                        HuaweiServices();
-                                                    if (widget.member.osType ==
-                                                        3) {
-                                                      _huawei
-                                                          .huaweiPostNotification(
-                                                              widget.member
-                                                                  .fcmToken,
-                                                              "أجازة",
-                                                              "تم وضع اجازة لك ",
-                                                              "vacation");
-                                                    } else {
-                                                      sendFcmMessage(
-                                                        topicName: "",
-                                                        title: "أجازة",
-                                                        category: "vacation",
-                                                        userToken: widget
-                                                            .member.fcmToken,
-                                                        message:
-                                                            "تم وضع اجازة لك ",
-                                                      );
-                                                    }
+
+                                                    sendFcmMessage(
+                                                      topicName: "",
+                                                      title: "أجازة",
+                                                      category: "vacation",
+                                                      userToken: widget
+                                                          .member.fcmToken,
+                                                      message:
+                                                          "تم وضع اجازة لك ",
+                                                    );
                                                   } else if (value ==
                                                       "Failed : There are external mission in this period!") {
                                                     Fluttertoast.showToast(
@@ -527,7 +512,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                     Card(
                                       elevation: 5,
                                       child: Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         child: Row(
                                           children: [
                                             AutoSizeText(
@@ -596,7 +581,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                               padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
-                                                  Text(
+                                                  AutoSizeText(
                                                     getTranslated(
                                                         context, "تاريخ الأذن"),
                                                     style: TextStyle(
@@ -679,7 +664,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                           Card(
                                             elevation: 5,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Row(
                                                 children: [
                                                   AutoSizeText(
@@ -796,39 +781,39 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                             Provider.of<UserHolidaysData>(
                                                     context)
                                                 .isLoading
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             backgroundColor: Colors.orange)
                                         : RoundedButton(
                                             onPressed: () async {
                                               if (_selectedDateString != null &&
                                                   timeOutController.text !=
                                                       "") {
-                                                String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
-                                                    UserPermessions(
-                                                        createdOn:
-                                                            DateTime.now(),
-                                                        date: DateTime.parse(
-                                                            _selectedDateString),
-                                                        duration: formattedTime
-                                                            .replaceAll(
-                                                                ":", ""),
-                                                        permessionType:
-                                                            selectedPermession == getTranslated(context, "تأخير عن الحضور")
-                                                                ? 1
-                                                                : 2,
-                                                        permessionDescription:
-                                                            commentController.text == ""
-                                                                ? getTranslated(
-                                                                    context, "لا يوجد تعليق")
-                                                                : commentController
-                                                                    .text,
-                                                        user:
-                                                            widget.member.name),
-                                                    Provider.of<UserData>(context,
+                                                final String msg = await Provider
+                                                        .of<UserPermessionsData>(
+                                                            context,
                                                             listen: false)
-                                                        .user
-                                                        .userToken,
-                                                    widget.member.id);
+                                                    .addUserPermession(
+                                                        UserPermessions(
+                                                            // createdOn:
+                                                            //     DateTime.now(),
+                                                            date: DateTime.parse(
+                                                                _selectedDateString),
+                                                            duration:
+                                                                formattedTime
+                                                                    .replaceAll(
+                                                                        ":", ""),
+                                                            permessionType:
+                                                                selectedPermession == getTranslated(context, "تأخير عن الحضور")
+                                                                    ? 1
+                                                                    : 2,
+                                                            permessionDescription:
+                                                                commentController.text == ""
+                                                                    ? getTranslated(
+                                                                        context, "لا يوجد تعليق")
+                                                                    : commentController.text,
+                                                            user: widget.member.name),
+                                                        Provider.of<UserData>(context, listen: false).user.userToken,
+                                                        widget.member.id);
                                                 if (msg == "success") {
                                                   Fluttertoast.showToast(
                                                           msg: getTranslated(
@@ -842,27 +827,15 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                       .whenComplete(() =>
                                                           Navigator.pop(
                                                               context));
-                                                  HuaweiServices _huawei =
-                                                      HuaweiServices();
-                                                  if (widget.member.osType ==
-                                                      3) {
-                                                    _huawei
-                                                        .huaweiPostNotification(
-                                                            widget.member
-                                                                .fcmToken,
-                                                            "اذن",
-                                                            "تم وضع اجازة لك ",
-                                                            "permession");
-                                                  } else {
-                                                    sendFcmMessage(
-                                                      topicName: "",
-                                                      userToken: widget
-                                                          .member.fcmToken,
-                                                      title: "اذن",
-                                                      category: "permession",
-                                                      message: "تم وضع اذن لك",
-                                                    );
-                                                  }
+
+                                                  sendFcmMessage(
+                                                    topicName: "",
+                                                    userToken:
+                                                        widget.member.fcmToken,
+                                                    title: "اذن",
+                                                    category: "permession",
+                                                    message: "تم وضع اذن لك",
+                                                  );
                                                 } else if (msg ==
                                                     "external mission") {
                                                   print("external found");
@@ -946,7 +919,6 @@ class SitesAndMissionsWidg extends StatefulWidget {
 class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
   @override
   Widget build(BuildContext context) {
-    int shiftId;
     int holder;
     return Column(
       children: [
@@ -1001,7 +973,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                         .toList(),
                                     onChanged: (v) async {
                                       if (widget.selectedVal != "كل المواقع") {
-                                        List<String> x = [];
+                                        final List<String> x = [];
 
                                         value.shifts.forEach((element) {
                                           x.add(element.shiftName);
@@ -1011,7 +983,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                         holder = x.indexOf(v);
 
                                         widget.prov.setDropDownShift(holder);
-                                        shiftId = value.shifts[holder].shiftId;
                                       }
                                     },
                                     hint: AutoSizeText(
@@ -1114,7 +1085,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                               );
                             },
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -1124,7 +1095,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Icon(

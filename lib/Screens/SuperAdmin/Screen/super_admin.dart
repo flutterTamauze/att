@@ -32,7 +32,7 @@ class SuperAdminScreen extends StatefulWidget {
 
 class _SuperAdminScreenState extends State<SuperAdminScreen> {
   Future getCompanyData(int comiD) async {
-    var msg = await Provider.of<CompanyData>(context, listen: false)
+    final msg = await Provider.of<CompanyData>(context, listen: false)
         .getCompanyProfileApi(
             comiD,
             Provider.of<UserData>(context, listen: false).user.userToken,
@@ -56,7 +56,8 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
   @override
   Widget build(BuildContext context) {
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
-    CompanyData comProvider = Provider.of<CompanyData>(context, listen: false);
+    final CompanyData comProvider =
+        Provider.of<CompanyData>(context, listen: false);
 
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Consumer<UserData>(builder: (context, userData, child) {
@@ -72,7 +73,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ///Title
-                    SuperadminHeader(),
+                    Header(
+                      nav: false,
+                    ),
                     DirectoriesHeader(
                         Padding(
                           padding: const EdgeInsets.all(10),
@@ -112,7 +115,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                             .getAllSitesAndShifts(
                                                 comProvider.com.id,
                                                 userData.user.userToken);
-                                        final chartResponse = await userData
+                                        await userData
                                             .getSuperCompanyChart(
                                                 userData.user.userToken,
                                                 comProvider.com.id)

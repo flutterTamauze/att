@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SitesScreens/SelectOnMapScreen.dart';
@@ -26,7 +27,7 @@ class AddSiteScreen extends StatefulWidget {
   final isEdit;
   final hasData;
 
-  AddSiteScreen(this.site, this.id, this.isEdit, this.hasData);
+  const AddSiteScreen(this.site, this.id, this.isEdit, this.hasData);
 
   @override
   _AddSiteScreenState createState() => _AddSiteScreenState();
@@ -37,7 +38,6 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fillTextField();
   }
@@ -120,7 +120,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                           kTextFieldDecorationWhite.copyWith(
                                               hintText: getTranslated(
                                                   context, 'اسم الموقع'),
-                                              suffixIcon: Icon(
+                                              suffixIcon: const Icon(
                                                 Icons.title,
                                                 color: Colors.orange,
                                               )),
@@ -150,7 +150,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                   hintText: 'Latitude',
                                                   suffixIcon: Icon(
                                                     Icons.location_on,
-                                                    color: Colors.orange,
+                                                    color: ColorManager.primary,
                                                   )),
                                         ),
                                       ),
@@ -178,7 +178,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                           decoration: kTextFieldDecorationWhite
                                               .copyWith(
                                                   hintText: 'Longitude',
-                                                  suffixIcon: Icon(
+                                                  suffixIcon: const Icon(
                                                     Icons.location_on,
                                                     color: Colors.orange,
                                                   )),
@@ -203,10 +203,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                           builder: (BuildContext context) {
                                             return RoundedLoadingIndicator();
                                           });
-                                      Company com = Provider.of<CompanyData>(
-                                              context,
-                                              listen: false)
-                                          .com;
+                                      final Company com =
+                                          Provider.of<CompanyData>(context,
+                                                  listen: false)
+                                              .com;
                                       final userToken = Provider.of<UserData>(
                                               context,
                                               listen: false)
@@ -513,13 +513,13 @@ class CircularIconButton extends StatelessWidget {
   final IconData icon;
   final onTap;
 
-  CircularIconButton({this.icon, this.onTap});
+  const CircularIconButton({this.icon, this.onTap});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
         ),
         child: CircleAvatar(

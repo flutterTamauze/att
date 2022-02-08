@@ -43,7 +43,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
         _lat.text = widget.site.lat.toString();
         latLng = LatLng(widget.site.lat, widget.site.long);
         allMarkers.add(Marker(
-            markerId: MarkerId('myMarker'),
+            markerId: const MarkerId('myMarker'),
             onTap: () {
               print('Marker Tapped');
             },
@@ -98,8 +98,8 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                 zoom: 16.0),
                           ),
                         );
-                        Marker marker = Marker(
-                            markerId: MarkerId('myMarker'),
+                        final Marker marker = Marker(
+                            markerId: const MarkerId('myMarker'),
                             onTap: () {
                               print('Marker Tapped');
                             },
@@ -135,7 +135,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                   textInputAction: TextInputAction.next,
                                   controller: _lat,
                                   textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: 'Latitude',
                                     border: InputBorder.none,
                                   ),
@@ -147,7 +147,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                   // },
                                 ),
                               ),
-                              VerticalDivider(
+                              const VerticalDivider(
                                 thickness: 2,
                                 color: Colors.orange,
                               ),
@@ -168,7 +168,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                   ),
                                 ),
                               ),
-                              VerticalDivider(
+                              const VerticalDivider(
                                 thickness: 2,
                                 color: Colors.orange,
                               ),
@@ -194,13 +194,14 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                       child: Column(
                         children: [
                           SafeArea(
+                            // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () async {
                                 print("ss");
                                 await Provider.of<ShiftApi>(context,
                                         listen: false)
                                     .getCurrentLocation();
-                                var currentLocation = Provider.of<ShiftApi>(
+                                final currentLocation = Provider.of<ShiftApi>(
                                         context,
                                         listen: false)
                                     .currentPosition;
@@ -219,8 +220,8 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                         zoom: 16.0),
                                   ),
                                 );
-                                Marker marker = Marker(
-                                    markerId: MarkerId('myMarker'),
+                                final Marker marker = Marker(
+                                    markerId: const MarkerId('myMarker'),
                                     onTap: () {
                                       print('Marker Tapped');
                                     },
@@ -257,6 +258,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                           ),
                           allMarkers.isEmpty
                               ? Container()
+                              // ignore: deprecated_member_use
                               : FlatButton(
                                   onPressed: () {
                                     print(widget.site.id);
@@ -353,8 +355,8 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
             zoom: 16.0),
       ),
     );
-    Marker marker = Marker(
-        markerId: MarkerId('myMarker'),
+    final Marker marker = Marker(
+        markerId: const MarkerId('myMarker'),
         onTap: () {
           print('Marker Tapped');
         },

@@ -26,7 +26,7 @@ class LocationTile extends StatefulWidget {
   final Function onTapLocation;
   final Function onTapEdit;
   final Function onTapDelete;
-  LocationTile(
+  const LocationTile(
       {this.title,
       this.onTapEdit,
       this.onTapDelete,
@@ -104,17 +104,17 @@ class _LocationTileState extends State<LocationTile> {
         actionExtentRatio: 0.10,
         closeOnScroll: true,
         controller: widget.slidableController,
-        actionPane: SlidableDrawerActionPane(),
+        actionPane: const SlidableDrawerActionPane(),
         secondaryActions: [
           ZoomIn(
               child: InkWell(
             child: Container(
-              padding: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                   border: Border.all(width: 2, color: Colors.orange)),
-              child: Icon(
+              child: const Icon(
                 Icons.edit,
                 size: 18,
                 color: Colors.orange,
@@ -134,12 +134,12 @@ class _LocationTileState extends State<LocationTile> {
           ZoomIn(
               child: InkWell(
             child: Container(
-              padding: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                   border: Border.all(width: 2, color: Colors.red)),
-              child: Icon(
+              child: const Icon(
                 Icons.delete,
                 size: 18,
                 color: Colors.red,

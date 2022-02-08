@@ -80,7 +80,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
   void initState() {
     super.initState();
 
-    var now = DateTime.now();
+    final now = DateTime.now();
     Provider.of<VacationData>(context, listen: false).isLoading = false;
     toDate = DateTime(now.year, DateTime.december, 31);
     fromDate = DateTime(toDate.year, DateTime.january, 1);
@@ -171,7 +171,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                           .user
                                           .userType ==
                                       2) {
-                                var userToken = Provider.of<UserData>(context,
+                                final userToken = Provider.of<UserData>(context,
                                         listen: false)
                                     .user
                                     .userToken;
@@ -187,7 +187,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                             width: 330.w,
                             child: IgnorePointer(
                               child: TextFormField(
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500),
                                 textInputAction: TextInputAction.next,
@@ -195,7 +195,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                 decoration: kTextFieldDecorationFromTO.copyWith(
                                     hintText: getTranslated(
                                         context, 'المدة من / إلى'),
-                                    prefixIcon: Icon(
+                                    prefixIcon: const Icon(
                                       Icons.calendar_today_rounded,
                                       color: Colors.orange,
                                     )),
@@ -230,7 +230,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                             color: Colors.grey.shade700,
                             fontWeight: FontWeight.w500),
                         hintText: getTranslated(context, "أسم العطلة"),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.person,
                           color: Colors.orange,
                         )),
@@ -243,7 +243,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                       return a.vacationName.compareTo(b.vacationName);
                     },
                     itemSubmitted: (item) async {
-                      var index = vactionProv.vactionList.indexOf(item);
+                      final index = vactionProv.vactionList.indexOf(item);
                       if (_nameController.text != item.vacationName) {
                         setState(() {
                           searchTextField.textField.controller.text =
@@ -279,7 +279,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            Divider(
+                            const Divider(
                               color: Colors.grey,
                               thickness: 1,
                             ),
@@ -301,7 +301,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                       DataTableVacationHeader(),
                       Divider(thickness: 1, color: ColorManager.primary),
                       vactionProv.isLoading
-                          ? Expanded(
+                          ? const Expanded(
                               child: Center(
                                 child: CircularProgressIndicator(
                                   backgroundColor: Colors.orange,
@@ -315,7 +315,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                       child: AutoSizeText(
                                         getTranslated(
                                             context, "لا يوجد عطلات رسمية"),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
                                     )
@@ -332,17 +332,19 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                               closeOnScroll: true,
                                               controller: slidableController,
                                               actionPane:
-                                                  SlidableDrawerActionPane(),
+                                                  const SlidableDrawerActionPane(),
                                               secondaryActions: [
                                                 ZoomIn(
                                                     child: InkWell(
                                                   child: Container(
-                                                    padding: EdgeInsets.all(7),
-                                                    decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.all(7),
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: Colors.green,
                                                     ),
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       Icons.edit,
                                                       size: 18,
                                                       color: Colors.white,
@@ -364,12 +366,14 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                 ZoomIn(
                                                     child: InkWell(
                                                   child: Container(
-                                                    padding: EdgeInsets.all(7),
-                                                    decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.all(7),
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: Colors.red,
                                                     ),
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       Icons.delete,
                                                       size: 18,
                                                       color: Colors.white,
@@ -382,7 +386,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                             context) {
                                                           return vactionProv
                                                                   .isLoading
-                                                              ? Center(
+                                                              ? const Center(
                                                                   child:
                                                                       CircularProgressIndicator(
                                                                     backgroundColor:
@@ -395,7 +399,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                                       () async {
                                                                     Navigator.pop(
                                                                         context);
-                                                                    String msg = await vactionProv.deleteVacationById(
+                                                                    final String msg = await vactionProv.deleteVacationById(
                                                                         Provider.of<UserData>(context, listen: false)
                                                                             .user
                                                                             .userToken,
@@ -450,7 +454,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                         .vactionList[index],
                                                     pickedRange.first,
                                                     pickedRange.last)
-                                                ? Divider(
+                                                ? const Divider(
                                                     thickness: 1,
                                                   )
                                                 : Container()

@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/SiteAdminUsersScreen.dart';
@@ -16,14 +14,11 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/addSh
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
-import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/Shift.dart';
 
-import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -395,7 +390,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
       return Future.value(false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => NavScreenTwo(3)),
+          MaterialPageRoute(builder: (context) => const NavScreenTwo(3)),
           (Route<dynamic> route) => false);
       return Future.value(false);
     }
@@ -404,13 +399,13 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
 
 class ShiftTile extends StatefulWidget {
   final Shift shift;
-  var index;
+  final index;
 
   final String siteName;
   final siteIndex;
   final Function onTapEdit;
   final Function onTapDelete;
-  ShiftTile(
+  const ShiftTile(
       {this.siteIndex,
       this.index,
       this.siteName,
@@ -532,9 +527,9 @@ class _ShiftTileState extends State<ShiftTile> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: Colors.orange, width: 1)),
-                              padding: EdgeInsets.all(9),
-                              child: Icon(
+                                      color: ColorManager.primary, width: 1)),
+                              padding: const EdgeInsets.all(9),
+                              child: const Icon(
                                 Icons.person,
                                 size: 18,
                                 color: Colors.orange,
@@ -590,7 +585,6 @@ class _ShiftTileState extends State<ShiftTile> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          final daysOff = Provider.of<DaysOffData>(context).weak;
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
@@ -726,7 +720,7 @@ class dateDataField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
 
-  dateDataField({this.icon, this.controller, this.labelText});
+  const dateDataField({this.icon, this.controller, this.labelText});
 
   Widget build(BuildContext context) {
     return Container(

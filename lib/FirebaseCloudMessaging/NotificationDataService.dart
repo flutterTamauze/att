@@ -197,7 +197,7 @@ class NotificationDataService with ChangeNotifier {
         return;
       }
       semaphore = 1;
-      Future.delayed(Duration(seconds: 1)).then((_) => semaphore = 0);
+      Future.delayed(const Duration(seconds: 1)).then((_) => semaphore = 0);
       // counter++;
       // print(counter);
       if (event.data["category"] == "internalMission") {

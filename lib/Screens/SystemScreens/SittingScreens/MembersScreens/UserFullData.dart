@@ -4,14 +4,13 @@ import 'dart:async';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/AddUserScreen.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -22,13 +21,12 @@ import 'package:qr_users/widgets/UserFullData/user_properties.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     as intlPhone;
-import 'package:qr_users/widgets/roundedButton.dart';
 
 class UserFullDataScreen extends StatefulWidget {
   @override
   _UserFullDataScreenState createState() => _UserFullDataScreenState();
 
-  UserFullDataScreen(
+  const UserFullDataScreen(
       {this.userId,
       this.onResetMac,
       this.onTapDelete,
@@ -47,8 +45,8 @@ bool isSAved = false;
 bool allowToAttendBox = false;
 bool noShowInReport = false;
 TimeOfDay intToTimeOfDay(int time) {
-  int hours = (time ~/ 100);
-  int min = time - (hours * 100);
+  final int hours = (time ~/ 100);
+  final int min = time - (hours * 100);
   return TimeOfDay(hour: hours, minute: min);
 }
 
@@ -65,7 +63,6 @@ final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
 TimeOfDay fromPicked;
 TimeOfDay toPicked;
 
-AnimationController _controller;
 int levelClock = 300;
 
 class _UserFullDataScreenState extends State<UserFullDataScreen>
@@ -78,7 +75,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
-    intlPhone.PhoneNumber result =
+    final intlPhone.PhoneNumber result =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             phoneNumberEdit);
     return [result.isoCode, result.dialCode];
@@ -94,18 +91,18 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     date = apiFormatter.format(DateTime.now());
     isSAved = false;
     selectedDateString = DateTime.now().toString();
-    var now = DateTime.now();
+    final now = DateTime.now();
 
     selectedDate = DateTime(now.year, now.month, now.day);
     fromPicked = (intToTimeOfDay(0));
     toPicked = (intToTimeOfDay(0));
     animateControllerOne = AnimationController(
       vsync: this, // the SingleTickerProviderStateMixin
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
     );
     animateControllerTwo = AnimationController(
         vsync: this, // the SingleTickerProviderStateMixin
-        duration: Duration(milliseconds: 200));
+        duration: const Duration(milliseconds: 200));
   }
 
   // String getShiftName(int shiftId) {
@@ -122,7 +119,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
   List<String> sitesList = [], shiftsList = [];
   fillSitesList() {
     sitesList = [];
-    var scheduleList =
+    final scheduleList =
         Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
     sitesList = [
       scheduleList.satShift.siteName,
@@ -137,7 +134,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
 
   fillScheduleShiftsList() {
     shiftsList = [];
-    var scheduleList =
+    final scheduleList =
         Provider.of<ShiftsData>(context, listen: false).firstAvailableSchedule;
     shiftsList = [
       scheduleList.satShift.shiftName,
@@ -154,7 +151,8 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
   AnimationController animateControllerTwo;
   @override
   Widget build(BuildContext context) {
-    var userType = Provider.of<UserData>(context, listen: false).user.userType;
+    final userType =
+        Provider.of<UserData>(context, listen: false).user.userType;
 
     return Scaffold(
       endDrawer: NotificationItem(),
@@ -168,10 +166,10 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
           FutureBuilder(
               future: singleUserData,
               builder: (context, snapshot) {
-                var userData = Provider.of<MemberData>(context).singleMember;
+                final userData = Provider.of<MemberData>(context).singleMember;
                 if (snapshot.connectionState == ConnectionState.waiting ||
                     userData == null) {
-                  return Expanded(
+                  return const Expanded(
                     child: Center(
                         child: CircularProgressIndicator(
                             backgroundColor: Colors.orange)),
@@ -192,7 +190,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 1,
-                                color: Color(0xffFF7E00),
+                                color: ColorManager.primary,
                               ),
                             ),
                             child: Container(
@@ -214,7 +212,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                   ),
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      width: 2, color: Color(0xffFF7E00))),
+                                      width: 2, color: ColorManager.primary)),
                             ),
                           ),
                           Container(
@@ -242,7 +240,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                       icon: Icons.email,
                                       text: userData.email,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Row(
@@ -254,7 +252,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                             text: userData.jobTitle,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 3,
                                         ),
                                         userType == 4
@@ -268,7 +266,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                             : Container(),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Row(
@@ -288,7 +286,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Row(
@@ -316,7 +314,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Padding(
@@ -357,7 +355,7 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
 }
 
 String plusSignPhone(String phoneNum) {
-  int len = phoneNum.length;
+  final int len = phoneNum.length;
   if (phoneNum[0] == "+") {
     return " ${phoneNum.substring(1, len)}+";
   } else {

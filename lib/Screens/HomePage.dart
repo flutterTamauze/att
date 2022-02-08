@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
-import 'package:qr_users/GetitLocator/locator.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
-import 'package:qr_users/main.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
 import 'package:qr_users/services/Download/download_service.dart';
 import 'package:qr_users/services/company.dart';
@@ -45,17 +42,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           Provider.of<NotificationDataService>(context, listen: false);
       notificationProv.firebaseMessagingConfig(context);
     }
-
+    final newVersion = NewVersion();
+    // ignore: cascade_invocations
+    newVersion.showAlertIfNecessary(
+      context: context,
+    );
+    // checkVersion();
     //Check for updates
-    final DownloadService downloadService = DownloadService();
-    downloadService.checkReleaseDate(showApk, context);
+    // final DownloadService downloadService = DownloadService();
+    // downloadService.checkReleaseDate(showApk, context);
+    // // Provider.of<NotificationDataService>(context, listen: false)
+    // //     .huaweiMessagingConfig(context);
     // Provider.of<NotificationDataService>(context, listen: false)
-    //     .huaweiMessagingConfig(context);
-    Provider.of<NotificationDataService>(context, listen: false)
-        .notificationPermessions();
+    //     .notificationPermessions();
 
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  checkVersion() async {
+    final newVersion = NewVersion();
+    final status = await newVersion.getVersionStatus();
+    print(status.canUpdate); // (true)
+    print(status.localVersion); // (1.2.1)
+    print(status.storeVersion); // (1.2.3)
+    print(status
+        .appStoreLink); // (https://itunes.apple.com/us/app/google/id284815942?mt=8)
   }
 
   @override
@@ -146,7 +158,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => ScanPage(),
+                                            builder: (context) =>
+                                                const ScanPage(),
                                           ),
                                         );
                                       },
@@ -168,7 +181,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final DateTime now = DateTime.now();
 
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(
         msg: getTranslated(context, "اضغط مره اخرى للخروج من التطبيق"),

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'dart:ui' as ui;
 
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 

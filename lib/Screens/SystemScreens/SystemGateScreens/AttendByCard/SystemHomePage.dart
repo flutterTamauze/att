@@ -28,7 +28,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
   Future futureShift;
   // AudioCache player = AudioCache();
   _startUp() async {
-    List<CameraDescription> cameras = await availableCameras();
+    final List<CameraDescription> cameras = await availableCameras();
 
     cameraDescription = cameras.firstWhere(
       (CameraDescription camera) =>
@@ -61,7 +61,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
           return true;
         } else {
           Provider.of<ShiftApi>(context, listen: false).firstCall = true;
-          Timer(Duration(seconds: 2), () async {
+          Timer(const Duration(seconds: 2), () async {
             // 5s over, navigate to a new page
             if (mounted) {
               futureShift = Provider.of<ShiftApi>(context, listen: false)
@@ -101,7 +101,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NavScreenTwo(0),
+                            builder: (context) => const NavScreenTwo(0),
                           ));
                     }
                   }
@@ -111,7 +111,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NavScreenTwo(0),
+                        builder: (context) => const NavScreenTwo(0),
                       ));
                 });
           });
@@ -121,7 +121,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    var userData = Provider.of<UserData>(context, listen: false);
+    final userData = Provider.of<UserData>(context, listen: false);
     return Consumer<ShiftApi>(builder: (context, shiftApiConsumer, child) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -131,11 +131,11 @@ class _SystemHomePageState extends State<SystemHomePage> {
               if (!snapshot.hasData) {
                 return Container(
                   color: Colors.white,
-                  child: Center(
+                  child: const Center(
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.orange),
+                          const AlwaysStoppedAnimation<Color>(Colors.orange),
                     ),
                   ),
                 );
@@ -173,7 +173,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                   children: [
                                                     Container(
                                                       width: 120.w,
-                                                      child: Divider(
+                                                      child: const Divider(
                                                         color: Colors.black,
                                                       ),
                                                     ),
@@ -195,7 +195,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                     ),
                                                     Container(
                                                       width: 120.w,
-                                                      child: Divider(
+                                                      child: const Divider(
                                                         color: Colors.black,
                                                       ),
                                                     )
@@ -204,7 +204,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                 SizedBox(
                                                   height: 20.h,
                                                 ),
-                                                AttendByCardButton()
+                                                const AttendByCardButton()
                                               ],
                                             )
                                           : Container()
@@ -215,10 +215,10 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           // If the Future is complete, display the preview.
-                                          return Center(
+                                          return const Center(
                                               child: CircularProgressIndicator(
                                             valueColor:
-                                                new AlwaysStoppedAnimation<
+                                                const AlwaysStoppedAnimation<
                                                     Color>(Colors.orange),
                                           ));
                                         } else {
@@ -239,7 +239,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                   setState(() {});
                                                 },
                                                 child:
-                                                    AttendByCardRetryButton(),
+                                                    const AttendByCardRetryButton(),
                                               ),
                                             ],
                                           );
@@ -261,7 +261,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NavScreenTwo(0),
+          builder: (context) => const NavScreenTwo(0),
         ));
     return Future.value(false);
   }

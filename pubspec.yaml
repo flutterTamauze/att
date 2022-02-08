@@ -83,7 +83,8 @@ dependencies:
   typicons_flutter: ^0.3.1
   url_launcher: ^6.0.0
   webview_flutter: null
-  get_it: 
+  get_it:
+  new_version: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

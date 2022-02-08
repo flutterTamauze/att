@@ -39,8 +39,9 @@ class DrawerI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     checkNetwork();
-    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-    int userType = Provider.of<UserData>(context, listen: true).user.userType;
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    final int userType =
+        Provider.of<UserData>(context, listen: true).user.userType;
 
     return GestureDetector(
       onTap: () {
@@ -68,7 +69,7 @@ class DrawerI extends StatelessWidget {
                       child: Container(
                         height: 90.h,
                         width: 90.w,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 image: AssetImage("resources/image.png"),
@@ -80,7 +81,7 @@ class DrawerI extends StatelessWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Divider(
@@ -384,7 +385,7 @@ class AMHPoweredWidght extends StatelessWidget {
                       child: Container(
                         child: Container(
                           height: 55.h,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.black,
                           ),
                         ),

@@ -18,18 +18,13 @@ import 'package:qr_users/services/user_data.dart';
 import '../../main.dart';
 
 class UserHolidays {
-  String userId,
-      fcmToken,
-      userName,
-      holidayDescription,
-      adminResponse,
-      userImage;
+  String userId, fcmToken, userName, holidayDescription, adminResponse;
   int holidayNumber,
       holidayStatus, //1=>accept , //2 refused , //3 waiting..
       holidayType,
       osType;
 
-  DateTime fromDate, toDate, createdOnDate, approvedDate;
+  DateTime fromDate, toDate, createdOnDate;
   UserHolidays(
       {this.adminResponse,
       this.fromDate,
@@ -42,8 +37,7 @@ class UserHolidays {
       this.userName,
       this.osType,
       this.userId,
-      this.approvedDate,
-      this.userImage,
+      // this.approvedDate,
       this.createdOnDate});
   factory UserHolidays.fromJson(dynamic json) {
     return UserHolidays(
@@ -57,10 +51,23 @@ class UserHolidays {
         holidayNumber: json["id"],
         fcmToken: json["fcmToken"],
         holidayDescription: json["desc"],
-        userImage: "$imageUrl${json["userImage"]}",
-        // approvedDate: DateTime.tryParse(json["approvedDate"]) ?? DateTime.now(),
         osType: json["mobileOS"],
         createdOnDate: DateTime.tryParse(json["createdOn"]));
+  }
+  factory UserHolidays.detailsFromJson(dynamic json) {
+    return UserHolidays(
+      adminResponse: json["adminResponse"],
+      fromDate: DateTime.tryParse(json["fromdate"]),
+      toDate: DateTime.tryParse(json["toDate"]),
+      holidayType: json["typeId"],
+      userName: json["userName"],
+      userId: json['userId'],
+      holidayStatus: json["status"],
+      holidayNumber: json["id"],
+      fcmToken: json["fcmToken"],
+      holidayDescription: json["desc"],
+      osType: json["mobileOS"],
+    );
   }
 }
 
@@ -284,6 +291,8 @@ class UserHolidaysData with ChangeNotifier {
             holidaysSingleDetail.fcmToken;
         pendingCompanyHolidays[holidayIndex].adminResponse =
             pendingCompanyHolidays[holidayIndex].adminResponse;
+        // pendingCompanyHolidays[holidayIndex].createdOnDate =
+        //     pendingCompanyHolidays[holidayIndex].createdOnDate;
         notifyListeners();
       }
     } else {
@@ -325,7 +334,8 @@ class UserHolidaysData with ChangeNotifier {
         notifyListeners();
         final decodedResponse = json.decode(response.body);
         if (decodedResponse["message"] == "Success") {
-          holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+          holidaysSingleDetail =
+              UserHolidays.detailsFromJson(decodedResponse['data']);
           final holidays = singleUserHoliday
               .where((element) => element.holidayNumber == holidayId)
               .toList();

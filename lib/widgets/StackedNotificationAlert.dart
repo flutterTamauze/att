@@ -91,16 +91,16 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                         : RoundedButton(
                             title: widget.roundedButtonTitle,
                             onPressed: () async {
-                              SharedPreferences prefs =
+                              final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               if (widget.showToast) {
                                 setState(() {
                                   isloading = true;
                                 });
-                                int attendId = await attendObj.getAttendProofID(
-                                    user.id, user.userToken);
+                                final int attendId = await attendObj
+                                    .getAttendProofID(user.id, user.userToken);
                                 print(attendId);
-                                Position currentPosition =
+                                final Position currentPosition =
                                     await Geolocator.getCurrentPosition(
                                         desiredAccuracy: LocationAccuracy.best);
 
@@ -182,7 +182,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
         Positioned(
             right: 125.w,
             top: widget.popWidget
-                ? MediaQuery.of(context).size.height / 3.5
+                ? MediaQuery.of(context).size.height / 3.7
                 : 180.h,
             child: Container(
               width: 150.w,

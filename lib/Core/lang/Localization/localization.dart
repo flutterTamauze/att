@@ -14,9 +14,9 @@ class DemoLocalization {
   Map<String, String> _localizedValues;
 
   Future<void> load() async {
-    String jsonStringValues = await rootBundle.loadString(
+    final String jsonStringValues = await rootBundle.loadString(
         'lib/Core/lang/${locale.languageCode.split("_").first}.json');
-    Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
+    final Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
     _localizedValues =
         mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
@@ -41,7 +41,7 @@ class _DemoLocalizationsDelegate
 
   @override
   Future<DemoLocalization> load(Locale locale) async {
-    DemoLocalization localization = new DemoLocalization(locale);
+    final DemoLocalization localization = new DemoLocalization(locale);
     await localization.load();
     return localization;
   }

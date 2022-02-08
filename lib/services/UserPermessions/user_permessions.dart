@@ -11,19 +11,15 @@ import 'package:qr_users/Network/networkInfo.dart';
 import '../../main.dart';
 
 class UserPermessions {
-  String user,
-      permessionDescription,
-      adminResponse,
-      approvedByUserId,
-      userImage;
+  String user, permessionDescription, adminResponse, approvedByUserId;
   int permessionStatus; //1=>accept , //2 refused , //3 waiting..
   int permessionId, osType;
   String userID;
   String fcmToken;
   int permessionType;
-  DateTime date, createdOn, approvedDate;
+  DateTime date, approvedDate;
   String duration;
-
+  DateTime createdOn;
   UserPermessions(
       {this.date,
       this.adminResponse,
@@ -38,7 +34,6 @@ class UserPermessions {
       this.approvedByUserId,
       this.createdOn,
       this.approvedDate,
-      this.userImage,
       this.permessionId});
 
   factory UserPermessions.fromJson(dynamic json) {
@@ -66,10 +61,8 @@ class UserPermessions {
         duration: json["time"],
         permessionType: json["type"],
         fcmToken: json["fcmToken"] ?? "null",
-        userID: json['userId'] ?? "",
         permessionId: json["id"],
         permessionStatus: json["status"],
-        userImage: "$imageUrl${json["userImage"]}",
         createdOn: DateTime.tryParse(json["createdOn"]),
         user: json["userName"]);
   }
@@ -490,7 +483,7 @@ class UserPermessionsData with ChangeNotifier {
       UserPermessions userPermessions, String userToken, String userId) async {
     isLoading = false;
     log(userPermessions.date.toIso8601String());
-    log(userPermessions.createdOn.toIso8601String());
+    // log(userPermessions.createdOn.toIso8601String());
     print(userPermessions.permessionDescription);
     try {
       //1 تأخخير عن الحضور
@@ -515,7 +508,7 @@ class UserPermessionsData with ChangeNotifier {
               "time": userPermessions.duration,
               "userId": userId,
               "Desc": userPermessions.permessionDescription,
-              "createdonDate": userPermessions.createdOn.toIso8601String(),
+              "createdonDate": DateTime.now().toIso8601String(),
             }));
         print(response.body);
         isLoading = false;

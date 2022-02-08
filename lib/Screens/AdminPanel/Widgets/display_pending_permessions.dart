@@ -6,17 +6,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:huawei_location/permission/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/AdminPanel/Widgets/userImageExpanstionTile.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ExpandedPendingPermessions extends StatefulWidget {
   final StringConversionSinkMixin adminComment;
@@ -54,9 +57,6 @@ class _ExpandedPendingPermessionsState
         padding: const EdgeInsets.all(4.0),
         child: Container(
           child: ExpansionTile(
-            leading: LeadingExpanstionImage(
-              image: widget.userPermessions.userImage,
-            ),
             onExpansionChanged: (value) async {
               if (value) {
                 showDialog(
@@ -73,23 +73,51 @@ class _ExpandedPendingPermessionsState
               }
             },
             trailing: Container(
-              width: 80.w,
+              width: 100.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Center(
-                          child: AutoSizeText(
-                            widget.userPermessions.createdOn
-                                .toString()
-                                .substring(0, 11),
-                            style:
-                                TextStyle(fontSize: setResponsiveFontSize(14)),
-                          ),
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: 90,
+                              child: AutoSizeText(
+                                "  ${widget.userPermessions.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")}",
+                                style: boldStyle.copyWith(
+                                    fontSize: setResponsiveFontSize(10)),
+                                textAlign: locator
+                                        .locator<PermissionHan>()
+                                        .isEnglishLocale()
+                                    ? TextAlign.right
+                                    : TextAlign.left,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Container(
+                              child: AutoSizeText(
+                                widget.userPermessions.date
+                                    .toString()
+                                    .substring(0, 11),
+                                style: TextStyle(
+                                    fontSize: setResponsiveFontSize(11)),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            AutoSizeText(
+                              "  ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}",
+                              style: TextStyle(
+                                  fontSize: setResponsiveFontSize(11)),
+                            ),
+                          ],
                         ),
                       ),
                       widget.isAdmin
@@ -178,6 +206,13 @@ class _ExpandedPendingPermessionsState
                                           null
                                       ? const Divider()
                                       : Container(),
+                                  AutoSizeText(
+                                    "${getTranslated(context, "تاريخ إنشاء الطلب")}: ${widget.userPermessions.createdOn.toString().substring(0, 11)}",
+                                    style: TextStyle(
+                                      fontSize: setResponsiveFontSize(14),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),

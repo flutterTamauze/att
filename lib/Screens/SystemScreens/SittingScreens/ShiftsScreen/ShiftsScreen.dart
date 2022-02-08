@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
@@ -48,7 +49,7 @@ class ShiftsScreen extends StatefulWidget {
   final isFromSites;
   final siteIndex;
 
-  ShiftsScreen(this.siteId, this.isFromSites, this.siteIndex);
+  const ShiftsScreen(this.siteId, this.isFromSites, this.siteIndex);
 
   @override
   _ShiftsScreenState createState() => _ShiftsScreenState();
@@ -78,7 +79,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
   //   return "${formatter.format(h)}:${formatter.format(m)}";
   // }
 
-  @override
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -247,7 +247,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                   controller: refreshController,
                                                   enablePullDown: true,
                                                   header:
-                                                      WaterDropMaterialHeader(
+                                                      const WaterDropMaterialHeader(
                                                     color: Colors.white,
                                                     backgroundColor:
                                                         Colors.orange,
@@ -297,7 +297,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                                 (BuildContext context) {
                                                                               return RoundedLoadingIndicator();
                                                                             });
-                                                                        var msg = await shiftsData.deleteShift(
+                                                                        final msg = await shiftsData.deleteShift(
                                                                             value.dropDownShifts[index].shiftId,
                                                                             token,
                                                                             index,
@@ -440,7 +440,8 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                             } else {
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => NavScreenTwo(3)),
+                                      builder: (context) =>
+                                          const NavScreenTwo(3)),
                                   (Route<dynamic> route) => false);
                               return Future.value(false);
                             }
@@ -472,7 +473,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
       return Future.value(false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => NavScreenTwo(3)),
+          MaterialPageRoute(builder: (context) => const NavScreenTwo(3)),
           (Route<dynamic> route) => false);
       return Future.value(false);
     }
@@ -482,13 +483,13 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
 class ShiftTile extends StatefulWidget {
   final Shift shift;
   final Shifts shifts;
-  var index;
+  final index;
   final SlidableController slidableController;
   final String siteName;
   final siteIndex;
   final Function onTapEdit;
   final Function onTapDelete;
-  ShiftTile(
+  const ShiftTile(
       {this.siteIndex,
       this.index,
       this.siteName,
@@ -560,17 +561,17 @@ class _ShiftTileState extends State<ShiftTile> {
           actionExtentRatio: 0.10,
           closeOnScroll: true,
           controller: widget.slidableController,
-          actionPane: SlidableDrawerActionPane(),
+          actionPane: const SlidableDrawerActionPane(),
           secondaryActions: [
             ZoomIn(
                 child: InkWell(
                     child: Container(
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                           border: Border.all(width: 2, color: Colors.orange)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.edit,
                         size: 18,
                         color: Colors.orange,
@@ -596,12 +597,12 @@ class _ShiftTileState extends State<ShiftTile> {
             ZoomIn(
                 child: InkWell(
               child: Container(
-                padding: EdgeInsets.all(7),
+                padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                     border: Border.all(width: 2, color: Colors.red)),
-                child: Icon(
+                child: const Icon(
                   Icons.delete,
                   size: 18,
                   color: Colors.red,
@@ -672,7 +673,7 @@ class _ShiftTileState extends State<ShiftTile> {
 
                           print("finding matching shifts");
                           print(siteProv.currentSiteName);
-                          var index = getSiteName(siteProv.currentSiteName);
+                          final index = getSiteName(siteProv.currentSiteName);
 
                           Provider.of<SiteShiftsData>(context, listen: false)
                               .getShiftsList(
@@ -699,11 +700,11 @@ class _ShiftTileState extends State<ShiftTile> {
                                 shape: BoxShape.circle,
                                 border:
                                     Border.all(color: Colors.orange, width: 1)),
-                            padding: EdgeInsets.all(9),
+                            padding: const EdgeInsets.all(9),
                             child: Icon(
                               Icons.person,
                               size: 18,
-                              color: Colors.orange,
+                              color: ColorManager.primary,
                             )),
                       )
                       // CircularIconButton(
@@ -757,7 +758,6 @@ class _ShiftTileState extends State<ShiftTile> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          final daysOff = Provider.of<DaysOffData>(context).weak;
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here
@@ -921,13 +921,13 @@ class CircularIconButton extends StatelessWidget {
   final IconData icon;
   final onTap;
 
-  CircularIconButton({this.icon, this.onTap});
+  const CircularIconButton({this.icon, this.onTap});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
         ),
         child: CircleAvatar(
@@ -950,7 +950,7 @@ class dateDataField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
 
-  dateDataField({this.icon, this.controller, this.labelText});
+  const dateDataField({this.icon, this.controller, this.labelText});
 
   Widget build(BuildContext context) {
     return Container(
@@ -966,11 +966,12 @@ class dateDataField extends StatelessWidget {
           labelText: labelText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Color(0xffD7D7D7), width: 1.0.w),
+            borderSide:
+                BorderSide(color: const Color(0xffD7D7D7), width: 1.0.w),
           ),
           prefixIcon: Icon(
             icon,
-            color: Colors.orange,
+            color: ColorManager.primary,
           ),
         ),
       ),
