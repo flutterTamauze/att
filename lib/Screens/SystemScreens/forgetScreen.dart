@@ -683,8 +683,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ في تغيير كلمة المرور',
-                  content: "لا يوجد اتصال بالانترنت");
+                  title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
+                  content: getTranslated(context, "لا يوجد اتصال بالانترنت"));
             }).then((value) {
           setState(() {
             isLoading = false;
@@ -698,8 +698,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'خطأ في تغيير كلمة المرور',
-                  content: "رقم المستخدم غير موجود");
+                  title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
+                  content: getTranslated(context, "رقم المستخدم غير موجود"));
             }).then((value) {
           setState(() {
             isLoading = false;
@@ -728,7 +728,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                title: 'خطأ في تغيير كلمة المرور',
+                title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
                 content: "",
               );
             }).then((value) {
@@ -773,7 +773,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في تغيير كلمة المرور',
+                    title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
                     content: getTranslated(context, "لا يوجد اتصال بالانترنت"));
               }).then((value) {
             setState(() {
@@ -788,8 +788,8 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ في تغيير كلمة المرور',
-                    content: "رمز تفعيل غير صحيح");
+                    title: getTranslated(context, 'خطأ في تغيير كلمة المرور'),
+                    content: getTranslated(context, "رمز تفعيل غير صحيح"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -803,8 +803,9 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    title: 'خطأ فى بيانات الحساب',
-                    content: "من فضلك راجع مدير النظام");
+                    title: getTranslated(context, 'خطأ فى بيانات الحساب'),
+                    content:
+                        getTranslated(context, "من فضلك راجع مدير النظام"));
               }).then((value) {
             setState(() {
               isLoading = false;
@@ -861,24 +862,15 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  title: 'لا يوجد اتصال بالانترنت',
-                  content: "برجاء المحاولة مرة اخرى");
+                  title: getTranslated(context, 'لا يوجد اتصال بالانترنت'),
+                  content: getTranslated(context, "برجاء المحاولة مرة اخرى"));
             }).then((value) {
           setState(() {
             isLoading = false;
           });
         });
       } else if (value == USER_INVALID_RESPONSE) {
-        return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return RoundedAlertOkOnly(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  title: getTranslated(context, 'خطأ فى البيانات الحساب'),
-                  content: "من فضلك راجع مدير النظام");
-            }).then((value) {
+        return serverDownDialog(context).then((value) {
           setState(() {
             isLoading = false;
           });
@@ -901,7 +893,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => NavScreenTwo(0),
+              builder: (context) => const NavScreenTwo(0),
             ));
       } else if (value == -2) {
         return showDialog(

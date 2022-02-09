@@ -203,7 +203,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                   AutoSizeText(
                                     "${getTranslated(context, "تاريخ إنشاء الطلب")}: ${widget.userHolidays.createdOnDate.toString().substring(0, 11)}",
                                     style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
+                                      fontSize: setResponsiveFontSize(15),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),

@@ -10,10 +10,13 @@ class SuperCompaniesChartRepo {
   Future<Object> getSuperCharts(String token, int companyID) async {
     try {
       return NetworkApi().request(
-        "$baseURL/api/Reports/GetDailyReport_BIO?companyId=$companyID",
-        RequestType.GET,
-        {'Content-type': 'application/json', 'Authorization': "Bearer $token"},
-      );
+          "$baseURL/api/Reports/GetDailyReport_BIO?companyId=$companyID",
+          RequestType.GET,
+          {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $token"
+          },
+          true);
     } catch (e) {
       print(e);
     }

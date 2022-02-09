@@ -12,13 +12,15 @@ class PrData {
 
 class PermissionHan with ChangeNotifier {
   bool showHome = true;
-  Locale locale = Locale("en_US");
+  Locale locale = const Locale("en_US");
   bool showQr = true;
   bool attendProovTriggered = false;
   bool showNotification = false;
   bool showReport = true;
   bool showSettings = true;
+  bool isServerDown = false;
   bool currentDialogOnstream = true;
+
   List<PrData> permissionsList = [
     PrData(
         icon: Icons.location_on,
@@ -34,6 +36,11 @@ class PermissionHan with ChangeNotifier {
   ];
   setNotificationbool(bool data) {
     showNotification = data;
+    notifyListeners();
+  }
+
+  setServerDown(bool isDown) {
+    isServerDown = isDown;
     notifyListeners();
   }
 

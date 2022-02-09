@@ -14,9 +14,11 @@ import 'package:huawei_location/location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/Shift.dart';
+import 'package:qr_users/services/Shifts/Repo/ShiftRepo.dart';
 import 'package:trust_location/trust_location.dart';
 
 class ShiftApi with ChangeNotifier {
@@ -32,6 +34,7 @@ class ShiftApi with ChangeNotifier {
 
   String siteName;
   bool isOnLocation = false;
+  bool isServerDown = false;
   int isLocationServiceOn = 0;
   bool isConnected = false;
   bool permissionOff = false;
@@ -178,50 +181,51 @@ class ShiftApi with ChangeNotifier {
     //3shan low my3radsh el code low bara el location : low bara we 3ala nafs el screen hyasht3'al 3adi...
     // if (shiftsListProvider.isEmpty) {
     print(id);
-    if (await isConnectedToInternet()) {
-      isConnected = true;
-      List<Shift> shiftsList;
-      bool isHawawi = false;
-      int isMoc;
-      final HuaweiServices _huawi = HuaweiServices();
-      if (Platform.isAndroid) {
-        isHawawi = await _huawi.isHuaweiDevice();
-        if (isHawawi) {
-          isMoc = 0;
-        } else {
-          print("going to see current loc");
-          isMoc = await getCurrentLocation();
-        }
+
+    isConnected = true;
+    List<Shift> shiftsList;
+    bool isHawawi = false;
+    int isMoc;
+    final HuaweiServices _huawi = HuaweiServices();
+    if (Platform.isAndroid) {
+      isHawawi = await _huawi.isHuaweiDevice();
+      if (isHawawi) {
+        isMoc = 0;
       } else {
+        print("going to see current loc");
         isMoc = await getCurrentLocation();
       }
-      print("IS MOC RESULT : $isMoc");
-      print(id);
-      if (isMoc == 0) {
-        final response = await http.post(
-            Uri.parse("$baseURL/api/Shifts/PostSiteShift"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            },
-            body: json.encode(
-              {
-                "ID": id,
-                "Latitude": isHawawi
-                    ? currentHuaweiLocation.latitude.toString().trim()
-                    : currentPosition.latitude.toString().trim(),
-                "Longitude": isHawawi
-                    ? currentHuaweiLocation.longitude.toString().trim()
-                    : currentPosition.longitude.toString().trim()
-              },
-            ));
-        print(response.statusCode);
-
-        log(response.body);
-        if (jsonDecode(response.body)["message"] == "Success") {
-          final shiftObjJson = jsonDecode(response.body)['data'];
+    } else {
+      isMoc = await getCurrentLocation();
+    }
+    print("IS MOC RESULT : $isMoc");
+    print(id);
+    if (isMoc == 0) {
+      final response = await ShiftRepo().getLateAbsenceReport(
+          "$baseURL/api/Shifts/PostSiteShift",
+          userToken,
+          isHawawi,
+          currentHuaweiLocation,
+          currentPosition,
+          id);
+      if (response is Faliure) {
+        if (response.code == NO_INTERNET) {
+          isConnected = false;
+          isLocationServiceOn = 0;
+          isOnLocation = false;
+          notifyListeners();
+          return false;
+        } else if (response.code == USER_INVALID_RESPONSE) {
+          isServerDown = true;
+          notifyListeners();
+          return false;
+        }
+      } else {
+        isServerDown = false;
+        if (jsonDecode(response)["message"] == "Success") {
+          final shiftObjJson = jsonDecode(response)['data'];
           qrShift = Shift.fromJsonQR(shiftObjJson);
-          currentCountryDate = jsonDecode(response.body)['data']["currentTime"];
+          currentCountryDate = jsonDecode(response)['data']["currentTime"];
 
           shiftsListProvider = shiftsList;
 
@@ -230,15 +234,15 @@ class ShiftApi with ChangeNotifier {
           isLocationServiceOn = 1;
           notifyListeners();
           return true;
-        } else if (jsonDecode(response.body)["message"] ==
+        } else if (jsonDecode(response)["message"] ==
             "Faild : Location not found ") {
           print("isNotInLocation");
 
           currentSitePositionLat =
-              jsonDecode(response.body)["data"]["siteLatitue"] as double;
+              jsonDecode(response)["data"]["siteLatitue"] as double;
           currentSitePositionLong =
-              jsonDecode(response.body)["data"]["siteLongitude"] as double;
-          siteName = jsonDecode(response.body)['data']["siteName"];
+              jsonDecode(response)["data"]["siteLongitude"] as double;
+          siteName = jsonDecode(response)['data']["siteName"];
           isOnLocation = false;
           isLocationServiceOn = 1;
           permissionOff = true;
@@ -252,33 +256,28 @@ class ShiftApi with ChangeNotifier {
           notifyListeners();
           return false;
         }
-      } else if (isMoc == 1) {
-        print("Mock location");
-        isOnLocation = false;
-        isLocationServiceOn = 2;
-        permissionOff = true;
-        notifyListeners();
-        return false;
-      } else if (isMoc == 3) {
-        permissionOff = false;
-        isLocationServiceOn = 0;
-        isOnLocation = false;
-        notifyListeners();
-        return false;
-      } else {
-        print("location off");
-        isLocationServiceOn = 0;
-        isOnLocation = false;
-        notifyListeners();
-        return false;
       }
+    } else if (isMoc == 1) {
+      print("Mock location");
+      isOnLocation = false;
+      isLocationServiceOn = 2;
+      permissionOff = true;
+      notifyListeners();
+      return false;
+    } else if (isMoc == 3) {
+      permissionOff = false;
+      isLocationServiceOn = 0;
+      isOnLocation = false;
+      notifyListeners();
+      return false;
     } else {
-      isConnected = false;
+      print("location off");
       isLocationServiceOn = 0;
       isOnLocation = false;
       notifyListeners();
       return false;
     }
+    return false;
   }
 
   // bool searchForCurrentShift(int currentTime) {

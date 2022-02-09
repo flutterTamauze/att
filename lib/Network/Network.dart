@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
@@ -8,6 +9,8 @@ import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
+import 'package:qr_users/services/permissions_data.dart';
+import 'package:qr_users/widgets/roundedAlert.dart';
 
 import '../main.dart';
 import 'networkInfo.dart';
@@ -43,12 +46,20 @@ class NetworkApi {
             break;
         }
         final DateTime postTime = DateTime.now();
+
         print(
             "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-        // print("not faliure");
-        // log("Response body : ${res.body}");
         log(res.body);
+        if (res.statusCode == 500 || res.statusCode == 503) {
+          locator.locator<PermissionHan>().setServerDown(true);
+          serverDownDialog(navigatorKey.currentState.overlay.context);
+          return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
+        }
+        // locator.locator<PermissionHan>().setServerDown(true);
+        // serverDownDialog(navigatorKey.currentState.overlay.context);
+        // return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
+        locator.locator<PermissionHan>().setServerDown(false);
         return res.body;
       } on TimeoutException catch (e) {
         print("timeout occured $e");
@@ -56,7 +67,7 @@ class NetworkApi {
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       }
     }
-
+    noInternetDialog(navigatorKey.currentState.overlay.context);
     return Faliure(errorResponse: "NO INTERNET", code: NO_INTERNET);
   }
 

@@ -64,19 +64,19 @@ class ErrorScreen2 extends StatelessWidget {
                         SizedBox(
                           height: 20.h,
                         ),
-                        Container(
-                          height: 20.h,
-                          child: AutoSizeText(
-                            "برجاء المحاولة مرة اخرى ",
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(15, allowFontScalingSelf: true),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        // Container(
+                        //   height: 20.h,
+                        //   child: AutoSizeText(
+                        //     getTranslated(context, "برجاء المحاولة مرة اخرى"),
+                        //     maxLines: 1,
+                        //     style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       fontSize: ScreenUtil()
+                        //           .setSp(15, allowFontScalingSelf: true),
+                        //     ),
+                        //     textAlign: TextAlign.center,
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 40.h,
                         ),

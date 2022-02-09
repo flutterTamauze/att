@@ -59,10 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return WillPopScope(
         onWillPop: onWillPop,
         child: GestureDetector(
-          onTap: () {
-            print(Provider.of<PermissionHan>(context, listen: false)
-                .isEnglishLocale());
-          },
+          onTap: () {},
           child: Container(
             padding: const EdgeInsets.only(bottom: 5),
             child: Column(
@@ -209,6 +206,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 context: context,
                                 builder: (context) {
                                   return ChangeLanguage(
+                                      callBackFun: () {},
                                       locale: Provider.of<PermissionHan>(
                                                   context,
                                                   listen: false)

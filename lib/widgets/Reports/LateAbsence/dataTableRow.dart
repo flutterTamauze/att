@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 
 import 'package:qr_users/services/Reports/Services/report_data.dart';
@@ -24,9 +25,9 @@ class DataTableRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        var now = DateTime.now();
+        final now = DateTime.now();
 
-        var userProvider = Provider.of<UserData>(context, listen: false).user;
+        final userProvider = Provider.of<UserData>(context, listen: false).user;
 
         showDialog(
             context: context,
@@ -34,7 +35,7 @@ class DataTableRow extends StatelessWidget {
               return RoundedLoadingIndicator();
             });
 
-        var x = await Provider.of<ReportsData>(context, listen: false)
+        final x = await Provider.of<ReportsData>(context, listen: false)
             .getUserReportUnits(
                 userProvider.userToken,
                 userAttendanceReportUnit.userId,
@@ -69,7 +70,6 @@ class DataTableRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 40.h,
                       width: 144.w,
                       child: AutoSizeText(
                         userAttendanceReportUnit.userName,
@@ -77,7 +77,7 @@ class DataTableRow extends StatelessWidget {
                         style: TextStyle(
                           fontSize: ScreenUtil()
                               .setSp(13, allowFontScalingSelf: true),
-                          color: Colors.black,
+                          color: ColorManager.accentColor,
                         ),
                       ),
                     ),

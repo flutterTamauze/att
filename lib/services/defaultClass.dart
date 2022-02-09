@@ -6,10 +6,9 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InheritDefault {
-  sayHey(String token) {}
   login(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> userData = (prefs.getStringList('userData') ?? null);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> userData = (prefs.getStringList('userData') ?? null);
 
     if (userData == null || userData.isEmpty) {
       print('null');

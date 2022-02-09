@@ -205,48 +205,51 @@ class _OutsideVacationState extends State<OutsideVacation> {
                           VacationCardHeader(
                             header: getTranslated(context, "نوع الطلب"),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              RadioButtonWidg(
-                                radioVal2: widget.radioValue,
-                                radioVal: 3,
-                                title: getTranslated(context, "أذن"),
-                                onchannge: (value) {
-                                  setState(() {
-                                    _today = DateTime.now();
-                                    widget.radioValue = value;
-                                  });
-                                },
-                              ),
-                              RadioButtonWidg(
-                                radioVal2: widget.radioValue,
-                                radioVal: 1,
-                                title: getTranslated(context, "اجازة"),
-                                onchannge: (value) {
-                                  setState(() {
-                                    fromDate = widget.radioValue == 3
-                                        ? DateTime.now()
-                                        : tomorrow;
-                                    widget.radioValue = value;
-                                  });
-                                },
-                              ),
-                              RadioButtonWidg(
-                                radioVal: 2,
-                                radioVal2: widget.radioValue,
-                                title: getTranslated(
-                                  context,
-                                  "مأمورية",
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                RadioButtonWidg(
+                                  radioVal2: widget.radioValue,
+                                  radioVal: 3,
+                                  title: getTranslated(context, "أذن"),
+                                  onchannge: (value) {
+                                    setState(() {
+                                      _today = DateTime.now();
+                                      widget.radioValue = value;
+                                    });
+                                  },
                                 ),
-                                onchannge: (value) {
-                                  // getSingleUserMission();
-                                  setState(() {
-                                    widget.radioValue = value;
-                                  });
-                                },
-                              ),
-                            ],
+                                RadioButtonWidg(
+                                  radioVal2: widget.radioValue,
+                                  radioVal: 1,
+                                  title: getTranslated(context, "اجازة"),
+                                  onchannge: (value) {
+                                    setState(() {
+                                      fromDate = widget.radioValue == 3
+                                          ? DateTime.now()
+                                          : tomorrow;
+                                      widget.radioValue = value;
+                                    });
+                                  },
+                                ),
+                                RadioButtonWidg(
+                                  radioVal: 2,
+                                  radioVal2: widget.radioValue,
+                                  title: getTranslated(
+                                    context,
+                                    "مأمورية",
+                                  ),
+                                  onchannge: (value) {
+                                    // getSingleUserMission();
+                                    setState(() {
+                                      widget.radioValue = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                           widget.radioValue == 1
                               ? Column(
@@ -255,7 +258,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                       header:
                                           getTranslated(context, "مدة الأجازة"),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Container(
@@ -360,10 +363,11 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                         ? fromText == ""
                                             ? Container()
                                             : Container(
-                                                padding: EdgeInsets.all(5),
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 alignment:
                                                     Alignment.centerRight,
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   "${getTranslated(context, "تم اختيار")} $dateDifference ${getTranslated(context, "يوم")} ",
                                                   style: const TextStyle(
                                                       color: Colors.grey,
@@ -383,7 +387,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          padding: EdgeInsets.only(right: 10),
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -441,7 +446,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                             Provider.of<UserHolidaysData>(
                                                     context)
                                                 .isLoading
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             backgroundColor: Colors.orange)
                                         : RoundedButton(
                                             onPressed: () async {
@@ -633,12 +638,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 return DropdownMenuItem<String>(
                                                     value: x,
                                                     child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10),
                                                       child: AutoSizeText(
                                                         x,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color:
                                                                 Colors.orange,
                                                             fontWeight:
@@ -730,7 +735,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     width: 365.w,
                                                     child: IgnorePointer(
                                                       child: TextFormField(
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Colors.black,
                                                             fontWeight:
                                                                 FontWeight
@@ -840,7 +845,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                         Card(
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.all(10),
+                                            padding: const EdgeInsets.all(10),
                                             child: Row(
                                               children: [
                                                 AutoSizeText(
@@ -849,7 +854,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      fontSize: 11),
+                                                      fontSize:
+                                                          setResponsiveFontSize(
+                                                              11)),
                                                   maxLines: 2,
                                                 ),
                                               ],
@@ -864,8 +871,9 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      right: 10),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -911,11 +919,12 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                   )),
                                                 ),
                                               ),
-                                              Divider(),
+                                              const Divider(),
                                               Card(
                                                 elevation: 5,
                                                 child: Container(
-                                                  padding: EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   child: Row(
                                                     children: [
                                                       AutoSizeText(
@@ -933,7 +942,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                 ),
                                               ),
                                               Container(
-                                                padding: EdgeInsets.all(5),
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 child: Container(
                                                   child: Theme(
                                                     data: clockTheme,
@@ -1006,7 +1016,8 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                               Card(
                                                 elevation: 5,
                                                 child: Container(
-                                                  padding: EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   child: Row(
                                                     children: [
                                                       AutoSizeText(
@@ -1021,7 +1032,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 context,
                                                                 "اذن من الساعة",
                                                               ),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             fontSize: 13),
@@ -1275,7 +1286,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
 
 class SitesAndMissionsWidg extends StatefulWidget {
   final Function onchannge;
-  SitesAndMissionsWidg({
+  const SitesAndMissionsWidg({
     this.onchannge,
     Key key,
     @required this.prov,
@@ -1294,7 +1305,6 @@ class SitesAndMissionsWidg extends StatefulWidget {
 class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
   @override
   Widget build(BuildContext context) {
-    int shiftId;
     int holder;
     return Column(
       children: [
@@ -1303,7 +1313,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
           context,
           "الموقع و المناوبة للمأمورية",
         )),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Container(
@@ -1363,9 +1373,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                               .setDropDownShift(holder);
                                           print(
                                               "x ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
-
-                                          shiftId =
-                                              value.shifts[holder].shiftId;
                                         });
                                       }
                                     },
@@ -1471,7 +1478,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                               );
                             },
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             thickness: 1,
                             color: Colors.grey,
@@ -1481,7 +1488,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Icon(
@@ -1499,7 +1506,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
 
 class VacationCardHeader extends StatelessWidget {
   final String header;
-  VacationCardHeader({
+  const VacationCardHeader({
     this.header,
     Key key,
   }) : super(key: key);
@@ -1509,7 +1516,7 @@ class VacationCardHeader extends StatelessWidget {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
             AutoSizeText(

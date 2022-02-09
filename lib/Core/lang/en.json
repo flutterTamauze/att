@@ -118,7 +118,7 @@
 "مناوباتى المجدولة":"Scheduled Shifts",
 "اختر لغة التطبيق":"Choose Application Langugage",
 "السبت":"Saturday",
-"العربية":"Arabic",
+"العربية":"العربية",
 "تغير اللغة":"Change Langugage",
 "English":"English", 
 "لغة التطبيق":"App Langugage",
@@ -136,7 +136,7 @@
  "الخميس":"Thursday",
  "الجمعة":"Friday",  "خطأ في التسجيل":  "Registration Error",
  "الغاء":"Cancel",
- "حدث خطأ ما":"Something Went Wrong",
+ "حدث خطأ ما":"Something went wrong",
  "لقد ادخلت رقم او كلمة سر خاطئة \n  برجاء اعادة المحاولة مرة اخرى"
  :"You entered invalid username/password \n Please try again later",
  "رمز التفعيل":"Activation Code",
@@ -591,8 +591,13 @@
 "تسجيل الانصراف":"Register Leave",
 "الأتصال بالأنترنت ضعيف":"The internet connection is weak",
 "ليس مصرح لك التسجيل بالبطاقة":
-"Failed : You are not allowed to sign by card!"
-
+"Failed : You are not allowed to sign by card!",
+"برجاء المحاولة مرة اخرى":"Please try again",
+"لا يوجد اتصال بالانترنت \nبرجاء اعادة المحاولة":
+"There is no internet connection\nPlease try again"
+,"رمز تفعيل غير صحيح":"Invalid pinCode",
+"لا يوجد تسجيلات بهذا الموقع":"There is no records for this site",
+"تحليل بيانات الموظفين عن فترة":"Analyze employee data by period"
 
     }
     

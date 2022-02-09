@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/UserAttendanceReport.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -24,7 +25,7 @@ class DataTableRow extends StatefulWidget {
   final DailyReportUnit attendUnit;
   final int siteId;
   final DateTime todayDate;
-  DataTableRow(this.attendUnit, this.siteId, this.todayDate);
+  const DataTableRow(this.attendUnit, this.siteId, this.todayDate);
 
   @override
   _DataTableRowState createState() => _DataTableRowState();
@@ -133,21 +134,24 @@ class _DataTableRowState extends State<DataTableRow> {
                         context)
                     .then((value) async {
                   print("value $value");
-
-                  // Navigator.maybePop(context);
-                  await Navigator.of(context).push(
-                    new MaterialPageRoute(
-                      builder: (context) => UserAttendanceReportScreen(
-                        name: widget.attendUnit.userName,
-                        userFromDate: fromDate,
-                        userToDate: toDate,
-                        id: widget.attendUnit.userId,
-                        siteId: widget.siteId,
-                        // siteIndex:
+                  if (value == "noInternet") {
+                    //close already
+                  } else {
+                    await Navigator.of(context).push(
+                      new MaterialPageRoute(
+                        builder: (context) => UserAttendanceReportScreen(
+                          name: widget.attendUnit.userName,
+                          userFromDate: fromDate,
+                          userToDate: toDate,
+                          id: widget.attendUnit.userId,
+                          siteId: widget.siteId,
+                          // siteIndex:
+                        ),
                       ),
-                    ),
-                  );
-                  Navigator.pop(context);
+                    );
+                    Navigator.pop(context);
+                  }
+                  // Navigator.maybePop(context);
                 });
               },
               //USERNAME IN LISTVIEW//

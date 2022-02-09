@@ -121,7 +121,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
       }
       setState(() {
         percent += 2;
-        print(percent);
         if (percent >= 65) {
           timer.cancel();
         }
@@ -548,7 +547,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                       titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
                                                                                       title: reportsData.dailyReport.officialHoliday,
                                                                                     )
-                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed"
+                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
                                                                                       ? Container()
                                                                                       : DailyReportTodayTableEnd(
                                                                                           titleHeader: getTranslated(context, "عطلة اسبوعية"),
@@ -558,10 +557,10 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                               ? Container()
                                                                               : snapshot.data == "Success : Official Vacation Day"
                                                                                   ? DailyReportTodayTableEnd(
-                                                                                      titleHeader: "عطلة رسمية :",
+                                                                                      titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
                                                                                       title: reportsData.dailyReport.officialHoliday,
                                                                                     )
-                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed"
+                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
                                                                                       ? Container()
                                                                                       : DailyReportTodayTableEnd(
                                                                                           titleHeader: getTranslated(context, "عطلة اسبوعية"),

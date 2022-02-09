@@ -13,9 +13,11 @@ import 'package:qr_users/services/permissions_data.dart';
 class ChangeLanguage extends StatefulWidget {
   const ChangeLanguage({
     this.locale,
+    this.callBackFun,
     Key key,
   }) : super(key: key);
   final String locale;
+  final Function callBackFun;
   @override
   _ChangeLanguageState createState() => _ChangeLanguageState();
 }
@@ -91,6 +93,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                           msg: value == "En"
                               ? "Langugage has been saved successfully !"
                               : "تم حفظ اللغة بنجاح");
+                      widget.callBackFun();
                     },
                     isExpanded: true,
                     value: languageCode,

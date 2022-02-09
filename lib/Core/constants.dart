@@ -33,9 +33,9 @@ List<String> weekDays = [
   "الجمعة"
 ];
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 2, 2);
+DateTime kAndroidReleaseDate = DateTime(DateTime.now().year, 2, 8);
 DateTime _currentBackPressTime;
-DateTime kiosReleaseDate = DateTime(DateTime.now().year, 2, 2);
+DateTime kiosReleaseDate = DateTime(DateTime.now().year, 2, 8);
 //ERRORS
 const USER_INVALID_RESPONSE = 500;
 const NO_INTERNET = 101;
@@ -115,6 +115,20 @@ noInternetDialog(BuildContext context) {
             title: getTranslated(context, 'حدث خطأ ما'),
             content: getTranslated(context,
                 "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"));
+      });
+}
+
+serverDownDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RoundedAlertOkOnly(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: getTranslated(context, 'حدث خطأ ما'),
+            content: getTranslated(context,
+                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"));
       });
 }
 

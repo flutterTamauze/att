@@ -17,11 +17,13 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Settings/settings.dart';
 import 'package:qr_users/services/Sites_data.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
@@ -214,6 +216,7 @@ class _UsersScreenState extends State<UsersScreen> {
   Timer _debounce;
   @override
   void dispose() {
+    _scrollController.dispose();
     _debounce?.cancel();
     super.dispose();
   }
@@ -490,21 +493,25 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                               itemBuilder: (BuildContext context, int index) {
                                                                                 return InkWell(
                                                                                   onTap: () {
-                                                                                    Navigator.push(
-                                                                                        context,
-                                                                                        MaterialPageRoute(
-                                                                                          builder: (context) => UserFullDataScreen(
-                                                                                            index: index,
-                                                                                            onResetMac: () {
-                                                                                              settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                            },
-                                                                                            onTapDelete: () {
-                                                                                              settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                            },
-                                                                                            siteIndex: siteIndex,
-                                                                                            userId: value.userSearchMember[index].id,
-                                                                                          ),
-                                                                                        ));
+                                                                                    if (locator.locator<PermissionHan>().isServerDown) {
+                                                                                      serverDownDialog(context);
+                                                                                    } else {
+                                                                                      Navigator.push(
+                                                                                          context,
+                                                                                          MaterialPageRoute(
+                                                                                            builder: (context) => UserFullDataScreen(
+                                                                                              index: index,
+                                                                                              onResetMac: () {
+                                                                                                settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                              },
+                                                                                              onTapDelete: () {
+                                                                                                settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                              },
+                                                                                              siteIndex: siteIndex,
+                                                                                              userId: value.userSearchMember[index].id,
+                                                                                            ),
+                                                                                          ));
+                                                                                    }
                                                                                   },
                                                                                   child: Slidable(
                                                                                     enabled: Provider.of<UserData>(context, listen: false).user.userType == 4,

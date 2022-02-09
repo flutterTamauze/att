@@ -127,7 +127,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
       }
       setState(() {
         percent += 3;
-        print(percent);
         if (percent >= 295) {
           timer.cancel();
         }

@@ -80,6 +80,7 @@ class _SplashScreenState extends State<SplashScreen>
           } else {
             await firebaseMessaging.subscribeToTopic(
                 "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+            print("subscribed to topic");
           }
         }
       }
@@ -132,7 +133,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     setState(() {
       animationController.reverse();
-      Timer(new Duration(milliseconds: 2000), () async {
+      Timer(const Duration(milliseconds: 0), () async {
         if (userName != "") {
           if (Provider.of<UserData>(context, listen: false).changedPassword ==
               false) {
@@ -162,7 +163,9 @@ class _SplashScreenState extends State<SplashScreen>
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
-                      "لا يوجد اتصال بالانترنت\nبرجاء اعادة المحاولة", true)));
+                      getTranslated(context,
+                          "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"),
+                      true)));
             } else if (value == 4 || value == 3) {
               Navigator.pushReplacement(
                   context,
@@ -174,7 +177,7 @@ class _SplashScreenState extends State<SplashScreen>
 
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                return NavScreenTwo(0);
+                return const NavScreenTwo(0);
               }));
 
               getUserData();
@@ -198,13 +201,13 @@ class _SplashScreenState extends State<SplashScreen>
               Navigator.of(context).pushReplacement(
                   new MaterialPageRoute(builder: (context) => LoginScreen()));
             } else {
-              Navigator.of(context).pushReplacement(
-                  new MaterialPageRoute(builder: (context) => PageIntro()));
+              Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                  builder: (context) => const PageIntro()));
             }
           }
         } else {
           Navigator.of(context).pushReplacement(
-              new MaterialPageRoute(builder: (context) => PageIntro()));
+              new MaterialPageRoute(builder: (context) => const PageIntro()));
         }
       });
     });
@@ -289,7 +292,7 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: !isLoading
           ? Container(
-              decoration: BoxDecoration(color: Colors.black),
+              decoration: const BoxDecoration(color: Colors.black),
               child: Stack(
                 alignment: Alignment.center,
                 fit: StackFit.expand,
@@ -354,9 +357,9 @@ class _SplashScreenState extends State<SplashScreen>
           : Container(
               height: double.infinity,
               color: Colors.black,
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
                   backgroundColor: Colors.black,
                 ),
               ),

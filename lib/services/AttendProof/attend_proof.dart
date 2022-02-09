@@ -20,8 +20,7 @@ class AttendProof {
         'Authorization': "Bearer $userToken"
       },
     );
-    print(response.body);
-    print(fcmToken);
+
     print("status code : ${response.statusCode}");
     final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {

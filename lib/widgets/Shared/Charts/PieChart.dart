@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
@@ -28,7 +29,7 @@ class LateReportPieChartState extends State {
               children: [
                 Container(
                   child: AutoSizeText(
-                    "تحليل بيانات الموظفين عن فترة",
+                    getTranslated(context, "تحليل بيانات الموظفين عن فترة"),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.orange[600],
@@ -68,7 +69,7 @@ class LateReportPieChartState extends State {
                   ),
                   AutoSizeText(
                     getTranslated(context, "الغياب"),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: boldStyle,
                   )
                 ],
               ),
@@ -81,14 +82,14 @@ class LateReportPieChartState extends State {
                       width: 20,
                       height: 20,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.orange)),
-                  Text(
+                          shape: BoxShape.circle, color: ColorManager.primary)),
+                  AutoSizeText(
                     getTranslated(context, "التأخير"),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: boldStyle,
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(

@@ -17,7 +17,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isEnglishLocale =
+    final bool isEnglishLocale =
         Provider.of<PermissionHan>(context, listen: false).isEnglishLocale();
     return Column(
       children: [
@@ -68,7 +68,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       DataTableEndRowInfo(
                         info: _attendanceReport.totalDeductionAbsent
                             .toStringAsFixed(1),
-                        infoTitle: '${getTranslated(context, 'خصم التأخير')}',
+                        infoTitle: '${getTranslated(context, 'خصم الغياب')}',
                       ),
                       DataTableEndRowInfo(
                           info: _attendanceReport.totalLateDeduction
@@ -78,7 +78,7 @@ class UserReprotDataTableEnd extends StatelessWidget {
                       DataTableEndRowInfo(
                         info:
                             _attendanceReport.totalDeduction.toStringAsFixed(1),
-                        infoTitle: '${getTranslated(context, 'خصم التأخير')}',
+                        infoTitle: '${getTranslated(context, 'الإجمالى')}',
                       )
                     ],
                   ),

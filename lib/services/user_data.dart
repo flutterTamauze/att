@@ -377,7 +377,7 @@ class UserData with ChangeNotifier {
       if (Platform.isAndroid) {
         identifier = await FlutterUdid.udid; //UUID for Android
       } else if (Platform.isIOS) {
-        final storage = new FlutterSecureStorage();
+        const storage = const FlutterSecureStorage();
         identifier = await storage.read(key: "deviceMac"); //UUID for iOS
       }
     } catch (e) {

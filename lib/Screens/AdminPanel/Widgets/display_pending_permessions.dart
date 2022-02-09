@@ -159,7 +159,7 @@ class _ExpandedPendingPermessionsState
                                   AutoSizeText(
                                     "${getTranslated(context, "نوع الأذن")}: ${widget.userPermessions.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")} ",
                                     style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
+                                      fontSize: setResponsiveFontSize(15),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -179,7 +179,7 @@ class _ExpandedPendingPermessionsState
                                               "${getTranslated(context, "تفاصيل الطلب ")} : ${widget.userPermessions.permessionDescription}",
                                               style: TextStyle(
                                                 fontSize:
-                                                    setResponsiveFontSize(14),
+                                                    setResponsiveFontSize(15),
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             )
@@ -209,7 +209,7 @@ class _ExpandedPendingPermessionsState
                                   AutoSizeText(
                                     "${getTranslated(context, "تاريخ إنشاء الطلب")}: ${widget.userPermessions.createdOn.toString().substring(0, 11)}",
                                     style: TextStyle(
-                                      fontSize: setResponsiveFontSize(14),
+                                      fontSize: setResponsiveFontSize(15),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),

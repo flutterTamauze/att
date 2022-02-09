@@ -52,29 +52,29 @@ class _SystemHomePageState extends State<SystemHomePage> {
 
   getData() async {
     if (mounted) {
-      futureShift = Provider.of<ShiftApi>(context, listen: false)
-          .getShiftData(Provider.of<UserData>(context, listen: false).user.id,
-              Provider.of<UserData>(context, listen: false).user.userToken)
-          .then((value) {
-        print(value);
-        if (value == true) {
-          return true;
-        } else {
-          Provider.of<ShiftApi>(context, listen: false).firstCall = true;
-          Timer(const Duration(seconds: 2), () async {
-            // 5s over, navigate to a new page
-            if (mounted) {
-              futureShift = Provider.of<ShiftApi>(context, listen: false)
-                  .getShiftData(
-                      Provider.of<UserData>(context, listen: false).user.id,
-                      Provider.of<UserData>(context, listen: false)
-                          .user
-                          .userToken);
-            }
-          });
-        }
-        // firstget();
-      });
+      futureShift = Provider.of<ShiftApi>(context, listen: false).getShiftData(
+          Provider.of<UserData>(context, listen: false).user.id,
+          Provider.of<UserData>(context, listen: false).user.userToken);
+      //   .then((value) {
+      // print(value);
+      // if (value == true) {
+      //   return true;
+      // } else {
+      //   Provider.of<ShiftApi>(context, listen: false).firstCall = true;
+      //   Timer(const Duration(seconds: 2), () async {
+      //     // 5s over, navigate to a new page
+      //     if (mounted) {
+      //       futureShift = Provider.of<ShiftApi>(context, listen: false)
+      //           .getShiftData(
+      //               Provider.of<UserData>(context, listen: false).user.id,
+      //               Provider.of<UserData>(context, listen: false)
+      //                   .user
+      //                   .userToken);
+      //     }
+      //   });
+      // }
+      // firstget();
+      // });
     }
   }
 
@@ -177,20 +177,26 @@ class _SystemHomePageState extends State<SystemHomePage> {
                                                         color: Colors.black,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      height: 20,
-                                                      child: AutoSizeText(
-                                                        getTranslated(
-                                                            context, "او"),
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(20,
-                                                                    allowFontScalingSelf:
-                                                                        true)),
+                                                    Visibility(
+                                                      visible: !Provider.of<
+                                                              ShiftApi>(context)
+                                                          .isServerDown,
+                                                      child: Container(
+                                                        height: 20,
+                                                        child: AutoSizeText(
+                                                          getTranslated(
+                                                              context, "او"),
+                                                          maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(20,
+                                                                      allowFontScalingSelf:
+                                                                          true)),
+                                                        ),
                                                       ),
                                                     ),
                                                     Container(

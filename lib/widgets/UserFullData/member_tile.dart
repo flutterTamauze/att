@@ -46,7 +46,7 @@ final SlidableController slidableController = SlidableController();
 
 class _MemberTileState extends State<MemberTile> {
   String plusSignPhone(String phoneNum) {
-    int len = phoneNum.length;
+    final int len = phoneNum.length;
     if (phoneNum[0] == "+") {
       return " ${phoneNum.substring(1, len)}+";
     } else {
@@ -55,12 +55,12 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   int getSiteListIndex(int fShiftId) {
-    var fsiteIndex = Provider.of<ShiftsData>(context, listen: false)
+    final fsiteIndex = Provider.of<ShiftsData>(context, listen: false)
         .shiftsList[fShiftId]
         .siteID;
 
-    var list = Provider.of<SiteData>(context, listen: false).sitesList;
-    int index = list.length;
+    final list = Provider.of<SiteData>(context, listen: false).sitesList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (fsiteIndex == list[i].id) {
         return i;
@@ -70,8 +70,8 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   String getShiftName() {
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       if (list[i].shiftId == widget.user.shiftId) {
         return list[i].shiftName;
@@ -81,7 +81,7 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {
-    intlPhone.PhoneNumber result =
+    final intlPhone.PhoneNumber result =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             phoneNumberEdit);
     return [result.isoCode, result.dialCode];
@@ -89,8 +89,8 @@ class _MemberTileState extends State<MemberTile> {
 
   int getShiftListIndex(int shiftId) {
     print("my shift = $shiftId");
-    var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    int index = list.length;
+    final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
+    final int index = list.length;
     for (int i = 0; i < index; i++) {
       print(list[i].shiftId);
       if (shiftId == list[i].shiftId) {
@@ -143,17 +143,17 @@ class _MemberTileState extends State<MemberTile> {
           actionExtentRatio: 0.10,
           closeOnScroll: true,
           controller: slidableController,
-          actionPane: SlidableDrawerActionPane(),
+          actionPane: const SlidableDrawerActionPane(),
           secondaryActions: [
             ZoomIn(
                 child: InkWell(
               child: Container(
-                padding: EdgeInsets.all(7),
+                padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                     border: Border.all(width: 2, color: Colors.orange)),
-                child: Icon(
+                child: const Icon(
                   Icons.edit,
                   size: 18,
                   color: Colors.orange,
@@ -165,46 +165,51 @@ class _MemberTileState extends State<MemberTile> {
                     builder: (BuildContext context) {
                       return RoundedLoadingIndicator();
                     });
-                await Provider.of<MemberData>(context, listen: false)
-                    .getUserById(
-                        widget.user.id,
-                        Provider.of<UserData>(context, listen: false)
-                            .user
-                            .userToken);
-                var phone = await getPhoneInEdit(Provider.of<MemberData>(
-                                context,
-                                listen: false)
-                            .singleMember
-                            .phoneNumber[0] !=
-                        "+"
-                    ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}"
-                    : Provider.of<MemberData>(context, listen: false)
-                        .singleMember
-                        .phoneNumber);
-                List<String> rolesList = [
-                  getTranslated(context, "مستخدم"),
-                  getTranslated(context, "مسئول تسجيل"),
-                  getTranslated(context, "مدير موقع"),
-                  getTranslated(context, "موارد بشرية"),
-                  getTranslated(context, "ادمن"),
-                ];
-                Navigator.of(context).push(
-                  new MaterialPageRoute(
-                    builder: (context) => AddUserScreen(
-                        Provider.of<MemberData>(context, listen: false)
-                            .singleMember,
-                        widget.index,
-                        true,
-                        phone[0],
-                        phone[1],
-                        false,
-                        "",
-                        rolesList[
-                            Provider.of<MemberData>(context, listen: false)
-                                .singleMember
-                                .userType]),
-                  ),
-                );
+
+                final String msg =
+                    await Provider.of<MemberData>(context, listen: false)
+                        .getUserById(
+                            widget.user.id,
+                            Provider.of<UserData>(context, listen: false)
+                                .user
+                                .userToken);
+
+                if (msg == "Success") {
+                  final phone = await getPhoneInEdit(Provider.of<MemberData>(
+                                  context,
+                                  listen: false)
+                              .singleMember
+                              .phoneNumber[0] !=
+                          "+"
+                      ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}"
+                      : Provider.of<MemberData>(context, listen: false)
+                          .singleMember
+                          .phoneNumber);
+                  final List<String> rolesList = [
+                    getTranslated(context, "مستخدم"),
+                    getTranslated(context, "مسئول تسجيل"),
+                    getTranslated(context, "مدير موقع"),
+                    getTranslated(context, "موارد بشرية"),
+                    getTranslated(context, "ادمن"),
+                  ];
+                  Navigator.of(context).push(
+                    new MaterialPageRoute(
+                      builder: (context) => AddUserScreen(
+                          Provider.of<MemberData>(context, listen: false)
+                              .singleMember,
+                          widget.index,
+                          true,
+                          phone[0],
+                          phone[1],
+                          false,
+                          "",
+                          rolesList[
+                              Provider.of<MemberData>(context, listen: false)
+                                  .singleMember
+                                  .userType]),
+                    ),
+                  );
+                } else {}
               },
             )),
             Provider.of<UserData>(context, listen: false).user.id ==
@@ -213,12 +218,12 @@ class _MemberTileState extends State<MemberTile> {
                 : ZoomIn(
                     child: InkWell(
                     child: Container(
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                           border: Border.all(width: 2, color: Colors.red)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.delete,
                         size: 18,
                         color: Colors.red,
@@ -323,7 +328,8 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   showUserDetails(Member member) {
-    var userType = Provider.of<UserData>(context, listen: false).user.userType;
+    final userType =
+        Provider.of<UserData>(context, listen: false).user.userType;
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -374,7 +380,7 @@ class _MemberTileState extends State<MemberTile> {
                                         width: 2, color: Color(0xffFF7E00))),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 3,
                             ),
                             Container(

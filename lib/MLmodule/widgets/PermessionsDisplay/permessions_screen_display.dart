@@ -12,6 +12,7 @@ import 'package:qr_users/Screens/SystemScreens/ReportScreens/DataTablePermession
 import 'package:qr_users/services/MemberData/MemberData.dart';
 
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 
 import 'dart:ui' as ui;
 
@@ -69,7 +70,7 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                 child: FutureBuilder(
                     future: widget.getAllPermessions,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.hasData) {
                         return const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Colors.orange,
@@ -111,18 +112,23 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : AutoSizeText(
-                                                getTranslated(
-                                                  context,
-                                                  "لا يوجد اذونات لهذا المستخدم",
-                                                ),
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        setResponsiveFontSize(
-                                                            15),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ));
+                                            : snapshot.data == "noInternet"
+                                                ? CenterMessageText(
+                                                    message: getTranslated(
+                                                        context,
+                                                        "لا يوجد اتصال بالانترنت"))
+                                                : AutoSizeText(
+                                                    getTranslated(
+                                                      context,
+                                                      "لا يوجد اذونات لهذا المستخدم",
+                                                    ),
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            setResponsiveFontSize(
+                                                                15),
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ));
                       }
                     })),
           ),

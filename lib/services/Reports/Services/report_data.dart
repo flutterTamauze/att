@@ -8,7 +8,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/services/Reports/Repo/ReportsRepo.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/Reports/Services/todays_user_Report_model.dart';
 import 'package:qr_users/services/defaultClass.dart';
@@ -140,7 +142,7 @@ class UserAttendanceReport {
   int totalOfficialVacation;
 
   UserAttendanceReport(
-      this.userAttendListUnits,
+      {this.userAttendListUnits,
       this.totalAbsentDay,
       this.totalLateDay,
       this.totalLateDuration,
@@ -148,7 +150,17 @@ class UserAttendanceReport {
       this.totalLateDeduction,
       this.totalDeductionAbsent,
       this.totalDeduction,
-      this.totalOfficialVacation);
+      this.totalOfficialVacation});
+  factory UserAttendanceReport.fromJson(dataDecoded) {
+    return UserAttendanceReport(
+        totalOfficialVacation: dataDecoded["totalOffcialVacation"] as int,
+        totalAbsentDay: dataDecoded['totalAbsentDay'] as int,
+        totalLateDay: dataDecoded['totalLateDay'] as int,
+        totalLateDeduction: dataDecoded["totalLateDeduction"] + 0.0 as double,
+        totalDeduction: dataDecoded["totalDeduction"] + 0.0 as double,
+        totalDeductionAbsent:
+            dataDecoded["totalDedutionAbsent"] + 0.0 as double);
+  }
 }
 
 class LateAbsenceReport {
@@ -233,7 +245,7 @@ class UserAttendanceReportUnit {
         int hours = (intTime ~/ 100);
         final int min = intTime - (hours * 100);
 
-        final ampm = hours >= 12 ? 'pm' : 'am';
+        // final ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours != 0 ? hours : 12; //
 
@@ -294,8 +306,16 @@ class ReportsData with ChangeNotifier {
   List<AttendProofModel> attendProofList = [];
   DailyReport dailyReport = DailyReport([], 0, 0, false, "");
   InheritDefault inherit = InheritDefault();
-  UserAttendanceReport userAttendanceReport =
-      UserAttendanceReport([], 0, 0, "", -1, 0, 0, 0, 0);
+  UserAttendanceReport userAttendanceReport = UserAttendanceReport(
+      userAttendListUnits: [],
+      totalAbsentDay: 0,
+      totalLateDay: 0,
+      totalLateDuration: "",
+      totalLateDeduction: -1,
+      isDayOff: 0,
+      totalDeduction: 0,
+      totalDeductionAbsent: 0,
+      totalOfficialVacation: 0);
 
   LateAbsenceReport lateAbsenceReport =
       LateAbsenceReport([], "0%", "0%", true, 0.0);
@@ -408,76 +428,68 @@ class ReportsData with ChangeNotifier {
   Future<String> getDailyReportUnitsApi(
       String userToken, int siteId, String date, BuildContext context) async {
     List<DailyReportUnit> newReportList;
-    print("site id $siteId");
+
     isLoading = true;
-    if (await isConnectedToInternet()) {
-      notifyListeners();
-      final response = await http.get(
-          Uri.parse(
-              "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
 
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getDailyReportUnitsApi(userToken, siteId, date, context);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
-        print(response.body);
-        if (decodedRes["message"] == "Success" ||
-            decodedRes["message"] == "Success : Official Vacation Day" ||
-            decodedRes["message"] == "Success : Holiday Day") {
-          dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
-          dailyReport.totalAttend = decodedRes['data']['totalAttend'] as int;
-          dailyReport.totalAbsent = decodedRes['data']['totalAbsent'] as int;
-          if (decodedRes["message"] == "Success : Official Vacation Day") {
-            dailyReport.officialHoliday =
-                decodedRes["data"]["officialVactionName"];
-          }
-          if (decodedRes["data"]["users"] != null) {
-            final reportObjJson =
-                jsonDecode(response.body)['data']['users'] as List;
+    notifyListeners();
+    final response = await ReprotsRepo().getDailyReport(
+        "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date",
+        userToken);
+    if (response is Faliure) {
+      print(response.errorResponse);
+      if (response.code == NO_INTERNET) {
+        return "noInternet";
+      }
+    } else {
+      final decodedRes = json.decode(response);
 
-            newReportList = reportObjJson
-                .map((reportJson) => DailyReportUnit.fromJson(reportJson))
-                .toList();
+      if (decodedRes["message"] == "Success" ||
+          decodedRes["message"] == "Success : Official Vacation Day" ||
+          decodedRes["message"] == "Success : Holiday Day") {
+        dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
+        // ignore: cascade_invocations
+        dailyReport.totalAttend = decodedRes['data']['totalAttend'] as int;
+        // ignore: cascade_invocations
+        dailyReport.totalAbsent = decodedRes['data']['totalAbsent'] as int;
+        if (decodedRes["message"] == "Success : Official Vacation Day") {
+          dailyReport.officialHoliday =
+              decodedRes["data"]["officialVactionName"];
+        }
+        if (decodedRes["data"]["users"] != null) {
+          final reportObjJson = decodedRes['data']['users'] as List;
 
-            dailyReport.attendListUnits = [...newReportList];
-            isLoading = false;
-            notifyListeners();
-            print("message ${dailyReport.isHoliday}");
-            await Future.delayed(const Duration(milliseconds: 800), () {});
-            return decodedRes["message"];
-          } else {
-            if (decodedRes["message"] == "Success : Official Vacation Day")
-              return "No records found official vacation";
-            else if (decodedRes["message"] == "Success : Holiday Day")
-              return "No records found holiday";
-          }
-        } else if (decodedRes["message"] ==
-            "Success : Date is older than company date") {
-          return "Date is older than company date";
-        } else if (decodedRes["message"] == "Success : Holiday Day") {
-          dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
+          newReportList = reportObjJson
+              .map((reportJson) => DailyReportUnit.fromJson(reportJson))
+              .toList();
 
-          dailyReport.attendListUnits.clear();
+          dailyReport.attendListUnits = [...newReportList];
           isLoading = false;
           notifyListeners();
-          print("message ${dailyReport.isHoliday}");
-          return "holiday";
-        } else {
-          return "wrong";
-        }
-      }
 
-      return "failed";
-    } else {
-      return 'noInternet';
+          await Future.delayed(const Duration(milliseconds: 800), () {});
+          return decodedRes["message"];
+        } else {
+          if (decodedRes["message"] == "Success : Official Vacation Day")
+            return "No records found official vacation";
+          else if (decodedRes["message"] == "Success : Holiday Day")
+            return "No records found holiday";
+        }
+      } else if (decodedRes["message"] ==
+          "Success : Date is older than company date") {
+        return "Date is older than company date";
+      } else if (decodedRes["message"] == "Success : Holiday Day") {
+        dailyReport.isHoliday = decodedRes['data']['isHoliDays'] as bool;
+
+        dailyReport.attendListUnits.clear();
+        isLoading = false;
+        notifyListeners();
+        print("message ${dailyReport.isHoliday}");
+        return "holiday";
+      } else {
+        return "wrong";
+      }
     }
+    return "failed";
   }
 
   getUserReportUnits(String userToken, String userId, String dateFrom,
@@ -504,80 +516,77 @@ class ReportsData with ChangeNotifier {
     print("UseriD $userId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<UserAttendanceReportUnit> newReportList;
     isLoading = true;
-    if (await isConnectedToInternet()) {
-      final response = await http.get(
-          Uri.parse(
-              "$baseURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
 
-      print(response.statusCode);
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getUserReportUnitsApi(
-            userToken, userId, dateFrom, dateTo, context);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
-        isLoading = false;
-        print(response.body);
-
-        if (decodedRes["message"] == "Success") {
-          userAttendanceReport.totalOfficialVacation =
-              decodedRes["data"]["totalOffcialVacation"];
-          // ignore: cascade_invocations
-          userAttendanceReport.totalLateDuration =
-              getTimeToString(decodedRes['data']['totalLateDuration'] as int);
-          userAttendanceReport.totalAbsentDay =
-              decodedRes['data']['totalAbsentDay'] as int;
-          userAttendanceReport.totalLateDay =
-              decodedRes['data']['totalLateDay'] as int;
-          userAttendanceReport.totalLateDeduction =
-              decodedRes["data"]["totalLateDeduction"] + 0.0 as double;
-          userAttendanceReport.totalDeduction =
-              decodedRes["data"]["totalDeduction"] + 0.0 as double;
-          userAttendanceReport.totalDeductionAbsent =
-              decodedRes["data"]["totalDedutionAbsent"] + 0.0 as double;
-          final reportObjJson =
-              jsonDecode(response.body)['data']['userDayAttends'] as List;
-          userAttendanceReport.totalOfficialVacation =
-              decodedRes["data"]["totalOffcialVacation"] as int;
-          log(reportObjJson.toString());
-          if (reportObjJson.isNotEmpty) {
-            print("reportObjJson: $reportObjJson");
-            userAttendanceReport.isDayOff = 0;
-            newReportList = reportObjJson
-                .map((reportJson) =>
-                    UserAttendanceReportUnit.fromJson(reportJson))
-                .toList();
-
-            userAttendanceReport.userAttendListUnits = newReportList;
-            notifyListeners();
-            print("success");
-            return "Success";
-          } else {
-            userAttendanceReport.userAttendListUnits = [];
-            userAttendanceReport.isDayOff = 1;
-            notifyListeners();
-
-            return "dayOff";
-          }
-        } else if (decodedRes["message"] ==
-            "Success: User Created after this period.") {
-          return "user created after period";
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
+    final response = await ReprotsRepo().getUserReport(
+        "${"$baseURL/api/Reports/GetUserAttendReport?userId=$userId&fromDate=$dateFrom&toDate=$dateTo"}",
+        userToken);
+    if (response is Faliure) {
+      if (response.code == NO_INTERNET) {
+        return "noInternet";
       }
-      print(response.statusCode);
-      return "failed";
     } else {
-      return 'noInternet';
+      final decodedRes = json.decode(response);
+      final dataDecoded = decodedRes['data'];
+      isLoading = false;
+
+      if (decodedRes["message"] == "Success") {
+        userAttendanceReport.totalOfficialVacation =
+            decodedRes["data"]["totalOffcialVacation"];
+        // ignore: cascade_invocations
+        userAttendanceReport.totalLateDuration =
+            getTimeToString(decodedRes['data']['totalLateDuration'] as int);
+        userAttendanceReport = UserAttendanceReport();
+        userAttendanceReport.totalAbsentDay =
+            dataDecoded['totalAbsentDay'] as int;
+        // ignore: cascade_invocations
+        userAttendanceReport.totalLateDay = dataDecoded['totalLateDay'] as int;
+        // ignore: cascade_invocations
+        userAttendanceReport.totalLateDeduction =
+            dataDecoded["totalLateDeduction"] + 0.0 as double;
+        // ignore: cascade_invocations
+        userAttendanceReport.totalDeduction =
+            dataDecoded["totalDeduction"] + 0.0 as double;
+        // ignore: cascade_invocations
+        userAttendanceReport.totalDeductionAbsent =
+            dataDecoded["totalDedutionAbsent"] + 0.0 as double;
+        // ignore: cascade_invocations
+        userAttendanceReport.totalLateDuration =
+            getTimeToString(decodedRes['data']['totalLateDuration'] as int);
+
+        final reportObjJson =
+            jsonDecode(response)['data']['userDayAttends'] as List;
+        userAttendanceReport.totalOfficialVacation =
+            decodedRes["data"]["totalOffcialVacation"] as int;
+        log(reportObjJson.toString());
+        if (reportObjJson.isNotEmpty) {
+          print("reportObjJson: $reportObjJson");
+          userAttendanceReport.isDayOff = 0;
+          newReportList = reportObjJson
+              .map(
+                  (reportJson) => UserAttendanceReportUnit.fromJson(reportJson))
+              .toList();
+
+          userAttendanceReport.userAttendListUnits = newReportList;
+          notifyListeners();
+          print("success");
+          return "Success";
+        } else {
+          userAttendanceReport.userAttendListUnits = [];
+          // ignore: cascade_invocations
+          userAttendanceReport.isDayOff = 1;
+          notifyListeners();
+
+          return "dayOff";
+        }
+      } else if (decodedRes["message"] ==
+          "Success: User Created after this period.") {
+        return "user created after period";
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
+      }
     }
+    return "failed";
   }
 
   getLateAbsenceReport(String userToken, int siteId, String dateFrom,
@@ -593,65 +602,56 @@ class ReportsData with ChangeNotifier {
     List<LateAbsenceReportUnit> newReportList;
     isLoading = true;
     notifyListeners();
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.get(
-            Uri.parse(
-                "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print(response.statusCode);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getLateAbsenceReportApi(
-              userToken, siteId, dateFrom, dateTo, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          log(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            lateAbsenceReport.absentRatio = decodedRes['data']['absentRatio'];
-            lateAbsenceReport.lateRatio = decodedRes['data']['lateRatio'];
-            lateAbsenceReport.totalDecutionForAllUsers =
-                decodedRes["data"]["totalDeductionForAllUsers"] + 0.0 as double;
-            if (lateAbsenceReport.absentRatio == "%NaN" &&
-                lateAbsenceReport.lateRatio == "%0") {
-              lateAbsenceReport.isDayOff = true;
-            } else {
-              lateAbsenceReport.isDayOff = false;
-            }
+    try {
+      final response = await ReprotsRepo().getLateAbsenceReport(
+          "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo",
+          userToken);
 
-            final reportObjJson = jsonDecode(response.body)['data']
-                ['userLateAbsentReport'] as List;
-
-            newReportList = reportObjJson
-                .map((reportJson) => LateAbsenceReportUnit.fromJson(reportJson))
-                .toList();
-
-            lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
-            isLoading = false;
-            notifyListeners();
-            await Future.delayed(const Duration(milliseconds: 1500), () {});
-
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          } else if (decodedRes["message"] ==
-              "Success: Date is older than company date") {
-            return "Date is older than company date";
-          }
+      final decodedRes = json.decode(response);
+      if (response is Faliure) {
+        if (response.code == NO_INTERNET) {
+          return 'noInternet';
         }
-      } catch (e) {
-        print(e);
+      } else {
+        if (decodedRes["message"] == "Success") {
+          lateAbsenceReport.absentRatio = decodedRes['data']['absentRatio'];
+          // ignore: cascade_invocations
+          lateAbsenceReport.lateRatio = decodedRes['data']['lateRatio'];
+          // ignore: cascade_invocations
+          lateAbsenceReport.totalDecutionForAllUsers =
+              decodedRes["data"]["totalDeductionForAllUsers"] + 0.0 as double;
+          if (lateAbsenceReport.absentRatio == "%NaN" &&
+              lateAbsenceReport.lateRatio == "%0") {
+            lateAbsenceReport.isDayOff = true;
+          } else {
+            lateAbsenceReport.isDayOff = false;
+          }
+
+          final reportObjJson =
+              jsonDecode(response)['data']['userLateAbsentReport'] as List;
+
+          newReportList = reportObjJson
+              .map((reportJson) => LateAbsenceReportUnit.fromJson(reportJson))
+              .toList();
+
+          lateAbsenceReport.lateAbsenceReportUnitList = newReportList;
+          isLoading = false;
+          notifyListeners();
+          await Future.delayed(const Duration(milliseconds: 1500), () {});
+
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
+        } else if (decodedRes["message"] ==
+            "Success: Date is older than company date") {
+          return "Date is older than company date";
+        }
       }
-      return "failed";
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
+    return "failed";
   }
 }

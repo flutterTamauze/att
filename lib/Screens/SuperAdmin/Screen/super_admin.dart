@@ -37,16 +37,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             comiD,
             Provider.of<UserData>(context, listen: false).user.userToken,
             context);
-    // if (msg == "Success") {
-    //   print("ana get b success");
 
-    //   // await Provider.of<ShiftsData>(context, listen: false).getShifts(
-    //   //     Provider.of<CompanyData>(context, listen: false).com.id,
-    //   //     Provider.of<UserData>(context, listen: false).user.userToken,
-    //   //     context,
-    //   //     4,
-    //   //     0);
-    // }
     if (msg is Faliure) {
       print("msg faliure ${msg.code} ${msg.errorResponse}");
     }
@@ -73,9 +64,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ///Title
-                    Header(
-                      nav: false,
-                    ),
+                    const SuperAdminHeader(),
                     DirectoriesHeader(
                         Padding(
                           padding: const EdgeInsets.all(10),

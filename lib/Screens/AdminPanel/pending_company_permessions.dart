@@ -153,6 +153,8 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                         index: index,
                                         id: pending.permessionId,
                                         onRefused: () {
+                                          print("fcm");
+                                          print(pending.fcmToken);
                                           return showDialog(
                                               context: context,
                                               builder: (BuildContext context) {

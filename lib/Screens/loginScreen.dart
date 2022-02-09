@@ -280,34 +280,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                             const Icon(FontAwesomeIcons.globe),
                                           ],
                                         )
-                                      : Stack(
-                                          children: [
-                                            ChangeLanguage(
-                                                locale:
-                                                    Provider.of<PermissionHan>(
-                                                                context,
-                                                                listen: false)
-                                                            .isEnglishLocale()
-                                                        ? "En"
-                                                        : "Ar"),
-                                            Positioned(
-                                                top: 5.h,
-                                                right: 10.w,
-                                                child: IconButton(
-                                                  icon: const Icon(
-                                                      FontAwesomeIcons.times),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      showLocalizationButton =
-                                                          true;
-                                                    });
-                                                  },
-                                                  color: ColorManager.primary,
-                                                ))
-                                          ],
-                                        )
-
-//
+                                      : ChangeLanguage(
+                                          callBackFun: () {
+                                            setState(() {
+                                              showLocalizationButton = true;
+                                            });
+                                          },
+                                          locale: Provider.of<PermissionHan>(
+                                                      context,
+                                                      listen: false)
+                                                  .isEnglishLocale()
+                                              ? "En"
+                                              : "Ar")
                                 ],
                               ),
                             ],
@@ -384,37 +368,10 @@ class _LoginScreenState extends State<LoginScreen> {
             isLoading = false;
           });
           // return noInternetDialog(context);
-        } else if (value == null) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  title: getTranslated(
-                    context,
-                    'خطأ في التسجيل',
-                  ),
-                  content: getTranslated(context, "حدث خطأ ما "),
-                );
-              }).then((value) => setState(() {
-                isLoading = false;
-              }));
         } else if (value == USER_INVALID_RESPONSE ||
-            value == CONNECTION_TIMEOUT ||
+            value == null ||
             value == -3) {
-          return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RoundedAlertOkOnly(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: getTranslated(context, 'خطأ في التسجيل'),
-                    content: getTranslated(context,
-                        "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"));
-              }).then((value) {
+          return serverDownDialog(context).then((value) {
             setState(() {
               isLoading = false;
             });

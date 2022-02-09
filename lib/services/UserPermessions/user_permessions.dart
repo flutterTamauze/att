@@ -6,7 +6,9 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/services/UserPermessions/Repo/PermessionRepo.dart';
 
 import '../../main.dart';
 
@@ -68,13 +70,13 @@ class UserPermessions {
   }
   factory UserPermessions.detailsFromJson(dynamic json) {
     return UserPermessions(
-      date: DateTime.tryParse(json["date"]),
-      permessionDescription: json["desc"],
-      duration: json["time"],
-      permessionType: json["type"],
-      adminResponse: json["adminResponse"],
-      permessionId: json["id"],
-    );
+        date: DateTime.tryParse(json["date"]),
+        permessionDescription: json["desc"],
+        duration: json["time"],
+        permessionType: json["type"],
+        adminResponse: json["adminResponse"],
+        permessionId: json["id"],
+        fcmToken: json["fcmToken"]);
   }
 }
 
@@ -367,60 +369,46 @@ class UserPermessionsData with ChangeNotifier {
     return singleUserPermessions;
   }
 
-  Future<List<UserPermessions>> getSingleUserPermession(
+  Future<String> getSingleUserPermession(
       String userId, String userToken) async {
     lateAbesenceCount = 0;
     earlyLeaversCount = 0;
-    final String startTime = DateTime(
-      DateTime.now().year,
-      1,
-      1,
-    ).toIso8601String();
-    final String endingTime =
-        DateTime(DateTime.now().year, 12, 30).toIso8601String();
+
     permessionDetailLoading = true;
 
     notifyListeners();
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      try {
-        final response = await http.get(
-          Uri.parse(
-              "$baseURL/api/Permissions/GetPermissionPeriod/$userId/$startTime/$endingTime?isMobile=true"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          },
-        );
-        permessionDetailLoading = false;
-        log(userId);
-        log(response.body);
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse["message"] == "Success") {
-          final permessionsObj =
-              jsonDecode(response.body)['data']["Permissions"] as List;
-          singleUserPermessions = permessionsObj
-              .map((json) => UserPermessions.detailsFromJson(json))
-              .toList();
 
-          singleUserPermessions = singleUserPermessions.reversed.toList();
-          lateAbesenceCount = jsonDecode(response.body)['data']['TotalLate'];
-          earlyLeaversCount = jsonDecode(response.body)['data']['TotalLeave'];
-
-          notifyListeners();
-
-          return singleUserPermessions;
+    try {
+      final response =
+          await PermessionRepo().getSingleUserPermession(userToken, userId);
+      permessionDetailLoading = false;
+      if (response is Faliure) {
+        if (response.code == NO_INTERNET) {
+          print("faliuyre ");
+          return "noInternet";
         }
-      } catch (e) {
-        print(e);
       }
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
+
+      final decodedResponse = json.decode(response);
+      if (decodedResponse["message"] == "Success") {
+        final permessionsObj =
+            jsonDecode(response)['data']["Permissions"] as List;
+        singleUserPermessions = permessionsObj
+            .map((json) => UserPermessions.detailsFromJson(json))
+            .toList();
+
+        singleUserPermessions = singleUserPermessions.reversed.toList();
+        lateAbesenceCount = jsonDecode(response)['data']['TotalLate'];
+        earlyLeaversCount = jsonDecode(response)['data']['TotalLeave'];
+
+        notifyListeners();
+
+        return "Success";
+      }
+    } catch (e) {
+      print(e);
     }
+    return "Fail";
   }
 
   deleteUserPermession(int permID, String userToken, int permIndex) async {
@@ -457,26 +445,19 @@ class UserPermessionsData with ChangeNotifier {
     notifyListeners();
   }
 
-  getAllPermessions(int companyId, String userToken) async {
-    final response = await http.get(
-      Uri.parse("$baseURL/api/Permissions/GetAllPermissionbyComId/$companyId"),
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': "Bearer $userToken"
-      },
-    );
-    print(response.body);
-    final decodedResponse = json.decode(response.body);
-    if (decodedResponse["message"] == "Success") {
-      final permessionsObj = jsonDecode(response.body)['data'] as List;
-      permessionsList =
-          permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
-      getAllUserNamesInPermessions();
-      notifyListeners();
-    }
+  // getAllPermessions(int companyId, String userToken) async {
+  //   final response =
+  //       await PermessionRepo().getAllPermessions(userToken, companyId);
 
-    print(response.body);
-  }
+  //   final decodedResponse = json.decode(response);
+  //   if (decodedResponse["message"] == "Success") {
+  //     final permessionsObj = jsonDecode(response)['data'] as List;
+  //     permessionsList =
+  //         permessionsObj.map((json) => UserPermessions.fromJson(json)).toList();
+  //     getAllUserNamesInPermessions();
+  //     notifyListeners();
+  //   }
+  // }
 
 //اعطاء اذن
   Future<String> addUserPermession(
@@ -486,63 +467,36 @@ class UserPermessionsData with ChangeNotifier {
     // log(userPermessions.createdOn.toIso8601String());
     print(userPermessions.permessionDescription);
     try {
-      //1 تأخخير عن الحضور
+      isLoading = true;
+      notifyListeners();
+      final response = await PermessionRepo()
+          .addPermession(userPermessions, userToken, userId);
+      isLoading = false;
+      notifyListeners();
+      final decodedMsg = json.decode(response)["message"];
 
-      final DataConnectionChecker dataConnectionChecker =
-          DataConnectionChecker();
-      final NetworkInfoImp networkInfoImp =
-          NetworkInfoImp(dataConnectionChecker);
-      final bool isConnected = await networkInfoImp.isConnected;
-      if (isConnected) {
-        isLoading = true;
+      if (decodedMsg == "Success : Permission Created!") {
+        // permessionsList.add(userPermessions);
         notifyListeners();
-        final response = await http.post(
-            Uri.parse("$baseURL/api/Permissions/AddPerm"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            },
-            body: json.encode({
-              "type": userPermessions.permessionType,
-              "date": (userPermessions.date.toIso8601String()),
-              "time": userPermessions.duration,
-              "userId": userId,
-              "Desc": userPermessions.permessionDescription,
-              "createdonDate": DateTime.now().toIso8601String(),
-            }));
-        print(response.body);
-        isLoading = false;
-        notifyListeners();
-        final decodedMsg = json.decode(response.body)["message"];
-
-        if (decodedMsg == "Success : Permission Created!") {
-          print(response.body);
-          // permessionsList.add(userPermessions);
-          notifyListeners();
-          return "success";
-        } else if (decodedMsg ==
-            "Failed : Another permission not approved for this user!") {
-          return "already exist";
-        } else if (decodedMsg == "Failed : Another permission in this date!") {
-          return "dublicate permession";
-        } else if (decodedMsg ==
-            "Failed : there is an external mission in this date!") {
-          return "external mission";
-        } else if (decodedMsg == "Failed : there is a holiday in this date!") {
-          return "holiday";
-        } else if (decodedMsg ==
-                "Failed : there is a holiday was not approved in this date!" ||
-            decodedMsg == "Failed : there is a holiday still pending!") {
-          print("not approved");
-          return "holiday was not approved";
-        }
-        notifyListeners();
-        return "failed";
-      } else {
-        return weakInternetConnection(
-          navigatorKey.currentState.overlay.context,
-        );
+        return "success";
+      } else if (decodedMsg ==
+          "Failed : Another permission not approved for this user!") {
+        return "already exist";
+      } else if (decodedMsg == "Failed : Another permission in this date!") {
+        return "dublicate permession";
+      } else if (decodedMsg ==
+          "Failed : there is an external mission in this date!") {
+        return "external mission";
+      } else if (decodedMsg == "Failed : there is a holiday in this date!") {
+        return "holiday";
+      } else if (decodedMsg ==
+              "Failed : there is a holiday was not approved in this date!" ||
+          decodedMsg == "Failed : there is a holiday still pending!") {
+        print("not approved");
+        return "holiday was not approved";
       }
+      notifyListeners();
+      return "failed";
     } catch (e) {
       print(e);
     }

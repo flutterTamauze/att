@@ -9,7 +9,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/services/MemberData/Repo/MembersRepo.dart';
 
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/defaultClass.dart';
@@ -102,7 +104,6 @@ class Member {
 }
 
 class MemberData with ChangeNotifier {
-  InheritDefault inherit = InheritDefault();
   List<Member> membersList = [];
   List<Member> membersListScreenDropDownSearch = [];
   List<Member> dropDownMembersList = [];
@@ -134,6 +135,7 @@ class MemberData with ChangeNotifier {
 
   searchUsersList(String filter, String userToken, dynamic siteId,
       int companyId, BuildContext context) async {
+    print("site id");
     print(siteId);
     if (siteId == -1) {
       siteId = "";
@@ -196,28 +198,25 @@ class MemberData with ChangeNotifier {
     return false;
   }
 
-  getUserById(String id, String userToken) async {
+  Future<String> getUserById(String id, String userToken) async {
     try {
-      final response = await http.get(
-          Uri.parse(
-            "$baseURL/api/Users/GetUser/$id",
-          ),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
+      final response = await MemberRepo().getUserById(userToken, id);
       isLoading = true;
       notifyListeners();
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
+      if (response is Faliure) {
+        isLoading = false;
+        notifyListeners();
+        if (response.code == NO_INTERNET) {
+          return "noInternet";
+        } else if (response.code == USER_INVALID_RESPONSE) {
+          return "serverDown";
+        }
+      } else {
+        final decodedRes = json.decode(response);
 
         if (decodedRes["message"] == "Success") {
-          final memberObjJson = jsonDecode(response.body)['data'];
+          final memberObjJson = jsonDecode(response)['data'];
           singleMember = Member.fullDataMemberFromJson(memberObjJson);
-          print("success");
-
-          log(response.body);
-
           isLoading = false;
           notifyListeners();
 
@@ -230,6 +229,7 @@ class MemberData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return "wrong";
   }
 
   getAllCompanyMember(int siteId, int companyId, String userToken,
@@ -300,52 +300,49 @@ class MemberData with ChangeNotifier {
     print("get all members");
 
     print(url);
-    if (await isConnectedToInternet()) {
-      try {
-        print(("printing the page index $allPageIndex"));
-        print(("printing the page index $bySitePageIndex"));
-        print(("printing the page by shift index $byShiftPageIndex"));
-        final response = await http.get(Uri.parse(url), headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
-        print(response.statusCode);
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          log(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            final memberObjJson = jsonDecode(response.body)['data'] as List;
-            if (memberObjJson.isEmpty) {
-              keepRetriving = false;
-              notifyListeners();
-            }
-            if (keepRetriving) {
-              memberNewList.addAll(memberObjJson
-                  .map((memberJson) => Member.fromJson(memberJson))
-                  .toList());
-
-              membersList = memberNewList;
-              membersListScreenDropDownSearch = memberNewList;
-            }
-
-            log(membersList.length.toString());
-            isLoading = false;
-            notifyListeners();
-
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+    try {
+      print(("printing the page index $allPageIndex"));
+      print(("printing the page index $bySitePageIndex"));
+      print(("printing the page by shift index $byShiftPageIndex"));
+      final response =
+          await MemberRepo().getAllMembersInCompany(url, userToken);
+      if (response is Faliure) {
+        if (response.code == NO_INTERNET) {
+          return "noInternet";
         }
-      } catch (e) {
-        print(e);
+      } else {
+        final decodedRes = json.decode(response);
+
+        if (decodedRes["message"] == "Success") {
+          final memberObjJson = decodedRes['data'] as List;
+          if (memberObjJson.isEmpty) {
+            keepRetriving = false;
+            notifyListeners();
+          }
+          if (keepRetriving) {
+            memberNewList.addAll(memberObjJson
+                .map((memberJson) => Member.fromJson(memberJson))
+                .toList());
+
+            membersList = memberNewList;
+            membersListScreenDropDownSearch = memberNewList;
+          }
+
+          log(membersList.length.toString());
+          isLoading = false;
+          notifyListeners();
+
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
+        }
       }
-      return "failed";
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
+    return "failed";
   }
 
   allowMemberAttendByCard(
@@ -403,12 +400,7 @@ class MemberData with ChangeNotifier {
           });
       print(response.statusCode);
       print(response.body);
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getAllSiteMembersApi(siteId, userToken, context);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
         print(response.body);
         if (decodedRes["message"] == "Success") {
@@ -500,12 +492,7 @@ class MemberData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
         print(response.body);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await deleteMember(id, listIndex, userToken, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           final decodedRes = json.decode(response.body);
           print(response.body);
 
@@ -552,12 +539,7 @@ class MemberData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
         print(response.body);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await addMember(member, userToken, context, roleName);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           final decodedRes = json.decode(response.body);
           print(response.body);
 
@@ -606,12 +588,7 @@ class MemberData with ChangeNotifier {
               'Authorization': "Bearer $userToken"
             });
 
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await editMember(member, id, userToken, context, roleName);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           final decodedRes = json.decode(response.body);
           print(response.body);
           print(member.salary);

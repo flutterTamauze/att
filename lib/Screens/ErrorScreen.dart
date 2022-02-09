@@ -156,7 +156,8 @@ class _ErrorScreenState extends State<ErrorScreen> {
           print("mfeeesh net");
           setState(() {
             isLoading = false;
-            message = "لا يوجد اتصال بالانترنت\nبرجاء المحاولة مرة اخرى";
+            message = getTranslated(context,
+                "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى");
           });
         } else if (value == 6) {
           Navigator.pushReplacement(

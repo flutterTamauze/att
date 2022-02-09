@@ -146,11 +146,21 @@ class _UserAttendanceReportScreenState
       siteIdIndex = widget.siteId;
     } else {
       Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
-          new UserAttendanceReport([], 0, 0, "0", -1, 0, 0, 0, 0);
+          new UserAttendanceReport(
+              userAttendListUnits: [],
+              totalAbsentDay: 0,
+              totalLateDay: 0,
+              totalLateDuration: "",
+              totalLateDeduction: -1,
+              isDayOff: 0,
+              totalDeduction: 0,
+              totalDeductionAbsent: 0,
+              totalOfficialVacation: 0);
     }
   }
 
   searchInList(String value, int siteId, int companyId) async {
+    print(siteId);
     if (value.isNotEmpty) {
       print(companyId);
       await Provider.of<MemberData>(context, listen: false).searchUsersList(
@@ -540,7 +550,7 @@ class _UserAttendanceReportScreenState
                                                       2
                                                   ? userDataProvider
                                                       .user.userSiteId
-                                                  : -1,
+                                                  : siteId,
                                               Provider.of<CompanyData>(context,
                                                       listen: false)
                                                   .com
@@ -649,7 +659,7 @@ class _UserAttendanceReportScreenState
                                                               ? userDataProvider
                                                                   .user
                                                                   .userSiteId
-                                                              : -1,
+                                                              : siteId,
                                                           Provider.of<CompanyData>(
                                                                   context,
                                                                   listen: false)
@@ -705,7 +715,7 @@ class _UserAttendanceReportScreenState
                                                               ? userDataProvider
                                                                   .user
                                                                   .userSiteId
-                                                              : -1,
+                                                              : siteId,
                                                           Provider.of<CompanyData>(
                                                                   context,
                                                                   listen: false)
