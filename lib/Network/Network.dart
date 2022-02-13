@@ -59,14 +59,17 @@ class NetworkApi {
         // locator.locator<PermissionHan>().setServerDown(true);
         // serverDownDialog(navigatorKey.currentState.overlay.context);
         // return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
+        locator.locator<PermissionHan>().setInternetConnection(true);
         locator.locator<PermissionHan>().setServerDown(false);
         return res.body;
       } on TimeoutException catch (e) {
         print("timeout occured $e");
+        locator.locator<PermissionHan>().setInternetConnection(false);
         noInternetDialog(navigatorKey.currentState.overlay.context);
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       }
     }
+    locator.locator<PermissionHan>().setInternetConnection(false);
     noInternetDialog(navigatorKey.currentState.overlay.context);
     return Faliure(errorResponse: "NO INTERNET", code: NO_INTERNET);
   }

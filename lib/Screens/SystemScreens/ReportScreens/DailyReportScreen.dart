@@ -27,6 +27,7 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableRow.dart';
+import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/Shared/Single_day_datePicker.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/XlsxExportButton.dart';
@@ -58,6 +59,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   Timer timer;
   @override
   void dispose() {
+    _scrollController.dispose();
     _visableNotifier.dispose();
     if (percent != 0) {
       timer.cancel();
@@ -112,7 +114,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   }
 
   loadProgressIndicator() {
-    percent = 0;
+    if (mounted) percent = 0;
     timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
         setState(() {
@@ -181,17 +183,19 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
         child: NotificationListener(
           onNotification: (notificationInfo) {
             if (showTable) {
-              if (_scrollController.position.userScrollDirection ==
-                  ScrollDirection.reverse) {
-                setFBvisability(false);
-                //the setState function
-              } else if (_scrollController.position.userScrollDirection ==
-                  ScrollDirection.forward) {
-                setFBvisability(true);
-                //setState function
-              } else if (_scrollController.position.pixels ==
-                  _scrollController.position.maxScrollExtent) {
-                setFBvisability(false);
+              if (_scrollController.hasClients) {
+                if (_scrollController.position.userScrollDirection ==
+                    ScrollDirection.reverse) {
+                  setFBvisability(false);
+                  //the setState function
+                } else if (_scrollController.position.userScrollDirection ==
+                    ScrollDirection.forward) {
+                  setFBvisability(true);
+                  //setState function
+                } else if (_scrollController.position.pixels ==
+                    _scrollController.position.maxScrollExtent) {
+                  setFBvisability(false);
+                }
               }
             }
 
@@ -531,13 +535,15 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                               ? CenterMessageText(
                                                                                   message: getTranslated(context, "التاريخ قبل إنشاء الشركة"),
                                                                                 )
-                                                                              : ListView.builder(
-                                                                                  controller: _scrollController,
-                                                                                  physics: const AlwaysScrollableScrollPhysics(),
-                                                                                  itemCount: reportsData.dailyReport.attendListUnits.length,
-                                                                                  itemBuilder: (BuildContext context, int index) {
-                                                                                    return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
-                                                                                  })),
+                                                                              : HandleExceptionsView(
+                                                                                  ListView.builder(
+                                                                                      controller: _scrollController,
+                                                                                      physics: const AlwaysScrollableScrollPhysics(),
+                                                                                      itemCount: reportsData.dailyReport.attendListUnits.length,
+                                                                                      itemBuilder: (BuildContext context, int index) {
+                                                                                        return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
+                                                                                      }),
+                                                                                )),
                                                                       !isToday(
                                                                               selectedDate)
                                                                           ? snapshot.data == "Success"

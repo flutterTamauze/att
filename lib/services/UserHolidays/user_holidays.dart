@@ -11,7 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/services/UserHolidays/Repo/user_holidays_repo.dart';
+import 'package:qr_users/services/UserHolidays/Repo/user_holidays_repo_implementer.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -151,44 +154,12 @@ class UserHolidaysData with ChangeNotifier {
       paginatedIsLoading = true;
       notifyListeners();
     }
-
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
     pageIndex++;
-    if (isConnected) {
-      final response = await http.get(
-          Uri.parse(
-              "$baseURL/api/Holiday/GetAllHolidaysPending/$companyId?pageindex=$pageIndex&pageSize=8"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print("$pageIndex after call ");
-      log(response.body);
-      final decodedResp = json.decode(response.body);
-      if (decodedResp["message"] == "Success") {
-        final permessionsObj = jsonDecode(response.body)['data'] as List;
-        if (keepRetriving) {
-          pendingCompanyHolidays.addAll(permessionsObj
-              .map((json) => UserHolidays.fromJson(json))
-              .toList());
+    pendingCompanyHolidays.addAll(await UserHolidaysRepoImplementer()
+        .getPendingCompanyHolidays(companyId, userToken, pageIndex));
+    paginatedIsLoading = false;
 
-          pendingCompanyHolidays = pendingCompanyHolidays.reversed.toList();
-        }
-      } else if (decodedResp["message"] ==
-          "No Holidays exist for this company!") {
-        print("keep retrive is false");
-        keepRetriving = false;
-      }
-      paginatedIsLoading = false;
-
-      notifyListeners();
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
-    }
+    notifyListeners();
   }
 
   Future<String> acceptOrRefusePendingVacation(
@@ -364,43 +335,13 @@ class UserHolidaysData with ChangeNotifier {
     sickVacationCount = 0;
     suddenVacationCount = 0;
     vacationCreditCount = 0;
-
     loadingHolidaysDetails = true;
-    // notifyListeners();
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      final response = await http.get(
-        Uri.parse("$baseURL/api/Holiday/infuture/$userId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      loadingHolidaysDetails = false;
-      print(response.statusCode);
 
-      log(response.body);
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        final holidaysObj = jsonDecode(response.body)['data'] as List;
-        singleUserHoliday =
-            holidaysObj.map((json) => UserHolidays.fromJson(json)).toList();
+    singleUserHoliday = await UserHolidaysRepoImplementer()
+        .getFutureSingleUserHoliday(userId, userToken);
+    loadingHolidaysDetails = false;
 
-        singleUserHoliday = singleUserHoliday.reversed.toList();
-        // sickVacationCount = jsonDecode(response.body)['data']["Sick"];
-        // suddenVacationCount = jsonDecode(response.body)['data']["Excep"];
-        // vacationCreditCount = jsonDecode(response.body)['data']["Credit"];
-        notifyListeners();
-
-        return singleUserHoliday;
-      }
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
-    }
+    notifyListeners();
 
     return singleUserHoliday;
   }
@@ -410,50 +351,31 @@ class UserHolidaysData with ChangeNotifier {
     sickVacationCount = 0;
     suddenVacationCount = 0;
     vacationCreditCount = 0;
-    final String startTime = DateTime(
-      DateTime.now().year,
-      1,
-      1,
-    ).toIso8601String();
+
     loadingHolidaysDetails = true;
     // notifyListeners();
-    final String endingTime =
-        DateTime(DateTime.now().year, 12, 31).toIso8601String();
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      final response = await http.get(
-        Uri.parse(
-            "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime?isMobile=true"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      loadingHolidaysDetails = false;
-      log(userId);
-      log(response.body);
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        final permessionsObj =
-            jsonDecode(response.body)['data']["Holidays"] as List;
-        singleUserHoliday =
-            permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
 
-        singleUserHoliday = singleUserHoliday.reversed.toList();
-        sickVacationCount = jsonDecode(response.body)['data']["Sick"];
-        suddenVacationCount = jsonDecode(response.body)['data']["Excep"];
-        vacationCreditCount = jsonDecode(response.body)['data']["Credit"];
-        notifyListeners();
+    final response = await UserHolidaysRepoImplementer()
+        .getSingleUserHoliday(userToken, userId);
+    loadingHolidaysDetails = false;
+    notifyListeners();
+    if (response is Faliure) {
+      return [];
+    }
 
-        return singleUserHoliday;
-      }
-    } else {
-      print("no connection available");
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
+    final decodedResponse = json.decode(response);
+    if (decodedResponse["message"] == "Success") {
+      final permessionsObj = jsonDecode(response)['data']["Holidays"] as List;
+      singleUserHoliday =
+          permessionsObj.map((json) => UserHolidays.fromJson(json)).toList();
+
+      singleUserHoliday = singleUserHoliday.reversed.toList();
+      sickVacationCount = jsonDecode(response)['data']["Sick"];
+      suddenVacationCount = jsonDecode(response)['data']["Excep"];
+      vacationCreditCount = jsonDecode(response)['data']["Credit"];
+      notifyListeners();
+
+      return singleUserHoliday;
     }
     return singleUserHoliday;
   }
@@ -480,7 +402,7 @@ class UserHolidaysData with ChangeNotifier {
             "toDate": holiday.toDate.toIso8601String(),
             "userId": userId,
             "desc": holiday.holidayDescription,
-            "createdonDate": holiday.createdOnDate.toIso8601String(),
+            "createdonDate": DateTime.now().toIso8601String(),
             "status": 3,
           }));
       isLoading = false;

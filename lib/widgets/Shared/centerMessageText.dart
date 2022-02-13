@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:qr_users/Core/constants.dart';
 
 class CenterMessageText extends StatelessWidget {
   const CenterMessageText({
@@ -19,9 +20,8 @@ class CenterMessageText extends StatelessWidget {
         child: AutoSizeText(
           message,
           maxLines: 1,
-          style: TextStyle(
-              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-              fontWeight: FontWeight.w700),
+          style: boldStyle.copyWith(fontSize: setResponsiveFontSize(17)),
+          textAlign: TextAlign.center,
         ),
       ),
     );

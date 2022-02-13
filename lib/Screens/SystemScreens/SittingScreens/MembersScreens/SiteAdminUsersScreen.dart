@@ -681,13 +681,15 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                             .user
                                             .userType !=
                                         2) {
-                                      Timer(
-                                        const Duration(milliseconds: 1),
-                                        () => _scrollController.jumpTo(
-                                            _scrollController
-                                                    .position.maxScrollExtent -
-                                                10),
-                                      );
+                                      if (_scrollController.hasClients) {
+                                        Timer(
+                                          const Duration(milliseconds: 1),
+                                          () => _scrollController.jumpTo(
+                                              _scrollController.position
+                                                      .maxScrollExtent -
+                                                  10),
+                                        );
+                                      }
                                     }
                                   }
                                   return Column(

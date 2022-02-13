@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
@@ -326,7 +327,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                   if (msg == "Success : Holiday Deleted!") {
                                     Fluttertoast.showToast(
                                         msg: getTranslated(
-                                            context, "تم الحذف بنجاح"),
+                                            navigatorKey
+                                                .currentState.overlay.context,
+                                            "تم الحذف بنجاح"),
                                         backgroundColor: Colors.green);
                                   } else {
                                     Fluttertoast.showToast(

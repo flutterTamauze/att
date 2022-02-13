@@ -181,9 +181,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
             )),
         Positioned(
             right: 125.w,
-            top: widget.popWidget
-                ? MediaQuery.of(context).size.height / 3.7
-                : 180.h,
+            top: MediaQuery.of(context).size.height / 3.7,
             child: Container(
               width: 150.w,
               height: 150.h,

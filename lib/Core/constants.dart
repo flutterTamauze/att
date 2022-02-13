@@ -140,7 +140,7 @@ weakInternetConnection(BuildContext context) {
             onPressed: () {
               Navigator.pop(context);
             },
-            title: getTranslated(context, "الأتصال بالأنترنت ضعيف"),
+            title: getTranslated(context, "لا يوجد اتصال بالأنترنت"),
             content: getTranslated(context, "برجاء اعادة المحاولة مرة اخرى"));
       });
 }

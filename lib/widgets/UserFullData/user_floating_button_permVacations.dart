@@ -15,10 +15,12 @@ import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayHeader.dart';
 import 'package:qr_users/widgets/Holidays/DataTableHolidayRow.dart';
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
+import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 class FadeInVacPermFloatingButton extends StatelessWidget {
@@ -35,6 +37,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final serverHanProv = Provider.of<PermissionHan>(context, listen: false);
     return FadeInDown(
       child: Container(
         width: comingFromAdminPanel ? 35.w : 50.w,
@@ -167,40 +170,45 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                       ),
                                                     );
                                                   } else {
-                                                    return provList.isEmpty
-                                                        ? Center(
-                                                            child: AutoSizeText(
-                                                            getTranslated(
-                                                              context,
-                                                              "لا يوجد اجازات لهذا المستخدم",
-                                                            ),
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    setResponsiveFontSize(
-                                                                        15),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ))
-                                                        : ListView.builder(
-                                                            itemCount:
-                                                                provList.length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              return Column(
-                                                                children: [
-                                                                  DataTableHolidayRow(
-                                                                      provList[
-                                                                          index]),
-                                                                  const Divider(
-                                                                    thickness:
-                                                                        1,
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
+                                                    return serverHanProv
+                                                            .isServerDown
+                                                        ? CenterMessageText(
+                                                            message: getTranslated(
+                                                                context,
+                                                                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"))
+                                                        : provList.isEmpty
+                                                            ? Center(
+                                                                child:
+                                                                    AutoSizeText(
+                                                                getTranslated(
+                                                                    context,
+                                                                    !serverHanProv
+                                                                            .isInternetConnected
+                                                                        ? "لا يوجد اتصال بالانترنت"
+                                                                        : "لا يوجد اجازات لهذا المستخدم"),
+                                                                style:
+                                                                    boldStyle,
+                                                              ))
+                                                            : ListView.builder(
+                                                                itemCount:
+                                                                    provList
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  return Column(
+                                                                    children: [
+                                                                      DataTableHolidayRow(
+                                                                          provList[
+                                                                              index]),
+                                                                      const Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                      )
+                                                                    ],
+                                                                  );
+                                                                });
                                                   }
                                                 }))
                                         : Expanded(
@@ -218,41 +226,46 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                       ),
                                                     );
                                                   } else {
-                                                    return permessionsList
-                                                            .isEmpty
-                                                        ? Center(
-                                                            child: AutoSizeText(
-                                                            getTranslated(
+                                                    return serverHanProv
+                                                            .isServerDown
+                                                        ? CenterMessageText(
+                                                            message: getTranslated(
                                                                 context,
-                                                                "لا يوجد اذونات لهذا المستخدم"),
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    setResponsiveFontSize(
-                                                                        15),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ))
-                                                        : ListView.builder(
-                                                            itemCount:
-                                                                permessionsList
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              return Column(
-                                                                children: [
-                                                                  DataTablePermessionRow(
-                                                                      permessionsList[
-                                                                          index]),
-                                                                  const Divider(
-                                                                    thickness:
-                                                                        1,
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
+                                                                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"))
+                                                        : permessionsList
+                                                                .isEmpty
+                                                            ? Center(
+                                                                child:
+                                                                    AutoSizeText(
+                                                                getTranslated(
+                                                                    context,
+                                                                    !serverHanProv
+                                                                            .isInternetConnected
+                                                                        ? "لا يوجد اتصال بالانترنت"
+                                                                        : "لا يوجد اذونات لهذا المستخدم"),
+                                                                style:
+                                                                    boldStyle,
+                                                              ))
+                                                            : ListView.builder(
+                                                                itemCount:
+                                                                    permessionsList
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  return Column(
+                                                                    children: [
+                                                                      DataTablePermessionRow(
+                                                                          permessionsList[
+                                                                              index]),
+                                                                      const Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                      )
+                                                                    ],
+                                                                  );
+                                                                });
                                                   }
                                                 })),
                                     radioVal2 == 1

@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/Network.dart';
+import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/enums/request_type.dart';
+import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 
 class ReprotsRepo {
   Future<Object> getDailyReport(String url, String userToken) async {
@@ -22,6 +27,36 @@ class ReprotsRepo {
         'Authorization': "Bearer $userToken"
       },
     );
+  }
+
+  Future<List<AttendProofModel>> getDailyAttendProofApi(
+      apiId, String userToken, String date) async {
+    List<AttendProofModel> attendProofList = [];
+    final response = await NetworkApi().request(
+      "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50",
+      RequestType.GET,
+      {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
+    );
+    if (response is Faliure) {
+      return [];
+    } else {
+      final decodedRes = json.decode(response);
+
+      if (decodedRes["message"] == "Success") {
+        final reportObjJson = jsonDecode(response)['data'] as List;
+
+        attendProofList = reportObjJson
+            .map((reportJson) => AttendProofModel.fromJson(reportJson))
+            .toList();
+      } else if (decodedRes["message"] == "No AttendProofs was found!") {
+        attendProofList.clear();
+      }
+    }
+
+    return attendProofList;
   }
 
   Future<Object> getLateAbsenceReport(String url, String userToken) async {

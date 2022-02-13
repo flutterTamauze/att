@@ -125,7 +125,7 @@ class SiteData with ChangeNotifier {
             context,
           );
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "Success") {
@@ -184,7 +184,7 @@ class SiteData with ChangeNotifier {
             context,
           );
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "Success") {
@@ -265,9 +265,6 @@ class SiteData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
 
-      print(response.request.url);
-      print(response.body);
-      print("status code ${response.statusCode}");
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =
@@ -278,11 +275,11 @@ class SiteData with ChangeNotifier {
           context,
         );
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
 
         if (decodedRes["message"] == "Success") {
-          var sitesNewList = jsonDecode(response.body)['data'] as List;
+          final sitesNewList = jsonDecode(response.body)['data'] as List;
           if (sitesNewList.isEmpty) {
             keepRetriving = false;
             notifyListeners();
@@ -357,11 +354,11 @@ class SiteData with ChangeNotifier {
             context,
           );
         } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
+          final decodedRes = json.decode(response.body);
           print(response.body);
 
           if (decodedRes["message"] == "Success") {
-            Site newSite = Site(
+            final Site newSite = Site(
                 id: decodedRes['data']['id'] as int,
                 lat: double.parse(decodedRes['data']['siteLat'].toString()),
                 long: double.parse(decodedRes['data']['siteLan'].toString()),
@@ -447,12 +444,12 @@ class SiteData with ChangeNotifier {
           context,
         );
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
 
         if (decodedRes["message"] == "Success") {
           print("edit success");
-          Site newSite = Site(
+          final Site newSite = Site(
               id: decodedRes['data']['id'] as int,
               lat: double.parse(decodedRes['data']['siteLat'].toString()),
               long: double.parse(decodedRes['data']['siteLan'].toString()),

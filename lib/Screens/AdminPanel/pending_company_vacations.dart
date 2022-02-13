@@ -15,8 +15,10 @@ import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -64,6 +66,12 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _onRefresh() async {
@@ -125,7 +133,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                         ),
                       );
                     } else {
-                      return Expanded(
+                      return HandleExceptionsView(Expanded(
                           child: pendingList.pendingCompanyHolidays.length == 0
                               ? Center(
                                   child: AutoSizeText(
@@ -416,7 +424,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                     itemCount: pendingList
                                         .pendingCompanyHolidays.length,
                                   ),
-                                ));
+                                )));
                     }
                   }),
               Provider.of<UserHolidaysData>(context)

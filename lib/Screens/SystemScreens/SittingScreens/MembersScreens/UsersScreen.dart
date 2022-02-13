@@ -26,6 +26,7 @@ import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
 import 'package:qr_users/widgets/UserFullData/member_tile.dart';
 import 'package:qr_users/widgets/UserFullData/rounded_searchBar.dart';
@@ -72,6 +73,11 @@ class _UsersScreenState extends State<UsersScreen> {
   //       -1);
   //   refreshController.refreshCompleted();
   // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -322,346 +328,350 @@ class _UsersScreenState extends State<UsersScreen> {
                                                 Provider.of<MemberData>(context)
                                                         .loadingShifts ==
                                                     false) {
-                                              Timer(
-                                                const Duration(milliseconds: 1),
-                                                () => _scrollController.jumpTo(
-                                                    _scrollController.position
-                                                            .maxScrollExtent -
-                                                        10),
-                                              );
+                                              if (_scrollController
+                                                  .hasClients) {
+                                                Timer(
+                                                  const Duration(
+                                                      milliseconds: 1),
+                                                  () => _scrollController
+                                                      .jumpTo(_scrollController
+                                                              .position
+                                                              .maxScrollExtent -
+                                                          10),
+                                                );
+                                              }
                                             }
 
-                                            return Column(
-                                              children: [
-                                                Container(
-                                                  height: 110.h,
-                                                  width: 330.w,
-                                                  child: RoundedSearchBar(
-                                                    list: Provider.of<
-                                                                SiteShiftsData>(
-                                                            context,
-                                                            listen: true)
-                                                        .sites,
-                                                    dropdownValue:
-                                                        widget.selectedValue,
-                                                    resetTextFieldFun: () {
-                                                      setState(() {
-                                                        _nameController.text =
-                                                            "";
-                                                      });
-                                                    },
-                                                    searchFun: (value) {
-                                                      int siteiD = -1;
-                                                      final int siteindex =
-                                                          getSiteIndex(Provider
-                                                                  .of<SiteData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .siteValue);
+                                            return HandleExceptionsView(
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    height: 110.h,
+                                                    width: 330.w,
+                                                    child: RoundedSearchBar(
+                                                      list: Provider.of<
+                                                                  SiteShiftsData>(
+                                                              context,
+                                                              listen: true)
+                                                          .sites,
+                                                      dropdownValue:
+                                                          widget.selectedValue,
+                                                      resetTextFieldFun: () {
+                                                        setState(() {
+                                                          _nameController.text =
+                                                              "";
+                                                        });
+                                                      },
+                                                      searchFun: (value) {
+                                                        int siteiD = -1;
+                                                        final int siteindex =
+                                                            getSiteIndex(Provider.of<
+                                                                        SiteData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .siteValue);
 
-                                                      if (siteindex != -1) {
-                                                        siteiD = Provider.of<
-                                                                    SiteShiftsData>(
-                                                                context,
-                                                                listen: false)
-                                                            .siteShiftList[
-                                                                siteindex]
-                                                            .siteId;
-                                                      }
-
-                                                      searchInList(
-                                                          value,
-                                                          siteiD,
-                                                          Provider.of<CompanyData>(
+                                                        if (siteindex != -1) {
+                                                          siteiD = Provider.of<
+                                                                      SiteShiftsData>(
                                                                   context,
                                                                   listen: false)
-                                                              .com
-                                                              .id);
-                                                      setState(() {
-                                                        currentShiftName =
-                                                            value;
-                                                      });
-                                                      // do something with query
-                                                    },
-                                                    textController:
-                                                        _nameController,
-                                                    dropdownFun: (value) {
-                                                      setState(() {
-                                                        widget.selectedValue =
-                                                            value;
-                                                        print(
-                                                            "current : ${widget.selectedValue}");
-                                                        currentShiftName = "";
-                                                        _nameController.clear();
-                                                        Provider.of<MemberData>(
-                                                                context,
-                                                                listen: false)
-                                                            .userSearchMember
-                                                            .clear();
-                                                      });
+                                                              .siteShiftList[
+                                                                  siteindex]
+                                                              .siteId;
+                                                        }
 
-                                                      final userProvider =
-                                                          Provider.of<UserData>(
-                                                              context,
-                                                              listen: false);
-                                                      final id =
-                                                          settings.getsiteIndex(
-                                                              context, value);
-                                                      if (id != siteIndex) {
-                                                        siteIndex = id;
-                                                        Provider.of<MemberData>(
-                                                                context,
-                                                                listen: false)
-                                                            .allPageIndex = 0;
-                                                        Provider.of<MemberData>(
-                                                                context,
-                                                                listen: false)
-                                                            .bySitePageIndex = 0;
-                                                        Provider.of<MemberData>(
-                                                                context,
-                                                                listen: false)
-                                                            .keepRetriving = true;
-                                                        Provider.of<MemberData>(
-                                                                context,
-                                                                listen: false)
-                                                            .getAllCompanyMember(
-                                                                Provider.of<SiteShiftsData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .sites[
-                                                                        siteIndex]
-                                                                    .id,
-                                                                companyProv
-                                                                    .com.id,
-                                                                userProvider
-                                                                    .user
-                                                                    .userToken,
-                                                                context,
-                                                                -1);
+                                                        searchInList(
+                                                            value,
+                                                            siteiD,
+                                                            Provider.of<CompanyData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .com
+                                                                .id);
+                                                        setState(() {
+                                                          currentShiftName =
+                                                              value;
+                                                        });
+                                                        // do something with query
+                                                      },
+                                                      textController:
+                                                          _nameController,
+                                                      dropdownFun: (value) {
                                                         setState(() {
                                                           widget.selectedValue =
-                                                              siteProv
-                                                                  .sites[
-                                                                      siteIndex]
-                                                                  .name;
+                                                              value;
+                                                          print(
+                                                              "current : ${widget.selectedValue}");
+                                                          currentShiftName = "";
+                                                          _nameController
+                                                              .clear();
+                                                          Provider.of<MemberData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .userSearchMember
+                                                              .clear();
                                                         });
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                    child: _nameController
-                                                                    .text !=
-                                                                null &&
-                                                            _nameController
-                                                                    .text !=
-                                                                ""
-                                                        ? Consumer<MemberData>(
-                                                            builder: (context,
-                                                                value, child) {
-                                                              return value
-                                                                      .loadingSearch
-                                                                  ? Center(
-                                                                      child: Lottie.asset(
-                                                                          "resources/searching.json",
-                                                                          width: 200
-                                                                              .w,
-                                                                          height:
-                                                                              200.h),
-                                                                    )
-                                                                  : value.userSearchMember
-                                                                              .length ==
-                                                                          0
-                                                                      ? Center(
-                                                                          child:
-                                                                              AutoSizeText(
-                                                                            getTranslated(context,
-                                                                                "لا يوجد نتائج للبحث"),
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: setResponsiveFontSize(17)),
-                                                                          ),
-                                                                        )
-                                                                      : Container(
-                                                                          alignment: Alignment
-                                                                              .topCenter,
-                                                                          width:
-                                                                              double.infinity,
-                                                                          child: ListView.builder(
-                                                                              itemCount: value.userSearchMember.length,
-                                                                              itemBuilder: (BuildContext context, int index) {
-                                                                                return InkWell(
-                                                                                  onTap: () {
-                                                                                    if (locator.locator<PermissionHan>().isServerDown) {
-                                                                                      serverDownDialog(context);
-                                                                                    } else {
-                                                                                      Navigator.push(
-                                                                                          context,
-                                                                                          MaterialPageRoute(
-                                                                                            builder: (context) => UserFullDataScreen(
-                                                                                              index: index,
-                                                                                              onResetMac: () {
-                                                                                                settings.resetMacAddress(context, value.userSearchMember[index].id);
-                                                                                              },
-                                                                                              onTapDelete: () {
-                                                                                                settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                              },
-                                                                                              siteIndex: siteIndex,
-                                                                                              userId: value.userSearchMember[index].id,
-                                                                                            ),
-                                                                                          ));
-                                                                                    }
-                                                                                  },
-                                                                                  child: Slidable(
-                                                                                    enabled: Provider.of<UserData>(context, listen: false).user.userType == 4,
-                                                                                    actionExtentRatio: 0.10,
-                                                                                    closeOnScroll: true,
-                                                                                    controller: slidableController,
-                                                                                    actionPane: const SlidableDrawerActionPane(),
-                                                                                    secondaryActions: [
-                                                                                      ZoomIn(
-                                                                                          child: InkWell(
-                                                                                        child: Container(
-                                                                                          padding: const EdgeInsets.all(7),
-                                                                                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.orange)),
-                                                                                          child: Icon(
-                                                                                            Icons.edit,
-                                                                                            size: 18,
-                                                                                            color: ColorManager.primary,
-                                                                                          ),
-                                                                                        ),
-                                                                                        onTap: () async {
-                                                                                          showDialog(
-                                                                                              context: context,
-                                                                                              builder: (BuildContext context) {
-                                                                                                return RoundedLoadingIndicator();
-                                                                                              });
-                                                                                          await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
-                                                                                          final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
 
-                                                                                          Navigator.of(context).push(
-                                                                                            new MaterialPageRoute(
-                                                                                              builder: (context) => AddUserScreen(Provider.of<MemberData>(context, listen: false).singleMember, index, true, phone[0], phone[1], false, "", getTranslated(context, "مستخدم")),
-                                                                                            ),
-                                                                                          );
-                                                                                        },
-                                                                                      )),
-                                                                                      Provider.of<UserData>(context, listen: false).user.id == value.userSearchMember[index].id
-                                                                                          ? Container()
-                                                                                          : ZoomIn(
-                                                                                              child: InkWell(
-                                                                                              child: Container(
-                                                                                                padding: const EdgeInsets.all(7),
-                                                                                                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.red)),
-                                                                                                child: const Icon(
-                                                                                                  Icons.delete,
-                                                                                                  size: 18,
-                                                                                                  color: Colors.red,
-                                                                                                ),
+                                                        final userProvider =
+                                                            Provider.of<
+                                                                    UserData>(
+                                                                context,
+                                                                listen: false);
+                                                        final id = settings
+                                                            .getsiteIndex(
+                                                                context, value);
+                                                        if (id != siteIndex) {
+                                                          siteIndex = id;
+                                                          Provider.of<MemberData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .allPageIndex = 0;
+                                                          Provider.of<MemberData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .bySitePageIndex = 0;
+                                                          Provider.of<MemberData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .keepRetriving = true;
+                                                          Provider.of<MemberData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getAllCompanyMember(
+                                                                  Provider.of<SiteShiftsData>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sites[
+                                                                          siteIndex]
+                                                                      .id,
+                                                                  companyProv
+                                                                      .com.id,
+                                                                  userProvider
+                                                                      .user
+                                                                      .userToken,
+                                                                  context,
+                                                                  -1);
+                                                          setState(() {
+                                                            widget.selectedValue =
+                                                                siteProv
+                                                                    .sites[
+                                                                        siteIndex]
+                                                                    .name;
+                                                          });
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                      child: _nameController
+                                                                      .text !=
+                                                                  null &&
+                                                              _nameController
+                                                                      .text !=
+                                                                  ""
+                                                          ? Consumer<
+                                                              MemberData>(
+                                                              builder: (context,
+                                                                  value,
+                                                                  child) {
+                                                                return value
+                                                                        .loadingSearch
+                                                                    ? Center(
+                                                                        child: Lottie.asset(
+                                                                            "resources/searching.json",
+                                                                            width:
+                                                                                200.w,
+                                                                            height: 200.h),
+                                                                      )
+                                                                    : value.userSearchMember.length ==
+                                                                            0
+                                                                        ? Center(
+                                                                            child:
+                                                                                AutoSizeText(
+                                                                              getTranslated(context, "لا يوجد نتائج للبحث"),
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: setResponsiveFontSize(17)),
+                                                                            ),
+                                                                          )
+                                                                        : Container(
+                                                                            alignment:
+                                                                                Alignment.topCenter,
+                                                                            width: double.infinity,
+                                                                            child: ListView.builder(
+                                                                                itemCount: value.userSearchMember.length,
+                                                                                itemBuilder: (BuildContext context, int index) {
+                                                                                  return InkWell(
+                                                                                    onTap: () {
+                                                                                      if (locator.locator<PermissionHan>().isServerDown) {
+                                                                                        serverDownDialog(context);
+                                                                                      } else {
+                                                                                        Navigator.push(
+                                                                                            context,
+                                                                                            MaterialPageRoute(
+                                                                                              builder: (context) => UserFullDataScreen(
+                                                                                                index: index,
+                                                                                                onResetMac: () {
+                                                                                                  settings.resetMacAddress(context, value.userSearchMember[index].id);
+                                                                                                },
+                                                                                                onTapDelete: () {
+                                                                                                  settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                                },
+                                                                                                siteIndex: siteIndex,
+                                                                                                userId: value.userSearchMember[index].id,
                                                                                               ),
-                                                                                              onTap: () {
-                                                                                                settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
-                                                                                              },
-                                                                                            )),
-                                                                                    ],
-                                                                                    child: Card(
-                                                                                      elevation: 2,
-                                                                                      child: Container(
-                                                                                        alignment: Alignment.centerRight,
-                                                                                        width: double.infinity,
-                                                                                        height: 50.h,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(10.0),
-                                                                                          child: AutoSizeText(
-                                                                                            value.userSearchMember[index].username,
+                                                                                            ));
+                                                                                      }
+                                                                                    },
+                                                                                    child: Slidable(
+                                                                                      enabled: Provider.of<UserData>(context, listen: false).user.userType == 4,
+                                                                                      actionExtentRatio: 0.10,
+                                                                                      closeOnScroll: true,
+                                                                                      controller: slidableController,
+                                                                                      actionPane: const SlidableDrawerActionPane(),
+                                                                                      secondaryActions: [
+                                                                                        ZoomIn(
+                                                                                            child: InkWell(
+                                                                                          child: Container(
+                                                                                            padding: const EdgeInsets.all(7),
+                                                                                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.orange)),
+                                                                                            child: Icon(
+                                                                                              Icons.edit,
+                                                                                              size: 18,
+                                                                                              color: ColorManager.primary,
+                                                                                            ),
+                                                                                          ),
+                                                                                          onTap: () async {
+                                                                                            showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return RoundedLoadingIndicator();
+                                                                                                });
+                                                                                            await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
+                                                                                            final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
+
+                                                                                            Navigator.of(context).push(
+                                                                                              new MaterialPageRoute(
+                                                                                                builder: (context) => AddUserScreen(Provider.of<MemberData>(context, listen: false).singleMember, index, true, phone[0], phone[1], false, "", getTranslated(context, "مستخدم")),
+                                                                                              ),
+                                                                                            );
+                                                                                          },
+                                                                                        )),
+                                                                                        Provider.of<UserData>(context, listen: false).user.id == value.userSearchMember[index].id
+                                                                                            ? Container()
+                                                                                            : ZoomIn(
+                                                                                                child: InkWell(
+                                                                                                child: Container(
+                                                                                                  padding: const EdgeInsets.all(7),
+                                                                                                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all(width: 2, color: Colors.red)),
+                                                                                                  child: const Icon(
+                                                                                                    Icons.delete,
+                                                                                                    size: 18,
+                                                                                                    color: Colors.red,
+                                                                                                  ),
+                                                                                                ),
+                                                                                                onTap: () {
+                                                                                                  settings.deleteUser(context, value.userSearchMember[index].id, index, value.userSearchMember[index].username);
+                                                                                                },
+                                                                                              )),
+                                                                                      ],
+                                                                                      child: Card(
+                                                                                        elevation: 2,
+                                                                                        child: Container(
+                                                                                          alignment: Alignment.centerRight,
+                                                                                          width: double.infinity,
+                                                                                          height: 50.h,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(10.0),
+                                                                                            child: AutoSizeText(
+                                                                                              value.userSearchMember[index].username,
+                                                                                            ),
                                                                                           ),
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                  ),
-                                                                                );
-                                                                              }));
-                                                            },
-                                                          )
-                                                        : snapshot.data ==
-                                                                "noInternet"
-                                                            ? CenterMessageText(
-                                                                message:
-                                                                    getTranslated(
-                                                                  context,
-                                                                  "لا يوجد اتصال بالأنترنت",
-                                                                ),
-                                                              )
-                                                            : memberData.membersList
-                                                                        .length !=
-                                                                    0
-                                                                ? Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topCenter,
-                                                                    width: double
-                                                                        .infinity,
-                                                                    child: ListView.builder(
-                                                                        controller: _scrollController,
-                                                                        itemCount: memberData.membersListScreenDropDownSearch.length,
-                                                                        itemBuilder: (BuildContext context, int index) {
-                                                                          final Member
-                                                                              user =
-                                                                              memberData.membersListScreenDropDownSearch[index];
-                                                                          return MemberTile(
-                                                                            index:
-                                                                                index,
-                                                                            user:
-                                                                                memberData.membersListScreenDropDownSearch[index],
-                                                                            onTapDelete:
-                                                                                () {
-                                                                              settings.deleteUser(context, user.id, index, user.name);
-                                                                            },
-                                                                            onResetMac:
-                                                                                () {
-                                                                              settings.resetMacAddress(context, user.id);
-                                                                            },
-                                                                          );
-                                                                        }),
-                                                                  )
-                                                                : widget.selectedValue ==
-                                                                            "كل المواقع" ||
-                                                                        Provider.of<SiteData>(context, listen: false).dropDownShiftIndex ==
-                                                                            0
-                                                                    ? Center(
-                                                                        child:
-                                                                            AutoSizeText(
-                                                                          getTranslated(
-                                                                              context,
-                                                                              "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين"),
-                                                                          maxLines:
-                                                                              1,
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                          style: TextStyle(
-                                                                              height: 2,
-                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                                                                              fontWeight: FontWeight.w700),
-                                                                        ),
-                                                                      )
-                                                                    : Center(
-                                                                        child:
-                                                                            AutoSizeText(
-                                                                          getTranslated(
-                                                                              context,
-                                                                              "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين"),
-                                                                          maxLines:
-                                                                              1,
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                          style: TextStyle(
-                                                                              height: 2,
-                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                                                                              fontWeight: FontWeight.w700),
-                                                                        ),
-                                                                      )),
-                                              ],
+                                                                                  );
+                                                                                }));
+                                                              },
+                                                            )
+                                                          : memberData.membersList
+                                                                      .length !=
+                                                                  0
+                                                              ? Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topCenter,
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child: ListView
+                                                                      .builder(
+                                                                          controller:
+                                                                              _scrollController,
+                                                                          itemCount: memberData
+                                                                              .membersListScreenDropDownSearch
+                                                                              .length,
+                                                                          itemBuilder:
+                                                                              (BuildContext context, int index) {
+                                                                            final Member
+                                                                                user =
+                                                                                memberData.membersListScreenDropDownSearch[index];
+                                                                            return MemberTile(
+                                                                              index: index,
+                                                                              user: memberData.membersListScreenDropDownSearch[index],
+                                                                              onTapDelete: () {
+                                                                                settings.deleteUser(context, user.id, index, user.name);
+                                                                              },
+                                                                              onResetMac: () {
+                                                                                settings.resetMacAddress(context, user.id);
+                                                                              },
+                                                                            );
+                                                                          }),
+                                                                )
+                                                              : widget.selectedValue ==
+                                                                          "كل المواقع" ||
+                                                                      Provider.of<SiteData>(context, listen: false)
+                                                                              .dropDownShiftIndex ==
+                                                                          0
+                                                                  ? Center(
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين"),
+                                                                        maxLines:
+                                                                            1,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: TextStyle(
+                                                                            height:
+                                                                                2,
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                            fontWeight: FontWeight.w700),
+                                                                      ),
+                                                                    )
+                                                                  : Center(
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "لا يوجد مستخدمين بهذه المناوبة\nبرجاء اضافة مستخدمين"),
+                                                                        maxLines:
+                                                                            1,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: TextStyle(
+                                                                            height:
+                                                                                2,
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                            fontWeight: FontWeight.w700),
+                                                                      ),
+                                                                    )),
+                                                ],
+                                              ),
                                             );
                                           default:
                                             return Center(

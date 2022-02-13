@@ -12,6 +12,7 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/UserRequests/MyOrdersWidget.dart';
 import 'package:qr_users/widgets/UserRequests/UserOrdersListView.dart';
 import 'package:qr_users/widgets/UserRequests/UserPermessionsListView.dart';
@@ -216,7 +217,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: getTranslated(context, "البحث برقم الطلب"),
-                      focusColor: Colors.orange,
+                      focusColor: ColorManager.primary,
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.orange[600]))),
                 ),
@@ -227,17 +228,19 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
+                          return Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.orange,
+                              backgroundColor: ColorManager.primary,
                             ),
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? Expanded(
-                                  child: UserOrdersListView(
-                                    provList: provList,
-                                    memberId: "",
+                              ? HandleExceptionsView(
+                                  Expanded(
+                                    child: UserOrdersListView(
+                                      provList: provList,
+                                      memberId: "",
+                                    ),
                                   ),
                                 )
                               : filteredOrderData == null ||
@@ -290,11 +293,13 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? Expanded(
-                                  child: UserPermessionListView(
-                                      memberId: "",
-                                      isFilter: false,
-                                      permessionsList: permessionsList),
+                              ? HandleExceptionsView(
+                                  Expanded(
+                                    child: UserPermessionListView(
+                                        memberId: "",
+                                        isFilter: false,
+                                        permessionsList: permessionsList),
+                                  ),
                                 )
                               : filteredPermessions == null ||
                                       filteredPermessions.isEmpty

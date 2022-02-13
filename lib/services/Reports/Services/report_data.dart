@@ -382,41 +382,11 @@ class ReportsData with ChangeNotifier {
     return futureListener;
   }
 
-  Future<String> getDailyAttendProofApi(
+  getDailyAttendProofApi(
       String userToken, var apiId, String date, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      String url;
-      url =
-          "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50";
-
-      final response = await http.get(
-          Uri.parse(
-            url,
-          ),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print(response.statusCode);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
-        print(response.body);
-        if (decodedRes["message"] == "Success") {
-          final reportObjJson = jsonDecode(response.body)['data'] as List;
-
-          attendProofList = reportObjJson
-              .map((reportJson) => AttendProofModel.fromJson(reportJson))
-              .toList();
-
-          notifyListeners();
-          return decodedRes["message"];
-        } else if (decodedRes["message"] == "No AttendProofs was found!") {
-          attendProofList.clear();
-        }
-      }
-    }
-
-    return 'noInternet';
+    attendProofList =
+        await ReprotsRepo().getDailyAttendProofApi(apiId, userToken, date);
+    notifyListeners();
   }
 
   getDailyReportUnits(

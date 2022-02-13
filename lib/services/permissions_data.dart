@@ -19,6 +19,7 @@ class PermissionHan with ChangeNotifier {
   bool showReport = true;
   bool showSettings = true;
   bool isServerDown = false;
+  bool isInternetConnected = true;
   bool currentDialogOnstream = true;
 
   List<PrData> permissionsList = [
@@ -41,7 +42,10 @@ class PermissionHan with ChangeNotifier {
 
   setServerDown(bool isDown) {
     isServerDown = isDown;
-    notifyListeners();
+  }
+
+  setInternetConnection(bool isConnected) {
+    isInternetConnected = isConnected;
   }
 
   setDialogonStreambool(bool data) {

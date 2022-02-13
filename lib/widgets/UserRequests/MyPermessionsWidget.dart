@@ -294,8 +294,11 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
               ),
             ),
             checkDeleteAllowed()
-                ? const Positioned(
-                    child: RemovePermession(),
+                ? Positioned(
+                    child: RemovePermession(
+                      permId: widget.userPermessions.permessionId,
+                      index: widget.currentIndex,
+                    ),
                     top: 0,
                     right: 0,
                   )

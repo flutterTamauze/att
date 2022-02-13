@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
-import 'package:qr_users/services/UserPermessions/Repo/PermessionRepo.dart';
+import 'package:qr_users/services/UserHolidays/Repo/user_holidays_repo_implementer.dart';
+import 'package:qr_users/services/UserPermessions/Repo/user_permession_repo_implementer.dart';
 
 import '../../main.dart';
 
@@ -151,78 +152,20 @@ class UserPermessionsData with ChangeNotifier {
     return "fail";
   }
 
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
-
   bool keepRetriving = true;
   int pageIndex = 0;
   Future<String> getPendingCompanyPermessions(
       int companyId, String userToken) async {
-    if (await isConnectedToInternet()) {
-      if (pageIndex == 0) {
-        pendingCompanyPermessions = [];
-      }
-      pageIndex++;
-
-      final DataConnectionChecker dataConnectionChecker =
-          DataConnectionChecker();
-      final NetworkInfoImp networkInfoImp =
-          NetworkInfoImp(dataConnectionChecker);
-      final bool isConnected = await networkInfoImp.isConnected;
-      if (isConnected) {
-        paginatedLoading = true;
-        notifyListeners();
-        final response = await http.get(
-            Uri.parse(
-                "$baseURL/api/Permissions/GetAllPermissionPending/$companyId?pageIndex=$pageIndex&pageSize=8"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print("permessions");
-        print(response.request.url);
-        print(response.statusCode);
-        print(response.body);
-        final decodedResp = json.decode(response.body);
-        if (decodedResp["message"] == "Success") {
-          final permessionsObj = jsonDecode(response.body)['data'] as List;
-          if (keepRetriving) {
-            pendingCompanyPermessions.addAll(permessionsObj
-                .map((json) => UserPermessions.fromJsonWithCreatedOn(json))
-                .toList());
-
-            pendingCompanyPermessions =
-                pendingCompanyPermessions.reversed.toList();
-          }
-          paginatedLoading = false;
-          notifyListeners();
-
-          return "Success";
-        } else if (decodedResp["message"] ==
-            "No Permissions pending for this company!") {
-          keepRetriving = false;
-          isLoading = false;
-          paginatedLoading = false;
-          notifyListeners();
-        }
-      } else {
-        return "noInternet";
-      }
-      isLoading = false;
-      notifyListeners();
-      return "Success";
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
+    if (pageIndex == 0) {
+      pendingCompanyPermessions = [];
     }
+    pageIndex++;
+
+    pendingCompanyPermessions.addAll(await UserPermessionRepoImp()
+        .getPendingCompanyPermessions(companyId, userToken, pageIndex));
+    paginatedLoading = false;
+    notifyListeners();
+    return "Success";
   }
 
   Future<void> getPendingPermessionDetailsByID(
@@ -332,40 +275,13 @@ class UserPermessionsData with ChangeNotifier {
       String userId, String userToken) async {
     permessionDetailLoading = true;
     notifyListeners();
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      final response = await http.get(
-        Uri.parse("$baseURL/api/Permissions/infuture/$userId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      permessionDetailLoading = false;
-      print("response");
-      print(userId);
-      log(response.body);
-      log(response.statusCode.toString());
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        final permessionsObj = jsonDecode(response.body)['data'] as List;
-        singleUserPermessions = permessionsObj
-            .map((json) => UserPermessions.fromJson(json))
-            .toList();
 
-        singleUserPermessions = singleUserPermessions.reversed.toList();
+    singleUserPermessions = await UserPermessionRepoImp()
+        .getFutureSinglePermession(userId, userToken);
+    permessionDetailLoading = false;
 
-        notifyListeners();
+    notifyListeners();
 
-        return singleUserPermessions;
-      }
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
-    }
     return singleUserPermessions;
   }
 
@@ -379,31 +295,33 @@ class UserPermessionsData with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response =
-          await PermessionRepo().getSingleUserPermession(userToken, userId);
+      final response = await UserPermessionRepoImp()
+          .getSingleUserPermession(userToken, userId);
       permessionDetailLoading = false;
+      notifyListeners();
       if (response is Faliure) {
-        if (response.code == NO_INTERNET) {
-          print("faliuyre ");
+        if (response.code == USER_INVALID_RESPONSE) {
+          return "serverDown";
+        } else if (response.code == NO_INTERNET) {
           return "noInternet";
         }
-      }
+      } else {
+        final decodedResponse = json.decode(response);
+        if (decodedResponse["message"] == "Success") {
+          final permessionsObj =
+              jsonDecode(response)['data']["Permissions"] as List;
+          singleUserPermessions = permessionsObj
+              .map((json) => UserPermessions.detailsFromJson(json))
+              .toList();
 
-      final decodedResponse = json.decode(response);
-      if (decodedResponse["message"] == "Success") {
-        final permessionsObj =
-            jsonDecode(response)['data']["Permissions"] as List;
-        singleUserPermessions = permessionsObj
-            .map((json) => UserPermessions.detailsFromJson(json))
-            .toList();
+          singleUserPermessions = singleUserPermessions.reversed.toList();
+          lateAbesenceCount = jsonDecode(response)['data']['TotalLate'];
+          earlyLeaversCount = jsonDecode(response)['data']['TotalLeave'];
 
-        singleUserPermessions = singleUserPermessions.reversed.toList();
-        lateAbesenceCount = jsonDecode(response)['data']['TotalLate'];
-        earlyLeaversCount = jsonDecode(response)['data']['TotalLeave'];
+          notifyListeners();
 
-        notifyListeners();
-
-        return "Success";
+          return "Success";
+        }
       }
     } catch (e) {
       print(e);
@@ -414,24 +332,26 @@ class UserPermessionsData with ChangeNotifier {
   deleteUserPermession(int permID, String userToken, int permIndex) async {
     isLoading = true;
     notifyListeners();
+    try {
+      final response = await http.delete(
+          Uri.parse("$baseURL/api/Permissions/DeletePerm?id=$permID"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
 
-    final response = await http.delete(
-        Uri.parse("$baseURL/api/Permissions/DeletePerm?id=$permID"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
-    print(response.statusCode);
-    print(response.body);
-    final decodedRsp = json.decode(response.body);
-    isLoading = false;
-    notifyListeners();
-    if (decodedRsp["message"] == "Success : Permission Deleted!") {
-      print(permIndex);
-      singleUserPermessions.removeAt(permIndex);
+      final decodedRsp = json.decode(response.body);
+      isLoading = false;
       notifyListeners();
+      if (decodedRsp["message"] == "Success : Permission Deleted!") {
+        print(permIndex);
+        singleUserPermessions.removeAt(permIndex);
+        notifyListeners();
+      }
+      return decodedRsp["message"];
+    } catch (e) {
+      print(e);
     }
-    return decodedRsp["message"];
   }
 
   setCopyByIndex(List<int> index) {
@@ -469,7 +389,7 @@ class UserPermessionsData with ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-      final response = await PermessionRepo()
+      final response = await UserPermessionRepoImp()
           .addPermession(userPermessions, userToken, userId);
       isLoading = false;
       notifyListeners();

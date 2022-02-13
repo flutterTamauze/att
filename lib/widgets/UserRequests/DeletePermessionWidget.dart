@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -36,11 +37,15 @@ class RemovePermession extends StatelessWidget {
 
                   if (msg == "Success : Permission Deleted!") {
                     Fluttertoast.showToast(
-                        msg: getTranslated(context, "تم الحذف بنجاح"),
+                        msg: getTranslated(
+                            navigatorKey.currentState.overlay.context,
+                            "تم الحذف بنجاح"),
                         backgroundColor: Colors.green);
                   } else {
                     Fluttertoast.showToast(
-                        msg: getTranslated(context, "خطأ في الحذف"),
+                        msg: getTranslated(
+                            navigatorKey.currentState.overlay.context,
+                            "خطأ في الحذف"),
                         backgroundColor: Colors.red);
                   }
                 },
