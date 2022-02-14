@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_admin.dart';
@@ -9,13 +10,11 @@ import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart'
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../Core/constants.dart';
-import 'Notifications/Notifications.dart';
 
 class ErrorScreen extends StatefulWidget {
   final message;
@@ -90,17 +89,16 @@ class _ErrorScreenState extends State<ErrorScreen> {
                 child: isLoading
                     ? Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                          valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.orange),
-                        ),
+                            backgroundColor: Colors.white,
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                ColorManager.primary)),
                       )
                     : InkWell(
                         onTap: () {
                           widget.rep ? login() : Navigator.pop(context);
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           // height: 100,
                           width: 260.w,
                           decoration: BoxDecoration(
@@ -131,8 +129,8 @@ class _ErrorScreenState extends State<ErrorScreen> {
     setState(() {
       isLoading = true;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> userData = (prefs.getStringList('userData') ?? null);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> userData = (prefs.getStringList('userData') ?? null);
 
     if (userData == null || userData.isEmpty) {
       print('null');
@@ -146,7 +144,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
         print(e);
       })).then((value) {
         print(value);
-        if (value == -4 || value == USER_INVALID_RESPONSE || value == null) {
+        if (value == USER_INVALID_RESPONSE || value == null) {
           setState(() {
             isLoading = false;
             message = getTranslated(context,
@@ -176,7 +174,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => NavScreenTwo(0),
+                builder: (context) => const NavScreenTwo(0),
               ));
         } else if (value == 0) {
           Navigator.pushReplacement(

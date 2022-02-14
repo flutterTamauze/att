@@ -111,6 +111,17 @@ class UserData with ChangeNotifier {
       if (await _huawei.isHuaweiDevice()) {
         token = hawawiToken;
         isHuawei = true;
+      } else {
+        bool isError = false;
+        final String isnull =
+            await firebaseMessaging.getToken().catchError((e) {
+          token = "null";
+          isError = true;
+        });
+
+        if (isError == false) {
+          token = await firebaseMessaging.getToken();
+        }
       }
     } else {
       bool isError = false;

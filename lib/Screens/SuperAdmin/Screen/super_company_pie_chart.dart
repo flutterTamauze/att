@@ -48,11 +48,19 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Header(
-                      goUserHomeFromMenu: false,
-                      goUserMenu: false,
-                      nav: false,
-                    ),
+                    if (userData.user.userType == 4 &&
+                        !userData.isSuperAdmin &&
+                        !userData.isTdsAdmin &&
+                        !userData.isTechnicalSupport) ...[
+                      const SuperAdminHeader()
+                    ] else ...[
+                      Header(
+                        goUserHomeFromMenu: false,
+                        goUserMenu: false,
+                        nav: false,
+                      ),
+                    ],
+
                     FadeIn(
                         child: RoundBorderedImage(
                       radius: 13,

@@ -70,10 +70,10 @@ class _DisplayPermessionsState extends State<DisplayPermessions> {
                 child: FutureBuilder(
                     future: widget.getAllPermessions,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return const Center(
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
                           child: CircularProgressIndicator(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: ColorManager.primary,
                           ),
                         );
                       } else {

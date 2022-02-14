@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
-  AppButton(
+  const AppButton(
       {this.onPressed,
       this.text,
       this.color = const Color(0xFF0F0BDB),

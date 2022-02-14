@@ -113,14 +113,14 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                               : permessionsList.isEmpty
                                   ? 100.h
                                   : 500.h,
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Provider.of<UserPermessionsData>(
                                     context,
                                   ).permessionDetailLoading ||
                                   Provider.of<UserHolidaysData>(
                                     context,
                                   ).loadingHolidaysDetails
-                              ? LoadingIndicator()
+                              ? const LoadingIndicator()
                               : Column(
                                   children: [
                                     AutoSizeText(
@@ -133,7 +133,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                           fontSize: setResponsiveFontSize(20),
                                           fontWeight: FontWeight.w700),
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     radioVal2 == 1
                                         ? provList.isEmpty
                                             ? Container()

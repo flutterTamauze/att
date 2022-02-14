@@ -16,7 +16,8 @@ class MaintenanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 500,
+      padding: EdgeInsets.only(bottom: 20.h),
+      height: 500.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -46,13 +47,14 @@ class NoInternetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 500,
+      padding: EdgeInsets.only(bottom: 20.h),
+      height: 400.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             width: 300.w,
-            height: 270.h,
+            height: 250.h,
             child: Lottie.asset("resources/noNetwork.json"),
           ),
           Center(

@@ -194,7 +194,7 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
                                             .substring(0, 11)),
                                       ],
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     FeatureScheduleShiftCard(
                                         currentIndex: 0,
                                         startTime: shiftDate.satShift.startTime,
@@ -290,7 +290,7 @@ class FeatureScheduleShiftCard extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -349,7 +349,7 @@ class FeatureScheduleShiftCard extends StatelessWidget {
               ],
             ),
           ),
-          Divider()
+          const Divider()
         ],
       ),
     );
@@ -378,12 +378,12 @@ class ExpansionUserShiftTile extends StatelessWidget {
                   FontAwesomeIcons.clock,
                   color: ColorManager.primary,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
-                Text(
+                AutoSizeText(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: boldStyle,
                 ),
               ],
             ),

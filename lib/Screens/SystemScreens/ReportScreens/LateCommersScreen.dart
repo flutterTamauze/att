@@ -512,32 +512,48 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                     showViewTableButton = false;
                                   });
                                 },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.all(5),
-                                  width: 150.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 2,
-                                          color: ColorManager.primary),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        getTranslated(context, "عرض التقرير"),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 400.w,
+                                      height: 300.h,
+                                      child: Lottie.asset(
+                                          "resources/displayReport.json",
+                                          fit: BoxFit.fill),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.all(5),
+                                      width: 150.w,
+                                      height: 50.h,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 2,
+                                              color: ColorManager.primary),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          AutoSizeText(
+                                            getTranslated(
+                                                context, "عرض التقرير"),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                              width: 2,
+                                              height: 80.h,
+                                              color: ColorManager.primary),
+                                          const Icon(FontAwesomeIcons.fileAlt)
+                                        ],
                                       ),
-                                      Container(
-                                          width: 2,
-                                          height: 80.h,
-                                          color: ColorManager.primary),
-                                      const Icon(FontAwesomeIcons.fileAlt)
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

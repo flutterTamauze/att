@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/Screens/AdminPanel/Widgets/userImageExpanstionTile.dart';
-import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
-import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
-import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
+
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -44,7 +42,8 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-          accentColor: Colors.orange, unselectedWidgetColor: Colors.black),
+          accentColor: ColorManager.primary,
+          unselectedWidgetColor: Colors.black),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(

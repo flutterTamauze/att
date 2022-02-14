@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
@@ -10,7 +9,6 @@ import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 import 'package:qr_users/services/permissions_data.dart';
-import 'package:qr_users/widgets/roundedAlert.dart';
 
 import '../main.dart';
 import 'networkInfo.dart';
