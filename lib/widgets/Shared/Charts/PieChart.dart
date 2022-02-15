@@ -101,7 +101,7 @@ class LateReportPieChartState extends State {
                           shape: BoxShape.circle, color: Colors.green[600])),
                   AutoSizeText(
                     getTranslated(context, "الأنتظام"),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
               ),
@@ -132,7 +132,8 @@ class LateReportPieChartState extends State {
                 reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
             title: reportsData.lateAbsenceReport.lateRatio
                 .toString()
-                .replaceAll("%", ""),
+                .replaceAll("%", "")
+                .substring(0, 4),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -166,7 +167,8 @@ class LateReportPieChartState extends State {
                             .replaceAll("%", "")) +
                         double.parse(reportsData.lateAbsenceReport.absentRatio
                             .replaceAll("%", ""))))
-                .toString(),
+                .toString()
+                .substring(0, 4),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,

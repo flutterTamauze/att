@@ -504,38 +504,40 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                           child: Expanded(
                             flex: 9,
                             child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  loadProgressIndicator();
-                                  setState(() {
-                                    getData(siteIdIndex);
-                                    showTable = true;
-                                    showViewTableButton = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 400.w,
-                                      height: 300.h,
-                                      child: Lottie.asset(
-                                          "resources/displayReport.json",
-                                          fit: BoxFit.fill),
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.all(5),
-                                      width: 150.w,
-                                      height: 50.h,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 2,
-                                              color: ColorManager.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 400.w,
+                                    height: 300.h,
+                                    child: Lottie.asset(
+                                        "resources/displayReport.json",
+                                        fit: BoxFit.fill),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(5),
+                                    width: 150.w,
+                                    height: 50.h,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 2,
+                                            color: ColorManager.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        loadProgressIndicator();
+                                        setState(() {
+                                          getData(siteIdIndex);
+                                          showTable = true;
+                                          showViewTableButton = false;
+                                        });
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -554,8 +556,8 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

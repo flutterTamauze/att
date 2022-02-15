@@ -7,10 +7,10 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 class DataTableEnd extends StatelessWidget {
-  final lateRatio;
+  final String lateRatio;
   final absenceRatio;
   final double totalDeduction;
-  DataTableEnd(
+  const DataTableEnd(
       {this.absenceRatio, this.lateRatio, @required this.totalDeduction});
 
   @override
@@ -45,7 +45,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20.h,
                       child: AutoSizeText(
-                        lateRatio,
+                        lateRatio.substring(0, 3),
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
