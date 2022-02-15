@@ -15,7 +15,7 @@ import '../main.dart';
 import 'networkInfo.dart';
 
 class NetworkApi {
-  final timeOutDuration = const Duration(seconds: 50);
+  final timeOutDuration = const Duration(seconds: 51);
 
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,

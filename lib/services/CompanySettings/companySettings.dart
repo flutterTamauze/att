@@ -51,8 +51,9 @@ class CompanySettingsService {
     );
     if (response.statusCode == 500 || response.statusCode == 501) {
       locator.locator<PermissionHan>().setServerDown(true);
-    } else {
+    } else if (response.statusCode == 200) {
       locator.locator<PermissionHan>().setServerDown(false);
+      locator.locator<PermissionHan>().setInternetConnection(true);
     }
     print(response.body);
     final decodedRes = json.decode(response.body);
