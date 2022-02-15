@@ -106,7 +106,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                               color: Colors.orange),
                           child: Center(
                             child: AutoSizeText(
-                              getTranslated(context, "اضغط للماحاولة مره اخرى"),
+                              getTranslated(context, "اضغط للمحاولة مره اخرى"),
                               maxLines: 1,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

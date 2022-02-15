@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
@@ -107,12 +108,13 @@ successfulSaved(BuildContext context) {
 noInternetDialog(BuildContext context) {
   showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return RoundedAlertOkOnly(
+        return RoundedAlertOkOnlyWithIcon(
             onPressed: () {
               Navigator.pop(context);
             },
-            title: getTranslated(context, 'حدث خطأ ما'),
+            imageIcon: Icons.wifi_off_sharp,
             content: getTranslated(context,
                 "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى"));
       });
@@ -121,14 +123,16 @@ noInternetDialog(BuildContext context) {
 serverDownDialog(BuildContext context) {
   showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return RoundedAlertOkOnly(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            title: getTranslated(context, 'حدث خطأ ما'),
-            content: getTranslated(context,
-                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"));
+        return RoundedAlertOkOnlyWithIcon(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          content: getTranslated(context,
+              "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"),
+          imageIcon: FontAwesomeIcons.tools,
+        );
       });
 }
 

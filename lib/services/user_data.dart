@@ -466,7 +466,6 @@ class UserData with ChangeNotifier {
       print("faliure occured");
       return response;
     } else {
-      print(response);
       final decodedRes = json.decode(response);
       if (decodedRes["message"] == "Success") {
         superCompaniesChartModel =
@@ -774,8 +773,8 @@ class User {
       // osType: json["userData"]["mobileOS"],
       salary: json["userData"]["salary"],
       createdOn: DateTime.tryParse(json["userData"]["createdOn"]),
-      apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),
-      iosBundleDate: DateTime.tryParse(json["apkDate"]["ios"]),
+      // apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),
+      // iosBundleDate: DateTime.tryParse(json["apkDate"]["ios"]),
       userSiteId: json["userData"]["siteId"] as int,
       userShiftId: json["userData"]["shiftId"],
       // isAllowedToAttend: json["userData"]["isAllowtoAttend"],

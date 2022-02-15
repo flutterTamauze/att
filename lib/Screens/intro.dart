@@ -260,30 +260,32 @@ class IntroContent extends StatelessWidget {
                           ? FadeIn(
                               child: Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 400.w,
-                                      child: AutoSizeText(
-                                        getTranslated(context,
-                                            ". وداعا لمشاكل الصيانة و الأعطال"),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize:
-                                                setResponsiveFontSize(13)),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 400.w,
+                                        child: AutoSizeText(
+                                          getTranslated(context,
+                                              ". وداعا لمشاكل الصيانة و الأعطال"),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                                  setResponsiveFontSize(13)),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle),
-                                      width: 5,
-                                      height: 5,
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                            color: Colors.black,
+                                            shape: BoxShape.circle),
+                                        width: 5,
+                                        height: 5,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 5,

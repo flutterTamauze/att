@@ -5,6 +5,8 @@ import 'package:qr_users/enums/request_type.dart';
 import 'dart:convert';
 
 import '../../Core/constants.dart';
+import '../../main.dart';
+import '../permissions_data.dart';
 
 class CompanySettingsService {
   DateTime suspentionTime;
@@ -40,19 +42,20 @@ class CompanySettingsService {
   }
 
   Future<bool> isCompanySuspended(int comID, String userToken) async {
-    final response = await NetworkApi().request(
-      "$baseURL/api/Company/Status?companyId=$comID",
-      RequestType.GET,
-      {
+    final response = await http.get(
+      Uri.parse("$baseURL/api/Company/Status?companyId=$comID"),
+      headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
       },
     );
-    print(response);
-    if (response is Faliure) {
-      return false;
+    if (response.statusCode == 500 || response.statusCode == 501) {
+      locator.locator<PermissionHan>().setServerDown(true);
+    } else {
+      locator.locator<PermissionHan>().setServerDown(false);
     }
-    final decodedRes = json.decode(response);
+    print(response.body);
+    final decodedRes = json.decode(response.body);
     if (decodedRes["message"] == "Success") {
       this.suspentionTime =
           DateTime.tryParse(decodedRes["data"]["endofSubScription"]);

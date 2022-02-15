@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Shared/RoundBorderImage.dart';
 
 class AttendDetails {
   showAttendByCameraDetails({
@@ -64,71 +66,12 @@ class AttendDetails {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                width: 2.w,
-                                                color: const Color(0xffFF7E00),
-                                              ),
-                                            ),
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 40,
-                                              child: Container(
-                                                width: 80.w,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          75.0),
-                                                  child: Image.network(
-                                                    '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
-                                                        "A.jpg",
-                                                    fit: BoxFit.cover,
-                                                    headers: {
-                                                      "Authorization": "Bearer " +
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .userToken
-                                                    },
-                                                    loadingBuilder: (BuildContext
-                                                            context,
-                                                        Widget child,
-                                                        ImageChunkEvent
-                                                            loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) return child;
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          valueColor:
-                                                              const AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  Colors
-                                                                      .orange),
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          AttendLeaveImageDisplay(
+                                              imgUrl:
+                                                  '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
+                                                      "A.jpg",
+                                              imageDate: imageDate,
+                                              dateTime: dateTime),
                                           SizedBox(
                                             height: 5.h,
                                           ),
@@ -153,73 +96,14 @@ class AttendDetails {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                width: 2.w,
-                                                color: const Color(0xffFF7E00),
-                                              ),
-                                            ),
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 40,
-                                              child: Container(
-                                                width: 80.w,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          75.0),
-                                                  child: Image.network(
-                                                    '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
-                                                        "L.jpg", //L for leave
-                                                    headers: {
-                                                      "Authorization": "Bearer " +
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .userToken
-                                                    },
-                                                    fit: BoxFit.cover,
-                                                    loadingBuilder: (BuildContext
-                                                            context,
-                                                        Widget child,
-                                                        ImageChunkEvent
-                                                            loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) return child;
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          valueColor:
-                                                              const AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  Colors
-                                                                      .orange),
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          AttendLeaveImageDisplay(
+                                              imgUrl:
+                                                  '$imageUrl$normalizedName${imageDate.format(dateTime).replaceAll("/", "")}' +
+                                                      "L.jpg",
+                                              imageDate: imageDate,
+                                              dateTime: dateTime),
                                           SizedBox(
-                                            height: 10.h,
+                                            height: 5.h,
                                           ),
                                           Container(
                                             height: 20,
@@ -250,7 +134,7 @@ class AttendDetails {
                           },
                           child: Icon(
                             Icons.close,
-                            color: Colors.orange,
+                            color: ColorManager.primary,
                             size: ScreenUtil()
                                 .setSp(25, allowFontScalingSelf: true),
                           ),
@@ -261,5 +145,43 @@ class AttendDetails {
                 ),
               ));
         });
+  }
+}
+
+class AttendLeaveImageDisplay extends StatelessWidget {
+  const AttendLeaveImageDisplay(
+      {Key key,
+      @required this.imageDate,
+      @required this.dateTime,
+      @required this.imgUrl})
+      : super(key: key);
+
+  final DateFormat imageDate;
+  final DateTime dateTime;
+  final String imgUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          width: 2.w,
+          color: const Color(0xffFF7E00),
+        ),
+      ),
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 40,
+        child: Container(
+          width: 80.w,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: RoundBorderedImageWithoutCache(
+              radius: 10, width: 90, height: 95, imageUrl: imgUrl),
+        ),
+      ),
+    );
   }
 }

@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
@@ -67,7 +68,8 @@ class NotificationItem extends StatelessWidget {
                     value.notification.length != 0
                         ? getTranslated(context, "الأشعارات")
                         : getTranslated(context, "لا يوجد اشعارات"),
-                    style: boldStyle,
+                    style:
+                        boldStyle.copyWith(color: ColorManager.backGroundColor),
                   ),
                 ),
                 SizedBox(

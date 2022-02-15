@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:new_version/new_version.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../user_data.dart';
 
 class DownloadService {
   Dio dio;
@@ -17,28 +16,25 @@ class DownloadService {
   // bool _isLoading = false;
   String progress;
 
-  checkReleaseDate(bool showApk, BuildContext context) {
+  checkReleaseDate(bool showApk, BuildContext context) async {
+    final newVersion = NewVersion();
+    final status = await newVersion.getVersionStatus();
     if (Platform.isAndroid) {
       if (showApk) {
         showApk = false;
 
-        if (kAndroidReleaseDate.isBefore(
-            Provider.of<UserData>(context, listen: false).user.apkDate)) {
+        if (status.canUpdate) {
           Future.delayed(Duration.zero, () {
             showDialog(
-                // barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return RoundAlertUpgrade(
                       onPressed: () async {
-                        // Navigator.pop(context);
-                        // downloadApkFromUrl("ChilangoV3.apk", context);
-                        launch(
-                            "https://play.google.com/store/apps/details?id=com.tds.chilango");
+                        launch(status.appStoreLink);
                       },
-                      title: "اصدار جديد",
-                      content:
-                          'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام');
+                      title: getTranslated(context, "إصدار جديد"),
+                      content: getTranslated(context,
+                          'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام'));
                 });
           });
         }
@@ -47,8 +43,7 @@ class DownloadService {
       if (showApk) {
         showApk = false;
 
-        if (kiosReleaseDate.isBefore(
-            Provider.of<UserData>(context, listen: false).user.iosBundleDate)) {
+        if (status.canUpdate) {
           Future.delayed(Duration.zero, () {
             showDialog(
                 context: context,
@@ -58,7 +53,8 @@ class DownloadService {
                         Navigator.pop(context);
                         launch(iosDownloadLink);
                       },
-                      title: 'تحديث التطبيق لأخر اصدار ؟',
+                      title:
+                          getTranslated(context, 'تحديث التطبيق لأخر اصدار ؟'),
                       content: "");
                 });
           });

@@ -149,9 +149,6 @@ class LangugageDropdownItem extends StatelessWidget {
                 shape: BoxShape.circle),
           ),
           Container(
-            child: const Text("-"),
-          ),
-          Container(
             width: 100.w,
             child: AutoSizeText(
               langugage,

@@ -12,6 +12,7 @@ import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/CompanySettings/companySettings.dart';
+import 'package:qr_users/services/Download/download_service.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -47,27 +48,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     newVersion.showAlertIfNecessary(
       context: context,
     );
+    checkVersion();
     // checkVersion();
     //Check for updates
-    // final DownloadService downloadService = DownloadService();
-    // downloadService.checkReleaseDate(showApk, context);
-    // // Provider.of<NotificationDataService>(context, listen: false)
-    // //     .huaweiMessagingConfig(context);
+    final DownloadService downloadService = DownloadService();
+    downloadService.checkReleaseDate(showApk, context);
     // Provider.of<NotificationDataService>(context, listen: false)
-    //     .notificationPermessions();
+    //     .huaweiMessagingConfig(context);
+    Provider.of<NotificationDataService>(context, listen: false)
+        .notificationPermessions();
 
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
 
   checkVersion() async {
-    final newVersion = NewVersion();
-    final status = await newVersion.getVersionStatus();
-    print(status.canUpdate); // (true)
-    print(status.localVersion); // (1.2.1)
-    print(status.storeVersion); // (1.2.3)
-    print(status
-        .appStoreLink); // (https://itunes.apple.com/us/app/google/id284815942?mt=8)
+    // (https://itunes.apple.com/us/app/google/id284815942?mt=8)
   }
 
   @override

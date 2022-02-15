@@ -195,7 +195,7 @@ class _UserAttendanceReportScreenState
   Widget build(BuildContext context) {
     final userToken = Provider.of<UserData>(context, listen: false);
     final comData = Provider.of<CompanyData>(context, listen: false).com;
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     final reportsData = Provider.of<ReportsData>(context, listen: false);
     final userDataProvider = Provider.of<UserData>(context, listen: false);
     final siteProv = Provider.of<SiteShiftsData>(context, listen: false);

@@ -7,7 +7,9 @@ import 'package:lottie/lottie.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
@@ -71,14 +73,19 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                       onTap: () async {},
                       child: AutoSizeText(
                         widget.notificationTitle,
-                        style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: setResponsiveFontSize(15),
-                            fontWeight: FontWeight.w500),
+                        style: boldStyle.copyWith(color: ColorManager.primary),
                       ),
                     ),
                     const Divider(),
-                    AutoSizeText(widget.notificationContent),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    AutoSizeText(
+                      widget.notificationContent,
+                      style: boldStyle.copyWith(
+                          fontSize: setResponsiveFontSize(13),
+                          fontWeight: FontWeight.w400),
+                    ),
                     SizedBox(
                       height: 20.h,
                     ),
@@ -181,7 +188,9 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
             )),
         Positioned(
             right: 125.w,
-            top: MediaQuery.of(context).size.height / 3.7,
+            top: widget.isFromBackground
+                ? MediaQuery.of(context).size.height / 7
+                : MediaQuery.of(context).size.height / 3.7,
             child: Container(
               width: 150.w,
               height: 150.h,

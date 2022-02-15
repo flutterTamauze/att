@@ -27,6 +27,7 @@ import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableEnd.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dataTableRow.dart';
+import 'package:qr_users/widgets/Reports/ProgressBar.dart';
 import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/Shared/Single_day_datePicker.dart';
 import 'package:qr_users/widgets/Shared/centerMessageText.dart';
@@ -169,129 +170,124 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   @override
   Widget build(BuildContext context) {
     final comDate = Provider.of<CompanyData>(context, listen: false);
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    // SystemChrome.setEnabledSystemUIOverlays([]);
     final userType =
         Provider.of<UserData>(context, listen: false).user.userType;
     final reportsData = Provider.of<ReportsData>(context, listen: false);
 
     return WillPopScope(
       onWillPop: onWillPop,
-      child: GestureDetector(
-        onTap: () {
-          print(currentSiteName);
-        },
-        child: NotificationListener(
-          onNotification: (notificationInfo) {
-            if (showTable) {
-              if (_scrollController.hasClients) {
-                if (_scrollController.position.userScrollDirection ==
-                    ScrollDirection.reverse) {
-                  setFBvisability(false);
-                  //the setState function
-                } else if (_scrollController.position.userScrollDirection ==
-                    ScrollDirection.forward) {
-                  setFBvisability(true);
-                  //setState function
-                } else if (_scrollController.position.pixels ==
-                    _scrollController.position.maxScrollExtent) {
-                  setFBvisability(false);
-                }
+      child: NotificationListener(
+        onNotification: (notificationInfo) {
+          if (showTable) {
+            if (_scrollController.hasClients) {
+              if (_scrollController.position.userScrollDirection ==
+                  ScrollDirection.reverse) {
+                setFBvisability(false);
+                //the setState function
+              } else if (_scrollController.position.userScrollDirection ==
+                  ScrollDirection.forward) {
+                setFBvisability(true);
+                //setState function
+              } else if (_scrollController.position.pixels ==
+                  _scrollController.position.maxScrollExtent) {
+                setFBvisability(false);
               }
             }
+          }
 
-            return true;
-          },
-          child: Scaffold(
-            floatingActionButton: ValueListenableBuilder(
-              valueListenable: _visableNotifier,
-              builder: (context, value, child) {
-                return Visibility(
-                    visible: value,
-                    child: FadeIn(
-                        duration: const Duration(seconds: 1),
-                        child: MultipleFloatingButtonsNoADD()));
+          return true;
+        },
+        child: Scaffold(
+          floatingActionButton: ValueListenableBuilder(
+            valueListenable: _visableNotifier,
+            builder: (context, value, child) {
+              return Visibility(
+                  visible: value,
+                  child: FadeIn(
+                      duration: const Duration(seconds: 1),
+                      child: MultipleFloatingButtonsNoADD()));
+            },
+          ),
+          endDrawer: NotificationItem(),
+          backgroundColor: Colors.white,
+          body: Container(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanDown: (_) {
+                FocusScope.of(context).unfocus();
               },
-            ),
-            endDrawer: NotificationItem(),
-            backgroundColor: Colors.white,
-            body: Container(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onPanDown: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-                child: Stack(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Header(
-                          goUserHomeFromMenu: false,
-                          nav: false,
-                          goUserMenu: false,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SmallDirectoriesHeader(
-                              Lottie.asset("resources/report.json",
-                                  repeat: false),
-                              getTranslated(context, "تقرير الحضور اليومى"),
-                            ),
-                            showTable
-                                ? Container(
-                                    child: FutureBuilder(
-                                        future: reportsData.futureListener,
-                                        builder: (context, snapshot) {
-                                          switch (snapshot.connectionState) {
-                                            case ConnectionState.waiting:
-                                              return Container();
-                                            case ConnectionState.done:
-                                              return Row(
-                                                children: [
-                                                  !reportsData.dailyReport
-                                                              .isHoliday ||
-                                                          reportsData
-                                                                  .dailyReport
-                                                                  .attendListUnits
-                                                                  .length !=
-                                                              0
-                                                      ? isLoading
-                                                          ? Container()
-                                                          : XlsxExportButton(
-                                                              reportType: 0,
-                                                              title: getTranslated(
-                                                                  context,
-                                                                  "تقرير الحضور اليومى"),
-                                                              site: userType ==
-                                                                      2
-                                                                  ? ""
-                                                                  : Provider.of<
-                                                                              SiteShiftsData>(
-                                                                          context)
-                                                                      .siteShiftList[
-                                                                          siteIndex]
-                                                                      .siteName,
-                                                              day: date,
-                                                            )
-                                                      : Container(),
-                                                ],
-                                              );
-                                            default:
-                                              return Container();
-                                          }
-                                        }))
-                                : Container()
-                          ],
-                        ),
-                        Container(
-                            height: 40.h,
-                            child: userType == 4 || userType == 3
-                                ? Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 10,
-                                        child: SiteDropdown(
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Header(
+                        goUserHomeFromMenu: false,
+                        nav: false,
+                        goUserMenu: false,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SmallDirectoriesHeader(
+                            Lottie.asset("resources/report.json",
+                                repeat: false),
+                            getTranslated(context, "تقرير الحضور اليومى"),
+                          ),
+                          showTable
+                              ? Container(
+                                  child: FutureBuilder(
+                                      future: reportsData.futureListener,
+                                      builder: (context, snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.waiting:
+                                            return Container();
+                                          case ConnectionState.done:
+                                            return Row(
+                                              children: [
+                                                !reportsData.dailyReport
+                                                            .isHoliday ||
+                                                        reportsData
+                                                                .dailyReport
+                                                                .attendListUnits
+                                                                .length !=
+                                                            0
+                                                    ? isLoading
+                                                        ? Container()
+                                                        : XlsxExportButton(
+                                                            reportType: 0,
+                                                            title: getTranslated(
+                                                                context,
+                                                                "تقرير الحضور اليومى"),
+                                                            site: userType == 2
+                                                                ? ""
+                                                                : Provider.of<
+                                                                            SiteShiftsData>(
+                                                                        context)
+                                                                    .siteShiftList[
+                                                                        siteIndex]
+                                                                    .siteName,
+                                                            day: date,
+                                                          )
+                                                    : Container(),
+                                              ],
+                                            );
+                                          default:
+                                            return Container();
+                                        }
+                                      }))
+                              : Container()
+                        ],
+                      ),
+                      Container(
+                          height: 40.h,
+                          child: userType == 4 || userType == 3
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 10,
+                                      child: SiteDropdown(
                                           edit: true,
                                           list: Provider.of<SiteShiftsData>(
                                                   context)
@@ -321,313 +317,309 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                       context)
                                                   .siteShiftList[siteIndex]
                                                   .siteName,
-                                          textColor: Colors.orange,
-                                        ),
+                                          textColor: ColorManager.primary),
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Expanded(
+                                      flex: 8,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(6),
+                                        child: Theme(
+                                            data: clockTheme,
+                                            child: SingleDayDatePicker(
+                                              firstDate: DateTime(
+                                                  comDate.com.createdOn.year -
+                                                      1,
+                                                  comDate.com.createdOn.month,
+                                                  comDate.com.createdOn.day),
+                                              lastDate: DateTime.now(),
+                                              selectedDateString:
+                                                  selectedDateString,
+                                              functionPicker: (value) {
+                                                if (value != date) {
+                                                  date = value;
+                                                  selectedDateString = date;
+                                                  setState(() {
+                                                    selectedDate =
+                                                        DateTime.parse(
+                                                            selectedDateString);
+                                                    showViewTableButton = true;
+                                                    showTable = false;
+                                                  });
+                                                  // getDailyReport(siteIndex,
+                                                  //     date, context);
+                                                }
+                                              },
+                                            )),
                                       ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        flex: 8,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(6),
-                                          child: Theme(
-                                              data: clockTheme,
-                                              child: SingleDayDatePicker(
-                                                firstDate: DateTime(
-                                                    comDate.com.createdOn.year -
-                                                        1,
-                                                    comDate.com.createdOn.month,
-                                                    comDate.com.createdOn.day),
-                                                lastDate: DateTime.now(),
-                                                selectedDateString:
-                                                    selectedDateString,
-                                                functionPicker: (value) {
-                                                  if (value != date) {
-                                                    date = value;
-                                                    selectedDateString = date;
-                                                    setState(() {
-                                                      selectedDate =
-                                                          DateTime.parse(
-                                                              selectedDateString);
-                                                      showViewTableButton =
-                                                          true;
-                                                      showTable = false;
-                                                    });
-                                                    // getDailyReport(siteIndex,
-                                                    //     date, context);
-                                                  }
-                                                },
-                                              )),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : SingleDayDatePicker(
-                                    firstDate: comDate.com.createdOn,
-                                    lastDate: DateTime.now(),
-                                    selectedDateString: selectedDateString,
-                                    functionPicker: (value) {
-                                      if (value != date) {
-                                        setState(() {
-                                          date = value;
-                                          selectedDateString = date;
-                                          showViewTableButton = true;
-                                          showTable = false;
-                                        });
-                                        // getDailyReport(siteIndex,
-                                        //     date, context);
-                                      }
-                                    },
-                                  )),
-                        showViewTableButton
-                            ? SizedBox(
-                                height: 20.h,
-                              )
-                            : Container(),
-                        Visibility(
-                          visible: showViewTableButton,
-                          child: Expanded(
-                            flex: 9,
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  loadProgressIndicator();
-                                  setState(() {
-                                    getDailyReport(siteIndex, date, context);
-                                    showTable = true;
-                                    showViewTableButton = false;
-                                  });
-                                },
-                                child: Container(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width: 400.w,
-                                        height: 300.h,
-                                        child: Lottie.asset(
-                                            "resources/displayReport.json",
-                                            fit: BoxFit.fill),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Container(
-                                        alignment: Alignment.center,
-                                        padding: const EdgeInsets.all(5),
-                                        width: 150.w,
-                                        height: 50.h,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 2,
-                                                color: ColorManager.primary),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            AutoSizeText(
-                                              getTranslated(
-                                                  context, "عرض التقرير"),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Container(
-                                                width: 2,
-                                                height: 80.h,
-                                                color: ColorManager.primary),
-                                            const Icon(FontAwesomeIcons.fileAlt)
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                  ],
+                                )
+                              : SingleDayDatePicker(
+                                  firstDate: comDate.com.createdOn,
+                                  lastDate: DateTime.now(),
+                                  selectedDateString: selectedDateString,
+                                  functionPicker: (value) {
+                                    if (value != date) {
+                                      setState(() {
+                                        date = value;
+                                        selectedDateString = date;
+                                        showViewTableButton = true;
+                                        showTable = false;
+                                      });
+                                      // getDailyReport(siteIndex,
+                                      //     date, context);
+                                    }
+                                  },
+                                )),
+                      showViewTableButton
+                          ? SizedBox(
+                              height: 20.h,
+                            )
+                          : Container(),
+                      Visibility(
+                        visible: showViewTableButton,
+                        child: Expanded(
+                          flex: 9,
+                          child: Center(
+                            child: Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 400.w,
+                                    height: 300.h,
+                                    child: Lottie.asset(
+                                        "resources/displayReport.json",
+                                        fit: BoxFit.fill),
                                   ),
-                                ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(5),
+                                    width: 150.w,
+                                    height: 50.h,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 2,
+                                            color: ColorManager.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        loadProgressIndicator();
+                                        setState(() {
+                                          getDailyReport(
+                                              siteIndex, date, context);
+                                          showTable = true;
+                                          showViewTableButton = false;
+                                        });
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          AutoSizeText(
+                                            getTranslated(
+                                                context, "عرض التقرير"),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                              width: 2,
+                                              height: 80.h,
+                                              color: ColorManager.primary),
+                                          const Icon(FontAwesomeIcons.fileAlt)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: FutureBuilder(
-                              future: reportsData.futureListener,
-                              builder: (context, snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.waiting:
-                                    return ProgressBar(percent, 70, 60);
-                                  case ConnectionState.done:
-                                    // log("data ${snapshot.data}");
-                                    if (percent != 0) {
-                                      timer.cancel();
-                                    }
+                      ),
+                      Expanded(
+                        child: FutureBuilder(
+                            future: reportsData.futureListener,
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return ProgressBar(percent, 70, 60);
+                                case ConnectionState.done:
+                                  // log("data ${snapshot.data}");
+                                  if (percent != 0) {
+                                    timer.cancel();
+                                  }
 
-                                    return Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        showTable
-                                            ? Expanded(
-                                                child: SmartRefresher(
-                                                  onRefresh: _onRefresh,
-                                                  controller: refreshController,
-                                                  header:
-                                                      const WaterDropMaterialHeader(
-                                                    color: Colors.white,
-                                                    backgroundColor:
-                                                        Colors.orange,
-                                                  ),
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: snapshot.data ==
-                                                            "No records found official vacation"
-                                                        ? Container(
-                                                            child: Center(
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Container(
-                                                                    height: 20,
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      getTranslated(
-                                                                          context,
-                                                                          "لا يوجد تسجيلات : عطلة رسمية"),
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: TextStyle(
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf:
-                                                                                  true),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height:
-                                                                        10.h,
-                                                                  ),
-                                                                  Container(
-                                                                    height: 20,
-                                                                    child: AutoSizeText(
-                                                                        reportsData
-                                                                            .dailyReport
-                                                                            .officialHoliday,
-                                                                        maxLines:
-                                                                            1,
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              17,
-                                                                              allowFontScalingSelf: true),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          color:
-                                                                              Colors.orange,
-                                                                        )),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : snapshot.data ==
-                                                                "No records found holiday"
-                                                            ? CenterMessageText(
-                                                                message:
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      showTable
+                                          ? Expanded(
+                                              child: SmartRefresher(
+                                                onRefresh: _onRefresh,
+                                                controller: refreshController,
+                                                header: WaterDropMaterialHeader(
+                                                  color: Colors.white,
+                                                  backgroundColor:
+                                                      ColorManager.primary,
+                                                ),
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: snapshot.data ==
+                                                          "No records found official vacation"
+                                                      ? Container(
+                                                          child: Center(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  height: 20,
+                                                                  child:
+                                                                      AutoSizeText(
                                                                     getTranslated(
                                                                         context,
-                                                                        "لا يوجد تسجيلات: عطلة اسبوعية"),
-                                                              )
-                                                            : snapshot.data !=
-                                                                    "wrong"
-                                                                ? Column(
-                                                                    children: [
-                                                                      orangeDivider,
-                                                                      DataTableHeader(),
-                                                                      orangeDivider,
-                                                                      Expanded(
-                                                                          child: snapshot.data == "Date is older than company date"
-                                                                              ? CenterMessageText(
-                                                                                  message: getTranslated(context, "التاريخ قبل إنشاء الشركة"),
-                                                                                )
-                                                                              : HandleExceptionsView(
-                                                                                  ListView.builder(
-                                                                                      controller: _scrollController,
-                                                                                      physics: const AlwaysScrollableScrollPhysics(),
-                                                                                      itemCount: reportsData.dailyReport.attendListUnits.length,
-                                                                                      itemBuilder: (BuildContext context, int index) {
-                                                                                        return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
-                                                                                      }),
-                                                                                )),
-                                                                      !isToday(
-                                                                              selectedDate)
-                                                                          ? snapshot.data == "Success"
-                                                                              ? DailyReportTableEnd(totalAbsents: reportsData.dailyReport.totalAbsent.toString(), totalAttend: reportsData.dailyReport.totalAttend.toString())
-                                                                              : snapshot.data == "Success : Official Vacation Day"
-                                                                                  ? DailyReportTodayTableEnd(
-                                                                                      titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
-                                                                                      title: reportsData.dailyReport.officialHoliday,
-                                                                                    )
-                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
-                                                                                      ? Container()
-                                                                                      : DailyReportTodayTableEnd(
-                                                                                          titleHeader: getTranslated(context, "عطلة اسبوعية"),
-                                                                                          title: "",
-                                                                                        )
-                                                                          : snapshot.data == "Success"
-                                                                              ? Container()
-                                                                              : snapshot.data == "Success : Official Vacation Day"
-                                                                                  ? DailyReportTodayTableEnd(
-                                                                                      titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
-                                                                                      title: reportsData.dailyReport.officialHoliday,
-                                                                                    )
-                                                                                  : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
-                                                                                      ? Container()
-                                                                                      : DailyReportTodayTableEnd(
-                                                                                          titleHeader: getTranslated(context, "عطلة اسبوعية"),
-                                                                                          title: "",
-                                                                                        ),
-                                                                    ],
-                                                                  )
-                                                                : CenterMessageText(
-                                                                    message: getTranslated(
-                                                                        context,
-                                                                        "لا يوجد تسجيلات بهذا اليوم"),
+                                                                        "لا يوجد تسجيلات : عطلة رسمية"),
+                                                                    maxLines: 1,
+                                                                    style:
+                                                                        boldStyle,
                                                                   ),
-                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10.h,
+                                                                ),
+                                                                Container(
+                                                                  height: 20,
+                                                                  child: AutoSizeText(
+                                                                      reportsData
+                                                                          .dailyReport
+                                                                          .officialHoliday,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            17,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        color: Colors
+                                                                            .orange,
+                                                                      )),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : snapshot.data ==
+                                                              "No records found holiday"
+                                                          ? CenterMessageText(
+                                                              message:
+                                                                  getTranslated(
+                                                                      context,
+                                                                      "لا يوجد تسجيلات : عطلة اسبوعية"),
+                                                            )
+                                                          : snapshot.data !=
+                                                                  "wrong"
+                                                              ? Column(
+                                                                  children: [
+                                                                    orangeDivider,
+                                                                    DataTableHeader(),
+                                                                    orangeDivider,
+                                                                    Expanded(
+                                                                      child: snapshot.data ==
+                                                                              "Date is older than company date"
+                                                                          ? CenterMessageText(
+                                                                              message: getTranslated(context, "التاريخ قبل إنشاء الشركة"),
+                                                                            )
+                                                                          : ListView.builder(
+                                                                              controller: _scrollController,
+                                                                              physics: const AlwaysScrollableScrollPhysics(),
+                                                                              itemCount: reportsData.dailyReport.attendListUnits.length,
+                                                                              itemBuilder: (BuildContext context, int index) {
+                                                                                return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
+                                                                              }),
+                                                                    ),
+                                                                    !isToday(
+                                                                            selectedDate)
+                                                                        ? snapshot.data ==
+                                                                                "Success"
+                                                                            ? DailyReportTableEnd(
+                                                                                totalAbsents: reportsData.dailyReport.totalAbsent.toString(),
+                                                                                totalAttend: reportsData.dailyReport.totalAttend.toString())
+                                                                            : snapshot.data == "Success : Official Vacation Day"
+                                                                                ? DailyReportTodayTableEnd(
+                                                                                    titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
+                                                                                    title: reportsData.dailyReport.officialHoliday,
+                                                                                  )
+                                                                                : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
+                                                                                    ? Container()
+                                                                                    : DailyReportTodayTableEnd(
+                                                                                        titleHeader: getTranslated(context, "عطلة اسبوعية"),
+                                                                                        title: "",
+                                                                                      )
+                                                                        : snapshot.data == "Success"
+                                                                            ? Container()
+                                                                            : snapshot.data == "Success : Official Vacation Day"
+                                                                                ? DailyReportTodayTableEnd(
+                                                                                    titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
+                                                                                    title: reportsData.dailyReport.officialHoliday,
+                                                                                  )
+                                                                                : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
+                                                                                    ? Container()
+                                                                                    : DailyReportTodayTableEnd(
+                                                                                        titleHeader: getTranslated(context, "عطلة اسبوعية"),
+                                                                                        title: "",
+                                                                                      ),
+                                                                  ],
+                                                                )
+                                                              : CenterMessageText(
+                                                                  message: getTranslated(
+                                                                      context,
+                                                                      "لا يوجد تسجيلات بهذا اليوم"),
+                                                                ),
                                                 ),
-                                              )
-                                            : Container()
-                                      ],
-                                    );
-                                  default:
-                                    return Center(child: Container());
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      left: 5.0.w,
-                      top: 5.0.h,
-                      child: Container(
-                        width: 50.w,
-                        height: 50.h,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => NavScreenTwo(2)),
-                                (Route<dynamic> route) => false);
-                          },
-                        ),
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
+                                  );
+                                default:
+                                  return Center(child: Container());
+                              }
+                            }),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    left: 5.0.w,
+                    top: 5.0.h,
+                    child: Container(
+                      width: 50.w,
+                      height: 50.h,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const NavScreenTwo(2)),
+                              (Route<dynamic> route) => false);
+                        },
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -642,50 +634,5 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
         MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
         (Route<dynamic> route) => false);
     return Future.value(false);
-  }
-}
-
-class ProgressBar extends StatelessWidget {
-  final int percent;
-  final int maxValue;
-  final int maxPercent;
-
-  const ProgressBar(this.percent, this.maxValue, this.maxPercent);
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 50),
-      child: Column(
-        children: [
-          Container(
-            width: 400.w,
-            height: 300.h,
-            child: Lottie.asset("resources/kiteLoader.json"),
-          ),
-          AutoSizeText(
-            percent > maxPercent
-                ? getTranslated(context, "على وشك الأنتهاء ")
-                : getTranslated(context, "برجاء الأنتظار"),
-            style: TextStyle(
-                fontSize: setResponsiveFontSize(17),
-                fontWeight: FontWeight.w700),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: FAProgressBar(
-                currentValue: percent,
-                backgroundColor: Colors.grey[200],
-                maxValue: maxValue,
-                progressColor: ColorManager.primary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

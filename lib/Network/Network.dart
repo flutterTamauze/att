@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ import '../main.dart';
 import 'networkInfo.dart';
 
 class NetworkApi {
-  final timeOutDuration = const Duration(seconds: 40);
+  final timeOutDuration = const Duration(seconds: 50);
 
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
@@ -60,6 +61,11 @@ class NetworkApi {
         locator.locator<PermissionHan>().setInternetConnection(true);
         locator.locator<PermissionHan>().setServerDown(false);
         return res.body;
+      } on SocketException catch (e) {
+        print("socket error occured $e");
+        locator.locator<PermissionHan>().setInternetConnection(false);
+        noInternetDialog(navigatorKey.currentState.overlay.context);
+        return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       } on TimeoutException catch (e) {
         print("timeout occured $e");
         locator.locator<PermissionHan>().setInternetConnection(false);

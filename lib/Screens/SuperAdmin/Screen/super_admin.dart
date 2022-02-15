@@ -98,8 +98,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                             .companyId)
                                         .then((value) async {
                                       if (value.toString() == "Success") {
-                                        await Provider.of<SiteShiftsData>(
-                                                context,
+                                        Provider.of<SiteShiftsData>(context,
                                                 listen: false)
                                             .getAllSitesAndShifts(
                                                 comProvider.com.id,

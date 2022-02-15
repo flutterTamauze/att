@@ -235,12 +235,10 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? HandleExceptionsView(
-                                  Expanded(
-                                    child: UserOrdersListView(
-                                      provList: provList,
-                                      memberId: "",
-                                    ),
+                              ? Expanded(
+                                  child: UserOrdersListView(
+                                    provList: provList,
+                                    memberId: "",
                                   ),
                                 )
                               : filteredOrderData == null ||
@@ -293,13 +291,11 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           );
                         } else {
                           return orderNumberController.text == ""
-                              ? HandleExceptionsView(
-                                  Expanded(
-                                    child: UserPermessionListView(
-                                        memberId: "",
-                                        isFilter: false,
-                                        permessionsList: permessionsList),
-                                  ),
+                              ? Expanded(
+                                  child: UserPermessionListView(
+                                      memberId: "",
+                                      isFilter: false,
+                                      permessionsList: permessionsList),
                                 )
                               : filteredPermessions == null ||
                                       filteredPermessions.isEmpty

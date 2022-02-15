@@ -132,7 +132,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                         ),
                       );
                     } else {
-                      return HandleExceptionsView(Expanded(
+                      return (Expanded(
                           child: pendingList.pendingCompanyHolidays.length == 0
                               ? Center(
                                   child: AutoSizeText(

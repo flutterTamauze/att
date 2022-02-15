@@ -167,7 +167,10 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Header(nav: false),
+                        Header(
+                          nav: false,
+                          goUserHomeFromMenu: true,
+                        ),
 
                         ///Title
                         SmallDirectoriesHeader(

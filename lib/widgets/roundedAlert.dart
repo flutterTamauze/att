@@ -6,10 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/main.dart';
+import 'package:qr_users/services/CompanySettings/companySettings.dart';
+import 'package:qr_users/services/company.dart';
 
 import 'package:qr_users/services/permissions_data.dart';
+import 'package:qr_users/services/user_data.dart';
 
 class RoundedAlert extends StatelessWidget {
   final String title;
@@ -17,7 +22,7 @@ class RoundedAlert extends StatelessWidget {
   final Function onPressed;
   final Function onCancel;
 
-  RoundedAlert(
+  const RoundedAlert(
       {this.title, this.content, @required this.onPressed, this.onCancel});
 
   @override
@@ -44,11 +49,11 @@ class RoundedAlert extends StatelessWidget {
                           style: TextStyle(
                               fontSize: setResponsiveFontSize(18),
                               height: 1.8,
-                              color: Colors.orange,
+                              color: ColorManager.primary,
                               fontWeight: FontWeight.w900),
                         ),
                       )),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Center(
@@ -95,7 +100,7 @@ class RoundedAlert extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Material(
                         elevation: 5.0,
                         color: Colors.black,
@@ -232,7 +237,7 @@ class RoundedAlertWithComment extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Material(
                         elevation: 5.0,
                         color: Colors.black,
@@ -272,7 +277,7 @@ class RoundedAlertEn extends StatelessWidget {
   final Function onPressed;
   final Function onCancel;
 
-  RoundedAlertEn(
+  const RoundedAlertEn(
       {this.title, this.content, @required this.onPressed, this.onCancel});
 
   @override
@@ -297,11 +302,11 @@ class RoundedAlertEn extends StatelessWidget {
                           title,
                           style: TextStyle(
                               fontSize: 18,
-                              color: Colors.orange,
+                              color: ColorManager.primary,
                               fontWeight: FontWeight.w900),
                         ),
                       )),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Center(
@@ -343,7 +348,7 @@ class RoundedAlertEn extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Material(
                         elevation: 5.0,
                         color: Colors.black,
@@ -379,7 +384,7 @@ class PermissionAlert extends StatefulWidget {
   final String content;
   final Function allAccepted;
 
-  PermissionAlert({
+  const PermissionAlert({
     this.title,
     this.content,
     @required this.allAccepted,
@@ -409,11 +414,11 @@ class _PermissionAlertState extends State<PermissionAlert> {
                     maxLines: 1,
                     style: TextStyle(
                         fontSize: setResponsiveFontSize(18),
-                        color: Colors.orange,
+                        color: ColorManager.primary,
                         fontWeight: FontWeight.w900),
                   ),
                 )),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Center(
@@ -468,7 +473,7 @@ class _PermissionAlertState extends State<PermissionAlert> {
 }
 
 class PermissionWidget extends StatefulWidget {
-  PermissionWidget({this.permissionData, this.onTap});
+  const PermissionWidget({this.permissionData, this.onTap});
 
   final PrData permissionData;
   final Function onTap;
@@ -485,7 +490,6 @@ class _PermissionState extends State<PermissionWidget> {
 
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await _listenForPermissionStatus();
   }
@@ -621,7 +625,7 @@ class RoundAlertUpgrade extends StatelessWidget {
   final String content;
   final Function onPressed;
 
-  RoundAlertUpgrade({this.title, this.content, @required this.onPressed});
+  const RoundAlertUpgrade({this.title, this.content, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -650,21 +654,19 @@ class RoundAlertUpgrade extends StatelessWidget {
                               fontWeight: FontWeight.w900),
                         ),
                       )),
-                      Divider(),
+                      const Divider(),
                       SizedBox(
-                        height: 15.h,
+                        height: 5.h,
                       ),
                       Center(
                         child: Container(
-                          height: 40.h,
                           width: 200.w,
                           child: AutoSizeText(
                             content,
-                            maxLines: 2,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: setResponsiveFontSize(14),
-                                height: 1.5,
+                                fontSize: setResponsiveFontSize(13),
+                                height: 1.2,
                                 fontWeight: FontWeight.w600),
                             textAlign: TextAlign.center,
                           ),
@@ -685,10 +687,10 @@ class RoundAlertUpgrade extends StatelessWidget {
                       child: Container(
                         height: 20,
                         child: AutoSizeText(
-                          "تحديث",
+                          getTranslated(context, "تحديث"),
                           maxLines: 1,
                           style: TextStyle(
-                              color: Colors.orange,
+                              color: ColorManager.primary,
                               fontWeight: FontWeight.bold,
                               fontSize: setResponsiveFontSize(17)),
                         ),
@@ -698,6 +700,161 @@ class RoundAlertUpgrade extends StatelessWidget {
                 ]),
           ),
         ));
+  }
+}
+
+class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
+  final IconData imageIcon;
+  final String content;
+  final Function onPressed;
+  RoundedAlertOkOnlyWithIcon(
+      {@required this.imageIcon,
+      @required this.content,
+      @required this.onPressed});
+
+  var isLoading = false;
+  bool checkApplicationStatus() {
+    if (imageIcon == Icons.wifi_off_sharp) {
+      if (locator.locator<PermissionHan>().isInternetConnected) {
+        print("true");
+        return true;
+      } else {
+        print("false");
+        return false;
+      }
+    } else {
+      if (!locator.locator<PermissionHan>().isServerDown) {
+        print("true");
+        return true;
+      } else {
+        print("false");
+        return false;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(
+      builder: (context, setstate) {
+        return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              height: 200.h,
+              width: 250.w,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: <Widget>[
+                          Center(
+                              child: Container(
+                                  height: 20.h,
+                                  child: Icon(
+                                    imageIcon,
+                                    color: ColorManager.primary,
+                                  ))),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Divider(
+                            thickness: 1,
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          Center(
+                            child: Container(
+                              height: 40.h,
+                              child: AutoSizeText(
+                                content,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: setResponsiveFontSize(14),
+                                    height: 1.5,
+                                    fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Material(
+                            elevation: 5.0,
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                setstate(() {
+                                  isLoading = true;
+                                });
+                                if (checkApplicationStatus()) {
+                                  Navigator.pop(context);
+                                } else {
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    final CompanySettingsService
+                                        _companyService =
+                                        CompanySettingsService();
+                                    // ignore: cascade_invocations
+                                    _companyService.isCompanySuspended(
+                                        Provider.of<CompanyData>(context,
+                                                listen: false)
+                                            .com
+                                            .id,
+                                        Provider.of<UserData>(context,
+                                                listen: false)
+                                            .user
+                                            .userToken);
+                                    setstate(() {
+                                      isLoading = false;
+                                    });
+                                  });
+                                }
+                              },
+                              minWidth: 130,
+                              height: 30,
+                              child: Container(
+                                height: 20,
+                                child: isLoading
+                                    ? Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: ColorManager.primary,
+                                          ),
+                                        ),
+                                      )
+                                    : AutoSizeText(
+                                        getTranslated(
+                                          context,
+                                          "محاولة مرة اخرى",
+                                        ),
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: ColorManager.primary,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: setResponsiveFontSize(17),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+              ),
+            ));
+      },
+    );
   }
 }
 

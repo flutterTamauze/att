@@ -7,6 +7,7 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:qr_users/widgets/Reports/ProgressBar.dart';
 import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'DailyReportScreen.dart';
 import 'package:flutter/services.dart';
@@ -586,103 +587,101 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                                               context,
                                                               "التاريخ قبل إنشاء الشركة")),
                                                     )
-                                                  : HandleExceptionsView(
-                                                      Expanded(
-                                                        child: Container(
-                                                          color: Colors.white,
-                                                          child: !reportsData
-                                                                  .lateAbsenceReport
-                                                                  .isDayOff
-                                                              ? reportsData
-                                                                          .lateAbsenceReport
-                                                                          .lateAbsenceReportUnitList
-                                                                          .length !=
-                                                                      0
-                                                                  ? Column(
-                                                                      children: [
-                                                                        Divider(
-                                                                          thickness:
-                                                                              1,
-                                                                          color:
-                                                                              Colors.orange[600],
-                                                                        ),
-                                                                        DataTableHeader(),
-                                                                        Divider(
-                                                                          thickness:
-                                                                              1,
-                                                                          color:
-                                                                              Colors.orange[600],
-                                                                        ),
-                                                                        Expanded(
-                                                                            child:
-                                                                                Container(
-                                                                          child:
-                                                                              Stack(
-                                                                            children: [
-                                                                              ListView.builder(
-                                                                                  controller: _scrollController,
-                                                                                  itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
-                                                                                  itemBuilder: (BuildContext context, int index) {
-                                                                                    return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
-                                                                                  }),
-                                                                            ],
-                                                                          ),
-                                                                        )),
-                                                                        DataTableEnd(
-                                                                          lateRatio: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .lateRatio,
-                                                                          absenceRatio: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .absentRatio,
-                                                                          totalDeduction: reportsData
-                                                                              .lateAbsenceReport
-                                                                              .totalDecutionForAllUsers,
-                                                                        )
-                                                                      ],
-                                                                    )
-                                                                  : Center(
-                                                                      child:
-                                                                          Container(
-                                                                        height:
-                                                                            20,
-                                                                        child:
-                                                                            AutoSizeText(
-                                                                          getTranslated(
-                                                                              context,
-                                                                              "لا يوجد تسجيلات بهذا الموقع"),
-                                                                          maxLines:
-                                                                              1,
-                                                                          style: TextStyle(
-                                                                              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                                                                              fontWeight: FontWeight.w700),
-                                                                        ),
+                                                  : Expanded(
+                                                      child: Container(
+                                                        color: Colors.white,
+                                                        child: !reportsData
+                                                                .lateAbsenceReport
+                                                                .isDayOff
+                                                            ? reportsData
+                                                                        .lateAbsenceReport
+                                                                        .lateAbsenceReportUnitList
+                                                                        .length !=
+                                                                    0
+                                                                ? Column(
+                                                                    children: [
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .orange[600],
                                                                       ),
-                                                                    )
-                                                              : Center(
-                                                                  child:
-                                                                      Container(
-                                                                    height: 20,
+                                                                      DataTableHeader(),
+                                                                      Divider(
+                                                                        thickness:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .orange[600],
+                                                                      ),
+                                                                      Expanded(
+                                                                          child:
+                                                                              Container(
+                                                                        child:
+                                                                            Stack(
+                                                                          children: [
+                                                                            ListView.builder(
+                                                                                controller: _scrollController,
+                                                                                itemCount: reportsData.lateAbsenceReport.lateAbsenceReportUnitList.length,
+                                                                                itemBuilder: (BuildContext context, int index) {
+                                                                                  return DataTableRow(reportsData.lateAbsenceReport.lateAbsenceReportUnitList[index], siteIdIndex, fromDate, toDate);
+                                                                                }),
+                                                                          ],
+                                                                        ),
+                                                                      )),
+                                                                      DataTableEnd(
+                                                                        lateRatio: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .lateRatio,
+                                                                        absenceRatio: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .absentRatio,
+                                                                        totalDeduction: reportsData
+                                                                            .lateAbsenceReport
+                                                                            .totalDecutionForAllUsers,
+                                                                      )
+                                                                    ],
+                                                                  )
+                                                                : Center(
                                                                     child:
-                                                                        AutoSizeText(
-                                                                      getTranslated(
-                                                                          context,
-                                                                          "لا يوجد تسجيلات: يوم اجازة"),
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: TextStyle(
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              16,
-                                                                              allowFontScalingSelf:
-                                                                                  true),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
+                                                                        Container(
+                                                                      height:
+                                                                          20,
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        getTranslated(
+                                                                            context,
+                                                                            "لا يوجد تسجيلات بهذا الموقع"),
+                                                                        maxLines:
+                                                                            1,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                                                                            fontWeight: FontWeight.w700),
+                                                                      ),
                                                                     ),
+                                                                  )
+                                                            : Center(
+                                                                child:
+                                                                    Container(
+                                                                  height: 20,
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تسجيلات: يوم اجازة"),
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            16,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
                                                                   ),
                                                                 ),
-                                                        ),
+                                                              ),
                                                       ),
-                                                    )
+                                                    ),
                                             ],
                                           )
                                         : Container();

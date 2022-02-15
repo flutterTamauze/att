@@ -368,13 +368,9 @@ class _LoginScreenState extends State<LoginScreen> {
             isLoading = false;
           });
           // return noInternetDialog(context);
-        } else if (value == USER_INVALID_RESPONSE ||
-            value == null ||
-            value == -3) {
-          return serverDownDialog(context).then((value) {
-            setState(() {
-              isLoading = false;
-            });
+        } else if (value == USER_INVALID_RESPONSE || value == null) {
+          setState(() {
+            isLoading = false;
           });
         } else if (value == 0) {
           prefs.setStringList(
