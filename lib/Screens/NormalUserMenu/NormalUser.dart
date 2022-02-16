@@ -14,9 +14,11 @@ import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/Settings/LanguageSettings.dart';
 import 'package:qr_users/widgets/UserReport/TodayUserReport.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -137,6 +139,23 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
               new MaterialPageRoute(
                 builder: (context) => UserCurrentShifts(),
               ),
+            );
+          }),
+      ReportTile(
+          title: getTranslated(context, "اعدادات اللغة"),
+          subTitle: getTranslated(context, "ضبط اعدادات اللغة"),
+          icon: FontAwesomeIcons.globe,
+          onTap: () async {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return ChangeLanguage(
+                    callBackFun: () {},
+                    locale: Provider.of<PermissionHan>(context, listen: false)
+                            .isEnglishLocale()
+                        ? "En"
+                        : "Ar");
+              },
             );
           }),
     ];

@@ -1058,7 +1058,7 @@ class ProfileHeader extends StatelessWidget {
                                   maxLines: 1,
                                   style: TextStyle(
                                       color: Colors.orange,
-                                      fontSize: ScreenUtil().setSp(17,
+                                      fontSize: ScreenUtil().setSp(16,
                                           allowFontScalingSelf: true),
                                       fontWeight: FontWeight.bold),
                                 ),

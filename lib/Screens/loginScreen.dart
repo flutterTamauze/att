@@ -86,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: <Widget>[
                                   TextFormField(
                                     textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (_) =>
-                                        FocusScope.of(context).nextFocus(),
+                                    // onFieldSubmitted: (_) =>
+                                    //     FocusScope.of(context).nextFocus(),
                                     validator: (text) {
                                       if (text == null || text.isEmpty) {
                                         return getTranslated(context, "مطلوب");
@@ -175,8 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   setState(() {
                                                     _passwordVisible =
                                                         !_passwordVisible;
-                                                    FocusScope.of(context)
-                                                        .requestFocus();
+                                                    // FocusScope.of(context)
+                                                    //     .requestFocus();
                                                   });
                                                 },
                                               ),
@@ -196,8 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   setState(() {
                                                     _passwordVisible =
                                                         !_passwordVisible;
-                                                    FocusScope.of(context)
-                                                        .requestFocus();
+                                                    // FocusScope.of(context)
+                                                    //     .requestFocus();
                                                   });
                                                 },
                                               ),

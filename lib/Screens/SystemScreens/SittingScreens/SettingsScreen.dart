@@ -196,26 +196,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         builder: (context) => CompanySettings(),
                                       ));
                                 }),
-                        ServiceTile(
-                            title: getTranslated(context, "اعدادات اللغة"),
-                            subTitle:
-                                getTranslated(context, "ضبط اعدادات اللغة"),
-                            icon: Icons.language,
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return ChangeLanguage(
-                                      callBackFun: () {},
-                                      locale: Provider.of<PermissionHan>(
-                                                  context,
-                                                  listen: false)
-                                              .isEnglishLocale()
-                                          ? "En"
-                                          : "Ar");
-                                },
-                              );
-                            }),
+                        // ServiceTile(
+                        //     title: getTranslated(context, "اعدادات اللغة"),
+                        //     subTitle:
+                        //         getTranslated(context, "ضبط اعدادات اللغة"),
+                        //     icon: Icons.language,
+                        //     onTap: () async {
+                        //       showDialog(
+                        //         context: context,
+                        //         builder: (context) {
+                        //           return ChangeLanguage(
+                        //               callBackFun: () {},
+                        //               locale: Provider.of<PermissionHan>(
+                        //                           context,
+                        //                           listen: false)
+                        //                       .isEnglishLocale()
+                        //                   ? "En"
+                        //                   : "Ar");
+                        //         },
+                        //       );
+                        //     }),
                       ],
                     ),
                   ),

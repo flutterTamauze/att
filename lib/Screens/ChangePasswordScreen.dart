@@ -175,8 +175,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Stack(
                       children: [
                         ProfileHeader(
-                          title:
-                              widget.inAppEdit ? "" : "برجاء اختيار صورة شخصية",
+                          title: widget.inAppEdit
+                              ? ""
+                              : getTranslated(
+                                  context, "برجاء اختيار صورة شخصية"),
                           headerImage: Container(
                             height: 140.h,
                             child: CachedNetworkImage(
@@ -341,6 +343,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                                   : Icons.visibility,
                                               color: Colors.grey,
                                             ),
+                                            onPressed: () {
+                                              setState(() {
+                                                _passwordVisible =
+                                                    !_passwordVisible;
+                                                FocusScope.of(context)
+                                                    .requestFocus();
+                                              });
+                                            },
                                           ))
                                 ],
                               ),
@@ -431,7 +441,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                                   : Icons.visibility,
                                               color: Colors.grey,
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              setState(() {
+                                                _repasswordVisible =
+                                                    !_repasswordVisible;
+                                                FocusScope.of(context)
+                                                    .requestFocus();
+                                              });
+                                            },
                                           ))
                                 ],
                               ),
