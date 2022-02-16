@@ -153,7 +153,9 @@ class _SplashScreenState extends State<SplashScreen>
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
                       getTranslated(context,
-                          "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج"),
+                          "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"),
+                      // getTranslated(context,
+                      //     "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج"),
                       true)));
             } else if (value == -4) {
               Navigator.of(context).pushReplacement(new MaterialPageRoute(

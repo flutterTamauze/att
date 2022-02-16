@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
 
@@ -10,6 +11,7 @@ import 'dart:async';
 
 import 'package:qr_users/enums/request_type.dart';
 import 'package:qr_users/services/permissions_data.dart';
+import 'package:qr_users/services/user_data.dart';
 
 import '../main.dart';
 import 'networkInfo.dart';
@@ -55,8 +57,13 @@ class NetworkApi {
           serverDownDialog(navigatorKey.currentState.overlay.context);
           return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
         }
+
         // locator.locator<PermissionHan>().setServerDown(true);
-        // serverDownDialog(navigatorKey.currentState.overlay.context);
+        // print(locator.locator<UserData>().user.userToken);
+        // if (locator.locator<UserData>().user.userToken != null) {
+        //   serverDownDialog(navigatorKey.currentState.overlay.context);
+        // }
+
         // return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
         locator.locator<PermissionHan>().setInternetConnection(true);
         locator.locator<PermissionHan>().setServerDown(false);
@@ -64,17 +71,26 @@ class NetworkApi {
       } on SocketException catch (e) {
         print("socket error occured $e");
         locator.locator<PermissionHan>().setInternetConnection(false);
-        noInternetDialog(navigatorKey.currentState.overlay.context);
+        if (locator.locator<UserData>().user.userToken != null) {
+          noInternetDialog(navigatorKey.currentState.overlay.context);
+        }
+
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       } on TimeoutException catch (e) {
         print("timeout occured $e");
         locator.locator<PermissionHan>().setInternetConnection(false);
-        noInternetDialog(navigatorKey.currentState.overlay.context);
+        if (locator.locator<UserData>().user.userToken != null) {
+          noInternetDialog(navigatorKey.currentState.overlay.context);
+        }
+
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       }
     }
     locator.locator<PermissionHan>().setInternetConnection(false);
-    noInternetDialog(navigatorKey.currentState.overlay.context);
+    if (locator.locator<UserData>().user.userToken != null) {
+      noInternetDialog(navigatorKey.currentState.overlay.context);
+    }
+
     return Faliure(errorResponse: "NO INTERNET", code: NO_INTERNET);
   }
 

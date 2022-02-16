@@ -42,27 +42,34 @@ class CompanySettingsService {
   }
 
   Future<bool> isCompanySuspended(int comID, String userToken) async {
-    final response = await http.get(
-      Uri.parse("$baseURL/api/Company/Status?companyId=$comID"),
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': "Bearer $userToken"
-      },
-    );
-    if (response.statusCode == 500 || response.statusCode == 501) {
-      locator.locator<PermissionHan>().setServerDown(true);
-    } else if (response.statusCode == 200) {
-      locator.locator<PermissionHan>().setServerDown(false);
-      locator.locator<PermissionHan>().setInternetConnection(true);
+    try {
+      final response = await http.get(
+        Uri.parse("$baseURL/api/Company/Status?companyId=$comID"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+      );
+      print(userToken);
+      print(response.statusCode);
+      if (response.statusCode == 500 || response.statusCode == 501) {
+        locator.locator<PermissionHan>().setServerDown(true);
+      } else if (response.statusCode == 200) {
+        locator.locator<PermissionHan>().setServerDown(false);
+        locator.locator<PermissionHan>().setInternetConnection(true);
+        final decodedRes = json.decode(response.body);
+        if (decodedRes["message"] == "Success") {
+          this.suspentionTime =
+              DateTime.tryParse(decodedRes["data"]["endofSubScription"]);
+          return decodedRes["data"]["isSuspended"];
+        }
+      }
+    } catch (e) {
+      print(e);
+      return false;
     }
-    print(response.body);
-    final decodedRes = json.decode(response.body);
-    if (decodedRes["message"] == "Success") {
-      this.suspentionTime =
-          DateTime.tryParse(decodedRes["data"]["endofSubScription"]);
-      return decodedRes["data"]["isSuspended"];
-    }
-    return false;
+
+    return true;
   }
 
   Future<bool> updateCompanySettingsTime(

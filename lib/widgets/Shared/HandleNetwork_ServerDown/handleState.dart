@@ -29,7 +29,7 @@ class MaintenanceWidget extends StatelessWidget {
           Center(
               child: AutoSizeText(
             getTranslated(context,
-                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"),
+                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"),
             style: boldStyle,
             textAlign: TextAlign.center,
           )),

@@ -183,7 +183,7 @@
  "مطلوب":"Required",
  "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج":
 "The application is under maintenance\nWe are currently making improvements and maintenance \nThis maintenance will not affect your account data \nWe apologize for any inconvenience"
-,"التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق":"The application is under maintenance \n Please try again later",
+,"تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق":"The application is under maintenance \n Please try again later",
 "مستخدم":"User",
 "مسئول تسجيل":"Registry Administrator",
 "مدير موقع":  "Site Admin",

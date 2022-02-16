@@ -396,7 +396,9 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
                           height: 100.h,
                           child: AutoSizeText(
                             getTranslated(context,
-                                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج"),
+                                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"),
+                            // getTranslated(context,
+                            //     "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج"),
                             style: TextStyle(
                               height: 1.5,
                               fontWeight: FontWeight.bold,

@@ -130,7 +130,7 @@ serverDownDialog(BuildContext context) {
             Navigator.pop(context);
           },
           content: getTranslated(context,
-              "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"),
+              "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"),
           imageIcon: FontAwesomeIcons.tools,
         );
       });

@@ -175,7 +175,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                         ? CenterMessageText(
                                                             message: getTranslated(
                                                                 context,
-                                                                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"))
+                                                                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"))
                                                         : provList.isEmpty
                                                             ? Center(
                                                                 child:
@@ -231,7 +231,7 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                         ? CenterMessageText(
                                                             message: getTranslated(
                                                                 context,
-                                                                "التطبيق تحت الصيانة \n  برجاء اعادة المحاولة فى وقت لاحق"))
+                                                                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"))
                                                         : permessionsList
                                                                 .isEmpty
                                                             ? Center(

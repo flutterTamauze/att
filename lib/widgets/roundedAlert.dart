@@ -735,6 +735,7 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CompanySettingsService _companyService = CompanySettingsService();
     return StatefulBuilder(
       builder: (context, setstate) {
         return Dialog(
@@ -799,12 +800,9 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
                                   Navigator.pop(context);
                                 } else {
                                   Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    final CompanySettingsService
-                                        _companyService =
-                                        CompanySettingsService();
+                                      () async {
                                     // ignore: cascade_invocations
-                                    _companyService.isCompanySuspended(
+                                    await _companyService.isCompanySuspended(
                                         Provider.of<CompanyData>(context,
                                                 listen: false)
                                             .com

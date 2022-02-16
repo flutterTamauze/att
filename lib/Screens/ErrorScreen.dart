@@ -148,7 +148,9 @@ class _ErrorScreenState extends State<ErrorScreen> {
           setState(() {
             isLoading = false;
             message = getTranslated(context,
-                "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج");
+                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق");
+            // message = getTranslated(context,
+            //     "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج");
           });
         } else if (value == NO_INTERNET) {
           print("mfeeesh net");
