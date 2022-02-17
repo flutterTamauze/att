@@ -218,7 +218,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
   Future<bool> onWillPop() {
     if (Provider.of<UserData>(context, listen: false).user.userType != 0) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => NavScreenTwo(0)),
+          MaterialPageRoute(builder: (context) => const NavScreenTwo(0)),
           (Route<dynamic> route) => false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(

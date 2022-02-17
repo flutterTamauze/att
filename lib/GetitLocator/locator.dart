@@ -1,5 +1,7 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -14,15 +16,20 @@ import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final instance = GetIt.instance;
 
 class InitLocator {
   GetIt locator = GetIt.I;
+
   void intalizeLocator() {
     _setUpLocator();
     print("initialized locators");
   }
 
-  void _setUpLocator() {
+  void _setUpLocator() async {
+    //Providers
     locator.registerLazySingleton(() => UserData());
     // ignore: cascade_invocations
     locator.registerLazySingleton(() => SiteShiftsData());
@@ -52,5 +59,13 @@ class InitLocator {
     locator.registerLazySingleton(() => UserPermessionsData());
     // ignore: cascade_invocations
     locator.registerLazySingleton(() => DaysOffData());
+    //Network
+
+    // ignore: cascade_invocations
+    instance.registerLazySingleton<DataConnectionChecker>(
+        () => DataConnectionChecker());
+    // ignore: cascade_invocations
+    instance
+        .registerLazySingleton<NetworkInfo>(() => NetworkInfoImp(instance()));
   }
 }

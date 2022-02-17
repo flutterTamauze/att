@@ -21,6 +21,8 @@ import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/Screens/Notifications/NotificationOnTapDialog.dart';
+import 'package:qr_users/services/UserPermessions/user_permessions.dart';
+import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:qr_users/widgets/UserProfileImageWidget.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
@@ -101,6 +103,10 @@ class NotificationItem extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) => UserOrdersView(
                                           selectedOrder: "الأجازات",
+                                          ordersList: [
+                                            getTranslated(context, "الأجازات"),
+                                            getTranslated(context, "الأذونات")
+                                          ],
                                         ),
                                       ));
                                 }
@@ -121,12 +127,23 @@ class NotificationItem extends StatelessWidget {
                               case "permession":
                                 {
                                   Navigator.pop(context);
-
+                                  final userProvider = Provider.of<UserData>(
+                                      context,
+                                      listen: false);
+                                  Provider.of<UserPermessionsData>(context,
+                                          listen: false)
+                                      .getFutureSinglePermession(
+                                          userProvider.user.id,
+                                          userProvider.user.userToken);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => UserOrdersView(
                                           selectedOrder: "الأذونات",
+                                          ordersList: [
+                                            getTranslated(context, "الأجازات"),
+                                            getTranslated(context, "الأذونات")
+                                          ],
                                         ),
                                       ));
                                 }

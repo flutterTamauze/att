@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -72,8 +73,9 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
               ),
               child: Provider.of<UserPermessionsData>(context, listen: true)
                       .isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          color: ColorManager.primary),
                     )
                   : ListView.builder(
                       shrinkWrap: true,

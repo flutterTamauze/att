@@ -106,7 +106,6 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 });
                                 final int attendId = await attendObj
                                     .getAttendProofID(user.id, user.userToken);
-                                print(attendId);
                                 final Position currentPosition =
                                     await Geolocator.getCurrentPosition(
                                         desiredAccuracy: LocationAccuracy.best);
@@ -140,10 +139,8 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 }
                                 if (user.userType != 0 &&
                                     !widget.isFromBackground) {
-                                  print("not user not back ground");
                                   Navigator.pop(context);
                                 } else {
-                                  print("normal user");
                                   if (!widget.isFromBackground) {
                                     Navigator.pop(context);
                                   }
@@ -158,15 +155,25 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 }
                               } else {
                                 if (!widget.isAdmin) {
+                                  if (widget.notificationTitle.contains(
+                                      getTranslated(context, "الأذن"))) {
+                                    final userProvider = Provider.of<UserData>(
+                                        context,
+                                        listen: false);
+                                    Provider.of<UserPermessionsData>(context,
+                                            listen: false)
+                                        .getFutureSinglePermession(
+                                            userProvider.user.id,
+                                            userProvider.user.userToken);
+                                  }
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => UserOrdersView(
                                           selectedOrder: widget
-                                                      .notificationTitle
-                                                      .contains("الأذن") ||
-                                                  widget.notificationTitle
-                                                      .contains("Perm")
+                                                  .notificationTitle
+                                                  .contains(getTranslated(
+                                                      context, "الأذن"))
                                               ? getTranslated(
                                                   context, "الأذونات")
                                               : getTranslated(

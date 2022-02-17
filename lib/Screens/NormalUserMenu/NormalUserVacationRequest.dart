@@ -721,6 +721,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                       repeatAnimation: false,
                                                       popWidget: true,
                                                       isAdmin: false,
+                                                      isFromBackground: false,
                                                       notificationTitle:
                                                           getTranslated(context,
                                                               "تم تقديم طلب الأجازة بنجاح"),
@@ -861,6 +862,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
 
                                                   return StackedNotificaitonAlert(
                                                     repeatAnimation: false,
+                                                    isFromBackground: false,
                                                     popWidget: true,
                                                     isAdmin: false,
                                                     notificationTitle:

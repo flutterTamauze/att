@@ -35,7 +35,6 @@ class ExpandedPermessionsTile extends StatefulWidget {
 
 class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
   bool checkDeleteAllowed() {
-    print(widget.userPermessions.date);
     if (DateTime.now().isBefore(widget.userPermessions.date) &&
         widget.userPermessions.permessionStatus == 3) {
       return true;
@@ -171,13 +170,21 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                             : const Divider()
                                       ],
                                       AutoSizeText(
-                                          "${getTranslated(context, "تاريخ الأذن")}  : ${widget.userPermessions.date.toString().substring(0, 11)}"),
+                                        "${getTranslated(context, "تاريخ الأذن")}  : ${widget.userPermessions.date.toString().substring(0, 11)}",
+                                        style: TextStyle(
+                                            fontSize:
+                                                setResponsiveFontSize(13)),
+                                      ),
                                       const Divider(),
-                                      AutoSizeText(widget.userPermessions
-                                                  .permessionType ==
-                                              1
-                                          ? "${getTranslated(context, "اذن حتى الساعة")}  : ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"
-                                          : "${getTranslated(context, "اذن من الساعة")} : ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"),
+                                      AutoSizeText(
+                                        widget.userPermessions.permessionType ==
+                                                1
+                                            ? "${getTranslated(context, "اذن حتى الساعة")}  : ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"
+                                            : "${getTranslated(context, "اذن من الساعة")} : ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}",
+                                        style: TextStyle(
+                                            fontSize:
+                                                setResponsiveFontSize(13)),
+                                      ),
                                       widget.userPermessions
                                                   .permessionDescription !=
                                               null

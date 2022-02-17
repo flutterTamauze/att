@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_users/Core/colorManager.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/user_data.dart';
@@ -51,8 +52,11 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
         child: Provider.of<UserHolidaysData>(
           context,
         ).isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: ColorManager.primary,
+                  color: ColorManager.accentColor,
+                ),
               )
             : ListView.builder(
                 shrinkWrap: true,

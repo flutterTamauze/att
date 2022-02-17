@@ -17,16 +17,14 @@ import '../main.dart';
 import 'networkInfo.dart';
 
 class NetworkApi {
-  final timeOutDuration = const Duration(seconds: 51);
+  final timeOutDuration = const Duration(seconds: 120);
 
   Future<Object> request(
       String endPoint, RequestType requestType, Map<String, String> headers,
       [body]) async {
     var res;
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
 
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
+    final bool isConnected = await locator.locator<NetworkInfo>().isConnected;
     if (isConnected) {
       try {
         print("There is a connection");
@@ -54,7 +52,10 @@ class NetworkApi {
         log(res.body);
         if (res.statusCode == 500 || res.statusCode == 503) {
           locator.locator<PermissionHan>().setServerDown(true);
-          serverDownDialog(navigatorKey.currentState.overlay.context);
+          if (_displayExceptionDialog()) {
+            serverDownDialog(navigatorKey.currentState.overlay.context);
+          }
+
           return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
         }
 
@@ -71,15 +72,16 @@ class NetworkApi {
       } on SocketException catch (e) {
         print("socket error occured $e");
         locator.locator<PermissionHan>().setInternetConnection(false);
-        if (locator.locator<UserData>().user.userToken != null) {
+        if (_displayExceptionDialog()) {
           noInternetDialog(navigatorKey.currentState.overlay.context);
         }
 
         return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
       } on TimeoutException catch (e) {
         print("timeout occured $e");
+        print(locator.locator<UserData>().user.userToken);
         locator.locator<PermissionHan>().setInternetConnection(false);
-        if (locator.locator<UserData>().user.userToken != null) {
+        if ((_displayExceptionDialog())) {
           noInternetDialog(navigatorKey.currentState.overlay.context);
         }
 
@@ -87,7 +89,7 @@ class NetworkApi {
       }
     }
     locator.locator<PermissionHan>().setInternetConnection(false);
-    if (locator.locator<UserData>().user.userToken != null) {
+    if ((_displayExceptionDialog())) {
       noInternetDialog(navigatorKey.currentState.overlay.context);
     }
 
@@ -123,5 +125,13 @@ class NetworkApi {
           headers: headers,
         )
         .timeout(timeOutDuration);
+  }
+
+  bool _displayExceptionDialog() {
+    if (locator.locator<UserData>().user.userToken != null &&
+        locator.locator<UserData>().user.userToken != "") {
+      return true;
+    }
+    return false;
   }
 }

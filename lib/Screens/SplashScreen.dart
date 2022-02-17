@@ -87,19 +87,14 @@ class _SplashScreenState extends State<SplashScreen>
 
       reverse(userData[0], value);
     }
+    print("user data checked ...");
   }
 
   checkLanguage() async {
     final Locale cachedLocale = await getLocale();
     Provider.of<PermissionHan>(context, listen: false).setLocale(cachedLocale);
     MyApp.setLocale(context, cachedLocale);
-  }
-
-  checkAttendProovStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("notifCategory") == 'attend') {
-      Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
-    }
+    print("check languaage done ...");
   }
 
   Future<int> login({String userName, String password}) async {
@@ -133,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     setState(() {
       animationController.reverse();
-      Timer(const Duration(milliseconds: 0), () async {
+      Timer(const Duration(milliseconds: 1), () async {
         if (userName != "") {
           if (Provider.of<UserData>(context, listen: false).changedPassword ==
               false) {
@@ -271,17 +266,18 @@ class _SplashScreenState extends State<SplashScreen>
     loadSecondModel();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 400),
     );
 
     //start Animation
     animationController.forward();
+    loadFromCache();
+  }
 
-    new Timer(const Duration(milliseconds: 1), () async {
-      await checkLanguage();
-      await checkSharedUserData();
-      await checkAttendProovStatus();
-    });
+  loadFromCache() async {
+    // await checkAttendProovStatus();
+    await checkLanguage();
+    await checkSharedUserData();
   }
 
   @override

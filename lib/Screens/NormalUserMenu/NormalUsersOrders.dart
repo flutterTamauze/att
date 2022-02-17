@@ -68,7 +68,6 @@ class _UserOrdersViewState extends State<UserOrdersView> {
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
-          print(permessionsList.length);
         },
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
@@ -176,10 +175,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       ),
                       AutoSizeText(
                         getTranslated(context, "عرض طلبات"),
-                        style: TextStyle(
-                          fontSize: setResponsiveFontSize(17),
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: boldStyle,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -191,8 +187,6 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: TextField(
                   onChanged: (value) {
-                    print(value);
-
                     setState(() {
                       if (widget.selectedOrder == "الأجازات") {
                         final List<UserHolidays> order = provList

@@ -172,7 +172,7 @@ class AttendLeaveImageDisplay extends StatelessWidget {
       ),
       child: CircleAvatar(
         backgroundColor: Colors.white,
-        radius: 40,
+        radius: 35,
         child: Container(
           width: 80.w,
           decoration: const BoxDecoration(

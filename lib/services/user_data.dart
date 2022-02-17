@@ -30,9 +30,11 @@ import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dar
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/Repo/MembersRepo.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
 
+import '../main.dart';
 import 'ShiftsData.dart';
 
 class UserData with ChangeNotifier {
@@ -142,6 +144,7 @@ class UserData with ChangeNotifier {
       print("faliure occured");
       return response.code;
     } else {
+      await checkAttendProovStatus();
       print("not faliure");
       // log(response);
       decodedRes = json.decode(response);
@@ -544,6 +547,15 @@ class UserData with ChangeNotifier {
     } else {
       return 'noInternet';
     }
+  }
+
+  checkAttendProovStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("notifCategory") == 'attend') {
+      locator.locator<PermissionHan>().triggerAttendProof();
+      // Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
+    }
+    print("attend proov checked ... ");
   }
 
   Future<String> editProfile(String password) async {

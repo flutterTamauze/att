@@ -74,11 +74,16 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
   }
 
   final ScrollController _scrollController = ScrollController();
-  // void _onRefresh() async {
-  //   setState(() {
-  //     getPendingPermessions();
-  //   });
-  // }
+  void _onRefresh() async {
+    final userPerm = Provider.of<UserPermessionsData>(context, listen: false);
+    userPerm.pendingCompanyPermessions.clear();
+    userPerm.pageIndex = 0;
+    // ignore: cascade_invocations
+    userPerm.keepRetriving = true;
+    setState(() {
+      getPendingPermessions();
+    });
+  }
 
   int currentIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -146,233 +151,249 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                     fontSize: setResponsiveFontSize(16)),
                                 textAlign: TextAlign.center,
                               ))
-                            : ListView.builder(
-                                controller: _scrollController,
-                                itemBuilder: (context, index) {
-                                  final pending = pendingList
-                                      .pendingCompanyPermessions[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Card(
-                                      child: ExpandedPendingPermessions(
-                                        isAdmin: true,
-                                        userPermessions: pending,
-                                        index: index,
-                                        id: pending.permessionId,
-                                        onRefused: () {
-                                          return showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Directionality(
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                    child:
-                                                        RoundedAlertWithComment(
-                                                      onTapped: (e) {
-                                                        comment = e;
-                                                      },
-                                                      hint: "سبب الرفض",
-                                                      onPressed: () async {
-                                                        Navigator.pop(context);
-                                                        showDialog(
-                                                            context: _scaffoldKey
-                                                                .currentContext,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return RoundedLoadingIndicator();
-                                                            });
-                                                        final String msg = await pendingList
-                                                            .acceptOrRefusePendingPermession(
-                                                                2,
-                                                                pending
-                                                                    .permessionId,
-                                                                pending.userID,
-                                                                pending
-                                                                    .permessionDescription,
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .user
-                                                                    .userToken,
-                                                                comment,
-                                                                pending.date);
-                                                        Navigator.pop(
-                                                            _scaffoldKey
-                                                                .currentContext);
+                            : SmartRefresher(
+                                onRefresh: _onRefresh,
+                                controller: refreshController,
+                                header: const WaterDropMaterialHeader(
+                                  color: Colors.white,
+                                  backgroundColor: Colors.orange,
+                                ),
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemBuilder: (context, index) {
+                                    final pending = pendingList
+                                        .pendingCompanyPermessions[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Card(
+                                        child: ExpandedPendingPermessions(
+                                          isAdmin: true,
+                                          userPermessions: pending,
+                                          index: index,
+                                          id: pending.permessionId,
+                                          onRefused: () {
+                                            return showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child:
+                                                          RoundedAlertWithComment(
+                                                        onTapped: (e) {
+                                                          comment = e;
+                                                        },
+                                                        hint: "سبب الرفض",
+                                                        onPressed: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          showDialog(
+                                                              context: _scaffoldKey
+                                                                  .currentContext,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return RoundedLoadingIndicator();
+                                                              });
+                                                          final String msg = await pendingList.acceptOrRefusePendingPermession(
+                                                              2,
+                                                              pending
+                                                                  .permessionId,
+                                                              pending.userID,
+                                                              pending
+                                                                  .permessionDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.date);
+                                                          Navigator.pop(
+                                                              _scaffoldKey
+                                                                  .currentContext);
 
-                                                        if (msg ==
-                                                            "Success : User Updated!") {
-                                                          // HuaweiServices _huawei =
-                                                          //     HuaweiServices();
-                                                          // if (pending.osType ==
-                                                          //     3) {
-                                                          //   await _huawei
-                                                          //       .huaweiPostNotification(
-                                                          //           pending
-                                                          //               .fcmToken,
-                                                          //           "طلب اذن",
-                                                          //           "تم رفض طلب الأذن",
-                                                          //           "permession");
-                                                          // }
+                                                          if (msg ==
+                                                              "Success : User Updated!") {
+                                                            // HuaweiServices _huawei =
+                                                            //     HuaweiServices();
+                                                            // if (pending.osType ==
+                                                            //     3) {
+                                                            //   await _huawei
+                                                            //       .huaweiPostNotification(
+                                                            //           pending
+                                                            //               .fcmToken,
+                                                            //           "طلب اذن",
+                                                            //           "تم رفض طلب الأذن",
+                                                            //           "permession");
+                                                            // }
 
+                                                            await sendFcmMessage(
+                                                                category:
+                                                                    "permession",
+                                                                topicName: "",
+                                                                userToken: pending
+                                                                    .fcmToken,
+                                                                title:
+                                                                    "طلب اذن",
+                                                                message:
+                                                                    "تم رفض طلب الأذن");
+
+                                                            Fluttertoast.showToast(
+                                                                msg: getTranslated(
+                                                                    navigatorKey
+                                                                        .currentState
+                                                                        .overlay
+                                                                        .context,
+                                                                    "تم الرفض بنجاح"),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .green);
+                                                          } else if (msg ==
+                                                              "Fail: Permission out of date!") {
+                                                            Fluttertoast.showToast(
+                                                                msg: getTranslated(
+                                                                    navigatorKey
+                                                                        .currentState
+                                                                        .overlay
+                                                                        .context,
+                                                                    "خطأ فى الرفض : انتهى وقت الطلب"),
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          } else {
+                                                            Fluttertoast.showToast(
+                                                                msg: getTranslated(
+                                                                    navigatorKey
+                                                                        .currentState
+                                                                        .overlay
+                                                                        .context,
+                                                                    "خطأ في الرفض"),
+                                                                backgroundColor:
+                                                                    Colors.red);
+                                                          }
+                                                        },
+                                                        content: getTranslated(
+                                                            context,
+                                                            "تأكيد رفض الأذن"),
+                                                        onCancel: () {},
+                                                        title:
+                                                            "${getTranslated(context, "رفض  طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
+                                                      ));
+                                                });
+                                          },
+                                          onAccept: () {
+                                            return showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return RoundedAlertWithComment(
+                                                    onTapped: (comm) {
+                                                      comment = comm;
+                                                    },
+                                                    hint: getTranslated(
+                                                        context, "التفاصيل"),
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      showDialog(
+                                                          context: _scaffoldKey
+                                                              .currentContext,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return RoundedLoadingIndicator();
+                                                          });
+
+                                                      final String msg = await pendingList
+                                                          .acceptOrRefusePendingPermession(
+                                                              1,
+                                                              pending
+                                                                  .permessionId,
+                                                              pending.userID,
+                                                              pending
+                                                                  .permessionDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.date);
+                                                      Navigator.pop(_scaffoldKey
+                                                          .currentContext);
+                                                      if (msg ==
+                                                          "Success : User Updated!") {
+                                                        final HuaweiServices
+                                                            _huawei =
+                                                            HuaweiServices();
+                                                        if (pending.osType ==
+                                                            3) {
+                                                          await _huawei
+                                                              .huaweiPostNotification(
+                                                                  pending
+                                                                      .fcmToken,
+                                                                  "طلب اذن",
+                                                                  "تم الموافقة على طلب الأذن",
+                                                                  "permession");
+                                                        } else {
                                                           await sendFcmMessage(
                                                               category:
                                                                   "permession",
                                                               topicName: "",
                                                               userToken: pending
                                                                   .fcmToken,
-                                                              title: "طلب اذن",
-                                                              message:
-                                                                  "تم رفض طلب الأذن");
-
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
+                                                              title:
+                                                                  getTranslated(
+                                                                      context,
+                                                                      "طلب اذن"),
+                                                              message: getTranslated(
                                                                   navigatorKey
                                                                       .currentState
                                                                       .overlay
                                                                       .context,
-                                                                  "تم الرفض بنجاح"),
-                                                              backgroundColor:
-                                                                  Colors.green);
-                                                        } else if (msg ==
-                                                            "Fail: Permission out of date!") {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ فى الرفض : انتهى وقت الطلب"),
-                                                              backgroundColor:
-                                                                  Colors.red);
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ في الرفض"),
-                                                              backgroundColor:
-                                                                  Colors.red);
+                                                                  "تم الموافقة على طلب الأذن"));
                                                         }
-                                                      },
-                                                      content: getTranslated(
-                                                          context,
-                                                          "تأكيد رفض الأذن"),
-                                                      onCancel: () {},
-                                                      title:
-                                                          "${getTranslated(context, "رفض  طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
-                                                    ));
-                                              });
-                                        },
-                                        onAccept: () {
-                                          return showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return RoundedAlertWithComment(
-                                                  onTapped: (comm) {
-                                                    comment = comm;
-                                                  },
-                                                  hint: getTranslated(
-                                                      context, "التفاصيل"),
-                                                  onPressed: () async {
-                                                    Navigator.pop(context);
-                                                    showDialog(
-                                                        context: _scaffoldKey
-                                                            .currentContext,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return RoundedLoadingIndicator();
-                                                        });
 
-                                                    final String msg = await pendingList
-                                                        .acceptOrRefusePendingPermession(
-                                                            1,
-                                                            pending
-                                                                .permessionId,
-                                                            pending.userID,
-                                                            pending
-                                                                .permessionDescription,
-                                                            Provider.of<UserData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .user
-                                                                .userToken,
-                                                            comment,
-                                                            pending.date);
-                                                    Navigator.pop(_scaffoldKey
-                                                        .currentContext);
-                                                    if (msg ==
-                                                        "Success : User Updated!") {
-                                                      final HuaweiServices
-                                                          _huawei =
-                                                          HuaweiServices();
-                                                      if (pending.osType == 3) {
-                                                        await _huawei
-                                                            .huaweiPostNotification(
-                                                                pending
-                                                                    .fcmToken,
-                                                                "طلب اذن",
-                                                                "تم الموافقة على طلب الأذن",
-                                                                "permession");
-                                                      } else {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "permession",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title:
-                                                                getTranslated(
-                                                                    context,
-                                                                    "طلب اذن"),
-                                                            message: getTranslated(
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
                                                                 context,
-                                                                "تم الموافقة على طلب الأذن"));
+                                                                "تم الموافقة بنجاح"),
+                                                            backgroundColor:
+                                                                Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail: Permission out of date!") {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                context,
+                                                                "خطأ فى الرفض : انتهى وقت الطلب"),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                context,
+                                                                "خطأ في الموافقة"),
+                                                            backgroundColor:
+                                                                Colors.red);
                                                       }
-
-                                                      Fluttertoast.showToast(
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "تم الموافقة بنجاح"),
-                                                          backgroundColor:
-                                                              Colors.green);
-                                                    } else if (msg ==
-                                                        "Fail: Permission out of date!") {
-                                                      Fluttertoast.showToast(
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "خطأ فى الرفض : انتهى وقت الطلب"),
-                                                          backgroundColor:
-                                                              Colors.red);
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "خطأ في الموافقة"),
-                                                          backgroundColor:
-                                                              Colors.red);
-                                                    }
-                                                  },
-                                                  content: getTranslated(
-                                                      context,
-                                                      "تأكيد الموافقة على الأذن"),
-                                                  onCancel: () {},
-                                                  title:
-                                                      "${getTranslated(context, "الموافقة على طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
-                                                );
-                                              });
-                                        },
+                                                    },
+                                                    content: getTranslated(
+                                                        context,
+                                                        "تأكيد الموافقة على الأذن"),
+                                                    onCancel: () {},
+                                                    title:
+                                                        "${getTranslated(context, "الموافقة على طلب")} ${pendingList.pendingCompanyPermessions[index].user} ",
+                                                  );
+                                                });
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                itemCount: pendingList
-                                    .pendingCompanyPermessions.length,
+                                    );
+                                  },
+                                  itemCount: pendingList
+                                      .pendingCompanyPermessions.length,
+                                ),
                               ),
                       );
                     }
