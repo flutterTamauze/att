@@ -12,6 +12,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -30,6 +31,7 @@ class StackedNotificaitonAlert extends StatefulWidget {
       roundedButtonTitle,
       lottieAsset;
   bool showToast = true, repeatAnimation;
+  final Function callBackFun;
   StackedNotificaitonAlert(
       {this.notificationContent,
       this.notificationTitle,
@@ -40,7 +42,8 @@ class StackedNotificaitonAlert extends StatefulWidget {
       @required this.repeatAnimation,
       this.notificationToast,
       this.isFromBackground,
-      this.roundedButtonTitle});
+      this.roundedButtonTitle,
+      this.callBackFun});
 
   @override
   _StackedNotificaitonAlertState createState() =>
@@ -118,7 +121,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 setState(() {
                                   isloading = false;
                                 });
-                                prefs.setString("notifCategory", "");
+                                await prefs.setString("notifCategory", "");
                                 if (msg == "timeout") {
                                   Fluttertoast.showToast(
                                       msg: getTranslated(context,
@@ -145,9 +148,10 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                     Navigator.pop(context);
                                   }
                                 }
-                                Provider.of<PermissionHan>(context,
-                                        listen: false)
-                                    .setAttendProoftoDefault();
+                                // locator
+                                //     .locator<PermissionHan>()
+                                //     .setAttendProoftoDefault();
+                                widget.callBackFun();
 
                                 if (widget.popWidget) {
                                   Navigator.pop(context);

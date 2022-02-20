@@ -17,7 +17,6 @@ import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
-import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';

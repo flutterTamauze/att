@@ -15,6 +15,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/Screens/SystemScreens/forgetScreen.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/api.dart';
+import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/Settings/LanguageSettings.dart';
@@ -363,6 +364,23 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         print("VALUE OF USER");
         print(value);
+        if (value == 4) {
+          //subscribe admin channel
+          bool isError = false;
+
+          await firebaseMessaging.getToken().catchError((e) {
+            print(e);
+            isError = true;
+          });
+          if (isError == false) {
+            print("topic name : ");
+            print({
+              await firebaseMessaging.subscribeToTopic(
+                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}")
+            });
+            print("subscribed to topic");
+          }
+        }
         if (value == NO_INTERNET) {
           setState(() {
             isLoading = false;

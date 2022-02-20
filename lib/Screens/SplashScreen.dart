@@ -276,6 +276,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   loadFromCache() async {
     // await checkAttendProovStatus();
+
     await checkLanguage();
     await checkSharedUserData();
   }

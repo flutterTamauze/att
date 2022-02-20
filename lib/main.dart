@@ -50,6 +50,7 @@ InitLocator locator = InitLocator();
 GetIt getIt = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
   if (Platform.isAndroid)
     await hawawi.Push.registerBackgroundMessageHandler(
@@ -59,9 +60,13 @@ void main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
+  bool isError = false;
   if (Platform.isAndroid) {
-    await _channel.invokeMethod('createNotificationChannel', channelMap);
+    try {
+      await _channel.invokeMethod('createNotificationChannel', channelMap);
+    } catch (e) {
+      print(e);
+    }
   }
   locator.intalizeLocator();
   runApp(MyApp());
@@ -92,10 +97,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
     prefs.setStringList("bgNotifyList", []);
     if (message.data["category"] != "reloadData") {
-      if (prefs.getString('notifCategory') == "" ||
-          prefs.getString('notifCategory') == null) {
-        prefs.setString("notifCategory", message.data["category"]);
-      }
+      await prefs
+          .setString("notifCategory", message.data["category"])
+          .whenComplete(
+              () => print("category added !!! ${message.data["category"]}"));
       await prefs.setStringList("bgNotifyList", [
         message.data["category"],
         DateTime.now().toString().substring(0, 11),
@@ -236,5 +241,14 @@ class _MyAppState extends State<MyApp> {
         },
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

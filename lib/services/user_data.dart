@@ -144,7 +144,7 @@ class UserData with ChangeNotifier {
       print("faliure occured");
       return response.code;
     } else {
-      await checkAttendProovStatus();
+      await checkAttendProovStatus(prefs);
       print("not faliure");
       // log(response);
       decodedRes = json.decode(response);
@@ -549,10 +549,10 @@ class UserData with ChangeNotifier {
     }
   }
 
-  checkAttendProovStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  checkAttendProovStatus(SharedPreferences prefs) async {
     if (prefs.getString("notifCategory") == 'attend') {
       locator.locator<PermissionHan>().triggerAttendProof();
+      print("attend proof triggerd");
       // Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
     }
     print("attend proov checked ... ");

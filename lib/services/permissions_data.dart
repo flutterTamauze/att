@@ -67,6 +67,7 @@ class PermissionHan with ChangeNotifier {
 
   triggerAttendProof() {
     attendProovTriggered = true;
+    notifyListeners();
   }
 
   setAttendProoftoDefault() {

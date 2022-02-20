@@ -548,12 +548,19 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                               builder: (BuildContext context) {
                                                                                                 return RoundedLoadingIndicator();
                                                                                               });
+                                                                                          final List<String> rolesList = [
+                                                                                            getTranslated(context, "مستخدم"),
+                                                                                            getTranslated(context, "مسئول تسجيل"),
+                                                                                            getTranslated(context, "مدير موقع"),
+                                                                                            getTranslated(context, "موارد بشرية"),
+                                                                                            getTranslated(context, "ادمن"),
+                                                                                          ];
                                                                                           await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
                                                                                           final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
 
                                                                                           Navigator.of(context).push(
                                                                                             new MaterialPageRoute(
-                                                                                              builder: (context) => AddUserScreen(Provider.of<MemberData>(context, listen: false).singleMember, index, true, phone[0], phone[1], false, "", getTranslated(context, "مستخدم")),
+                                                                                              builder: (context) => AddUserScreen(Provider.of<MemberData>(context, listen: false).singleMember, index, true, phone[0], phone[1], false, "", rolesList[Provider.of<MemberData>(context, listen: false).singleMember.userType]),
                                                                                             ),
                                                                                           );
                                                                                         },

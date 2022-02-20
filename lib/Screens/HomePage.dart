@@ -48,8 +48,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     newVersion.showAlertIfNecessary(
       context: context,
     );
-    checkVersion();
-    // checkVersion();
+
     //Check for updates
     final DownloadService downloadService = DownloadService();
     downloadService.checkReleaseDate(showApk, context);
@@ -62,10 +61,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
-  checkVersion() async {
-    // (https://itunes.apple.com/us/app/google/id284815942?mt=8)
-  }
-
+  bool displayAttendDialog =
+      locator.locator<PermissionHan>().attendProovTriggered;
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -102,10 +99,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     showApk = false;
     SystemChrome.setEnabledSystemUIOverlays([]);
 
-    return Provider.of<PermissionHan>(context, listen: true)
-            .attendProovTriggered
+    return displayAttendDialog
         ? StackedNotificaitonAlert(
             popWidget: false,
+            callBackFun: () {
+              setState(() {
+                displayAttendDialog = !displayAttendDialog;
+                locator.locator<PermissionHan>().setAttendProoftoDefault();
+              });
+            },
             isFromBackground: true,
             notificationTitle: getTranslated(context, "اثبات حضور"),
             notificationContent: getTranslated(
