@@ -45,7 +45,7 @@ class DataTableEnd extends StatelessWidget {
                     Container(
                       height: 20.h,
                       child: AutoSizeText(
-                        lateRatio.substring(0, 3),
+                        lateRatio.toString(),
                         maxLines: 1,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

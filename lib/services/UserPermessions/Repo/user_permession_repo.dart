@@ -6,4 +6,5 @@ abstract class PermessionAbstract {
   getSingleUserPermession(String userToken, String userId);
   getPendingCompanyPermessions(int companyId, String userToken, int pageIndex);
   getFutureSinglePermession(String userId, String userToken);
+  getPendingPermessionDetailsByID(int permessionId, String token);
 }

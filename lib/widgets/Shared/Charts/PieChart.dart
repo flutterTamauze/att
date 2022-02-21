@@ -105,7 +105,7 @@ class LateReportPieChartState extends State {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
             ],
@@ -129,11 +129,8 @@ class LateReportPieChartState extends State {
           return PieChartSectionData(
             color: Colors.orange,
             value: double.parse(
-                reportsData.lateAbsenceReport.lateRatio.replaceAll("%", "")),
-            title: reportsData.lateAbsenceReport.lateRatio
-                .toString()
-                .replaceAll("%", "")
-                .substring(0, 4),
+                    reportsData.lateAbsenceReport.lateRatio.replaceAll("%", ""))
+                .ceilToDouble(),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -143,11 +140,9 @@ class LateReportPieChartState extends State {
         case 1:
           return PieChartSectionData(
             color: Colors.red,
-            value: double.parse(
-                reportsData.lateAbsenceReport.absentRatio.replaceAll("%", "")),
-            title: reportsData.lateAbsenceReport.absentRatio
-                .toString()
-                .replaceAll("%", ""),
+            value: double.parse(reportsData.lateAbsenceReport.absentRatio
+                    .replaceAll("%", ""))
+                .ceilToDouble(),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -159,16 +154,10 @@ class LateReportPieChartState extends State {
             color: Colors.green,
             value: 100 -
                 (double.parse(reportsData.lateAbsenceReport.lateRatio
-                        .replaceAll("%", "")) +
-                    double.parse(reportsData.lateAbsenceReport.absentRatio
-                        .replaceAll("%", ""))),
-            title: (100 -
-                    (double.parse(reportsData.lateAbsenceReport.lateRatio
                             .replaceAll("%", "")) +
                         double.parse(reportsData.lateAbsenceReport.absentRatio
-                            .replaceAll("%", ""))))
-                .toString()
-                .substring(0, 4),
+                            .replaceAll("%", "")))
+                    .ceilToDouble(),
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,

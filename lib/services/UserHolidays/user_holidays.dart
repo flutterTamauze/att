@@ -226,51 +226,51 @@ class UserHolidaysData with ChangeNotifier {
 
   Future<void> getPendingHolidayDetailsByID(
       int holidayId, String userToken) async {
-    loadingHolidaysDetails = true;
-    notifyListeners();
     print("holiday id $holidayId");
+    final holidays = pendingCompanyHolidays
+        .where((element) => element.holidayNumber == holidayId)
+        .toList();
+    final int holidayIndex = pendingCompanyHolidays.indexOf(holidays[0]);
 
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      final response = await http.get(
-        Uri.parse("$baseURL/api/Holiday/$holidayId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      print(response.statusCode);
+    if (pendingCompanyHolidays[holidayIndex].holidayDescription == null) {
+      loadingHolidaysDetails = true;
+      notifyListeners();
 
-      log(response.body);
+      if (await locator.locator<NetworkInfo>().isConnected) {
+        final response = await http.get(
+          Uri.parse("$baseURL/api/Holiday/$holidayId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+        );
+        print(response.statusCode);
+
+        log(response.body);
+        loadingHolidaysDetails = false;
+        notifyListeners();
+        final decodedResponse = json.decode(response.body);
+        if (decodedResponse["message"] == "Success") {
+          holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+
+          pendingCompanyHolidays[holidayIndex].adminResponse =
+              holidaysSingleDetail.adminResponse;
+          pendingCompanyHolidays[holidayIndex].holidayDescription =
+              holidaysSingleDetail.holidayDescription;
+          pendingCompanyHolidays[holidayIndex].fcmToken =
+              holidaysSingleDetail.fcmToken;
+          pendingCompanyHolidays[holidayIndex].adminResponse =
+              pendingCompanyHolidays[holidayIndex].adminResponse;
+          // pendingCompanyHolidays[holidayIndex].createdOnDate =
+          //     pendingCompanyHolidays[holidayIndex].createdOnDate;
+
+          notifyListeners();
+        }
+      }
       loadingHolidaysDetails = false;
       notifyListeners();
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
-        final holidays = pendingCompanyHolidays
-            .where((element) => element.holidayNumber == holidayId)
-            .toList();
-
-        final int holidayIndex = pendingCompanyHolidays.indexOf(holidays[0]);
-        pendingCompanyHolidays[holidayIndex].adminResponse =
-            holidaysSingleDetail.adminResponse;
-        pendingCompanyHolidays[holidayIndex].holidayDescription =
-            holidaysSingleDetail.holidayDescription;
-        pendingCompanyHolidays[holidayIndex].fcmToken =
-            holidaysSingleDetail.fcmToken;
-        pendingCompanyHolidays[holidayIndex].adminResponse =
-            pendingCompanyHolidays[holidayIndex].adminResponse;
-        // pendingCompanyHolidays[holidayIndex].createdOnDate =
-        //     pendingCompanyHolidays[holidayIndex].createdOnDate;
-
-        notifyListeners();
-      }
     } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
+      print("not null");
     }
   }
 

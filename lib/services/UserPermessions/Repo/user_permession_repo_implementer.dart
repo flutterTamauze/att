@@ -109,4 +109,13 @@ class UserPermessionRepoImp implements PermessionAbstract {
     }
     return userPermessions;
   }
+
+  @override
+  getPendingPermessionDetailsByID(int permId, String token) {
+    return NetworkApi().request(
+      "$baseURL/api/Permissions/$permId",
+      RequestType.GET,
+      {'Content-type': 'application/json', 'Authorization': "Bearer $token"},
+    );
+  }
 }
