@@ -55,7 +55,6 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: ColorManager.primary,
-                  color: ColorManager.accentColor,
                 ),
               )
             : ListView.builder(

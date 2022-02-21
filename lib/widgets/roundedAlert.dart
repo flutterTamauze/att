@@ -827,7 +827,8 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
                                         width: 20,
                                         child: Center(
                                           child: CircularProgressIndicator(
-                                            color: ColorManager.primary,
+                                            backgroundColor:
+                                                ColorManager.primary,
                                           ),
                                         ),
                                       )

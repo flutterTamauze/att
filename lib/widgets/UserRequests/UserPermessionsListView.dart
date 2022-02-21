@@ -75,7 +75,7 @@ class _UserPermessionListViewState extends State<UserPermessionListView> {
                       .isLoading
                   ? Center(
                       child: CircularProgressIndicator(
-                          color: ColorManager.primary),
+                          backgroundColor: ColorManager.primary),
                     )
                   : ListView.builder(
                       shrinkWrap: true,

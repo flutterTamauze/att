@@ -193,6 +193,9 @@ class NotificationDataService with ChangeNotifier {
 
   firebaseMessagingConfig(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((event) async {
+      print(event.category);
+      print(event.data["category"]);
+      print(event.notification.title);
       if (semaphore != 0) {
         return;
       }

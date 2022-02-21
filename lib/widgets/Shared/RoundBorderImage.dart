@@ -105,7 +105,7 @@ class RoundBorderedImageWithoutCache extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Center(
                     child: CircularProgressIndicator(
-                        color: ColorManager.primary,
+                        backgroundColor: ColorManager.primary,
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes
