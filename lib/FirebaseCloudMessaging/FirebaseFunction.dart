@@ -26,47 +26,25 @@ Future<bool> sendFcmMessage(
       "Authorization": "key=$serverToken",
     };
     var request;
-    if (Platform.isIOS) {
-      request = {
-        "notification": {
-          "title": title,
-          "body": message,
-          "text": message,
-          // "image": "default",
-          "content_available": true,
-          "mutable_content": true,
-          'sound': 'default'
-          // "android_channel_id": "ChilangoNotifications",
-          // "sound": "your_sweet_sound.wav",
-        },
-        "data": {
-          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-          "title": "$title",
-          "body": "$message",
-          "category": "$category",
-        },
-        "priority": "high",
-        "to": topicName == "" ? userToken : toParams
-      };
-    } else {
-      request = {
-        "notification": {
-          "title": title,
-          "body": message,
-          "text": message,
-          "android_channel_id": "ChilangoNotifications",
-          "sound": "your_sweet_sound.wav",
-        },
-        "data": {
-          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-          "title": "$title",
-          "body": "$message",
-          "category": "$category",
-        },
-        "priority": "high",
-        "to": topicName == "" ? userToken : toParams
-      };
-    }
+
+    request = {
+      "notification": {
+        "title": title,
+        "body": message,
+        "content_available": true,
+        "text": message,
+        "android_channel_id": "ChilangoNotifications",
+        "sound": "your_sweet_sound.wav",
+      },
+      "data": {
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+        "title": "$title",
+        "body": "$message",
+        "category": "$category",
+      },
+      "priority": "high",
+      "to": topicName == "" ? userToken : toParams
+    };
 
 //    "to": "$toParams",
     final client = new http.Client();

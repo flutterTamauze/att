@@ -152,13 +152,13 @@ class MultipleFloatingButtons extends StatelessWidget {
           // FAB 2
 
           SpeedDialChild(
-              child: Icon(Icons.settings),
+              child: const Icon(Icons.settings),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(3),
+                      builder: (context) => const NavScreenTwo(3),
                     ));
               },
               label: getTranslated(context, 'الاعدادات'),
@@ -168,13 +168,13 @@ class MultipleFloatingButtons extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.article_sharp),
+              child: const Icon(Icons.article_sharp),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(2),
+                      builder: (context) => const NavScreenTwo(2),
                     ));
               },
               label: getTranslated(context, "التقارير"),
@@ -184,13 +184,13 @@ class MultipleFloatingButtons extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.qr_code),
+              child: const Icon(Icons.qr_code),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(1),
+                      builder: (context) => const NavScreenTwo(1),
                     ));
               },
               label: getTranslated(context, 'التسجيل'),
@@ -200,13 +200,13 @@ class MultipleFloatingButtons extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.home),
+              child: const Icon(Icons.home),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(0),
+                      builder: (context) => const NavScreenTwo(0),
                     ));
               },
               label: getTranslated(context, 'الرئيسية'),
@@ -216,7 +216,7 @@ class MultipleFloatingButtons extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(FontAwesomeIcons.user),
+              child: const Icon(FontAwesomeIcons.user),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
@@ -245,7 +245,7 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
       child: SpeedDial(
         overlayOpacity: 0,
         animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: IconThemeData(size: 22),
+        animatedIconTheme: const IconThemeData(size: 22),
         backgroundColor: ColorManager.primary,
         visible: true,
         curve: Curves.bounceIn,
@@ -255,13 +255,13 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
           // FAB 2
 
           SpeedDialChild(
-              child: Icon(Icons.settings),
+              child: const Icon(Icons.settings),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(3),
+                      builder: (context) => const NavScreenTwo(3),
                     ));
               },
               label: getTranslated(context, 'الاعدادات'),
@@ -271,13 +271,13 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.article_sharp),
+              child: const Icon(Icons.article_sharp),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(2),
+                      builder: (context) => const NavScreenTwo(2),
                     ));
               },
               label: getTranslated(context, "التقارير"),
@@ -287,13 +287,13 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.qr_code),
+              child: const Icon(Icons.qr_code),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(1),
+                      builder: (context) => const NavScreenTwo(1),
                     ));
               },
               label: getTranslated(context, 'التسجيل'),
@@ -303,13 +303,13 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(Icons.home),
+              child: const Icon(Icons.home),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NavScreenTwo(0),
+                      builder: (context) => const NavScreenTwo(0),
                     ));
               },
               label: getTranslated(context, 'الرئيسية'),
@@ -319,7 +319,7 @@ class MultipleFloatingButtonsNoADD extends StatelessWidget {
                   fontSize: setResponsiveFontSize(15)),
               labelBackgroundColor: Colors.black),
           SpeedDialChild(
-              child: Icon(FontAwesomeIcons.user),
+              child: const Icon(FontAwesomeIcons.user),
               backgroundColor: ColorManager.primary,
               onTap: () {
                 Navigator.push(
