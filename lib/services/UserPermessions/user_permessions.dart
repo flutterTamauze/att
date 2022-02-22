@@ -177,43 +177,40 @@ class UserPermessionsData with ChangeNotifier {
 
     final int permessionyIndex =
         pendingCompanyPermessions.indexOf(permessions[0]);
-    if (pendingCompanyPermessions[permessionyIndex].adminResponse == null ||
-        pendingCompanyPermessions[permessionyIndex].permessionDescription ==
-            null) {
+
+    if (pendingCompanyPermessions[permessionyIndex].permessionDescription ==
+        null) {
       permessionDetailLoading = true;
       notifyListeners();
 
-      final response = await http.get(
-        Uri.parse("$baseURL/api/Permissions/$permessionId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        },
-      );
-      log(response.body);
-      print(response.statusCode);
+      final response = await UserPermessionRepoImp()
+          .getPendingPermessionDetailsByID(permessionId, userToken);
+      if (response is Faliure) {
+      } else {
+        final decodedResponse = json.decode(response);
+        if (decodedResponse["message"] == "Success") {
+          singlePermessionDetail =
+              UserPermessions.detailsFromJson(decodedResponse['data']);
+          final permessions = pendingCompanyPermessions
+              .where((element) => element.permessionId == permessionId)
+              .toList();
 
-      permessionDetailLoading = false;
-      notifyListeners();
-      final decodedResponse = json.decode(response.body);
-      if (decodedResponse["message"] == "Success") {
-        singlePermessionDetail =
-            UserPermessions.detailsFromJson(decodedResponse['data']);
-        final permessions = pendingCompanyPermessions
-            .where((element) => element.permessionId == permessionId)
-            .toList();
+          final int permIndex =
+              pendingCompanyPermessions.indexOf(permessions[0]);
+          pendingCompanyPermessions[permIndex].adminResponse =
+              singlePermessionDetail.adminResponse;
+          pendingCompanyPermessions[permIndex].permessionDescription =
+              singlePermessionDetail.permessionDescription;
+          pendingCompanyPermessions[permIndex].fcmToken =
+              singlePermessionDetail.fcmToken;
+          pendingCompanyPermessions[permIndex].adminResponse =
+              singlePermessionDetail.adminResponse;
+        }
 
-        final int permIndex = pendingCompanyPermessions.indexOf(permessions[0]);
-        pendingCompanyPermessions[permIndex].adminResponse =
-            singlePermessionDetail.adminResponse;
-        pendingCompanyPermessions[permIndex].permessionDescription =
-            singlePermessionDetail.permessionDescription;
-        pendingCompanyPermessions[permIndex].fcmToken =
-            singlePermessionDetail.fcmToken;
-        pendingCompanyPermessions[permIndex].adminResponse =
-            singlePermessionDetail.adminResponse;
+        notifyListeners();
       }
 
+      permessionDetailLoading = false;
       notifyListeners();
     } else {
       print("not null");

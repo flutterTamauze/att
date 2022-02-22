@@ -98,11 +98,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     prefs.setStringList("bgNotifyList", []);
     if (message.data["category"] != "reloadData") {
       await prefs
-          .setString(
-              "notifCategory",
-              Platform.isAndroid
-                  ? message.data["category"]
-                  : message.data["category"] ?? message.category)
+          .setString("notifCategory", message.data["category"])
           .whenComplete(
               () => print("category added !!! ${message.data["category"]}"));
       await prefs.setStringList("bgNotifyList", [

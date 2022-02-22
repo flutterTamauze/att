@@ -33,17 +33,24 @@ Future<bool> sendFcmMessage(
           "body": message,
           "text": message,
           // "image": "default",
-          "content_available": true,
           "mutable_content": true,
           'sound': 'default'
           // "android_channel_id": "ChilangoNotifications",
           // "sound": "your_sweet_sound.wav",
+        },
+        "apns": {
+          "headers": {
+            "content_available": true,
+            "apns-priority": "5",
+            'sound': 'default'
+          }
         },
         "data": {
           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
           "title": "$title",
           "body": "$message",
           "category": "$category",
+          "priority": "high",
         },
         "priority": "high",
         "to": topicName == "" ? userToken : toParams

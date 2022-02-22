@@ -36,7 +36,7 @@ dependencies:
   device_info: ^0.4.0+4
   dio: ^4.0.0
   ext_storage: ^1.0.3
-  firebase_messaging: ^10.0.0
+  firebase_messaging:
   fl_chart: 0.36.4
   flutter:
     sdk: flutter

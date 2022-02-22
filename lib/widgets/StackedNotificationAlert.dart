@@ -201,7 +201,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
             right: 125.w,
             top: widget.isFromBackground
                 ? MediaQuery.of(context).size.height / 7
-                : MediaQuery.of(context).size.height / 3.7,
+                : MediaQuery.of(context).size.height / 3.9,
             child: Container(
               width: 150.w,
               height: 150.h,

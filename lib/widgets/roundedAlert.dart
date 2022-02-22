@@ -817,14 +817,14 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
                                   });
                                 }
                               },
-                              minWidth: 130,
-                              height: 30,
+                              minWidth: 130.w,
+                              height: 30.h,
                               child: Container(
                                 height: 20,
                                 child: isLoading
                                     ? Container(
-                                        height: 20,
-                                        width: 20,
+                                        height: 20.h,
+                                        width: 20.w,
                                         child: Center(
                                           child: CircularProgressIndicator(
                                             backgroundColor:
@@ -841,7 +841,7 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
                                         style: TextStyle(
                                           color: ColorManager.primary,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: setResponsiveFontSize(17),
+                                          fontSize: setResponsiveFontSize(15),
                                         ),
                                       ),
                               ),
