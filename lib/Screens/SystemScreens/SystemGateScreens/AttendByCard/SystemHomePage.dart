@@ -52,6 +52,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
 
   getData() async {
     if (mounted) {
+      Provider.of<UserData>(context, listen: false).getCurrentLocation();
       futureShift = Provider.of<ShiftApi>(context, listen: false).getShiftData(
           Provider.of<UserData>(context, listen: false).user.id,
           Provider.of<UserData>(context, listen: false).user.userToken);

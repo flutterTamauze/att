@@ -232,27 +232,27 @@ class _SplashScreenState extends State<SplashScreen>
     // _mlKitService.initialize();
   }
 
-  getInitialOpenedFcmMessage() async {
-    await firebaseMessaging.getInitialMessage().then((message) async {
-      final prefs = await SharedPreferences.getInstance();
-      if (message.data["category"] != "reloadData") {
-        if (message.data["category"] == "attend") {
-          locator.locator<PermissionHan>().triggerAttendProof();
-        }
-        await prefs
-            .setString("notifCategory", message.data["category"])
-            .whenComplete(
-                () => print("category added !!! ${message.data["category"]}"));
-        await prefs.setStringList("bgNotifyList", [
-          message.data["category"],
-          DateTime.now().toString().substring(0, 11),
-          message.data["body"],
-          message.data["title"],
-          DateFormat('kk:mm:a').format(DateTime.now())
-        ]);
-      }
-    });
-  }
+  // getInitialOpenedFcmMessage() async {
+  //   await firebaseMessaging.getInitialMessage().then((message) async {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     if (message.data["category"] != "reloadData") {
+  //       if (message.data["category"] == "attend") {
+  //         locator.locator<PermissionHan>().triggerAttendProof();
+  //       }
+  //       await prefs
+  //           .setString("notifCategory", message.data["category"])
+  //           .whenComplete(
+  //               () => print("category added !!! ${message.data["category"]}"));
+  //       await prefs.setStringList("bgNotifyList", [
+  //         message.data["category"],
+  //         DateTime.now().toString().substring(0, 11),
+  //         message.data["body"],
+  //         message.data["title"],
+  //         DateFormat('kk:mm:a').format(DateTime.now())
+  //       ]);
+  //     }
+  //   });
+  // }
 
   String _token = "";
   void _onTokenEvent(String event) {
@@ -302,7 +302,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     await checkLanguage();
     await checkSharedUserData();
-    await getInitialOpenedFcmMessage();
+    // await getInitialOpenedFcmMessage();
   }
 
   @override

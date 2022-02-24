@@ -217,19 +217,6 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
 
                                                           if (msg ==
                                                               "Success : User Updated!") {
-                                                            // HuaweiServices _huawei =
-                                                            //     HuaweiServices();
-                                                            // if (pending.osType ==
-                                                            //     3) {
-                                                            //   await _huawei
-                                                            //       .huaweiPostNotification(
-                                                            //           pending
-                                                            //               .fcmToken,
-                                                            //           "طلب اذن",
-                                                            //           "تم رفض طلب الأذن",
-                                                            //           "permession");
-                                                            // }
-
                                                             await sendFcmMessage(
                                                                 category:
                                                                     "permession",
