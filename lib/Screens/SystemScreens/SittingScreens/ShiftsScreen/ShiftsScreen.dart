@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -529,34 +528,23 @@ class _ShiftTileState extends State<ShiftTile> {
 
   Widget build(BuildContext context) {
     final siteProv = Provider.of<SiteData>(context, listen: false);
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: InkWell(
         onTap: () async {
-          final bool isConnected = await networkInfoImp.isConnected;
-          if (isConnected) {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundedLoadingIndicator();
-                });
-            await Provider.of<ShiftApi>(context, listen: false)
-                .getShiftByShiftId(
-                    widget.shifts.shiftId,
-                    Provider.of<UserData>(context, listen: false)
-                        .user
-                        .userToken);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundedLoadingIndicator();
+              });
+          await Provider.of<ShiftApi>(context, listen: false).getShiftByShiftId(
+              widget.shifts.shiftId,
+              Provider.of<UserData>(context, listen: false).user.userToken);
 
-            Navigator.pop(context);
-            showShiftDetails(
-                Provider.of<ShiftApi>(context, listen: false).userShift);
-          } else {
-            return weakInternetConnection(
-              navigatorKey.currentState.overlay.context,
-            );
-          }
+          Navigator.pop(context);
+          showShiftDetails(
+              Provider.of<ShiftApi>(context, listen: false).userShift);
         },
         child: Slidable(
           enabled:
@@ -581,21 +569,13 @@ class _ShiftTileState extends State<ShiftTile> {
                       ),
                     ),
                     onTap: () async {
-                      final bool isConnected = await networkInfoImp.isConnected;
-                      if (isConnected) {
-                        widget.onTapEdit();
-                      } else {
-                        return weakInternetConnection(
-                          navigatorKey.currentState.overlay.context,
-                        );
+                      widget.onTapEdit();
 
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (BuildContext context) {
-                        //       return RoundedLoadingIndicator();
-                        //     });
-
-                      }
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return RoundedLoadingIndicator();
+                      //     });
                     })),
             ZoomIn(
                 child: InkWell(
@@ -612,18 +592,7 @@ class _ShiftTileState extends State<ShiftTile> {
                 ),
               ),
               onTap: () async {
-                final DataConnectionChecker dataConnectionChecker =
-                    DataConnectionChecker();
-                final NetworkInfoImp networkInfoImp =
-                    NetworkInfoImp(dataConnectionChecker);
-                final bool isConnected = await networkInfoImp.isConnected;
-                if (isConnected) {
-                  widget.onTapDelete();
-                } else {
-                  return weakInternetConnection(
-                    navigatorKey.currentState.overlay.context,
-                  );
-                }
+                widget.onTapDelete();
               },
             )),
           ],

@@ -169,10 +169,8 @@ class _MemberTileState extends State<MemberTile> {
                 final String msg =
                     await Provider.of<MemberData>(context, listen: false)
                         .getUserById(
-                            widget.user.id,
-                            Provider.of<UserData>(context, listen: false)
-                                .user
-                                .userToken);
+                  widget.user.id,
+                );
 
                 if (msg == "Success") {
                   final phone = await getPhoneInEdit(Provider.of<MemberData>(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,15 +86,15 @@ class CompanyData extends ChangeNotifier {
       companySites: 0,
       companyUsers: 0);
 
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> isConnectedToInternet() async {
+  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+  //   final bool isConnected = await networkInfoImp.isConnected;
+  //   if (isConnected) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   getCompanyDataFromLogin(decodedRes) {
     com = Company.fromLogin(decodedRes);
@@ -218,37 +218,32 @@ class CompanyData extends ChangeNotifier {
   }
 
   Future<String> guestTokaen() async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.post(
-            Uri.parse("$baseURL/api/Authenticate/login"),
-            body: json.encode(
-              {"Username": "GUEST67", "Password": "Amh*1234"},
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': _apiToken
-            });
+    try {
+      final response = await http.post(
+          Uri.parse("$baseURL/api/Authenticate/login"),
+          body: json.encode(
+            {"Username": "GUEST67", "Password": "Amh*1234"},
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': _apiToken
+          });
 
-        final decodedRes = json.decode(response.body);
-        print(response.body);
+      final decodedRes = json.decode(response.body);
+      print(response.body);
 
-        if (decodedRes["message"] == "Success : ") {
-          return decodedRes["token"];
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "-2";
-        } else if (decodedRes["message"] ==
-            "Fail : This Company is suspended") {
-          return "-4";
-        }
-      } catch (e) {
-        print(e);
+      if (decodedRes["message"] == "Success : ") {
+        return decodedRes["token"];
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "-2";
+      } else if (decodedRes["message"] == "Fail : This Company is suspended") {
+        return "-4";
       }
-      return "-3";
-    } else {
-      return "-1";
+    } catch (e) {
+      print(e);
     }
+    return "-3";
   }
 
   // Future<String> addGuestCompany(
@@ -291,52 +286,48 @@ class CompanyData extends ChangeNotifier {
 
     print(image.lengthSync());
     String msg;
-    if (await isConnectedToInternet()) {
-      final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
-      final length = await image.length();
-      final uri = Uri.parse("$baseURL/api/Company");
 
-      final request = new http.MultipartRequest("POST", uri);
-      final Map<String, String> headers = {
-        'Authorization': "Bearer $guestToken"
-      };
-      request.headers.addAll(headers);
+    final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
+    final length = await image.length();
+    final uri = Uri.parse("$baseURL/api/Company");
 
-      request.fields['NameAr'] = company.nameAr;
-      request.fields['NameEn'] = company.nameEn;
-      request.fields['NormalizedName'] =
-          company.nameEn.replaceAll(" ", "").toUpperCase();
+    final request = new http.MultipartRequest("POST", uri);
+    final Map<String, String> headers = {'Authorization': "Bearer $guestToken"};
+    request.headers.addAll(headers);
 
-      final multipartFile = new http.MultipartFile('Logo', stream, length,
-          filename: basename(image.path));
-      request.files.add(multipartFile);
-      request.fields['CompanyEmail'] = company.email;
-      request.fields['AdminUserName'] = company.nameAr;
-      request.fields['AdminPhoneNumber'] = company.adminPhoneNumber;
+    request.fields['NameAr'] = company.nameAr;
+    request.fields['NameEn'] = company.nameEn;
+    request.fields['NormalizedName'] =
+        company.nameEn.replaceAll(" ", "").toUpperCase();
 
-      await request.send().then((response) async {
-        response.stream.transform(utf8.decoder).listen((value) async {
-          print(value);
-          final Map<String, dynamic> responesDedoded = json.decode(value);
+    final multipartFile = new http.MultipartFile('Logo', stream, length,
+        filename: basename(image.path));
+    request.files.add(multipartFile);
+    request.fields['CompanyEmail'] = company.email;
+    request.fields['AdminUserName'] = company.nameAr;
+    request.fields['AdminPhoneNumber'] = company.adminPhoneNumber;
 
-          if (responesDedoded['message'] == "Creat Company Success") {
-            //companyId
-            companyId = responesDedoded['data']['id'];
-            msg = "Success";
-            return msg;
-          } else if (responesDedoded['message'] ==
-              "Fail : The same Company name already exists") {
-            print('nameExists');
-            msg = "nameExists";
-            return msg;
-          }
-        });
-      }).catchError((e) {
-        print(e);
+    await request.send().then((response) async {
+      response.stream.transform(utf8.decoder).listen((value) async {
+        print(value);
+        final Map<String, dynamic> responesDedoded = json.decode(value);
+
+        if (responesDedoded['message'] == "Creat Company Success") {
+          //companyId
+          companyId = responesDedoded['data']['id'];
+          msg = "Success";
+          return msg;
+        } else if (responesDedoded['message'] ==
+            "Fail : The same Company name already exists") {
+          print('nameExists');
+          msg = "nameExists";
+          return msg;
+        }
       });
-    } else {
-      msg = 'noInternet';
-    }
+    }).catchError((e) {
+      print(e);
+    });
+
     return msg;
   }
 
@@ -377,42 +368,38 @@ class CompanyData extends ChangeNotifier {
 
   Future<String> editCompanyProfile(
       Company com, String token, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.put(
-            Uri.parse("$baseURL/api/Users/UpdatePassword"),
-            body: json.encode(
-              {
-                "NameAr": com.nameAr,
-                "NameEn": com.nameEn,
-                "CompanyEmail": com.email,
-                "logo": com.logo
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $token"
-            });
+    try {
+      final response = await http.put(
+          Uri.parse("$baseURL/api/Users/UpdatePassword"),
+          body: json.encode(
+            {
+              "NameAr": com.nameAr,
+              "NameEn": com.nameEn,
+              "CompanyEmail": com.email,
+              "logo": com.logo
+            },
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $token"
+          });
 
-        final decodedRes = json.decode(response.body);
-        print(response.body);
-        print(decodedRes["message"]);
-        if (response.statusCode == 401) {
-          await inheritDefault.login(context);
-          await editCompanyProfile(com, token, context);
-        }
-        if (decodedRes["message"] == "Success : password updated successfuly") {
-          return "success";
-        } else {
-          return "wrong";
-        }
-      } catch (e) {
-        print(e);
+      final decodedRes = json.decode(response.body);
+      print(response.body);
+      print(decodedRes["message"]);
+      if (response.statusCode == 401) {
+        await inheritDefault.login(context);
+        await editCompanyProfile(com, token, context);
       }
-      return "failed";
-    } else {
-      return 'noInternet';
+      if (decodedRes["message"] == "Success : password updated successfuly") {
+        return "success";
+      } else {
+        return "wrong";
+      }
+    } catch (e) {
+      print(e);
     }
+    return "failed";
   }
 
   Future<String> uploadImage(File _image, String token) async {
@@ -454,25 +441,21 @@ class CompanyData extends ChangeNotifier {
     print(_image.lengthSync());
     var url = "";
 
-    if (await isConnectedToInternet()) {
-      await uploadImage(_image, token).then((value) async {
-        if (value != "") {
-          print("path :$value");
-          url = "$baseURL/$value";
-          print("lunch url $url");
-          com.logo = url;
-          print("success =  $value");
+    await uploadImage(_image, token).then((value) async {
+      if (value != "") {
+        print("path :$value");
+        url = "$baseURL/$value";
+        print("lunch url $url");
+        com.logo = url;
+        print("success =  $value");
 
-          notifyListeners();
-        }
-      });
-      if (url != "") {
-        return "success";
-      } else {
-        return "";
+        notifyListeners();
       }
+    });
+    if (url != "") {
+      return "success";
     } else {
-      return 'noInternet';
+      return "";
     }
   }
 }

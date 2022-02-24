@@ -555,7 +555,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                             getTranslated(context, "موارد بشرية"),
                                                                                             getTranslated(context, "ادمن"),
                                                                                           ];
-                                                                                          await Provider.of<MemberData>(context, listen: false).getUserById(value.userSearchMember[index].id, Provider.of<UserData>(context, listen: false).user.userToken);
+                                                                                          await Provider.of<MemberData>(context, listen: false).getUserById(
+                                                                                            value.userSearchMember[index].id,
+                                                                                          );
                                                                                           final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
 
                                                                                           Navigator.of(context).push(

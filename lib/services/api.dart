@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -148,15 +148,15 @@ class ShiftApi with ChangeNotifier {
   //     shiftEndTime: 0,
   //     shiftQrCode: "",
   //     siteID: 0);
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> isConnectedToInternet() async {
+  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+  //   final bool isConnected = await networkInfoImp.isConnected;
+  //   if (isConnected) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   getShiftByShiftId(int shiftID, String usertoken) async {
     final response = await http.get(

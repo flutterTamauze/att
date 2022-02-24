@@ -843,7 +843,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                           return RoundedLoadingIndicator();
                                                                                         });
                                                                                     final token = Provider.of<UserData>(context, listen: false).user.userToken;
-                                                                                    if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, token, context) == "Success") {
+                                                                                    if (await memberData.deleteMember(memberData.membersListScreenDropDownSearch[index].id, index, context) == "Success") {
                                                                                       Navigator.pop(context);
                                                                                       successfullDelete(context);
                                                                                     } else {
@@ -894,7 +894,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                                           return RoundedLoadingIndicator();
                                                                                         });
                                                                                     final token = Provider.of<UserData>(context, listen: false).user.userToken;
-                                                                                    if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, token, context) == "Success") {
+                                                                                    if (await memberData.resetMemberMac(memberData.membersListScreenDropDownSearch[index].id, context) == "Success") {
                                                                                       Navigator.pop(context);
                                                                                       Fluttertoast.showToast(
                                                                                         msg: getTranslated(

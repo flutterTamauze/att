@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -119,8 +118,7 @@ class _UserPropertiesState extends State<UserProperties> {
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserData>(context, listen: false).user;
     final memberData = Provider.of<MemberData>(context, listen: false);
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+
     return ZoomIn(
       child: Container(
         // decoration: BoxDecoration(
@@ -182,7 +180,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                           .user
                                           .userToken;
                                       if (await memberData.resetMemberMac(
-                                              widget.user.id, token, context) ==
+                                              widget.user.id, context) ==
                                           "Success") {
                                         Navigator.pop(context);
                                         Fluttertoast.showToast(

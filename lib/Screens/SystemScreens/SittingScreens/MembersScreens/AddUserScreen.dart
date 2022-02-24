@@ -777,10 +777,18 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                     if (_formKey.currentState.validate()) {
                                       if (Provider.of<SiteShiftsData>(context,
                                                   listen: false)
-                                              .shifts[Provider.of<SiteData>(
-                                                      context,
-                                                      listen: false)
-                                                  .dropDownShiftIndex]
+                                              .shifts[
+                                                  Provider.of<SiteShiftsData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .shifts
+                                                              .length ==
+                                                          1
+                                                      ? 0
+                                                      : Provider.of<SiteData>(
+                                                              context,
+                                                              listen: false)
+                                                          .dropDownShiftIndex]
                                               .shiftName ==
                                           "لا يوجد مناوبات بهذا الموقع") {
                                         Fluttertoast.showToast(
@@ -836,7 +844,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                           "",
                                                         ),
                                                     name: _nameController.text.trim()),
-                                                token,
                                                 context,
                                                 getRoleName(userRole));
                                         Navigator.pop(context);
@@ -936,10 +943,19 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       if (_formKey.currentState.validate()) {
                                         if (Provider.of<SiteShiftsData>(context,
                                                     listen: false)
-                                                .shifts[Provider.of<SiteData>(
-                                                        context,
-                                                        listen: false)
-                                                    .dropDownShiftIndex]
+                                                .shifts[
+                                                    Provider.of<SiteShiftsData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .shifts
+                                                                .length ==
+                                                            1
+                                                        ? 0
+                                                        : Provider.of<SiteData>(
+                                                                context,
+                                                                listen: false)
+                                                            .dropDownShiftIndex]
                                                 .shiftName ==
                                             "لا يوجد مناوبات بهذا الموقع") {
                                           Fluttertoast.showToast(

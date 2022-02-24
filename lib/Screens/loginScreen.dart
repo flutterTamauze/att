@@ -364,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         print("VALUE OF USER");
         print(value);
-        if (value == 4) {
+        if (value == 4 || value == 3) {
           //subscribe admin channel
           bool isError = false;
 
@@ -374,11 +374,15 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           if (isError == false) {
             print("topic name : ");
-            print({
+            print(
+                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+            try {
               await firebaseMessaging.subscribeToTopic(
-                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}")
-            });
-            print("subscribed to topic");
+                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+              print("subscribed to topic");
+            } catch (e) {
+              print(e);
+            }
           }
         }
         if (value == NO_INTERNET) {

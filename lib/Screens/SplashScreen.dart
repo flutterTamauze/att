@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
       //       Provider.of<CompanyData>(context, listen: false).com.id,
       //       Provider.of<UserData>(context, listen: false).user.userToken,
       //       context);
-      if (value == 4) {
+      if (value == 4 || value == 3) {
         //subscribe admin channel
         bool isError = false;
 

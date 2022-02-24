@@ -78,10 +78,8 @@ class _DataTableRowState extends State<DataTableRow> {
                     });
                 await Provider.of<MemberData>(context, listen: false)
                     .getUserById(
-                        widget.attendUnit.userId,
-                        Provider.of<UserData>(context, listen: false)
-                            .user
-                            .userToken);
+                  widget.attendUnit.userId,
+                );
                 Navigator.pop(context);
                 final userData = Provider.of<MemberData>(context, listen: false)
                     .singleMember;

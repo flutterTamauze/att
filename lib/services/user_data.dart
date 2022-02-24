@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:huawei_location/location/location.dart';
 import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
@@ -205,19 +204,28 @@ class UserData with ChangeNotifier {
         loggedIn = true;
         final List<String> notifyList =
             await prefs.getStringList('bgNotifyList');
-        print("notifi status :$notifyList ");
 
         if (notifyList != null && notifyList.length != 0) {
-          await db.insertNotification(
-              NotificationMessage(
-                  category: notifyList[0],
-                  dateTime: notifyList[1],
-                  message: notifyList[2],
-                  messageSeen: 0,
-                  timeOfMessage: notifyList[4],
-                  title: notifyList[3]),
-              context);
+          while (notifyList.length != 0) {
+            print("test length now is ${notifyList.length}");
+            await db
+                .insertNotification(
+                    NotificationMessage(
+                        category: notifyList[0],
+                        dateTime: notifyList[1],
+                        message: notifyList[2],
+                        messageSeen: 0,
+                        timeOfMessage: notifyList[4],
+                        title: notifyList[3]),
+                    context)
+                .whenComplete(() {
+              for (int i = 0; i < 5; i++) {
+                notifyList.removeAt(0);
+              }
+            });
+          }
         }
+
         if (cacheLogin) {
           await initializeNotification(context);
         } else {

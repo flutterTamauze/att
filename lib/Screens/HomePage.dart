@@ -8,6 +8,7 @@ import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
+import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/main.dart';
@@ -45,9 +46,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     final newVersion = NewVersion();
     // ignore: cascade_invocations
-    newVersion.showAlertIfNecessary(
-      context: context,
-    );
+    // newVersion.showAlertIfNecessary(
+    //   context: context,
+    // );
 
     //Check for updates
     final DownloadService downloadService = DownloadService();
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: GestureDetector(
               onTap: () async {
                 // print(_startTime.hour);
-                print(locator.locator<PermissionHan>().isServerDown);
+                // print(locator.locator<PermissionHan>().isServerDown);
               },
               child: Scaffold(
                 endDrawer: NotificationItem(),

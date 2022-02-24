@@ -76,7 +76,6 @@ class _EditMemberState extends State<EditMember> {
                       email: widget.emailController.text.trim(),
                       name: widget.nameController.text),
                   widget.id,
-                  token,
                   context,
                   getRoleName(widget.userRole));
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -320,15 +320,15 @@ class ReportsData with ChangeNotifier {
   LateAbsenceReport lateAbsenceReport =
       LateAbsenceReport([], "0%", "0%", true, 0.0);
 
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> isConnectedToInternet() async {
+  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+  //   final bool isConnected = await networkInfoImp.isConnected;
+  //   if (isConnected) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   deleteAttendProofFromReport(
       String token, int id, int attendProofIndex) async {

@@ -1,4 +1,4 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Network/networkInfo.dart';
@@ -61,10 +61,10 @@ class InitLocator {
     //Network
 
     // ignore: cascade_invocations
-    instance.registerLazySingleton<DataConnectionChecker>(
-        () => DataConnectionChecker());
+    // instance.registerLazySingleton<DataConnectionChecker>(
+    //     () => DataConnectionChecker());
     // ignore: cascade_invocations
-    instance
-        .registerLazySingleton<NetworkInfo>(() => NetworkInfoImp(instance()));
+    // instance
+    //     .registerLazySingleton<NetworkInfo>(() => NetworkInfoImp(instance()));
   }
 }

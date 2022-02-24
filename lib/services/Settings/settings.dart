@@ -31,7 +31,7 @@ class Settings {
                 final token = Provider.of<UserData>(context, listen: false)
                     .user
                     .userToken;
-                if (await memberData.resetMemberMac(userid, token, context) ==
+                if (await memberData.resetMemberMac(userid, context) ==
                     "Success") {
                   Navigator.pop(context);
                   Fluttertoast.showToast(
@@ -79,8 +79,7 @@ class Settings {
                 final token = Provider.of<UserData>(context, listen: false)
                     .user
                     .userToken;
-                if (await memberData.deleteMember(
-                        userId, listIndex, token, context) ==
+                if (await memberData.deleteMember(userId, listIndex, context) ==
                     "Success") {
                   successfullDelete(context);
                   log("going to users screen");
