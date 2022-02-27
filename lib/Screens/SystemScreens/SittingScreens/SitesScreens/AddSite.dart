@@ -91,6 +91,10 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                 (!widget.isEdit)
                                     ? getTranslated(context, "إضافة مواقع")
                                     : getTranslated(context, "تعديل مواقع")),
+                            Divider(
+                              color: ColorManager.primary,
+                              endIndent: 50.w,
+                            ),
                             SizedBox(
                               height: 30.h,
                             ),

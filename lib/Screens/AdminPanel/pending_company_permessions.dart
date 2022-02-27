@@ -330,10 +330,12 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                               topicName: "",
                                                               userToken: pending
                                                                   .fcmToken,
-                                                              title:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "طلب اذن"),
+                                                              title: getTranslated(
+                                                                  navigatorKey
+                                                                      .currentState
+                                                                      .overlay
+                                                                      .context,
+                                                                  "طلب اذن"),
                                                               message: getTranslated(
                                                                   navigatorKey
                                                                       .currentState
@@ -344,7 +346,10 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                context,
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
                                                                 "تم الموافقة بنجاح"),
                                                             backgroundColor:
                                                                 Colors.green);
@@ -352,14 +357,20 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                           "Fail: Permission out of date!") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                context,
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
                                                                 "خطأ فى الرفض : انتهى وقت الطلب"),
                                                             backgroundColor:
                                                                 Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                context,
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
                                                                 "خطأ في الموافقة"),
                                                             backgroundColor:
                                                                 Colors.red);

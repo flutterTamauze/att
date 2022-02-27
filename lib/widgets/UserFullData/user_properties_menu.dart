@@ -15,7 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserPropertiesMenu extends StatefulWidget {
   final Member user;
-  UserPropertiesMenu({this.user});
+  const UserPropertiesMenu({this.user});
 
   @override
   _UserPropertiesMenuState createState() => _UserPropertiesMenuState();
@@ -33,7 +33,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
             horizontal: userDataProvider.userType != 2 ? 95.0.w : 20.0.w,
             vertical: userDataProvider.userType != 2 ? 90.0.h : 20.h,
           ),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
             height: userDataProvider.userType != 2 ? 180.h : 130.h,
@@ -70,7 +70,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                             )),
-                    Divider(),
+                    const Divider(),
                     AssignTaskToUser(
                         taskName: "اجازة",
                         iconData: FontAwesomeIcons.clock,
@@ -100,7 +100,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                             )),
-                    Divider(),
+                    const Divider(),
                     if (userDataProvider.userType != 2) ...[
                       AssignTaskToUser(
                           taskName: "مأمورية",
@@ -119,7 +119,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                               )),
-                      Divider(),
+                      const Divider(),
                     ],
                   ],
                 );

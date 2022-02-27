@@ -53,9 +53,9 @@ class _EditMemberState extends State<EditMember> {
                 return RoundedLoadingIndicator();
               });
 
-          var token =
+          final token =
               Provider.of<UserData>(context, listen: false).user.userToken;
-          var msg = await Provider.of<MemberData>(context, listen: false)
+          final msg = await Provider.of<MemberData>(context, listen: false)
               .editMember(
                   Member(
                       id: widget.member.id,

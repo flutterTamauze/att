@@ -62,7 +62,6 @@ DateTime selectedDate;
 final DateFormat apiFormatter = DateFormat('yyyy-MM-dd');
 TimeOfDay fromPicked;
 TimeOfDay toPicked;
-
 int levelClock = 300;
 
 class _UserFullDataScreenState extends State<UserFullDataScreen>
@@ -82,9 +81,11 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     return [result.isoCode, result.dialCode];
   }
 
+  bool userImageFailed = false;
+
   void initState() {
     super.initState();
-
+    userImageFailed = false;
     getSingleUserData();
     levelClock = 300;
 
@@ -199,21 +200,29 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
                               height: 120.h,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                      '$imageUrl${userData.userImageURL}',
-                                      headers: {
-                                        "Authorization": "Bearer " +
-                                            Provider.of<UserData>(context,
-                                                    listen: false)
-                                                .user
-                                                .userToken
+                                      image: !userImageFailed
+                                          ? NetworkImage(
+                                              '$imageUrl${userData.userImageURL}',
+                                              headers: {
+                                                "Authorization": "Bearer " +
+                                                    Provider.of<UserData>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .userToken
+                                              },
+                                            )
+                                          : AssetImage(
+                                              "resources/personicon.png"),
+                                      onError: (exception, stackTrace) {
+                                        setState(() {
+                                          userImageFailed = true;
+                                        });
                                       },
-                                    ),
-                                  ),
+                                      fit: BoxFit.fill),
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      width: 2, color: ColorManager.primary)),
+                                      width: 2, color: Color(0xffFF7E00))),
                             ),
                           ),
                           Container(

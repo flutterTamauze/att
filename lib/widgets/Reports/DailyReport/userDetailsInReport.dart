@@ -17,13 +17,13 @@ import 'package:qr_users/widgets/UserFullData/user_properties.dart';
 import '../../../Core/constants.dart';
 
 class UserDetailsInReport extends StatelessWidget {
-  const UserDetailsInReport({
+  UserDetailsInReport({
     Key key,
     @required this.userData,
   }) : super(key: key);
 
   final Member userData;
-
+  bool userImageFailed = false;
   @override
   Widget build(BuildContext context) {
     return ZoomIn(
@@ -47,7 +47,7 @@ class UserDetailsInReport extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(
                             width: 1,
-                            color: Color(0xffFF7E00),
+                            color: const Color(0xffFF7E00),
                           ),
                         ),
                         child: Container(
@@ -55,18 +55,24 @@ class UserDetailsInReport extends StatelessWidget {
                           height: 120.h,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(
-                                  '$imageUrl${userData.userImageURL}',
-                                  headers: {
-                                    "Authorization": "Bearer " +
-                                        Provider.of<UserData>(context,
-                                                listen: false)
-                                            .user
-                                            .userToken
+                                  image: !userImageFailed
+                                      ? NetworkImage(
+                                          '$imageUrl${userData.userImageURL}',
+                                          headers: {
+                                            "Authorization": "Bearer " +
+                                                Provider.of<UserData>(context,
+                                                        listen: false)
+                                                    .user
+                                                    .userToken
+                                          },
+                                        )
+                                      : AssetImage("resources/personicon.png"),
+                                  onError: (exception, stackTrace) {
+                                    setState(() {
+                                      userImageFailed = true;
+                                    });
                                   },
-                                ),
-                              ),
+                                  fit: BoxFit.fill),
                               shape: BoxShape.circle,
                               border: Border.all(
                                   width: 2, color: Color(0xffFF7E00))),
@@ -81,7 +87,7 @@ class UserDetailsInReport extends StatelessWidget {
                                 .setSp(14, allowFontScalingSelf: true),
                             fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Column(
@@ -90,7 +96,7 @@ class UserDetailsInReport extends StatelessWidget {
                             icon: Icons.email,
                             text: userData.email,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
@@ -102,7 +108,7 @@ class UserDetailsInReport extends StatelessWidget {
                                   text: userData.jobTitle,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 3,
                               ),
                               Provider.of<UserData>(context, listen: false)
@@ -117,12 +123,12 @@ class UserDetailsInReport extends StatelessWidget {
                                       ),
                                     )
                                   : Container(),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
@@ -133,7 +139,7 @@ class UserDetailsInReport extends StatelessWidget {
                                     icon: Icons.phone,
                                     text: plusSignPhone(userData.phoneNumber)),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 3,
                               ),
                               Expanded(
@@ -145,7 +151,7 @@ class UserDetailsInReport extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(

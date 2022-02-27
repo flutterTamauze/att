@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/Network/Network.dart';
 import 'package:qr_users/Network/networkInfo.dart';
+import 'package:qr_users/enums/request_type.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
@@ -105,54 +107,47 @@ class DaysOffData with ChangeNotifier {
 
   getDaysOffApi(int companyId, String userToken, BuildContext context,
       [Shift shift]) async {
-    print("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId");
-
     try {
       reallocateUsers.clear();
-      final response = await http.get(
-          Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print("days of status code ${response.statusCode}");
+      final response = await NetworkApi().request(
+          "$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId",
+          RequestType.GET, {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      });
+      http.get(
+        Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
+      );
 
-      if (response.statusCode == 401) {
-        await inheritDefault.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getDaysOffApi(companyId, userToken, context);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
-        if (decodedRes["message"] == "Success") {
-          weak[0].isDayOff = decodedRes["data"]["saturDay"] as bool;
-          weak[0].dayName = getTranslated(context, "السبت");
+      final decodedRes = json.decode(response);
+      if (decodedRes["message"] == "Success") {
+        weak[0].isDayOff = decodedRes["data"]["saturDay"] as bool;
+        weak[0].dayName = getTranslated(context, "السبت");
 
-          weak[1].isDayOff = decodedRes["data"]["sunDay"] as bool;
-          weak[1].dayName = getTranslated(context, "الأحد");
+        weak[1].isDayOff = decodedRes["data"]["sunDay"] as bool;
+        weak[1].dayName = getTranslated(context, "الأحد");
 
-          weak[2].isDayOff = decodedRes["data"]["monDay"] as bool;
-          weak[2].dayName = getTranslated(context, "الأثنين");
+        weak[2].isDayOff = decodedRes["data"]["monDay"] as bool;
+        weak[2].dayName = getTranslated(context, "الأثنين");
 
-          weak[3].isDayOff = decodedRes["data"]["tuesDay"] as bool;
-          weak[3].dayName = getTranslated(context, "الثلاثاء");
+        weak[3].isDayOff = decodedRes["data"]["tuesDay"] as bool;
+        weak[3].dayName = getTranslated(context, "الثلاثاء");
 
-          weak[4].isDayOff = decodedRes["data"]["wendseDay"] as bool;
-          weak[4].dayName = getTranslated(context, "الأربعاء");
+        weak[4].isDayOff = decodedRes["data"]["wendseDay"] as bool;
+        weak[4].dayName = getTranslated(context, "الأربعاء");
 
-          weak[5].isDayOff = decodedRes["data"]["thurseDay"] as bool;
-          weak[5].dayName = getTranslated(context, "الخميس");
+        weak[5].isDayOff = decodedRes["data"]["thurseDay"] as bool;
+        weak[5].dayName = getTranslated(context, "الخميس");
 
-          weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
-          weak[6].dayName = getTranslated(context, "الجمعة");
-          reallocateUsers = [...weak];
+        weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
+        weak[6].dayName = getTranslated(context, "الجمعة");
+        reallocateUsers = [...weak];
 
-          notifyListeners();
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
       }
     } catch (e) {
       print(e);

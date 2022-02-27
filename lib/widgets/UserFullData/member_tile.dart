@@ -268,8 +268,8 @@ class _MemberTileState extends State<MemberTile> {
                                             child: CircularProgressIndicator(
                                           backgroundColor: Colors.white,
                                           valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  Colors.orange),
+                                              const AlwaysStoppedAnimation<
+                                                  Color>(Colors.orange),
                                           value: loadingProgress
                                                       .expectedTotalBytes !=
                                                   null
@@ -295,6 +295,13 @@ class _MemberTileState extends State<MemberTile> {
                                                 .userToken
                                       },
                                     ),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Image(
+                                        image: AssetImage(
+                                            "resources/personicon.png"),
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
                                   ),
                                 ),
                               ),
@@ -353,7 +360,7 @@ class _MemberTileState extends State<MemberTile> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   width: 1,
-                                  color: Color(0xffFF7E00),
+                                  color: const Color(0xffFF7E00),
                                 ),
                               ),
                               child: Container(
@@ -375,7 +382,8 @@ class _MemberTileState extends State<MemberTile> {
                                     ),
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                        width: 2, color: Color(0xffFF7E00))),
+                                        width: 2,
+                                        color: const Color(0xffFF7E00))),
                               ),
                             ),
                             const SizedBox(
@@ -491,7 +499,7 @@ class _MemberTileState extends State<MemberTile> {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.close,
                             color: Colors.orange,
                             size: 25,
@@ -509,7 +517,7 @@ class _MemberTileState extends State<MemberTile> {
                           onTap: () {
                             widget.onResetMac();
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.repeat,
                             color: Colors.orange,
                             size: 25,

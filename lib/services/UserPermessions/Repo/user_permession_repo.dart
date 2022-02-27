@@ -7,4 +7,5 @@ abstract class PermessionAbstract {
   getPendingCompanyPermessions(int companyId, String userToken, int pageIndex);
   getFutureSinglePermession(String userId, String userToken);
   getPendingPermessionDetailsByID(int permessionId, String token);
+  getShiftByShiftId(int shiftId);
 }
