@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -300,72 +299,56 @@ class ShiftsData with ChangeNotifier {
 
   deleteShift(int shiftId, String userToken, int listIndex,
       BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http
-            .delete(Uri.parse("$baseURL/api/Shifts/$shiftId"), headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
+    try {
+      final response = await http
+          .delete(Uri.parse("$baseURL/api/Shifts/$shiftId"), headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      });
+      print(response.body);
+      if (response.statusCode == 401) {
+        await inherit.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await deleteShift(shiftId, userToken, listIndex, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedRes = json.decode(response.body);
         print(response.body);
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await deleteShift(shiftId, userToken, listIndex, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
 
-          if (decodedRes["message"] == "Success") {
-            if (shiftsBySite.length > 1) {
-              shiftsBySite.removeAt(listIndex);
-            } else {
-              shiftsBySite = [
-                Shift(
-                    shiftName: "لا يوجد مناوبات بهذا الموقع",
-                    shiftStartTime: -1,
-                    shiftEndTime: 0,
-                    shiftId: 0,
-                    siteID: 0)
-              ];
-            }
-            await sendFcmDataOnly(
-                category: "reloadData",
-                topicName:
-                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-
-            await Provider.of<SiteShiftsData>(context, listen: false)
-                .getAllSitesAndShifts(
-                    Provider.of<CompanyData>(context, listen: false).com.id,
-                    Provider.of<UserData>(context, listen: false)
-                        .user
-                        .userToken);
-            deleteFromAllShiftsList(shiftId);
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : You must delete all users in shift then delete shift") {
-            return "hasData";
+        if (decodedRes["message"] == "Success") {
+          if (shiftsBySite.length > 1) {
+            shiftsBySite.removeAt(listIndex);
+          } else {
+            shiftsBySite = [
+              Shift(
+                  shiftName: "لا يوجد مناوبات بهذا الموقع",
+                  shiftStartTime: -1,
+                  shiftEndTime: 0,
+                  shiftId: 0,
+                  siteID: 0)
+            ];
           }
-        }
-      } catch (e) {
-        print(e);
-      }
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
+          await sendFcmDataOnly(
+              category: "reloadData",
+              topicName:
+                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
 
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
+          await Provider.of<SiteShiftsData>(context, listen: false)
+              .getAllSitesAndShifts(
+                  Provider.of<CompanyData>(context, listen: false).com.id,
+                  Provider.of<UserData>(context, listen: false).user.userToken);
+          deleteFromAllShiftsList(shiftId);
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Fail : You must delete all users in shift then delete shift") {
+          return "hasData";
+        }
+      }
+    } catch (e) {
+      print(e);
     }
-    return false;
+    return "failed";
   }
 
   Future getShifts(int companyId, String userToken, BuildContext context,
@@ -383,52 +366,47 @@ class ShiftsData with ChangeNotifier {
       int siteId, String userToken, BuildContext context) async {
     print(siteId);
     List<Shift> shiftsNewList = [];
-    if (await isConnectedToInternet()) {
-      final response = await http.get(
-          Uri.parse("$baseURL/api/Shifts/GetAllShiftInSite?siteId=$siteId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print("GetAllShiftInSite");
-      print(response.statusCode);
+
+    final response = await http.get(
+        Uri.parse("$baseURL/api/Shifts/GetAllShiftInSite?siteId=$siteId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print("GetAllShiftInSite");
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 401) {
+      await inherit.login(context);
+      userToken = Provider.of<UserData>(context, listen: false).user.userToken;
+      await getShiftsBySiteId(
+        siteId,
+        userToken,
+        context,
+      );
+    } else if (response.statusCode == 200 || response.statusCode == 201) {
+      var decodedRes = json.decode(response.body);
       print(response.body);
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await getShiftsBySiteId(
-          siteId,
-          userToken,
-          context,
-        );
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
-        print(response.body);
 
-        if (decodedRes["message"] == "Success") {
-          var shiftObjJson = jsonDecode(response.body)['data'] as List;
-          shiftsNewList = shiftObjJson
-              .map((shiftJson) => Shift.fromJson(shiftJson))
-              .toList();
-          log(shiftsNewList.length.toString());
-          shiftsList = shiftsNewList;
-          notifyListeners();
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Error : There are no shifts at cuurent time") {
-          shiftsList = [];
-          notifyListeners();
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
+      if (decodedRes["message"] == "Success") {
+        var shiftObjJson = jsonDecode(response.body)['data'] as List;
+        shiftsNewList =
+            shiftObjJson.map((shiftJson) => Shift.fromJson(shiftJson)).toList();
+        log(shiftsNewList.length.toString());
+        shiftsList = shiftsNewList;
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Error : There are no shifts at cuurent time") {
+        shiftsList = [];
+        notifyListeners();
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
       }
-
-      return "failed";
-    } else {
-      return 'noInternet';
     }
+
+    return "failed";
   }
 
   // getAllCompanyShiftsApi(
@@ -482,132 +460,10 @@ class ShiftsData with ChangeNotifier {
 
   addShift(
       Shift shift, String userToken, BuildContext context, int index) async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
-            body: json.encode(
-              {
-                "shiftEntime": shift.shiftEndTime.toString(),
-                "shiftName": shift.shiftName,
-                "shiftSttime": shift.shiftStartTime.toString(),
-                "siteId": shift.siteID,
-                "FridayShiftSttime": shift.fridayShiftstTime.toString(),
-                "FridayShiftEntime": shift.fridayShiftenTime.toString(),
-                "MonShiftSttime": shift.monShiftstTime.toString(),
-                "MondayShiftEntime": shift.mondayShiftenTime.toString(),
-                "SunShiftSttime": shift.sunShiftstTime.toString(),
-                "SunShiftEntime": shift.sunShiftenTime.toString(),
-                "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
-                "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
-                "TuesdayShiftSttime": shift.tuesdayShiftstTime.toString(),
-                "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
-                "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
-                "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-
-        if (response.statusCode == 401) {
-          await inherit.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await addShift(shift, userToken, context, index);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          var decodedRes = json.decode(response.body);
-          print(response.body);
-
-          if (decodedRes["message"] == "Success") {
-            Shift newShift = Shift(
-                fridayShiftenTime:
-                    int.parse(decodedRes['data']["fridayShiftEntime"]),
-                fridayShiftstTime:
-                    int.parse(decodedRes['data']["fridayShiftSttime"]),
-                monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
-                mondayShiftenTime:
-                    int.parse(decodedRes['data']["mondayShiftEntime"]),
-                sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
-                sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
-                thursdayShiftenTime:
-                    int.parse(decodedRes['data']["thursdayShiftEntime"]),
-                thursdayShiftstTime:
-                    int.parse(decodedRes['data']["thursdayShiftSttime"]),
-                tuesdayShiftenTime:
-                    int.parse(decodedRes['data']["tuesdayShiftEntime"]),
-                tuesdayShiftstTime:
-                    int.parse(decodedRes['data']["tuesdayShiftSttime"]),
-                wednesDayShiftenTime:
-                    int.parse(decodedRes['data']["wednesdayShiftEntime"]),
-                wednesDayShiftstTime:
-                    int.parse(decodedRes['data']["wednesdayShiftSttime"]),
-                shiftId: decodedRes['data']['id'],
-                shiftName: decodedRes['data']['shiftName'],
-                shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
-                shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
-                siteID: decodedRes['data']['siteId'] as int);
-
-            // shiftsList.add(newShift);
-            // Provider.of<SiteShiftsData>(context, listen: false)
-            //     .siteShiftList[index]
-            //     .shifts
-            //     .add(Shifts(
-            //         shiftName: newShift.shiftName, shiftId: newShift.shiftId));
-
-            await sendFcmDataOnly(
-                category: "reloadData",
-                topicName:
-                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-
-            await Provider.of<SiteShiftsData>(context, listen: false)
-                .getAllSitesAndShifts(
-                    Provider.of<CompanyData>(context, listen: false).com.id,
-                    Provider.of<UserData>(context, listen: false)
-                        .user
-                        .userToken);
-
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : The same shift name already exists in site") {
-            return "exists";
-          } else if (decodedRes["message"] == "Fail : Time constants error") {
-            print("s");
-            return decodedRes["data"];
-          } else {
-            return "failed";
-          }
-        }
-      } catch (e) {
-        print(e);
-      }
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
-
-  findShiftIndexInShiftsList(int id) {
-    for (int i = 0; i < shiftsList.length; i++) {
-      if (shiftsList[i].shiftId == id) {
-        return i;
-      }
-    }
-  }
-
-  editShift(Shift shift, int id, String usertoken, BuildContext context,
-      index) async {
-    print("Shift ID : ${shift.shiftId}");
-    print("Site ID : ${shift.siteID}");
-    print("index : $id");
-    print(shift.fridayShiftenTime);
-    if (await isConnectedToInternet()) {
-      print("shift start = ${shift.sunShiftstTime.toString()}");
-      final response = await http.put(
-          Uri.parse("$baseURL/api/Shifts/${shift.shiftId}"),
+    try {
+      final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
           body: json.encode(
             {
-              "id": shift.shiftId,
               "shiftEntime": shift.shiftEndTime.toString(),
               "shiftName": shift.shiftName,
               "shiftSttime": shift.shiftStartTime.toString(),
@@ -628,14 +484,14 @@ class ShiftsData with ChangeNotifier {
           ),
           headers: {
             'Content-type': 'application/json',
-            'Authorization': "Bearer $usertoken"
+            'Authorization': "Bearer $userToken"
           });
-      print(response.body);
+
       if (response.statusCode == 401) {
         await inherit.login(context);
-        usertoken =
+        userToken =
             Provider.of<UserData>(context, listen: false).user.userToken;
-        await editShift(shift, id, usertoken, context, index);
+        await addShift(shift, userToken, context, index);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedRes = json.decode(response.body);
         print(response.body);
@@ -668,33 +524,14 @@ class ShiftsData with ChangeNotifier {
               shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
               shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
               siteID: decodedRes['data']['siteId'] as int);
-          // var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
 
-          // shiftsList[shiftsListIndex] = newShift;
+          // shiftsList.add(newShift);
+          // Provider.of<SiteShiftsData>(context, listen: false)
+          //     .siteShiftList[index]
+          //     .shifts
+          //     .add(Shifts(
+          //         shiftName: newShift.shiftName, shiftId: newShift.shiftId));
 
-          // for (int i = 0;
-          //     i <
-          //         Provider.of<SiteShiftsData>(context, listen: false)
-          //             .siteShiftList[index]
-          //             .shifts
-          //             .length;
-          //     i++) {
-          //   if (shift.shiftName ==
-          //       Provider.of<SiteShiftsData>(context, listen: false)
-          //           .siteShiftList[index]
-          //           .shifts[i]
-          //           .shiftName) {
-          //     Provider.of<SiteShiftsData>(context, listen: false)
-          //         .siteShiftList[index]
-          //         .shifts[i]
-          //         .shiftName = newShift.shiftName;
-          //     Provider.of<SiteShiftsData>(context, listen: false)
-          //         .siteShiftList[index]
-          //         .shifts[i]
-          //         .shiftId = newShift.shiftId;
-          //   }
-
-          // }
           await sendFcmDataOnly(
               category: "reloadData",
               topicName:
@@ -705,11 +542,9 @@ class ShiftsData with ChangeNotifier {
                   Provider.of<CompanyData>(context, listen: false).com.id,
                   Provider.of<UserData>(context, listen: false).user.userToken);
 
-          notifyListeners();
-
           return "Success";
         } else if (decodedRes["message"] ==
-            "Fail : Shift Name already exists") {
+            "Fail : The same shift name already exists in site") {
           return "exists";
         } else if (decodedRes["message"] == "Fail : Time constants error") {
           print("s");
@@ -718,10 +553,141 @@ class ShiftsData with ChangeNotifier {
           return "failed";
         }
       }
-
-      return "failed";
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
+    return "failed";
+  }
+
+  findShiftIndexInShiftsList(int id) {
+    for (int i = 0; i < shiftsList.length; i++) {
+      if (shiftsList[i].shiftId == id) {
+        return i;
+      }
+    }
+  }
+
+  editShift(Shift shift, int id, String usertoken, BuildContext context,
+      index) async {
+    print("Shift ID : ${shift.shiftId}");
+    print("Site ID : ${shift.siteID}");
+    print("index : $id");
+    print(shift.fridayShiftenTime);
+    print("shift start = ${shift.sunShiftstTime.toString()}");
+    final response = await http.put(
+        Uri.parse("$baseURL/api/Shifts/${shift.shiftId}"),
+        body: json.encode(
+          {
+            "id": shift.shiftId,
+            "shiftEntime": shift.shiftEndTime.toString(),
+            "shiftName": shift.shiftName,
+            "shiftSttime": shift.shiftStartTime.toString(),
+            "siteId": shift.siteID,
+            "FridayShiftSttime": shift.fridayShiftstTime.toString(),
+            "FridayShiftEntime": shift.fridayShiftenTime.toString(),
+            "MonShiftSttime": shift.monShiftstTime.toString(),
+            "MondayShiftEntime": shift.mondayShiftenTime.toString(),
+            "SunShiftSttime": shift.sunShiftstTime.toString(),
+            "SunShiftEntime": shift.sunShiftenTime.toString(),
+            "ThursdayShiftSttime": shift.thursdayShiftstTime.toString(),
+            "ThursdayShiftEntime": shift.thursdayShiftenTime.toString(),
+            "TuesdayShiftSttime": shift.tuesdayShiftstTime.toString(),
+            "TuesdayShiftEntime": shift.tuesdayShiftenTime.toString(),
+            "WednesdayShiftSttime": shift.wednesDayShiftstTime.toString(),
+            "WednesdayShiftEntime": shift.wednesDayShiftenTime.toString(),
+          },
+        ),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $usertoken"
+        });
+    print(response.body);
+    if (response.statusCode == 401) {
+      await inherit.login(context);
+      usertoken = Provider.of<UserData>(context, listen: false).user.userToken;
+      await editShift(shift, id, usertoken, context, index);
+    } else if (response.statusCode == 200 || response.statusCode == 201) {
+      var decodedRes = json.decode(response.body);
+      print(response.body);
+
+      if (decodedRes["message"] == "Success") {
+        Shift newShift = Shift(
+            fridayShiftenTime:
+                int.parse(decodedRes['data']["fridayShiftEntime"]),
+            fridayShiftstTime:
+                int.parse(decodedRes['data']["fridayShiftSttime"]),
+            monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
+            mondayShiftenTime:
+                int.parse(decodedRes['data']["mondayShiftEntime"]),
+            sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
+            sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
+            thursdayShiftenTime:
+                int.parse(decodedRes['data']["thursdayShiftEntime"]),
+            thursdayShiftstTime:
+                int.parse(decodedRes['data']["thursdayShiftSttime"]),
+            tuesdayShiftenTime:
+                int.parse(decodedRes['data']["tuesdayShiftEntime"]),
+            tuesdayShiftstTime:
+                int.parse(decodedRes['data']["tuesdayShiftSttime"]),
+            wednesDayShiftenTime:
+                int.parse(decodedRes['data']["wednesdayShiftEntime"]),
+            wednesDayShiftstTime:
+                int.parse(decodedRes['data']["wednesdayShiftSttime"]),
+            shiftId: decodedRes['data']['id'],
+            shiftName: decodedRes['data']['shiftName'],
+            shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
+            shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
+            siteID: decodedRes['data']['siteId'] as int);
+        // var shiftsListIndex = findShiftIndexInShiftsList(shift.shiftId);
+
+        // shiftsList[shiftsListIndex] = newShift;
+
+        // for (int i = 0;
+        //     i <
+        //         Provider.of<SiteShiftsData>(context, listen: false)
+        //             .siteShiftList[index]
+        //             .shifts
+        //             .length;
+        //     i++) {
+        //   if (shift.shiftName ==
+        //       Provider.of<SiteShiftsData>(context, listen: false)
+        //           .siteShiftList[index]
+        //           .shifts[i]
+        //           .shiftName) {
+        //     Provider.of<SiteShiftsData>(context, listen: false)
+        //         .siteShiftList[index]
+        //         .shifts[i]
+        //         .shiftName = newShift.shiftName;
+        //     Provider.of<SiteShiftsData>(context, listen: false)
+        //         .siteShiftList[index]
+        //         .shifts[i]
+        //         .shiftId = newShift.shiftId;
+        //   }
+
+        // }
+        await sendFcmDataOnly(
+            category: "reloadData",
+            topicName:
+                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+
+        await Provider.of<SiteShiftsData>(context, listen: false)
+            .getAllSitesAndShifts(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken);
+
+        notifyListeners();
+
+        return "Success";
+      } else if (decodedRes["message"] == "Fail : Shift Name already exists") {
+        return "exists";
+      } else if (decodedRes["message"] == "Fail : Time constants error") {
+        print("s");
+        return decodedRes["data"];
+      } else {
+        return "failed";
+      }
+    }
+
+    return "failed";
   }
 }

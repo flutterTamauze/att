@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -87,15 +87,15 @@ class DaysOffData with ChangeNotifier {
 
   InheritDefault inheritDefault = InheritDefault();
   Future future;
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> isConnectedToInternet() async {
+  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+  //   final bool isConnected = await networkInfoImp.isConnected;
+  //   if (isConnected) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   getDaysOff(int companyId, String userToken, BuildContext context,
       [Shift shift]) {
@@ -106,127 +106,121 @@ class DaysOffData with ChangeNotifier {
   getDaysOffApi(int companyId, String userToken, BuildContext context,
       [Shift shift]) async {
     print("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId");
-    if (await isConnectedToInternet()) {
-      try {
-        reallocateUsers.clear();
-        final response = await http.get(
-            Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print("days of status code ${response.statusCode}");
 
-        if (response.statusCode == 401) {
-          await inheritDefault.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await getDaysOffApi(companyId, userToken, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          if (decodedRes["message"] == "Success") {
-            weak[0].isDayOff = decodedRes["data"]["saturDay"] as bool;
-            weak[0].dayName = getTranslated(context, "السبت");
+    try {
+      reallocateUsers.clear();
+      final response = await http.get(
+          Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          });
+      print("days of status code ${response.statusCode}");
 
-            weak[1].isDayOff = decodedRes["data"]["sunDay"] as bool;
-            weak[1].dayName = getTranslated(context, "الأحد");
+      if (response.statusCode == 401) {
+        await inheritDefault.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await getDaysOffApi(companyId, userToken, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        final decodedRes = json.decode(response.body);
+        if (decodedRes["message"] == "Success") {
+          weak[0].isDayOff = decodedRes["data"]["saturDay"] as bool;
+          weak[0].dayName = getTranslated(context, "السبت");
 
-            weak[2].isDayOff = decodedRes["data"]["monDay"] as bool;
-            weak[2].dayName = getTranslated(context, "الأثنين");
+          weak[1].isDayOff = decodedRes["data"]["sunDay"] as bool;
+          weak[1].dayName = getTranslated(context, "الأحد");
 
-            weak[3].isDayOff = decodedRes["data"]["tuesDay"] as bool;
-            weak[3].dayName = getTranslated(context, "الثلاثاء");
+          weak[2].isDayOff = decodedRes["data"]["monDay"] as bool;
+          weak[2].dayName = getTranslated(context, "الأثنين");
 
-            weak[4].isDayOff = decodedRes["data"]["wendseDay"] as bool;
-            weak[4].dayName = getTranslated(context, "الأربعاء");
+          weak[3].isDayOff = decodedRes["data"]["tuesDay"] as bool;
+          weak[3].dayName = getTranslated(context, "الثلاثاء");
 
-            weak[5].isDayOff = decodedRes["data"]["thurseDay"] as bool;
-            weak[5].dayName = getTranslated(context, "الخميس");
+          weak[4].isDayOff = decodedRes["data"]["wendseDay"] as bool;
+          weak[4].dayName = getTranslated(context, "الأربعاء");
 
-            weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
-            weak[6].dayName = getTranslated(context, "الجمعة");
-            reallocateUsers = [...weak];
+          weak[5].isDayOff = decodedRes["data"]["thurseDay"] as bool;
+          weak[5].dayName = getTranslated(context, "الخميس");
 
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+          weak[6].isDayOff = decodedRes["data"]["friDay"] as bool;
+          weak[6].dayName = getTranslated(context, "الجمعة");
+          reallocateUsers = [...weak];
+
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
-      } catch (e) {
-        print(e);
       }
-      return "failed";
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
+    return "failed";
   }
 
   editDaysOffApi(int companyId, String userToken, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.put(
-            Uri.parse("$baseURL/api/DaysOff?companyId=$companyId"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
+    try {
+      final response = await http.put(
+          Uri.parse("$baseURL/api/DaysOff?companyId=$companyId"),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+          body: json.encode(
+            {
+              "saturDay": weak[0].isDayOff,
+              "sunDay": weak[1].isDayOff,
+              "monDay": weak[2].isDayOff,
+              "tuseDay": weak[3].isDayOff,
+              "wendseDay": weak[4].isDayOff,
+              "thurseDay": weak[5].isDayOff,
+              "friDay": weak[6].isDayOff,
+              "companyId": companyId
             },
-            body: json.encode(
-              {
-                "saturDay": weak[0].isDayOff,
-                "sunDay": weak[1].isDayOff,
-                "monDay": weak[2].isDayOff,
-                "tuseDay": weak[3].isDayOff,
-                "wendseDay": weak[4].isDayOff,
-                "thurseDay": weak[5].isDayOff,
-                "friDay": weak[6].isDayOff,
-                "companyId": companyId
-              },
-            ));
-        if (response.statusCode == 401) {
-          await inheritDefault.login(context);
-          userToken =
-              Provider.of<UserData>(context, listen: false).user.userToken;
-          await editDaysOffApi(companyId, userToken, context);
-        } else if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          print(decodedRes);
+          ));
+      if (response.statusCode == 401) {
+        await inheritDefault.login(context);
+        userToken =
+            Provider.of<UserData>(context, listen: false).user.userToken;
+        await editDaysOffApi(companyId, userToken, context);
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        final decodedRes = json.decode(response.body);
+        print(decodedRes);
 
-          if (decodedRes["message"] == "Success : Update Successfully") {
-            weak[0].isDayOff = decodedRes["data"]["saturDay"];
-            weak[0].dayName = getTranslated(context, "السبت");
+        if (decodedRes["message"] == "Success : Update Successfully") {
+          weak[0].isDayOff = decodedRes["data"]["saturDay"];
+          weak[0].dayName = getTranslated(context, "السبت");
 
-            weak[1].isDayOff = decodedRes["data"]["sunDay"];
-            weak[1].dayName = getTranslated(context, "الأحد");
+          weak[1].isDayOff = decodedRes["data"]["sunDay"];
+          weak[1].dayName = getTranslated(context, "الأحد");
 
-            weak[2].isDayOff = decodedRes["data"]["monDay"];
-            weak[2].dayName = getTranslated(context, "الأثنين");
+          weak[2].isDayOff = decodedRes["data"]["monDay"];
+          weak[2].dayName = getTranslated(context, "الأثنين");
 
-            weak[3].isDayOff = decodedRes["data"]["tuesDay"];
-            weak[3].dayName = getTranslated(context, "الثلاثاء");
+          weak[3].isDayOff = decodedRes["data"]["tuesDay"];
+          weak[3].dayName = getTranslated(context, "الثلاثاء");
 
-            weak[4].isDayOff = decodedRes["data"]["wendseDay"];
-            weak[4].dayName = getTranslated(context, "الأربعاء");
+          weak[4].isDayOff = decodedRes["data"]["wendseDay"];
+          weak[4].dayName = getTranslated(context, "الأربعاء");
 
-            weak[5].isDayOff = decodedRes["data"]["thurseDay"];
-            weak[5].dayName = getTranslated(context, "الخميس");
+          weak[5].isDayOff = decodedRes["data"]["thurseDay"];
+          weak[5].dayName = getTranslated(context, "الخميس");
 
-            weak[6].isDayOff = decodedRes["data"]["friDay"];
-            weak[6].dayName = getTranslated(context, "الجمعة");
-            reallocateUsers = [...weak];
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
+          weak[6].isDayOff = decodedRes["data"]["friDay"];
+          weak[6].dayName = getTranslated(context, "الجمعة");
+          reallocateUsers = [...weak];
+          notifyListeners();
+          return "Success";
+        } else if (decodedRes["message"] ==
+            "Failed : user name and password not match ") {
+          return "wrong";
         }
-        return "failed";
-      } catch (e) {
-        print(e);
       }
+      return "failed";
+    } catch (e) {
+      print(e);
     }
-    return 'noInternet';
   }
 }

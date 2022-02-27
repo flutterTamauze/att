@@ -239,7 +239,7 @@ class DrawerI extends StatelessWidget {
                             builder: (BuildContext context) {
                               return RoundedAlert(
                                   onPressed: () async {
-                                    if (userType == 4) {
+                                    if (userType == 4 || userType == 3) {
                                       //subscribe admin channel
                                       bool isError = false;
                                       await _firebaseMessaging

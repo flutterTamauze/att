@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
@@ -120,31 +120,23 @@ class UserHolidaysData with ChangeNotifier {
   deleteUserHoliday(int holidayID, String userToken, int holidayIndex) async {
     isLoading = true;
     notifyListeners();
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      final response = await http.delete(
-          Uri.parse("$baseURL/api/Holiday/DeleteHoliday?id=$holidayID"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print(response.statusCode);
-      print(response.body);
-      isLoading = false;
+
+    final response = await http.delete(
+        Uri.parse("$baseURL/api/Holiday/DeleteHoliday?id=$holidayID"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.statusCode);
+    print(response.body);
+    isLoading = false;
+    notifyListeners();
+    final decodedResp = json.decode(response.body);
+    if (decodedResp["message"] == "Success : Holiday Deleted!") {
+      singleUserHoliday.removeAt(holidayIndex);
       notifyListeners();
-      final decodedResp = json.decode(response.body);
-      if (decodedResp["message"] == "Success : Holiday Deleted!") {
-        singleUserHoliday.removeAt(holidayIndex);
-        notifyListeners();
-      }
-      return decodedResp["message"];
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
     }
+    return decodedResp["message"];
   }
 
   getPendingCompanyHolidays(int companyId, String userToken) async {
@@ -174,49 +166,39 @@ class UserHolidaysData with ChangeNotifier {
       print(vacID);
       isLoading = true;
       notifyListeners();
-      final DataConnectionChecker dataConnectionChecker =
-          DataConnectionChecker();
-      final NetworkInfoImp networkInfoImp =
-          NetworkInfoImp(dataConnectionChecker);
-      final bool isConnected = await networkInfoImp.isConnected;
-      if (isConnected) {
-        final response = await http.put(
-            Uri.parse(
-              "$baseURL/api/Holiday/Approve",
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            },
-            body: json.encode({
-              "status": status,
-              "id": vacID,
-              "adminResponse": adminComment,
-              "Desc": desc,
-              "fromdate": fromDate.toIso8601String(),
-              "todate": toDate.toIso8601String()
-            }));
-        print(response.statusCode);
-        isLoading = false;
-        notifyListeners();
-        print(response.body);
-        final decodedResp = json.decode(response.body);
-        if (response.statusCode == 200 &&
-            (!decodedResp["message"].toString().contains("Fail"))) {
-          pendingCompanyHolidays
-              .removeWhere((element) => element.holidayNumber == vacID);
 
-          print(decodedResp["message"]);
-          notifyListeners();
-          log(decodedResp["message"]);
-          return decodedResp["message"];
-        }
+      final response = await http.put(
+          Uri.parse(
+            "$baseURL/api/Holiday/Approve",
+          ),
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': "Bearer $userToken"
+          },
+          body: json.encode({
+            "status": status,
+            "id": vacID,
+            "adminResponse": adminComment,
+            "Desc": desc,
+            "fromdate": fromDate.toIso8601String(),
+            "todate": toDate.toIso8601String()
+          }));
+      print(response.statusCode);
+      isLoading = false;
+      notifyListeners();
+      print(response.body);
+      final decodedResp = json.decode(response.body);
+      if (response.statusCode == 200 &&
+          (!decodedResp["message"].toString().contains("Fail"))) {
+        pendingCompanyHolidays
+            .removeWhere((element) => element.holidayNumber == vacID);
+
+        print(decodedResp["message"]);
+        notifyListeners();
+        log(decodedResp["message"]);
         return decodedResp["message"];
-      } else {
-        return weakInternetConnection(
-          navigatorKey.currentState.overlay.context,
-        );
       }
+      return decodedResp["message"];
     } catch (e) {
       print(e);
     }
@@ -236,36 +218,34 @@ class UserHolidaysData with ChangeNotifier {
       loadingHolidaysDetails = true;
       notifyListeners();
 
-      if (await locator.locator<NetworkInfo>().isConnected) {
-        final response = await http.get(
-          Uri.parse("$baseURL/api/Holiday/$holidayId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          },
-        );
-        print(response.statusCode);
+      final response = await http.get(
+        Uri.parse("$baseURL/api/Holiday/$holidayId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+      );
+      print(response.statusCode);
 
-        log(response.body);
-        loadingHolidaysDetails = false;
+      log(response.body);
+      loadingHolidaysDetails = false;
+      notifyListeners();
+      final decodedResponse = json.decode(response.body);
+      if (decodedResponse["message"] == "Success") {
+        holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+
+        pendingCompanyHolidays[holidayIndex].adminResponse =
+            holidaysSingleDetail.adminResponse;
+        pendingCompanyHolidays[holidayIndex].holidayDescription =
+            holidaysSingleDetail.holidayDescription;
+        pendingCompanyHolidays[holidayIndex].fcmToken =
+            holidaysSingleDetail.fcmToken;
+        pendingCompanyHolidays[holidayIndex].adminResponse =
+            pendingCompanyHolidays[holidayIndex].adminResponse;
+        // pendingCompanyHolidays[holidayIndex].createdOnDate =
+        //     pendingCompanyHolidays[holidayIndex].createdOnDate;
+
         notifyListeners();
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse["message"] == "Success") {
-          holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
-
-          pendingCompanyHolidays[holidayIndex].adminResponse =
-              holidaysSingleDetail.adminResponse;
-          pendingCompanyHolidays[holidayIndex].holidayDescription =
-              holidaysSingleDetail.holidayDescription;
-          pendingCompanyHolidays[holidayIndex].fcmToken =
-              holidaysSingleDetail.fcmToken;
-          pendingCompanyHolidays[holidayIndex].adminResponse =
-              pendingCompanyHolidays[holidayIndex].adminResponse;
-          // pendingCompanyHolidays[holidayIndex].createdOnDate =
-          //     pendingCompanyHolidays[holidayIndex].createdOnDate;
-
-          notifyListeners();
-        }
       }
       loadingHolidaysDetails = false;
       notifyListeners();
@@ -286,47 +266,36 @@ class UserHolidaysData with ChangeNotifier {
       notifyListeners();
       print("holiday id $holidayId");
 
-      final DataConnectionChecker dataConnectionChecker =
-          DataConnectionChecker();
-      final NetworkInfoImp networkInfoImp =
-          NetworkInfoImp(dataConnectionChecker);
-      final bool isConnected = await networkInfoImp.isConnected;
-      if (isConnected) {
-        final response = await http.get(
-          Uri.parse("$baseURL/api/Holiday/$holidayId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          },
-        );
-        print(response.statusCode);
+      final response = await http.get(
+        Uri.parse("$baseURL/api/Holiday/$holidayId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+      );
+      print(response.statusCode);
 
-        log(response.body);
-        loadingHolidaysDetails = false;
-        notifyListeners();
-        final decodedResponse = json.decode(response.body);
-        if (decodedResponse["message"] == "Success") {
-          holidaysSingleDetail =
-              UserHolidays.detailsFromJson(decodedResponse['data']);
-          final holidays = singleUserHoliday
-              .where((element) => element.holidayNumber == holidayId)
-              .toList();
+      log(response.body);
+      loadingHolidaysDetails = false;
+      notifyListeners();
+      final decodedResponse = json.decode(response.body);
+      if (decodedResponse["message"] == "Success") {
+        holidaysSingleDetail =
+            UserHolidays.detailsFromJson(decodedResponse['data']);
+        final holidays = singleUserHoliday
+            .where((element) => element.holidayNumber == holidayId)
+            .toList();
 
-          final int holidayIndex = singleUserHoliday.indexOf(holidays[0]);
-          singleUserHoliday[holidayIndex].adminResponse =
-              holidaysSingleDetail.adminResponse;
-          singleUserHoliday[holidayIndex].holidayDescription =
-              holidaysSingleDetail.holidayDescription;
-          singleUserHoliday[holidayIndex].holidayType =
-              holidaysSingleDetail.holidayType;
-        }
-
-        notifyListeners();
-      } else {
-        return weakInternetConnection(
-          navigatorKey.currentState.overlay.context,
-        );
+        final int holidayIndex = singleUserHoliday.indexOf(holidays[0]);
+        singleUserHoliday[holidayIndex].adminResponse =
+            holidaysSingleDetail.adminResponse;
+        singleUserHoliday[holidayIndex].holidayDescription =
+            holidaysSingleDetail.holidayDescription;
+        singleUserHoliday[holidayIndex].holidayType =
+            holidaysSingleDetail.holidayType;
       }
+
+      notifyListeners();
     }
   }
 
@@ -384,59 +353,50 @@ class UserHolidaysData with ChangeNotifier {
       UserHolidays holiday, String userToken, String userId) async {
     print(holiday.holidayDescription);
 
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      isLoading = true;
-      notifyListeners();
-      final response = await http.post(
-          Uri.parse("$baseURL/api/Holiday/AddHoliday"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          },
-          body: json.encode({
-            "typeId": holiday.holidayType,
-            "fromdate": holiday.fromDate.toIso8601String(),
-            "toDate": holiday.toDate.toIso8601String(),
-            "userId": userId,
-            "desc": holiday.holidayDescription,
-            "createdonDate": DateTime.now().toIso8601String(),
-            "status": 3,
-          }));
-      isLoading = false;
-      notifyListeners();
-      print("adding holiday");
-      print(response.body);
-      final decodedMessage = json.decode(response.body)["message"];
-      switch (decodedMessage) {
-        case "Success : Holiday Created!":
-          return Holiday.Success;
-          break;
-        case "Failed : There are external mission in this period!":
-          return Holiday.External_Mission_InThis_Period;
-          break;
-        case "Failed : Another Holiday not approved for this user!":
-          return Holiday.Another_Holiday_NOT_APPROVED;
-          break;
-        case "Failed : There are an holiday approved in this period!":
-          return Holiday.Holiday_Approved_InThis_Period;
-          break;
-        case "Failed : There are an internal Mission in this period!":
-          return Holiday.Internal_Mission_InThis_Period;
-          break;
-        case "Failed : There are an permission in this period!":
-          return Holiday.Permession_InThis_Period;
-          break;
+    isLoading = true;
+    notifyListeners();
+    final response = await http.post(
+        Uri.parse("$baseURL/api/Holiday/AddHoliday"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        },
+        body: json.encode({
+          "typeId": holiday.holidayType,
+          "fromdate": holiday.fromDate.toIso8601String(),
+          "toDate": holiday.toDate.toIso8601String(),
+          "userId": userId,
+          "desc": holiday.holidayDescription,
+          "createdonDate": DateTime.now().toIso8601String(),
+          "status": 3,
+        }));
+    isLoading = false;
+    notifyListeners();
+    print("adding holiday");
+    print(response.body);
+    final decodedMessage = json.decode(response.body)["message"];
+    switch (decodedMessage) {
+      case "Success : Holiday Created!":
+        return Holiday.Success;
+        break;
+      case "Failed : There are external mission in this period!":
+        return Holiday.External_Mission_InThis_Period;
+        break;
+      case "Failed : Another Holiday not approved for this user!":
+        return Holiday.Another_Holiday_NOT_APPROVED;
+        break;
+      case "Failed : There are an holiday approved in this period!":
+        return Holiday.Holiday_Approved_InThis_Period;
+        break;
+      case "Failed : There are an internal Mission in this period!":
+        return Holiday.Internal_Mission_InThis_Period;
+        break;
+      case "Failed : There are an permission in this period!":
+        return Holiday.Permession_InThis_Period;
+        break;
 
-        default:
-          return Holiday.Failed;
-      }
-    } else {
-      return weakInternetConnection(
-        navigatorKey.currentState.overlay.context,
-      );
+      default:
+        return Holiday.Failed;
     }
   }
 

@@ -69,9 +69,10 @@ class _UserFullDataScreenState extends State<UserFullDataScreen>
     with TickerProviderStateMixin {
   Future singleUserData;
   getSingleUserData() async {
-    singleUserData = Provider.of<MemberData>(context, listen: false)
-        .getUserById(widget.userId,
-            Provider.of<UserData>(context, listen: false).user.userToken);
+    singleUserData =
+        Provider.of<MemberData>(context, listen: false).getUserById(
+      widget.userId,
+    );
   }
 
   Future<List<String>> getPhoneInEdit(String phoneNumberEdit) async {

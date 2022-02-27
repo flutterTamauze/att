@@ -30,13 +30,13 @@ dependencies:
   connectivity_plus: ^1.1.0
   cupertino_icons: ^1.0.0
   curved_navigation_bar: ^0.3.4
-  data_connection_checker: ^0.3.4
+  # data_connection_checker: ^0.3.4
   date_range_picker: ^1.0.7
   date_time_picker: ^2.0.0
   device_info: ^0.4.0+4
   dio: ^4.0.0
   ext_storage: ^1.0.3
-  firebase_messaging: 
+  firebase_messaging: ^10.0.0
   fl_chart: 0.36.4
   flutter:
     sdk: flutter
@@ -68,7 +68,7 @@ dependencies:
   open_file: ^3.0.3
   path_provider: ^2.0.0
   permission_handler: ^6.0.0
-  progress_dialog: ^1.2.4
+  # progress_dialog: ^1.2.4
   provider: ^4.3.2+2
   pull_to_refresh: 1.6.5
   qr_code_scanner: ^0.1.0

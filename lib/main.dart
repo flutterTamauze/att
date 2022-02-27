@@ -60,7 +60,7 @@ void main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  bool isError = false;
+  final bool isError = false;
   if (Platform.isAndroid) {
     try {
       await _channel.invokeMethod('createNotificationChannel', channelMap);
@@ -94,20 +94,26 @@ void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   try {
     final prefs = await SharedPreferences.getInstance();
-
-    prefs.setStringList("bgNotifyList", []);
+    // prefs.setStringList("bgNotifyList", []);
     if (message.data["category"] != "reloadData") {
       await prefs
           .setString("notifCategory", message.data["category"])
           .whenComplete(
               () => print("category added !!! ${message.data["category"]}"));
-      await prefs.setStringList("bgNotifyList", [
-        message.data["category"],
+      final List<String> cachedList = await prefs.getStringList("bgNotifyList");
+      cachedList.add(message.data["category"]);
+      // ignore: cascade_invocations
+      cachedList.add(
         DateTime.now().toString().substring(0, 11),
-        message.data["body"],
-        message.data["title"],
-        DateFormat('kk:mm:a').format(DateTime.now())
-      ]).whenComplete(() => print("background notification is set !!!"));
+      );
+      // ignore: cascade_invocations
+      cachedList.add(message.data["body"]);
+      // ignore: cascade_invocations
+      cachedList.add(message.data["title"]);
+      // ignore: cascade_invocations
+      cachedList.add(DateFormat('kk:mm:a').format(DateTime.now()));
+      await prefs.setStringList("bgNotifyList", cachedList).whenComplete(() =>
+          print("cached list update with total length ${cachedList.length}"));
     }
   } catch (e) {
     print(e);

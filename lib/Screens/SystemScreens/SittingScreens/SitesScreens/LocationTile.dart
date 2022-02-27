@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -94,8 +93,6 @@ class _LocationTileState extends State<LocationTile> {
   }
 
   Widget build(BuildContext context) {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: Slidable(
@@ -121,14 +118,7 @@ class _LocationTileState extends State<LocationTile> {
               ),
             ),
             onTap: () async {
-              final bool isConnected = await networkInfoImp.isConnected;
-              if (isConnected) {
-                widget.onTapEdit();
-              } else {
-                return weakInternetConnection(
-                  navigatorKey.currentState.overlay.context,
-                );
-              }
+              widget.onTapEdit();
             },
           )),
           ZoomIn(
@@ -146,14 +136,7 @@ class _LocationTileState extends State<LocationTile> {
               ),
             ),
             onTap: () async {
-              final bool isConnected = await networkInfoImp.isConnected;
-              if (isConnected) {
-                widget.onTapDelete();
-              } else {
-                return weakInternetConnection(
-                  navigatorKey.currentState.overlay.context,
-                );
-              }
+              widget.onTapDelete();
             },
           )),
         ],
@@ -170,35 +153,25 @@ class _LocationTileState extends State<LocationTile> {
                     Expanded(
                       child: InkWell(
                         onTap: () async {
-                          final bool isConnected =
-                              await networkInfoImp.isConnected;
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return RoundedLoadingIndicator();
+                            },
+                          );
 
-                          if (isConnected) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return RoundedLoadingIndicator();
-                              },
-                            );
-
-                            final SiteData siteData =
-                                Provider.of<SiteData>(context, listen: false);
-                            await siteData
-                                .getSiteBySiteId(
-                                    Provider.of<SiteShiftsData>(context,
-                                            listen: false)
-                                        .sites[widget.index + 1]
-                                        .id,
-                                    Provider.of<UserData>(context,
-                                            listen: false)
-                                        .user
-                                        .userToken)
-                                .then((value) => {showShiftDetails(value)});
-                          } else {
-                            return weakInternetConnection(
-                              navigatorKey.currentState.overlay.context,
-                            );
-                          }
+                          final SiteData siteData =
+                              Provider.of<SiteData>(context, listen: false);
+                          await siteData
+                              .getSiteBySiteId(
+                                  Provider.of<SiteShiftsData>(context,
+                                          listen: false)
+                                      .sites[widget.index + 1]
+                                      .id,
+                                  Provider.of<UserData>(context, listen: false)
+                                      .user
+                                      .userToken)
+                              .then((value) => {showShiftDetails(value)});
 
                           //
                         },

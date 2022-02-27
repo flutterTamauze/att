@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,6 +16,8 @@ import 'package:qr_users/services/MemberData/Repo/MembersRepo.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
+
+import '../../main.dart';
 
 class SearchMember {
   String id, username;
@@ -188,19 +190,21 @@ class MemberData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> isConnectedToInternet() async {
-    final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-    final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-    final bool isConnected = await networkInfoImp.isConnected;
-    if (isConnected) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> isConnectedToInternet() async {
+  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
+  //   final bool isConnected = await networkInfoImp.isConnected;
+  //   if (isConnected) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-  Future<String> getUserById(String id, String userToken) async {
+  Future<String> getUserById(
+    String id,
+  ) async {
     try {
-      final response = await MemberRepo().getUserById(userToken, id);
+      final response = await MemberRepo().getUserById(id);
       isLoading = true;
       notifyListeners();
       if (response is Faliure) {
@@ -305,8 +309,9 @@ class MemberData with ChangeNotifier {
       print(("printing the page index $allPageIndex"));
       print(("printing the page index $bySitePageIndex"));
       print(("printing the page by shift index $byShiftPageIndex"));
-      final response =
-          await MemberRepo().getAllMembersInCompany(url, userToken);
+      final response = await MemberRepo().getAllMembersInCompany(
+        url,
+      );
       if (response is Faliure) {
         if (response.code == NO_INTERNET) {
           return "noInternet";
@@ -391,43 +396,113 @@ class MemberData with ChangeNotifier {
     print("get all members");
     print(siteId);
     List<Member> memberNewList;
-    if (await isConnectedToInternet()) {
-      final response = await http.get(
-          Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': "Bearer $userToken"
-          });
-      print(response.statusCode);
+    final response = await http.get(
+        Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $userToken"
+        });
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final decodedRes = json.decode(response.body);
       print(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final decodedRes = json.decode(response.body);
-        print(response.body);
-        if (decodedRes["message"] == "Success") {
-          final memberObjJson = jsonDecode(response.body)['data'] as List;
-          memberNewList = memberObjJson
-              .map((memberJson) => Member.fromJson(memberJson))
-              .toList();
-          print("MEMBER DATA length");
-          print(memberNewList.length);
+      if (decodedRes["message"] == "Success") {
+        final memberObjJson = jsonDecode(response.body)['data'] as List;
+        memberNewList = memberObjJson
+            .map((memberJson) => Member.fromJson(memberJson))
+            .toList();
+        print("MEMBER DATA length");
+        print(memberNewList.length);
 
-          membersList = [...memberNewList];
-          membersListScreenDropDownSearch = [...membersList];
-          copyMemberList = membersList;
-          dropDownMembersList = memberNewList;
-          notifyListeners();
+        membersList = [...memberNewList];
+        membersListScreenDropDownSearch = [...membersList];
+        copyMemberList = membersList;
+        dropDownMembersList = memberNewList;
+        notifyListeners();
 
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
       }
-
-      return "failed";
-    } else {
-      return 'noInternet';
     }
+
+    return "failed";
+  }
+
+  resetMemberMac(String id, BuildContext context) async {
+    try {
+      print("reseeeeeeeetMac");
+      final response = await MemberRepo().resetMemberMac(id);
+
+      final decodedRes = json.decode(response);
+
+      if (decodedRes["message"] == "Success : User Device Reset Success") {
+        print("before deleting");
+        if (Platform.isIOS) {
+          const storage = FlutterSecureStorage();
+
+          await storage
+              .write(key: "deviceMac", value: "")
+              .whenComplete(() => print("keychain is reseted successfully!"))
+              .catchError((e) {
+            print(e);
+          });
+        }
+
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
+      }
+    } catch (e) {
+      print(e);
+    }
+    return "failed";
+  }
+
+  deleteMember(String id, int listIndex, BuildContext context) async {
+    try {
+      final response = await MemberRepo().deleteMember(id);
+
+      final decodedRes = json.decode(response);
+
+      if (decodedRes["message"] == "Success : User Deleted Successfully") {
+        membersListScreenDropDownSearch.removeAt(listIndex);
+
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Failed : user name and password not match ") {
+        return "wrong";
+      }
+    } catch (e) {
+      print(e);
+    }
+    return "failed";
+  }
+
+  addMember(Member member, BuildContext context, String roleName) async {
+    try {
+      final response = await MemberRepo().addMember(
+        member,
+        roleName,
+      );
+
+      final decodedRes = json.decode(response);
+
+      if (decodedRes["message"] == "User created successfully!") {
+        return "Success";
+      } else if (decodedRes["message"] == "Fail : Phone No Already exists") {
+        return "exists";
+      } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
+        return "Limit Reached";
+      }
+    } catch (e) {
+      print(e);
+    }
+    return "failed";
   }
 
   findMemberInMembersList(String id) {
@@ -438,183 +513,59 @@ class MemberData with ChangeNotifier {
     }
   }
 
-  resetMemberMac(String id, String userToken, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        print("reseeeeeeeetMac");
-        final response = await http.put(
-            Uri.parse("$baseURL/api/Users/ResetUserDevice?userId=$id"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-
-        final decodedRes = json.decode(response.body);
-        print(response.body);
-
-        if (decodedRes["message"] == "Success : User Device Reset Success") {
-          print("before deleting");
-          if (Platform.isIOS) {
-            final storage = new FlutterSecureStorage();
-
-            await storage
-                .write(key: "deviceMac", value: "")
-                .whenComplete(() => print("keychain is reseted successfully!"))
-                .catchError((e) {
-              print(e);
-            });
-          }
-          //Only local//
-          // Provider.of<UserData>(context, listen: false).changedWidget =
-          //     Image.asset("resources/personicon.png");
-          // notifyListeners();
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Failed : user name and password not match ") {
-          return "wrong";
-        }
-      } catch (e) {
-        print(e);
-      }
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
-
-  deleteMember(
-      String id, int listIndex, String userToken, BuildContext context) async {
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.delete(Uri.parse("$baseURL/api/Users/$id"),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print(response.body);
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          print(response.body);
-
-          if (decodedRes["message"] == "Success : User Deleted Successfully") {
-            membersListScreenDropDownSearch.removeAt(listIndex);
-
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Failed : user name and password not match ") {
-            return "wrong";
-          }
-        }
-      } catch (e) {
-        print(e);
-      }
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
-
-  addMember(Member member, String userToken, BuildContext context,
-      String roleName) async {
-    print(roleName);
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.post(
-            Uri.parse("$baseURL/api/Authenticate/register"),
-            body: json.encode(
-              {
-                "Name": member.name,
-                "PhoneNo": member.phoneNumber,
-                "Salary": member.salary,
-                "Email": member.email,
-                "JobTitle": member.jobTitle,
-                "UserType": member.userType,
-                "ShiftId": member.shiftId,
-                "roleName": roleName == "" ? "User" : roleName
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
-        print(response.body);
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          print(response.body);
-
-          if (decodedRes["message"] == "User created successfully!") {
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : Phone No Already exists") {
-            return "exists";
-          } else if (decodedRes["message"] == "Fail : Users Limit Reached") {
-            return "Limit Reached";
-          }
-        }
-      } catch (e) {
-        print(e);
-      }
-      return "failed";
-    } else {
-      return 'noInternet';
-    }
-  }
-
-  editMember(Member member, int id, String userToken, BuildContext context,
-      String roleName) async {
+  editMember(
+    Member member,
+    int id,
+    BuildContext context,
+    String roleName,
+  ) async {
     print(
         "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, roleName $roleName} userType ${member.userType}");
 
-    if (await isConnectedToInternet()) {
-      try {
-        final response = await http.put(
-            Uri.parse("$baseURL/api/Users/Update/${member.id}"),
-            body: json.encode(
-              {
-                "id": member.id,
-                "Name": member.name,
-                "PhoneNo": member.phoneNumber,
-                "Email": member.email,
-                "Salary": member.salary,
-                "JobTitle": member.jobTitle,
-                "UserType": member.userType,
-                "ShiftId": member.shiftId,
-                "roleName": roleName
-              },
-            ),
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': "Bearer $userToken"
-            });
+    try {
+      print(member.email);
+      print(roleName);
+      final response = await http.put(
+        Uri.parse("$baseURL/api/Users/Update/${member.id}"),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization':
+              "Bearer ${locator.locator<UserData>().user.userToken}",
+        },
+        body: json.encode(
+          {
+            "Name": member.name,
+            "PhoneNo": member.phoneNumber,
+            "Salary": member.salary,
+            "Email": member.email,
+            "JobTitle": member.jobTitle,
+            "UserType": member.userType,
+            "ShiftId": member.shiftId,
+            "roleName": roleName == "" ? "User" : roleName
+          },
+        ),
+      );
 
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final decodedRes = json.decode(response.body);
-          print(response.body);
-          print(member.salary);
-          if (decodedRes["message"] == "Success : User Updated Successfully ") {
-            membersList[id] = member;
+      final decodedRes = json.decode(response.body);
 
-            final membersListId = findMemberInMembersList(member.id);
+      if (decodedRes["message"] == "Success : User Updated Successfully ") {
+        membersList[id] = member;
 
-            membersList[membersListId] = member;
-            membersListScreenDropDownSearch = [...membersList];
+        final membersListId = findMemberInMembersList(member.id);
 
-            notifyListeners();
-            return "Success";
-          } else if (decodedRes["message"] ==
-              "Fail : Phone no already exist!") {
-            return "exists";
-          } else if (decodedRes["message"] == "Failed : User Not Exist") {
-            return "not exist";
-          }
-        }
-      } catch (e) {
-        print(e);
+        membersList[membersListId] = member;
+        membersListScreenDropDownSearch = [...membersList];
+
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] == "Fail : Phone no already exist!") {
+        return "exists";
+      } else if (decodedRes["message"] == "Failed : User Not Exist") {
+        return "not exist";
       }
-      return "failed";
-    } else {
-      return 'noInternet';
+    } catch (e) {
+      print(e);
     }
+    return "failed";
   }
 }
