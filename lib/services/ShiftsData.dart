@@ -12,11 +12,14 @@ import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dar
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/FuturedScheduleShift.dart';
 import 'package:qr_users/services/Shift.dart';
+import 'package:qr_users/services/Shifts/Repo/ShiftsRepo.dart';
 import 'package:qr_users/services/defaultClass.dart';
 import 'package:qr_users/services/user_data.dart';
 
+import 'AllSiteShiftsData/site_shifts_all.dart';
 import 'Shift.dart';
 import 'ShiftSchedule/ShiftScheduleModel.dart';
+import 'Shifts/Repo/ShiftsRepoImplementer.dart';
 import 'company.dart';
 
 class ShiftsData with ChangeNotifier {
@@ -94,7 +97,7 @@ class ShiftsData with ChangeNotifier {
   ) async {
     isLoading = true;
     notifyListeners();
-    var response = await http.delete(
+    final response = await http.delete(
         Uri.parse("$baseURL/api/ShiftSchedule/Del_ScheduleShiftsbyId/$shiftId"),
         headers: {
           'Content-type': 'application/json',
@@ -104,23 +107,14 @@ class ShiftsData with ChangeNotifier {
     isLoading = false;
     notifyListeners();
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     return decodedResponse["message"];
   }
 
-  Future<bool> getFirstAvailableSchedule(
-      String userToken, String userId) async {
-    print(userId);
-    var response = await http.get(
-        Uri.parse(
-            "$baseURL/api/ShiftSchedule/DetailedScheduleShiftsbyUserId/$userId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
-    print(response.body);
-    var decodedResponse = json.decode(response.body);
-    var scheduleJson = decodedResponse['data'];
+  Future<bool> getFirstAvailableSchedule(String userId) async {
+    final response = await ShiftsRepoImp().getFirstAvailableSchedule(userId);
+    final decodedResponse = json.decode(response);
+    final scheduleJson = decodedResponse['data'];
 
     if (scheduleJson != null) {
       firstAvailableSchedule =
@@ -138,7 +132,7 @@ class ShiftsData with ChangeNotifier {
   Future<bool> isShiftScheduleByIdEmpty(
       String usertoken, String userId, BuildContext context) async {
     print("user id $userId");
-    var response = await http.get(
+    final response = await http.get(
         Uri.parse("$baseURL/api/ShiftSchedule/GetScheduleByUserId/$userId"),
         headers: {
           'Content-type': 'application/json',
@@ -147,9 +141,9 @@ class ShiftsData with ChangeNotifier {
     print(response.statusCode);
     print("asdms");
     print(response.body);
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
 
-    var scheduleJson = decodedResponse['data'] as List;
+    final scheduleJson = decodedResponse['data'] as List;
     shiftScheduleList = scheduleJson
         .map((shiftJson) => ShiftSheduleModel.fromJson(shiftJson))
         .toList();
@@ -180,7 +174,7 @@ class ShiftsData with ChangeNotifier {
     print(scheduleId);
     print(shiftIds[0].shiftname);
     print(shiftIds[1].shiftname);
-    var response = await http.put(
+    final response = await http.put(
         Uri.parse(
           "$baseURL/api/ShiftSchedule/Edit/$scheduleId",
         ),
@@ -213,7 +207,7 @@ class ShiftsData with ChangeNotifier {
     isLoading = false;
     print(response.body);
     notifyListeners();
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["statusCode"] == 200) {
       if (decodedResponse["message"] == "Success") {
         return "Success";
@@ -243,7 +237,7 @@ class ShiftsData with ChangeNotifier {
     print("adding shift sched for id $usershiftId");
     isLoading = true;
     notifyListeners();
-    var response = await http.post(
+    final response = await http.post(
         Uri.parse(
           "$baseURL/api/ShiftSchedule/Add",
         ),
@@ -275,7 +269,7 @@ class ShiftsData with ChangeNotifier {
     isLoading = false;
     print(response.body);
     notifyListeners();
-    var decodedResponse = json.decode(response.body);
+    final decodedResponse = json.decode(response.body);
     if (decodedResponse["statusCode"] == 200) {
       if (decodedResponse["message"] == "Success") {
         return "Success";
@@ -312,7 +306,7 @@ class ShiftsData with ChangeNotifier {
             Provider.of<UserData>(context, listen: false).user.userToken;
         await deleteShift(shiftId, userToken, listIndex, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
+        final decodedRes = json.decode(response.body);
         print(response.body);
 
         if (decodedRes["message"] == "Success") {
@@ -385,11 +379,11 @@ class ShiftsData with ChangeNotifier {
         context,
       );
     } else if (response.statusCode == 200 || response.statusCode == 201) {
-      var decodedRes = json.decode(response.body);
+      final decodedRes = json.decode(response.body);
       print(response.body);
 
       if (decodedRes["message"] == "Success") {
-        var shiftObjJson = jsonDecode(response.body)['data'] as List;
+        final shiftObjJson = jsonDecode(response.body)['data'] as List;
         shiftsNewList =
             shiftObjJson.map((shiftJson) => Shift.fromJson(shiftJson)).toList();
         log(shiftsNewList.length.toString());
@@ -487,71 +481,68 @@ class ShiftsData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
 
-      if (response.statusCode == 401) {
-        await inherit.login(context);
-        userToken =
-            Provider.of<UserData>(context, listen: false).user.userToken;
-        await addShift(shift, userToken, context, index);
-      } else if (response.statusCode == 200 || response.statusCode == 201) {
-        var decodedRes = json.decode(response.body);
-        print(response.body);
+      final decodedRes = json.decode(response.body);
+      print(response.body);
 
-        if (decodedRes["message"] == "Success") {
-          Shift newShift = Shift(
-              fridayShiftenTime:
-                  int.parse(decodedRes['data']["fridayShiftEntime"]),
-              fridayShiftstTime:
-                  int.parse(decodedRes['data']["fridayShiftSttime"]),
-              monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
-              mondayShiftenTime:
-                  int.parse(decodedRes['data']["mondayShiftEntime"]),
-              sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
-              sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
-              thursdayShiftenTime:
-                  int.parse(decodedRes['data']["thursdayShiftEntime"]),
-              thursdayShiftstTime:
-                  int.parse(decodedRes['data']["thursdayShiftSttime"]),
-              tuesdayShiftenTime:
-                  int.parse(decodedRes['data']["tuesdayShiftEntime"]),
-              tuesdayShiftstTime:
-                  int.parse(decodedRes['data']["tuesdayShiftSttime"]),
-              wednesDayShiftenTime:
-                  int.parse(decodedRes['data']["wednesdayShiftEntime"]),
-              wednesDayShiftstTime:
-                  int.parse(decodedRes['data']["wednesdayShiftSttime"]),
-              shiftId: decodedRes['data']['id'],
-              shiftName: decodedRes['data']['shiftName'],
-              shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
-              shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
-              siteID: decodedRes['data']['siteId'] as int);
+      if (decodedRes["message"] == "Success") {
+        final Shift newShift = Shift(
+            fridayShiftenTime:
+                int.parse(decodedRes['data']["fridayShiftEntime"]),
+            fridayShiftstTime:
+                int.parse(decodedRes['data']["fridayShiftSttime"]),
+            monShiftstTime: int.parse(decodedRes['data']["monShiftSttime"]),
+            mondayShiftenTime:
+                int.parse(decodedRes['data']["mondayShiftEntime"]),
+            sunShiftenTime: int.parse(decodedRes['data']["sunShiftEntime"]),
+            sunShiftstTime: int.parse(decodedRes['data']["sunShiftSttime"]),
+            thursdayShiftenTime:
+                int.parse(decodedRes['data']["thursdayShiftEntime"]),
+            thursdayShiftstTime:
+                int.parse(decodedRes['data']["thursdayShiftSttime"]),
+            tuesdayShiftenTime:
+                int.parse(decodedRes['data']["tuesdayShiftEntime"]),
+            tuesdayShiftstTime:
+                int.parse(decodedRes['data']["tuesdayShiftSttime"]),
+            wednesDayShiftenTime:
+                int.parse(decodedRes['data']["wednesdayShiftEntime"]),
+            wednesDayShiftstTime:
+                int.parse(decodedRes['data']["wednesdayShiftSttime"]),
+            shiftId: decodedRes['data']['id'],
+            shiftName: decodedRes['data']['shiftName'],
+            shiftStartTime: int.parse(decodedRes['data']['shiftSttime']),
+            shiftEndTime: int.parse(decodedRes['data']['shiftEntime']),
+            siteID: decodedRes['data']['siteId'] as int);
 
-          // shiftsList.add(newShift);
-          // Provider.of<SiteShiftsData>(context, listen: false)
-          //     .siteShiftList[index]
-          //     .shifts
-          //     .add(Shifts(
-          //         shiftName: newShift.shiftName, shiftId: newShift.shiftId));
+        shiftsList.add(newShift);
+        Provider.of<SiteShiftsData>(context, listen: false)
+            .siteShiftList[index]
+            .shifts
+            .add(Shifts(
+                shiftName: newShift.shiftName, shiftId: newShift.shiftId));
 
-          await sendFcmDataOnly(
-              category: "reloadData",
-              topicName:
-                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-
-          await Provider.of<SiteShiftsData>(context, listen: false)
-              .getAllSitesAndShifts(
-                  Provider.of<CompanyData>(context, listen: false).com.id,
-                  Provider.of<UserData>(context, listen: false).user.userToken);
-
-          return "Success";
-        } else if (decodedRes["message"] ==
-            "Fail : The same shift name already exists in site") {
-          return "exists";
-        } else if (decodedRes["message"] == "Fail : Time constants error") {
-          print("s");
-          return decodedRes["data"];
-        } else {
-          return "failed";
-        }
+        await sendFcmDataOnly(
+            category: "reloadData",
+            topicName:
+                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+        final String siteName =
+            Provider.of<SiteShiftsData>(context, listen: false)
+                .getSiteNameBySiteID(shift.siteID);
+        await Provider.of<SiteShiftsData>(context, listen: false)
+            .getShiftsList(siteName, false);
+        await Provider.of<SiteShiftsData>(context, listen: false)
+            .getAllSitesAndShifts(
+                Provider.of<CompanyData>(context, listen: false).com.id,
+                Provider.of<UserData>(context, listen: false).user.userToken);
+        notifyListeners();
+        return "Success";
+      } else if (decodedRes["message"] ==
+          "Fail : The same shift name already exists in site") {
+        return "exists";
+      } else if (decodedRes["message"] == "Fail : Time constants error") {
+        print("s");
+        return decodedRes["data"];
+      } else {
+        return "failed";
       }
     } catch (e) {
       print(e);
@@ -607,11 +598,11 @@ class ShiftsData with ChangeNotifier {
       usertoken = Provider.of<UserData>(context, listen: false).user.userToken;
       await editShift(shift, id, usertoken, context, index);
     } else if (response.statusCode == 200 || response.statusCode == 201) {
-      var decodedRes = json.decode(response.body);
+      final decodedRes = json.decode(response.body);
       print(response.body);
 
       if (decodedRes["message"] == "Success") {
-        Shift newShift = Shift(
+        final Shift newShift = Shift(
             fridayShiftenTime:
                 int.parse(decodedRes['data']["fridayShiftEntime"]),
             fridayShiftstTime:

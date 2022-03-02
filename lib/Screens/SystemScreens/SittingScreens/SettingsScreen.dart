@@ -281,33 +281,32 @@ class CustomRow extends StatelessWidget {
           const EdgeInsets.only(left: 12.0, right: 12.0, top: 3.0, bottom: 3.0),
       child: InkWell(
         onTap: onTap,
-        child: Row(
-          children: <Widget>[
-            AutoSizeText(
-              model.dayName,
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                  fontWeight: FontWeight.w600),
-            ),
-            Container(
-              child: Expanded(
+        child: Container(
+          child: Row(
+            children: [
+              AutoSizeText(
+                model.dayName,
+                style: TextStyle(
+                    fontSize:
+                        ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                    fontWeight: FontWeight.w600),
+              ),
+              Expanded(
                 child: Container(),
               ),
-            ),
-            this.model.isDayOff == true
-                ? Container(
-                    alignment: Alignment.centerRight,
-                    width: 100,
-                    child: Icon(
-                      Icons.radio_button_checked,
-                      color: Colors.orange,
-                    ),
-                  )
-                : Container(
-                    alignment: Alignment.centerRight,
-                    width: 100,
-                    child: Icon(Icons.radio_button_unchecked)),
-          ],
+              this.model.isDayOff == true
+                  ? Container(
+                      width: 100,
+                      child: const Icon(
+                        Icons.radio_button_checked,
+                        color: Colors.orange,
+                      ),
+                    )
+                  : Container(
+                      width: 100,
+                      child: const Icon(Icons.radio_button_unchecked)),
+            ],
+          ),
         ),
       ),
     );

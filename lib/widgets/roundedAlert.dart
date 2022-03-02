@@ -131,6 +131,135 @@ class RoundedAlert extends StatelessWidget {
   }
 }
 
+// class CustomRoundedAlert extends StatelessWidget {
+//   final String title;
+//   final String content;
+//   final Function onPressed;
+//   final Function onCancel;
+
+//   const CustomRoundedAlert(
+//       {this.title, this.content, @required this.onPressed, this.onCancel});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//         shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(20.0)), //this right here
+//         child: FadeIn(
+//           child: Container(
+//             color: Colors.transparent,
+//             height: 230.h,
+//             child: Column(
+//               children: [
+//                 Stack(
+//                   alignment: Alignment.center,
+//                   children: [
+//                     Container(
+//                       height: 60,
+//                       width: 330.w,
+//                       color: ColorManager.primary,
+//                     ),
+//                     Positioned(
+//                         top: 0,
+//                         child: Container(
+//                           width: 60,
+//                           padding: const EdgeInsets.all(5),
+//                           height: 60,
+//                           decoration: const BoxDecoration(
+//                             shape: BoxShape.circle,
+//                           ),
+//                           child: Center(
+//                             child: Lottie.asset("resources/edit.json",
+//                                 repeat: false),
+//                           ),
+//                         )),
+//                   ],
+//                 ),
+//                 Container(
+//                   height: getkDeviceHeightFactor(context, 150),
+//                   width: getkDeviceWidthFactor(context, 330),
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(12.0),
+//                     child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         children: [
+//                           Container(
+//                             child: AutoSizeText(
+//                               title,
+//                               maxLines: 1,
+//                               style: TextStyle(
+//                                   fontSize: setResponsiveFontSize(18),
+//                                   height: 1.8,
+//                                   color: ColorManager.primary,
+//                                   fontWeight: FontWeight.w900),
+//                             ),
+//                           ),
+//                           const SizedBox(
+//                             height: 5,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: [
+//                               Material(
+//                                 color: Colors.black,
+//                                 elevation: 3.0,
+//                                 borderRadius: BorderRadius.circular(10.0),
+//                                 child: MaterialButton(
+//                                   onPressed: () {
+//                                     Navigator.pop(context);
+//                                     // onCancel();
+//                                   },
+//                                   minWidth: 120,
+//                                   height: 20,
+//                                   child: Container(
+//                                     height: 20,
+//                                     child: AutoSizeText(
+//                                       getTranslated(context, "لا"),
+//                                       maxLines: 1,
+//                                       style: TextStyle(
+//                                         color: ColorManager.primary,
+//                                         fontWeight: FontWeight.bold,
+//                                         fontSize: setResponsiveFontSize(17),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               const SizedBox(width: 10),
+//                               Material(
+//                                 color: Colors.black,
+//                                 elevation: 3.0,
+//                                 borderRadius: BorderRadius.circular(15.0),
+//                                 child: MaterialButton(
+//                                   onPressed: onPressed,
+//                                   minWidth: 120,
+//                                   height: 30,
+//                                   child: Container(
+//                                     height: 20,
+//                                     child: AutoSizeText(
+//                                       getTranslated(context, "نعم"),
+//                                       maxLines: 1,
+//                                       style: TextStyle(
+//                                         color: ColorManager.primary,
+//                                         fontWeight: FontWeight.bold,
+//                                         fontSize: setResponsiveFontSize(17),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ]),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ));
+//   }
+// }
+
 class RoundedAlertWithComment extends StatelessWidget {
   final String title;
   final String content;

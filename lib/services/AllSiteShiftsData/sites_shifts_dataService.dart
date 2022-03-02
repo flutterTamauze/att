@@ -62,6 +62,10 @@ class SiteShiftsData with ChangeNotifier {
     return shifts;
   }
 
+  String getSiteNameBySiteID(int siteId) {
+    return sites.where((element) => element.id == siteId).toList()[0].name;
+  }
+
   getAllSitesAndShifts(int companyId, String userToken) async {
     siteShiftList.clear();
     sites.clear();

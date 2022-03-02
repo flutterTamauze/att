@@ -8,8 +8,10 @@ import 'package:qr_users/services/UserPermessions/Repo/user_permession_repo.dart
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 
 import '../../../main.dart';
+import '../../user_data.dart';
 
 class UserPermessionRepoImp implements PermessionAbstract {
+  final userToken = locator.locator<UserData>().user.userToken;
   @override
   Future<Object> addPermession(
       UserPermessions userPermessions, String userToken, String userId) async {
@@ -116,6 +118,18 @@ class UserPermessionRepoImp implements PermessionAbstract {
       "$baseURL/api/Permissions/$permId",
       RequestType.GET,
       {'Content-type': 'application/json', 'Authorization': "Bearer $token"},
+    );
+  }
+
+  @override
+  getShiftByShiftId(int shiftId) {
+    return NetworkApi().request(
+      "$baseURL/api/Shifts/$shiftId",
+      RequestType.GET,
+      {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer $userToken"
+      },
     );
   }
 }

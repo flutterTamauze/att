@@ -51,8 +51,8 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                 builder: (BuildContext context) {
                   return RoundedLoadingIndicator();
                 });
-            final String msg = await reportData.getTodayUserReport(
-                userDataProvider.user.userToken, userDataProvider.user.id);
+            final String msg =
+                await reportData.getTodayUserReport(userDataProvider.user.id);
             Navigator.pop(context);
 
             return showDialog(
@@ -98,9 +98,14 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           subTitle: getTranslated(context, "متابعة حالة الطلبات"),
           icon: FontAwesomeIcons.clipboardList,
           onTap: () {
-            Provider.of<UserHolidaysData>(context, listen: false)
+            if (Provider.of<UserHolidaysData>(context, listen: false)
                 .singleUserHoliday
-                .clear();
+                .isNotEmpty) {
+              Provider.of<UserHolidaysData>(context, listen: false)
+                  .singleUserHoliday
+                  .clear();
+            }
+
             Provider.of<UserPermessionsData>(context, listen: false)
                 .singleUserPermessions
                 .clear();
@@ -129,10 +134,12 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                   return RoundedLoadingIndicator();
                 });
             await Provider.of<ShiftsData>(context, listen: false)
-                .getFirstAvailableSchedule(user.userToken, user.id);
+                .getFirstAvailableSchedule(user.id);
 
             await Provider.of<ShiftApi>(context, listen: false)
-                .getShiftByShiftId(user.userShiftId, user.userToken);
+                .getShiftByShiftId(
+              user.userShiftId,
+            );
 
             Navigator.pop(context);
             Navigator.of(context).push(

@@ -342,8 +342,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                   userProvider.user.userToken, context);
                           final isEdit = await Provider.of<ShiftsData>(context,
                                   listen: false)
-                              .getFirstAvailableSchedule(
-                                  userProv.userToken, widget.user.id);
+                              .getFirstAvailableSchedule(widget.user.id);
                           if (userProv.userType == 2 && isEdit == false) {
                             Fluttertoast.showToast(
                                     msg: getTranslated(

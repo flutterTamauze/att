@@ -353,15 +353,9 @@ class ReportsData with ChangeNotifier {
   }
 
   TodayUserReport todayUserReport = TodayUserReport();
-  Future<String> getTodayUserReport(String userToken, String userId) async {
-    final response = await http.get(
-        Uri.parse("$baseURL/api/AttendLogin/todayAttend/$userId"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': "Bearer $userToken"
-        });
-    print(response.body);
-    final decodedResponse = json.decode(response.body);
+  Future<String> getTodayUserReport(String userId) async {
+    final response = await ReprotsRepo().getTodayUserReport(userId);
+    final decodedResponse = json.decode(response);
     if (decodedResponse["message"] == "Success") {
       todayUserReport = TodayUserReport.fromJson(decodedResponse["data"]);
       print(todayUserReport.attend);

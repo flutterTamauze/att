@@ -196,9 +196,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
   String userRole = "";
   List<Shift> shiftsList;
   intlPhone.PhoneNumber editNumber;
-
+  bool userImageFailed = false;
   @override
   Widget build(BuildContext context) {
+    String userImage = "$imageUrl${widget.member.userImageURL}";
     final siteData = Provider.of<SiteData>(context, listen: false);
     final siteShiftData = Provider.of<SiteShiftsData>(context);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
@@ -263,17 +264,26 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           border: Border.all(
                                               width: 1, color: Colors.orange),
                                           image: DecorationImage(
-                                              image: NetworkImage(
-                                                "$imageUrl${widget.member.userImageURL}",
-                                                headers: {
-                                                  "Authorization": "Bearer " +
-                                                      Provider.of<UserData>(
-                                                              context,
-                                                              listen: false)
-                                                          .user
-                                                          .userToken
-                                                },
-                                              ),
+                                              image: !userImageFailed
+                                                  ? NetworkImage(
+                                                      "$imageUrl${widget.member.userImageURL}",
+                                                      headers: {
+                                                        "Authorization": "Bearer " +
+                                                            Provider.of<UserData>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .user
+                                                                .userToken
+                                                      },
+                                                    )
+                                                  : AssetImage(
+                                                      "resources/personicon.png"),
+                                              onError: (exception, stackTrace) {
+                                                setState(() {
+                                                  userImageFailed = true;
+                                                });
+                                              },
                                               fit: BoxFit.fill)),
                                     )
                                   : Container(),

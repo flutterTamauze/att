@@ -13,7 +13,7 @@ class UserDataField extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  UserDataField({this.icon, this.text});
+  const UserDataField({this.icon, this.text});
 
   Widget build(BuildContext context) {
     final phone = {
@@ -42,8 +42,10 @@ class UserDataField extends StatelessWidget {
                           path: Provider.of<MemberData>(context, listen: false)
                               .singleMember
                               .phoneNumber);
-                      if (await canLaunch(phone.toString())) {
+                      try {
                         await launch(phone.toString());
+                      } catch (e) {
+                        print(e);
                       }
                     }
                   }
@@ -112,7 +114,7 @@ class UserDataFieldInReport extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  UserDataFieldInReport({this.icon, this.text});
+  const UserDataFieldInReport({this.icon, this.text});
 
   Widget build(BuildContext context) {
     return Container(

@@ -386,16 +386,11 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                                     listen:
                                                                         false)
                                                                 .getShiftByShiftId(
-                                                                    value
-                                                                        .dropDownShifts[
-                                                                            index]
-                                                                        .shiftId,
-                                                                    Provider.of<UserData>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .user
-                                                                        .userToken);
+                                                              value
+                                                                  .dropDownShifts[
+                                                                      index]
+                                                                  .shiftId,
+                                                            );
 
                                                             Navigator.pop(
                                                                 context);
@@ -539,8 +534,8 @@ class _ShiftTileState extends State<ShiftTile> {
                 return RoundedLoadingIndicator();
               });
           await Provider.of<ShiftApi>(context, listen: false).getShiftByShiftId(
-              widget.shifts.shiftId,
-              Provider.of<UserData>(context, listen: false).user.userToken);
+            widget.shifts.shiftId,
+          );
 
           Navigator.pop(context);
           showShiftDetails(

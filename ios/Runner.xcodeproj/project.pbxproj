@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		040260FC26D7C68B0094D8B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 040260FB26D7C68B0094D8B6 /* GoogleService-Info.plist */; };
 		044224A327C2801B005C10F3 /* Pods-Runner.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2A8A478460A55DB06B1795DA /* Pods-Runner.release.xcconfig */; };
+		044FFD4A27CBBFE900A1B111 /* your_sweet_sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 044FFD4927CBBFE900A1B111 /* your_sweet_sound.wav */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		22ACAE1ACBE90894DA1C0FAC /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDE36B5C71B5286A2856DEB /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		040260FB26D7C68B0094D8B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		044FFD4927CBBFE900A1B111 /* your_sweet_sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = your_sweet_sound.wav; sourceTree = "<group>"; };
 		04F633BB2667E2750036EEA7 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				044FFD4927CBBFE900A1B111 /* your_sweet_sound.wav */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -198,6 +201,7 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				040260FC26D7C68B0094D8B6 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
+				044FFD4A27CBBFE900A1B111 /* your_sweet_sound.wav in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				044224A327C2801B005C10F3 /* Pods-Runner.release.xcconfig in Resources */,
 			);
@@ -402,7 +406,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.0.5;
+				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "TamauzeChialngo-gmail.com.qr-users";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -548,7 +552,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.0.5;
+				MARKETING_VERSION = 2.0.6;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-fcxx-modules";
 				PRODUCT_BUNDLE_IDENTIFIER = "TamauzeChialngo-gmail.com.qr-users";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -586,7 +590,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 2.0.5;
+				MARKETING_VERSION = 2.0.6;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-fcxx-modules";
 				PRODUCT_BUNDLE_IDENTIFIER = "TamauzeChialngo-gmail.com.qr-users";
 				PRODUCT_NAME = "$(TARGET_NAME)";

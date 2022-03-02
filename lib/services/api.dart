@@ -14,11 +14,14 @@ import 'package:huawei_location/location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/Network/Network.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/Shift.dart';
-import 'package:qr_users/services/Shifts/Repo/ShiftRepo.dart';
+import 'package:qr_users/services/Shifts/Repo/ShiftsRepo.dart';
+import 'package:qr_users/services/Shifts/Repo/ShiftsRepoImplementer.dart';
+import 'package:qr_users/services/UserPermessions/Repo/user_permession_repo_implementer.dart';
 import 'package:trust_location/trust_location.dart';
 
 class ShiftApi with ChangeNotifier {
@@ -142,35 +145,11 @@ class ShiftApi with ChangeNotifier {
     ///check if he pressed back twich in the 2 seconds duration
   }
 
-  // Shift currentShift = Shift(
-  //     shiftName: "",
-  //     shiftStartTime: 0,
-  //     shiftEndTime: 0,
-  //     shiftQrCode: "",
-  //     siteID: 0);
-  // Future<bool> isConnectedToInternet() async {
-  //   final DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
-  //   final NetworkInfoImp networkInfoImp = NetworkInfoImp(dataConnectionChecker);
-  //   final bool isConnected = await networkInfoImp.isConnected;
-  //   if (isConnected) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  getShiftByShiftId(int shiftID) async {
+    final response = await UserPermessionRepoImp().getShiftByShiftId(shiftID);
 
-  getShiftByShiftId(int shiftID, String usertoken) async {
-    final response = await http.get(
-      Uri.parse("$baseURL/api/Shifts/$shiftID"),
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': "Bearer $usertoken"
-      },
-    );
-    print(response.request.url);
-    print(response.body);
-    print(jsonDecode(response.body)["message"]);
-    if (jsonDecode(response.body)["message"] == "Success") {
-      final shiftObjJson = jsonDecode(response.body)['data'];
+    if (jsonDecode(response)["message"] == "Success") {
+      final shiftObjJson = jsonDecode(response)['data'];
       userShift = Shift.fromJson(shiftObjJson);
       print(userShift.shiftId);
       notifyListeners();
@@ -201,13 +180,8 @@ class ShiftApi with ChangeNotifier {
     print("IS MOC RESULT : $isMoc");
     print(id);
     if (isMoc == 0) {
-      final response = await ShiftRepo().getLateAbsenceReport(
-          "$baseURL/api/Shifts/PostSiteShift",
-          userToken,
-          isHawawi,
-          currentHuaweiLocation,
-          currentPosition,
-          id);
+      final response = await ShiftsRepoImp().getLateAbsenceReport(
+          isHawawi, currentHuaweiLocation, currentPosition, id);
       if (response is Faliure) {
         if (response.code == NO_INTERNET) {
           isConnected = false;
