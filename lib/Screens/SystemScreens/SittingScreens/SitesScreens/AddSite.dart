@@ -230,8 +230,8 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                       Navigator.pop(context);
                                       if (msg == "Success") {
                                         Fluttertoast.showToast(
-                                            msg: getTranslated(context,
-                                                "تم اضافة الموقع بنجاح"),
+                                            msg: getTranslated(
+                                                context, "تم الإضافة بنجاح"),
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.CENTER,
                                             timeInSecForIosWeb: 1,
@@ -353,7 +353,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
                                                   if (msg == "Success") {
                                                     Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                context, "تم تعديل الموقع بنجاح"),
+                                                                context, "تم التعديل بنجاح"),
                                                             toastLength: Toast
                                                                 .LENGTH_SHORT,
                                                             timeInSecForIosWeb:

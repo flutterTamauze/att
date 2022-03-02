@@ -860,8 +860,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
                                         if (msg == "Success") {
                                           Fluttertoast.showToast(
-                                              msg: getTranslated(context,
-                                                  "تم اضافة المستخدم بنجاح"),
+                                              msg: getTranslated(
+                                                  context, "تم الإضافة بنجاح"),
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.CENTER,
                                               timeInSecForIosWeb: 1,

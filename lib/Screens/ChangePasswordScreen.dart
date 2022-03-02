@@ -71,7 +71,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           // print(value)
 
           Fluttertoast.showToast(
-              msg: getTranslated(context, "تم حفظ الصورة بنجاح"),
+              msg: getTranslated(context, "تم تغيير الصورة بنجاح"),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,

@@ -269,7 +269,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                                                                   Navigator.pop(context);
                                                                                   final String msg = await Provider.of<ReportsData>(context, listen: false).deleteAttendProofFromReport(Provider.of<UserData>(context, listen: false).user.userToken, reportsData.attendProofList[index].id, index);
                                                                                   if (msg == "Success : AttendProof Deleted!") {
-                                                                                    Fluttertoast.showToast(msg: getTranslated(navigatorKey.currentState.overlay.context, "تم حذف الإثبات بنجاح"), backgroundColor: Colors.green);
+                                                                                    Fluttertoast.showToast(msg: getTranslated(navigatorKey.currentState.overlay.context, "تم الحذف بنجاح"), backgroundColor: Colors.green);
                                                                                   } else if (msg == "Fail : Proof created by another user") {
                                                                                     Fluttertoast.showToast(msg: getTranslated(navigatorKey.currentState.overlay.context, "لا يمكنك حذف طلب تسجيل حضور لم تقم بإنشاؤه"), backgroundColor: Colors.red, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER);
                                                                                   } else {

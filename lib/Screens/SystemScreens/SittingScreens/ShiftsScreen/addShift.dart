@@ -1017,7 +1017,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         Fluttertoast.showToast(
                 msg: getTranslated(
                   context,
-                  "تم تعديل المناوبة بنجاح",
+                  "تم التعديل بنجاح",
                 ),
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,

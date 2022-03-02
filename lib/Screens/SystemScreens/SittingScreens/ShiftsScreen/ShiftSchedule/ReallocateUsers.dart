@@ -603,7 +603,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                       Fluttertoast.showToast(
                                                           msg: getTranslated(
                                                               context,
-                                                              "تم حذف الجدولة بنجاح"),
+                                                              "تم الحذف بنجاح"),
                                                           backgroundColor:
                                                               Colors.green,
                                                           gravity: ToastGravity
@@ -660,7 +660,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   scheduleList.id);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(
-                                                msg: "تم تعديل الجدولة بنجاح",
+                                                msg: "تم التعديل بنجاح",
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.green);
 
@@ -703,7 +703,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             );
 
                                             Fluttertoast.showToast(
-                                                msg: "تمت اضافة الجدولة بنجاح",
+                                                msg: "تم الإضافة بنجاح",
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.green);
                                             Navigator.pop(context);

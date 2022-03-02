@@ -85,6 +85,15 @@ class NetworkApi {
       }
 
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
+    } on HandshakeException catch (e) {
+      print("timeout occured $e");
+      print(locator.locator<UserData>().user.userToken);
+      locator.locator<PermissionHan>().setInternetConnection(false);
+      if ((_displayExceptionDialog())) {
+        noInternetDialog(navigatorKey.currentState.overlay.context);
+      }
+
+      return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     }
   }
 

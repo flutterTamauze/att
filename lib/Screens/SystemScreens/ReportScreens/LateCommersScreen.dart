@@ -723,7 +723,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   Future<bool> onWillPop() {
     print("back");
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
+        MaterialPageRoute(builder: (context) => const NavScreenTwo(2)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

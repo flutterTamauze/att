@@ -315,7 +315,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(
                                                 msg: getTranslated(context,
-                                                    "تم تعديل العطلة بنجاح"),
+                                                    "تم التعديل بنجاح"),
                                                 backgroundColor: Colors.green);
                                           } else {
                                             Fluttertoast.showToast(
@@ -344,7 +344,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                             if (msg == "Success") {
                                               Fluttertoast.showToast(
                                                   msg: getTranslated(context,
-                                                      "تم اضافة العطلة بنجاح"),
+                                                      "تم الإضافة بنجاح"),
                                                   backgroundColor:
                                                       Colors.green);
 

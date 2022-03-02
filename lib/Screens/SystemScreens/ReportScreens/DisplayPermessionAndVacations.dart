@@ -81,7 +81,6 @@ class _VacationAndPermessionsReportState
     final userProv = Provider.of<UserData>(context, listen: false);
     return GestureDetector(
       onTap: () {
-        print(_nameController.text);
         FocusScope.of(context).unfocus();
         // _nameController.text == ""
         //     ?
