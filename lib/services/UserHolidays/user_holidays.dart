@@ -309,7 +309,6 @@ class UserHolidaysData with ChangeNotifier {
     singleUserHoliday = await UserHolidaysRepoImplementer()
         .getFutureSingleUserHoliday(userId, userToken);
     loadingHolidaysDetails = false;
-
     notifyListeners();
 
     return singleUserHoliday;

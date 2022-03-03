@@ -99,11 +99,18 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           icon: FontAwesomeIcons.clipboardList,
           onTap: () {
             if (Provider.of<UserHolidaysData>(context, listen: false)
-                .singleUserHoliday
-                .isNotEmpty) {
+                    .singleUserHoliday ==
+                null) {
               Provider.of<UserHolidaysData>(context, listen: false)
+                  .singleUserHoliday = [];
+            } else {
+              if (Provider.of<UserHolidaysData>(context, listen: false)
                   .singleUserHoliday
-                  .clear();
+                  .isNotEmpty) {
+                Provider.of<UserHolidaysData>(context, listen: false)
+                    .singleUserHoliday
+                    .clear();
+              }
             }
 
             Provider.of<UserPermessionsData>(context, listen: false)

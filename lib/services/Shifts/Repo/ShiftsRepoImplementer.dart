@@ -11,7 +11,7 @@ import '../../user_data.dart';
 
 class ShiftsRepoImp {
   final userToken = locator.locator<UserData>().user.userToken;
-  Future<Object> getLateAbsenceReport(
+  Future<Object> getQrData(
       bool isHawawi, Location huawi, Position location, String id) {
     return NetworkApi().request(
         "$baseURL/api/Shifts/PostSiteShift",

@@ -7,6 +7,7 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/main.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -42,7 +43,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
   @override
   void initState() {
     final UserData userProvider = Provider.of<UserData>(context, listen: false);
-
+    locator.locator<UserHolidaysData>().keepRetriving = true;
     userHolidays = Provider.of<UserHolidaysData>(context, listen: false)
         .getFutureSingleUserHoliday(
             userProvider.user.id, userProvider.user.userToken);
@@ -231,7 +232,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                           return orderNumberController.text == ""
                               ? Expanded(
                                   child: UserOrdersListView(
-                                    provList: provList,
+                                    provList: provList ?? [],
                                     memberId: "",
                                   ),
                                 )
