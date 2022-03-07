@@ -416,7 +416,7 @@ class UserHolidaysData with ChangeNotifier {
 
       if (msg == "Success : External Missions Created!") {
         Fluttertoast.showToast(
-            msg: getTranslated(context, "تمت اضافة المأمورية بنجاح"),
+            msg: getTranslated(context, "تم الإضافة بنجاح"),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
         await sendFcmMessage(

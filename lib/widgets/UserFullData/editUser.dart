@@ -81,7 +81,7 @@ class _EditMemberState extends State<EditMember> {
 
           if (msg == "Success") {
             Fluttertoast.showToast(
-              msg: "تم تعديل المستخدم بنجاح",
+              msg: "تم التعديل بنجاح",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,

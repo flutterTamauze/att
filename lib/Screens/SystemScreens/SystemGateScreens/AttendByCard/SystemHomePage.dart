@@ -10,6 +10,7 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/attendByCardRetryButton.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,11 +86,11 @@ class _SystemHomePageState extends State<SystemHomePage> {
     } else {
       showDialog(
           barrierDismissible: false,
-          context: context,
+          context: navigatorKey.currentState.overlay.context,
           builder: (BuildContext context) {
             return RoundedAlertEn(
-                title: 'Permission',
-                content: "Please accept this permission to show start work",
+                title: getTranslated(context, "تصريح"),
+                content: getTranslated(context, "برجاء قبول التصريح"),
                 onPressed: () async {
                   if (await Permission.microphone.isPermanentlyDenied) {
                     openAppSettings();
@@ -97,6 +98,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
                     await Permission.microphone.request();
                     if (await Permission.microphone.isGranted) {
                       Navigator.pop(context);
+                      Navigator.maybePop(context);
                       getData();
                     } else {
                       Navigator.pushReplacement(

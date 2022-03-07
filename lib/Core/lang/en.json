@@ -74,6 +74,7 @@
     "حفظ الطلب":"Save Request",
     "عارضة":"Casual",
     "مرضية":"Sick Leave",
+    "هل تريد حفظ الطلب ؟":"Confirm request ?",
     "مرضى":"Sick Leave",
     "رصيد اجازات":"Balance",
     "مدة الأجازة":"Holiday Duration",
@@ -335,7 +336,7 @@
 "Error deleting the proof",
     "هل تريد إزالة":"Do you want to remove",
     "خطأ في الحذف: هذه المناوبة تحتوي على مستخدمين. برجاء حذف المستخدمين اولا"
-    :"Delete error: This shift contains users. Please delete users first"
+    :"Error: This shift contains users. Please delete users first"
   ,"إزالة مناوبة":"Delete Shift",
   "إزالة مستخدم":"Delete User",
   "تم الأرسال بنجاح":"Sent successfully",
@@ -352,22 +353,22 @@
 "تم الحفظ بنجاح":"Saved Successfully",
 "لا يمكن طلب الاجازة : يوجد مأمورية داخلية":"It is not possible to request leave: there is an internal mission"
 ,"قم بأدخال مدة الأجازة":"Enter holiday duration",
-"يوجد اجازة لم يتم الموافقة عليها":"There is an unapproved holiday",
-"يوجد اجازة فى هذا اليوم":"There is a Holiday on this day.",
-"يوجد مأمورية خارجية فى هذا اليوم":"There is an external mission on this day",
-"يوجد اذن اخر فى هذا اليوم":"There is another permission on this day",
-"لقد تم تقديم طلب من قبل":"A request has already been submitted",
+"يوجد اجازة لم يتم الموافقة عليها":"Error : There is an unapproved holiday",
+"يوجد اجازة فى هذا اليوم":"Error : There is a Holiday on this day.",
+"يوجد مأمورية خارجية فى هذا اليوم":"Error : There is an external mission on this day",
+"يوجد اذن اخر فى هذا اليوم":"Error : There is another permission on this day",
+"لقد تم تقديم طلب من قبل":"Error : a request has already been submitted",
 "تم تقديم طلب الأذن بنجاح":"Permission request submitted successfully",
 "برجاء متابعة الطلب":"Please follow on the request",
 "لم يتم اثبات الحضور انتهى وقت التسجيل":"Attendance has not been confirmed. Registration has expired",
 "لم يتم اثبات الحضور : خارج موقع العمل"
 :"Attendance has not been proven: outside the work location",
-"لا يمكن طلب الاجازة : يوجد طلب اذن":"Holiday cannot be requested: there is a permission request",
-"يوجد اذن فى هذا اليوم":"There is a permission in this day",
+"لا يمكن طلب الاجازة : يوجد طلب اذن":"Error : Holiday cannot be requested: there is a permission request",
+"يوجد اذن فى هذا اليوم":"Error : There is a permission in this day",
 "قم بأدخال البيانات المطلوبة":"Enter the required information",
 "لا يمكن طلب الاجازة : يوجد مأمورية خارجية"
-:"Holiday cannot be requested: there is an external mission",
-"يوجد اجازة تم الموافقة عليها فى هذه الفترة":"There is an approved Holiday during this period.",
+:"Error : Holiday cannot be requested: there is an external mission",
+"يوجد اجازة تم الموافقة عليها فى هذه الفترة":"Error : There is an approved Holiday during this period.",
 "تم طلب اذن من قبل المستخدم":"Permission requested by user",
 "تم تقديم طلب الأجازة بنجاح":"Holiday request submitted successfully.",
 "لا يوجد تعليق":"No comment",
@@ -410,7 +411,15 @@
 "هل تريد حفظ التعديل ؟"
 :"Do you want to save the edit?",
 "تم اضافة المستخدم بنجاح"
-:"User added successfully",
+:"User added Successfully",
+"تم الإضافة بنجاح"
+:"تم الإضافة بنجاح ",
+"تم تغيير الصورة بنجاح":
+"Image Uploaded Successfully",
+"تم الإرسال بنجاح"
+:"Sent Successfully",
+"تم الإضافة بنجاح "
+:"Added Successfully",
 "البريد الإلكترونى غير صحيح":
 "Invalid Email Address",
 "اختر بأسم البلد او الرقم الدولى":"Choose the name of the country or the international number",
@@ -481,7 +490,7 @@
 "تمت اضافة المأمورية بنجاح"
 :"Mission added successfully",
 "تم وضع مأمورية لهذا المستخدم من قبل":
-"Another InternalMission not approved for this user!",
+"Error : Another InternalMission not approved for this user!",
 "تم تسجيل مأمورية داخلية لك"
 :"An internal mission assigned for you",
 "خطأ فى اضافة المأمورية":
@@ -493,7 +502,7 @@
 "تم وضع مأمورية خارجية لهذا المستخدم من قبل":
 "There is an external mission in this period!",
 "يوجد مأمورية داخلية فى هذا التاريخ"
-:"There is an internal mission on this date",
+:"Error : There is an internal mission on this date",
 "برجاء ادخال المدة":
 "Please enter the duration",
 "تم تسجيل مأمورية خارجية لك":"An exteranl mission assigned to you",
@@ -503,13 +512,15 @@
 "مأمورية خارجية":"External Mission",
 "التاريخ قبل إنشاء الشركة":"Date is before company creation",
 "تقرير حضور مستخدم":"Attend User Report",
-"لا يمكن وضع الأجازة : يوجد مأمورية خارجية":"There is an external mission"
+"لا يمكن وضع الأجازة : يوجد مأمورية خارجية":"Error : There is an external mission"
 ,"تأكيد رفض الأذن":
 "Confirm permession rejection",
 "تأكيد رفض الأجازة"
 :"Confirm holiday rejection"
 ,"إعادة ضبط بيانات مستخدم"
 :"Reset user phone",
+"تصريح":"Permession",
+"برجاء قبول التصريح":"Please accept this permission to show start work",
 "هل تريد اعادة ضبط بيانات هاتف المستخدم؟"
 :"Do you want to reset user phone information?",
  "جدولة المناوبات للمستخدم":"Schedule shifts for",
@@ -546,8 +557,8 @@
 "تمت إضافة المناوبة بنجاح"
 :"Shift added successfully",
 "خطأ في تعديل المناوبة":"Edit failed","خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت":"Edit failed : No internet connection",
-"يجب ان لا تقل المدة عن 4 ساعات":"Duration should not be less than 4 hours",
-"خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من اربع ساعات":"Error: The time specified between the start and end of the shift\n must be greater than four hours"
+"يجب ان لا تقل المدة عن 4 ساعات":"Error : Duration should not be less than 4 hours",
+"خطأ : الوقت المحدد بين بداية و نهاية المناوبة\n يجب ان يكون اكبر من اربع ساعات":"Error : The time specified between the start and end of the shift\n must be greater than four hours"
 ,"خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت":"Failed to add shift : No internet connection",
 "تم إضافة الأذن بنجاح":"Permession added successfully",
 "لا يمكن وضع الاجازة : يوجد مأمورية داخلية":"The holiday cannot be set: there is an internal mission",
@@ -589,6 +600,8 @@
 "برجاء العلم ان مواعيد المناوبة من":"Please note that the shift timings are from ",
 "كلمة المرور يجب ان تتكون من احرف ابجدية كبيرة و صغيرة":
 "Password must consist of uppercase and lowercase letters \n punctuation marks (!@#$&*~) and a number",
+"خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"
+:"Error : Shift name is already used for the same site",
 "تسجيل الانصراف":"Register Leave",
 "الأتصال بالأنترنت ضعيف":"The internet connection is weak",
 "ليس مصرح لك التسجيل بالبطاقة":

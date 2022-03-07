@@ -499,7 +499,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                     Fluttertoast.showToast(
                                                             msg: getTranslated(
                                                                 context,
-                                                                "تم إضافة الأجازة بنجاح"),
+                                                                "تم الإضافة بنجاح"),
                                                             gravity:
                                                                 ToastGravity
                                                                     .CENTER,
@@ -1185,7 +1185,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                       Fluttertoast.showToast(
                                                               msg: getTranslated(
                                                                   context,
-                                                                  "تم إضافة الأذن بنجاح"),
+                                                                  "تم الإضافة بنجاح"),
                                                               backgroundColor:
                                                                   Colors.green,
                                                               gravity:

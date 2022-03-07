@@ -149,9 +149,6 @@ class _SystemScanPageState extends State<SystemScanPage> {
     controller?.pauseCamera();
 
     if (shiftQrCode != null && qrText != null) {
-      print(shiftQrCode);
-      print(qrText);
-      print(cameraDescription);
       Navigator.push(
           context,
           MaterialPageRoute(

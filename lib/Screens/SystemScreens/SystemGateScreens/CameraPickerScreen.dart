@@ -81,8 +81,14 @@ class TakePictureScreenState extends State<CameraPicker>
               enableContours: true,
               enableLandmarks: true,
               mode: FaceDetectorMode.accurate));
+      if (!cameraController.value.isInitialized) {
+        await cameraController.initialize().then((_) async {
+          if (!mounted) {
+            return;
+          }
+        });
+      }
 
-      await cameraController.initialize();
       cameraController.startImageStream((imageFromStream) {
         if (!isWorking) {
           isWorking = true;

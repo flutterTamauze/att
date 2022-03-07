@@ -214,7 +214,7 @@ class MissionsData with ChangeNotifier {
         Fluttertoast.showToast(
             msg: getTranslated(
               context,
-              "تمت اضافة المأمورية بنجاح",
+              "تم الإضافة بنجاح",
             ),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);

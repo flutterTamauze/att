@@ -58,14 +58,14 @@ class RoundedAlert extends StatelessWidget {
                       ),
                       Center(
                         child: Container(
-                          height: 20,
+                          height: 50.h,
                           child: AutoSizeText(
                             content,
-                            maxLines: 1,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: setResponsiveFontSize(14),
-                                fontWeight: FontWeight.w900),
+                                height: 1.5,
+                                fontSize: setResponsiveFontSize(13),
+                                fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -468,9 +468,9 @@ class RoundedAlertEn extends StatelessWidget {
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              "Yes",
+                              getTranslated(context, "نعم"),
                               style: TextStyle(
-                                  color: Colors.orange,
+                                  color: ColorManager.primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: setResponsiveFontSize(17)),
                             ),
@@ -491,10 +491,10 @@ class RoundedAlertEn extends StatelessWidget {
                           height: 30,
                           child: Container(
                             height: 20,
-                            child: AutoSizeText("No",
+                            child: AutoSizeText(getTranslated(context, "لا"),
                                 maxLines: 1,
                                 style: TextStyle(
-                                    color: Colors.orange,
+                                    color: ColorManager.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: setResponsiveFontSize(17))),
                           ),

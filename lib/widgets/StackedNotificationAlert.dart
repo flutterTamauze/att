@@ -103,6 +103,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                             onPressed: () async {
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
+                              await prefs.setString("notifCategory", "");
                               if (widget.showToast) {
                                 setState(() {
                                   isloading = true;
@@ -121,7 +122,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 setState(() {
                                   isloading = false;
                                 });
-                                await prefs.setString("notifCategory", "");
+
                                 if (msg == "timeout") {
                                   Fluttertoast.showToast(
                                       msg: getTranslated(context,

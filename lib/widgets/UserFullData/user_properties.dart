@@ -519,7 +519,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                   if (value) {
                                     Fluttertoast.showToast(
                                         msg: getTranslated(
-                                            context, "تم الأرسال بنجاح"),
+                                            context, "تم الإرسال بنجاح"),
                                         backgroundColor: Colors.green,
                                         gravity: ToastGravity.CENTER);
                                   }

@@ -412,7 +412,7 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                                       Fluttertoast.showToast(
                                                                           msg: getTranslated(
                                                                               context,
-                                                                              "تم حذف العطلة بنجاح"),
+                                                                              "تم الحذف بنجاح"),
                                                                           backgroundColor:
                                                                               Colors.green);
                                                                     } else {
