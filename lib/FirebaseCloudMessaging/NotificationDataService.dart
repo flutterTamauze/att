@@ -37,12 +37,14 @@ class NotificationDataService with ChangeNotifier {
         category: category,
         messageSeen: 0,
         id: id));
+    notification = notification.reversed.toList();
     print("adding temp not. . .");
     notifyListeners();
   }
 
   deleteNotification(int currentId) {
     notification.removeWhere((element) => element.id == currentId);
+    notification = notification.reversed.toList();
     notifyListeners();
   }
 
@@ -74,15 +76,11 @@ class NotificationDataService with ChangeNotifier {
       final List<NotificationMessage> dbMessages =
           await db.getAllNotifications();
       for (int i = 0; i < dbMessages.length; i++) {
-        if (!Provider.of<NotificationDataService>(context, listen: false)
-            .notification
-            .contains(dbMessages[i])) {
-          Provider.of<NotificationDataService>(context, listen: false)
-              .notification
-              .add(dbMessages[i]);
+        if (!notification.contains(dbMessages[i])) {
+          notification.add(dbMessages[i]);
         }
       }
-
+      notification = notification.reversed.toList();
       notifyListeners();
     }
   }

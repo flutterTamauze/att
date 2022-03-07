@@ -814,167 +814,161 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                           }
                                         } else //اذن
                                         {
-                                          showDialog(
-                                            context: context,
-                                            builder: (ct) {
-                                              return RoundedAlert(
-                                                  onCancel: () {},
-                                                  onPressed: () async {
-                                                    Navigator.pop(ct);
-                                                    if (selectedDateString !=
-                                                            null &&
-                                                        timeOutController
-                                                                .text !=
-                                                            "") {
-                                                      final String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
-                                                          UserPermessions(
-                                                              date:
-                                                                  selectedDate,
-                                                              duration: formattedTime
-                                                                  .replaceAll(
-                                                                      ":", ""),
-                                                              permessionType:
-                                                                  selectedPermession == getTranslated(context, "تأخير عن الحضور")
-                                                                      ? 1
-                                                                      : 2,
-                                                              permessionDescription:
-                                                                  commentController.text == ""
-                                                                      ? getTranslated(
-                                                                          context, "لا يوجد تعليق")
-                                                                      : commentController
-                                                                          .text,
-                                                              user: userdata
-                                                                  .name),
-                                                          Provider.of<UserData>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .user
-                                                              .userToken,
-                                                          userdata.id);
-                                                      if (msg == "success") {
-                                                        return showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            sendFcmMessage(
-                                                              topicName:
-                                                                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                              title:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "طلب اذن"),
-                                                              category:
-                                                                  "permessionRequest",
-                                                              message:
-                                                                  "${getTranslated(context, "تم طلب اذن من قبل المستخدم ")}${Provider.of<UserData>(context, listen: false).user.name}",
-                                                            );
+                                          if (selectedDateString != null &&
+                                              timeOutController.text != "") {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ct) {
+                                                return RoundedAlert(
+                                                    onCancel: () {},
+                                                    onPressed: () async {
+                                                      Navigator.pop(ct);
+                                                      {
+                                                        final String msg = await Provider.of<UserPermessionsData>(context, listen: false).addUserPermession(
+                                                            UserPermessions(
+                                                                date:
+                                                                    selectedDate,
+                                                                duration: formattedTime
+                                                                    .replaceAll(
+                                                                        ":", ""),
+                                                                permessionType:
+                                                                    selectedPermession == getTranslated(context, "تأخير عن الحضور")
+                                                                        ? 1
+                                                                        : 2,
+                                                                permessionDescription: commentController.text == ""
+                                                                    ? getTranslated(
+                                                                        context,
+                                                                        "لا يوجد تعليق")
+                                                                    : commentController
+                                                                        .text,
+                                                                user: userdata
+                                                                    .name),
+                                                            Provider.of<UserData>(context,
+                                                                    listen: false)
+                                                                .user
+                                                                .userToken,
+                                                            userdata.id);
+                                                        if (msg == "success") {
+                                                          return showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              sendFcmMessage(
+                                                                topicName:
+                                                                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                                title: getTranslated(
+                                                                    context,
+                                                                    "طلب اذن"),
+                                                                category:
+                                                                    "permessionRequest",
+                                                                message:
+                                                                    "${getTranslated(context, "تم طلب اذن من قبل المستخدم ")}${Provider.of<UserData>(context, listen: false).user.name}",
+                                                              );
 
-                                                            return StackedNotificaitonAlert(
-                                                              repeatAnimation:
-                                                                  false,
-                                                              isFromBackground:
-                                                                  false,
-                                                              popWidget: true,
-                                                              isAdmin: false,
-                                                              notificationTitle:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "تم تقديم طلب الأذن بنجاح"),
-                                                              notificationContent:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "برجاء متابعة الطلب"),
-                                                              roundedButtonTitle:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "متابعة"),
-                                                              lottieAsset:
-                                                                  "resources/success.json",
-                                                              showToast: false,
-                                                            );
-                                                          },
-                                                        );
-                                                      } else if (msg ==
-                                                          'already exist') {
-                                                        Fluttertoast.showToast(
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لقد تم تقديم طلب من قبل"));
-                                                      } else if (msg ==
-                                                          "dublicate permession") {
-                                                        Fluttertoast.showToast(
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "يوجد اذن اخر فى هذا اليوم"));
-                                                      } else if (msg ==
-                                                          "external mission") {
-                                                        Fluttertoast.showToast(
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "يوجد مأمورية خارجية فى هذا اليوم"));
-                                                      } else if (msg ==
-                                                          "holiday") {
-                                                        Fluttertoast.showToast(
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "يوجد اجازة فى هذا اليوم"));
-                                                      } else if (msg ==
-                                                          "holiday was not approved") {
-                                                        Fluttertoast.showToast(
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "يوجد اجازة لم يتم الموافقة عليها"));
-                                                      } else if (msg ==
-                                                          "failed") {
-                                                        errorToast(context);
+                                                              return StackedNotificaitonAlert(
+                                                                repeatAnimation:
+                                                                    false,
+                                                                isFromBackground:
+                                                                    false,
+                                                                popWidget: true,
+                                                                isAdmin: false,
+                                                                notificationTitle:
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "تم تقديم طلب الأذن بنجاح"),
+                                                                notificationContent:
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "برجاء متابعة الطلب"),
+                                                                roundedButtonTitle:
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "متابعة"),
+                                                                lottieAsset:
+                                                                    "resources/success.json",
+                                                                showToast:
+                                                                    false,
+                                                              );
+                                                            },
+                                                          );
+                                                        } else if (msg ==
+                                                            'already exist') {
+                                                          Fluttertoast.showToast(
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "لقد تم تقديم طلب من قبل"));
+                                                        } else if (msg ==
+                                                            "dublicate permession") {
+                                                          Fluttertoast.showToast(
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "يوجد اذن اخر فى هذا اليوم"));
+                                                        } else if (msg ==
+                                                            "external mission") {
+                                                          Fluttertoast.showToast(
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "يوجد مأمورية خارجية فى هذا اليوم"));
+                                                        } else if (msg ==
+                                                            "holiday") {
+                                                          Fluttertoast.showToast(
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "يوجد اجازة فى هذا اليوم"));
+                                                        } else if (msg ==
+                                                            "holiday was not approved") {
+                                                          Fluttertoast.showToast(
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              msg: getTranslated(
+                                                                  context,
+                                                                  "يوجد اجازة لم يتم الموافقة عليها"));
+                                                        } else if (msg ==
+                                                            "failed") {
+                                                          errorToast(context);
+                                                        }
                                                       }
-                                                    } else {
-                                                      print(selectedDateString);
-                                                      print(timeOutController
-                                                          .text);
-                                                      Fluttertoast.showToast(
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "قم بأدخال البيانات المطلوبة"));
-                                                    }
-                                                  },
-                                                  title: getTranslated(context,
-                                                      'هل تريد حفظ الطلب ؟'),
-                                                  content:
-                                                      "${getTranslated(context, "الوقت")} : ${timeOutController.text} \n ${getTranslated(context, "التاريخ")} : ${selectedDate.toString().substring(0, 11)}");
-                                            },
-                                          );
+                                                    },
+                                                    title: getTranslated(
+                                                        context,
+                                                        'هل تريد حفظ الطلب ؟'),
+                                                    content:
+                                                        "${getTranslated(context, "الوقت")} : ${timeOutController.text} \n ${getTranslated(context, "التاريخ")} : ${selectedDate.toString().substring(0, 11)}");
+                                              },
+                                            );
+                                          } else {
+                                            print(selectedDateString);
+                                            print(timeOutController.text);
+                                            Fluttertoast.showToast(
+                                                gravity: ToastGravity.CENTER,
+                                                backgroundColor: Colors.red,
+                                                msg: getTranslated(context,
+                                                    "قم بأدخال البيانات المطلوبة"));
+                                          }
                                         }
-                                      }),
-                                )
+                                      }))
                         ],
                       ),
                     ),

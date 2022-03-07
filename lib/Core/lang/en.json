@@ -101,9 +101,9 @@
     :   "Attend Proofs",
     "الموقع و المناوبة للمأمورية":"Site & Shift for the mission",
     "نوع المأمورية":"Mission Type",
-    "لا يوجد اذونات لم يتم الرد عليها":"There Are No Unanswered Permissions",
-    "لا يوجد اجازات لم يتم الرد عليها":  "There Are No Unanswered Holidays",
-    "لا يوجد إثباتات حضور فى هذا اليوم":"There Are No Attend Proofs At This Day",
+    "لا يوجد اذونات لم يتم الرد عليها":"There are no unanswered permissions",
+    "لا يوجد اجازات لم يتم الرد عليها":  "There are no unanswered holidays",
+    "لا يوجد إثباتات حضور فى هذا اليوم":"There are no attend proofs at this day",
 "تم الموافقة على طلب الأذن":"Permission request approved.",
     "تم اختيار":"Chosen",
     "الموافقة على طلب":"Request Approval",
@@ -306,7 +306,7 @@
     "خطأ فى التسجيل: لا يوجد اتصال بالانترنت":"Registration error: No Internet Connection"
     ,"خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف":"Registration error: The geographical location of the phones is not enabled",
     "لم يتم التسجيل : عطلة رسمية":"Not registered: official holiday",
-    "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم":"Registration Error: User's presence has not been verified",
+    "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم":"Registration Error: The user did not prove attend",
     "التسجيل غير متاح الأن":"Registration is not available now",
     "خطأ فى التسجيل":"Registration Error",
     "خطأ في الحذف":"Delete Error",
@@ -326,7 +326,7 @@
     "تم الحذف بنجاح":"Deleted Successfully",
     "تم حذف الإثبات بنجاح":"Proof deleted successfully",
     "خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nبرجاء حذف المناوبات اولا"
-    :"خطأ في الحذف: هذا الموقع يحتوي على مناوبات\nPlease remove shifts first",
+    :"Error : This site contains shifts\nPlease remove shifts first",
     "إزالة موقع":"Remove Site",
     "حذف الإثبات":
     "Delete Proof",
@@ -348,7 +348,7 @@
 "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل":
 "Sending error \n This user has not been logged in before",
 "لم يتم تسجيل حضور هذا المتسخدم"
-:"This user is not registered",
+:"Error : This user is not registered",
 "لا يوجد جدولة لهذا المستخدم":"There is no schedule for this user",
 "تم الحفظ بنجاح":"Saved Successfully",
 "لا يمكن طلب الاجازة : يوجد مأمورية داخلية":"It is not possible to request leave: there is an internal mission"
@@ -399,11 +399,11 @@
 "تم تعديل المستخدم بنجاح"
 :"User edited successfully",
 "خطأ في تعديل المستخدم: رقم الهاتف مستخدم مسبقا":
-"User Editing Error: The phone number is already in use"
+"Error: The phone number is already in use"
 ,"خطأ في تعديل المستخدم":
 "Error editing user",
 "خطأ في تعديل المستخدم:المستخدم غير موجود":
-"Error editing user: user does not exist",
+"Error : user does not exist",
 "خطأ في تعديل المستخدم:لايوجد اتصال بالانترنت":
 "Edit user error: no internet connection",
 "حفظ التعديل":
@@ -449,7 +449,7 @@
 "يجب ان لا يتخطي الأسم عن 40 حرف"
 :"The name must not exceed 40 characters",
 "خطأ في اضافة الموقع: اسم الموقع مضاف مسبقا":
-"Error adding site: site name already added",
+"Error : site name already exists",
 "لقد وصلت الى الحد المسموح بة من المواقع":
 "You have reached the maximum number of sites",
 "خطأ في اضافة الموقع"
@@ -459,7 +459,7 @@
 "تم تعديل الموقع بنجاح"
 :"The site successfully edited.",
 "خطأ في تعديل الموقع: اسم الموقع مضاف مسبقا":
-"Error editing site: site name already exists",
+"Error : site name already exists",
 "خطأ في تعديل الموقع":
 "Error editing the site",
 "خطأ في تعديل الموقع:لايوجد اتصال بالانترنت":

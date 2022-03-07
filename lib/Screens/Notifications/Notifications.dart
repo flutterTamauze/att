@@ -81,9 +81,6 @@ class NotificationItem extends StatelessWidget {
                     child: Align(
                   alignment: Alignment.topCenter,
                   child: ListView.builder(
-                    reverse: true,
-                    shrinkWrap: true,
-                    primary: true,
                     itemBuilder: (context, index) {
                       final notifiyProv = value.notification[index];
 
@@ -306,7 +303,7 @@ class _NotificationsDataState extends State<NotificationsData>
                     },
                   ),
                   child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: 90.h,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -24,6 +24,7 @@ import 'package:qr_users/MLmodule/recognition_services/quant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
 import "package:qr_users/widgets/headers.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
@@ -201,7 +202,11 @@ class TakePictureScreenState extends State<CameraPicker>
                           aspectRatio: cameraController.value.aspectRatio,
                           child: new CameraPreview(cameraController),
                         )
-                      : Container(),
+                      : Container(
+                          child: const Center(
+                            child: LoadingIndicator(),
+                          ),
+                        ),
                 ),
                 Positioned(
                   left: 4.0,
