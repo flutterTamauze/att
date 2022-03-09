@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
+
+import 'package:qr_users/main.dart';
+import 'package:qr_users/services/user_data.dart';
 
 const String serverToken =
     // ignore: lines_longer_than_80_chars
@@ -19,7 +24,9 @@ Future<bool> sendFcmMessage(
   try {
     final String toParams = "/topics/" + topicName;
     print("user token $userToken");
-
+    if (userToken == null) {
+      print("sending to topic $toParams");
+    }
     const url = 'https://fcm.googleapis.com/fcm/send';
     final header = {
       "Content-Type": "application/json",
@@ -47,11 +54,16 @@ Future<bool> sendFcmMessage(
     };
 
 //    "to": "$toParams",
+
     final client = new http.Client();
     final response = await client.post(Uri.parse(url),
         headers: header, body: json.encode(request));
     print(response.body);
     print(response.statusCode);
+
+    // Provider.of<UserData>(navigatorKey.currentState.overlay.context,
+    //         listen: false)
+    //     .addNotificationRequestID(DateTime.now().millisecond);
     return true;
   } catch (e) {
     print(e);

@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
@@ -23,7 +24,7 @@ import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:http/http.dart' as http;
 // var cron1;
 // var cron2;
 
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       final notificationProv =
           Provider.of<NotificationDataService>(context, listen: false);
       notificationProv.firebaseMessagingConfig(context);
+      notificationProv.tokenRefresh();
     }
     final newVersion = NewVersion();
     // ignore: cascade_invocations
@@ -123,6 +125,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
+                // final response = await http.get(
+                //   Uri.parse(
+                //       "https://iid.googleapis.com/iid/info/eT_lIIZZSGKty7uxfyeVba:APA91bFM95bxyfbVCXyOfA-EILER6EkUk2CxIUZHMPu1VNrdkK3Ud9c7_aOW5dcfGJTR7NUtvpBE1X5xiDC-Bo0WgslxDTsCBaTxkB9Zea-HvUTNEzN96cgQJT4Hx4u9vB_E97Bae1H-?details=true"),
+                //   headers: {
+                //     "Authorization": "Bearer $serverToken",
+                //   },
+                // );
+                // print(response.body);
                 // print(_startTime.hour);
                 // print(locator.locator<PermissionHan>().isServerDown);
               },

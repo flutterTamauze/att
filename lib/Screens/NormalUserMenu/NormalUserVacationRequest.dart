@@ -11,6 +11,7 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/ReportScreens/RadioButtonWidget.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -56,7 +57,7 @@ DateTime yesterday;
 TextEditingController _dateController = TextEditingController();
 String dateToString = "";
 String dateFromString = "";
-
+int radioVal;
 TimeOfDay toPicked;
 String dateDifference;
 List<DateTime> picked = [];
@@ -65,6 +66,7 @@ DateTime _today, _tomorow;
 class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void initState() {
+    radioVal = widget.radioVal;
     selectedPermession = widget.permesionTitles.first;
     selectedReason = widget.holidayTitles.first;
     picked = null;
@@ -91,6 +93,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  final _radioButtonNotifier = ValueNotifier<int>(0);
+  void setRadioButtonState(int newState) {
+    _radioButtonNotifier.value = newState;
   }
 
   String formattedTime;
@@ -139,29 +146,29 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 RadioButtonWidg(
-                                  radioVal2: widget.radioVal,
+                                  radioVal2: radioVal,
                                   radioVal: 3,
                                   title: getTranslated(context, "أذن"),
                                   onchannge: (value) {
                                     setState(() {
-                                      widget.radioVal = value;
+                                      radioVal = value;
                                     });
                                   },
                                 ),
                                 RadioButtonWidg(
-                                  radioVal2: widget.radioVal,
+                                  radioVal2: radioVal,
                                   radioVal: 1,
                                   title: getTranslated(context, "اجازة"),
                                   onchannge: (value) {
                                     setState(() {
-                                      widget.radioVal = value;
+                                      radioVal = value;
                                     });
                                   },
                                 ),
                               ],
                             ),
                           ),
-                          widget.radioVal == 1
+                          radioVal == 1
                               ? Column(
                                   children: [
                                     VacationCardHeader(
@@ -202,6 +209,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                             onChanged: (String value) {
                                               setState(() {
                                                 selectedReason = value;
+
                                                 if (value != "عارضة") {
                                                   _dateController.text = "";
                                                   newString = "";
@@ -367,9 +375,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                             AutoSizeText(
                                               getTranslated(
                                                   context, "نوع الأذن"),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 11),
+                                                  fontSize:
+                                                      setResponsiveFontSize(
+                                                          11)),
                                               maxLines: 2,
                                             ),
                                           ],
@@ -485,15 +495,13 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                               selectedDateString);
                                                     });
                                                   },
-                                                  initialDate:
-                                                      widget.radioVal == 3
-                                                          ? _today
-                                                          : _tomorow,
+                                                  initialDate: radioVal == 3
+                                                      ? _today
+                                                      : _tomorow,
                                                   type: DateTimePickerType.date,
-                                                  firstDate:
-                                                      widget.radioVal == 3
-                                                          ? _today
-                                                          : _tomorow,
+                                                  firstDate: radioVal == 3
+                                                      ? _today
+                                                      : _tomorow,
                                                   lastDate: DateTime(
                                                       DateTime.now().year + 2,
                                                       DateTime.december,
@@ -672,7 +680,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                       title:
                                           getTranslated(context, "حفظ الطلب"),
                                       onPressed: () async {
-                                        if (widget.radioVal == 1) //اجازة
+                                        if (radioVal == 1) //اجازة
                                         {
                                           if (picked != null) {
 //4-2-2021
@@ -703,21 +711,19 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         holidayStatus: 3),
                                                     userdata.userToken,
                                                     userdata.id)
-                                                .then((value) {
+                                                .then((value) async {
                                               if (value == Holiday.Success) {
+                                                await sendFcmMessage(
+                                                  topicName:
+                                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                  title: "طلب أجازة",
+                                                  category: "vacationRequest",
+                                                  message:
+                                                      "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                );
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
-                                                    sendFcmMessage(
-                                                      topicName:
-                                                          "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                      title: "طلب أجازة",
-                                                      category:
-                                                          "vacationRequest",
-                                                      message:
-                                                          "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                    );
-
                                                     return StackedNotificaitonAlert(
                                                       repeatAnimation: false,
                                                       popWidget: true,
@@ -849,21 +855,21 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 .userToken,
                                                             userdata.id);
                                                         if (msg == "success") {
+                                                          await sendFcmMessage(
+                                                            topicName:
+                                                                "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                            title:
+                                                                getTranslated(
+                                                                    context,
+                                                                    "طلب اذن"),
+                                                            category:
+                                                                "permessionRequest",
+                                                            message:
+                                                                "${getTranslated(context, "  تم طلب اذن من قبل المستخدم  ")}${Provider.of<UserData>(context, listen: false).user.name}",
+                                                          );
                                                           return showDialog(
                                                             context: context,
                                                             builder: (context) {
-                                                              sendFcmMessage(
-                                                                topicName:
-                                                                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                                title: getTranslated(
-                                                                    context,
-                                                                    "طلب اذن"),
-                                                                category:
-                                                                    "permessionRequest",
-                                                                message:
-                                                                    "${getTranslated(context, "تم طلب اذن من قبل المستخدم ")}${Provider.of<UserData>(context, listen: false).user.name}",
-                                                              );
-
                                                               return StackedNotificaitonAlert(
                                                                 repeatAnimation:
                                                                     false,
@@ -978,37 +984,5 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
             ),
           ),
         ));
-  }
-}
-
-class RadioButtonWidg extends StatelessWidget {
-  final Function onchannge;
-  final int radioVal;
-  final String title;
-  const RadioButtonWidg({
-    this.onchannge,
-    this.radioVal,
-    this.title,
-    @required this.radioVal2,
-  });
-
-  final int radioVal2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Radio(
-          activeColor: Colors.orange,
-          value: radioVal,
-          groupValue: radioVal2,
-          onChanged: (value) {
-            onchannge(value);
-          },
-        ),
-        AutoSizeText(title),
-      ],
-    );
   }
 }

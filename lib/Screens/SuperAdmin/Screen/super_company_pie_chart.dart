@@ -181,13 +181,6 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                // SinglePieChartItem(
-                                //   title: "الغياب",
-                                //   color: Colors.red[600],
-                                //   count: userData
-                                //       .superCompaniesChartModel.totalAbsent
-                                //       .toString(),
-                                // ),
                               ],
                             ),
                           ),
@@ -198,43 +191,6 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                       ),
                     ),
 
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: Container(
-                    //     padding: EdgeInsets.only(right: 10.w),
-                    //     width: 202.w,
-                    //     child: Row(
-                    //       children: [
-                    //         Container(
-                    //           width: 25.w,
-                    //           height: 25.h,
-                    //           child: Center(
-                    //             child: Text(
-                    //               userData
-                    //                   .superCompaniesChartModel.totalPermessions
-                    //                   .toString(),
-                    //               style: TextStyle(fontWeight: FontWeight.w500),
-                    //             ),
-                    //           ),
-                    //           decoration: BoxDecoration(
-                    //               shape: BoxShape.circle,
-                    //               border:
-                    //                   Border.all(width: 1, color: Colors.black)),
-                    //         ),
-                    //         Expanded(
-                    //           child: Container(),
-                    //         ),
-                    //         AutoSizeText(
-                    //           "مجموع الأذونات",
-                    //           style: TextStyle(
-                    //             fontWeight: FontWeight.w600,
-                    //           ),
-                    //           textAlign: TextAlign.right,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 60.h,
                     ),

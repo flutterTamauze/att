@@ -578,7 +578,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                 !widget.isEdit
                                     ? Container()
                                     : RoundedButton(
-                                        title: "حذف",
+                                        title: getTranslated(context, "حذف"),
                                         onPressed: () {
                                           return showDialog(
                                               context: context,
@@ -660,7 +660,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   scheduleList.id);
                                           if (msg == "Success") {
                                             Fluttertoast.showToast(
-                                                msg: "تم التعديل بنجاح",
+                                                msg: getTranslated(context,
+                                                    "تم التعديل بنجاح"),
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.green);
 
@@ -674,7 +675,8 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                 backgroundColor: Colors.red);
                                           } else if (msg == "not exists") {
                                             Fluttertoast.showToast(
-                                                msg: "لا يوجد جدولة",
+                                                msg: getTranslated(context,
+                                                    "لا يوجد جدولة لهذا المستخدم"),
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.red);
                                           } else {
@@ -703,14 +705,15 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                             );
 
                                             Fluttertoast.showToast(
-                                                msg: "تم الإضافة بنجاح",
+                                                msg: getTranslated(context,
+                                                    "تم الإضافة بنجاح"),
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.green);
                                             Navigator.pop(context);
                                           } else if (msg == "exists") {
                                             Fluttertoast.showToast(
-                                                msg:
-                                                    "تم طلب جدولة لهذا المستخدم مسبقا",
+                                                msg: getTranslated(context,
+                                                    "خطأ : هذا المسخدم لديه جدولة فى نفس الفترة"),
                                                 backgroundColor: Colors.red);
                                           } else {
                                             errorToast(context);

@@ -82,7 +82,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
           onTap: () {
             Navigator.of(context).push(
               new MaterialPageRoute(
-                builder: (context) => UserVacationRequest(1, [
+                builder: (context) => UserVacationRequest(3, [
                   getTranslated(context, "تأخير عن الحضور"),
                   getTranslated(context, "انصراف مبكر")
                 ], [

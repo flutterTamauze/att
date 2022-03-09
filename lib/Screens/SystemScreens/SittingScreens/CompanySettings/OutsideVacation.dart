@@ -17,6 +17,7 @@ import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/SystemScreens/ReportScreens/RadioButtonWidget.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
@@ -1456,15 +1457,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                   } else {
                                     widget.prov.setDropDownIndex(0);
                                   }
-                                  // await Provider.of<ShiftsData>(context,
-                                  //         listen: false)
-                                  //     .findMatchingShifts(
-                                  //         Provider.of<SiteData>(context,
-                                  //                 listen: false)
-                                  //             .sitesList[widget
-                                  //                 .prov.dropDownSitesIndex]
-                                  //             .id,
-                                  //         false);
 
                                   widget.prov.fillCurrentShiftID(widget
                                       .list[widget.prov.dropDownSitesIndex + 1]
