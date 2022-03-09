@@ -21,6 +21,12 @@ class UserOrdersListView extends StatefulWidget {
 }
 
 class _UserOrdersListViewState extends State<UserOrdersListView> {
+  @override
+  void initState() {
+    super.initState();
+    print(widget.memberId);
+  }
+
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   void _onRefresh() async {

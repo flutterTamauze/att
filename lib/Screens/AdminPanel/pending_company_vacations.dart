@@ -72,14 +72,14 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
     super.dispose();
   }
 
-  void _onRefresh() async {
-    Provider.of<UserHolidaysData>(context, listen: false).pageIndex = 0;
-    Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
-    Provider.of<UserHolidaysData>(context, listen: false).keepRetriving = true;
-    setState(() {
-      getPendingHolidays();
-    });
-  }
+  // void _onRefresh() async {
+  //   Provider.of<UserHolidaysData>(context, listen: false).pageIndex = 0;
+  //   Provider.of<UserHolidaysData>(context, listen: false).isLoading = false;
+  //   Provider.of<UserHolidaysData>(context, listen: false).keepRetriving = true;
+  //   setState(() {
+  //     getPendingHolidays();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -142,286 +142,269 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                       fontSize: setResponsiveFontSize(16)),
                                   textAlign: TextAlign.center,
                                 ))
-                              : SmartRefresher(
-                                  onRefresh: _onRefresh,
-                                  controller: refreshController,
-                                  header: const WaterDropMaterialHeader(
-                                    color: Colors.white,
-                                    backgroundColor: Colors.orange,
-                                  ),
-                                  child: ListView.builder(
-                                    controller: _scrollController,
-                                    itemBuilder: (context, index) {
-                                      final pending = pendingList
-                                          .pendingCompanyHolidays[index];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Card(
-                                          child: ExpandedPendingVacation(
-                                            userHolidays: pending,
-                                            isAdmin: true,
-                                            vacationDaysCount: [
-                                              pending.fromDate,
-                                              pending.toDate
-                                            ],
-                                            onAccept: () {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return RoundedAlertWithComment(
-                                                      onTapped: (comm) {
-                                                        comment = comm;
-                                                      },
-                                                      hint: getTranslated(
+                              : ListView.builder(
+                                  controller: _scrollController,
+                                  itemBuilder: (context, index) {
+                                    final pending = pendingList
+                                        .pendingCompanyHolidays[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Card(
+                                        child: ExpandedPendingVacation(
+                                          userHolidays: pending,
+                                          isAdmin: true,
+                                          vacationDaysCount: [
+                                            pending.fromDate,
+                                            pending.toDate
+                                          ],
+                                          onAccept: () {
+                                            return showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return RoundedAlertWithComment(
+                                                    onTapped: (comm) {
+                                                      comment = comm;
+                                                    },
+                                                    hint: getTranslated(
+                                                      context,
+                                                      "التفاصيل",
+                                                    ),
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            RoundedLoadingIndicator(),
+                                                      );
+                                                      final String msg = await pendingList
+                                                          .acceptOrRefusePendingVacation(
+                                                              1,
+                                                              pending
+                                                                  .holidayNumber,
+                                                              pending
+                                                                  .holidayDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
+                                                      Navigator.pop(navigatorKey
+                                                          .currentState
+                                                          .overlay
+                                                          .context);
+                                                      if (msg ==
+                                                          "Success : Updated!") {
+                                                        await sendFcmMessage(
+                                                            category:
+                                                                "vacation",
+                                                            topicName: "",
+                                                            userToken: pending
+                                                                .fcmToken,
+                                                            title:
+                                                                getTranslated(
+                                                              navigatorKey
+                                                                  .currentState
+                                                                  .overlay
+                                                                  .context,
+                                                              "طلب اجازة",
+                                                            ),
+                                                            message: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "تم الموافقة على طلب الأجازة"));
+
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "تم الموافقة بنجاح"),
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            backgroundColor:
+                                                                Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail : User not found") {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "خطأ فى بيانات المستخدم"),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else if (msg ==
+                                                          "Fail: holiday time out!") {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "خطأ فى الموافقة : انتهى وقت الرد"),
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "خطأ في الموافقة"),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      }
+                                                    },
+                                                    content: getTranslated(
                                                         context,
-                                                        "التفاصيل",
-                                                      ),
-                                                      onPressed: () async {
-                                                        Navigator.pop(context);
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              RoundedLoadingIndicator(),
-                                                        );
-                                                        final String msg = await pendingList
-                                                            .acceptOrRefusePendingVacation(
-                                                                1,
-                                                                pending
-                                                                    .holidayNumber,
-                                                                pending
-                                                                    .holidayDescription,
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .user
-                                                                    .userToken,
-                                                                comment,
-                                                                pending
-                                                                    .fromDate,
-                                                                pending.toDate);
-                                                        Navigator.pop(
-                                                            navigatorKey
-                                                                .currentState
-                                                                .overlay
-                                                                .context);
-                                                        if (msg ==
-                                                            "Success : Updated!") {
+                                                        "تأكيد الموافقة على الاجازة"),
+                                                    onCancel: () {},
+                                                    title:
+                                                        "${getTranslated(navigatorKey.currentState.overlay.context, "الموافقة على طلب")} ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                  );
+                                                });
+                                          },
+                                          onRefused: () {
+                                            return showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return RoundedAlertWithComment(
+                                                    hint: getTranslated(
+                                                        context, "سبب الرفض"),
+                                                    onTapped: (comm) {
+                                                      comment = comm;
+                                                    },
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            RoundedLoadingIndicator(),
+                                                      );
+                                                      final String msg = await pendingList
+                                                          .acceptOrRefusePendingVacation(
+                                                              2,
+                                                              pending
+                                                                  .holidayNumber,
+                                                              pending
+                                                                  .holidayDescription,
+                                                              Provider.of<UserData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .user
+                                                                  .userToken,
+                                                              comment,
+                                                              pending.fromDate,
+                                                              pending.toDate);
+                                                      Navigator.pop(navigatorKey
+                                                          .currentState
+                                                          .overlay
+                                                          .context);
+
+                                                      if (msg ==
+                                                          "Success : Updated!") {
+                                                        if (mounted) {
                                                           await sendFcmMessage(
                                                               category:
                                                                   "vacation",
                                                               topicName: "",
                                                               userToken: pending
                                                                   .fcmToken,
-                                                              title:
-                                                                  getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
-                                                                "طلب اجازة",
-                                                              ),
+                                                              title: getTranslated(
+                                                                  navigatorKey
+                                                                      .currentState
+                                                                      .overlay
+                                                                      .context,
+                                                                  "طلب اجازة"),
                                                               message: getTranslated(
                                                                   navigatorKey
                                                                       .currentState
                                                                       .overlay
                                                                       .context,
-                                                                  "تم الموافقة على طلب الأجازة"));
-
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "تم الموافقة بنجاح"),
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              backgroundColor:
-                                                                  Colors.green);
-                                                        } else if (msg ==
-                                                            "Fail : User not found") {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ فى بيانات المستخدم"),
-                                                              backgroundColor:
-                                                                  Colors.red);
-                                                        } else if (msg ==
-                                                            "Fail: holiday time out!") {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ فى الموافقة : انتهى وقت الرد"),
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              backgroundColor:
-                                                                  Colors.red);
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ في الموافقة"),
-                                                              backgroundColor:
-                                                                  Colors.red);
+                                                                  "تم رفض طلب الأجازة"));
                                                         }
-                                                      },
-                                                      content: getTranslated(
-                                                          context,
-                                                          "تأكيد الموافقة على الاجازة"),
-                                                      onCancel: () {},
-                                                      title:
-                                                          "${getTranslated(navigatorKey.currentState.overlay.context, "الموافقة على طلب")} ${pendingList.pendingCompanyHolidays[index].userName} ",
-                                                    );
-                                                  });
-                                            },
-                                            onRefused: () {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return RoundedAlertWithComment(
-                                                      hint: getTranslated(
-                                                          context, "سبب الرفض"),
-                                                      onTapped: (comm) {
-                                                        comment = comm;
-                                                      },
-                                                      onPressed: () async {
-                                                        Navigator.pop(context);
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              RoundedLoadingIndicator(),
-                                                        );
-                                                        final String msg = await pendingList
-                                                            .acceptOrRefusePendingVacation(
-                                                                2,
-                                                                pending
-                                                                    .holidayNumber,
-                                                                pending
-                                                                    .holidayDescription,
-                                                                Provider.of<UserData>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .user
-                                                                    .userToken,
-                                                                comment,
-                                                                pending
-                                                                    .fromDate,
-                                                                pending.toDate);
-                                                        Navigator.pop(
-                                                            navigatorKey
-                                                                .currentState
-                                                                .overlay
-                                                                .context);
 
-                                                        if (msg ==
-                                                            "Success : Updated!") {
-                                                          if (mounted) {
-                                                            await sendFcmMessage(
-                                                                category:
-                                                                    "vacation",
-                                                                topicName: "",
-                                                                userToken: pending
-                                                                    .fcmToken,
-                                                                title: getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
-                                                                    "طلب اجازة"),
-                                                                message: getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
-                                                                    "تم رفض طلب الأجازة"));
-                                                          }
-
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "تم الرفض بنجاح"),
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .CENTER,
-                                                              backgroundColor:
-                                                                  Colors.green);
-                                                        } else if (msg ==
-                                                            "Fail : User not found") {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ فى بيانات المستخدم"),
-                                                              backgroundColor:
-                                                                  Colors.red);
-                                                        } else if (msg ==
-                                                            "Fail: holiday time out!") {
-                                                          Fluttertoast
-                                                              .showToast(
-                                                                  msg:
-                                                                      getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
-                                                                    "خطأ فى الرفض : انتهى وقت الرد",
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red);
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "خطأ في الرفض"),
-                                                              backgroundColor:
-                                                                  Colors.red);
-                                                        }
-                                                      },
-                                                      content: getTranslated(
-                                                        navigatorKey
-                                                            .currentState
-                                                            .overlay
-                                                            .context,
-                                                        "تأكيد رفض الأجازة",
-                                                      ),
-                                                      onCancel: () {},
-                                                      title:
-                                                          "${getTranslated(navigatorKey.currentState.overlay.context, "رفض  طلب ")}${pendingList.pendingCompanyHolidays[index].userName} ",
-                                                    );
-                                                  });
-                                            },
-                                          ),
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "تم الرفض بنجاح"),
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            backgroundColor:
+                                                                Colors.green);
+                                                      } else if (msg ==
+                                                          "Fail : User not found") {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "خطأ فى بيانات المستخدم"),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else if (msg ==
+                                                          "Fail: holiday time out!") {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                              navigatorKey
+                                                                  .currentState
+                                                                  .overlay
+                                                                  .context,
+                                                              "خطأ فى الرفض : انتهى وقت الرد",
+                                                            ),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg: getTranslated(
+                                                                navigatorKey
+                                                                    .currentState
+                                                                    .overlay
+                                                                    .context,
+                                                                "خطأ في الرفض"),
+                                                            backgroundColor:
+                                                                Colors.red);
+                                                      }
+                                                    },
+                                                    content: getTranslated(
+                                                      navigatorKey.currentState
+                                                          .overlay.context,
+                                                      "تأكيد رفض الأجازة",
+                                                    ),
+                                                    onCancel: () {},
+                                                    title:
+                                                        "${getTranslated(navigatorKey.currentState.overlay.context, "رفض  طلب ")}${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                  );
+                                                });
+                                          },
                                         ),
-                                      );
-                                    },
-                                    itemCount: pendingList
-                                        .pendingCompanyHolidays.length,
-                                  ),
+                                      ),
+                                    );
+                                  },
+                                  itemCount:
+                                      pendingList.pendingCompanyHolidays.length,
                                 )));
                     }
                   }),

@@ -80,16 +80,13 @@ class RoundedAlert extends StatelessWidget {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // onCancel();
-                          },
+                          onPressed: onPressed,
                           minWidth: 120,
                           height: 30,
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              getTranslated(context, "لا"),
+                              getTranslated(context, "نعم"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
@@ -106,13 +103,16 @@ class RoundedAlert extends StatelessWidget {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: MaterialButton(
-                          onPressed: onPressed,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            // onCancel();
+                          },
                           minWidth: 120,
                           height: 30,
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              getTranslated(context, "نعم"),
+                              getTranslated(context, "لا"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
@@ -349,13 +349,16 @@ class RoundedAlertWithComment extends StatelessWidget {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: MaterialButton(
-                          onPressed: onPressed,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onCancel();
+                          },
                           minWidth: 120,
                           height: 30,
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              getTranslated(context, "نعم"),
+                              getTranslated(context, "لا"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
@@ -372,16 +375,13 @@ class RoundedAlertWithComment extends StatelessWidget {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            onCancel();
-                          },
+                          onPressed: onPressed,
                           minWidth: 120,
                           height: 30,
                           child: Container(
                             height: 20,
                             child: AutoSizeText(
-                              getTranslated(context, "لا"),
+                              getTranslated(context, "نعم"),
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.orange,
