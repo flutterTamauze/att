@@ -180,8 +180,8 @@ class ShiftApi with ChangeNotifier {
     print("IS MOC RESULT : $isMoc");
     print(id);
     if (isMoc == 0) {
-      final response = await ShiftsRepoImp().getLateAbsenceReport(
-          isHawawi, currentHuaweiLocation, currentPosition, id);
+      final response = await ShiftsRepoImp()
+          .getQrData(isHawawi, currentHuaweiLocation, currentPosition, id);
       if (response is Faliure) {
         if (response.code == NO_INTERNET) {
           isConnected = false;

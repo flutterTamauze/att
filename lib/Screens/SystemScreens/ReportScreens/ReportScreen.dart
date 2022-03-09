@@ -116,7 +116,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                             itemCount: reports.length,
                             itemBuilder: (BuildContext context, int index) {
                               return reports[index];
-                            }))
+                            })),
                   ],
                 ),
               ),

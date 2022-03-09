@@ -117,7 +117,7 @@ class _UserOrdersListViewState extends State<UserOrdersListView> {
                                       widget.provList[index].holidayType,
                                 )
                               : Container(),
-                      Divider()
+                      const Divider()
                     ],
                   );
                 },

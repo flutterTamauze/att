@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';

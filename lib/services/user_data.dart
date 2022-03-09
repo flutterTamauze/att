@@ -266,6 +266,12 @@ class UserData with ChangeNotifier {
     if (await db.checkNotificationStatus()) {
       Provider.of<NotificationDataService>(context, listen: false)
           .notification = await db.getAllNotifications();
+      Provider.of<NotificationDataService>(context, listen: false)
+              .notification =
+          Provider.of<NotificationDataService>(context, listen: false)
+              .notification
+              .reversed
+              .toList();
     }
   }
 
