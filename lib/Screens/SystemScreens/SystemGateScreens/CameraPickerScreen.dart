@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
@@ -49,19 +50,18 @@ class CameraPicker extends StatefulWidget {
   TakePictureScreenState createState() => TakePictureScreenState();
 }
 
-class TakePictureScreenState extends State<CameraPicker>
-    with WidgetsBindingObserver {
+CameraController cameraController;
+
+class TakePictureScreenState extends State<CameraPicker> {
   File imagePath;
   Size imageSize;
   Classifier _classifier;
   // FaceNetService _faceNetService = FaceNetService();
   // final DataBaseService _dataBaseService = DataBaseService();
   double predictedUserName = 0.0;
-
   bool isWorking = false;
   Size size;
   Category category;
-  CameraController cameraController;
   FaceDetector faceDetector;
 
   CameraImage currentCameraImage;
@@ -73,7 +73,6 @@ class TakePictureScreenState extends State<CameraPicker>
     try {
       cameraController = CameraController(widget.camera,
           Platform.isIOS ? ResolutionPreset.high : ResolutionPreset.low);
-
       faceDetector = GoogleVision.instance.faceDetector(
           const FaceDetectorOptions(
               enableClassification: true,
@@ -82,21 +81,20 @@ class TakePictureScreenState extends State<CameraPicker>
               enableContours: true,
               enableLandmarks: true,
               mode: FaceDetectorMode.accurate));
-      if (!cameraController.value.isInitialized) {
-        await cameraController.initialize().then((_) async {
-          if (!mounted) {
-            return;
+
+      await cameraController.initialize().then((_) async {
+        cameraController.startImageStream((imageFromStream) {
+          if (!isWorking) {
+            isWorking = true;
+            performDetectionOnStreamFrame(imageFromStream);
           }
         });
-      }
-
-      cameraController.startImageStream((imageFromStream) {
-        if (!isWorking) {
-          isWorking = true;
-          performDetectionOnStreamFrame(imageFromStream);
+        if (!mounted) {
+          return;
         }
       });
     } catch (e) {
+      log("ERROR");
       print(e);
     }
   }
@@ -176,6 +174,15 @@ class TakePictureScreenState extends State<CameraPicker>
     });
   }
 
+  bool isFaceAvailable(List<Face> facesList) {
+    if (facesList[0].headEulerAngleY > 10 ||
+        facesList[0].headEulerAngleY < -10) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   void dispose() {
     cameraController.dispose().then((value) => faceDetector.close());
@@ -183,10 +190,20 @@ class TakePictureScreenState extends State<CameraPicker>
     super.dispose();
   }
 
+  Future<String> fillPath() async {
+    return join(
+      (await getTemporaryDirectory().catchError((e) {
+        print("directory error $e");
+      }))
+          .path,
+      '${DateTime.now()}.jpg',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    final path = fillPath();
     // ignore: cascade_invocations
 
     return GestureDetector(
@@ -264,14 +281,6 @@ class TakePictureScreenState extends State<CameraPicker>
                                           ),
                                         ),
                                         onTap: () async {
-                                          final path = join(
-                                            (await getTemporaryDirectory()
-                                                    .catchError((e) {
-                                              print("directory error $e");
-                                            }))
-                                                .path,
-                                            '${DateTime.now()}.jpg',
-                                          );
                                           try {
                                             // await _faceNetService.setCurrentPrediction(
                                             //     currentCameraImage, scannResult[0]);
@@ -282,15 +291,15 @@ class TakePictureScreenState extends State<CameraPicker>
                                               milliseconds: 500));
                                           await cameraController
                                               .stopImageStream();
-                                          await Future.delayed(const Duration(
-                                              milliseconds: 200));
+                                          // await Future.delayed(const Duration(
+                                          //     milliseconds: 200));
                                           File img;
                                           await cameraController
                                               .takePicture()
-                                              .then((value) =>
-                                                  value.saveTo(path));
+                                              .then((value) async =>
+                                                  value.saveTo(await path));
 
-                                          img = File(path);
+                                          img = File(await path);
                                           print(path);
                                           // if (widget.fromScreen == "register") {
                                           //   // await signUp(context);
@@ -337,6 +346,32 @@ class TakePictureScreenState extends State<CameraPicker>
                                             // print(predictedUserName);
                                           }
 
+                                          // if (Platform.isAndroid) {
+                                          //   GoogleVisionImage fbVisionImage =
+                                          //       await GoogleVisionImage
+                                          //           .fromFile(imagePath);
+                                          //   List<Face> faceList =
+                                          //       await faceDetector.processImage(
+                                          //           fbVisionImage);
+                                          //   if (!isFaceAvailable(faceList)) {
+                                          //     Fluttertoast.showToast(
+                                          //         msg: getTranslated(context,
+                                          //             "برجاء تصوير وجهك بوضوح"),
+                                          //         backgroundColor: Colors.red,
+                                          //         gravity: ToastGravity.CENTER,
+                                          //         toastLength:
+                                          //             Toast.LENGTH_LONG);
+                                          //     Navigator.of(context)
+                                          //         .pushAndRemoveUntil(
+                                          //             MaterialPageRoute(
+                                          //                 builder: (context) =>
+                                          //                     const NavScreenTwo(
+                                          //                         1)),
+                                          //             (Route<dynamic> route) =>
+                                          //                 false);
+                                          //   }
+                                          // }
+
                                           if (category.label.substring(2) ==
                                               "mobiles") {
                                             Fluttertoast.showToast(
@@ -345,7 +380,14 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 backgroundColor: Colors.red,
                                                 gravity: ToastGravity.CENTER,
                                                 toastLength: Toast.LENGTH_LONG);
-                                            Navigator.pop(context);
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const NavScreenTwo(
+                                                                1)),
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           }
                                           // else if (predictedUserName >= 1) {
                                           //   Fluttertoast.showToast(
@@ -361,7 +403,8 @@ class TakePictureScreenState extends State<CameraPicker>
                                               Navigator.pop(context, image);
                                             } else {
                                               Future.delayed(
-                                                  const Duration(seconds: 3),
+                                                  const Duration(
+                                                      milliseconds: 200),
                                                   () async {
                                                 final msg = await Provider.of<
                                                             UserData>(context,
@@ -664,7 +707,7 @@ class TakePictureScreenState extends State<CameraPicker>
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                NavScreenTwo(
+                                                                const NavScreenTwo(
                                                                     1)),
                                                         (Route<dynamic>
                                                                 route) =>
@@ -679,7 +722,14 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 backgroundColor: Colors.red,
                                                 gravity: ToastGravity.CENTER,
                                                 toastLength: Toast.LENGTH_LONG);
-                                            Navigator.pop(context);
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const NavScreenTwo(
+                                                                1)),
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           } else {
                                             Fluttertoast.showToast(
                                                 msg: getTranslated(context,
@@ -687,7 +737,14 @@ class TakePictureScreenState extends State<CameraPicker>
                                                 backgroundColor: Colors.red,
                                                 gravity: ToastGravity.CENTER,
                                                 toastLength: Toast.LENGTH_LONG);
-                                            Navigator.pop(context);
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const NavScreenTwo(
+                                                                1)),
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           }
                                         })
                                   ],
@@ -722,8 +779,10 @@ class TakePictureScreenState extends State<CameraPicker>
                               getTranslated(context,
                                   "... برجاء انتظار انتهاء عملية المسح"),
                               style: TextStyle(
-                                  fontSize: setResponsiveFontSize(18),
-                                  fontWeight: FontWeight.w700),
+                                fontSize: setResponsiveFontSize(18),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
                             )
                           ],
                         ),

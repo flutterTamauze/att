@@ -14,12 +14,12 @@
     "سجل الأن":"Register Now",
     "برجاء التواجد بموقع العمل":"You are out of work area !",
     "التقارير":"Reports",
-    "الحضور اليومى":"Daily Attend",
-    "تقرير الحضور اليومى":"Daily Attend Report",
+    "الحضور اليومى":"Daily Attendance",
+    "تقرير الحضور اليومى":"Daily Attendance Report",
     "التأخير و الغياب":"Late & Absence",
     "تقرير التأخير و الغياب":"Late & Absence Report",
     "حضور مستخدم":"User Attend",
-    "تقرير حضور المستخدم":"User Attend Report",
+    "تقرير حضور المستخدم":"User Attendance Report",
     "الأجازات و المأموريات":"Missions & Holidays",
     "تقرير الأجازات و المأموريات و الأذونات":"Permissions , Missions & Holidays Report",
     "حسابى":"My Profile",
@@ -109,7 +109,7 @@
     "الموافقة على طلب":"Request Approval",
     "الأجازات":"Holidays",
     "الأذونات":"Permissions",
-    "البحث برقم الطلب":"Search By Request Number",
+    "البحث برقم الطلب":"Search by request number",
     "عرض طلبات":"Requests Display",
     "الأذن":"Permission",
     "لا يوجد طلب بهذا الرقم":"There is no request with this number",
@@ -148,8 +148,9 @@
  "تم ارسال رمز التفعيل على الهاتف و البريد الإلكترونى الخاص بكم":
  "The activation code sent to your phone and e-mail.",
  "تم ارسال رمز التفعيل بنجاح على رقم الهاتف الخاص بكم":"The activation code successfully sent to your phone number",
- "الأسم":"Name","مجموع الخصومات":"Total Deductions", "عطلة اسبوعية":         "Weekend",
- "الغياب":"Absence", "عطلة رسمية":"Official Holiday",
+ "الأسم":"Name","مجموع الخصومات":"Total Deductions",
+  "عطلة اسبوعية":         "Weekend",
+ "الغياب":"Absence", "عطلة رسمية":"Official Vacation",
  "حالة الإثبات":"Proofs Status",
  "تسجيل ببطاقة التعريف الشخصية"
  :"Attend by id card",
@@ -161,9 +162,9 @@
  "تقرير الأجازات و المأموريات":"Missions & Holidays Report",
  "المأموريات":"Missions", "لا يوجد تسجيلات : عطلة اسبوعية":"There are no records : Week Holiday",
  "لا يوجد تسجيلات : عطلة رسمية":"There are no records : Official Vacation",
- "طلبات الأذونات":"Permissions Requests","طلبات الأذونات للمستخدمين":"Permissions Requests For Users",
- "دليل المواقع": "Sites", "طلبات الأجازات":"Holidays Requests",
- "طلبات الأجازات للمستخدمين":"Holidays Requests For Users",
+ "طلبات الأذونات":"Permission Requests","طلبات الأذونات للمستخدمين":"Permission Requests For Users",
+ "دليل المواقع": "Sites", "طلبات الأجازات":"Holiday Requests",
+ "طلبات الأجازات للمستخدمين":"Holiday Requests For Users",
  "البحث بأسم الموقع":"Search by Site Name",
  "تقرير إثبات الحضور":"Attend Proof Report",
  "دليل المناوبات":"Shifts",   "إثبات الحضور":"Attend Proof",
@@ -186,9 +187,9 @@
 "The application is under maintenance\nWe are currently making improvements and maintenance \nThis maintenance will not affect your account data \nWe apologize for any inconvenience"
 ,"تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق":"The application is under maintenance \n Please try again later",
 "مستخدم":"User",
-"مسئول تسجيل":"Registry Administrator",
-"مدير موقع":  "Site Admin",
-"موارد بشرية":  "HR",
+"مسئول تسجيل":"Registry Responsible",
+"مدير موقع":  "Site Manager",
+"موارد بشرية":  "HR Manager",
 "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى":
 "There is no internet connection,\n Please try again",
 "برجاء اعادة المحاولة مرة اخرى":"Please try again",
@@ -202,10 +203,10 @@
 "خطأ فى بيانات الحساب":"خطأ فى بيانات الحساب",
 "الشركة متوقفة حاليا\nمن فضلك راجع مدير النظام":
 "The company is currently down.\n Please see the system administrator",
-"العطلات الأسبوعية":"Weekly Holidays",
+"العطلات الأسبوعية":"Weekends",
 "العطلات الرسمية":"Official Vacations",
 "اعدادات الحضور و الأنصراف":"Attend/Absence Settings",
-"ادارة العطلات الأسبوعية":"Manage Weekly Holidays",
+"ادارة العطلات الأسبوعية":"Manage Weekends Settings",
 "ادارة العطلات الرسمية":"Manage Official Vacations",
 "ادارة الحضور و الأنصراف":"Manage Attend/Absence",
 "ايام العطلات للشركة":"Company Week Days",
@@ -239,8 +240,8 @@
     "اعادة ضبط هاتف المستخدم":"Reset User Phone",
 "جدولة المناوبات":"Schedule Shifts",
 "إرسال اثبات حضور":"Send Attend Proof",
-"عدم الظهور فى التقرير":"Don't show in report",
-"السماح للمستخدم بالتسجيل بالبطاقة":"Allow User Attend By Card",
+"عدم الظهور فى التقرير":"Hide from reports",
+"السماح للمستخدم بالتسجيل بالبطاقة":"ID registry allowance ",
 "تسجيل  مأموريات / اذونات / اجازات":"Register Mission / Permission / Holiday",
 "جنية مصرى":"EGP",
 "تسجيل اذونات / اجازات":"Register Permission / Holiday",
@@ -250,7 +251,7 @@
 "لا يوجد مستخدمين بهذا الموقع\nبرجاء اضافة مستخدمين":
 "There are no users in this site\nPlease add users to this site",
 "كود بطاقة التعريف الشخصية": "Personal ID Card Code",
-"تاريخ التعيين":"Hiring Date",
+"تاريخ التعيين":"User create date",
 "تغير كلمة السر":"Change Password",
 "كلمة المرور":"Password",
 "برجاء ادخال كلمة مرور":"Please Enter Password",
@@ -511,7 +512,7 @@
 "مأمورية داخلية":"Internal Mission",
 "مأمورية خارجية":"External Mission",
 "التاريخ قبل إنشاء الشركة":"Date is before company creation",
-"تقرير حضور مستخدم":"Attend User Report",
+"تقرير حضور مستخدم":" User Attendance Report",
 "لا يمكن وضع الأجازة : يوجد مأمورية خارجية":"Error : There is an external mission"
 ,"تأكيد رفض الأذن":
 "Confirm permession rejection",
@@ -616,7 +617,9 @@
 "تحديث":"Update",
 "تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام":"The application version has been updated. Please download the latest version to continue using",
 "تحديث التطبيق لأخر اصدار ؟":"Update the app to the latest version?",
-"برجاء اختيار صورة شخصية":"Please choose personal image"
+"برجاء اختيار صورة شخصية":"Please choose personal image",
+"حذف":"Delete",
+"خطأ : هذا المسخدم لديه جدولة فى نفس الفترة":"Error : This user has a schedule in the same period"
 
     }
     

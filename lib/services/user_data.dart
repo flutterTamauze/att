@@ -47,6 +47,7 @@ class UserData with ChangeNotifier {
   String hawawiToken = "";
   Position _currentPosition;
   Location _currentHawawiLocation;
+  List<int> notificationsSent = [];
   bool changedPassword;
   bool isLoading = false;
   bool isSuperAdmin = false;
@@ -571,6 +572,26 @@ class UserData with ChangeNotifier {
     }
     print("attend proov checked ... ");
   }
+
+  // addNotificationRequestID(int id) {
+  //   if (!notificationsSent.contains(id)) {
+  //     notificationsSent.add(id);
+  //     print("id added $id");
+  //   }
+
+  //   notifyListeners();
+  // }
+
+  // bool isNotificationIdExist(int id) {
+  //   if (notificationsSent.contains(id)) {
+  //     print("notification exist");
+
+  //     return true;
+  //   }
+  //   print("notification not  exist");
+
+  //   return false;
+  // }
 
   Future<String> editProfile(String password) async {
     print("${user.id} -----edit-- $password");

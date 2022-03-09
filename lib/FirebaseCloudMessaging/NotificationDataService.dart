@@ -42,6 +42,19 @@ class NotificationDataService with ChangeNotifier {
     notifyListeners();
   }
 
+  tokenRefresh() {
+    firebaseMessaging.onTokenRefresh.listen((event) {
+      if (locator.locator<UserData>().user.userType == 4 ||
+          locator.locator<UserData>().user.userType == 3) {
+        firebaseMessaging
+            .subscribeToTopic("attend${locator.locator<CompanyData>().com.id}");
+        print("subscribed to topic");
+      }
+      print(event);
+      print("token changed");
+    });
+  }
+
   deleteNotification(int currentId) {
     notification.removeWhere((element) => element.id == currentId);
     notification = notification.reversed.toList();
