@@ -23,7 +23,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/headers.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_pickers/image_pickers.dart';
+// import 'package:image_pickers/image_pickers.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,8 +52,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   TextEditingController _passwordController = TextEditingController();
   var isLoading = false;
   File img;
-  GalleryMode _galleryMode = GalleryMode.image;
-  List<Media> _listImagePaths = List();
+  // GalleryMode _galleryMode = GalleryMode.image;
+  // List<Media> _listImagePaths = List();
 
   Future<void> cameraPick(File image) async {
     try {
@@ -233,7 +233,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     ),
                                     height: 35.h,
                                     width: 35.w,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.edit,
                                       color: Colors.white,
                                     ),

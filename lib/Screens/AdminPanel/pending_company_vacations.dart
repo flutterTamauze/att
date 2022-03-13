@@ -161,8 +161,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                           onAccept: () {
                                             return showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (BuildContext ctx) {
                                                   return RoundedAlertWithComment(
                                                     onTapped: (comm) {
                                                       comment = comm;
@@ -172,7 +171,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       "التفاصيل",
                                                     ),
                                                     onPressed: () async {
-                                                      Navigator.pop(context);
+                                                      Navigator.pop(ctx);
                                                       showDialog(
                                                         context: context,
                                                         builder: (context) =>
@@ -194,10 +193,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               comment,
                                                               pending.fromDate,
                                                               pending.toDate);
-                                                      Navigator.pop(navigatorKey
-                                                          .currentState
-                                                          .overlay
-                                                          .context);
+                                                      Navigator.pop(context);
                                                       if (msg ==
                                                           "Success : Updated!") {
                                                         await sendFcmMessage(
@@ -208,25 +204,16 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                                 .fcmToken,
                                                             title:
                                                                 getTranslated(
-                                                              navigatorKey
-                                                                  .currentState
-                                                                  .overlay
-                                                                  .context,
+                                                              context,
                                                               "طلب اجازة",
                                                             ),
                                                             message: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "تم الموافقة على طلب الأجازة"));
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "تم الموافقة بنجاح"),
                                                             gravity:
                                                                 ToastGravity
@@ -237,10 +224,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           "Fail : User not found") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ فى بيانات المستخدم"),
                                                             backgroundColor:
                                                                 Colors.red);
@@ -248,10 +232,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           "Fail: holiday time out!") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ فى الموافقة : انتهى وقت الرد"),
                                                             gravity:
                                                                 ToastGravity
@@ -261,10 +242,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ في الموافقة"),
                                                             backgroundColor:
                                                                 Colors.red);
@@ -275,15 +253,14 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                         "تأكيد الموافقة على الاجازة"),
                                                     onCancel: () {},
                                                     title:
-                                                        "${getTranslated(navigatorKey.currentState.overlay.context, "الموافقة على طلب")} ${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                        "${getTranslated(context, "الموافقة على طلب")} ${pendingList.pendingCompanyHolidays[index].userName} ",
                                                   );
                                                 });
                                           },
                                           onRefused: () {
                                             return showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (BuildContext ctx) {
                                                   return RoundedAlertWithComment(
                                                     hint: getTranslated(
                                                         context, "سبب الرفض"),
@@ -291,7 +268,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       comment = comm;
                                                     },
                                                     onPressed: () async {
-                                                      Navigator.pop(context);
+                                                      Navigator.pop(ctx);
                                                       showDialog(
                                                         context: context,
                                                         builder: (context) =>
@@ -313,10 +290,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               comment,
                                                               pending.fromDate,
                                                               pending.toDate);
-                                                      Navigator.pop(navigatorKey
-                                                          .currentState
-                                                          .overlay
-                                                          .context);
+                                                      Navigator.pop(context);
 
                                                       if (msg ==
                                                           "Success : Updated!") {
@@ -328,25 +302,17 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               userToken: pending
                                                                   .fcmToken,
                                                               title: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
+                                                                  context,
                                                                   "طلب اجازة"),
-                                                              message: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "تم رفض طلب الأجازة"));
+                                                              message:
+                                                                  getTranslated(
+                                                                      context,
+                                                                      "تم رفض طلب الأجازة"));
                                                         }
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "تم الرفض بنجاح"),
                                                             gravity:
                                                                 ToastGravity
@@ -357,10 +323,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           "Fail : User not found") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ فى بيانات المستخدم"),
                                                             backgroundColor:
                                                                 Colors.red);
@@ -368,10 +331,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                           "Fail: holiday time out!") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                              navigatorKey
-                                                                  .currentState
-                                                                  .overlay
-                                                                  .context,
+                                                              context,
                                                               "خطأ فى الرفض : انتهى وقت الرد",
                                                             ),
                                                             backgroundColor:
@@ -379,23 +339,19 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ في الرفض"),
                                                             backgroundColor:
                                                                 Colors.red);
                                                       }
                                                     },
                                                     content: getTranslated(
-                                                      navigatorKey.currentState
-                                                          .overlay.context,
+                                                      context,
                                                       "تأكيد رفض الأجازة",
                                                     ),
                                                     onCancel: () {},
                                                     title:
-                                                        "${getTranslated(navigatorKey.currentState.overlay.context, "رفض  طلب ")}${pendingList.pendingCompanyHolidays[index].userName} ",
+                                                        "${getTranslated(context, "رفض  طلب ")}${pendingList.pendingCompanyHolidays[index].userName} ",
                                                   );
                                                 });
                                           },

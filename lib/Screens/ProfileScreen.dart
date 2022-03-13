@@ -9,7 +9,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_pickers/image_pickers.dart';
+// import 'package:image_pickers/image_pickers.dart';
 
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
@@ -43,8 +43,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // final ImagePicker _picker = ImagePicker();
   // PickedFile _imageFile;
-  GalleryMode _galleryMode = GalleryMode.image;
-  List<Media> _listImagePaths = List();
+  // GalleryMode _galleryMode = GalleryMode.image;
+  // List<Media> _listImagePaths = List();
   String encryptUserName(String userName) {
     final output = [];
 

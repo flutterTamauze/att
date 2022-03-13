@@ -98,7 +98,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                         BorderRadius.circular(
                                                             75.0),
                                                     child: Image.asset(
-                                                        "resources/image.png"),
+                                                        "resources/Chilangu.png"),
                                                   ),
                                                 ),
                                               ),

@@ -291,7 +291,7 @@
     "تم الرفض بنجاح":"Successfully rejected",
     "خطأ فى الرفض : انتهى وقت الطلب":"Rejection Error: Request timed out",
     "خطأ في الرفض":"Rejection Error",
-    "رفض  طلب":"Reject Request",
+    "رفض  طلب":" Reject Request ",
     
     "لا يمكن التسجيل بمناوبتك الأن":"You can't register in your shift now",
     "لم يتم التسجيل: لديك مأمورية خارجية":"Not registered: You have an external mission",
@@ -370,7 +370,7 @@
 "لا يمكن طلب الاجازة : يوجد مأمورية خارجية"
 :"Error : Holiday cannot be requested: there is an external mission",
 "يوجد اجازة تم الموافقة عليها فى هذه الفترة":"Error : There is an approved Holiday during this period.",
-"تم طلب اذن من قبل المستخدم":"Permission requested by user",
+"تم طلب اذن من قبل المستخدم":"Permission requested by user ",
 "تم تقديم طلب الأجازة بنجاح":"Holiday request submitted successfully.",
 "لا يوجد تعليق":"No comment",
 "طلب اجازة":"Holiday Request",
