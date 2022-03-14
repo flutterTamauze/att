@@ -63,6 +63,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
         imageUrl: "resources/intro3.json",
       ),
     ];
+
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
       onTap: () =>

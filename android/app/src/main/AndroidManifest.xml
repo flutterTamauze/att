@@ -21,7 +21,7 @@
 
     <application
         android:name=".Application"
-        android:label="Chilango"
+        android:label="Chilangu"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">

@@ -154,7 +154,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
     sheet.getRangeByName('B1:H3').merge();
 
-    sheet.getRangeByName('B1').setText('Chilango');
+    sheet.getRangeByName('B1').setText('Chilangu');
     sheet.getRangeByName('B1').cellStyle.fontSize = 24;
     sheet.getRangeByName('B1').cellStyle.fontColor = '#FF9800';
 
@@ -353,7 +353,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
       sheet.getRangeByName('B1:H3').merge();
 
-      sheet.getRangeByName('B1').setText('Chilango');
+      sheet.getRangeByName('B1').setText('Chilangu');
       sheet.getRangeByName('B1').cellStyle.fontSize = 24;
       sheet.getRangeByName('B1').cellStyle.fontColor = '#FF9800';
 
@@ -578,7 +578,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
       sheet.getRangeByName('B1:H3').merge();
 
-      sheet.getRangeByName('B1').setText('Chilango');
+      sheet.getRangeByName('B1').setText('Chilangu');
       sheet.getRangeByName('B1').cellStyle.fontSize = 24;
       sheet.getRangeByName('B1').cellStyle.fontColor = '#FF9800';
 

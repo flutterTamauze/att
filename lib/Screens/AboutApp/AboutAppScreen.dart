@@ -109,7 +109,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                             Container(
                                               height: 20,
                                               child: AutoSizeText(
-                                                "Chilango",
+                                                "Chilangu",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,

@@ -1116,10 +1116,12 @@ class HeaderBeforeLogin extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: 20,
-                        child: const AutoSizeText(
-                          "Chilango",
+                        child: AutoSizeText(
+                          "Chilangu",
                           maxLines: 1,
-                          style: TextStyle(color: Colors.orange, fontSize: 17),
+                          style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: setResponsiveFontSize(17)),
                         ),
                       ),
                     ),
