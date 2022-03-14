@@ -274,36 +274,46 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                         }
                       })
                   : //اذن
-                  FutureBuilder(
-                      future: userPermessions,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: ColorManager.primary,
-                            ),
-                          );
-                        } else {
-                          return orderNumberController.text == ""
-                              ? Expanded(
-                                  child: UserPermessionListView(
-                                      memberId: "",
-                                      isFilter: false,
-                                      permessionsList: permessionsList),
-                                )
-                              : filteredPermessions == null ||
-                                      filteredPermessions.isEmpty
-                                  ? Center(
-                                      child: AutoSizeText(getTranslated(
-                                          context, "لا يوجد طلب بهذا الرقم")),
+
+                  Provider.of<UserPermessionsData>(context, listen: true)
+                              .permessionDetailLoading &&
+                          permessionsList.length == 0
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: ColorManager.primary,
+                          ),
+                        )
+                      : FutureBuilder(
+                          future: userPermessions,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: ColorManager.primary,
+                                ),
+                              );
+                            } else {
+                              return orderNumberController.text == ""
+                                  ? Expanded(
+                                      child: UserPermessionListView(
+                                          memberId: "",
+                                          isFilter: false,
+                                          permessionsList: permessionsList),
                                     )
-                                  : UserPermessionListView(
-                                      permessionsList: filteredPermessions,
-                                      isFilter: true,
-                                    );
-                        }
-                      })
+                                  : filteredPermessions == null ||
+                                          filteredPermessions.isEmpty
+                                      ? Center(
+                                          child: AutoSizeText(getTranslated(
+                                              context,
+                                              "لا يوجد طلب بهذا الرقم")),
+                                        )
+                                      : UserPermessionListView(
+                                          permessionsList: filteredPermessions,
+                                          isFilter: true,
+                                        );
+                            }
+                          })
             ],
           ),
         ),

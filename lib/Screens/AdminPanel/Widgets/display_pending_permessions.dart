@@ -197,11 +197,7 @@ class _ExpandedPendingPermessionsState
                                           1
                                       ? "${getTranslated(context, "اذن حتى الساعة")}: ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"
                                       : "${getTranslated(context, "اذن من الساعة")}: ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}"),
-                                  widget.userPermessions
-                                              .permessionDescription !=
-                                          null
-                                      ? const Divider()
-                                      : Container(),
+                                  const Divider(),
                                   AutoSizeText(
                                     "${getTranslated(context, "تاريخ إنشاء الطلب")}: ${widget.userPermessions.createdOn.toString().substring(0, 11)}",
                                     style: TextStyle(

@@ -85,7 +85,6 @@ class UserPermessionsData with ChangeNotifier {
   bool isLoading = false;
   bool paginatedLoading = false;
   bool permessionDetailLoading = false;
-
   List<UserPermessions> permessionsList = [];
   List<UserPermessions> copyPermessionsList = [];
   List<UserPermessions> singleUserPermessions = [];
@@ -270,6 +269,7 @@ class UserPermessionsData with ChangeNotifier {
 
   Future<List<UserPermessions>> getFutureSinglePermession(
       String userId, String userToken) async {
+    singleUserPermessions.clear();
     permessionDetailLoading = true;
     notifyListeners();
 

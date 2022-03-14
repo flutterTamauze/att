@@ -239,7 +239,7 @@ class _MyAppState extends State<MyApp> {
                       return supportedLocales.first;
                     },
                     navigatorKey: navigatorKey,
-                    title: "Chilango",
+                    title: "Chilangu",
                     debugShowCheckedModeBanner: false,
                     theme: getApplicationTheme(),
                     home: SplashScreen());

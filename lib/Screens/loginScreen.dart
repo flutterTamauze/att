@@ -373,9 +373,6 @@ class _LoginScreenState extends State<LoginScreen> {
             isError = true;
           });
           if (isError == false) {
-            print("topic name : ");
-            print(
-                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
             try {
               await firebaseMessaging.subscribeToTopic(
                   "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
@@ -386,9 +383,22 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         }
         if (value == NO_INTERNET) {
-          setState(() {
-            isLoading = false;
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundedAlertOkOnly(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    title: 'خطأ في التسجيل',
+                    content:
+                        "لا يوجد اتصال بالأنترنت \n  برجاء اعادة المحاولة مرة اخرى");
+              }).then((value) {
+            setState(() {
+              isLoading = false;
+            });
           });
+
           // return noInternetDialog(context);
         } else if (value == USER_INVALID_RESPONSE || value == null) {
           setState(() {

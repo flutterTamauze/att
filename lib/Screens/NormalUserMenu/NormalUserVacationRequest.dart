@@ -719,7 +719,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   title: "طلب أجازة",
                                                   category: "vacationRequest",
                                                   message:
-                                                      "تم طلب اجازة من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                      " تم طلب اجازة من قبل المستخدم  ${Provider.of<UserData>(context, listen: false).user.name}",
                                                 );
                                                 return showDialog(
                                                   context: context,
@@ -865,7 +865,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                             category:
                                                                 "permessionRequest",
                                                             message:
-                                                                "${getTranslated(context, "  تم طلب اذن من قبل المستخدم  ")}${Provider.of<UserData>(context, listen: false).user.name}",
+                                                                "${getTranslated(context, "تم طلب اذن من قبل المستخدم")} ${Provider.of<UserData>(context, listen: false).user.name}",
                                                           );
                                                           return showDialog(
                                                             context: context,

@@ -34,34 +34,6 @@ class DataTableRow extends StatefulWidget {
 class _DataTableRowState extends State<DataTableRow> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   var now = DateTime.now();
-  getMembersData() async {
-    print("inside");
-    final UserData userProvider = Provider.of<UserData>(context, listen: false);
-    final CompanyData comProvider =
-        Provider.of<CompanyData>(context, listen: false);
-    var siteId;
-    if (userProvider.user.userType == 2) {
-      siteId = userProvider.user.userSiteId;
-      await Provider.of<MemberData>(context, listen: false)
-          .getAllSiteMembers(siteId, userProvider.user.userToken, context);
-    } else {
-      if (Provider.of<SiteData>(context, listen: false).sitesList.isEmpty) {
-        await Provider.of<SiteData>(context, listen: false)
-            .getSitesByCompanyId(
-          comProvider.com.id,
-          userProvider.user.userToken,
-          context,
-        )
-            .then((value) async {
-          print("Got Sites");
-        });
-      }
-      siteId = Provider.of<SiteData>(context, listen: false).sitesList[0].id;
-
-      await Provider.of<MemberData>(context, listen: false)
-          .getAllSiteMembers(siteId, userProvider.user.userToken, context);
-    }
-  }
 
   Widget build(BuildContext context) {
     return Container(

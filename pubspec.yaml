@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   curved_navigation_bar: ^0.3.4
   # data_connection_checker: ^0.3.4
-  date_range_picker: ^1.0.7
+  date_range_picker: ^1.0.7 
   date_time_picker: ^2.0.0
   device_info: ^0.4.0+4
   dio: ^4.0.0
@@ -59,7 +59,7 @@ dependencies:
   http: ^0.13.0
   huawei_location: ^5.1.0+303
   huawei_push: ^5.0.2+301
-  image_pickers: ^1.0.8+7
+  # image_pickers: ^1.0.8+7
   intl: ^0.17.0
   intl_phone_number_input: ^0.7.0
   jwt_decoder: ^2.0.1
@@ -93,8 +93,8 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "resources/roundedChilango.png"
-  image_path_ios: "resources/newImgIos.jpg"
+  image_path: "resources/ChilanguBlackRound.png"
+  image_path_ios: "resources/ChilanguBlack.jpg"
   remove_alpha_ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

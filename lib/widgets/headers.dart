@@ -1117,7 +1117,7 @@ class HeaderBeforeLogin extends StatelessWidget {
                       child: Container(
                         height: 20,
                         child: const AutoSizeText(
-                          "Chilango",
+                          "Chilangu",
                           maxLines: 1,
                           style: TextStyle(color: Colors.orange, fontSize: 17),
                         ),
@@ -1133,8 +1133,8 @@ class HeaderBeforeLogin extends StatelessWidget {
                           // ),
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: AssetImage("resources/image.png"),
-                              fit: BoxFit.fill)),
+                            image: AssetImage("resources/Chilangu.png"),
+                          )),
                     ),
                   ],
                 ),

@@ -37,7 +37,6 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serverHanProv = Provider.of<PermissionHan>(context, listen: false);
     return FadeInDown(
       child: Container(
         width: comingFromAdminPanel ? 35.w : 50.w,
@@ -68,30 +67,33 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
               }
 
               Navigator.pop(navigatorKey.currentState.overlay.context);
-            }
-            if (radioVal2 == 3) {
-              if (Provider.of<UserPermessionsData>(context, listen: false)
-                  .singleUserPermessions
-                  .isEmpty) {
-                Provider.of<UserPermessionsData>(context, listen: false)
-                    .getSingleUserPermession(
-                        memberId,
-                        Provider.of<UserData>(context, listen: false)
-                            .user
-                            .userToken);
+            } else //Coming from user details
+            {
+              if (radioVal2 == 3) {
+                if (Provider.of<UserPermessionsData>(context, listen: false)
+                    .singleUserPermessions
+                    .isEmpty) {
+                  Provider.of<UserPermessionsData>(context, listen: false)
+                      .getSingleUserPermession(
+                          memberId,
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userToken);
+                }
+              } else if (radioVal2 == 1) {
+                if (Provider.of<UserHolidaysData>(context, listen: false)
+                    .singleUserHoliday
+                    .isEmpty) {
+                  Provider.of<UserHolidaysData>(context, listen: false)
+                      .getSingleUserHoliday(
+                          memberId,
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userToken);
+                }
               }
-            } else if (radioVal2 == 1) {
-              if (Provider.of<UserHolidaysData>(context, listen: false)
-                  .singleUserHoliday
-                  .isEmpty) {
-                Provider.of<UserHolidaysData>(context, listen: false)
-                    .getSingleUserHoliday(
-                        memberId,
-                        Provider.of<UserData>(context, listen: false)
-                            .user
-                            .userToken);
-              }
             }
+
             showDialog(
               context: navigatorKey.currentState.overlay.context,
               builder: (context) {
@@ -170,45 +172,33 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                       ),
                                                     );
                                                   } else {
-                                                    return serverHanProv
-                                                            .isServerDown
-                                                        ? CenterMessageText(
-                                                            message: getTranslated(
+                                                    return provList.isEmpty
+                                                        ? Center(
+                                                            child: AutoSizeText(
+                                                            getTranslated(
                                                                 context,
-                                                                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"))
-                                                        : provList.isEmpty
-                                                            ? Center(
-                                                                child:
-                                                                    AutoSizeText(
-                                                                getTranslated(
-                                                                    context,
-                                                                    !serverHanProv
-                                                                            .isInternetConnected
-                                                                        ? "لا يوجد اتصال بالانترنت"
-                                                                        : "لا يوجد اجازات لهذا المستخدم"),
-                                                                style:
-                                                                    boldStyle,
-                                                              ))
-                                                            : ListView.builder(
-                                                                itemCount:
-                                                                    provList
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (BuildContext
-                                                                            context,
-                                                                        int index) {
-                                                                  return Column(
-                                                                    children: [
-                                                                      DataTableHolidayRow(
-                                                                          provList[
-                                                                              index]),
-                                                                      const Divider(
-                                                                        thickness:
-                                                                            1,
-                                                                      )
-                                                                    ],
-                                                                  );
-                                                                });
+                                                                "لا يوجد اجازات لهذا المستخدم"),
+                                                            style: boldStyle,
+                                                          ))
+                                                        : ListView.builder(
+                                                            itemCount:
+                                                                provList.length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return Column(
+                                                                children: [
+                                                                  DataTableHolidayRow(
+                                                                      provList[
+                                                                          index]),
+                                                                  const Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                  )
+                                                                ],
+                                                              );
+                                                            });
                                                   }
                                                 }))
                                         : Expanded(
@@ -226,46 +216,35 @@ class FadeInVacPermFloatingButton extends StatelessWidget {
                                                       ),
                                                     );
                                                   } else {
-                                                    return serverHanProv
-                                                            .isServerDown
-                                                        ? CenterMessageText(
-                                                            message: getTranslated(
+                                                    return permessionsList
+                                                            .isEmpty
+                                                        ? Center(
+                                                            child: AutoSizeText(
+                                                            getTranslated(
                                                                 context,
-                                                                "تعذر الوصول الى الخادم \n  برجاء اعادة المحاولة فى وقت لاحق"))
-                                                        : permessionsList
-                                                                .isEmpty
-                                                            ? Center(
-                                                                child:
-                                                                    AutoSizeText(
-                                                                getTranslated(
-                                                                    context,
-                                                                    !serverHanProv
-                                                                            .isInternetConnected
-                                                                        ? "لا يوجد اتصال بالانترنت"
-                                                                        : "لا يوجد اذونات لهذا المستخدم"),
-                                                                style:
-                                                                    boldStyle,
-                                                              ))
-                                                            : ListView.builder(
-                                                                itemCount:
-                                                                    permessionsList
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (BuildContext
-                                                                            context,
-                                                                        int index) {
-                                                                  return Column(
-                                                                    children: [
-                                                                      DataTablePermessionRow(
-                                                                          permessionsList[
-                                                                              index]),
-                                                                      const Divider(
-                                                                        thickness:
-                                                                            1,
-                                                                      )
-                                                                    ],
-                                                                  );
-                                                                });
+                                                                "لا يوجد اذونات لهذا المستخدم"),
+                                                            style: boldStyle,
+                                                          ))
+                                                        : ListView.builder(
+                                                            itemCount:
+                                                                permessionsList
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return Column(
+                                                                children: [
+                                                                  DataTablePermessionRow(
+                                                                      permessionsList[
+                                                                          index]),
+                                                                  const Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                  )
+                                                                ],
+                                                              );
+                                                            });
                                                   }
                                                 })),
                                     radioVal2 == 1

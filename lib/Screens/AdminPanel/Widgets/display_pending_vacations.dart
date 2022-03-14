@@ -80,7 +80,8 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                             Container(
                               width: 90,
                               child: AutoSizeText(
-                                "  ${widget.userHolidays.holidayType == 1 ? getTranslated(context, "عارضة") : widget.userHolidays.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")}",
+                                getVacationType(
+                                    widget.userHolidays.holidayType),
                                 style: boldStyle.copyWith(
                                     fontSize: setResponsiveFontSize(10)),
                                 textAlign: locator
@@ -173,7 +174,7 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                                         ),
                                   const Divider(),
                                   AutoSizeText(
-                                    "${getTranslated(context, "نوع الأجازة")}: ${widget.userHolidays.holidayType == 1 ? getTranslated(context, "عارضة") : widget.userHolidays.holidayType == 3 ? getTranslated(context, "مرضية") : getTranslated(context, "رصيد اجازات")} ",
+                                    "${getTranslated(context, "نوع الأجازة ")}: ${getTranslated(context, getVacationType(widget.userHolidays.holidayType))} ",
                                     style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),
                                       fontWeight: FontWeight.w500,
@@ -250,14 +251,14 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                               bottom: 15.h,
                               left: 10.w,
                               child: FadeInVacPermFloatingButton(
-                                  radioVal2: 0,
+                                  radioVal2: 1,
                                   comingFromAdminPanel: true,
                                   memberId: widget.userHolidays.userName))
                           : Positioned(
                               bottom: 15.h,
                               right: 10.w,
                               child: FadeInVacPermFloatingButton(
-                                  radioVal2: 0,
+                                  radioVal2: 1,
                                   comingFromAdminPanel: true,
                                   memberId: widget.userHolidays.userName))
                 ],

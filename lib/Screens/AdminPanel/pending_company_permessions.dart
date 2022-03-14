@@ -174,8 +174,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                           onRefused: () {
                                             return showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (BuildContext ctx) {
                                                   return Directionality(
                                                       textDirection:
                                                           TextDirection.rtl,
@@ -186,11 +185,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                         },
                                                         hint: "سبب الرفض",
                                                         onPressed: () async {
-                                                          Navigator.pop(
-                                                              context);
+                                                          Navigator.pop(ctx);
                                                           showDialog(
-                                                              context: _scaffoldKey
-                                                                  .currentContext,
+                                                              context: context,
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
@@ -212,8 +209,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                               comment,
                                                               pending.date);
                                                           Navigator.pop(
-                                                              _scaffoldKey
-                                                                  .currentContext);
+                                                              context);
 
                                                           if (msg ==
                                                               "Success : User Updated!") {
@@ -230,10 +226,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
 
                                                             Fluttertoast.showToast(
                                                                 msg: getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
+                                                                    context,
                                                                     "تم الرفض بنجاح"),
                                                                 backgroundColor:
                                                                     Colors
@@ -242,20 +235,14 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                               "Fail: Permission out of date!") {
                                                             Fluttertoast.showToast(
                                                                 msg: getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
+                                                                    context,
                                                                     "خطأ فى الرفض : انتهى وقت الطلب"),
                                                                 backgroundColor:
                                                                     Colors.red);
                                                           } else {
                                                             Fluttertoast.showToast(
                                                                 msg: getTranslated(
-                                                                    navigatorKey
-                                                                        .currentState
-                                                                        .overlay
-                                                                        .context,
+                                                                    context,
                                                                     "خطأ في الرفض"),
                                                                 backgroundColor:
                                                                     Colors.red);
@@ -273,8 +260,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                           onAccept: () {
                                             return showDialog(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (BuildContext ctx) {
                                                   return RoundedAlertWithComment(
                                                     onTapped: (comm) {
                                                       comment = comm;
@@ -282,10 +268,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                     hint: getTranslated(
                                                         context, "التفاصيل"),
                                                     onPressed: () async {
-                                                      Navigator.pop(context);
+                                                      Navigator.pop(ctx);
                                                       showDialog(
-                                                          context: _scaffoldKey
-                                                              .currentContext,
+                                                          context: context,
                                                           builder: (BuildContext
                                                               context) {
                                                             return RoundedLoadingIndicator();
@@ -307,8 +292,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                                   .userToken,
                                                               comment,
                                                               pending.date);
-                                                      Navigator.pop(_scaffoldKey
-                                                          .currentContext);
+                                                      Navigator.pop(context);
                                                       if (msg ==
                                                           "Success : User Updated!") {
                                                         final HuaweiServices
@@ -330,26 +314,19 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                               topicName: "",
                                                               userToken: pending
                                                                   .fcmToken,
-                                                              title: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "طلب اذن"),
-                                                              message: getTranslated(
-                                                                  navigatorKey
-                                                                      .currentState
-                                                                      .overlay
-                                                                      .context,
-                                                                  "تم الموافقة على طلب الأذن"));
+                                                              title:
+                                                                  getTranslated(
+                                                                      context,
+                                                                      "طلب اذن"),
+                                                              message:
+                                                                  getTranslated(
+                                                                      context,
+                                                                      "تم الموافقة على طلب الأذن"));
                                                         }
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "تم الموافقة بنجاح"),
                                                             backgroundColor:
                                                                 Colors.green);
@@ -357,20 +334,14 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                           "Fail: Permission out of date!") {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ فى الرفض : انتهى وقت الطلب"),
                                                             backgroundColor:
                                                                 Colors.red);
                                                       } else {
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
-                                                                navigatorKey
-                                                                    .currentState
-                                                                    .overlay
-                                                                    .context,
+                                                                context,
                                                                 "خطأ في الموافقة"),
                                                             backgroundColor:
                                                                 Colors.red);

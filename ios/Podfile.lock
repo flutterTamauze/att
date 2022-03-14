@@ -1,19 +1,4 @@
 PODS:
-  - AFNetworking (4.0.1):
-    - AFNetworking/NSURLSession (= 4.0.1)
-    - AFNetworking/Reachability (= 4.0.1)
-    - AFNetworking/Security (= 4.0.1)
-    - AFNetworking/Serialization (= 4.0.1)
-    - AFNetworking/UIKit (= 4.0.1)
-  - AFNetworking/NSURLSession (4.0.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (4.0.1)
-  - AFNetworking/Security (4.0.1)
-  - AFNetworking/Serialization (4.0.1)
-  - AFNetworking/UIKit (4.0.1):
-    - AFNetworking/NSURLSession
   - audioplayers (0.0.1):
     - Flutter
   - camera (0.0.1):
@@ -148,10 +133,6 @@ PODS:
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.7.0)
-  - image_pickers (0.0.1):
-    - AFNetworking
-    - Flutter
-    - ZLPhotoBrowser-objc (= 1.0.2)
   - libphonenumber (0.0.1):
     - Flutter
     - libPhoneNumber-iOS
@@ -235,8 +216,6 @@ PODS:
     - MTBBarcodeScanner
   - Reachability (3.2)
   - SAMKeychain (1.5.3)
-  - SDWebImage (5.12.4):
-    - SDWebImage/Core (= 5.12.4)
   - SDWebImage/Core (5.12.4)
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
@@ -255,8 +234,6 @@ PODS:
     - Flutter
   - webview_flutter (0.0.1):
     - Flutter
-  - ZLPhotoBrowser-objc (1.0.2):
-    - SDWebImage
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
@@ -276,7 +253,6 @@ DEPENDENCIES:
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_ml_vision (from `.symlinks/plugins/google_ml_vision/ios`)
-  - image_pickers (from `.symlinks/plugins/image_pickers/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
@@ -293,7 +269,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AFNetworking
     - DTTJailbreakDetection
     - Firebase
     - FirebaseCore
@@ -330,7 +305,6 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - Toast
-    - ZLPhotoBrowser-objc
 
 EXTERNAL SOURCES:
   audioplayers:
@@ -367,8 +341,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   google_ml_vision:
     :path: ".symlinks/plugins/google_ml_vision/ios"
-  image_pickers:
-    :path: ".symlinks/plugins/image_pickers/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   libphonenumber_plugin:
@@ -397,7 +369,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   camera: 3164201dc344383e62282964016528c4f5a9ad50
   connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
@@ -429,7 +400,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
-  image_pickers: 4a20d713c9029a75582e28482271e92d72d334fd
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   libphonenumber_plugin: 7cf755ad1656145935d6c208173a476bd3f12898
@@ -465,7 +435,6 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
-  ZLPhotoBrowser-objc: c7684215bbde0ee990ad7bd1008e13bc3e6f6a32
 
 PODFILE CHECKSUM: 84ca8ff09d6b4a62ee7620b25c6c392a5748ef0d
 

@@ -217,8 +217,7 @@ class IntroContent extends StatelessWidget {
                       ),
                       Container(
                         child: Image.asset(
-                          'resources/image.png',
-                          fit: BoxFit.fill,
+                          'resources/Chilangu.png',
                         ),
                         height: 70.h,
                       ),
@@ -354,7 +353,7 @@ class IntroContent extends StatelessWidget {
                                       width: 380.w,
                                       child: AutoSizeText(
                                         getTranslated(context,
-                                            "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGO ."),
+                                            "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGU ."),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize:

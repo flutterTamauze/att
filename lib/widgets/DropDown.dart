@@ -58,9 +58,9 @@ class _SiteDropdownState extends State<SiteDropdown> {
                 ),
                 elevation: 2,
                 isExpanded: true,
-                items: widget.list.map((SiteShiftsModel x) {
+                items: widget.list.map((SiteShiftsModel siteModel) {
                   return DropdownMenuItem<String>(
-                      value: x.siteName,
+                      value: siteModel.siteName,
                       child: Row(
                         children: [
                           Expanded(
@@ -69,7 +69,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
                               child: Container(
                                 height: 25.h,
                                 child: AutoSizeText(
-                                  x.siteName,
+                                  siteModel.siteName,
                                   maxLines: 1,
                                   style: TextStyle(
                                       fontSize: setResponsiveFontSize(14),

@@ -98,7 +98,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                         BorderRadius.circular(
                                                             75.0),
                                                     child: Image.asset(
-                                                        "resources/image.png"),
+                                                        "resources/Chilangu.png"),
                                                   ),
                                                 ),
                                               ),
@@ -109,7 +109,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                             Container(
                                               height: 20,
                                               child: AutoSizeText(
-                                                "Chilango",
+                                                "Chilangu",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
