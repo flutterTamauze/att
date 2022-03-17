@@ -21,7 +21,7 @@
 
     <application
         android:name=".Application"
-        android:label="Chilangu"
+        android:label="Chilango"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">
@@ -33,7 +33,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqJB00PNv89PvcwyGkk7Wo0tN8-oO7uyA"/>
              <!-- These receivers are for sending scheduled local notifications -->
-        <receiver android:name="com.huawei.hms.flutter.push.receiver.local.HmsLocalNotificationBootEventReceiver">
+        <!-- <receiver android:name="com.huawei.hms.flutter.push.receiver.local.HmsLocalNotificationBootEventReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -48,7 +48,7 @@
             <intent-filter>
                 <action android:name="com.huawei.hms.flutter.push.receiver.BACKGROUND_REMOTE_MESSAGE" />
             </intent-filter>
-        </receiver>
+        </receiver> -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

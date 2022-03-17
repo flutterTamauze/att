@@ -25,6 +25,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 // var cron1;
 // var cron2;
 
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       notificationProv.firebaseMessagingConfig(context);
       notificationProv.tokenRefresh();
     }
-    final newVersion = NewVersion();
+
     // ignore: cascade_invocations
     // newVersion.showAlertIfNecessary(
     //   context: context,
@@ -125,14 +126,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             onWillPop: onWillPop,
             child: GestureDetector(
               onTap: () async {
-                final response = await http.get(
-                  Uri.parse(
-                      "https://iid.googleapis.com/iid/info/eT_lIIZZSGKty7uxfyeVba:APA91bFM95bxyfbVCXyOfA-EILER6EkUk2CxIUZHMPu1VNrdkK3Ud9c7_aOW5dcfGJTR7NUtvpBE1X5xiDC-Bo0WgslxDTsCBaTxkB9Zea-HvUTNEzN96cgQJT4Hx4u9vB_E97Bae1H-?details=true"),
-                  headers: {
-                    "Authorization": "Bearer $serverToken",
-                  },
-                );
-                print(response.body);
+                // final response = await http.get(
+                //   Uri.parse(
+                //       "https://iid.googleapis.com/iid/info/eT_lIIZZSGKty7uxfyeVba:APA91bFM95bxyfbVCXyOfA-EILER6EkUk2CxIUZHMPu1VNrdkK3Ud9c7_aOW5dcfGJTR7NUtvpBE1X5xiDC-Bo0WgslxDTsCBaTxkB9Zea-HvUTNEzN96cgQJT4Hx4u9vB_E97Bae1H-?details=true"),
+                //   headers: {
+                //     "Authorization": "Bearer $serverToken",
+                //   },
+                // );
+
                 // print(_startTime.hour);
                 // print(locator.locator<PermissionHan>().isServerDown);
               },

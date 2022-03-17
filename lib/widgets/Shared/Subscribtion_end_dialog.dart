@@ -80,27 +80,31 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                       RoundedButton(
                           title: getTranslated(context, "إغلاق"),
                           onPressed: () async {
-                            var userData =
-                                Provider.of<UserData>(context, listen: false)
-                                    .user;
-                            if (userData.userType == 3 ||
-                                userData.userType == 4) {
-                              final FirebaseMessaging _firebaseMessaging =
-                                  FirebaseMessaging.instance;
-                              bool isError = false;
-                              await _firebaseMessaging
-                                  .getToken()
-                                  .catchError((e) {
-                                print(e);
-                                isError = true;
-                              });
-                              if (isError == false) {
-                                print("topic name : ");
-                                print(
-                                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-                                await _firebaseMessaging.unsubscribeFromTopic(
-                                    "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                            try {
+                              var userData =
+                                  Provider.of<UserData>(context, listen: false)
+                                      .user;
+                              if (userData.userType == 3 ||
+                                  userData.userType == 4) {
+                                final FirebaseMessaging _firebaseMessaging =
+                                    FirebaseMessaging.instance;
+                                bool isError = false;
+                                await _firebaseMessaging
+                                    .getToken()
+                                    .catchError((e) {
+                                  print(e);
+                                  isError = true;
+                                });
+                                if (isError == false) {
+                                  print("topic name : ");
+                                  print(
+                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                  await _firebaseMessaging.unsubscribeFromTopic(
+                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                }
                               }
+                            } catch (e) {
+                              print(e);
                             }
 
                             Provider.of<UserData>(context, listen: false)

@@ -98,8 +98,8 @@ dependencies {
     // api 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:<7.0.3>'
-    implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
-    implementation 'com.huawei.hms:hianalytics:5.3.0.300'
+    // implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    // implementation 'com.huawei.hms:hianalytics:5.3.0.300'
 } 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.huawei.agconnect'
+// apply plugin: 'com.huawei.agconnect'

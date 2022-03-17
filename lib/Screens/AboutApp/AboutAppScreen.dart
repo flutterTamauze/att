@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -97,8 +98,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             75.0),
-                                                    child: Image.asset(
-                                                        "resources/Chilangu.png"),
+                                                    child: Image.asset(appLogo),
                                                   ),
                                                 ),
                                               ),
@@ -109,7 +109,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                             Container(
                                               height: 20,
                                               child: AutoSizeText(
-                                                "Chilangu",
+                                                "Chilango",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,

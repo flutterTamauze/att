@@ -24,6 +24,7 @@ import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
+import 'package:qr_users/widgets/Reports/displayReportButton.dart';
 import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 
 import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
@@ -46,10 +47,12 @@ class _AttendProofReportState extends State<AttendProofReport> {
   String selectedDateString;
   DateTime selectedDate;
   DateTime today;
+
+  bool showTable = false;
   void initState() {
     super.initState();
     date = apiFormatter.format(DateTime.now());
-    getReportData(date);
+    // getReportData(date);
     selectedDateString = DateTime.now().toString();
     final now = DateTime.now();
     today = DateTime(now.year, now.month, now.day);
@@ -103,14 +106,49 @@ class _AttendProofReportState extends State<AttendProofReport> {
           return Container(
             child: Stack(
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Header(
-                      goUserHomeFromMenu: false,
-                      nav: false,
-                      goUserMenu: false,
-                    ),
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Header(
+                    goUserHomeFromMenu: false,
+                    nav: false,
+                    goUserMenu: false,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Container(
+                          child: Container(
+                            child: Theme(
+                                data: clockTheme,
+                                child: SingleDayDatePicker(
+                                  firstDate: comDate.com.createdOn,
+                                  lastDate: DateTime.now(),
+                                  selectedDateString: selectedDateString,
+                                  functionPicker: (value) {
+                                    if (value != date) {
+                                      date = value;
+                                      selectedDateString = date;
+                                      setState(() {
+                                        selectedDate =
+                                            DateTime.parse(selectedDateString);
+                                        showTable = false;
+                                      });
+                                    }
+                                  },
+                                )),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 15.h),
+                        child: SmallDirectoriesHeader(
+                          Lottie.asset("resources/report.json", repeat: false),
+                          getTranslated(context, "إثباتات الحضور"),
+                        ),
+                      )
+                    ],
+                  ),
+                  if (showTable) ...[
                     FutureBuilder(
                         future: reportsData.futureListener,
                         builder: (context, snapshot) {
@@ -121,50 +159,6 @@ class _AttendProofReportState extends State<AttendProofReport> {
                               return Expanded(
                                 child: Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w),
-                                          child: Container(
-                                            child: Container(
-                                              child: Theme(
-                                                  data: clockTheme,
-                                                  child: SingleDayDatePicker(
-                                                    firstDate:
-                                                        comDate.com.createdOn,
-                                                    lastDate: DateTime.now(),
-                                                    selectedDateString:
-                                                        selectedDateString,
-                                                    functionPicker: (value) {
-                                                      if (value != date) {
-                                                        date = value;
-                                                        selectedDateString =
-                                                            date;
-                                                        setState(() {
-                                                          getReportData(date);
-                                                          selectedDate =
-                                                              DateTime.parse(
-                                                                  selectedDateString);
-                                                        });
-                                                      }
-                                                    },
-                                                  )),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: SmallDirectoriesHeader(
-                                            Lottie.asset(
-                                                "resources/report.json",
-                                                repeat: false),
-                                            getTranslated(
-                                                context, "إثباتات الحضور"),
-                                          ),
-                                        )
-                                      ],
-                                    ),
                                     SizedBox(
                                       height: 10.h,
                                     ),
@@ -302,11 +296,45 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                 ),
                               );
                             default:
-                              return Center(child: LoadingIndicator());
+                              return const Center(
+                                  child: const LoadingIndicator());
                           }
                         }),
+                  ] else ...[
+                    Container(
+                      width: 400.w,
+                      height: 300.h,
+                      child: Lottie.asset("resources/displayReport.json",
+                          fit: BoxFit.fill),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Center(
+                        child: InkWell(
+                          onTap: () {
+                            getReportData(date);
+                            setState(() {
+                              showTable = true;
+                            });
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(5),
+                              width: 150.w,
+                              height: 50.h,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2, color: ColorManager.primary),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const DisplayReportButton()),
+                        ),
+                      ),
+                    )
                   ],
-                ),
+                ]),
               ],
             ),
           );

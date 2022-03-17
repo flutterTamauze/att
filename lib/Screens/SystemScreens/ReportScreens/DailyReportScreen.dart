@@ -159,7 +159,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   }
 
   bool isToday(DateTime selectedDay) {
-    print(selectedDate.toString());
     if (selectedDay.difference(today).inDays == 0) {
       return true;
     } else {
@@ -552,37 +551,6 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                                                                 return DataTableRow(reportsData.dailyReport.attendListUnits[index], siteIndex, selectedDate);
                                                                               }),
                                                                     ),
-                                                                    !isToday(
-                                                                            selectedDate)
-                                                                        ? snapshot.data ==
-                                                                                "Success"
-                                                                            ? DailyReportTableEnd(
-                                                                                totalAbsents: reportsData.dailyReport.totalAbsent.toString(),
-                                                                                totalAttend: reportsData.dailyReport.totalAttend.toString())
-                                                                            : snapshot.data == "Success : Official Vacation Day"
-                                                                                ? DailyReportTodayTableEnd(
-                                                                                    titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
-                                                                                    title: reportsData.dailyReport.officialHoliday,
-                                                                                  )
-                                                                                : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
-                                                                                    ? Container()
-                                                                                    : DailyReportTodayTableEnd(
-                                                                                        titleHeader: getTranslated(context, "عطلة اسبوعية"),
-                                                                                        title: "",
-                                                                                      )
-                                                                        : snapshot.data == "Success"
-                                                                            ? Container()
-                                                                            : snapshot.data == "Success : Official Vacation Day"
-                                                                                ? DailyReportTodayTableEnd(
-                                                                                    titleHeader: "${getTranslated(context, "عطلة رسمية")} :",
-                                                                                    title: reportsData.dailyReport.officialHoliday,
-                                                                                  )
-                                                                                : snapshot.data == "user created after period" || snapshot.data == "Date is older than company date" || snapshot.data == "failed" || snapshot.data == "noInternet"
-                                                                                    ? Container()
-                                                                                    : DailyReportTodayTableEnd(
-                                                                                        titleHeader: getTranslated(context, "عطلة اسبوعية"),
-                                                                                        title: "",
-                                                                                      ),
                                                                   ],
                                                                 )
                                                               : CenterMessageText(
@@ -631,7 +599,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
   Future<bool> onWillPop() {
     print("back");
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => NavScreenTwo(2)),
+        MaterialPageRoute(builder: (context) => const NavScreenTwo(2)),
         (Route<dynamic> route) => false);
     return Future.value(false);
   }

@@ -218,7 +218,7 @@ class IntroContent extends StatelessWidget {
                       ),
                       Container(
                         child: Image.asset(
-                          'resources/Chilangu.png',
+                          appLogo,
                         ),
                         height: 70.h,
                       ),

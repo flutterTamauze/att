@@ -17,6 +17,7 @@ import 'package:qr_users/Screens/SystemScreens/SittingScreens/ShiftsScreen/Shift
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
+import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/DaysOff.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
@@ -36,7 +37,7 @@ import '../../main.dart';
 class UserProperties extends StatefulWidget {
   final Member user;
   final int siteIndex;
-  UserProperties({
+  const UserProperties({
     this.user,
     this.siteIndex,
   });
@@ -175,7 +176,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                           builder: (BuildContext context) {
                                             return RoundedLoadingIndicator();
                                           });
-                                      var token = Provider.of<UserData>(context,
+                                      final token = Provider.of<UserData>(
+                                              context,
                                               listen: false)
                                           .user
                                           .userToken;
@@ -386,7 +388,7 @@ class _UserPropertiesState extends State<UserProperties> {
                               shiftScheduling();
                               Navigator.pop(context);
                             } else {
-                              var scheduleList = Provider.of<ShiftsData>(
+                              final scheduleList = Provider.of<ShiftsData>(
                                       context,
                                       listen: false)
                                   .firstAvailableSchedule;
@@ -498,7 +500,9 @@ class _UserPropertiesState extends State<UserProperties> {
                               builder: (BuildContext context) {
                                 return RoundedLoadingIndicator();
                               });
-                          await attendObj
+                          final AttendProof attendProof = AttendProof();
+
+                          await attendProof
                               .sendAttendProof(
                                   userDataProvider.userToken,
                                   widget.user.id,
@@ -509,6 +513,7 @@ class _UserPropertiesState extends State<UserProperties> {
                             switch (value) {
                               case "success":
                                 print("ESBAAT ${widget.user.fcmToken}");
+
                                 sendFcmMessage(
                                         topicName: "",
                                         userToken: widget.user.fcmToken,
@@ -516,6 +521,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                         category: "attend",
                                         message: "برجاء اثبات حضورك الأن")
                                     .then((value) {
+                                  print("send value $value");
                                   if (value) {
                                     Fluttertoast.showToast(
                                         msg: getTranslated(

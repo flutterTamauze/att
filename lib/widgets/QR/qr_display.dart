@@ -68,7 +68,7 @@ class _QrAttendDisplayState extends State<QrAttendDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final HuaweiServices _huawei = HuaweiServices();
+    // final HuaweiServices _huawei = HuaweiServices();
     final shiftApiConsumer = Provider.of<ShiftApi>(context);
 
     // var shiftDataProvider =

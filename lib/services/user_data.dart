@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:huawei_location/location/location.dart';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -46,7 +45,7 @@ class UserData with ChangeNotifier {
   SuperCompaniesChartModel superCompaniesChartModel;
   String hawawiToken = "";
   Position _currentPosition;
-  Location _currentHawawiLocation;
+  // Location _currentHawawiLocation;
   List<int> notificationsSent = [];
   bool changedPassword;
   bool isLoading = false;
@@ -338,11 +337,11 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
-    final HuaweiServices _huawei = HuaweiServices();
-    bool isHawawi = false;
-    if (Platform.isAndroid) {
-      isHawawi = await _huawei.isHuaweiDevice();
-    }
+    // final HuaweiServices _huawei = HuaweiServices();
+    // bool isHawawi = false;
+    // if (Platform.isAndroid) {
+    //   isHawawi = await _huawei.isHuaweiDevice();
+    // }
 
     print(image.lengthSync());
     // log("image ${image.path}");
@@ -367,12 +366,8 @@ class UserData with ChangeNotifier {
         request.files.add(multipartFile);
         request.fields['Userid'] = "0";
         request.fields['Qrcode'] = cardCode;
-        request.fields['Longitude'] = isHawawi
-            ? _currentHawawiLocation.longitude.toString()
-            : _currentPosition.longitude.toString();
-        request.fields['Latitude'] = isHawawi
-            ? _currentHawawiLocation.latitude.toString()
-            : _currentPosition.latitude.toString();
+        request.fields['Longitude'] = _currentPosition.longitude.toString();
+        request.fields['Latitude'] = _currentPosition.latitude.toString();
         request.fields['userLogintype'] = "1";
         print("card code :$cardCode");
         print("**************");
@@ -444,12 +439,8 @@ class UserData with ChangeNotifier {
             body: {
               'Userid': user.id,
               'Qrcode': qrCode,
-              'Longitude': isHawawi
-                  ? _currentHawawiLocation.longitude.toString()
-                  : _currentPosition.longitude.toString(),
-              'Latitude': isHawawi
-                  ? _currentHawawiLocation.latitude.toString()
-                  : _currentPosition.latitude.toString(),
+              'Longitude': _currentPosition.longitude.toString(),
+              'Latitude': _currentPosition.latitude.toString(),
               'userLogintype': "0",
               'UserMac': imei,
             },
@@ -700,16 +691,16 @@ class UserData with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     // await checkPermissions();
-    final HuaweiServices _huawei = HuaweiServices();
+    // final HuaweiServices _huawei = HuaweiServices();
     bool enabled = true;
-    bool isHawawi = false;
-    if (Platform.isAndroid) {
-      isHawawi = await _huawei.isHuaweiDevice();
-    }
+    // bool isHawawi = false;
+    // if (Platform.isAndroid) {
+    //   // isHawawi = await _huawei.isHuaweiDevice();
+    // }
 
-    if (!isHawawi) {
-      enabled = await Geolocator.isLocationServiceEnabled();
-    }
+    // if (!isHawawi) {
+    enabled = await Geolocator.isLocationServiceEnabled();
+    // }
     print("userdata");
     print("enable locaiton : $enabled");
 
@@ -734,14 +725,15 @@ class UserData with ChangeNotifier {
         return 2;
       }
     } else {
-      final HuaweiServices _huawei = HuaweiServices();
-      if (isHawawi) {
-        await _huawei.getHuaweiCurrentLocation().then((currentLoc) {
-          _currentHawawiLocation = currentLoc;
-        });
+      // final HuaweiServices _huawei = HuaweiServices();
+      // if (isHawawi) {
+      //   // await _huawei.getHuaweiCurrentLocation().then((currentLoc) {
+      //   //   _currentHawawiLocation = currentLoc;
+      //   // });
 
-        return 0;
-      } else {
+      //   return 0;
+      // } else
+      {
         if (enabled) {
           final bool isMockLocation = await TrustLocation.isMockLocation;
 

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:qr_users/widgets/Reports/ProgressBar.dart';
+import 'package:qr_users/widgets/Reports/displayReportButton.dart';
 import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
 import 'DailyReportScreen.dart';
 import 'package:flutter/services.dart';
@@ -538,23 +539,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                           showViewTableButton = false;
                                         });
                                       },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          AutoSizeText(
-                                            getTranslated(
-                                                context, "عرض التقرير"),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Container(
-                                              width: 2,
-                                              height: 80.h,
-                                              color: ColorManager.primary),
-                                          const Icon(FontAwesomeIcons.fileAlt)
-                                        ],
-                                      ),
+                                      child: const DisplayReportButton(),
                                     ),
                                   ),
                                 ],

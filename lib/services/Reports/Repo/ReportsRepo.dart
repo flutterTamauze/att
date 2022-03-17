@@ -35,7 +35,7 @@ class ReprotsRepo {
 
   Future<Object> getTodayUserReport(String userId) async {
     return NetworkApi().request(
-      "$baseURL/api/AttendLogin/todayAttend/$userId}",
+      "$baseURL/api/AttendLogin/todayAttend/$userId",
       RequestType.GET,
       {
         'Content-type': 'application/json',

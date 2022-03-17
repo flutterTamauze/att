@@ -72,7 +72,7 @@ class DrawerI extends StatelessWidget {
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage("resources/Chilangu.png"),
+                              image: AssetImage(appLogo),
                             )),
                       ),
                     ),

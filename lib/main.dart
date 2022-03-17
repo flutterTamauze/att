@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -45,7 +45,7 @@ Map<String, String> channelMap = {
   "name": "tdsChilango.com/channel_test",
   "description": "notifications",
 };
-HuaweiServices huaweiServices = HuaweiServices();
+// HuaweiServices huaweiServices = HuaweiServices();
 InitLocator locator = InitLocator();
 GetIt getIt = GetIt.instance;
 void main() async {
@@ -53,10 +53,10 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
   if (Platform.isAndroid)
-    await hawawi.Push.registerBackgroundMessageHandler(
-        backgroundMessageCallback);
+    // await hawawi.Push.registerBackgroundMessageHandler(
+    //     backgroundMessageCallback);
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -72,24 +72,24 @@ void main() async {
   runApp(MyApp());
 }
 
-void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
-  final String data = remoteMessage.data;
-  final decodedResponse = json.decode(data);
-  print(data);
+// void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
+//   final String data = remoteMessage.data;
+//   final decodedResponse = json.decode(data);
+//   print(data);
 
-  hawawi.Push.localNotification({
-    hawawi.HMSLocalNotificationAttr.TITLE: decodedResponse["pushbody"]["title"],
-    hawawi.HMSLocalNotificationAttr.MESSAGE: decodedResponse["pushbody"]
-        ["description"],
-    hawawi.HMSLocalNotificationAttr.PLAY_SOUND: true,
-    hawawi.HMSLocalNotificationAttr.SMALL_ICON: "@mipmap/launcher_icon",
-    hawawi.HMSLocalNotificationAttr.LARGE_ICON: "@mipmap/launcher_icon",
-    hawawi.HMSLocalNotificationAttr.ACTIONS: ["OPEN"],
-    hawawi.HMSLocalNotificationAttr.PRIORITY: "HIGH",
-    hawawi.HMSLocalNotificationAttr.SOUND_NAME: "your_sweet_sound.wav",
-    hawawi.HMSLocalNotificationAttr.VIBRATE: false,
-  });
-}
+//   hawawi.Push.localNotification({
+//     hawawi.HMSLocalNotificationAttr.TITLE: decodedResponse["pushbody"]["title"],
+//     hawawi.HMSLocalNotificationAttr.MESSAGE: decodedResponse["pushbody"]
+//         ["description"],
+//     hawawi.HMSLocalNotificationAttr.PLAY_SOUND: true,
+//     hawawi.HMSLocalNotificationAttr.SMALL_ICON: "@mipmap/launcher_icon",
+//     hawawi.HMSLocalNotificationAttr.LARGE_ICON: "@mipmap/launcher_icon",
+//     hawawi.HMSLocalNotificationAttr.ACTIONS: ["OPEN"],
+//     hawawi.HMSLocalNotificationAttr.PRIORITY: "HIGH",
+//     hawawi.HMSLocalNotificationAttr.SOUND_NAME: "your_sweet_sound.wav",
+//     hawawi.HMSLocalNotificationAttr.VIBRATE: false,
+//   });
+// }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   try {
@@ -100,6 +100,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           .setString("notifCategory", message.data["category"])
           .whenComplete(
               () => print("category added !!! ${message.data["category"]}"));
+
       final List<String> cachedList = await prefs.getStringList("bgNotifyList");
       cachedList.add(message.data["category"]);
       // ignore: cascade_invocations
@@ -120,16 +121,16 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-huaweiHandler() async {
-  final HuaweiServices _huawei = HuaweiServices();
-  if (await _huawei.isHuaweiDevice()) {
-    await hawawi.Push.turnOnPush();
-    final bool backgroundMessageHandler =
-        await hawawi.Push.registerBackgroundMessageHandler(
-            backgroundMessageCallback);
-    print("backgroundMessageHandler registered: $backgroundMessageHandler");
-  }
-}
+// huaweiHandler() async {
+//   final HuaweiServices _huawei = HuaweiServices();
+//   if (await _huawei.isHuaweiDevice()) {
+//     await hawawi.Push.turnOnPush();
+//     final bool backgroundMessageHandler =
+//         await hawawi.Push.registerBackgroundMessageHandler(
+//             backgroundMessageCallback);
+//     print("backgroundMessageHandler registered: $backgroundMessageHandler");
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale newLocale) {
@@ -147,7 +148,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    if (Platform.isAndroid) huaweiHandler();
+    // if (Platform.isAndroid) huaweiHandler();
 
     super.initState();
   }
@@ -239,7 +240,7 @@ class _MyAppState extends State<MyApp> {
                       return supportedLocales.first;
                     },
                     navigatorKey: navigatorKey,
-                    title: "Chilangu",
+                    title: "Chilango",
                     debugShowCheckedModeBanner: false,
                     theme: getApplicationTheme(),
                     home: SplashScreen());

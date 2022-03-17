@@ -12,15 +12,16 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 
 //http://192.168.0.119:8010
 //https://Chilangoback.tamauzeds.com
-const androidDownloadLink =
-    "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
+// const androidDownloadLink =
+//     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
-const imageUrl = "$baseURL/Resources/images/";
-const localURL = "http://192.168.0.118:8010";
-const huaweiAppId = "104665933";
-const huaweiSecret =
-    "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
+const imageUrl = "https://Chilangoback.tamauzeds.com/Resources/images/";
+const localURL = "http://10.0.0.68:8010";
+const appLogo = "resources/image.png";
+// const huaweiAppId = "104665933";
+// const huaweiSecret =
+//     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
 
 // final baseURL = "http://192.168.1.38:45456";
 const apiKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
