@@ -831,7 +831,7 @@ class SuperAdminHeader extends StatelessWidget {
                                                         setResponsiveFontSize(
                                                             11)),
                                               )),
-                                        )
+                                        ),
                                 ],
                               );
                             },

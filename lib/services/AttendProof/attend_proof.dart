@@ -49,7 +49,7 @@ class AttendProof {
     try {
       final response = await http.get(
           Uri.parse(
-              "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
+              "$localURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
           headers: {'Authorization': "Bearer $userToken"});
       print(response.statusCode);
       print(response.body);
