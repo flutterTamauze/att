@@ -49,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
   FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
   Future checkSharedUserData() async {
+    final userProv = Provider.of<UserData>(context, listen: false);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> userData = (prefs.getStringList('userData') ?? null);
     print(userData);
@@ -62,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
       //       Provider.of<CompanyData>(context, listen: false).com.id,
       //       Provider.of<UserData>(context, listen: false).user.userToken,
       //       context);
-      if (value == 4 || value == 3) {
+      if (value == 4 || value == 3 || userProv.isSuperAdmin) {
         //subscribe admin channel
         bool isError = false;
 

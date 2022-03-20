@@ -82,10 +82,11 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                           onPressed: () async {
                             try {
                               var userData =
-                                  Provider.of<UserData>(context, listen: false)
-                                      .user;
-                              if (userData.userType == 3 ||
-                                  userData.userType == 4) {
+                                  Provider.of<UserData>(context, listen: false);
+
+                              if (userData.user.userType == 3 ||
+                                  userData.user.userType == 4 ||
+                                  userData.isSuperAdmin) {
                                 final FirebaseMessaging _firebaseMessaging =
                                     FirebaseMessaging.instance;
                                 bool isError = false;
