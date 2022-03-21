@@ -275,7 +275,7 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                 BorderRadius.circular(15),
                                             child: const Image(
                                               image: const AssetImage(
-                                                  "resources/imageface.jpeg"),
+                                                  "resources/imageface.png"),
                                             ),
                                           ),
                                         ),
