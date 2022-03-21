@@ -430,7 +430,7 @@ class ReportsData with ChangeNotifier {
           isLoading = false;
           notifyListeners();
 
-          await Future.delayed(const Duration(milliseconds: 800), () {});
+          await Future.delayed(const Duration(milliseconds: 400), () {});
           return decodedRes["message"];
         } else {
           if (decodedRes["message"] == "Success : Official Vacation Day")

@@ -3,14 +3,14 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://developer.huawei.com/repo/' }
+        // maven { url 'https://developer.huawei.com/repo/' }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.8'
-        classpath 'com.huawei.agconnect:agcp:1.5.2.300'
+        // classpath 'com.huawei.agconnect:agcp:1.5.2.300'
     }
 }
 
@@ -18,7 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {url 'https://developer.huawei.com/repo/'}
+        // maven {url 'https://developer.huawei.com/repo/'}
     }
 }
 

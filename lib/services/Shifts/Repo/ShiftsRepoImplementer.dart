@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:huawei_location/location/location.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Network/Network.dart';
 import 'package:qr_users/enums/request_type.dart';
@@ -11,8 +10,7 @@ import '../../user_data.dart';
 
 class ShiftsRepoImp {
   final userToken = locator.locator<UserData>().user.userToken;
-  Future<Object> getQrData(
-      bool isHawawi, Location huawi, Position location, String id) {
+  Future<Object> getQrData(Position location, String id) {
     return NetworkApi().request(
         "$baseURL/api/Shifts/PostSiteShift",
         RequestType.POST,
@@ -23,12 +21,8 @@ class ShiftsRepoImp {
         json.encode(
           {
             "ID": id,
-            "Latitude": isHawawi
-                ? huawi.latitude.toString().trim()
-                : location.latitude.toString().trim(),
-            "Longitude": isHawawi
-                ? huawi.longitude.toString().trim()
-                : location.longitude.toString().trim()
+            "Latitude": location.latitude.toString().trim(),
+            "Longitude": location.longitude.toString().trim()
           },
         ));
   }

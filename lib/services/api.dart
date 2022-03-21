@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:huawei_location/location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -30,7 +29,7 @@ class ShiftApi with ChangeNotifier {
   double currentSitePositionLat;
   double currentSitePositionLong;
   Shift qrShift = Shift();
-  Location currentHuaweiLocation;
+  // Location currentHuaweiLocation;
   DateTime currentBackPressTime;
   String currentCountryDate;
   bool isOnShift = true;
@@ -62,14 +61,9 @@ class ShiftApi with ChangeNotifier {
 
   Future<int> getCurrentLocation() async {
     try {
-      final HuaweiServices _huawi = HuaweiServices();
+      // final HuaweiServices _huawi = HuaweiServices();
       if (Platform.isAndroid) {
-        if (await _huawi.isHuaweiDevice()) {
-          await _huawi.getHuaweiCurrentLocation().then((value) {
-            currentHuaweiLocation = value;
-          });
-          return 0;
-        } else {
+        {
           if (await Permission.location.isGranted) {
             bool enabled = false;
             enabled = await Geolocator.isLocationServiceEnabled();
@@ -180,8 +174,7 @@ class ShiftApi with ChangeNotifier {
     print("IS MOC RESULT : $isMoc");
     print(id);
     if (isMoc == 0) {
-      final response = await ShiftsRepoImp()
-          .getQrData(isHawawi, currentHuaweiLocation, currentPosition, id);
+      final response = await ShiftsRepoImp().getQrData(currentPosition, id);
       if (response is Faliure) {
         if (response.code == NO_INTERNET) {
           isConnected = false;

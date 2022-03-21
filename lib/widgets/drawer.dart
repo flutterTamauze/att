@@ -42,7 +42,7 @@ class DrawerI extends StatelessWidget {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     final int userType =
         Provider.of<UserData>(context, listen: true).user.userType;
-
+    final userData = Provider.of<UserData>(context, listen: false);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -72,7 +72,7 @@ class DrawerI extends StatelessWidget {
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage("resources/Chilangu.png"),
+                              image: AssetImage(appLogo),
                             )),
                       ),
                     ),
@@ -239,7 +239,9 @@ class DrawerI extends StatelessWidget {
                             builder: (BuildContext context) {
                               return RoundedAlert(
                                   onPressed: () async {
-                                    if (userType == 4 || userType == 3) {
+                                    if (userType == 4 ||
+                                        userType == 3 ||
+                                        userData.isSuperAdmin) {
                                       //subscribe admin channel
                                       bool isError = false;
                                       await _firebaseMessaging

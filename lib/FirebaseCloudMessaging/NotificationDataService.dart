@@ -16,7 +16,7 @@ import 'package:qr_users/widgets/StackedNotificationAlert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'NotificationMessage.dart';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 
 class NotificationDataService with ChangeNotifier {
   bool showNotificationDot = false;
@@ -113,14 +113,14 @@ class NotificationDataService with ChangeNotifier {
     notifyListeners();
   }
 
-  void getInitialNotification(BuildContext context) async {
-    final initialNotification = await hawawi.Push.getInitialNotification();
-    print("getInitialNotification: " + initialNotification.toString());
-    if (initialNotification.toString().contains("اثبات حضور")) {
-      print("YES IT CONTAINS !");
-      showAttendanceCheckDialog(context);
-    }
-  }
+  // void getInitialNotification(BuildContext context) async {
+  //   final initialNotification = await hawawi.Push.getInitialNotification();
+  //   print("getInitialNotification: " + initialNotification.toString());
+  //   if (initialNotification.toString().contains("اثبات حضور")) {
+  //     print("YES IT CONTAINS !");
+  //     showAttendanceCheckDialog(context);
+  //   }
+  // }
 
   void notificationPermessions() async {
     await FirebaseMessaging.instance
@@ -145,40 +145,40 @@ class NotificationDataService with ChangeNotifier {
 
   bool finshed = false;
   // int counter = 0;
-  huaweiMessagingConfig(BuildContext context) async {
-    hawawi.Push.onMessageReceivedStream.listen((_onMessageReceived) async {
-      log("huawei message recieved ");
-      // NotificationDataService dataService = NotificationDataService();
-      // dataService.showAttendanceCheckDialog(context);
-      final String data = _onMessageReceived.data;
+  // huaweiMessagingConfig(BuildContext context) async {
+  //   hawawi.Push.onMessageReceivedStream.listen((_onMessageReceived) async {
+  //     log("huawei message recieved ");
+  //     // NotificationDataService dataService = NotificationDataService();
+  //     // dataService.showAttendanceCheckDialog(context);
+  //     final String data = _onMessageReceived.data;
 
-      final decodedResponse = json.decode(data);
-      print(decodedResponse["pushbody"]);
-      if (decodedResponse["pushbody"]["category"] == "attend") {
-        showAttendanceCheckDialog(context);
-      }
-      await db
-          .insertNotification(
-              NotificationMessage(
-                  category: decodedResponse["pushbody"]["category"],
-                  dateTime: DateTime.now().toString().substring(0, 10),
-                  message: decodedResponse["pushbody"]["description"],
-                  messageSeen: 0,
-                  title: decodedResponse["pushbody"]["title"],
-                  timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
-              context)
-          // .then((value) => counter = 0)
-          .then((value) => addNotification(
-              decodedResponse["pushbody"]["title"],
-              decodedResponse["pushbody"]["description"],
-              DateTime.now().toString().substring(0, 10),
-              decodedResponse["pushbody"]["category"],
-              DateFormat('kk:mm:a').format(DateTime.now()),
-              value));
+  //     final decodedResponse = json.decode(data);
+  //     print(decodedResponse["pushbody"]);
+  //     if (decodedResponse["pushbody"]["category"] == "attend") {
+  //       showAttendanceCheckDialog(context);
+  //     }
+  //     await db
+  //         .insertNotification(
+  //             NotificationMessage(
+  //                 category: decodedResponse["pushbody"]["category"],
+  //                 dateTime: DateTime.now().toString().substring(0, 10),
+  //                 message: decodedResponse["pushbody"]["description"],
+  //                 messageSeen: 0,
+  //                 title: decodedResponse["pushbody"]["title"],
+  //                 timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
+  //             context)
+  //         // .then((value) => counter = 0)
+  //         .then((value) => addNotification(
+  //             decodedResponse["pushbody"]["title"],
+  //             decodedResponse["pushbody"]["description"],
+  //             DateTime.now().toString().substring(0, 10),
+  //             decodedResponse["pushbody"]["category"],
+  //             DateFormat('kk:mm:a').format(DateTime.now()),
+  //             value));
 
-      player.play("notification.mp3");
-    });
-  }
+  //     player.play("notification.mp3");
+  //   });
+  // }
 
   static int semaphore = 0;
   addNotificationToListAndDB(RemoteMessage event, BuildContext context) async {

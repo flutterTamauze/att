@@ -336,6 +336,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   loginFunction() async {
+    final userData = Provider.of<UserData>(context, listen: false);
     Provider.of<UserData>(context, listen: false).getCurrentLocation();
     Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -344,14 +345,13 @@ class _LoginScreenState extends State<LoginScreen> {
         isLoading = true;
       });
 
-    await Provider.of<UserData>(context, listen: false)
+    await userData
         .loginPost(
             _uniIdController.text, _passwordController.text, context, false)
         .catchError(((e) {
       print(e);
     })).then((value) async {
-      if (Provider.of<UserData>(context, listen: false).changedPassword ==
-          false) {
+      if (userData.changedPassword == false) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -364,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         print("VALUE OF USER");
         print(value);
-        if (value == 4 || value == 3) {
+        if (value == 4 || value == 3 || userData.isSuperAdmin) {
           //subscribe admin channel
           bool isError = false;
 

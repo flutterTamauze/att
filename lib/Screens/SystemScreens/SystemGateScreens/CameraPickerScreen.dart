@@ -50,8 +50,6 @@ class CameraPicker extends StatefulWidget {
   TakePictureScreenState createState() => TakePictureScreenState();
 }
 
-CameraController cameraController;
-
 class TakePictureScreenState extends State<CameraPicker> {
   File imagePath;
   Size imageSize;
@@ -67,6 +65,7 @@ class TakePictureScreenState extends State<CameraPicker> {
   CameraImage currentCameraImage;
   bool _isDetecting = false;
   int numberOfFacesDetected = -1;
+  CameraController cameraController;
 
   CameraLensDirection cameraLensDirection = CameraLensDirection.front;
   initCamera() async {

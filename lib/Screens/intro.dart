@@ -63,6 +63,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
         imageUrl: "resources/intro3.json",
       ),
     ];
+
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
       onTap: () =>
@@ -217,7 +218,7 @@ class IntroContent extends StatelessWidget {
                       ),
                       Container(
                         child: Image.asset(
-                          'resources/Chilangu.png',
+                          appLogo,
                         ),
                         height: 70.h,
                       ),

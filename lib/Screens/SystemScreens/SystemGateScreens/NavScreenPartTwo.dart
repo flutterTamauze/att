@@ -1,6 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -64,15 +63,15 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   //   hawawi.Push.onNotificationOpenedApp.listen(_onNotificationOpenedApp);
   // }
 
-  Future<void> onHuaweiOpened() async {
-    if (!mounted) return;
-    hawawi.Push.onLocalNotificationClick.listen(_onLocalNotificationClickEvent);
-  }
+  // Future<void> onHuaweiOpened() async {
+  //   if (!mounted) return;
+  //   hawawi.Push.onLocalNotificationClick.listen(_onLocalNotificationClickEvent);
+  // }
 
-  _onLocalNotificationClickEvent(Map<String, dynamic> event) {
-    print("onBACKGROUND click");
-    print(event);
-  }
+  // _onLocalNotificationClickEvent(Map<String, dynamic> event) {
+  //   print("onBACKGROUND click");
+  //   print(event);
+  // }
 
   // Future<void> initPlatformState() async {
   //   if (!mounted) return;
@@ -87,11 +86,11 @@ class _NavScreenTwoState extends State<NavScreenTwo>
     final notificationProv =
         Provider.of<NotificationDataService>(context, listen: false);
     notificationProv.firebaseMessagingConfig(context);
-    if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
-      notificationProv.huaweiMessagingConfig(context);
+    // if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
+    //   // notificationProv.huaweiMessagingConfig(context);
 
-      notificationProv.getInitialNotification(context);
-    }
+    //   notificationProv.getInitialNotification(context);
+    // }
 
     checkForegroundNotification();
     super.initState();
@@ -149,10 +148,12 @@ class _NavScreenTwoState extends State<NavScreenTwo>
       print(event.notification.body);
       print(event.notification.title);
       print(event.data["category"] == "attend");
+
       saveNotificationToCache(event);
       // player.play("notification.mp3");
       if (event.data["category"] == "attend") {
         log("Opened an attend proov notification !");
+
         print(event.notification.body);
         print(event.notification.title);
         _notifService.showAttendanceCheckDialog(context);

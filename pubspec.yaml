@@ -57,8 +57,8 @@ dependencies:
   google_maps_flutter: ^2.0.0
   google_ml_vision: ^0.0.7
   http: ^0.13.0
-  huawei_location: ^5.1.0+303
-  huawei_push: ^5.0.2+301
+  # huawei_location: ^5.1.0+303
+  # huawei_push: ^5.0.2+301
   # image_pickers: ^1.0.8+7
   intl: ^0.17.0
   intl_phone_number_input: ^0.7.0
@@ -93,12 +93,14 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "resources/ChilanguBlackRound.png"
+  image_path: "resources/roundBlack.png"
   image_path_ios: "resources/ChilanguBlack.jpg"
   remove_alpha_ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
+#roundedChilango
+#ChilanguBlackRound
 flutter:
 
   # The following line ensures that the Material Icons font is

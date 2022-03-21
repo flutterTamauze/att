@@ -831,7 +831,7 @@ class SuperAdminHeader extends StatelessWidget {
                                                         setResponsiveFontSize(
                                                             11)),
                                               )),
-                                        )
+                                        ),
                                 ],
                               );
                             },
@@ -1116,10 +1116,12 @@ class HeaderBeforeLogin extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: 20,
-                        child: const AutoSizeText(
+                        child: AutoSizeText(
                           "Chilangu",
                           maxLines: 1,
-                          style: TextStyle(color: Colors.orange, fontSize: 17),
+                          style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: setResponsiveFontSize(17)),
                         ),
                       ),
                     ),
@@ -1133,7 +1135,7 @@ class HeaderBeforeLogin extends StatelessWidget {
                           // ),
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("resources/Chilangu.png"),
+                            image: AssetImage(appLogo),
                           )),
                     ),
                   ],

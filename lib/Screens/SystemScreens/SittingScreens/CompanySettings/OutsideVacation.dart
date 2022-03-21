@@ -509,29 +509,16 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                         .whenComplete(() =>
                                                             Navigator.pop(
                                                                 context));
-                                                    final HuaweiServices
-                                                        _huawei =
-                                                        HuaweiServices();
-                                                    if (widget.member.osType ==
-                                                        3) {
-                                                      _huawei
-                                                          .huaweiPostNotification(
-                                                              widget.member
-                                                                  .fcmToken,
-                                                              "أجازة",
-                                                              "تم وضع اجازة لك ",
-                                                              "vacation");
-                                                    } else {
-                                                      sendFcmMessage(
-                                                        topicName: "",
-                                                        title: "أجازة",
-                                                        category: "vacation",
-                                                        userToken: widget
-                                                            .member.fcmToken,
-                                                        message:
-                                                            "تم وضع اجازة لك ",
-                                                      );
-                                                    }
+
+                                                    sendFcmMessage(
+                                                      topicName: "",
+                                                      title: "أجازة",
+                                                      category: "vacation",
+                                                      userToken: widget
+                                                          .member.fcmToken,
+                                                      message:
+                                                          "تم وضع اجازة لك ",
+                                                    );
                                                   } else if (value ==
                                                       Holiday
                                                           .External_Mission_InThis_Period) {
@@ -1195,19 +1182,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                           .whenComplete(() =>
                                                               Navigator.pop(
                                                                   context));
-                                                      final HuaweiServices
-                                                          _huawei =
-                                                          HuaweiServices();
-                                                      if (widget
-                                                              .member.osType ==
-                                                          3) {
-                                                        _huawei.huaweiPostNotification(
-                                                            widget.member
-                                                                .fcmToken,
-                                                            "اذن",
-                                                            "تم وضع اجازة لك ",
-                                                            "permession");
-                                                      } else {
+                                                      {
                                                         sendFcmMessage(
                                                           topicName: "",
                                                           userToken: widget

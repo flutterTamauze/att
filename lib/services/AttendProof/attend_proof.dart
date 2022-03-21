@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:qr_users/Network/networkInfo.dart';
 import 'dart:convert';
 
 import '../../Core/constants.dart';
-import '../../main.dart';
 
 class AttendProof {
+  String proofId;
+  String getProofId() => proofId;
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
     print(userId);
@@ -19,14 +18,14 @@ class AttendProof {
         'Authorization': "Bearer $userToken"
       },
     );
-
+    print(response.body);
     print("status code : ${response.statusCode}");
     final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (fcmToken == null) {
         return "null";
       }
-
+      proofId = decodedResponse["data"];
       if (decodedResponse["message"] ==
           "Failed : User was not present today!") {
         return "fail present";
@@ -50,7 +49,7 @@ class AttendProof {
     try {
       final response = await http.get(
           Uri.parse(
-              "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
+              "$localURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
           headers: {'Authorization': "Bearer $userToken"});
       print(response.statusCode);
       print(response.body);
@@ -70,7 +69,7 @@ class AttendProof {
   Future<String> acceptAttendProof(
       String userToken, String attendId, Position latLng) async {
     final response = await http.put(
-      Uri.parse("$baseURL/api/AttendProof/Approve"),
+      Uri.parse("$localURL/api/AttendProof/Approve"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"

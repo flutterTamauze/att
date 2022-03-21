@@ -218,25 +218,16 @@ class MissionsData with ChangeNotifier {
             ),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
-        final HuaweiServices _huawei = HuaweiServices();
-        if (osType == 3) {
-          await _huawei.huaweiPostNotification(
-            fcmToken,
-            "تم تكليفك بمأمورية",
-            " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
-            fcmToken,
-          );
-          Navigator.pop(context);
-        } else {
-          sendFcmMessage(
-            category: "internalMission",
-            message:
-                " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
-            userToken: fcmToken,
-            topicName: "",
-            title: getTranslated(context, "تم تكليفك بمأمورية"),
-          ).then((value) => Navigator.pop(context));
-        }
+        // final HuaweiServices _huawei = HuaweiServices();
+
+        sendFcmMessage(
+          category: "internalMission",
+          message:
+              " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
+          userToken: fcmToken,
+          topicName: "",
+          title: getTranslated(context, "تم تكليفك بمأمورية"),
+        ).then((value) => Navigator.pop(context));
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         Fluttertoast.showToast(

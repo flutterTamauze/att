@@ -22,7 +22,7 @@ import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:huawei_push/huawei_push_library.dart' as hawawi;
+// import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
@@ -50,6 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
   FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
   Future checkSharedUserData() async {
+    final userProv = Provider.of<UserData>(context, listen: false);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> userData = (prefs.getStringList('userData') ?? null);
     print(userData);
@@ -63,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
       //       Provider.of<CompanyData>(context, listen: false).com.id,
       //       Provider.of<UserData>(context, listen: false).user.userToken,
       //       context);
-      if (value == 4 || value == 3) {
+      if (value == 4 || value == 3 || userProv.isSuperAdmin) {
         //subscribe admin channel
         bool isError = false;
 
@@ -75,14 +76,10 @@ class _SplashScreenState extends State<SplashScreen>
           print("topic name : ");
           print(
               "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-          if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
-            await hawawi.Push.subscribe(
-                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-          } else {
-            await firebaseMessaging.subscribeToTopic(
-                "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-            print("subscribed to topic");
-          }
+
+          await firebaseMessaging.subscribeToTopic(
+              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          print("subscribed to topic");
         }
       }
 
@@ -260,31 +257,31 @@ class _SplashScreenState extends State<SplashScreen>
     print("TokenEvent: " + _token);
   }
 
-  initPlatformState() async {
-    final code = await hawawi.Push.getAAID();
-    await hawawi.Push.getToken(code);
-    hawawi.Push.getTokenStream.listen(_onTokenEvent).onData((data) {
-      Provider.of<UserData>(context, listen: false).hawawiToken = data;
-    });
-  }
+  // initPlatformState() async {
+  //   final code = await hawawi.Push.getAAID();
+  //   await hawawi.Push.getToken(code);
+  //   hawawi.Push.getTokenStream.listen(_onTokenEvent).onData((data) {
+  //     Provider.of<UserData>(context, listen: false).hawawiToken = data;
+  //   });
+  // }
 
-  HuaweiServices huaweiServices = HuaweiServices();
-  fillHuaweiToken() async {
-    final bool isHuawei = await huaweiServices.isHuaweiDevice();
-    if (isHuawei) {
-      log("iS HUAWEI IS SUCCESS");
-      await initPlatformState();
-    }
-  }
+  // HuaweiServices huaweiServices = HuaweiServices();
+  // fillHuaweiToken() async {
+  //   final bool isHuawei = await huaweiServices.isHuaweiDevice();
+  //   if (isHuawei) {
+  //     log("iS HUAWEI IS SUCCESS");
+  //     await initPlatformState();
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     // filterList();
     // loadModel();
-    if (Platform.isAndroid) {
-      fillHuaweiToken();
-    }
+    // if (Platform.isAndroid) {
+    //   fillHuaweiToken();
+    // }
 
     loadSecondModel();
     animationController = AnimationController(
@@ -334,7 +331,7 @@ class _SplashScreenState extends State<SplashScreen>
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Image.asset(
-                              'resources/Chilangu.png',
+                              appLogo,
                             ),
                           ),
                           height: 150.h,
