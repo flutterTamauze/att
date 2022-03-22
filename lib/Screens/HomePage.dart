@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
-import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 import 'package:qr_users/Screens/AttendScanner.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/main.dart';
@@ -24,8 +21,6 @@ import 'package:qr_users/widgets/drawer.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 // var cron1;
 // var cron2;
 
@@ -42,10 +37,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
-      final notificationProv =
-          Provider.of<NotificationDataService>(context, listen: false);
-      notificationProv.firebaseMessagingConfig(context);
-      notificationProv.tokenRefresh();
+      Provider.of<NotificationDataService>(context, listen: false)
+        ..firebaseMessagingConfig(context)
+        ..tokenRefresh();
     }
 
     // ignore: cascade_invocations
@@ -54,8 +48,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // );
 
     //Check for updates
-    final DownloadService downloadService = DownloadService();
-    downloadService.checkReleaseDate(showApk, context);
+    final DownloadService downloadService = DownloadService()
+      ..checkReleaseDate(showApk, context);
     // Provider.of<NotificationDataService>(context, listen: false)
     //     .huaweiMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)
