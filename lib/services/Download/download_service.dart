@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -24,6 +25,7 @@ class DownloadService {
         showApk = false;
 
         if (status.canUpdate) {
+          debugPrint("there is an update found");
           Future.delayed(Duration.zero, () {
             showDialog(
                 context: context,
@@ -37,6 +39,10 @@ class DownloadService {
                           'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام'));
                 });
           });
+        } else {
+          debugPrint("There is no update available");
+          debugPrint(status.localVersion);
+          debugPrint(status.storeVersion);
         }
       }
     } else {

@@ -73,11 +73,6 @@ class _UsersScreenState extends State<UsersScreen> {
   //       -1);
   //   refreshController.refreshCompleted();
   // }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -86,6 +81,13 @@ class _UsersScreenState extends State<UsersScreen> {
     final userProvider = Provider.of<UserData>(context, listen: false);
     final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
+      Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
+          Provider.of<SiteShiftsData>(context, listen: false).sites[1].name,
+          true);
+      Provider.of<SiteData>(context, listen: false)
+        ..setSiteValue("كل المواقع")
+        ..setDropDownIndex(0)
+        ..setDropDownShift(0);
       if (mounted)
         Provider.of<SiteData>(context, listen: false)
             .setSiteValue("كل المواقع");
@@ -318,15 +320,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                           case ConnectionState.waiting:
 
                                           case ConnectionState.done:
-                                            if (Provider.of<MemberData>(context)
-                                                        .allPageIndex !=
-                                                    1 &&
-                                                Provider.of<MemberData>(context)
-                                                        .bySitePageIndex !=
+                                            if (memberData.allPageIndex != 1 &&
+                                                memberData.bySitePageIndex !=
                                                     1 &&
                                                 _nameController.text == "" &&
-                                                Provider.of<MemberData>(context)
-                                                        .loadingShifts ==
+                                                memberData.loadingShifts ==
                                                     false) {
                                               if (_scrollController
                                                   .hasClients) {
