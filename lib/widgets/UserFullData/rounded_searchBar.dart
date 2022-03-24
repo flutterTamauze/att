@@ -104,7 +104,7 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                           int holder;
                                           prov.setShiftValue(val);
                                           if (prov.siteValue != "كل المواقع") {
-                                            List<String> x = [];
+                                            final List<String> x = [];
 
                                             shiftData.shifts.forEach((element) {
                                               x.add(element.shiftName);
@@ -466,13 +466,15 @@ class _RoundedSearchBarState extends State<RoundedSearchBar> {
                                                   allowFontScalingSelf: true,
                                                 ),
                                               ),
-                                              fillColor: Color(0xFFE9E9E9),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 11,
-                                                  right: 13,
-                                                  top: 20,
-                                                  bottom: 14),
-                                              errorStyle: TextStyle(
+                                              fillColor:
+                                                  const Color(0xFFE9E9E9),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 11,
+                                                      right: 13,
+                                                      top: 20,
+                                                      bottom: 14),
+                                              errorStyle: const TextStyle(
                                                 fontSize: 13,
                                                 height: 0.7,
                                               ),

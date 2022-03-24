@@ -159,11 +159,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
       Provider.of<SiteShiftsData>(context, listen: false)
           .getShiftsList(widget.member.siteName, false);
 
-      shiftIndex = getShiftListIndex(widget.member.shiftId);
+      shiftIndex = getShiftListIndex(widget.member.shiftId) + 1;
       print(shiftIndex);
 
       Provider.of<SiteData>(context, listen: false)
-          .setDropDownShift(shiftIndex);
+          .setDropDownShift(shiftIndex); //to match the -1 bec of all shifts
 
       print("shift index $shiftIndex");
       // log("shift index displayed ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
@@ -215,21 +215,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
-                print(getTranslated(context, rolesList[userType]));
                 print(shiftIndex);
-                for (int i = 0;
-                    i <
-                        Provider.of<SiteShiftsData>(context, listen: false)
-                            .dropDownShifts
-                            .length;
-                    i++) {
-                  print(Provider.of<SiteShiftsData>(context, listen: false)
-                      .dropDownShifts[i]
-                      .shiftName);
-                }
-
-                print(Provider.of<SiteData>(context, listen: false)
-                    .dropDownShiftIndex);
+                print(Provider.of<SiteShiftsData>(context, listen: false)
+                    .dropDownShifts[siteData.dropDownShiftIndex == 0
+                        ? 0
+                        : siteData.dropDownShiftIndex - 1]
+                    .shiftName);
+                print(siteData.dropDownShiftIndex);
               },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
@@ -704,9 +696,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             setState(() {
                                               shiftIndex = 0;
                                             });
-                                            siteData.setSiteValue("كل المواقع");
-                                            siteData.setDropDownIndex(0);
-                                            siteData.setDropDownShift(0);
+                                            siteData
+                                              ..setSiteValue("كل المواقع")
+                                              ..setDropDownIndex(0)
+                                              ..setDropDownShift(0);
+
                                             print(siteId);
                                             print(value);
                                           },
@@ -737,16 +731,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           onChange: (value) {
                                             // print()
                                             log(value);
-                                            Provider.of<SiteData>(context,
-                                                    listen: false)
-                                                .setSiteValue("كل المواقع");
-                                            Provider.of<SiteData>(context,
-                                                    listen: false)
-                                                .setDropDownIndex(0);
+                                            siteData
+                                              ..setSiteValue("كل المواقع")
+                                              ..setDropDownIndex(0)
+                                              ..setDropDownShift(
+                                                  getShiftid(value));
 
-                                            Provider.of<SiteData>(context,
-                                                    listen: false)
-                                                .setDropDownShift(0);
                                             shiftIndex = getShiftid(value);
 
                                             print(
@@ -763,15 +753,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                               .dropDownShiftIndex -
                                                           1] //-1 because كل المناوبات is counted in shift index
                                                       .shiftName
-                                              : siteData.dropDownShiftIndex == 0
-                                                  ? siteShiftData
-                                                      .dropDownShifts[siteData
-                                                          .dropDownShiftIndex]
-                                                      .shiftName
-                                                  : siteShiftData
-                                                      .dropDownShifts[siteData
-                                                          .dropDownShiftIndex]
-                                                      .shiftName,
+                                              : siteShiftData
+                                                  .dropDownShifts[siteData
+                                                          .dropDownShiftIndex -
+                                                      1]
+                                                  .shiftName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -814,18 +800,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               return RoundedLoadingIndicator();
                                             });
 
-                                        final token = Provider.of<UserData>(
-                                                context,
-                                                listen: false)
-                                            .user
-                                            .userToken;
+                                        siteData
+                                          ..setDropDownIndex(0)
+                                          ..setDropDownShift(0);
 
-                                        Provider.of<SiteData>(context,
-                                                listen: false)
-                                            .setDropDownIndex(0);
-                                        Provider.of<SiteData>(context,
-                                                listen: false)
-                                            .setDropDownShift(0);
                                         final String msg = await Provider.of<MemberData>(
                                                 context,
                                                 listen: false)
