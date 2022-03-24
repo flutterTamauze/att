@@ -100,6 +100,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   void initState() {
     super.initState();
     print("selected role ${widget.selectedRole}");
+    userRole = widget.selectedRole;
     print(widget.comingFromShifts);
     if (widget.comingFromShifts) {
       print("shift incoming =${widget.shiftNameIncoming}");
@@ -196,6 +197,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   String userRole = "";
   List<Shift> shiftsList;
   intlPhone.PhoneNumber editNumber;
+
   bool userImageFailed = false;
   @override
   Widget build(BuildContext context) {

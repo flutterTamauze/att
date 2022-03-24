@@ -44,12 +44,8 @@
 	<string>This app needs to use the camera to sign up user to make his profile also to make logic operation on the image</string>
 	<key>NSContactsUsageDescription</key>
 	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open and in the background.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location in the background.</string>
+	<string>This app is an attendance app which needs location access for the employees in order to know if they are at work location or not</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>...</string>
 	<key>NSMotionUsageDescription</key>
