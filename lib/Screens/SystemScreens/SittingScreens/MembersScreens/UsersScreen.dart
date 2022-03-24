@@ -81,10 +81,6 @@ class _UsersScreenState extends State<UsersScreen> {
     final userProvider = Provider.of<UserData>(context, listen: false);
     final comProvier = Provider.of<CompanyData>(context, listen: false);
     if (widget.comingFromShifts == false) {
-      if (mounted)
-        Provider.of<SiteData>(context, listen: false)
-            .setSiteValue("كل المواقع");
-    } else {
       Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
           Provider.of<SiteShiftsData>(context, listen: false).sites[1].name,
           true);
@@ -92,6 +88,9 @@ class _UsersScreenState extends State<UsersScreen> {
         ..setSiteValue("كل المواقع")
         ..setDropDownIndex(0)
         ..setDropDownShift(0);
+      if (mounted)
+        Provider.of<SiteData>(context, listen: false)
+            .setSiteValue("كل المواقع");
     }
 
     getData();
