@@ -49,22 +49,22 @@ class DownloadService {
       if (showApk) {
         showApk = false;
 
-        if (status.canUpdate) {
-          Future.delayed(Duration.zero, () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundedAlert(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        launch(iosDownloadLink);
-                      },
-                      title:
-                          getTranslated(context, 'تحديث التطبيق لأخر اصدار ؟'),
-                      content: "");
-                });
-          });
-        }
+        // if (status.canUpdate) {
+        //   Future.delayed(Duration.zero, () {
+        //     showDialog(
+        //         context: context,
+        //         builder: (BuildContext context) {
+        //           return RoundedAlert(
+        //               onPressed: () async {
+        //                 Navigator.pop(context);
+        //                 launch(iosDownloadLink);
+        //               },
+        //               title:
+        //                   getTranslated(context, 'تحديث التطبيق لأخر اصدار ؟'),
+        //               content: "");
+        //         });
+        //   });
+        // }
       }
     }
   }

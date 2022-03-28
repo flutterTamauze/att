@@ -13,7 +13,7 @@ class AttendByCardRetryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       width: 330.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12), color: Colors.orange),

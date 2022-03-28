@@ -105,7 +105,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
   Future<void> requestPermission(Permission permission, int index) async {
     if (await Permission.microphone.status == PermissionStatus.granted &&
         await Permission.camera.status == PermissionStatus.granted &&
-        await Permission.locationWhenInUse.status == PermissionStatus.granted &&
+        // await Permission.locationWhenInUse.status == PermissionStatus.granted &&
         await Permission.photos.status == PermissionStatus.granted) {
       setState(() {
         isAllGranted = true;

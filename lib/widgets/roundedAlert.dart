@@ -592,8 +592,7 @@ class _PermissionAlertState extends State<PermissionAlert> {
   }
 
   Future<void> requestPermission(Permission permission, int index) async {
-    if (await Permission.camera.status == PermissionStatus.granted &&
-        await Permission.locationWhenInUse.status == PermissionStatus.granted) {
+    if (await Permission.camera.status == PermissionStatus.granted) {
       setState(() {
         widget.allAccepted();
       });

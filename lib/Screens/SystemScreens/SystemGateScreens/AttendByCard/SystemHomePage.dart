@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
@@ -43,9 +44,20 @@ class _SystemHomePageState extends State<SystemHomePage> {
     super.didChangeDependencies();
   }
 
+  requestLocationPerm() async {
+    if (await Permission.locationWhenInUse.isDenied ||
+        await Permission.locationWhenInUse.isPermanentlyDenied ||
+        !await Permission.locationWhenInUse.isGranted) {
+      print("Permession denied yes");
+      await Permission.locationWhenInUse.request();
+      await Geolocator.requestPermission();
+    }
+  }
+
   void initState() {
     Provider.of<NotificationDataService>(context, listen: false)
         .notificationPermessions();
+    requestLocationPerm();
     super.initState();
     _startUp();
     firstget();

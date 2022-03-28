@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -313,8 +315,7 @@ class _LoginScreenState extends State<LoginScreen> {
   chechPermissions() async {
     print("CHECKING PERMESSION");
     if (_loginFormKey.currentState.validate()) {
-      if (await Permission.location.isGranted &&
-          await Permission.camera.isGranted) {
+      if (await Permission.camera.isGranted) {
         loginFunction();
       } else {
         showModalBottomSheet(
@@ -337,8 +338,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginFunction() async {
     final userData = Provider.of<UserData>(context, listen: false);
-    Provider.of<UserData>(context, listen: false).getCurrentLocation();
-    Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
+    if (Platform.isAndroid) {
+      Provider.of<UserData>(context, listen: false).getCurrentLocation();
+      Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
+    }
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (mounted)
       setState(() {

@@ -23,10 +23,10 @@ class PermissionHan with ChangeNotifier {
   bool currentDialogOnstream = true;
 
   List<PrData> permissionsList = [
-    PrData(
-        icon: Icons.location_on,
-        interfaceName: "تصريح الموقع",
-        permission: Permission.locationWhenInUse),
+    // PrData(
+    //     icon: Icons.location_on,
+    //     interfaceName: "تصريح الموقع",
+    //     permission: Permission.locationWhenInUse),
 
     // PrData(interfaceName: "تصريح الصور", permission: Permission.storage),
     // PrData(interfaceName: "تصريح الصوت", permission: Permission.microphone),
