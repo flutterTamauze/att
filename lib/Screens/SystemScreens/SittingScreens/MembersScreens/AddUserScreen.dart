@@ -742,21 +742,17 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             print(
                                                 "shiftid..... =    $shiftIndex");
                                           },
-                                          selectedvalue: !widget.isEdit
-                                              ? siteData.dropDownShiftIndex == 0
-                                                  ? siteShiftData
-                                                      .dropDownShifts[siteData
-                                                          .dropDownShiftIndex]
-                                                      .shiftName
-                                                  : siteShiftData
-                                                      .dropDownShifts[siteData
-                                                              .dropDownShiftIndex -
-                                                          1] //-1 because كل المناوبات is counted in shift index
-                                                      .shiftName
+                                          selectedvalue: siteData
+                                                      .dropDownShiftIndex ==
+                                                  0
+                                              ? siteShiftData
+                                                  .dropDownShifts[siteData
+                                                      .dropDownShiftIndex]
+                                                  .shiftName
                                               : siteShiftData
                                                   .dropDownShifts[siteData
                                                           .dropDownShiftIndex -
-                                                      1]
+                                                      1] //-1 because كل المناوبات is counted in shift index
                                                   .shiftName,
                                           textColor: Colors.orange,
                                         ),
