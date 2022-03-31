@@ -280,8 +280,6 @@ class _ScanPageState extends State<ScanPage> {
               (Route<dynamic> route) => false)
           .then((value) => controller.resumeCamera());
     }
-    print(qrText);
-    print(msg);
   }
 
   @override

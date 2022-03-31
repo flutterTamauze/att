@@ -108,7 +108,7 @@
 
 //     _cameraService.cameraController.startImageStream((image) async {
 //       if (_cameraService.cameraController != null) {
-//         print("controller is not null");
+//         debugPrint("controller is not null");
 //         // if its currently busy, avoids overprocessing
 //         if (_detectingFaces) return;
 
@@ -117,7 +117,7 @@
 //         try {
 //           List<Face> faces;
 //           faces = (await _mlKitService.getFacesFromImage(image)).cast<Face>();
-//           print("Got facess : ${faces.length}");
+//           debugPrint("Got facess : ${faces.length}");
 //           if (faces.length > 0) {
 //             setState(() {
 //               faceDetected = faces[0];
@@ -137,7 +137,7 @@
 
 //           _detectingFaces = false;
 //         } catch (e) {
-//           print(e);
+//          print(e);
 //           _detectingFaces = false;
 //         }
 //       }

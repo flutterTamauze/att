@@ -184,7 +184,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   int siteIdIndex = 0;
   int siteId = 0;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
-    print("val $val");
+    debugPrint("val $val");
     final DateTime maxDate = currentDate.add(const Duration(days: 31));
     final DateTime minDate = currentDate.subtract(const Duration(days: 31));
 
@@ -377,9 +377,6 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                             .difference(picked.first)
                                             .inDays >
                                         31) {
-                                      print(picked.last
-                                          .difference(picked.first)
-                                          .inDays);
                                       Fluttertoast.showToast(
                                           gravity: ToastGravity.CENTER,
                                           msg: getTranslated(context,
@@ -448,6 +445,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                 // width: 330,
                                 width: getkDeviceWidthFactor(context, 345),
                                 child: SiteDropdown(
+                                  height: 40,
                                   edit: true,
                                   list: Provider.of<SiteShiftsData>(context)
                                       .siteShiftList,
@@ -457,7 +455,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                   hint: getTranslated(context, "الموقع"),
                                   hintColor: Colors.black,
                                   onChange: (value) async {
-                                    // print()
+                                    // debugPrint()
                                     siteIdIndex = getSiteIndexBySiteName(value);
                                     if (siteId !=
                                         Provider.of<SiteShiftsData>(context,
@@ -487,7 +485,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
                                       //         dateToString,
                                       //         context);
                                     }
-                                    print(value);
+                                    debugPrint(value);
                                   },
                                   selectedvalue:
                                       Provider.of<SiteShiftsData>(context)
@@ -706,7 +704,7 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
   }
 
   Future<bool> onWillPop() {
-    print("back");
+    debugPrint("back");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const NavScreenTwo(2)),
         (Route<dynamic> route) => false);

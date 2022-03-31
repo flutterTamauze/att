@@ -36,7 +36,7 @@
 //   Future getSchedules;
 //   fillSchedules() async {
 //     var userProvider = Provider.of<UserData>(context, listen: false);
-//     print(widget.member.id);
+//     debugPrint(widget.member.id);
 //     getSchedules = Provider.of<ShiftsData>(context, listen: false)
 //         .isShiftScheduleByIdEmpty(
 //             userProvider.user.userToken, widget.member.id, context);
@@ -202,7 +202,7 @@
 //     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
 //     List<Shift> currentSite =
 //         list.where((element) => element.shiftId == shiftId).toList();
-//     print(currentSite[0].siteID);
+//     debugPrint(currentSite[0].siteID);
 //     return currentSite[0].siteID;
 //   }
 
@@ -246,7 +246,7 @@
 //   String getShiftNameById(
 //     int id,
 //   ) {
-//     print("current id");
+//     debugPrint("current id");
 //     var list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
 //     int index = list.length;
 //     for (int i = 0; i < index; i++) {
@@ -351,8 +351,8 @@
 //                       ? Container()
 //                       : InkWell(
 //                           onTap: () async {
-//                             print(widget.currentIndex);
-//                             print(widget.scheduleList[widget.currentIndex].id);
+//                             debugPrint(widget.currentIndex);
+//                             debugPrint(widget.scheduleList[widget.currentIndex].id);
 //                             return showDialog(
 //                                 context: context,
 //                                 builder: (BuildContext context) {

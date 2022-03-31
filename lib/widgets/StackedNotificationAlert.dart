@@ -108,8 +108,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 setState(() {
                                   isloading = true;
                                 });
-                                final int attendId = await attendObj
-                                    .getAttendProofID(user.id, user.userToken);
+
                                 final Position currentPosition =
                                     await Geolocator.getCurrentPosition(
                                         desiredAccuracy: LocationAccuracy.best);
@@ -117,7 +116,7 @@ class _StackedNotificaitonAlertState extends State<StackedNotificaitonAlert> {
                                 final String msg =
                                     await attendObj.acceptAttendProof(
                                         user.userToken,
-                                        attendId.toString(),
+                                        user.id,
                                         currentPosition);
                                 setState(() {
                                   isloading = false;

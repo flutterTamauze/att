@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -68,7 +69,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           .updateProfileImgFile(image.path)
           .then((value) {
         if (value == "success") {
-          // print(value)
+          // debugPrint(value)
 
           Fluttertoast.showToast(
               msg: getTranslated(context, "تم تغيير الصورة بنجاح"),
@@ -100,7 +101,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         }
       });
       Navigator.pop(context);
-      print("done!");
+      debugPrint("done!");
     } catch (e) {
       print(e);
     }
@@ -161,7 +162,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                print(Provider.of<UserData>(context, listen: false)
+                debugPrint(Provider.of<UserData>(context, listen: false)
                     .user
                     .userImage);
               },
@@ -218,8 +219,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     final File result = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CameraPicker(
-                                            camera: cameraDescription,
+                                          builder: (context) =>
+                                              const CameraPicker(
                                             fromScreen: "register",
                                           ),
                                         ));
@@ -469,7 +470,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                               listen: false)
                                           .editProfile(
                                               _passwordController.text);
-                                      print(msg);
                                       if (msg == "success") {
                                         setState(() {
                                           prefs.setStringList('userData', [
@@ -481,14 +481,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           ]);
 
                                           Navigator.pop(context);
-                                          print('Edit Done ');
                                         });
                                         successfulSaved(context);
                                         Navigator.pop(context);
                                       } else {
-                                        setState(() {
-                                          print('Edit Done ');
-                                        });
+                                        setState(() {});
                                         Fluttertoast.showToast(
                                             msg: getTranslated(
                                               context,
@@ -587,7 +584,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           final msg = await Provider.of<UserData>(context, listen: false)
               .changePassword(_passwordController.text);
 
-          print(msg);
           Navigator.pop(context);
           if (msg == "success") {
             try {
@@ -598,14 +594,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 final data = await deviceInfoPlugin.iosInfo;
                 final String chainValue = await storage.read(key: "deviceMac");
 
-                print(
-                    "saving to the keychain mac : ${data.identifierForVendor}"); //UUID for iOS
+                log("saving to the keychain mac : ${data.identifierForVendor}"); //UUID for iOS
                 if (chainValue == "" || chainValue == null) {
-                  print("chain Value is empty going to write in it");
                   await storage
                       .write(key: "deviceMac", value: data.identifierForVendor)
                       .whenComplete(
-                          () => print("item added to keychain successfully !"))
+                          () => log("item added to keychain successfully !"))
                       .catchError((e) {
                     print(e);
                   });

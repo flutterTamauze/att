@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final charCode = cUserId.codeUnitAt(i) ^ encCode.codeUnitAt(i);
       output.add(new String.fromCharCode(charCode));
     }
-    print(output.length);
+    debugPrint(output.length.toString());
     for (var i = cUserId.length; i < encCode.length; i++) {
       output.add(" ");
     }

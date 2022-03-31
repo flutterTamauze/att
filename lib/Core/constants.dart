@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/screen_util.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/fontManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/widgets/roundedAlert.dart';
 
 //http://192.168.0.119:8010
@@ -17,7 +19,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "https://Chilangoback.tamauzeds.com/Resources/images/";
-const localURL = "http://10.0.0.68:8010";
+const localURL = "http://10.0.0.65:8010";
 const appLogo = "resources/image.png";
 // const huaweiAppId = "104665933";
 // const huaweiSecret =
@@ -86,6 +88,18 @@ successfullDelete(BuildContext context) {
     textColor: Colors.white,
     fontSize: setResponsiveFontSize(16),
   );
+}
+
+int getSiteIndexBySiteName(String siteName, BuildContext context) {
+  final list =
+      Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
+  final int index = list.length;
+  for (int i = 0; i < index; i++) {
+    if (siteName == list[i].siteName) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 errorToast(BuildContext context) {

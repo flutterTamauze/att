@@ -106,13 +106,12 @@ class CompanyData extends ChangeNotifier {
     try {
       final response = await CompanyRepo().getCompanyData(companyId, userToken);
       if (response is Faliure) {
-        print(response.errorResponse);
+        debugPrint(response.errorResponse);
         return Faliure(
             code: response.code, errorResponse: response.errorResponse);
       } else {
         final decodedRes = json.decode(response);
-        print("COMPANY MSG }");
-        print(decodedRes["message"]);
+        debugPrint("COMPANY MSG }");
         if (decodedRes["message"] == "Success") {
           com = Company.fromJson(decodedRes);
 
@@ -156,8 +155,8 @@ class CompanyData extends ChangeNotifier {
         enabled = await Geolocator.isLocationServiceEnabled();
       }
 
-      print("company");
-      print("enable locaiton : $enabled");
+      debugPrint("company");
+      debugPrint("enable locaiton : $enabled");
 
       // && pos[0] != null
 
@@ -181,10 +180,10 @@ class CompanyData extends ChangeNotifier {
       }
     } else if (Platform.isIOS) {
       final bool enabled = await Geolocator.isLocationServiceEnabled();
-      print("company");
-      print("enable locaiton : $enabled");
+      debugPrint("company");
+      debugPrint("enable locaiton : $enabled");
       final pos = await TrustLocation.getLatLong;
-      print("--------------${pos[0]}------------");
+      debugPrint("--------------${pos[0]}------------");
       // && pos[0] != null
       if (enabled) {
         final bool isMockLocation = await detectJailBreak();
@@ -207,34 +206,34 @@ class CompanyData extends ChangeNotifier {
     }
   }
 
-  Future<String> guestTokaen() async {
-    try {
-      final response = await http.post(
-          Uri.parse("$baseURL/api/Authenticate/login"),
-          body: json.encode(
-            {"Username": "GUEST67", "Password": "Amh*1234"},
-          ),
-          headers: {
-            'Content-type': 'application/json',
-            'x-api-key': _apiToken
-          });
+  // Future<String> guestTokaen() async {
+  //   try {
+  //     final response = await http.post(
+  //         Uri.parse("$baseURL/api/Authenticate/login"),
+  //         body: json.encode(
+  //           {"Username": "GUEST67", "Password": "Amh*1234"},
+  //         ),
+  //         headers: {
+  //           'Content-type': 'application/json',
+  //           'x-api-key': _apiToken
+  //         });
 
-      final decodedRes = json.decode(response.body);
-      print(response.body);
+  //     final decodedRes = json.decode(response.body);
+  //     debugPrint(response.body);
 
-      if (decodedRes["message"] == "Success : ") {
-        return decodedRes["token"];
-      } else if (decodedRes["message"] ==
-          "Failed : user name and password not match ") {
-        return "-2";
-      } else if (decodedRes["message"] == "Fail : This Company is suspended") {
-        return "-4";
-      }
-    } catch (e) {
-      print(e);
-    }
-    return "-3";
-  }
+  //     if (decodedRes["message"] == "Success : ") {
+  //       return decodedRes["token"];
+  //     } else if (decodedRes["message"] ==
+  //         "Failed : user name and password not match ") {
+  //       return "-2";
+  //     } else if (decodedRes["message"] == "Fail : This Company is suspended") {
+  //       return "-4";
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return "-3";
+  // }
 
   // Future<String> addGuestCompany(
   //     {File image, Company company, BuildContext context}) async {
@@ -268,13 +267,6 @@ class CompanyData extends ChangeNotifier {
       Company company,
       BuildContext context,
       String guestToken}) async {
-    print(company.nameAr);
-    print(company.nameEn);
-    print(company.email);
-    print(company.nameEn.replaceAll(" ", "").toUpperCase());
-    print(company.adminPhoneNumber);
-
-    print(image.lengthSync());
     String msg;
 
     final stream = new http.ByteStream(Stream.castFrom(image.openRead()));
@@ -299,7 +291,6 @@ class CompanyData extends ChangeNotifier {
 
     await request.send().then((response) async {
       response.stream.transform(utf8.decoder).listen((value) async {
-        print(value);
         final Map<String, dynamic> responesDedoded = json.decode(value);
 
         if (responesDedoded['message'] == "Creat Company Success") {
@@ -309,7 +300,7 @@ class CompanyData extends ChangeNotifier {
           return msg;
         } else if (responesDedoded['message'] ==
             "Fail : The same Company name already exists") {
-          print('nameExists');
+          debugPrint('nameExists');
           msg = "nameExists";
           return msg;
         }
@@ -332,7 +323,7 @@ class CompanyData extends ChangeNotifier {
   //       });
 
   //   var decodedRes = json.decode(response.body);
-  //   print(response.body);
+  //   debugPrint(response.body);
 
   //   if (decodedRes["message"] == "Success") {
   //     var shiftObjJson = jsonDecode(response.body)['data'] as List;
@@ -375,8 +366,6 @@ class CompanyData extends ChangeNotifier {
           });
 
       final decodedRes = json.decode(response.body);
-      print(response.body);
-      print(decodedRes["message"]);
       if (response.statusCode == 401) {
         await inheritDefault.login(context);
         await editCompanyProfile(com, token, context);
@@ -394,7 +383,7 @@ class CompanyData extends ChangeNotifier {
 
   Future<String> uploadImage(File _image, String token) async {
     String data = "";
-    print("uploading image....");
+    debugPrint("uploading image....");
 
     final stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
     final length = await _image.length();
@@ -409,11 +398,9 @@ class CompanyData extends ChangeNotifier {
 
     await request.send().then((response) async {
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
         final Map<String, dynamic> responesDedoded = json.decode(value);
 
         if (responesDedoded['message'] == "Success : Image updated success") {
-          print(responesDedoded['message']);
           data = responesDedoded['data'];
           return data;
         } else {
@@ -428,16 +415,16 @@ class CompanyData extends ChangeNotifier {
 
   Future<String> updateProfileImgFile(String imgPath, String token) async {
     final File _image = File(imgPath);
-    print(_image.lengthSync());
+
     var url = "";
 
     await uploadImage(_image, token).then((value) async {
       if (value != "") {
-        print("path :$value");
+        debugPrint("path :$value");
         url = "$baseURL/$value";
-        print("lunch url $url");
+        debugPrint("lunch url $url");
         com.logo = url;
-        print("success =  $value");
+        debugPrint("success =  $value");
 
         notifyListeners();
       }

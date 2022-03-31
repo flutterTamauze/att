@@ -25,11 +25,9 @@ class VacationData with ChangeNotifier {
       },
     );
     isLoading = false;
-    print(response.body);
     vactionList.removeAt(vacationIndex);
 
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode.toString());
     notifyListeners();
     return jsonDecode(response.body)["message"];
   }
@@ -50,7 +48,6 @@ class VacationData with ChangeNotifier {
           "date": vacation.vacationDate.toIso8601String()
         }));
     isLoading = false;
-    print(response.body);
 
     vactionList.add(vacation);
     notifyListeners();
@@ -73,7 +70,6 @@ class VacationData with ChangeNotifier {
           "date": vacation.vacationDate.toIso8601String()
         }));
     isLoading = false;
-    print(response.body);
     vactionList.removeAt(vacationIndex);
 
     vactionList.insert(vacationIndex, vacation);
@@ -90,7 +86,7 @@ class VacationData with ChangeNotifier {
   }
 
   setCopyByIndex(int index) {
-    print(vactionList.length);
+    debugPrint(vactionList.length.toString());
     copyVacationList = [];
 
     copyVacationList.add(vactionList[index]);
@@ -101,7 +97,7 @@ class VacationData with ChangeNotifier {
   getOfficialVacations(int companyId, String token) async {
     vactionList = [];
     isLoading = true;
-    print(DateTime.now().year);
+    debugPrint(DateTime.now().year.toString());
     notifyListeners();
     final response = await http.get(
         Uri.parse(
@@ -111,7 +107,6 @@ class VacationData with ChangeNotifier {
           'Authorization': "Bearer $token"
         });
     final decodedRes = json.decode(response.body);
-    print(decodedRes);
     isLoading = false;
     if (jsonDecode(response.body)["message"] == "Success") {
       final vacObjJson = jsonDecode(response.body)['data'] as List;

@@ -52,7 +52,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   ];
 
   _onPageChange(int indx) {
-    print("change");
+    debugPrint("change");
     setState(() {
       current = indx;
     });
@@ -69,8 +69,8 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   // }
 
   // _onLocalNotificationClickEvent(Map<String, dynamic> event) {
-  //   print("onBACKGROUND click");
-  //   print(event);
+  //   debugPrint("onBACKGROUND click");
+  //   debugPrint(event);
   // }
 
   // Future<void> initPlatformState() async {
@@ -98,7 +98,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   }
 
   // void _onNotificationOpenedApp(RemoteMessage remoteMessage) {
-  //   print("onNotificationOpenedApp: " + remoteMessage.data.toString());
+  //   debugPrint("onNotificationOpenedApp: " + remoteMessage.data.toString());
   // }
 
   saveNotificationToCache(RemoteMessage event) async {
@@ -144,18 +144,13 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   NotificationDataService _notifService = NotificationDataService();
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
-      print("####Recveiving data on message tapped ####");
-      print(event.notification.body);
-      print(event.notification.title);
-      print(event.data["category"] == "attend");
+      debugPrint("####Recveiving data on message tapped ####");
 
       saveNotificationToCache(event);
       // player.play("notification.mp3");
       if (event.data["category"] == "attend") {
         log("Opened an attend proov notification !");
 
-        print(event.notification.body);
-        print(event.notification.title);
         _notifService.showAttendanceCheckDialog(context);
       }
     });

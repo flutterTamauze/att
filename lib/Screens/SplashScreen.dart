@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart' as p;
 import '../Screens/intro.dart';
 import 'package:http/http.dart' as http;
-
 import '../Core/constants.dart';
 import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
@@ -52,13 +52,13 @@ class _SplashScreenState extends State<SplashScreen>
     final userProv = Provider.of<UserData>(context, listen: false);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> userData = (prefs.getStringList('userData') ?? null);
-    print(userData);
+    debugPrint(userData.toString());
     if (userData == null || userData.isEmpty) {
       await reverse("", 1);
     } else {
       final value = await login(userName: userData[0], password: userData[1]);
 
-      print("VALUE OF USER $value");
+      debugPrint("VALUE OF USER $value");
       //  Provider.of<DaysOffData>(context, listen: false).getDaysOff(
       //       Provider.of<CompanyData>(context, listen: false).com.id,
       //       Provider.of<UserData>(context, listen: false).user.userToken,
@@ -72,26 +72,25 @@ class _SplashScreenState extends State<SplashScreen>
           isError = true;
         });
         if (isError == false) {
-          print("topic name : ");
-          print(
-              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          debugPrint("topic name : ");
+          log("attend${Provider.of<CompanyData>(context, listen: false).com.id}");
 
           await firebaseMessaging.subscribeToTopic(
               "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-          print("subscribed to topic");
+          debugPrint("subscribed to topic");
         }
       }
 
       reverse(userData[0], value);
     }
-    print("user data checked ...");
+    debugPrint("user data checked ...");
   }
 
   checkLanguage() async {
     final Locale cachedLocale = await getLocale();
     Provider.of<PermissionHan>(context, listen: false).setLocale(cachedLocale);
     MyApp.setLocale(context, cachedLocale);
-    print("check languaage done ...");
+    debugPrint("check languaage done ...");
   }
 
   Future<int> login({String userName, String password}) async {
@@ -109,10 +108,9 @@ class _SplashScreenState extends State<SplashScreen>
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final cachedUserData = (prefs.getStringList('allUserData') ?? null);
     if (cachedUserData == null || cachedUserData.isEmpty) {
-      print('null');
+      debugPrint('null');
     } else {
-      print('not null');
-      print(cachedUserData[4]);
+      debugPrint('not null');
       Provider.of<UserData>(context, listen: false)
           .setCacheduserData(cachedUserData);
     }
@@ -139,7 +137,6 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ));
           } else {
-            print(value);
             if (value == USER_INVALID_RESPONSE || value == null) {
               await getUserData();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -169,7 +166,7 @@ class _SplashScreenState extends State<SplashScreen>
                     builder: (context) => SuperCompanyPieChart(),
                   ));
             } else if (value > 0 && value < 6) {
-              print(" usertype $value");
+              debugPrint(" usertype $value");
 
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
@@ -213,10 +210,10 @@ class _SplashScreenState extends State<SplashScreen>
   //   var interpreterOptions = InterpreterOptions()..addDelegate(NnApiDelegate());
   //   final interpreter = await Interpreter.fromAsset('model_unquant.tflite',
   //       options: interpreterOptions);
-  //   print("Result after loading model  : $interpreter");
+  //   debugPrint("Result after loading model  : $interpreter");
   //   // var result = await Tflite.loadModel(
   //   //     labels: "assets/labels.txt", model: "assets/model_unquant.tflite");
-  //   // print("Result after loading model  : $result");
+  //   // debugPrint("Result after loading model  : $result");
   // }
 
   loadSecondModel() async {
@@ -231,7 +228,7 @@ class _SplashScreenState extends State<SplashScreen>
   String _token = "";
   void _onTokenEvent(String event) {
     _token = event;
-    print("TokenEvent: " + _token);
+    debugPrint("TokenEvent: " + _token);
   }
 
   // initPlatformState() async {
@@ -288,79 +285,73 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      body: !isLoading
-          ? Container(
-              decoration: const BoxDecoration(color: Colors.black),
-              child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.expand,
-                children: <Widget>[
-                  FadeTransition(
-                    opacity: animationController.drive(
-                      CurveTween(curve: Curves.fastOutSlowIn),
-                    ),
-                    child: Stack(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Center(
-                            child: Container(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
+        body: Container(
+      decoration: const BoxDecoration(color: Colors.black),
+      child: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.expand,
+        children: <Widget>[
+          Stack(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  width: 300.w,
+                  height: 300.h,
+                  child: Image.asset(
+                    "resources/ChilanguSplash.gif",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+              // Center(
+              //     child: Container(
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(100),
+              //     child: Image.asset(
+              //       appLogo,
+              //     ),
+              //   ),
+              //   height: 150.h,
+              //   width: 150.w,
+              // )),
+              // Center(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 8),
+              //     child: Container(
+              //       width: 500.w,
+              //       child: Lottie.asset("resources/fire.json",
+              //           fit: BoxFit.fitWidth),
+              //     ),
+              //   ),
+              // ),
+              ,
+              Positioned(
+                bottom: 10.h,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    width: 140.w,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            height: 130.h,
                             child: Image.asset(
-                              appLogo,
-                            ),
-                          ),
-                          height: 150.h,
-                          width: 150.w,
-                        )),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Container(
-                              width: 500.w,
-                              child: Lottie.asset("resources/fire.json",
-                                  fit: BoxFit.fitWidth),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 10.h,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: Container(
-                              width: 140.w,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      height: 130.h,
-                                      child: Image.asset(
-                                        'resources/TDSlogo.png',
-                                        fit: BoxFit.fitHeight,
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                              'resources/TDSlogo.png',
+                              fit: BoxFit.fitHeight,
+                            )),
                       ],
                     ),
                   ),
-                ],
-              ),
-            )
-          : Container(
-              height: double.infinity,
-              color: Colors.black,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
-                  backgroundColor: Colors.black,
                 ),
               ),
-            ),
-    );
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 }

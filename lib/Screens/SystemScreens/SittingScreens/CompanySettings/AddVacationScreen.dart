@@ -173,8 +173,6 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                     selectedDateString,
 
                                                 onChanged: (value) {
-                                                  print(date);
-                                                  print(value);
                                                   if (value != date) {
                                                     date = value;
                                                     selectedDateString = date;
@@ -184,10 +182,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                           DateTime.parse(
                                                               selectedDateString);
                                                     });
-                                                    print(selectedDate);
                                                   }
-
-                                                  print(value);
                                                 },
                                                 type: DateTimePickerType.date,
                                                 firstDate: DateTime(

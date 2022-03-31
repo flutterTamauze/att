@@ -285,9 +285,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   newString =
                                                       "$fromText $toText";
                                                 });
-                                                print(picked.length);
-                                                print(fromDate);
-                                                print(toDate);
+
                                                 if (_dateController.text !=
                                                     newString) {
                                                   _dateController.text =
@@ -965,8 +963,6 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               },
                                             );
                                           } else {
-                                            print(selectedDateString);
-                                            print(timeOutController.text);
                                             Fluttertoast.showToast(
                                                 gravity: ToastGravity.CENTER,
                                                 backgroundColor: Colors.red,

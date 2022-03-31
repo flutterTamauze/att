@@ -39,7 +39,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             context);
 
     if (msg is Faliure) {
-      print("msg faliure ${msg.code} ${msg.errorResponse}");
+      debugPrint("msg faliure ${msg.code} ${msg.errorResponse}");
     }
     return msg;
   }

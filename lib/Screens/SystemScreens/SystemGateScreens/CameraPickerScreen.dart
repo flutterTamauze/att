@@ -34,14 +34,12 @@ import '../../../main.dart';
 import 'NavScreenPartTwo.dart';
 
 class CameraPicker extends StatefulWidget {
-  final CameraDescription camera;
   final String fromScreen, shiftQrcode, qrText;
   const CameraPicker({
     this.fromScreen,
     this.shiftQrcode,
     this.qrText,
     Key key,
-    @required this.camera,
   }) : super(key: key);
 
   @override
@@ -70,11 +68,11 @@ class TakePictureScreenState extends State<CameraPicker> {
   bool _isDetecting = false;
   int numberOfFacesDetected = -1;
   CameraController cameraController;
+  CameraDescription description;
   CameraLensDirection cameraLensDirection = CameraLensDirection.front;
   initCamera() async {
     try {
-      final CameraDescription description =
-          await ScannerUtils.getCamera(cameraLensDirection);
+      description = await ScannerUtils.getCamera(cameraLensDirection);
       cameraController = CameraController(description,
           Platform.isIOS ? ResolutionPreset.high : ResolutionPreset.low,
           enableAudio: false);
@@ -115,7 +113,7 @@ class TakePictureScreenState extends State<CameraPicker> {
       ScannerUtils.detect(
               image: imageFromStream,
               detectInImage: faceDetector.processImage,
-              imageRotation: widget.camera.sensorOrientation)
+              imageRotation: description.sensorOrientation)
           .then((dynamic result) async {
         if (mounted) {
           setState(() {
@@ -174,9 +172,8 @@ class TakePictureScreenState extends State<CameraPicker> {
 
   void _predict() async {
     final img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
-    print(imageInput.data);
     final pred = _classifier.predict(imageInput);
-    print("pred $pred");
+    debugPrint("pred $pred");
     setState(() {
       this.category = pred;
     });
@@ -201,7 +198,7 @@ class TakePictureScreenState extends State<CameraPicker> {
   Future<String> fillPath() async {
     return join(
       (await getTemporaryDirectory().catchError((e) {
-        print("directory error $e");
+        debugPrint("directory error $e");
       }))
           .path,
       '${DateTime.now()}.jpg',
@@ -326,7 +323,6 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                       value.saveTo(await path));
 
                                               img = File(await path);
-                                              print(path);
                                               // if (widget.fromScreen == "register") {
                                               //   // await signUp(context);
                                               // }
@@ -366,12 +362,12 @@ class TakePictureScreenState extends State<CameraPicker> {
 
                                               cameraController.dispose();
                                               // _cameraService.cameraController.dispose();
-                                              print(
+                                              debugPrint(
                                                   "=====Compressed==========");
                                               if (widget.fromScreen !=
                                                   "register") {
                                                 // predictedUserName = _faceNetService.predict();
-                                                // print(predictedUserName);
+                                                // debugPrint(predictedUserName);
                                               }
                                               final GoogleVisionImage
                                                   fbVisionImage =
@@ -449,7 +445,6 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                                 widget.qrText,
                                                             image:
                                                                 imgCompressed);
-                                                    print(msg);
 
                                                     switch (msg) {
                                                       case "Success : successfully registered":

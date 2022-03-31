@@ -82,14 +82,14 @@ class SiteData with ChangeNotifier {
 
   int dropDownSitesIndex = 1;
   setDropDownIndex(int newIndex) {
-    print("new index is $newIndex");
+    debugPrint("new index is $newIndex");
     dropDownSitesIndex = newIndex;
     notifyListeners();
   }
 
   int dropDownShiftIndex = 1;
   setDropDownShift(int newValue) {
-    print("new index is $newValue");
+    debugPrint("new index is $newValue");
     dropDownShiftIndex = newValue;
     // notifyListeners();
   }
@@ -124,7 +124,6 @@ class SiteData with ChangeNotifier {
         );
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
-        print(response.body);
 
         if (decodedRes["message"] == "Success") {
           // sitesList.removeAt(listIndex);
@@ -165,7 +164,7 @@ class SiteData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =
@@ -177,7 +176,6 @@ class SiteData with ChangeNotifier {
         );
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
-        print(response.body);
 
         if (decodedRes["message"] == "Success") {
           site = Site(
@@ -202,15 +200,13 @@ class SiteData with ChangeNotifier {
   }
 
   Future<Site> getSiteBySiteId(int siteId, String userToken) async {
-    print(siteId);
-    print(userToken);
+    debugPrint(siteId.toString());
     final result = await http.get(Uri.parse("$baseURL/api/Sites/$siteId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    print(result.statusCode);
-    print(result.body);
+    debugPrint(result.statusCode.toString());
     final decodedResponse = json.decode(result.body);
     if (decodedResponse["message"] == 'Success') {
       final Site singleSiteData = Site.fromJson(decodedResponse["data"]);
@@ -243,7 +239,7 @@ class SiteData with ChangeNotifier {
     if (pageIndex > 1) {
       notifyListeners();
     }
-    print(("printing the page index $pageIndex"));
+    debugPrint(("printing the page index $pageIndex"));
 
     final response = await http.get(
         Uri.parse(
@@ -263,7 +259,6 @@ class SiteData with ChangeNotifier {
       );
     } else if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
 
       if (decodedRes["message"] == "Success") {
         final sitesNewList = jsonDecode(response.body)['data'] as List;
@@ -327,7 +322,6 @@ class SiteData with ChangeNotifier {
         );
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
-        print(response.body);
 
         if (decodedRes["message"] == "Success") {
           final Site newSite = Site(
@@ -376,9 +370,6 @@ class SiteData with ChangeNotifier {
 
   editSite(Site site, int companyId, String userToken, int id,
       BuildContext context) async {
-    print(
-        " id:${site.id}  name:${site.name} long:${site.long} lat:${site.lat} comId:$companyId , listId:$id");
-
     dropDownSitesStrings = [];
     final response = await http.put(Uri.parse("$baseURL/api/Sites/${site.id}"),
         body: json.encode(
@@ -394,8 +385,7 @@ class SiteData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    print(response.body);
-    print(response.statusCode);
+    debugPrint(response.statusCode.toString());
     if (response.statusCode == 401) {
       await inherit.login(context);
       userToken = Provider.of<UserData>(context, listen: false).user.userToken;
@@ -408,10 +398,9 @@ class SiteData with ChangeNotifier {
       );
     } else if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
 
       if (decodedRes["message"] == "Success") {
-        print("edit success");
+        debugPrint("edit success");
         final Site newSite = Site(
             id: decodedRes['data']['id'] as int,
             lat: double.parse(decodedRes['data']['siteLat'].toString()),

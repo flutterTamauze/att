@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +29,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
   @override
   void initState() {
     languageCode = widget.locale;
-    print(languageCode);
+    log(languageCode);
     super.initState();
   }
 
@@ -68,7 +70,6 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                       child: DropdownButton(
                     elevation: 2,
                     onChanged: (value) {
-                      print(value);
                       Locale _tempLocal;
                       switch (value) {
                         case 'Ar':
@@ -82,7 +83,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                         Provider.of<PermissionHan>(context, listen: false)
                             .setLocale(_tempLocal);
                       });
-                      print("current local $_tempLocal");
+
                       setLocale(value == "En" ? "en" : "ar");
                       MyApp.setLocale(context, _tempLocal);
                       Navigator.maybePop(context);

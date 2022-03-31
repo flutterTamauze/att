@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,7 +11,6 @@ class AttendProof {
   String getProofId() => proofId;
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
-    print(userId);
     final response = await http.post(
       Uri.parse("$baseURL/api/AttendProof/AddAttendProof?userid=$userId"),
       headers: {
@@ -18,8 +18,6 @@ class AttendProof {
         'Authorization': "Bearer $userToken"
       },
     );
-    print(response.body);
-    print("status code : ${response.statusCode}");
     final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (fcmToken == null) {
@@ -51,10 +49,8 @@ class AttendProof {
           Uri.parse(
               "$baseURL/api/AttendProof/GetLastAttendProofbyUser/$userId"),
           headers: {'Authorization': "Bearer $userToken"});
-      print(response.statusCode);
-      print(response.body);
+
       final decodedResponse = jsonDecode(response.body);
-      print(decodedResponse["message"]);
       if (decodedResponse["message"] == "Success") {
         return decodedResponse["data"];
       } else {
@@ -67,20 +63,22 @@ class AttendProof {
   }
 
   Future<String> acceptAttendProof(
-      String userToken, String attendId, Position latLng) async {
+      String userToken, String userId, Position latLng) async {
     final response = await http.put(
-      Uri.parse("$localURL/api/AttendProof/Approve"),
+      Uri.parse(
+          "https://ChilangoBackVUT.tamauzeds.com/api/AttendProof/Approve"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
       },
       body: json.encode({
-        "id": attendId,
+        "userId": userId,
         "longitude": latLng.longitude,
         "latitude": latLng.latitude
       }),
     );
-    print(response.statusCode);
+    print(userId);
+
     print(response.body);
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Fail : Proof time out!") {

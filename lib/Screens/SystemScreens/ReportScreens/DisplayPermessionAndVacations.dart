@@ -51,7 +51,6 @@ class _VacationAndPermessionsReportState
   String userName;
   searchInList(String value, int siteId, int companyId) async {
     if (value.isNotEmpty) {
-      print(companyId);
       await Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
@@ -147,7 +146,6 @@ class _VacationAndPermessionsReportState
                               return a.username.compareTo(b.username);
                             },
                             textSubmitted: (data) {
-                              print(data);
                               setState(() {
                                 showSearchIcon = false;
 
@@ -252,7 +250,6 @@ class _VacationAndPermessionsReportState
 
                                 final List<int> indexes = [];
 
-                                print(comMissionProv.userNames.length);
                                 for (int i = 0;
                                     i < comMissionProv.userNames.length;
                                     i++) {
@@ -263,8 +260,6 @@ class _VacationAndPermessionsReportState
                                 }
                                 if (_nameController.text != item.username) {
                                   setState(() {
-                                    print(item.username);
-
                                     userName = item.username;
                                     searchTextField.textField.controller.text =
                                         item.username;

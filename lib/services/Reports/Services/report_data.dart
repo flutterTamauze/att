@@ -46,13 +46,10 @@ class DailyReportUnit {
       if (time == 0) {
         return "-";
       } else {
-        print(time);
         final double hoursDouble = time / 60.0;
         final int h = hoursDouble.toInt();
-        print(h);
         final double minDouble = time.toDouble() % 60;
         final int m = minDouble.toInt();
-        print(m);
         final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
@@ -196,13 +193,10 @@ class LateAbsenceReportUnit {
       if (time == 0) {
         return "-";
       } else {
-        print(time);
         final double hoursDouble = time / 60.0;
         final int h = hoursDouble.toInt();
-        print(h);
         final double minDouble = time.toDouble() % 60;
         final int m = minDouble.toInt();
-        print(m);
         final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
@@ -277,13 +271,10 @@ class UserAttendanceReportUnit {
       if (time == 0) {
         return "-";
       } else {
-        print(time);
         final double hoursDouble = time / 60.0;
         final int h = hoursDouble.toInt();
-        print(h);
         final double minDouble = time.toDouble() % 60;
         final int m = minDouble.toInt();
-        print(m);
         final NumberFormat formatter = new NumberFormat("00");
         return "${formatter.format(h)}:${formatter.format(m)}";
       }
@@ -342,7 +333,6 @@ class ReportsData with ChangeNotifier {
       },
     );
     isLoading = false;
-    print(response.body);
 
     if (jsonDecode(response.body)["message"] ==
         "Success : AttendProof Deleted!") {
@@ -358,7 +348,6 @@ class ReportsData with ChangeNotifier {
     final decodedResponse = json.decode(response);
     if (decodedResponse["message"] == "Success") {
       todayUserReport = TodayUserReport.fromJson(decodedResponse["data"]);
-      print(todayUserReport.attend);
       notifyListeners();
       return "Success";
     }
@@ -366,10 +355,14 @@ class ReportsData with ChangeNotifier {
   }
 
   getDailyAttendProofReport(
-      String userToken, var apiId, String date, BuildContext context) {
+    String userToken,
+    int siteId,
+    String date,
+    BuildContext context,
+  ) {
     futureListener = getDailyAttendProofApi(
       userToken,
-      apiId,
+      siteId,
       date,
       context,
     );
@@ -377,9 +370,9 @@ class ReportsData with ChangeNotifier {
   }
 
   getDailyAttendProofApi(
-      String userToken, var apiId, String date, BuildContext context) async {
+      String userToken, int siteId, String date, BuildContext context) async {
     attendProofList =
-        await ReprotsRepo().getDailyAttendProofApi(apiId, userToken, date);
+        await ReprotsRepo().getDailyAttendProofApi(siteId, userToken, date);
     notifyListeners();
   }
 
@@ -400,7 +393,6 @@ class ReportsData with ChangeNotifier {
         "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date",
         userToken);
     if (response is Faliure) {
-      print(response.errorResponse);
       if (response.code == NO_INTERNET) {
         return "noInternet";
       }
@@ -447,7 +439,6 @@ class ReportsData with ChangeNotifier {
         dailyReport.attendListUnits.clear();
         isLoading = false;
         notifyListeners();
-        print("message ${dailyReport.isHoliday}");
         return "holiday";
       } else {
         return "wrong";
@@ -464,20 +455,16 @@ class ReportsData with ChangeNotifier {
   }
 
   String getTimeToString(int time) {
-    print(time);
     final double hoursDouble = time / 60.0;
     final int h = hoursDouble.toInt();
-    print(h);
     final double minDouble = time.toDouble() % 60;
     final int m = minDouble.toInt();
-    print(m);
     final NumberFormat formatter = new NumberFormat("00");
     return "${formatter.format(h)}:${formatter.format(m)}";
   }
 
   Future<String> getUserReportUnitsApi(String userToken, String userId,
       String dateFrom, String dateTo, BuildContext context) async {
-    print("UseriD $userId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<UserAttendanceReportUnit> newReportList;
     isLoading = true;
 
@@ -523,7 +510,6 @@ class ReportsData with ChangeNotifier {
             decodedRes["data"]["totalOffcialVacation"] as int;
         log(reportObjJson.toString());
         if (reportObjJson.isNotEmpty) {
-          print("reportObjJson: $reportObjJson");
           userAttendanceReport.isDayOff = 0;
           newReportList = reportObjJson
               .map(
@@ -532,7 +518,6 @@ class ReportsData with ChangeNotifier {
 
           userAttendanceReport.userAttendListUnits = newReportList;
           notifyListeners();
-          print("success");
           return "Success";
         } else {
           userAttendanceReport.userAttendListUnits = [];
@@ -562,14 +547,13 @@ class ReportsData with ChangeNotifier {
 
   getLateAbsenceReportApi(String userToken, int siteId, String dateFrom,
       String dateTo, BuildContext context) async {
-    print("siteId $siteId , dateFrom = $dateFrom , dataTo = $dateTo");
     List<LateAbsenceReportUnit> newReportList;
     isLoading = true;
     notifyListeners();
 
     try {
       final response = await ReprotsRepo().getLateAbsenceReport(
-          "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo",
+          "$baseURL/api/Reports/GetLateAbsentReport_New?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo",
           userToken);
 //  "https://ChilangoBackVUT.tamauzeds.com/api/Reports/GetLateAbsentReport_New?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"
 

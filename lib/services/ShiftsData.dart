@@ -41,12 +41,11 @@ class ShiftsData with ChangeNotifier {
     bool addallshiftsBool,
   ) {
     try {
-      print("findMatchingShifts : $siteId");
+      debugPrint("findMatchingShifts : $siteId");
       shiftsBySite =
           shiftsList.where((element) => element.siteID == siteId).toList();
-      print(shiftsBySite[0].shiftName);
-      print("shiftsBySite length : ${shiftsBySite.length}");
-      print("shiftsLength : ${shiftsList.length}");
+      debugPrint("shiftsBySite length : ${shiftsBySite.length}");
+      debugPrint("shiftsLength : ${shiftsList.length}");
 
       if (addallshiftsBool == true) {
         shiftsBySite.insert(
@@ -74,7 +73,7 @@ class ShiftsData with ChangeNotifier {
     } catch (e) {
       print(e);
     }
-    print("shift by site length ${shiftsBySite.length}");
+    debugPrint("shift by site length ${shiftsBySite.length}");
     return shiftsBySite.length;
   }
 
@@ -106,7 +105,6 @@ class ShiftsData with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-    print(response.body);
     final decodedResponse = json.decode(response.body);
     return decodedResponse["message"];
   }
@@ -124,23 +122,22 @@ class ShiftsData with ChangeNotifier {
         return true;
       }
     } else {
-      print("no schedules");
+      debugPrint("no schedules");
     }
     return false;
   }
 
   Future<bool> isShiftScheduleByIdEmpty(
       String usertoken, String userId, BuildContext context) async {
-    print("user id $userId");
+    debugPrint("user id $userId");
     final response = await http.get(
         Uri.parse("$baseURL/api/ShiftSchedule/GetScheduleByUserId/$userId"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': "Bearer $usertoken"
         });
-    print(response.statusCode);
-    print("asdms");
-    print(response.body);
+    debugPrint(response.statusCode.toString());
+    debugPrint("asdms");
     final decodedResponse = json.decode(response.body);
 
     final scheduleJson = decodedResponse['data'] as List;
@@ -148,7 +145,7 @@ class ShiftsData with ChangeNotifier {
         .map((shiftJson) => ShiftSheduleModel.fromJson(shiftJson))
         .toList();
     if (shiftScheduleList.isNotEmpty) {
-      print("not empty");
+      debugPrint("not empty");
 
       notifyListeners();
       return false;
@@ -171,9 +168,8 @@ class ShiftsData with ChangeNotifier {
       int scheduleId) async {
     isLoading = true;
     notifyListeners();
-    print(scheduleId);
-    print(shiftIds[0].shiftname);
-    print(shiftIds[1].shiftname);
+    debugPrint(scheduleId.toString());
+
     final response = await http.put(
         Uri.parse(
           "$baseURL/api/ShiftSchedule/Edit/$scheduleId",
@@ -205,7 +201,6 @@ class ShiftsData with ChangeNotifier {
           "originalShift": usershiftId
         }));
     isLoading = false;
-    print(response.body);
     notifyListeners();
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["statusCode"] == 200) {
@@ -234,7 +229,7 @@ class ShiftsData with ChangeNotifier {
     DateTime to,
     userSiteid,
   ) async {
-    print("adding shift sched for id $usershiftId");
+    debugPrint("adding shift sched for id $usershiftId");
     isLoading = true;
     notifyListeners();
     final response = await http.post(
@@ -267,7 +262,6 @@ class ShiftsData with ChangeNotifier {
           "originalShift": usershiftId
         }));
     isLoading = false;
-    print(response.body);
     notifyListeners();
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["statusCode"] == 200) {
@@ -299,7 +293,6 @@ class ShiftsData with ChangeNotifier {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
       });
-      print(response.body);
       if (response.statusCode == 401) {
         await inherit.login(context);
         userToken =
@@ -307,7 +300,6 @@ class ShiftsData with ChangeNotifier {
         await deleteShift(shiftId, userToken, listIndex, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
-        print(response.body);
 
         if (decodedRes["message"] == "Success") {
           if (shiftsBySite.length > 1) {
@@ -358,7 +350,7 @@ class ShiftsData with ChangeNotifier {
 
   Future<String> getShiftsBySiteId(
       int siteId, String userToken, BuildContext context) async {
-    print(siteId);
+    debugPrint(siteId.toString());
     List<Shift> shiftsNewList = [];
 
     final response = await http.get(
@@ -367,9 +359,8 @@ class ShiftsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    print("GetAllShiftInSite");
-    print(response.statusCode);
-    print(response.body);
+    debugPrint("GetAllShiftInSite");
+    debugPrint(response.statusCode.toString());
     if (response.statusCode == 401) {
       await inherit.login(context);
       userToken = Provider.of<UserData>(context, listen: false).user.userToken;
@@ -380,7 +371,6 @@ class ShiftsData with ChangeNotifier {
       );
     } else if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
 
       if (decodedRes["message"] == "Success") {
         final shiftObjJson = jsonDecode(response.body)['data'] as List;
@@ -414,8 +404,8 @@ class ShiftsData with ChangeNotifier {
   //           'Content-type': 'application/json',
   //           'Authorization': "Bearer $userToken"
   //         });
-  //     print(response.statusCode);
-  //     print(response.body);
+  //     debugPrint(response.statusCode);
+  //     debugPrint(response.body);
   //     if (response.statusCode == 401) {
   //       await inherit.login(context);
   //       userToken =
@@ -427,7 +417,7 @@ class ShiftsData with ChangeNotifier {
   //       );
   //     } else if (response.statusCode == 200 || response.statusCode == 201) {
   //       var decodedRes = json.decode(response.body);
-  //       print(response.body);
+  //       debugPrint(response.body);
 
   //       if (decodedRes["message"] == "Success") {
   //         var shiftObjJson = jsonDecode(response.body)['data'] as List;
@@ -482,7 +472,6 @@ class ShiftsData with ChangeNotifier {
           });
 
       final decodedRes = json.decode(response.body);
-      print(response.body);
 
       if (decodedRes["message"] == "Success") {
         final Shift newShift = Shift(
@@ -538,7 +527,7 @@ class ShiftsData with ChangeNotifier {
           "Fail : The same shift name already exists in site") {
         return "exists";
       } else if (decodedRes["message"] == "Fail : Time constants error") {
-        print("s");
+        debugPrint("s");
         return decodedRes["data"];
       } else {
         return "failed";
@@ -559,11 +548,10 @@ class ShiftsData with ChangeNotifier {
 
   editShift(Shift shift, int id, String usertoken, BuildContext context,
       index) async {
-    print("Shift ID : ${shift.shiftId}");
-    print("Site ID : ${shift.siteID}");
-    print("index : $id");
-    print(shift.fridayShiftenTime);
-    print("shift start = ${shift.sunShiftstTime.toString()}");
+    debugPrint("Shift ID : ${shift.shiftId}");
+    debugPrint("Site ID : ${shift.siteID}");
+    debugPrint(shift.fridayShiftenTime.toString());
+    debugPrint("shift start = ${shift.sunShiftstTime.toString()}");
     final response = await http.put(
         Uri.parse("$baseURL/api/Shifts/${shift.shiftId}"),
         body: json.encode(
@@ -591,14 +579,12 @@ class ShiftsData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $usertoken"
         });
-    print(response.body);
     if (response.statusCode == 401) {
       await inherit.login(context);
       usertoken = Provider.of<UserData>(context, listen: false).user.userToken;
       await editShift(shift, id, usertoken, context, index);
     } else if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
 
       if (decodedRes["message"] == "Success") {
         final Shift newShift = Shift(
@@ -671,7 +657,7 @@ class ShiftsData with ChangeNotifier {
       } else if (decodedRes["message"] == "Fail : Shift Name already exists") {
         return "exists";
       } else if (decodedRes["message"] == "Fail : Time constants error") {
-        print("s");
+        debugPrint("s");
         return decodedRes["data"];
       } else {
         return "failed";

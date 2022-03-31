@@ -25,7 +25,6 @@ class RadioButtonWidg extends StatelessWidget {
           value: radioVal,
           groupValue: radioVal2,
           onChanged: (value) {
-            print(value);
             onchannge(value);
           },
         ),

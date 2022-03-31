@@ -58,7 +58,7 @@ class _SystemHomePageState extends State<SystemHomePage> {
           Provider.of<UserData>(context, listen: false).user.id,
           Provider.of<UserData>(context, listen: false).user.userToken);
       //   .then((value) {
-      // print(value);
+      // debugPrint(value);
       // if (value == true) {
       //   return true;
       // } else {

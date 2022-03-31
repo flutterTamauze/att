@@ -41,8 +41,8 @@ class DownloadService {
           });
         } else {
           debugPrint("There is no update available");
-          debugPrint(status.localVersion);
-          debugPrint(status.storeVersion);
+          debugPrint(status.localVersion.toString());
+          debugPrint(status.storeVersion.toString());
         }
       }
     } else {

@@ -75,7 +75,7 @@ void main() async {
 // void backgroundMessageCallback(hawawi.RemoteMessage remoteMessage) async {
 //   final String data = remoteMessage.data;
 //   final decodedResponse = json.decode(data);
-//   print(data);
+//   debugPrint(data);
 
 //   hawawi.Push.localNotification({
 //     hawawi.HMSLocalNotificationAttr.TITLE: decodedResponse["pushbody"]["title"],
@@ -98,8 +98,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     if (message.data["category"] != "reloadData") {
       await prefs
           .setString("notifCategory", message.data["category"])
-          .whenComplete(
-              () => print("category added !!! ${message.data["category"]}"));
+          .whenComplete(() =>
+              debugPrint("category added !!! ${message.data["category"]}"));
 
       final List<String> cachedList = await prefs.getStringList("bgNotifyList");
       cachedList.add(message.data["category"]);
@@ -114,7 +114,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       // ignore: cascade_invocations
       cachedList.add(DateFormat('kk:mm:a').format(DateTime.now()));
       await prefs.setStringList("bgNotifyList", cachedList).whenComplete(() =>
-          print("cached list update with total length ${cachedList.length}"));
+          debugPrint(
+              "cached list update with total length ${cachedList.length}"));
     }
   } catch (e) {
     print(e);
@@ -128,7 +129,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //     final bool backgroundMessageHandler =
 //         await hawawi.Push.registerBackgroundMessageHandler(
 //             backgroundMessageCallback);
-//     print("backgroundMessageHandler registered: $backgroundMessageHandler");
+//     debugPrint("backgroundMessageHandler registered: $backgroundMessageHandler");
 //   }
 // }
 

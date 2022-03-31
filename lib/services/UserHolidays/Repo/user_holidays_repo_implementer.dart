@@ -43,7 +43,7 @@ class UserHolidaysRepoImplementer implements UserHolidaysRepo {
   @override
   getFutureSingleUserHoliday(String userId, String userToken) async {
     List<UserHolidays> pendingList = [];
-    print(userId);
+
     if (locator.locator<UserHolidaysData>().keepRetriving) {
       final response = await NetworkApi().request(
         "$baseURL/api/Holiday/infuture/$userId",
@@ -54,7 +54,6 @@ class UserHolidaysRepoImplementer implements UserHolidaysRepo {
         },
       );
       if (response is Faliure) {
-        print("response failed");
         return [];
       }
       final decodedResponse = json.decode(response);

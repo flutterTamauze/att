@@ -80,13 +80,12 @@ class PermissionHan with ChangeNotifier {
       if (await element.permission.status == PermissionStatus.granted) {
         permissionsList.remove(element);
       }
-      print(permissionsList.length);
+      debugPrint(permissionsList.length.toString());
     });
     notifyListeners();
   }
 
   deletePer(int id) {
-    print(id);
     permissionsList.removeAt(id);
     notifyListeners();
   }

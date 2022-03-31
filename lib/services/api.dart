@@ -44,7 +44,7 @@ class ShiftApi with ChangeNotifier {
   Shift userShift;
   changeFlag(bool value) {
     isOnShift = value;
-    print("shift closed/opened");
+    debugPrint("shift closed/opened");
   }
 
   static Future<bool> detectJailBreak() async {
@@ -74,7 +74,7 @@ class ShiftApi with ChangeNotifier {
                 await Geolocator.getCurrentPosition(
                         desiredAccuracy: LocationAccuracy.best)
                     .then((Position position) {
-                  print("position : $position");
+                  debugPrint("position : $position");
                   currentPosition = position;
                 }).catchError((e) {
                   print(e);
@@ -96,8 +96,8 @@ class ShiftApi with ChangeNotifier {
         if (await Permission.location.isGranted) {
           bool enabled = false;
           enabled = await Geolocator.isLocationServiceEnabled();
-          print("api");
-          print("enable locaiton : $enabled");
+          debugPrint("api");
+          debugPrint("enable locaiton : $enabled");
           if (Platform.isIOS) {
             try {
               if (enabled) {
@@ -107,14 +107,14 @@ class ShiftApi with ChangeNotifier {
                   await Geolocator.getCurrentPosition(
                           desiredAccuracy: LocationAccuracy.best)
                       .then((Position position) {
-                    print("position : $position");
+                    debugPrint("position : $position");
                     currentPosition = position;
                   }).catchError((e) {
                     print(e);
                   });
                   return 0;
                 } else {
-                  print("Mock true");
+                  debugPrint("Mock true");
                   if (firstCall == true) {
                     return 1;
                   }
@@ -145,7 +145,7 @@ class ShiftApi with ChangeNotifier {
     if (jsonDecode(response)["message"] == "Success") {
       final shiftObjJson = jsonDecode(response)['data'];
       userShift = Shift.fromJson(shiftObjJson);
-      print(userShift.shiftId);
+
       notifyListeners();
     }
   }
@@ -153,7 +153,6 @@ class ShiftApi with ChangeNotifier {
   Future<bool> getShiftData(String id, String userToken) async {
     //3shan low my3radsh el code low bara el location : low bara we 3ala nafs el screen hyasht3'al 3adi...
     // if (shiftsListProvider.isEmpty) {
-    print(id);
 
     isConnected = true;
     List<Shift> shiftsList;
@@ -165,14 +164,13 @@ class ShiftApi with ChangeNotifier {
       if (isHawawi) {
         isMoc = 0;
       } else {
-        print("going to see current loc");
+        debugPrint("going to see current loc");
         isMoc = await getCurrentLocation();
       }
     } else {
       isMoc = await getCurrentLocation();
     }
-    print("IS MOC RESULT : $isMoc");
-    print(id);
+    debugPrint("IS MOC RESULT : $isMoc");
     if (isMoc == 0) {
       final response = await ShiftsRepoImp().getQrData(currentPosition, id);
       if (response is Faliure) {
@@ -203,7 +201,7 @@ class ShiftApi with ChangeNotifier {
           return true;
         } else if (jsonDecode(response)["message"] ==
             "Faild : Location not found ") {
-          print("isNotInLocation");
+          debugPrint("isNotInLocation");
 
           currentSitePositionLat =
               jsonDecode(response)["data"]["siteLatitue"] as double;
@@ -225,7 +223,7 @@ class ShiftApi with ChangeNotifier {
         }
       }
     } else if (isMoc == 1) {
-      print("Mock location");
+      debugPrint("Mock location");
       isOnLocation = false;
       isLocationServiceOn = 2;
       permissionOff = true;
@@ -238,7 +236,7 @@ class ShiftApi with ChangeNotifier {
       notifyListeners();
       return false;
     } else {
-      print("location off");
+      debugPrint("location off");
       isLocationServiceOn = 0;
       isOnLocation = false;
       notifyListeners();
@@ -252,18 +250,18 @@ class ShiftApi with ChangeNotifier {
   //     var shiftStart = shiftsListProvider[i].shiftStartTime;
   //     var shiftEnd = shiftsListProvider[i].shiftEndTime;
 
-  //     print(
+  //     debugPrint(
   //         "---$currentTime-${shiftsListProvider[i].siteID} : ${shiftsListProvider[i].shiftStartTime}");
   //     if (currentTime < shiftsListProvider[i].shiftStartTime &&
   //         currentTime < (shiftsListProvider[i].shiftEndTime % 2400)) {
   //       currentTime += 2400;
-  //       print(currentTime);
+  //       debugPrint(currentTime);
   //     }
   //     if (shiftsListProvider[i].shiftStartTime + kBeforeStartShift >= 2400) {
   //       shiftEnd += 2400;
   //     }
 
-  //     print(
+  //     debugPrint(
   //         "id=$i ,-- start: ${shiftsListProvider[i].shiftStartTime} ,-- end:${shiftsListProvider[i].shiftEndTime}");
   //     currentShift = shiftsListProvider[i];
   //     // changeFlag(true);

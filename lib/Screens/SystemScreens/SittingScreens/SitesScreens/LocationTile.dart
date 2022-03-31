@@ -40,8 +40,7 @@ class LocationTile extends StatefulWidget {
 
 class _LocationTileState extends State<LocationTile> {
   showShiftDetails(Site site) {
-    print(widget.index);
-    print(site.name);
+    debugPrint(site.name);
     Navigator.pop(context);
     return showDialog(
         context: context,
@@ -242,7 +241,7 @@ class _LocationTileState extends State<LocationTile> {
 
                               Provider.of<SiteData>(context, listen: false)
                                   .setDropDownIndex(widget.index + 1);
-                              print("selected index = ${widget.index}");
+                              debugPrint("selected index = ${widget.index}");
                               Provider.of<SiteData>(context, listen: false)
                                   .setCurrentSiteName(
                                       Provider.of<SiteShiftsData>(context,

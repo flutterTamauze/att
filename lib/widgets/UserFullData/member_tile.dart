@@ -88,11 +88,10 @@ class _MemberTileState extends State<MemberTile> {
   }
 
   int getShiftListIndex(int shiftId) {
-    print("my shift = $shiftId");
     final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
     final int index = list.length;
     for (int i = 0; i < index; i++) {
-      print(list[i].shiftId);
+      debugPrint(list[i].shiftId.toString());
       if (shiftId == list[i].shiftId) {
         return i;
       }
@@ -120,9 +119,6 @@ class _MemberTileState extends State<MemberTile> {
           );
         },
         onTap: () {
-          print(widget.user.id);
-          print(widget.user.name);
-
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -339,7 +335,7 @@ class _MemberTileState extends State<MemberTile> {
         context: context,
         builder: (BuildContext context) {
           return GestureDetector(
-            onTap: () => print(member.shiftId),
+            onTap: () => debugPrint(member.shiftId.toString()),
             child: Dialog(
                 shape: RoundedRectangleBorder(
                     borderRadius:

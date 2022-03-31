@@ -11,11 +11,11 @@ class InheritDefault {
     final List<String> userData = (prefs.getStringList('userData') ?? null);
 
     if (userData == null || userData.isEmpty) {
-      print('null');
+      debugPrint('null');
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {
-      print('not null');
+      debugPrint('not null');
       await Provider.of<UserData>(context, listen: false)
           .loginPost(userData[0], userData[1], context, true);
     }

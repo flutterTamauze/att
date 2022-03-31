@@ -88,7 +88,7 @@ class UserDataField extends StatelessWidget {
                           "https://api.whatsapp.com/send?phone=$phone&text=";
 
                       final uri = Uri.encodeFull(url);
-                      print(phone);
+                      debugPrint(phone.toString());
                       // String url =
                       //     'https://api.whatsapp.com/send?phone=$phone&text=HELLO';
                       if (await canLaunch(uri)) {

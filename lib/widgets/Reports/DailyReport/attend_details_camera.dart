@@ -25,7 +25,7 @@ class AttendDetails {
           final DateTime dateTime = todayDate;
           final DateFormat imageDate = DateFormat('yy/MM/dd');
 
-          // print(outputFormat.format(dateTime).replaceAll("/", ""));
+          // debugPrint(outputFormat.format(dateTime).replaceAll("/", ""));
           return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)), //this right here

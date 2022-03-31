@@ -51,7 +51,7 @@ class _UserPropertiesState extends State<UserProperties> {
     final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
     final List<Shift> currentSite =
         list.where((element) => element.shiftId == shiftId).toList();
-    print(currentSite[0].siteID);
+    debugPrint(currentSite[0].siteID.toString());
     return currentSite[0].siteID;
   }
 
@@ -89,8 +89,7 @@ class _UserPropertiesState extends State<UserProperties> {
     final userProvider = Provider.of<UserData>(context, listen: false);
     final comProvider = Provider.of<CompanyData>(context, listen: false);
     // String shiftName = getShiftName();
-    print("index");
-    print(widget.siteIndex);
+
     await Provider.of<DaysOffData>(context, listen: false)
         .getDaysOff(comProvider.com.id, userProvider.user.userToken, context);
     for (int i = 0; i < 7; i++) {
@@ -353,8 +352,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                     gravity: ToastGravity.CENTER)
                                 .then((value) => Navigator.pop(context));
                           } else {
-                            print(isEdit);
-                            print("ana d5lt");
+                            debugPrint(isEdit.toString());
+
                             if (isEdit == false) {
                               await Provider.of<SiteData>(context,
                                       listen: false)
@@ -509,11 +508,8 @@ class _UserPropertiesState extends State<UserProperties> {
                                   widget.user.fcmToken,
                                   userDataProvider.id)
                               .then((value) {
-                            print("value $value");
                             switch (value) {
                               case "success":
-                                print("ESBAAT ${widget.user.fcmToken}");
-
                                 sendFcmMessage(
                                         topicName: "",
                                         userToken: widget.user.fcmToken,
@@ -521,7 +517,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                         category: "attend",
                                         message: "برجاء اثبات حضورك الأن")
                                     .then((value) {
-                                  print("send value $value");
+                                  debugPrint("send value $value".toString());
                                   if (value) {
                                     Fluttertoast.showToast(
                                         msg: getTranslated(

@@ -571,7 +571,7 @@ class _PermissionAlertState extends State<PermissionAlert> {
                         return PermissionWidget(
                           permissionData: permissionHan.permissionsList[index],
                           onTap: () async {
-                            print(index);
+                            debugPrint(index.toString());
                             await requestPermission(
                                 permissionHan.permissionsList[index].permission,
                                 index);
@@ -694,7 +694,7 @@ class _PermissionState extends State<PermissionWidget> {
             Switch(
               value: getPermissionStatue(),
               onChanged: (value) async {
-                print("sdas");
+                debugPrint("sdas");
                 if (await permissionData.permission.isPermanentlyDenied) {
                   openAppSettings();
                 } else if (await permissionData.permission.isDenied) {
@@ -739,12 +739,12 @@ class _PermissionState extends State<PermissionWidget> {
   }
 
   Future<void> requestPermission(Permission permission) async {
-    print("req");
+    debugPrint("req");
     final status = await permission.request();
     setState(() {
-      print(status);
+      debugPrint(status.toString());
       _permissionStatus = status;
-      print(_permissionStatus);
+      debugPrint(_permissionStatus.toString());
     });
   }
 }
@@ -845,18 +845,18 @@ class RoundedAlertOkOnlyWithIcon extends StatelessWidget {
   bool checkApplicationStatus() {
     if (imageIcon == Icons.wifi_off_sharp) {
       if (locator.locator<PermissionHan>().isInternetConnected) {
-        print("true");
+        debugPrint("true");
         return true;
       } else {
-        print("false");
+        debugPrint("false");
         return false;
       }
     } else {
       if (!locator.locator<PermissionHan>().isServerDown) {
-        print("true");
+        debugPrint("true");
         return true;
       } else {
-        print("false");
+        debugPrint("false");
         return false;
       }
     }

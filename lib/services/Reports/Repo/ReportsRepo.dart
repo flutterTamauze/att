@@ -45,10 +45,10 @@ class ReprotsRepo {
   }
 
   Future<List<AttendProofModel>> getDailyAttendProofApi(
-      apiId, String userToken, String date) async {
+      siteId, String userToken, String date) async {
     List<AttendProofModel> attendProofList = [];
     final response = await NetworkApi().request(
-      "$baseURL/api/AttendProof/GetProofbycompanyId?companyid=$apiId&date=$date&pageIndex=1&pageSize=50",
+      "https://chilangobackvut.tamauzeds.com/api/attendproof/GetProofbySite?siteId=$siteId&Date=$date",
       RequestType.GET,
       {
         'Content-type': 'application/json',

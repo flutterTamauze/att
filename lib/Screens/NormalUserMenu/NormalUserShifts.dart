@@ -90,11 +90,9 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
   String getShiftNameById(
     int id,
   ) {
-    print("current id");
-    print(id);
+    debugPrint("current id");
 
     final list = Provider.of<ShiftsData>(context, listen: false).shiftsList;
-    print(list.length);
 
     final List<Shift> currentShift =
         list.where((element) => element.shiftId == id).toList();
@@ -105,7 +103,6 @@ class _UserCurrentShiftsState extends State<UserCurrentShifts> {
     int id,
   ) {
     final list = Provider.of<SiteData>(context, listen: false).sitesList;
-    print(list.length);
 
     final List<Site> currentSite =
         list.where((element) => element.id == id).toList();

@@ -47,7 +47,7 @@ class DaysOffData with ChangeNotifier {
 
   setSiteAndShift(
       int index, String sitename, String shiftname, int shiftID, int siteID) {
-    print("setting att $index $shiftID");
+    debugPrint("setting att $index $shiftID");
     if (shiftID != -100 && shiftID != 0) {
       reallocateUsers[index].sitename = sitename;
       reallocateUsers[index].shiftname = shiftname;
@@ -182,7 +182,6 @@ class DaysOffData with ChangeNotifier {
         await editDaysOffApi(companyId, userToken, context);
       } else if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedRes = json.decode(response.body);
-        print(decodedRes);
 
         if (decodedRes["message"] == "Success : Update Successfully") {
           weak[0].isDayOff = decodedRes["data"]["saturDay"];

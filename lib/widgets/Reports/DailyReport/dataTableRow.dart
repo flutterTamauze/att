@@ -87,7 +87,6 @@ class _DataTableRowState extends State<DataTableRow> {
                   fromDate = companyDate;
                 }
                 if (toDate.isBefore(fromDate)) {
-                  print("to date is before from date");
                   fromDate = DateTime(
                       now.year,
                       now.month - 1,
@@ -103,7 +102,6 @@ class _DataTableRowState extends State<DataTableRow> {
                         formatter.format(toDate),
                         context)
                     .then((value) async {
-                  print("value $value");
                   if (value == "noInternet") {
                     //close already
                   } else {
@@ -315,9 +313,7 @@ class _DataTableRowState extends State<DataTableRow> {
                                         timeIn: widget.attendUnit.timeIn,
                                         timeOut: widget.attendUnit.timeOut,
                                       );
-                                    } else {
-                                      print("mob");
-                                    }
+                                    } else {}
                                   },
                                   child: widget.attendUnit.timeOut != "-" ||
                                           widget.attendUnit.timeIn != "-"

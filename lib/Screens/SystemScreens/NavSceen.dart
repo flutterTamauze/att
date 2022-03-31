@@ -41,7 +41,7 @@
 //   ];
 
 //   _onPageChange(int indx) {
-//     print("change");
+//     debugPrint("change");
 //     setState(() {
 //       current = indx;
 //     });
@@ -55,7 +55,7 @@
 
 //   @override
 //   void didChangeDependencies() {
-//     print("entering now");
+//     debugPrint("entering now");
 //     WidgetsBinding.instance.addPostFrameCallback(
 //       (_) => ShowCaseWidget.of(context).startShowCase([
 //         keyOne,

@@ -66,8 +66,6 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
 
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
-      onTap: () =>
-          print(Provider.of<UserData>(context, listen: false).loggedIn),
       child: Scaffold(
         body: SafeArea(
           child: Stack(

@@ -75,9 +75,8 @@ class SiteShiftsData with ChangeNotifier {
       "Accept": "application/json"
     });
 
-    print("get all siteshift response code ${response.statusCode}");
     if (response.statusCode == 403) {
-      print("Access is forbidden ! 403");
+      debugPrint("Access is forbidden ! 403");
     }
     final decodedResponse = json.decode(response.body);
 

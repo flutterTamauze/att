@@ -37,7 +37,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
   fillLatLong() {
     if (widget.site.lat != 0) {
       setState(() {
-        print(widget.site.id);
         zoom = 16.0;
         _long.text = widget.site.long.toString();
         _lat.text = widget.site.lat.toString();
@@ -45,7 +44,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
         allMarkers.add(Marker(
             markerId: const MarkerId('myMarker'),
             onTap: () {
-              print('Marker Tapped');
+              debugPrint('Marker Tapped');
             },
             position: latLng));
       });
@@ -88,7 +87,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                           _lat.text = latLng.latitude.toString();
                           _long.text = latLng.longitude.toString();
                         });
-                        print(latLng.latitude);
 
                         mapController.animateCamera(
                           CameraUpdate.newCameraPosition(
@@ -101,7 +99,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                         final Marker marker = Marker(
                             markerId: const MarkerId('myMarker'),
                             onTap: () {
-                              print('Marker Tapped');
+                              debugPrint('Marker Tapped');
                             },
                             position:
                                 LatLng(latLng.latitude, latLng.longitude));
@@ -111,7 +109,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                           } else {
                             allMarkers[0] = marker;
                           }
-                          print(allMarkers.length);
                         });
                       },
                     ),
@@ -141,7 +138,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                   ),
                                   // onChanged: (val) {
                                   //   setState(() {
-                                  //     print(val);
+                                  //     debugPrint(val);
                                   //     lat = val;
                                   //   });
                                   // },
@@ -197,7 +194,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                             // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () async {
-                                print("ss");
+                                debugPrint("ss");
                                 await Provider.of<ShiftApi>(context,
                                         listen: false)
                                     .getCurrentLocation();
@@ -223,7 +220,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                 final Marker marker = Marker(
                                     markerId: const MarkerId('myMarker'),
                                     onTap: () {
-                                      print('Marker Tapped');
+                                      debugPrint('Marker Tapped');
                                     },
                                     position: LatLng(currentLocation.latitude,
                                         currentLocation.longitude));
@@ -233,7 +230,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                   } else {
                                     allMarkers[0] = marker;
                                   }
-                                  print(allMarkers.length);
                                 });
                               },
                               splashColor: Colors.white,
@@ -261,11 +257,8 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                               // ignore: deprecated_member_use
                               : FlatButton(
                                   onPressed: () {
-                                    print(widget.site.id);
-                                    print(widget.site.lat);
-                                    print(widget.site.name);
                                     if (widget.site.name != "") {
-                                      print("not null");
+                                      debugPrint("not null");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -282,7 +275,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                         ),
                                       );
                                     } else {
-                                      print(" null");
+                                      debugPrint(" null");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -297,7 +290,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
                                               true),
                                         ),
                                       );
-                                      print(_long.text + _lat.text);
                                     }
                                   },
                                   splashColor: Colors.white,
@@ -358,7 +350,7 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
     final Marker marker = Marker(
         markerId: const MarkerId('myMarker'),
         onTap: () {
-          print('Marker Tapped');
+          debugPrint('Marker Tapped');
         },
         position: LatLng(double.parse(_lat.text), double.parse(_long.text)));
     setState(() {
@@ -367,7 +359,6 @@ class _AddLocationMapScreenState extends State<AddLocationMapScreen> {
       } else {
         allMarkers[0] = marker;
       }
-      print(allMarkers.length);
     });
   }
   // }

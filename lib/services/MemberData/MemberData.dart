@@ -137,14 +137,12 @@ class MemberData with ChangeNotifier {
 
   searchUsersList(String filter, String userToken, dynamic siteId,
       int companyId, BuildContext context) async {
-    print("site id");
-    print(siteId);
+    debugPrint("site id");
+    debugPrint(siteId);
     if (siteId == -1) {
       siteId = "";
     }
 
-    print(
-        "$baseURL/api/Users/Search?companyId=$companyId&Username=$filter&siteid=$siteId");
     loadingSearch = true;
     final response = await http.get(
         Uri.parse(
@@ -157,7 +155,6 @@ class MemberData with ChangeNotifier {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
       if (decodedRes["message"] == "Success") {
         final memberObjJson = jsonDecode(response.body)['data'] as List;
         if (membersList.isEmpty) {
@@ -240,7 +237,7 @@ class MemberData with ChangeNotifier {
       BuildContext context, int shiftId) {
     String url = "";
     isLoading = true;
-    print("loading $isLoading");
+    debugPrint("loading $isLoading");
     if (shiftId != -1) {
       byShiftPageIndex++;
       loadingShifts = true;
@@ -280,7 +277,7 @@ class MemberData with ChangeNotifier {
         url =
             "$baseURL/api/Users/GetAllEmployeeInCompany?companyId=$companyId&pageNumber=$allPageIndex&pageSize=8";
       } else {
-        print("by site");
+        debugPrint("by site");
         if (bySitePageIndex == 1) {
           membersList = [];
           memberNewList = [];
@@ -301,14 +298,12 @@ class MemberData with ChangeNotifier {
 
   getAllCompanyMemberApi(String url, String userToken, int siteId,
       BuildContext context, shiftId) async {
-    print("get all members");
-
-    print(url);
+    debugPrint("get all members");
 
     try {
-      print(("printing the page index $allPageIndex"));
-      print(("printing the page index $bySitePageIndex"));
-      print(("printing the page by shift index $byShiftPageIndex"));
+      debugPrint(("printing the page index $allPageIndex"));
+      debugPrint(("printing the page index $bySitePageIndex"));
+      debugPrint(("printing the page by shift index $byShiftPageIndex"));
       final response = await MemberRepo().getAllMembersInCompany(
         url,
       );
@@ -353,7 +348,7 @@ class MemberData with ChangeNotifier {
   allowMemberAttendByCard(
       String userID, bool allowValue, String userToken) async {
     try {
-      final response = await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
+      await http.put(Uri.parse("$baseURL/api/Users/isAttend"),
           body: json.encode({
             "usersId": [userID],
             "value": allowValue
@@ -362,7 +357,6 @@ class MemberData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print(response.body);
     } catch (e) {
       print(e);
     }
@@ -380,7 +374,6 @@ class MemberData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-      print(response.body);
     } catch (e) {
       print(e);
     }
@@ -393,8 +386,7 @@ class MemberData with ChangeNotifier {
 
   getAllSiteMembersApi(
       int siteId, String userToken, BuildContext context) async {
-    print("get all members");
-    print(siteId);
+    debugPrint("get all members");
     List<Member> memberNewList;
     final response = await http.get(
         Uri.parse("$baseURL/api/Users/GetAllEmployeeInSite?siteId=$siteId"),
@@ -402,18 +394,14 @@ class MemberData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedRes = json.decode(response.body);
-      print(response.body);
       if (decodedRes["message"] == "Success") {
         final memberObjJson = jsonDecode(response.body)['data'] as List;
         memberNewList = memberObjJson
             .map((memberJson) => Member.fromJson(memberJson))
             .toList();
-        print("MEMBER DATA length");
-        print(memberNewList.length);
+        debugPrint("MEMBER DATA length");
 
         membersList = [...memberNewList];
         membersListScreenDropDownSearch = [...membersList];
@@ -433,19 +421,20 @@ class MemberData with ChangeNotifier {
 
   resetMemberMac(String id, BuildContext context) async {
     try {
-      print("reseeeeeeeetMac");
+      debugPrint("reseeeeeeeetMac");
       final response = await MemberRepo().resetMemberMac(id);
 
       final decodedRes = json.decode(response);
 
       if (decodedRes["message"] == "Success : User Device Reset Success") {
-        print("before deleting");
+        debugPrint("before deleting");
         if (Platform.isIOS) {
           const storage = FlutterSecureStorage();
 
           await storage
               .write(key: "deviceMac", value: "")
-              .whenComplete(() => print("keychain is reseted successfully!"))
+              .whenComplete(
+                  () => debugPrint("keychain is reseted successfully!"))
               .catchError((e) {
             print(e);
           });
@@ -519,12 +508,7 @@ class MemberData with ChangeNotifier {
     BuildContext context,
     String roleName,
   ) async {
-    print(
-        "Shift id ${member.shiftId} , userType id ${member.userType}  , memid : ${member.id}, roleName $roleName} userType ${member.userType}");
-
     try {
-      print(member.email);
-      print(roleName);
       final response = await http.put(
         Uri.parse("$baseURL/api/Users/Update/${member.id}"),
         headers: {

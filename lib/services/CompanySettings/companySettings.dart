@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/Network.dart';
@@ -30,7 +31,6 @@ class CompanySettingsService {
       'Content-type': 'application/json',
       'Authorization': "Bearer $userToken"
     });
-    print(response.body);
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       this.attendClearance = decodedResponse["data"]["attendClearance"];
@@ -50,8 +50,7 @@ class CompanySettingsService {
           'Authorization': "Bearer $userToken"
         },
       );
-      print(userToken);
-      print(response.statusCode);
+
       if (response.statusCode == 500 || response.statusCode == 501) {
         locator.locator<PermissionHan>().setServerDown(true);
       } else if (response.statusCode == 200) {
@@ -80,10 +79,6 @@ class CompanySettingsService {
     int leaveClearance,
     String userToken,
   ) async {
-    print(lateAllow);
-    print(attendClearance);
-    print(leaveClearance);
-    print(comID);
     final response =
         await http.put(Uri.parse("$baseURL/api/Settings/Edit/$comID"),
             headers: {
@@ -97,8 +92,6 @@ class CompanySettingsService {
               "leaveClearance": leaveClearance,
               "companyId": comID,
             }));
-    print(response.statusCode);
-    print(response.body);
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Success") {
       return true;

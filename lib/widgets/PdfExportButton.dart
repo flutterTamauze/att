@@ -29,7 +29,7 @@
 //void _getDownloadStorage() async {
 //  path = await ExtStorage.getExternalStoragePublicDirectory(
 //      ExtStorage.DIRECTORY_DOWNLOADS);
-//  print(path); // /storage/emulated/0/Pictures
+//  debugPrint(path); // /storage/emulated/0/Pictures
 //}
 //
 //var pathDownload = path;

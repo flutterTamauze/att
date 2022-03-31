@@ -44,7 +44,7 @@ class _AppHelpPageState extends State<AppHelpPage> {
                     setState(() {
                       currentProgress = progress;
                     });
-                    print('WebView is loading (progress : $progress%)');
+                    debugPrint('WebView is loading (progress : $progress%)');
                   },
                   initialUrl:
                       "https://chilango.tamauzeds.com/#/sdfhs2340_wsdASDA_SDADASD_A",

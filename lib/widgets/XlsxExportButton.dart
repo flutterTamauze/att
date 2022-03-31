@@ -33,13 +33,12 @@ void _getDownloadStorage() async {
   if (Platform.isIOS) {
     final Directory directory = await getApplicationDocumentsDirectory();
     path = directory.path;
-    print("path is : $path");
   } else if (Platform.isAndroid) {
     path = await ExtStorage.getExternalStoragePublicDirectory(
         ExtStorage.DIRECTORY_DOWNLOADS);
   }
 
-  print(path); // /storage/emulated/0/Pictures
+  debugPrint(path); // /storage/emulated/0/Pictures
 }
 
 class _XlsxExportButtonState extends State<XlsxExportButton> {
@@ -120,7 +119,6 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       file = new File("$path/$finalPath");
       num++;
     }
-    print(num);
 
     return finalPath;
   }
@@ -129,7 +127,6 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
     dateTime = DateTime.now().microsecond.toString();
     //Create a Excel document.
 
-    print(freePath);
     //Creating a workbook.
     final Workbook workbook = Workbook();
     //Accessing via index
@@ -302,17 +299,14 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
     range10.cellStyle.vAlign = VAlignType.center;
 
     //Save and launch the excel.
-    print("saving the excel");
     final List<int> bytes = workbook.saveAsStream();
     //Dispose the document.
     workbook.dispose();
 
     //Get the storage folder location using path_provider package.
 
-    print(" ppppath :$path");
     // final String path = directory.path;
     final File file = File("$path/$freePath");
-    print("$path / $freePath");
     await file.writeAsBytes(bytes);
 
     Fluttertoast.showToast(
@@ -328,7 +322,6 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
   Future<void> generateAbsenceReportExcel(String freePath) async {
     try {
       //Create a Excel document.
-      print("free path is : $freePath");
       //Creating a workbook.
       final Workbook workbook = Workbook();
       //Accessing via index
@@ -513,7 +506,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       range10.merge();
       range10.cellStyle.hAlign = HAlignType.center;
       range10.cellStyle.vAlign = VAlignType.center;
-      print("saving the excel");
+      debugPrint("saving the excel");
       //Save and launch the excel.
       final List<int> bytes = workbook.saveAsStream();
       //Dispose the document.
@@ -521,19 +514,15 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
       //Get the storage folder location using path_provider package.
 
-      print("path after save $path");
-
       // final String path = directory.path;
       final File file = File("$path/$freePath");
-      print(path);
 
-      print("$path/$freePath");
-      print(await file.exists());
-      print("writing to it ");
+      debugPrint(await file.exists().toString());
+      debugPrint("writing to it ");
       await file.writeAsBytes(bytes).catchError(((e) {
         print(e);
       }));
-      print(await file.exists());
+      debugPrint(await file.exists().toString());
       Fluttertoast.showToast(
           msg: "Download/$freePath",
           gravity: ToastGravity.CENTER,
@@ -553,7 +542,6 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
           Provider.of<ReportsData>(context, listen: false).userAttendanceReport;
 
       //Create a Excel document.
-      print(freePath);
       //Creating a workbook.
       final Workbook workbook = Workbook();
       //Accessing via index
@@ -764,7 +752,6 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
 
       //Get the storage folder location using path_provider package.
 
-      print(path);
       // final String path = directory.path;
       final File file = File("$path/$freePath");
 

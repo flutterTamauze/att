@@ -111,8 +111,6 @@ class UserPermessionsData with ChangeNotifier {
     String adminREsponse,
     DateTime permDate,
   ) async {
-    print(desc);
-
     isLoading = true;
     notifyListeners();
     final response = await http.put(
@@ -133,18 +131,15 @@ class UserPermessionsData with ChangeNotifier {
         }));
     isLoading = false;
     notifyListeners();
-    print(response.body);
     final decodedResp = json.decode(response.body);
     if (response.statusCode == 200) {
       if (decodedResp["message"] == "Success : User Updated!") {
         pendingCompanyPermessions
             .removeWhere((element) => element.permessionId == permID);
 
-        print(decodedResp["message"]);
         notifyListeners();
         return decodedResp["message"];
       } else {
-        print(decodedResp["message"]);
         return decodedResp["message"];
       }
     }
@@ -169,7 +164,7 @@ class UserPermessionsData with ChangeNotifier {
 
   Future<void> getPendingPermessionDetailsByID(
       int permessionId, String userToken) async {
-    print(permessionId);
+    debugPrint(permessionId.toString());
     final permessions = pendingCompanyPermessions
         .where((element) => element.permessionId == permessionId)
         .toList();
@@ -212,14 +207,14 @@ class UserPermessionsData with ChangeNotifier {
       permessionDetailLoading = false;
       notifyListeners();
     } else {
-      print("not null");
+      debugPrint("not null");
     }
   }
 
   Future<void> getPermessionDetailsByID(
       int permessionId, String userToken) async {
     try {
-      print(permessionId);
+      debugPrint(permessionId.toString());
       final permessions = singleUserPermessions
           .where((element) => element.permessionId == permessionId)
           .toList();
@@ -239,7 +234,7 @@ class UserPermessionsData with ChangeNotifier {
           },
         );
         log(response.body);
-        print(response.statusCode);
+        debugPrint(response.statusCode.toString());
 
         permessionDetailLoading = false;
         notifyListeners();
@@ -260,7 +255,7 @@ class UserPermessionsData with ChangeNotifier {
 
         notifyListeners();
       } else {
-        print("not null");
+        debugPrint("not null");
       }
     } catch (e) {
       print(e);
@@ -341,7 +336,7 @@ class UserPermessionsData with ChangeNotifier {
       isLoading = false;
       notifyListeners();
       if (decodedRsp["message"] == "Success : Permission Deleted!") {
-        print(permIndex);
+        debugPrint(permIndex.toString());
         singleUserPermessions.removeAt(permIndex);
         notifyListeners();
       }
@@ -352,9 +347,9 @@ class UserPermessionsData with ChangeNotifier {
   }
 
   setCopyByIndex(List<int> index) {
-    print(permessionsList.length);
+    debugPrint(permessionsList.length.toString());
     copyPermessionsList = [];
-    print(index);
+    debugPrint(index.toString());
     for (int i = 0; i < index.length; i++) {
       copyPermessionsList.add(permessionsList[index[i]]);
     }
@@ -382,7 +377,7 @@ class UserPermessionsData with ChangeNotifier {
     isLoading = false;
     log(userPermessions.date.toIso8601String());
     // log(userPermessions.createdOn.toIso8601String());
-    print(userPermessions.permessionDescription);
+    debugPrint(userPermessions.permessionDescription);
     try {
       isLoading = true;
       notifyListeners();
@@ -409,7 +404,7 @@ class UserPermessionsData with ChangeNotifier {
       } else if (decodedMsg ==
               "Failed : there is a holiday was not approved in this date!" ||
           decodedMsg == "Failed : there is a holiday still pending!") {
-        print("not approved");
+        debugPrint("not approved");
         return "holiday was not approved";
       }
       notifyListeners();
