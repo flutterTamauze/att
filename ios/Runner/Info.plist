@@ -47,7 +47,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app is an attendance app which needs location access for the employees in order to know if they are at work location or not</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>...</string>
+	<string>Thiss app needs microphone to enable QR scan library to work</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Motion usage description</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

@@ -175,6 +175,7 @@ class UserData with ChangeNotifier {
         final CompanyData comProv =
             Provider.of<CompanyData>(context, listen: false);
         if (isSuperAdmin) {
+          superCompaniesList.clear();
           final obJson = decodedRes['superAdminCompanies'] as List;
           superCompaniesList.add(SuperCompaniesModel(
               companyId: comProv.com.id, companyName: comProv.com.nameAr));

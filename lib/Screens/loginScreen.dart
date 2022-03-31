@@ -315,7 +315,8 @@ class _LoginScreenState extends State<LoginScreen> {
   chechPermissions() async {
     print("CHECKING PERMESSION");
     if (_loginFormKey.currentState.validate()) {
-      if (await Permission.camera.isGranted) {
+      if (await Permission.location.isGranted &&
+          await Permission.camera.isGranted) {
         loginFunction();
       } else {
         showModalBottomSheet(
@@ -338,10 +339,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginFunction() async {
     final userData = Provider.of<UserData>(context, listen: false);
-    if (Platform.isAndroid) {
-      Provider.of<UserData>(context, listen: false).getCurrentLocation();
-      Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
-    }
+
+    Provider.of<UserData>(context, listen: false).getCurrentLocation();
+    Provider.of<ShiftApi>(context, listen: false).getCurrentLocation();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (mounted)
