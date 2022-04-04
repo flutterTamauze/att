@@ -19,78 +19,74 @@ class ErrorScreen2 extends StatelessWidget {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.Wifi ||
         connectionStatus == ConnectivityStatus.Cellular) {
-      print(connectionStatus);
       return child;
     }
     final userData = Provider.of<UserData>(context);
-    return GestureDetector(
-      onTap: () => print(userData.cachedUserData.isNotEmpty),
-      child: Scaffold(
-        body: Column(
-          children: [
-            NewHeader(userData.cachedUserData),
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Lottie.asset("resources/noNetwork.json",
-                          repeat: true),
-                      height: 300.h,
-                      width: 300.w,
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 20,
-                          child: AutoSizeText(
-                            getTranslated(
-                              context,
-                              "لا يوجد اتصال بالأنترنت",
-                            ),
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil()
-                                  .setSp(18, allowFontScalingSelf: true),
-                            ),
-                            textAlign: TextAlign.center,
+    return Scaffold(
+      body: Column(
+        children: [
+          NewHeader(userData.cachedUserData),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child:
+                        Lottie.asset("resources/noNetwork.json", repeat: true),
+                    height: 300.h,
+                    width: 300.w,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        height: 20,
+                        child: AutoSizeText(
+                          getTranslated(
+                            context,
+                            "لا يوجد اتصال بالأنترنت",
                           ),
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil()
+                                .setSp(18, allowFontScalingSelf: true),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        // Container(
-                        //   height: 20.h,
-                        //   child: AutoSizeText(
-                        //     getTranslated(context, "برجاء المحاولة مرة اخرى"),
-                        //     maxLines: 1,
-                        //     style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       fontSize: ScreenUtil()
-                        //           .setSp(15, allowFontScalingSelf: true),
-                        //     ),
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        // ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
-                        userData.isLoading
-                            ? const CircularProgressIndicator()
-                            : Container()
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      // Container(
+                      //   height: 20.h,
+                      //   child: AutoSizeText(
+                      //     getTranslated(context, "برجاء المحاولة مرة اخرى"),
+                      //     maxLines: 1,
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: ScreenUtil()
+                      //           .setSp(15, allowFontScalingSelf: true),
+                      //     ),
+                      //     textAlign: TextAlign.center,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      userData.isLoading
+                          ? const CircularProgressIndicator()
+                          : Container()
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 // import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/constants.dart';
@@ -26,7 +27,7 @@ class NetworkApi {
     var res;
 
     try {
-      print("There is a connection");
+      debugPrint("There is a connection");
 
       final DateTime preTime = DateTime.now();
       switch (requestType) {
@@ -45,10 +46,11 @@ class NetworkApi {
       }
       final DateTime postTime = DateTime.now();
 
-      print(
+      debugPrint(
           "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
       log(res.body);
+      log(endPoint);
       if (res.statusCode == 500 || res.statusCode == 503) {
         locator.locator<PermissionHan>().setServerDown(true);
         if (_displayExceptionDialog()) {
@@ -59,7 +61,7 @@ class NetworkApi {
       }
 
       // locator.locator<PermissionHan>().setServerDown(true);
-      // print(locator.locator<UserData>().user.userToken);
+      // debugPrint(locator.locator<UserData>().user.userToken);
       // if (locator.locator<UserData>().user.userToken != null) {
       //   serverDownDialog(navigatorKey.currentState.overlay.context);
       // }
@@ -69,7 +71,7 @@ class NetworkApi {
       locator.locator<PermissionHan>().setServerDown(false);
       return res.body;
     } on SocketException catch (e) {
-      print("socket error occured $e");
+      print(e);
       locator.locator<PermissionHan>().setInternetConnection(false);
       if (_displayExceptionDialog()) {
         noInternetDialog(navigatorKey.currentState.overlay.context);
@@ -78,7 +80,7 @@ class NetworkApi {
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     } on TimeoutException catch (e) {
       print("timeout occured $e");
-      print(locator.locator<UserData>().user.userToken);
+      debugPrint(locator.locator<UserData>().user.userToken);
       locator.locator<PermissionHan>().setInternetConnection(false);
       if ((_displayExceptionDialog())) {
         noInternetDialog(navigatorKey.currentState.overlay.context);
@@ -87,7 +89,7 @@ class NetworkApi {
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     } on HandshakeException catch (e) {
       print("timeout occured $e");
-      print(locator.locator<UserData>().user.userToken);
+      debugPrint(locator.locator<UserData>().user.userToken);
       locator.locator<PermissionHan>().setInternetConnection(false);
       if ((_displayExceptionDialog())) {
         noInternetDialog(navigatorKey.currentState.overlay.context);
@@ -111,7 +113,7 @@ class NetworkApi {
   }
 
   Future<http.Response> _put(endPoint, headers, {body}) async {
-    print("body $body");
+    debugPrint("body $body");
     return await http
         .put(Uri.parse(endPoint), headers: headers, body: body)
         .timeout(timeOutDuration);
@@ -141,11 +143,11 @@ class NetworkApi {
     try {
       final result = await InternetAddress.lookup(url);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
+        debugPrint('connected');
         return true;
       }
     } on SocketException catch (_) {
-      print('not connected');
+      debugPrint('not connected');
       return false;
     }
     return false;

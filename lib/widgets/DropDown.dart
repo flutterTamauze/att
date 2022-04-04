@@ -16,7 +16,7 @@ class SiteDropdown extends StatefulWidget {
   String selectedvalue;
   final Color textColor;
   final bool edit;
-
+  final double height;
   SiteDropdown(
       {this.hint,
       this.colour,
@@ -27,6 +27,7 @@ class SiteDropdown extends StatefulWidget {
       this.selectedvalue,
       this.onChange,
       this.textColor,
+      this.height,
       this.edit});
 
   @override
@@ -38,7 +39,7 @@ class _SiteDropdownState extends State<SiteDropdown> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(),
-      height: 50.h,
+      height: widget.height.h,
       child: Padding(
         padding: const EdgeInsets.only(top: 6, right: 10, left: 5),
         child: Row(

@@ -34,7 +34,7 @@ class _ShowLocationMapState extends State<ShowLocationMap> {
       allMarkers.add(Marker(
           markerId: const MarkerId('myMarker'),
           onTap: () {
-            print('Marker Tapped');
+            debugPrint('Marker Tapped');
           },
           position: LatLng(widget.lat, widget.long)));
     });
@@ -114,8 +114,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
   @override
   void initState() {
     super.initState();
-    print(widget.siteLat);
-    print(widget.siteLong);
+
 // make sure to initialize before map loading
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(size: Size(12, 12)),
@@ -137,7 +136,7 @@ class _ShowSateliteMapState extends State<ShowSateliteMap> {
           markerId: MarkerId('userMarker'),
           icon: customIcon,
           onTap: () {
-            print('Marker Tapped');
+            debugPrint('Marker Tapped');
           },
           position: LatLng(widget.lat, widget.long)));
     });

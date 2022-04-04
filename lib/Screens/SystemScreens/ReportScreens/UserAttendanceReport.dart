@@ -79,7 +79,7 @@ class _UserAttendanceReportScreenState
   bool showSearchIcon = true;
   DateTime yesterday;
   bool datePickerPeriodAvailable(DateTime currentDate, DateTime val) {
-    print("val $val");
+    debugPrint("val $val");
     final DateTime maxDate = currentDate.add(const Duration(days: 31));
     final DateTime minDate = currentDate.subtract(const Duration(days: 31));
 
@@ -116,7 +116,7 @@ class _UserAttendanceReportScreenState
     }
 
     super.initState();
-    print("id $widget.id");
+    debugPrint("id $widget.id");
     final now = DateTime.now();
     selectedId = widget.id;
     toDate = DateTime(now.year, now.month, now.day - 1);
@@ -127,7 +127,7 @@ class _UserAttendanceReportScreenState
       fromDate = companyDate;
     }
     if (toDate.isBefore(fromDate)) {
-      print("to date is before from date");
+      debugPrint("to date is before from date");
       fromDate = DateTime(now.year, now.month - 1,
           Provider.of<CompanyData>(context, listen: false).com.legalComDate);
     }
@@ -142,7 +142,7 @@ class _UserAttendanceReportScreenState
 
     if (widget.name != "") {
       _nameController.text = widget.name;
-      print("widget.siteId${widget.siteId}");
+      debugPrint("widget.siteId${widget.siteId}");
       siteIdIndex = widget.siteId;
     } else {
       Provider.of<ReportsData>(context, listen: false).userAttendanceReport =
@@ -160,9 +160,7 @@ class _UserAttendanceReportScreenState
   }
 
   searchInList(String value, int siteId, int companyId) async {
-    print(siteId);
     if (value.isNotEmpty) {
-      print(companyId);
       await Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
@@ -204,7 +202,6 @@ class _UserAttendanceReportScreenState
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          print(showSearchIcon);
           FocusScope.of(context).unfocus();
           // _nameController.text == ""
           //     ? FocusScope.of(context).unfocus()
@@ -355,9 +352,6 @@ class _UserAttendanceReportScreenState
                                                 .difference(picked.first)
                                                 .inDays >
                                             31) {
-                                          print(picked.last
-                                              .difference(picked.first)
-                                              .inDays);
                                           Fluttertoast.showToast(
                                               gravity: ToastGravity.CENTER,
                                               msg: getTranslated(context,
@@ -451,6 +445,7 @@ class _UserAttendanceReportScreenState
                             ? Container(
                                 width: 360.w,
                                 child: SiteDropdown(
+                                  height: 40,
                                   edit: true,
                                   list: Provider.of<SiteShiftsData>(context)
                                       .siteShiftList,
@@ -460,7 +455,7 @@ class _UserAttendanceReportScreenState
                                   hint: getTranslated(context, "الموقع"),
                                   hintColor: Colors.black,
                                   onChange: (value) {
-                                    // print()
+                                    // debugPrint()
 
                                     siteIdIndex = getSiteId(value);
                                     if (siteId !=
@@ -481,7 +476,6 @@ class _UserAttendanceReportScreenState
                                       //         context);
                                       setState(() {});
                                     }
-                                    print(value);
                                   },
                                   selectedvalue: siteProv
                                       .siteShiftList[siteIdIndex].siteName,
@@ -541,7 +535,6 @@ class _UserAttendanceReportScreenState
                                         return a.username.compareTo(b.username);
                                       },
                                       textSubmitted: (data) {
-                                        print(data);
                                         setState(() {
                                           showSearchIcon = false;
                                           searchInList(
@@ -556,7 +549,7 @@ class _UserAttendanceReportScreenState
                                                   .com
                                                   .id);
                                         });
-                                        print("print start");
+                                        debugPrint("print start");
                                       },
                                       textInputAction: TextInputAction.search,
                                       itemSubmitted: (item) async {
@@ -972,7 +965,6 @@ List<Vacation> listAfterFilter(
 
 bool isDateBetweenTheRange(
     Vacation vacation, DateTime filterFromDate, DateTime filterToDate) {
-  print(vacation.vacationDate);
   return ((filterFromDate.isBefore(vacation.vacationDate) ||
           (vacation.vacationDate.year == filterFromDate.year &&
               vacation.vacationDate.day == filterFromDate.day &&

@@ -505,7 +505,7 @@ class _AddSiteScreenState extends State<AddSiteScreen> {
   }
 
   Future<bool> onWillPop() {
-    print("back");
+    debugPrint("back");
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => SitesScreen()),
         (Route<dynamic> route) => false);

@@ -51,7 +51,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
                         return PermissionWidget(
                           permissionData: permissionHan.permissionsList[index],
                           onTap: () async {
-                            print(index);
+                            debugPrint(index.toString());
                             await requestPermission(
                                 permissionHan.permissionsList[index].permission,
                                 index);
@@ -225,9 +225,9 @@ class _PermissionState extends State<PermissionWidget> {
   Future<void> requestPermission(Permission permission) async {
     final status = await permission.request();
     setState(() {
-      print(status);
+      debugPrint(status.toString());
       _permissionStatus = status;
-      print(_permissionStatus);
+      debugPrint(_permissionStatus.toString());
     });
   }
 }

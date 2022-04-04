@@ -66,7 +66,7 @@
 //         ),
 //       );
 //       _listImagePaths.forEach((media) {
-//         print(media.path.toString());
+//         debugPrint(media.path.toString());
 //       });
 
 //       img = File(_listImagePaths[0].path);
@@ -258,7 +258,7 @@
 //                                               nameAr: _nameArController.text,
 //                                               email: _emailController.text,
 //                                               adminPhoneNumber: "0238895523"));
-//                                   print("MEssssaageeee : ==========$msg");
+//                                   debugPrint("MEssssaageeee : ==========$msg");
 //                                   if (msg == "Success") {
 //                                     Fluttertoast.showToast(
 //                                       msg:

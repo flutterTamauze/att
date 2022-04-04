@@ -54,7 +54,7 @@ class DatabaseHelper {
         .catchError((e) {
       print(e);
     });
-    print("Notification added$id");
+    debugPrint("Notification added$id");
     return id;
   }
 
@@ -66,7 +66,7 @@ class DatabaseHelper {
           .insert(_notificationTableName, notificationMessage.toMap(),
               conflictAlgorithm: ConflictAlgorithm.replace)
           .then((value) async {
-        print("Notification $value");
+        debugPrint("Notification $value");
       }).catchError((e) {
         print(e);
       });
@@ -108,12 +108,12 @@ class DatabaseHelper {
         _database = null;
         await deleteDatabase(path).whenComplete(() {
           databaseDeleted = true;
-          print("db deleted");
+          debugPrint("db deleted");
         }).catchError((onError) {
           databaseDeleted = false;
         });
       } on DatabaseException catch (error) {
-        print(error);
+        debugPrint(error.toString());
       } catch (error) {
         print(error);
       }
@@ -131,7 +131,7 @@ class DatabaseHelper {
       await _database.rawQuery(
           'DELETE FROM $_notificationTableName WHERE $_notificationColId=?',
           [id]).then((value) {
-        print("delete $value $id");
+        debugPrint("delete $value $id");
       }).catchError((e) {
         print(e);
       });
@@ -157,8 +157,6 @@ class DatabaseHelper {
       final int updateCount = await _database.rawUpdate(
           'UPDATE $_notificationTableName  SET $_notificationColMsgSeen = ? WHERE $_notificationColId=? ',
           [value, id]);
-
-      print(updateCount);
     } catch (e) {
       print(e);
     }

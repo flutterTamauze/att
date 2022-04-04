@@ -22,14 +22,14 @@
 //     //           .shiftEndTime,
 //     //       context);
 //     // } else {
-//     //   print("cron 1: you are not in working timeline");
+//     //   debugPrint("cron 1: you are not in working timeline");
 
 //     //   cron1.schedule(new Schedule.parse('*/1 * * * *'), () async {
 //     //     now = DateTime.now();
 //     //     formater = DateFormat("Hm");
 //     //     currentTime = int.parse(formater.format(now).replaceAll(":", ""));
 
-//     //     print(currentTime);
+//     //     debugPrint(currentTime);
 //     //     if (Provider.of<ShiftApi>(context, listen: false)
 //     //         .searchForCurrentShift(currentTime)) {
 //     //       Navigator.pushReplacement(
@@ -38,24 +38,24 @@
 //     //             builder: (context) => NavScreenTwo(1),
 //     //           ));
 //     //     } else {
-//     //       print("cron 1: continue");
+//     //       debugPrint("cron 1: continue");
 //     //     }
-//     //     print('cron 1: every 1 minutes ');
+//     //     debugPrint('cron 1: every 1 minutes ');
 //     //   });
 //     // }
 //   }
 
 //   // shecdularFetching2(int endTime, BuildContext context) async {
 //   //   var end = endTime % 2400;
-//   //   print("crrent shift end Time = $end");
+//   //   debugPrint("crrent shift end Time = $end");
 //   //   int hours = (end ~/ 100);
 //   //   int min = end - (hours * 100);
 //   //   cron1.close();
-//   //   print("cron2: start,  working to $hours:$min");
+//   //   debugPrint("cron2: start,  working to $hours:$min");
 //   //   Provider.of<ShiftApi>(context, listen: false).changeFlag(true);
 //   //   cron2 = new Cron();
 //   //   cron2.schedule(new Schedule.parse('$min $hours * * *'), () async {
-//   //     print("cron2: end working");
+//   //     debugPrint("cron2: end working");
 //   //     shecdularFetching(context);
 //   //     Provider.of<ShiftApi>(context, listen: false).changeFlag(false);
 //   //     cron2.close();

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +35,7 @@ class NotificationDataService with ChangeNotifier {
         messageSeen: 0,
         id: id));
     notification = notification.reversed.toList();
-    print("adding temp not. . .");
+    debugPrint("adding temp not. . .");
     notifyListeners();
   }
 
@@ -48,10 +45,9 @@ class NotificationDataService with ChangeNotifier {
           locator.locator<UserData>().user.userType == 3) {
         firebaseMessaging
             .subscribeToTopic("attend${locator.locator<CompanyData>().com.id}");
-        print("subscribed to topic");
+        debugPrint("subscribed to topic");
       }
-      print(event);
-      print("token changed");
+      debugPrint("token changed");
     });
   }
 
@@ -85,7 +81,7 @@ class NotificationDataService with ChangeNotifier {
         .notification
         .clear();
     if (await db.checkNotificationStatus()) {
-      print("getting all notifications");
+      debugPrint("getting all notifications");
       final List<NotificationMessage> dbMessages =
           await db.getAllNotifications();
       for (int i = 0; i < dbMessages.length; i++) {
@@ -115,9 +111,9 @@ class NotificationDataService with ChangeNotifier {
 
   // void getInitialNotification(BuildContext context) async {
   //   final initialNotification = await hawawi.Push.getInitialNotification();
-  //   print("getInitialNotification: " + initialNotification.toString());
+  //   debugPrint("getInitialNotification: " + initialNotification.toString());
   //   if (initialNotification.toString().contains("اثبات حضور")) {
-  //     print("YES IT CONTAINS !");
+  //     debugPrint("YES IT CONTAINS !");
   //     showAttendanceCheckDialog(context);
   //   }
   // }
@@ -140,7 +136,7 @@ class NotificationDataService with ChangeNotifier {
       provisional: false,
       sound: true,
     );
-    print("User granted permession ${settings.authorizationStatus}");
+    debugPrint("User granted permession ${settings.authorizationStatus}");
   }
 
   bool finshed = false;
@@ -153,7 +149,7 @@ class NotificationDataService with ChangeNotifier {
   //     final String data = _onMessageReceived.data;
 
   //     final decodedResponse = json.decode(data);
-  //     print(decodedResponse["pushbody"]);
+  //     debugPrint(decodedResponse["pushbody"]);
   //     if (decodedResponse["pushbody"]["category"] == "attend") {
   //       showAttendanceCheckDialog(context);
   //     }
@@ -213,16 +209,16 @@ class NotificationDataService with ChangeNotifier {
       semaphore = 1;
       Future.delayed(const Duration(seconds: 1)).then((_) => semaphore = 0);
       // counter++;
-      // print(counter);
+      // debugPrint(counter);
       if (event.data["category"] == "internalMission") {
-        print("revieved internalMission ");
+        debugPrint("revieved internalMission ");
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final List<String> userData = (prefs.getStringList('userData') ?? null);
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context, true)
-            .then((value) => print('login successs'));
+            .then((value) => debugPrint('login successs'));
       } else if (event.data["category"] == "reloadData") {
-        print("recieved reloadData");
+        debugPrint("recieved reloadData");
         Provider.of<SiteShiftsData>(context, listen: false)
             .getAllSitesAndShifts(
                 Provider.of<CompanyData>(context, listen: false).com.id,
@@ -235,7 +231,6 @@ class NotificationDataService with ChangeNotifier {
           addNotificationToListAndDB(event, context);
           player.play("notification.mp3");
         } else {
-          print(event.data);
           addNotificationToListAndDB(event, context);
           player.play("notification.mp3");
         }
@@ -268,6 +263,7 @@ class NotificationDataService with ChangeNotifier {
           lottieAsset: "resources/notificationalarm.json",
           notificationToast: "تم اثبات الحضور بنجاح",
           showToast: true,
+          callBackFun: () {},
           popWidget: false,
           isFromBackground: false,
           repeatAnimation: true,

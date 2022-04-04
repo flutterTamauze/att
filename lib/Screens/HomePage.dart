@@ -128,8 +128,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 //   },
                 // );
 
-                // print(_startTime.hour);
-                // print(locator.locator<PermissionHan>().isServerDown);
+                // debugPrint(_startTime.hour);
+                // debugPrint(locator.locator<PermissionHan>().isServerDown);
               },
               child: Scaffold(
                 endDrawer: NotificationItem(),

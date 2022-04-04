@@ -90,8 +90,8 @@ class _OfficialVacationState extends State<OfficialVacation> {
     dateFromString = apiFormatter.format(fromDate);
     dateToString = apiFormatter.format(toDate);
 
-    print(toDate.toString());
-    print(fromDate.toString());
+    debugPrint(toDate.toString());
+    debugPrint(fromDate.toString());
     _dateController.text = "$fromText $toText";
   }
 

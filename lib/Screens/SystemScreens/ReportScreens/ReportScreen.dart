@@ -38,7 +38,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ),
             );
 
-            print("الموظفين");
+            debugPrint("الموظفين");
           }),
       ReportTile(
           title: getTranslated(context, "التأخير و الغياب"),

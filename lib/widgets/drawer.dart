@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -251,9 +252,8 @@ class DrawerI extends StatelessWidget {
                                         isError = true;
                                       });
                                       if (isError == false) {
-                                        print("topic name : ");
-                                        print(
-                                            "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                        debugPrint("topic name : ");
+                                        log("attend${Provider.of<CompanyData>(context, listen: false).com.id}");
                                         await _firebaseMessaging
                                             .unsubscribeFromTopic(
                                                 "attend${Provider.of<CompanyData>(context, listen: false).com.id}");

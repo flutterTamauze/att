@@ -114,7 +114,6 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return GestureDetector(
         onTap: () {
-          print(externalMissionController.text);
           _nameController.text == ""
               ? FocusScope.of(context).unfocus()
               : SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -839,7 +838,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                   );
                                                 } else if (msg ==
                                                     "external mission") {
-                                                  print("external found");
+                                                  debugPrint("external found");
                                                   Fluttertoast.showToast(
                                                       gravity:
                                                           ToastGravity.CENTER,
@@ -872,8 +871,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           "يوجد اذن فى هذا اليوم"));
                                                 }
                                               } else {
-                                                print(selectedDateString);
-                                                print(timeOutController.text);
+                                         
                                                 Fluttertoast.showToast(
                                                     gravity:
                                                         ToastGravity.CENTER,
@@ -980,7 +978,7 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                           x.add(element.shiftName);
                                         });
 
-                                        print("on changed $v");
+                                        debugPrint("on changed $v");
                                         holder = x.indexOf(v);
 
                                         widget.prov.setDropDownShift(holder);
@@ -1051,7 +1049,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
                                         ))
                                     .toList(),
                                 onChanged: (v) async {
-                                  print(v);
                                   widget.prov.setDropDownShift(0);
                                   Provider.of<SiteShiftsData>(context,
                                           listen: false)
@@ -1080,7 +1077,6 @@ class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
 
                                   widget.prov.setSiteValue(v);
                                   widget.onchannge(v);
-                                  print(widget.prov.dropDownSitesStrings);
                                 },
                                 value: widget.selectedVal,
                               );

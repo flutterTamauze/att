@@ -56,7 +56,6 @@ class _SitesScreenState extends State<SitesScreen> {
   }
 
   search(text) {
-    print(text);
     final List<Site> sites = Provider.of<SiteShiftsData>(context, listen: false)
         .sites
         .where((element) =>

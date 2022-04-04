@@ -12,7 +12,6 @@ class ConnectivityService {
       StreamController<ConnectivityStatus>();
   ConnectivityService() {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult event) {
-      print("Connection changed : $event");
       var status = _getStatusResult(event);
       connectionStatusController.add(status);
     });

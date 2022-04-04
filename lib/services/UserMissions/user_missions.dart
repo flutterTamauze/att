@@ -147,7 +147,6 @@ class MissionsData with ChangeNotifier {
         }));
     isLoading = false;
     notifyListeners();
-    print(response.body);
     return json.decode(response.body)["message"];
   }
 
@@ -155,10 +154,6 @@ class MissionsData with ChangeNotifier {
     UserMissions userMissions,
     String userToken,
   ) async {
-    print(userMissions.shiftId);
-    print(userMissions.description);
-    print(userMissions.userId);
-
     isLoading = true;
     notifyListeners();
     final response = await http.post(
@@ -177,7 +172,6 @@ class MissionsData with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-    print(response.body);
     return json.decode(response.body)["message"];
   }
 

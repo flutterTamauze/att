@@ -26,8 +26,6 @@ class _SystemScanPageState extends State<SystemScanPage> {
   AudioCache player = AudioCache();
   CameraDescription cameraDescription;
   _startUp() async {
-    List<CameraDescription> cameras = await availableCameras();
-
     /// takes the front camera
     cameraDescription = cameras.firstWhere(
       (CameraDescription camera) =>
@@ -73,7 +71,8 @@ class _SystemScanPageState extends State<SystemScanPage> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => NavScreenTwo(1)),
+                      MaterialPageRoute(
+                          builder: (context) => const NavScreenTwo(1)),
                       (Route<dynamic> route) => false);
                 },
               ),
@@ -137,14 +136,14 @@ class _SystemScanPageState extends State<SystemScanPage> {
         isScanned = true;
         shiftQrCode =
             Provider.of<ShiftApi>(context, listen: false).qrShift.shiftQrCode;
-        print("qrcode : $shiftQrCode");
+        debugPrint("qrcode : $shiftQrCode");
         secondPageRoute();
       }
     });
   }
 
   secondPageRoute() async {
-    print("Qr text $qrText");
+    debugPrint("Qr text $qrText");
     player.play("cap.wav");
     controller?.pauseCamera();
 
@@ -153,7 +152,6 @@ class _SystemScanPageState extends State<SystemScanPage> {
           context,
           MaterialPageRoute(
             builder: (context) => CameraPicker(
-              camera: cameraDescription,
               qrText: qrText,
               shiftQrcode: shiftQrCode,
             ),

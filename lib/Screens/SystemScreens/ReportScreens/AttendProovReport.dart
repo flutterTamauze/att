@@ -17,12 +17,14 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/main.dart';
+import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/Reports/Services/Attend_Proof_Model.dart';
 import 'package:qr_users/services/Reports/Widgets/attendProov.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
 import 'package:qr_users/widgets/Reports/displayReportButton.dart';
 import 'package:qr_users/widgets/Shared/HandleNetwork_ServerDown/handleState.dart';
@@ -47,10 +49,15 @@ class _AttendProofReportState extends State<AttendProofReport> {
   String selectedDateString;
   DateTime selectedDate;
   DateTime today;
-
+  int siteIndex = 0;
+  String currentSiteName = "";
   bool showTable = false;
+  int siteID;
   void initState() {
     super.initState();
+    siteID = Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[0]
+        .siteId;
     date = apiFormatter.format(DateTime.now());
     // getReportData(date);
     selectedDateString = DateTime.now().toString();
@@ -63,22 +70,20 @@ class _AttendProofReportState extends State<AttendProofReport> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    print("starrt refresh");
-    await getReportData(date);
-    print("refresh");
+    debugPrint("starrt refresh");
+    await getReportData(date, siteID);
+    debugPrint("refresh");
 
     refreshController.refreshCompleted();
   }
 
-  getReportData(date) async {
+  getReportData(date, siteId) async {
     final userProvider = Provider.of<UserData>(context, listen: false);
-    final apiId = userProvider.user.userType == 3
-        ? userProvider.user.id
-        : Provider.of<CompanyData>(context, listen: false).com.id;
+
     await Provider.of<ReportsData>(context, listen: false)
         .getDailyAttendProofReport(
       userProvider.user.userToken,
-      apiId,
+      siteId,
       date,
       context,
     );
@@ -112,41 +117,82 @@ class _AttendProofReportState extends State<AttendProofReport> {
                     nav: false,
                     goUserMenu: false,
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: Container(
-                          child: Container(
-                            child: Theme(
-                                data: clockTheme,
-                                child: SingleDayDatePicker(
-                                  firstDate: comDate.com.createdOn,
-                                  lastDate: DateTime.now(),
-                                  selectedDateString: selectedDateString,
-                                  functionPicker: (value) {
-                                    if (value != date) {
-                                      date = value;
-                                      selectedDateString = date;
-                                      setState(() {
-                                        selectedDate =
-                                            DateTime.parse(selectedDateString);
-                                        showTable = false;
-                                      });
-                                    }
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.h),
+                    child: SmallDirectoriesHeader(
+                      Lottie.asset("resources/report.json", repeat: false),
+                      getTranslated(context, "إثباتات الحضور"),
+                    ),
+                  ),
+                  Container(
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: SiteDropdown(
+                                  edit: true,
+                                  list: Provider.of<SiteShiftsData>(context)
+                                      .siteShiftList,
+                                  colour: Colors.white,
+                                  icon: Icons.location_on,
+                                  borderColor: Colors.black,
+                                  hint: getTranslated(context, "الموقع"),
+                                  hintColor: Colors.black,
+                                  height: 90,
+                                  onChange: (value) async {
+                                    siteIndex =
+                                        getSiteIndexBySiteName(value, context);
+                                    setState(() {
+                                      showTable = false;
+                                      siteID = Provider.of<SiteShiftsData>(
+                                              context,
+                                              listen: false)
+                                          .siteShiftList[siteIndex]
+                                          .siteId;
+                                    });
                                   },
-                                )),
+                                  selectedvalue:
+                                      Provider.of<SiteShiftsData>(context)
+                                          .siteShiftList[siteIndex]
+                                          .siteName,
+                                  textColor: ColorManager.primary),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Container(
+                                child: Theme(
+                                    data: clockTheme,
+                                    child: SingleDayDatePicker(
+                                      firstDate: comDate.com.createdOn,
+                                      lastDate: DateTime.now(),
+                                      selectedDateString: selectedDateString,
+                                      functionPicker: (value) {
+                                        if (value != date) {
+                                          date = value;
+                                          selectedDateString = date;
+                                          setState(() {
+                                            selectedDate = DateTime.parse(
+                                                selectedDateString);
+                                            showTable = false;
+                                          });
+                                        }
+                                      },
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 15.h),
-                        child: SmallDirectoriesHeader(
-                          Lottie.asset("resources/report.json", repeat: false),
-                          getTranslated(context, "إثباتات الحضور"),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
                   if (showTable) ...[
                     FutureBuilder(
@@ -315,7 +361,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
                       child: Center(
                         child: InkWell(
                           onTap: () {
-                            getReportData(date);
+                            getReportData(date, siteID);
                             setState(() {
                               showTable = true;
                             });

@@ -57,7 +57,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
   int getShiftIndex() {
     int holder = 0;
     final List<String> x = [];
-    print(Provider.of<SiteData>(context, listen: false).currentShiftName);
     Provider.of<SiteShiftsData>(context, listen: false)
         .shifts
         .forEach((element) {
@@ -99,16 +98,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
   @override
   void initState() {
     super.initState();
-    print("selected role ${widget.selectedRole}");
+    debugPrint("selected role ${widget.selectedRole}");
     userRole = widget.selectedRole;
-    print(widget.comingFromShifts);
     if (widget.comingFromShifts) {
-      print("shift incoming =${widget.shiftNameIncoming}");
+      debugPrint("shift incoming =${widget.shiftNameIncoming}");
       shiftIndex = getShiftid(widget.shiftNameIncoming);
     } else {
       shiftIndex =
           Provider.of<SiteData>(context, listen: false).dropDownShiftIndex;
-      print("current shift index $shiftIndex");
+      debugPrint("current shift index $shiftIndex");
     }
 
     editNumber = intlPhone.PhoneNumber(
@@ -118,7 +116,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
     fillTextField();
     if (widget.isEdit) {
       siteId = getSiteIndex(widget.member.siteId);
-      print(siteId);
     } else {
       if (Provider.of<SiteShiftsData>(context, listen: false).sites.length ==
           2) {
@@ -128,7 +125,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
             Provider.of<SiteData>(context, listen: false).dropDownSitesIndex;
       }
 
-      print(
+      debugPrint(
           "dropdownindex ${Provider.of<SiteData>(context, listen: false).dropDownSitesIndex}");
       if (!widget.comingFromShifts) {
         Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(
@@ -160,12 +157,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
           .getShiftsList(widget.member.siteName, false);
 
       shiftIndex = getShiftListIndex(widget.member.shiftId) + 1;
-      print(shiftIndex);
 
       Provider.of<SiteData>(context, listen: false)
           .setDropDownShift(shiftIndex); //to match the -1 bec of all shifts
 
-      print("shift index $shiftIndex");
+      debugPrint("shift index $shiftIndex");
       // log("shift index displayed ${Provider.of<SiteData>(context, listen: false).dropDownShiftIndex}");
       // siteId = getSiteListIndex(shiftIndex);
       _nameController.text = widget.member.name;
@@ -176,7 +172,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
       userType = widget.member.userType;
       setState(() {});
     } else {
-      print(widget.comingFromShifts);
       if (!widget.comingFromShifts) {
         Provider.of<SiteShiftsData>(context, listen: false)
             .getShiftsList(widget.shiftNameIncoming, false);
@@ -215,13 +210,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
-                print(shiftIndex);
-                print(Provider.of<SiteShiftsData>(context, listen: false)
+                debugPrint(Provider.of<SiteShiftsData>(context, listen: false)
                     .dropDownShifts[siteData.dropDownShiftIndex == 0
                         ? 0
                         : siteData.dropDownShiftIndex - 1]
                     .shiftName);
-                print(siteData.dropDownShiftIndex);
               },
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
@@ -400,10 +393,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                   "LY",
                                                 ],
                                                 // onFieldSubmitted: (value) {
-                                                //   print("a");
+                                                //   debugPrint("a");
                                                 // },
                                                 // onSubmit: () {
-                                                //   print("a");
+                                                //   debugPrint("a");
                                                 // },
                                                 errorMessage: _phoneController
                                                         .text.isEmpty
@@ -429,7 +422,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 },
                                                 onInputValidated:
                                                     (bool value) async {
-                                                  print(value);
                                                   if (value) {
                                                     // setStateThePhone(
                                                     //     _phoneController.text);
@@ -545,7 +537,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 onInputChanged:
                                                     (intlPhone.PhoneNumber
                                                         number2) {
-                                                  print(_phoneController.text);
+                                         
                                                   number = number2;
                                                 },
                                                 onInputValidated:
@@ -675,7 +667,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       ),
                                       IgnorePointer(
                                         ignoring: !edit,
-                                        child: SiteDropdown(
+                                        child: SiteDropdown(height: 40,
                                           edit: edit,
                                           list: Provider.of<SiteShiftsData>(
                                                   context)
@@ -687,7 +679,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               getTranslated(context, "الموقع"),
                                           hintColor: Colors.black,
                                           onChange: (value) {
-                                            // print()
+                                            // debugPrint()
                                             siteId = getSiteId(value);
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
@@ -700,9 +692,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                               ..setSiteValue("كل المواقع")
                                               ..setDropDownIndex(0)
                                               ..setDropDownShift(0);
-
-                                            print(siteId);
-                                            print(value);
                                           },
                                           selectedvalue:
                                               Provider.of<SiteShiftsData>(
@@ -727,9 +716,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           icon: Icons.location_on,
                                           borderColor: Colors.black,
                                           hint: "المناوبة",
-                                          hintColor: Colors.black,
                                           onChange: (value) {
-                                            // print()
+                                            // debugPrint()
                                             log(value);
                                             siteData
                                               ..setSiteValue("كل المواقع")
@@ -739,7 +727,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
                                             shiftIndex = getShiftid(value);
 
-                                            print(
+                                            debugPrint(
                                                 "shiftid..... =    $shiftIndex");
                                           },
                                           selectedvalue: siteData
@@ -1055,14 +1043,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
     // if (phoneNumber[0] != "+") {
     //   phoneNumber = "+20$phoneNumber";
     // }
-    print(widget.editiableDial);
     final intlPhone.PhoneNumber number3 =
         await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
             "+${widget.editiableDial}$phoneNumber");
 
-    print(number3.phoneNumber);
-    print(number3.dialCode);
-    print(number3.isoCode);
     setState(() {
       this.editNumber = number3;
       _phoneController.text = editNumber.phoneNumber;
@@ -1074,14 +1058,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
       if (phoneNumber[0] != "+") {
         phoneNumber = "+20$phoneNumber";
       }
-      print(number.isoCode);
       final intlPhone.PhoneNumber number2 =
           await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
               phoneNumber, number.isoCode);
-      print(number.isoCode);
-      print(number2.phoneNumber);
-      print(number2.dialCode);
-      print(number2.isoCode);
+
       setState(() {
         this.number = number2;
         _phoneController.text = number2.phoneNumber;
@@ -1091,14 +1071,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
       if (phoneNumber[0] != "+") {
         phoneNumber = "+20$phoneNumber";
       }
-      print(number.isoCode);
       final intlPhone.PhoneNumber number2 =
           await intlPhone.PhoneNumber.getRegionInfoFromPhoneNumber(
               phoneNumber, editNumber.isoCode);
-      print(number.isoCode);
-      print(number2.phoneNumber);
-      print(number2.dialCode);
-      print(number2.isoCode);
+
       setState(() {
         this.editNumber = number2;
         _phoneController.text = number2.phoneNumber;
@@ -1147,7 +1123,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   int getShiftid(String shiftName) {
-    print("shiftName getShiftId $shiftName");
+    debugPrint("shiftName getShiftId $shiftName");
     final list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
     final int index = list.length;
     for (int i = 0; i < index; i++) {
@@ -1169,7 +1145,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   }
 
   Future<bool> onWillPop() async {
-    print("back");
+    debugPrint("back");
     Provider.of<SiteData>(context, listen: false).setSiteValue("كل المواقع");
     Provider.of<SiteData>(context, listen: false).setDropDownIndex(0);
     Navigator.of(context).pushAndRemoveUntil(

@@ -128,13 +128,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       kTextFieldDecorationWhite.copyWith(
                                           hintText: getTranslated(
                                               context, "رقم الهاتف"),
-                                          prefixIcon: Icon(
+                                          prefixIcon: const Icon(
                                             Icons.phone,
                                             color: Colors.orange,
                                           )),
                                   onInputChanged:
                                       (intlPhone.PhoneNumber number2) {
-                                    print(_phoneController.text);
+                                    debugPrint(
+                                        _phoneController.text.toString());
                                     number = number2;
                                   },
                                   onInputValidated: (bool value) async {
@@ -184,11 +185,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 height: 30.0.h,
                               ),
                               isLoading
-                                  ? Center(
+                                  ? const Center(
                                       child: CircularProgressIndicator(
                                         backgroundColor: Colors.white,
                                         valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
+                                            AlwaysStoppedAnimation<Color>(
                                                 Colors.orange),
                                       ),
                                     )
@@ -234,8 +235,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       setState(() {
         isLoading = true;
       });
-      print(_usernameController.text);
-      print(number.toString());
+      debugPrint(number.toString());
       await Provider.of<UserData>(context, listen: false)
           .forgetPassword(_usernameController.text, number.toString().trim())
           .catchError(((e) {
@@ -321,14 +321,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       });
       //      Provider.of<UserData>(context, listen: false)
       // .loginPost(_uniIdController.text, _passwordController.text);
-      // print(Provider.of<UserData>(context, listen: false).user.userID);
+      // debugPrint(Provider.of<UserData>(context, listen: false).user.userID);
 
     }
 
     // }
 
     else {
-      print("validation error");
+      debugPrint("validation error");
     }
   }
 }
@@ -351,12 +351,12 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _rePasswordController = TextEditingController();
   var isLoading = false;
-  var reSend = true;
+
   var _passwordVisible = true;
   var _rePasswordVisible = true;
   AnimationController _controller;
   int levelClock = 180;
-
+  var reSend = true;
   @override
   void dispose() {
     _controller.dispose();
@@ -380,7 +380,6 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
     final duration = interval;
     Timer.periodic(duration, (timer) {
       setState(() {
-        print(timer.tick);
         currentSeconds = timer.tick;
         if (timer.tick >= timerMaxSeconds) {
           timer.cancel();
@@ -834,7 +833,7 @@ class _ForgetSetPasswordState extends State<ForgetSetPassword>
     // }
 
     else {
-      print("validation error");
+      debugPrint("validation error");
     }
   }
 

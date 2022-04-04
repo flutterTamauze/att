@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -64,8 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: <Widget>[
           GestureDetector(
-            onTap: () =>
-                print(Provider.of<UserData>(context, listen: false).loggedIn),
             behavior: HitTestBehavior.opaque,
             onPanDown: (_) {
               FocusScope.of(context).unfocus();
@@ -313,7 +311,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   chechPermissions() async {
-    print("CHECKING PERMESSION");
+    debugPrint("CHECKING PERMESSION");
     if (_loginFormKey.currentState.validate()) {
       if (await Permission.location.isGranted &&
           await Permission.camera.isGranted) {
@@ -332,9 +330,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 content:
                     getTranslated(context, "برجاء قبول التصريحات التالية ")));
       }
-    } else {
-      print("validation error");
-    }
+    } else {}
   }
 
   loginFunction() async {
@@ -366,8 +362,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ));
       } else {
-        print("VALUE OF USER");
-        print(value);
+        debugPrint("VALUE OF USER");
+        debugPrint(value.toString());
         if (value == 4 || value == 3 || userData.isSuperAdmin) {
           //subscribe admin channel
           bool isError = false;
@@ -380,7 +376,7 @@ class _LoginScreenState extends State<LoginScreen> {
             try {
               await firebaseMessaging.subscribeToTopic(
                   "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-              print("subscribed to topic");
+              log("subscribed to topic ${Provider.of<CompanyData>(context, listen: false).com.id} ");
             } catch (e) {
               print(e);
             }

@@ -133,17 +133,14 @@ class _ErrorScreenState extends State<ErrorScreen> {
     final List<String> userData = (prefs.getStringList('userData') ?? null);
 
     if (userData == null || userData.isEmpty) {
-      print('null');
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {
-      print('not null');
       await Provider.of<UserData>(context, listen: false)
           .loginPost(userData[0], userData[1], context, true)
           .catchError(((e) {
         print(e);
       })).then((value) {
-        print(value);
         if (value == USER_INVALID_RESPONSE || value == null) {
           setState(() {
             isLoading = false;
@@ -153,7 +150,6 @@ class _ErrorScreenState extends State<ErrorScreen> {
             //     "التطبيق تحت الصيانة\nنجرى حاليا تحسينات و صيانة للموقع \nلن تؤثر هذه الصيانة على بيانات حسابك \n نعتذر عن أي إزعاج");
           });
         } else if (value == NO_INTERNET) {
-          print("mfeeesh net");
           setState(() {
             isLoading = false;
             message = getTranslated(context,
@@ -172,7 +168,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                 builder: (context) => SuperCompanyPieChart(),
               ));
         } else if (value > 0) {
-          print("laaa");
+          debugPrint("laaa");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

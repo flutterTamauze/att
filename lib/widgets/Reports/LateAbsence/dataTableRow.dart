@@ -42,7 +42,7 @@ class DataTableRow extends StatelessWidget {
                 formatter.format(fromDate),
                 formatter.format(toDate),
                 context);
-        print("Success $x");
+
         if (x == "Success") {
           Navigator.pop(context);
           Navigator.of(context).push(

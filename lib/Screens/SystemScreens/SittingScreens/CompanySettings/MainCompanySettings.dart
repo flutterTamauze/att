@@ -500,7 +500,6 @@ class _CompanySettingsState extends State<CompanySettings> {
                                       .length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    print(index);
                                     return CustomRow(
                                         model: Provider.of<DaysOffData>(context,
                                                 listen: true)

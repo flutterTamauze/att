@@ -44,13 +44,13 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
   int siteId = 0;
 
   // String getTimeToString(int time) {
-  //   print(time);
+  //   debugPrint(time);
   //   double hoursDouble = time / 100.0;
   //   int h = hoursDouble.toInt();
-  //   print(h);
+  //   debugPrint(h);
   //   double minDouble = time.toDouble() % 100;
   //   int m = minDouble.toInt();
-  //   print(m);
+  //   debugPrint(m);
   //   NumberFormat formatter = new NumberFormat("00");
   //   return "${formatter.format(h)}:${formatter.format(m)}";
   // }
@@ -314,7 +314,7 @@ class _SiteAdminShiftScreenState extends State<SiteAdminShiftScreen> {
                                                           });
                                                     },
                                                     onTapEdit: () {
-                                                      print(
+                                                      debugPrint(
                                                           "aaaaaaaaa :${value.shiftsList[index].shiftId}");
                                                       Navigator.of(context)
                                                           .push(
@@ -491,17 +491,15 @@ class _ShiftTileState extends State<ShiftTile> {
                         ),
                         InkWell(
                           onTap: () async {
-                            siteProv.setDropDownShift(
-                                widget.index); //الموقع علي حسب ال اندكس اللي
-                            siteProv.setSiteValue(widget.siteName);
-                            siteProv.fillCurrentShiftID(widget.shift.shiftId);
-                            siteProv.setDropDownIndex(widget.siteIndex);
-                            siteProv.fillCurrentShiftID(widget.shift.shiftId);
+                            //الموقع علي حسب ال اندكس اللي
+                            siteProv
+                              ..setDropDownShift(widget.index)
+                              ..setSiteValue(widget.siteName)
+                              ..fillCurrentShiftID(widget.shift.shiftId)
+                              ..setDropDownIndex(widget.siteIndex)
+                              ..fillCurrentShiftID(widget.shift.shiftId);
 
-                            print("finding matching shifts");
-                            print(siteProv.currentSiteName);
-                            final index = getSiteName(siteProv.currentSiteName);
-                            print(index);
+                            debugPrint("finding matching shifts");
                             // Provider.of<SiteShiftsData>(context,
                             //         listen: false)
                             //     .getShiftsList(

@@ -107,9 +107,9 @@ class UserHolidaysData with ChangeNotifier {
   }
 
   setCopyByIndex(List<int> index) {
-    print(holidaysList.length);
+    debugPrint(holidaysList.length.toString());
     copyHolidaysList = [];
-    print(index);
+    debugPrint(index.toString());
     for (int i = 0; i < index.length; i++) {
       copyHolidaysList.add(holidaysList[index[i]]);
     }
@@ -127,8 +127,7 @@ class UserHolidaysData with ChangeNotifier {
           'Content-type': 'application/json',
           'Authorization': "Bearer $userToken"
         });
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode.toString());
     isLoading = false;
     notifyListeners();
     final decodedResp = json.decode(response.body);
@@ -163,7 +162,7 @@ class UserHolidaysData with ChangeNotifier {
       DateTime fromDate,
       DateTime toDate) async {
     try {
-      print(vacID);
+      debugPrint(vacID.toString());
       isLoading = true;
       notifyListeners();
 
@@ -183,17 +182,15 @@ class UserHolidaysData with ChangeNotifier {
             "fromdate": fromDate.toIso8601String(),
             "todate": toDate.toIso8601String()
           }));
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
       isLoading = false;
       notifyListeners();
-      print(response.body);
       final decodedResp = json.decode(response.body);
       if (response.statusCode == 200 &&
           (!decodedResp["message"].toString().contains("Fail"))) {
         pendingCompanyHolidays
             .removeWhere((element) => element.holidayNumber == vacID);
 
-        print(decodedResp["message"]);
         notifyListeners();
         log(decodedResp["message"]);
         return decodedResp["message"];
@@ -208,7 +205,6 @@ class UserHolidaysData with ChangeNotifier {
 
   Future<void> getPendingHolidayDetailsByID(
       int holidayId, String userToken) async {
-    print("holiday id $holidayId");
     final holidays = pendingCompanyHolidays
         .where((element) => element.holidayNumber == holidayId)
         .toList();
@@ -225,7 +221,7 @@ class UserHolidaysData with ChangeNotifier {
           'Authorization': "Bearer $userToken"
         },
       );
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
 
       log(response.body);
       loadingHolidaysDetails = false;
@@ -250,7 +246,7 @@ class UserHolidaysData with ChangeNotifier {
       loadingHolidaysDetails = false;
       notifyListeners();
     } else {
-      print("not null");
+      debugPrint("not null");
     }
   }
 
@@ -264,7 +260,6 @@ class UserHolidaysData with ChangeNotifier {
         singleUserHoliday[holidayIndex].holidayDescription == null) {
       loadingHolidaysDetails = true;
       notifyListeners();
-      print("holiday id $holidayId");
 
       final response = await http.get(
         Uri.parse("$baseURL/api/Holiday/$holidayId"),
@@ -273,7 +268,7 @@ class UserHolidaysData with ChangeNotifier {
           'Authorization': "Bearer $userToken"
         },
       );
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
 
       log(response.body);
       loadingHolidaysDetails = false;
@@ -350,8 +345,6 @@ class UserHolidaysData with ChangeNotifier {
 
   Future<Holiday> addHoliday(
       UserHolidays holiday, String userToken, String userId) async {
-    print(holiday.holidayDescription);
-
     isLoading = true;
     notifyListeners();
     final response = await http.post(
@@ -371,8 +364,7 @@ class UserHolidaysData with ChangeNotifier {
         }));
     isLoading = false;
     notifyListeners();
-    print("adding holiday");
-    print(response.body);
+    debugPrint("adding holiday");
     final decodedMessage = json.decode(response.body)["message"];
     switch (decodedMessage) {
       case "Success : Holiday Created!":
@@ -401,8 +393,8 @@ class UserHolidaysData with ChangeNotifier {
 
   addExternalMission(DateTime fromDate, DateTime toDate, BuildContext context,
       String memId, String desc, String fcmToken) async {
-    print(fromDate);
-    print(toDate);
+    debugPrint(fromDate.toString());
+    debugPrint(toDate.toString());
     if (fromDate != null && toDate != null) {
       final String msg = await Provider.of<MissionsData>(context, listen: false)
           .addUserExternalMission(

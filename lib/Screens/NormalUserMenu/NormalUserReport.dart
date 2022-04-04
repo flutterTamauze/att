@@ -133,7 +133,6 @@ class _NormalUserReportState extends State<NormalUserReport> {
           onWillPop: onWillPop,
           child: GestureDetector(
             onTap: () {
-              print(_nameController.text);
               _nameController.text == ""
                   ? FocusScope.of(context).unfocus()
                   : SystemChannels.textInput.invokeMethod('TextInput.hide');

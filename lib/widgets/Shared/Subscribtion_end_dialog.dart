@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -97,9 +99,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                                   isError = true;
                                 });
                                 if (isError == false) {
-                                  print("topic name : ");
-                                  print(
-                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+                                  log("attend${Provider.of<CompanyData>(context, listen: false).com.id}");
                                   await _firebaseMessaging.unsubscribeFromTopic(
                                       "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
                                 }

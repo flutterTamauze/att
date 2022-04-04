@@ -60,7 +60,7 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
       _fromText = " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
       _toText = " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
       _dateController.text = "$_fromText $_toText";
-      print("length");
+      debugPrint("length");
     } else {
       final now = DateTime.now();
       _dateController.text = "";
@@ -126,362 +126,360 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
     final List<String> shifts =
         Provider.of<ShiftsData>(context, listen: true).shiftSchedules;
     final ShiftsData shiftProv = Provider.of<ShiftsData>(context, listen: true);
-    return GestureDetector(
-        onTap: () {
-          for (int i = 0; i < list.length; i++) {
-            print(list[i].siteName);
-          }
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
-          endDrawer: NotificationItem(),
-          body: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Header(
-                    nav: false,
-                    goUserMenu: false,
-                    goUserHomeFromMenu: false,
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Column(children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SmallDirectoriesHeader(
-                              Lottie.asset("resources/calender.json",
-                                  repeat: false),
-                              getTranslated(context, "جدولة المناوبات"),
-                            ),
-                          ],
+    return Scaffold(
+      endDrawer: NotificationItem(),
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Header(
+                nav: false,
+                goUserMenu: false,
+                goUserHomeFromMenu: false,
+              ),
+              Expanded(
+                child: Container(
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SmallDirectoriesHeader(
+                          Lottie.asset("resources/calender.json",
+                              repeat: false),
+                          getTranslated(context, "جدولة المناوبات"),
                         ),
-                        VacationCardHeader(
-                          header:
-                              "${getTranslated(context, "جدولة المناوبات للمستخدم")}: ${widget.member.name} ",
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            child: Theme(
-                          data: clockTheme1,
-                          child: Builder(
-                            builder: (context) {
-                              return InkWell(
-                                  onTap: userProvider.user.userType == 2
-                                      ? () {}
-                                      : () async {
-                                          _picked = await DateRagePicker
-                                              .showDatePicker(
-                                                  context: context,
-                                                  initialFirstDate: widget
-                                                          .isEdit
+                      ],
+                    ),
+                    VacationCardHeader(
+                      header:
+                          "${getTranslated(context, "جدولة المناوبات للمستخدم")}: ${widget.member.name} ",
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                        child: Theme(
+                      data: clockTheme1,
+                      child: Builder(
+                        builder: (context) {
+                          return InkWell(
+                              onTap: userProvider.user.userType == 2
+                                  ? () {}
+                                  : () async {
+                                      _picked = await DateRagePicker
+                                          .showDatePicker(
+                                              context: context,
+                                              initialFirstDate:
+                                                  widget.isEdit
                                                       ? _fromDate
                                                       : DateTime(
                                                           DateTime.now().year,
                                                           DateTime.now().month,
                                                           DateTime.now().day),
-                                                  initialLastDate: _toDate,
-                                                  firstDate: widget.isEdit
-                                                      ? _fromDate
-                                                      : DateTime(
-                                                          DateTime.now().year,
-                                                          DateTime.now().month,
-                                                          DateTime.now().day),
-                                                  lastDate: lastDatee);
-                                          var newString = "";
-                                          setState(() {
-                                            _fromDate = _picked.first;
-                                            _toDate = _picked.last;
+                                              initialLastDate: _toDate,
+                                              firstDate: widget.isEdit
+                                                  ? _fromDate
+                                                  : DateTime(
+                                                      DateTime.now().year,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day),
+                                              lastDate: lastDatee);
+                                      var newString = "";
+                                      setState(() {
+                                        _fromDate = _picked.first;
+                                        _toDate = _picked.last;
 
-                                            _fromText =
-                                                " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
-                                            _toText =
-                                                " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
-                                            newString = "$_fromText $_toText";
-                                          });
+                                        _fromText =
+                                            " من ${DateFormat('yMMMd').format(_fromDate).toString()}";
+                                        _toText =
+                                            " إلى ${DateFormat('yMMMd').format(_toDate).toString()}";
+                                        newString = "$_fromText $_toText";
+                                      });
 
-                                          if (_dateController.text !=
-                                              newString) {
-                                            _dateController.text = newString;
+                                      if (_dateController.text != newString) {
+                                        _dateController.text = newString;
 
-                                            dateFromString =
-                                                apiFormatter.format(_fromDate);
-                                            dateToString =
-                                                apiFormatter.format(_toDate);
-                                          }
-                                        },
-                                  child: Container(
-                                    // width: 330,
-                                    width: 365.w,
-                                    child: IgnorePointer(
-                                      child: TextFormField(
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                        textInputAction: TextInputAction.next,
-                                        controller: _dateController,
-                                        decoration:
-                                            kTextFieldDecorationFromTO.copyWith(
-                                                hintText: getTranslated(
-                                                    context, 'المدة من / إلى'),
-                                                prefixIcon: const Icon(
-                                                  Icons.calendar_today_rounded,
-                                                  color: Colors.orange,
-                                                )),
-                                      ),
-                                    ),
-                                  ));
-                            },
-                          ),
-                        )),
-                        Expanded(
-                            child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
+                                        dateFromString =
+                                            apiFormatter.format(_fromDate);
+                                        dateToString =
+                                            apiFormatter.format(_toDate);
+                                      }
+                                    },
+                              child: Container(
+                                // width: 330,
+                                width: 365.w,
+                                child: IgnorePointer(
+                                  child: TextFormField(
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _dateController,
+                                    decoration:
+                                        kTextFieldDecorationFromTO.copyWith(
+                                            hintText: getTranslated(
+                                                context, 'المدة من / إلى'),
+                                            prefixIcon: const Icon(
+                                              Icons.calendar_today_rounded,
+                                              color: Colors.orange,
+                                            )),
+                                  ),
+                                ),
+                              ));
+                        },
+                      ),
+                    )),
+                    Expanded(
+                        child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  Stack(
                                     children: [
-                                      Stack(
-                                        children: [
-                                          Card(
-                                            child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              width: 250.w,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  AutoSizeText(widget.isEdit
-                                                      ? shifts[index]
-                                                      : daysofflist
-                                                          .reallocateUsers[
-                                                              index]
-                                                          .shiftname),
-                                                  AutoSizeText(widget.isEdit
-                                                      ? sites[index]
-                                                      : daysofflist
-                                                          .reallocateUsers[
-                                                              index]
-                                                          .sitename),
-                                                ],
-                                              ),
-                                            ),
+                                      Card(
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          width: 250.w,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              AutoSizeText(widget.isEdit
+                                                  ? shifts[index]
+                                                  : daysofflist
+                                                      .reallocateUsers[index]
+                                                      .shiftname),
+                                              AutoSizeText(widget.isEdit
+                                                  ? sites[index]
+                                                  : daysofflist
+                                                      .reallocateUsers[index]
+                                                      .sitename),
+                                            ],
                                           ),
-                                          userProvider.user.userType == 2
-                                              ? Container()
-                                              : Positioned(
-                                                  child: InkWell(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return Dialog(child:
-                                                            StatefulBuilder(
-                                                          builder: (context,
-                                                              setState) {
-                                                            return Container(
-                                                              padding: const EdgeInsets
+                                        ),
+                                      ),
+                                      userProvider.user.userType == 2
+                                          ? Container()
+                                          : Positioned(
+                                              child: InkWell(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Dialog(
+                                                        child: StatefulBuilder(
+                                                      builder:
+                                                          (context, setState) {
+                                                        return Container(
+                                                          padding:
+                                                              const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       10),
-                                                              height: 200.h,
-                                                              width: double
-                                                                  .infinity,
-                                                              child: Column(
-                                                                children: [
-                                                                  Container(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              20),
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        getTranslated(
-                                                                            context,
-                                                                            "اختر الموقع و المناوبة"),
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                Colors.orange,
-                                                                            fontWeight: FontWeight.w600),
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                      )),
-                                                                  Container(
-                                                                    height:
-                                                                        60.h,
-                                                                    child:
-                                                                        Container(
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Flexible(
-                                                                            flex:
-                                                                                1,
+                                                          height: 200.h,
+                                                          width:
+                                                              double.infinity,
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          20),
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    getTranslated(
+                                                                        context,
+                                                                        "اختر الموقع و المناوبة"),
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  )),
+                                                              Container(
+                                                                height: 60.h,
+                                                                child:
+                                                                    Container(
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Flexible(
+                                                                        flex: 1,
+                                                                        child:
+                                                                            Container(
+                                                                          child:
+                                                                              Center(
                                                                             child:
-                                                                                Container(
-                                                                              child: Center(
-                                                                                child: Column(
-                                                                                  children: [
-                                                                                    Consumer<SiteShiftsData>(
-                                                                                      builder: (context, value, child) {
-                                                                                        return DropdownButton(
-                                                                                            isExpanded: true,
-                                                                                            underline: const SizedBox(),
-                                                                                            elevation: 5,
-                                                                                            items: value.shifts
-                                                                                                .map(
-                                                                                                  (value) => DropdownMenuItem(
-                                                                                                      child: Container(
-                                                                                                          alignment: Alignment.topRight,
-                                                                                                          height: 40.h,
-                                                                                                          child: AutoSizeText(
-                                                                                                            value.shiftName,
-                                                                                                            style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
-                                                                                                          )),
-                                                                                                      value: value.shiftName),
-                                                                                                )
-                                                                                                .where((element) => element.value != "لا يوجد مناوبات بهذا الموقع")
-                                                                                                .toList(),
-                                                                                            onChanged: (v) async {
-                                                                                              int holder;
-                                                                                              if (selectedVal != "كل المواقع") {
-                                                                                                final List<String> x = [];
-
-                                                                                                value.shifts.forEach((element) {
-                                                                                                  x.add(element.shiftName);
-                                                                                                });
-
-                                                                                                print("on changed $v");
-                                                                                                holder = x.indexOf(v);
-                                                                                                setState(() {
-                                                                                                  prov.setDropDownShift(holder);
-                                                                                                });
-
-                                                                                                print("dropdown site index $holder");
-                                                                                              }
-                                                                                            },
-                                                                                            value: value.shifts[prov.dropDownShiftIndex].shiftName
-
-                                                                                            // value
-                                                                                            );
-                                                                                      },
-                                                                                    ),
-                                                                                    const Divider(
-                                                                                      height: 1,
-                                                                                      thickness: 1,
-                                                                                      color: Colors.grey,
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ),
-                                                                          Icon(
-                                                                            Icons.alarm,
-                                                                            color:
-                                                                                ColorManager.primary,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            width:
-                                                                                20,
-                                                                          ),
-                                                                          Flexible(
-                                                                            flex:
-                                                                                1,
-                                                                            child:
-                                                                                Container(
-                                                                              child: Center(
-                                                                                child: Column(
-                                                                                  children: [
-                                                                                    Consumer<ShiftsData>(
-                                                                                      builder: (context, value, child) {
-                                                                                        return DropdownButton(
-                                                                                          isExpanded: true,
-                                                                                          underline: const SizedBox(),
-                                                                                          elevation: 5,
-                                                                                          items: list
-                                                                                              .map((value) => DropdownMenuItem(
-                                                                                                    child: Container(
+                                                                                Column(
+                                                                              children: [
+                                                                                Consumer<SiteShiftsData>(
+                                                                                  builder: (context, value, child) {
+                                                                                    return DropdownButton(
+                                                                                        isExpanded: true,
+                                                                                        underline: const SizedBox(),
+                                                                                        elevation: 5,
+                                                                                        items: value.shifts
+                                                                                            .map(
+                                                                                              (value) => DropdownMenuItem(
+                                                                                                  child: Container(
                                                                                                       alignment: Alignment.topRight,
                                                                                                       height: 40.h,
                                                                                                       child: AutoSizeText(
-                                                                                                        value.siteName,
+                                                                                                        value.shiftName,
                                                                                                         style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    value: value.siteName,
-                                                                                                  ))
-                                                                                              .toList(),
-                                                                                          onChanged: (v) async {
-                                                                                            print(v);
-                                                                                            prov.setDropDownShift(0);
+                                                                                                      )),
+                                                                                                  value: value.shiftName),
+                                                                                            )
+                                                                                            .where((element) => element.value != "لا يوجد مناوبات بهذا الموقع")
+                                                                                            .toList(),
+                                                                                        onChanged: (v) async {
+                                                                                          int holder;
+                                                                                          if (selectedVal != "كل المواقع") {
+                                                                                            final List<String> x = [];
 
-                                                                                            // ignore: cascade_invocations
-                                                                                            for (int i = 0; i < prov.dropDownSitesStrings.length; i++) {
-                                                                                              print(prov.dropDownSitesStrings[i]);
-                                                                                            }
-                                                                                            prov.setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
-
-                                                                                            // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
-                                                                                            print("drop down site index ${prov.dropDownSitesIndex}");
-                                                                                            Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex ?? 0].siteName, false);
-                                                                                            prov.fillCurrentShiftID(list[prov.dropDownSitesIndex].siteId);
-
-                                                                                            prov.setSiteValue(v);
-                                                                                            setState(() {
-                                                                                              selectedVal = v;
+                                                                                            value.shifts.forEach((element) {
+                                                                                              x.add(element.shiftName);
                                                                                             });
-                                                                                            print(prov.dropDownSitesStrings);
-                                                                                          },
-                                                                                          value: selectedVal,
+
+                                                                                            debugPrint("on changed $v");
+                                                                                            holder = x.indexOf(v);
+                                                                                            setState(() {
+                                                                                              prov.setDropDownShift(holder);
+                                                                                            });
+
+                                                                                            debugPrint("dropdown site index $holder");
+                                                                                          }
+                                                                                        },
+                                                                                        value: value.shifts[prov.dropDownShiftIndex].shiftName
+
+                                                                                        // value
                                                                                         );
-                                                                                      },
-                                                                                    ),
-                                                                                    const Divider(
-                                                                                      height: 1,
-                                                                                      thickness: 1,
-                                                                                      color: Colors.grey,
-                                                                                    )
-                                                                                  ],
+                                                                                  },
                                                                                 ),
-                                                                              ),
+                                                                                const Divider(
+                                                                                  height: 1,
+                                                                                  thickness: 1,
+                                                                                  color: Colors.grey,
+                                                                                )
+                                                                              ],
                                                                             ),
                                                                           ),
-                                                                          const SizedBox(
-                                                                            width:
-                                                                                5,
-                                                                          ),
-                                                                          Icon(
-                                                                            Icons.location_on,
-                                                                            color:
-                                                                                Colors.orange[600],
-                                                                          ),
-                                                                        ],
+                                                                        ),
                                                                       ),
-                                                                    ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      Icon(
+                                                                        Icons
+                                                                            .alarm,
+                                                                        color: ColorManager
+                                                                            .primary,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            20,
+                                                                      ),
+                                                                      Flexible(
+                                                                        flex: 1,
+                                                                        child:
+                                                                            Container(
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Column(
+                                                                              children: [
+                                                                                Consumer<ShiftsData>(
+                                                                                  builder: (context, value, child) {
+                                                                                    return DropdownButton(
+                                                                                      isExpanded: true,
+                                                                                      underline: const SizedBox(),
+                                                                                      elevation: 5,
+                                                                                      items: list
+                                                                                          .map((value) => DropdownMenuItem(
+                                                                                                child: Container(
+                                                                                                  alignment: Alignment.topRight,
+                                                                                                  height: 40.h,
+                                                                                                  child: AutoSizeText(
+                                                                                                    value.siteName,
+                                                                                                    style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true), fontWeight: FontWeight.w700),
+                                                                                                  ),
+                                                                                                ),
+                                                                                                value: value.siteName,
+                                                                                              ))
+                                                                                          .toList(),
+                                                                                      onChanged: (v) async {
+                                                                                        prov
+                                                                                          ..setDropDownShift(0)
+                                                                                          ..setDropDownIndex(prov.dropDownSitesStrings.indexOf(v) - 1);
+
+                                                                                        // ignore: cascade_invocations
+
+                                                                                        ;
+
+                                                                                        // await Provider.of<ShiftsData>(context, listen: false).findMatchingShifts(Provider.of<SiteData>(context, listen: false).sitesList[prov.dropDownSitesIndex].id, false);
+                                                                                        debugPrint("drop down site index ${prov.dropDownSitesIndex}");
+                                                                                        Provider.of<SiteShiftsData>(context, listen: false).getShiftsList(Provider.of<SiteShiftsData>(context, listen: false).siteShiftList[prov.dropDownSitesIndex ?? 0].siteName, false);
+                                                                                        prov
+                                                                                          ..fillCurrentShiftID(list[prov.dropDownSitesIndex].siteId)
+                                                                                          ..setShiftValue(v);
+
+                                                                                        setState(() {
+                                                                                          selectedVal = v;
+                                                                                        });
+                                                                                      },
+                                                                                      value: selectedVal,
+                                                                                    );
+                                                                                  },
+                                                                                ),
+                                                                                const Divider(
+                                                                                  height: 1,
+                                                                                  thickness: 1,
+                                                                                  color: Colors.grey,
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Icon(
+                                                                        Icons
+                                                                            .location_on,
+                                                                        color: Colors
+                                                                            .orange[600],
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                  const Spacer(),
-                                                                  Padding(
-                                                                    padding: EdgeInsets.only(
+                                                                ),
+                                                              ),
+                                                              const Spacer(),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
                                                                         bottom:
                                                                             20.h),
-                                                                    child: RoundedButton(
-                                                                        title: getTranslated(context, "حفظ"),
-                                                                        onPressed: () async {
+                                                                child:
+                                                                    RoundedButton(
+                                                                        title: getTranslated(
+                                                                            context,
+                                                                            "حفظ"),
+                                                                        onPressed:
+                                                                            () async {
                                                                           final String
                                                                               shiftName =
                                                                               Provider.of<SiteShiftsData>(context, listen: false).shifts[prov.dropDownShiftIndex].shiftName;
@@ -515,139 +513,131 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                                           Navigator.pop(
                                                                               context);
                                                                         }),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        ));
+                                                              )
+                                                            ],
+                                                          ),
+                                                        );
                                                       },
-                                                    );
+                                                    ));
                                                   },
-                                                  child: Container(
-                                                    width: 20.w,
-                                                    height: 20.h,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                            color:
-                                                                Colors.orange,
-                                                            shape: BoxShape
-                                                                .circle),
-                                                    child: const Icon(
-                                                      Icons.edit,
-                                                      size: 15,
-                                                    ),
-                                                    padding:
-                                                        const EdgeInsets.all(1),
-                                                  ),
-                                                ))
-                                        ],
-                                      ),
-                                      AutoSizeText(
-                                          daysofflist
-                                              .reallocateUsers[index].dayName,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  setResponsiveFontSize(16))),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 20.w,
+                                                height: 20.h,
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.orange,
+                                                    shape: BoxShape.circle),
+                                                child: const Icon(
+                                                  Icons.edit,
+                                                  size: 15,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(1),
+                                              ),
+                                            ))
                                     ],
                                   ),
-                                  const Divider()
+                                  AutoSizeText(
+                                      daysofflist
+                                          .reallocateUsers[index].dayName,
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: setResponsiveFontSize(16))),
                                 ],
                               ),
-                            );
-                          },
-                          itemCount: daysofflist.reallocateUsers.length,
-                        ))
-                      ]),
-                    ),
-                  ),
-                  shiftProv.isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                          backgroundColor: Colors.orange,
-                        ))
-                      : userProvider.user.userType == 2
-                          ? Container()
-                          : Row(
-                              mainAxisAlignment: widget.isEdit
-                                  ? MainAxisAlignment.spaceEvenly
-                                  : MainAxisAlignment.center,
-                              children: [
-                                !widget.isEdit
-                                    ? Container()
-                                    : RoundedButton(
-                                        title: getTranslated(context, "حذف"),
-                                        onPressed: () {
-                                          return showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return RoundedAlert(
-                                                  onPressed: () async {
-                                                    final String msg =
-                                                        await Provider.of<
-                                                                    ShiftsData>(
-                                                                context,
-                                                                listen: false)
-                                                            .deleteShiftScheduleById(
-                                                      scheduleList.id,
-                                                      Provider.of<UserData>(
-                                                              context,
-                                                              listen: false)
-                                                          .user
-                                                          .userToken,
-                                                    );
-                                                    Navigator.pop(context);
-                                                    if (msg == "Success") {
-                                                      Fluttertoast.showToast(
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "تم الحذف بنجاح"),
-                                                          backgroundColor:
-                                                              Colors.green,
-                                                          gravity: ToastGravity
-                                                              .CENTER);
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "خطأ فى الحذف"),
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          gravity: ToastGravity
-                                                              .CENTER);
-                                                    }
-
-                                                    Navigator.pop(context);
-                                                  },
-                                                  content: getTranslated(
-                                                      context,
-                                                      getTranslated(context,
-                                                          "هل تريد حذف الجدولة")),
-                                                  onCancel: () {},
-                                                  title: getTranslated(
-                                                      context, "حذف الجدولة"),
+                              const Divider()
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: daysofflist.reallocateUsers.length,
+                    ))
+                  ]),
+                ),
+              ),
+              shiftProv.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      backgroundColor: Colors.orange,
+                    ))
+                  : userProvider.user.userType == 2
+                      ? Container()
+                      : Row(
+                          mainAxisAlignment: widget.isEdit
+                              ? MainAxisAlignment.spaceEvenly
+                              : MainAxisAlignment.center,
+                          children: [
+                            !widget.isEdit
+                                ? Container()
+                                : RoundedButton(
+                                    title: getTranslated(context, "حذف"),
+                                    onPressed: () {
+                                      return showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return RoundedAlert(
+                                              onPressed: () async {
+                                                final String msg = await Provider
+                                                        .of<ShiftsData>(context,
+                                                            listen: false)
+                                                    .deleteShiftScheduleById(
+                                                  scheduleList.id,
+                                                  Provider.of<UserData>(context,
+                                                          listen: false)
+                                                      .user
+                                                      .userToken,
                                                 );
-                                              });
-                                        }),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: RoundedButton(
-                                    onPressed: () async {
-                                      if (_fromText == null ||
-                                          _toText == null) {
-                                        Fluttertoast.showToast(
-                                            msg: getTranslated(
-                                              context,
-                                              "برجاء ادخال المدة",
-                                            ),
-                                            gravity: ToastGravity.CENTER,
-                                            backgroundColor: Colors.red);
-                                      } else {
-                                        if (widget.isEdit) {
-                                          final String msg = await Provider.of<
-                                                      ShiftsData>(context,
+                                                Navigator.pop(context);
+                                                if (msg == "Success") {
+                                                  Fluttertoast.showToast(
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "تم الحذف بنجاح"),
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      gravity:
+                                                          ToastGravity.CENTER);
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg: getTranslated(
+                                                          context,
+                                                          "خطأ فى الحذف"),
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      gravity:
+                                                          ToastGravity.CENTER);
+                                                }
+
+                                                Navigator.pop(context);
+                                              },
+                                              content: getTranslated(
+                                                  context,
+                                                  getTranslated(context,
+                                                      "هل تريد حذف الجدولة")),
+                                              onCancel: () {},
+                                              title: getTranslated(
+                                                  context, "حذف الجدولة"),
+                                            );
+                                          });
+                                    }),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  if (_fromText == null || _toText == null) {
+                                    Fluttertoast.showToast(
+                                        msg: getTranslated(
+                                          context,
+                                          "برجاء ادخال المدة",
+                                        ),
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red);
+                                  } else {
+                                    if (widget.isEdit) {
+                                      final String msg =
+                                          await Provider.of<ShiftsData>(context,
                                                   listen: false)
                                               .editShiftSchedule(
                                                   daysofflist.reallocateUsers,
@@ -658,33 +648,33 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   _toDate,
                                                   widget.member.siteId,
                                                   scheduleList.id);
-                                          if (msg == "Success") {
-                                            Fluttertoast.showToast(
-                                                msg: getTranslated(context,
-                                                    "تم التعديل بنجاح"),
-                                                gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.green);
+                                      if (msg == "Success") {
+                                        Fluttertoast.showToast(
+                                            msg: getTranslated(
+                                                context, "تم التعديل بنجاح"),
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.green);
 
-                                            Navigator.pop(context);
-                                          } else if (msg == "less than today") {
-                                            Fluttertoast.showToast(
-                                                msg: getTranslated(context,
-                                                    "خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة"),
-                                                gravity: ToastGravity.CENTER,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                backgroundColor: Colors.red);
-                                          } else if (msg == "not exists") {
-                                            Fluttertoast.showToast(
-                                                msg: getTranslated(context,
-                                                    "لا يوجد جدولة لهذا المستخدم"),
-                                                gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.red);
-                                          } else {
-                                            errorToast(context);
-                                          }
-                                        } else {
-                                          final String msg = await Provider.of<
-                                                      ShiftsData>(context,
+                                        Navigator.pop(context);
+                                      } else if (msg == "less than today") {
+                                        Fluttertoast.showToast(
+                                            msg: getTranslated(context,
+                                                "خطأ : تاريخ اليوم  اقل من بداية تاريخ الجدولة"),
+                                            gravity: ToastGravity.CENTER,
+                                            toastLength: Toast.LENGTH_LONG,
+                                            backgroundColor: Colors.red);
+                                      } else if (msg == "not exists") {
+                                        Fluttertoast.showToast(
+                                            msg: getTranslated(context,
+                                                "لا يوجد جدولة لهذا المستخدم"),
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        errorToast(context);
+                                      }
+                                    } else {
+                                      final String msg =
+                                          await Provider.of<ShiftsData>(context,
                                                   listen: false)
                                               .addShiftSchedule(
                                                   daysofflist.reallocateUsers,
@@ -694,45 +684,44 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   _fromDate,
                                                   _toDate,
                                                   widget.member.siteId);
-                                          if (msg == "Success") {
-                                            await sendFcmMessage(
-                                              topicName: "",
-                                              title: "جدولة مناوبة",
-                                              category: "schedule",
-                                              userToken: widget.member.fcmToken,
-                                              message:
-                                                  "تم وضع جدولة مناوبات لك ",
-                                            );
+                                      if (msg == "Success") {
+                                        await sendFcmMessage(
+                                          topicName: "",
+                                          title: "جدولة مناوبة",
+                                          category: "schedule",
+                                          userToken: widget.member.fcmToken,
+                                          message: "تم وضع جدولة مناوبات لك ",
+                                        );
 
-                                            Fluttertoast.showToast(
-                                                msg: getTranslated(context,
-                                                    "تم الإضافة بنجاح"),
-                                                gravity: ToastGravity.CENTER,
-                                                backgroundColor: Colors.green);
-                                            Navigator.pop(context);
-                                          } else if (msg == "exists") {
-                                            Fluttertoast.showToast(
-                                                msg: getTranslated(context,
-                                                    "خطأ : هذا المسخدم لديه جدولة فى نفس الفترة"),
-                                                backgroundColor: Colors.red);
-                                          } else {
-                                            errorToast(context);
-                                          }
-                                        }
+                                        Fluttertoast.showToast(
+                                            msg: getTranslated(
+                                                context, "تم الإضافة بنجاح"),
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Colors.green);
+                                        Navigator.pop(context);
+                                      } else if (msg == "exists") {
+                                        Fluttertoast.showToast(
+                                            msg: getTranslated(context,
+                                                "خطأ : هذا المسخدم لديه جدولة فى نفس الفترة"),
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        errorToast(context);
                                       }
-                                    },
-                                    title: widget.isEdit
-                                        ? getTranslated(context, "تعديل")
-                                        : getTranslated(context, "حفظ"),
-                                  ),
-                                ),
-                              ],
-                            )
-                ],
-              ),
-            ),
+                                    }
+                                  }
+                                },
+                                title: widget.isEdit
+                                    ? getTranslated(context, "تعديل")
+                                    : getTranslated(context, "حفظ"),
+                              ),
+                            ),
+                          ],
+                        )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget showEditWidget() {

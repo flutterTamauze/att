@@ -42,7 +42,7 @@ class HuaweiServices {
 //       final Location location = await locationService.getLastLocation();
 //       return location;
 //     } catch (e) {
-//       print(e.toString());
+//       debugPrint(e.toString());
 //     }
 //     return null;
 //   }
@@ -58,7 +58,7 @@ class HuaweiServices {
 //   //       "client_secret": huaweiSecret
 //   //     },
 //   //   );
-//   //   print(response.body);
+//   //   debugPrint(response.body);
 //   //   return json.decode(response.body)["access_token"];
 //   // }
 
@@ -94,7 +94,7 @@ class HuaweiServices {
 //   //     log(response.body);
 //   //     // log("finshed sending..");
 //   //   } catch (e) {
-//   //     print(e);
+//   //    print(e);
 //   //   }
 //   // }
 
@@ -134,7 +134,7 @@ class HuaweiServices {
 //   //     log(response.body);
 //   //     log("finshed sending..");
 //   //   } catch (e) {
-//   //     print(e);
+//   //    print(e);
 //   //   }
 //   // }
 // }

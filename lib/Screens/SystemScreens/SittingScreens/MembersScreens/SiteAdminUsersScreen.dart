@@ -75,7 +75,6 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
   Widget build(BuildContext context) {
     final prov = Provider.of<SiteData>(context, listen: false);
     return GestureDetector(
-      onTap: () => print(prov.dropDownSitesIndex),
       child: Container(
         child: Column(
           children: [
@@ -164,11 +163,9 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                       });
                                     },
                                     onChanged: (String v) {
-                                      print(v);
                                       if (v.isEmpty) {
                                         widget.resetTextFieldFun();
                                       }
-                                      print(showSearchButton);
                                       if (showSearchButton == false) {
                                         setState(() {
                                           showSearchButton = true;
@@ -242,11 +239,9 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                         });
                                       },
                                       onChanged: (String v) {
-                                        print(v);
                                         if (v.isEmpty) {
                                           widget.resetTextFieldFun();
                                         }
-                                        print(showSearchButton);
                                         if (showSearchButton == false) {
                                           setState(() {
                                             showSearchButton = true;
@@ -397,7 +392,6 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                           .toList(),
                                       onChanged: (v) async {
                                         int holder;
-                                        print(v);
                                         prov.setShiftValue(v);
 
                                         final List<String> x = [];
@@ -407,7 +401,7 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                         });
 
                                         holder = x.indexOf(v);
-                                        print(value.shiftsList[holder].shiftId);
+
                                         if (value.shiftsList[holder].shiftId ==
                                             -100) {
                                           Provider.of<MemberData>(context,
@@ -446,16 +440,14 @@ class _RoundedSearchBarSiteAdminState extends State<RoundedSearchBarSiteAdmin> {
                                                     ? -1
                                                     : value.shiftsList[holder]
                                                         .shiftId);
-                                        print(holder);
                                         prov.setDropDownShift(holder);
                                       },
                                       hint: const AutoSizeText("كل المناوبات"),
                                       value: value
                                           .shiftsList[prov.dropDownShiftIndex]
-                                          .shiftName
+                                          .shiftName);
 
-                                      // value
-                                      );
+                                  // value
                                 },
                               ),
                               const Divider(
@@ -507,7 +499,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
   //   var comProvier = Provider.of<CompanyData>(context, listen: false);
 
   //   // monitor network fetch
-  //   print("refresh");
+  //   debugPrint("refresh");
 
   //   await Provider.of<MemberData>(context, listen: false).getAllSiteMembers(
   //       userProvider.user.userSiteId, userProvider.user.userToken, context);
@@ -563,7 +555,7 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
         .getShifts(comProvier.com.id, userProvider.user.userToken, context,
             userProvider.user.userType, userProvider.user.userSiteId)
         .then((value) async {
-      print("Got shifts");
+      debugPrint("Got shifts");
     });
     log("user site id ${userProvider.user.userSiteId}");
     await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
@@ -591,7 +583,6 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
       RefreshController(initialRefresh: false);
   searchInList(String value, int siteId, int companyId) {
     if (value.isNotEmpty) {
-      print(companyId);
       Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
@@ -728,11 +719,9 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                           dropdownFun: (value) {
                                             setState(() {
                                               widget.selectedValue = value;
-                                              print(
+                                              debugPrint(
                                                   "current : ${widget.selectedValue}");
                                             });
-
-                                            print(value);
                                           },
                                         ),
                                       ),
@@ -930,30 +919,22 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                                                   }),
                                                         )
                                                       : Center(
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              print(memberData
-                                                                  .membersList
-                                                                  .length);
-                                                            },
-                                                            child: AutoSizeText(
-                                                              getTranslated(
-                                                                  context,
-                                                                  "لا يوجد مستخدمين بهذا الموقع"),
-                                                              maxLines: 2,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  height: 2,
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      16,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                            ),
+                                                          child: AutoSizeText(
+                                                            getTranslated(
+                                                                context,
+                                                                "لا يوجد مستخدمين بهذا الموقع"),
+                                                            maxLines: 2,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                height: 2,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
                                                           ),
                                                         )),
                                     ],

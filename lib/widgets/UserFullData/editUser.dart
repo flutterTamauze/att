@@ -78,8 +78,7 @@ class _EditMemberState extends State<EditMember> {
                   widget.id,
                   context,
                   getRoleName(widget.userRole));
-          print(widget.userRole);
-          print(getRoleName(widget.userRole));
+
           if (msg == "Success") {
             Fluttertoast.showToast(
               msg: "تم التعديل بنجاح",

@@ -1359,7 +1359,7 @@ class NewHeader extends StatelessWidget {
               height: 50.h,
               child: InkWell(
                 onTap: () {
-                  print("s");
+                  debugPrint("s");
                   Scaffold.of(context).openDrawer();
                 },
                 child: const Icon(

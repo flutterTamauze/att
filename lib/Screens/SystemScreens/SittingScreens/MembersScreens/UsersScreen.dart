@@ -61,7 +61,7 @@ class _UsersScreenState extends State<UsersScreen> {
   //   var comProvier = Provider.of<CompanyData>(context, listen: false);
 
   //   // monitor network fetch
-  //   print("refresh");
+  //   debugPrint("refresh");
   //   // if failed,use refreshFailed()
   //   await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
   //       Provider.of<SiteData>(context, listen: false)
@@ -100,7 +100,7 @@ class _UsersScreenState extends State<UsersScreen> {
         // log("reached end of list");
 
         if (Provider.of<MemberData>(context, listen: false).keepRetriving) {
-          print("entered");
+          debugPrint("entered");
           if (siteIndex == 0) {
             await Provider.of<MemberData>(context, listen: false)
                 .getAllCompanyMember(-1, comProvier.com.id,
@@ -142,8 +142,7 @@ class _UsersScreenState extends State<UsersScreen> {
     final comProvier = Provider.of<CompanyData>(context);
 
     if (widget.selectedIndex != -1) {
-      print("widget index");
-      print(widget.selectedIndex);
+      debugPrint("widget index");
       siteIndex = widget.selectedIndex;
       if (widget.comingFromShifts) {
         await Provider.of<MemberData>(context, listen: false)
@@ -173,7 +172,7 @@ class _UsersScreenState extends State<UsersScreen> {
           .getAllCompanyMember(
               -1, comProvier.com.id, userProvider.user.userToken, context, -1)
           .then((value) async {
-        print("Got members");
+        debugPrint("Got members");
       });
     }
     if (mounted)
@@ -196,7 +195,6 @@ class _UsersScreenState extends State<UsersScreen> {
       RefreshController(initialRefresh: false);
   searchInList(String value, int siteId, int companyId) {
     if (value.isNotEmpty) {
-      print(companyId);
       Provider.of<MemberData>(context, listen: false).searchUsersList(
           value,
           Provider.of<UserData>(context, listen: false).user.userToken,
@@ -239,11 +237,6 @@ class _UsersScreenState extends State<UsersScreen> {
         onWillPop: onWillPop,
         child: GestureDetector(
           onTap: () async {
-            for (int i = 0; i < siteProv.sites.length; i++) {
-              print(siteProv.sites[i].name);
-            }
-            print(siteProv.sites.length);
-
             FocusScope.of(context).unfocus();
           },
           child: Scaffold(
@@ -399,7 +392,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                                       setState(() {
                                                         widget.selectedValue =
                                                             value;
-                                                        print(
+                                                        debugPrint(
                                                             "current : ${widget.selectedValue}");
                                                         currentShiftName = "";
                                                         _nameController.clear();

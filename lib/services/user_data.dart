@@ -76,11 +76,11 @@ class UserData with ChangeNotifier {
     try {
       final result = await InternetAddress.lookup(url);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
+        debugPrint('connected');
         return true;
       }
     } on SocketException catch (_) {
-      print('not connected');
+      debugPrint('not connected');
       return false;
     }
     return false;
@@ -140,11 +140,11 @@ class UserData with ChangeNotifier {
     final response =
         await MemberRepo().getMemberData(username, password, token, isHuawei);
     if (response is Faliure) {
-      print("faliure occured");
+      debugPrint("faliure occured");
       return response.code;
     } else {
       await checkAttendProovStatus(prefs);
-      print("not faliure");
+      debugPrint("not faliure");
       // log(response);
       decodedRes = json.decode(response);
 
@@ -183,7 +183,6 @@ class UserData with ChangeNotifier {
               obJson.map((json) => SuperCompaniesModel.fromJson(json)).toList();
           superCompaniesList.addAll(tempComp);
         } else if (isTdsAdmin || isTechnicalSupport) {
-          print(decodedRes['tdsadminCompanies']);
           final obJson = decodedRes['tdsadminCompanies'] as List;
 
           superCompaniesList =
@@ -208,7 +207,6 @@ class UserData with ChangeNotifier {
 
         if (notifyList != null && notifyList.length != 0) {
           while (notifyList.length != 0) {
-            print("test length now is ${notifyList.length}");
             await db
                 .insertNotification(
                     NotificationMessage(
@@ -241,7 +239,7 @@ class UserData with ChangeNotifier {
         if (isSuperAdmin || isTdsAdmin || isTechnicalSupport) {
           return 6;
         } else if (userType == 2) {
-          print("get site admin shifts");
+          debugPrint("get site admin shifts");
           Provider.of<ShiftsData>(context, listen: false).getShifts(
               Provider.of<UserData>(context, listen: false).user.userSiteId,
               Provider.of<UserData>(context, listen: false).user.userToken,
@@ -252,7 +250,7 @@ class UserData with ChangeNotifier {
 
         // log("user type ${(user.userType)}");
         if (user.userType == 4 || user.userType == 3) {
-          print("getting super chart");
+          debugPrint("getting super chart");
           await Provider.of<UserData>(context, listen: false)
               .getSuperCompanyChart(user.userToken, companyId);
         }
@@ -285,7 +283,6 @@ class UserData with ChangeNotifier {
               {"UserName": username, "PhoneNo": phone.trim()},
             ),
             headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
-        print(response.body);
         final decodedRes = json.decode(response.body);
 
         if (decodedRes["message"] == "Verification code send to account ") {
@@ -319,7 +316,6 @@ class UserData with ChangeNotifier {
             headers: {'Content-type': 'application/json', 'x-api-key': apiKey});
 
         final decodedRes = json.decode(response.body);
-        print(decodedRes["message"]);
 
         if (decodedRes["message"] == "Password Updated Successfully ") {
           notifyListeners();
@@ -338,11 +334,11 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
-    // final HuaweiServices _huawei = HuaweiServices();
-    // bool isHawawi = false;
-    // if (Platform.isAndroid) {
-    //   isHawawi = await _huawei.isHuaweiDevice();
-    // }
+    final HuaweiServices _huawei = HuaweiServices();
+    bool isHawawi = false;
+    if (Platform.isAndroid) {
+      isHawawi = await _huawei.isHuaweiDevice();
+    }
 
     print(image.lengthSync());
     // log("image ${image.path}");
@@ -406,14 +402,13 @@ class UserData with ChangeNotifier {
         identifier = await storage.read(key: "deviceMac"); //UUID for iOS
       }
     } catch (e) {
-      print('Failed to get platform version');
+      print(e);
     }
 //if (!mounted) return;
     return identifier;
   }
 
   Future<String> attend({String qrCode}) async {
-    print("attend --${user.id}----$qrCode");
     String msg;
     try {
       if (await isConnectedToInternet("www.google.com")) {
@@ -426,7 +421,6 @@ class UserData with ChangeNotifier {
 
         if (locationService == 0) {
           final String imei = await getDeviceUUID();
-          print("imei is : $imei");
           final uri = '$baseURL/api/AttendLogin';
 
           final headers = {
@@ -447,12 +441,7 @@ class UserData with ChangeNotifier {
             },
           );
           final String responseBody = response.body;
-          print(response.body);
           msg = jsonDecode(responseBody)['message'];
-          print(
-              "-----------------------------${jsonDecode(responseBody)}-----------------------");
-          print("imei after attend is : $imei");
-          print("msg after attend is :$msg");
         } else if (locationService == 1) {
           msg = 'mock';
         } else {
@@ -473,7 +462,7 @@ class UserData with ChangeNotifier {
         await SuperCompaniesChartRepo().getSuperCharts(token, comID);
 
     if (response is Faliure) {
-      print("faliure occured");
+      debugPrint("faliure occured");
       return response;
     } else {
       final decodedRes = json.decode(response);
@@ -492,8 +481,6 @@ class UserData with ChangeNotifier {
 
   Future<String> uploadImage(File _image, String id) async {
     String data = "";
-    print("uploading image..$id...");
-    print(_image.path);
     final stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
     final length = await _image.length();
 
@@ -510,11 +497,9 @@ class UserData with ChangeNotifier {
 
     await request.send().then((response) async {
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
         final Map<String, dynamic> responesDedoded = json.decode(value);
 
         if (responesDedoded['message'] == "Success : Image updated success") {
-          print(responesDedoded['message']);
           data = responesDedoded['data'];
           return data;
         } else {
@@ -529,17 +514,14 @@ class UserData with ChangeNotifier {
 
   Future<String> updateProfileImgFile(String imgPath) async {
     final File _image = File(imgPath);
-    print(_image.lengthSync());
+    debugPrint(_image.lengthSync().toString());
     var url = "";
 
     if (await isConnectedToInternet("www.google.com")) {
       await uploadImage(_image, user.id).then((value) async {
         if (value != "") {
-          print("path :$value");
           url = "$imageUrl/$value";
-          print("lunch url $url");
           user.userImage = url;
-          print("success =  $value");
 
           changedWidget = Image.file(File(imgPath));
           // cachedUserData[2] = imgPath;
@@ -559,16 +541,16 @@ class UserData with ChangeNotifier {
   checkAttendProovStatus(SharedPreferences prefs) async {
     if (prefs.getString("notifCategory") == 'attend') {
       locator.locator<PermissionHan>().triggerAttendProof();
-      print("attend proof triggerd");
+      debugPrint("attend proof triggerd");
       // Provider.of<PermissionHan>(context, listen: false).triggerAttendProof();
     }
-    print("attend proov checked ... ");
+    debugPrint("attend proov checked ... ");
   }
 
   // addNotificationRequestID(int id) {
   //   if (!notificationsSent.contains(id)) {
   //     notificationsSent.add(id);
-  //     print("id added $id");
+  //     debugPrint("id added $id");
   //   }
 
   //   notifyListeners();
@@ -576,17 +558,16 @@ class UserData with ChangeNotifier {
 
   // bool isNotificationIdExist(int id) {
   //   if (notificationsSent.contains(id)) {
-  //     print("notification exist");
+  //     debugPrint("notification exist");
 
   //     return true;
   //   }
-  //   print("notification not  exist");
+  //   debugPrint("notification not  exist");
 
   //   return false;
   // }
 
   Future<String> editProfile(String password) async {
-    print("${user.id} -----edit-- $password");
     if (await isConnectedToInternet("www.google.com")) {
       try {
         isLoading = true;
@@ -603,11 +584,10 @@ class UserData with ChangeNotifier {
               'Content-type': 'application/json',
               'Authorization': "Bearer ${user.userToken}"
             });
-        print(response.body);
+        debugPrint(response.body);
         isLoading = false;
         final decodedRes = json.decode(response.body);
-        print(response.body);
-        print(decodedRes["message"]);
+
         notifyListeners();
         if (decodedRes["message"] == "Success : password updated successfuly") {
           return "success";
@@ -625,7 +605,6 @@ class UserData with ChangeNotifier {
 
   Future<String> changePassword(String password) async {
     final String imei = await getDeviceUUID();
-    print("${user.id} -----edit-- $password --- mac$imei ");
 
     if (await isConnectedToInternet("www.google.com")) {
       try {
@@ -640,9 +619,6 @@ class UserData with ChangeNotifier {
             });
 
         final decodedRes = json.decode(response.body);
-        print(response.statusCode);
-        print(response.body);
-        print(decodedRes["message"]);
 
         if (decodedRes["message"] == "Success : password updated successfuly") {
           return "success";
@@ -670,7 +646,7 @@ class UserData with ChangeNotifier {
     }
 
     loggedIn = false;
-    // manager.emptyCache().whenComplete(() => print("deletedSuccessfuly"));
+    // manager.emptyCache().whenComplete(() => debugPrint("deletedSuccessfuly"));
     PaintingBinding.instance.imageCache.clear();
 
     changedWidget = Image.asset("resources/personicon.png");
@@ -702,8 +678,6 @@ class UserData with ChangeNotifier {
     // if (!isHawawi) {
     enabled = await Geolocator.isLocationServiceEnabled();
     // }
-    print("userdata");
-    print("enable locaiton : $enabled");
 
     // && pos[0] != null
     if (Platform.isIOS) {
