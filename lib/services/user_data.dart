@@ -369,7 +369,7 @@ class UserData with ChangeNotifier {
         print("card code :$cardCode");
         print("**************");
         await request.send().then((response) async {
-          response.stream.transform(utf8.decoder).listen((value) {
+          response.stream.transform(utf8.decoder).listen((String value) {
             print(value);
             final Map<String, dynamic> responesDedoded = json.decode(value);
             msg = responesDedoded['message'];

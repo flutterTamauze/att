@@ -619,7 +619,12 @@
 "تحديث التطبيق لأخر اصدار ؟":"Update the app to the latest version?",
 "برجاء اختيار صورة شخصية":"Please choose personal image",
 "حذف":"Delete",
-"خطأ : هذا المسخدم لديه جدولة فى نفس الفترة":"Error : This user has a schedule in the same period"
-
-    }
+"خطأ : هذا المسخدم لديه جدولة فى نفس الفترة":"Error : This user has a schedule in the same period",
+"AM"
+:"AM",
+"PM":"PM",
+"ص"
+:"AM" ,
+"م"
+:"PM"    }
     
