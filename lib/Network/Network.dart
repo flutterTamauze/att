@@ -132,8 +132,7 @@ class NetworkApi {
   }
 
   bool _displayExceptionDialog() {
-    if (locator.locator<UserData>().user.userToken != null &&
-        locator.locator<UserData>().user.userToken != "") {
+    if (locator.locator<UserData>().user.userToken != "") {
       return true;
     }
     return false;

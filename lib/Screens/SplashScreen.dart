@@ -140,6 +140,7 @@ class _SplashScreenState extends State<SplashScreen>
           } else {
             if (value == USER_INVALID_RESPONSE || value == null) {
               await getUserData();
+
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
                   builder: (context) => ErrorScreen(
                       getTranslated(context,

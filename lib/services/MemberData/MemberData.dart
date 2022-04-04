@@ -137,8 +137,6 @@ class MemberData with ChangeNotifier {
 
   searchUsersList(String filter, String userToken, dynamic siteId,
       int companyId, BuildContext context) async {
-    debugPrint("site id");
-    debugPrint(siteId);
     if (siteId == -1) {
       siteId = "";
     }

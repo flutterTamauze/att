@@ -42,10 +42,11 @@ class _ErrorScreenState extends State<ErrorScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserData>(builder: (context, userData, child) {
-      return MaterialApp(
-        theme: ThemeData(fontFamily: "Almarai-Regular"),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+      return GestureDetector(
+        onTap: () {
+          print(message.toString());
+        },
+        child: Scaffold(
           body: Column(
             children: [
               NewHeader(userData.cachedUserData),
@@ -54,16 +55,14 @@ class _ErrorScreenState extends State<ErrorScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      message.toString().contains("لا يوجد اتصال بالانترنت")
-                          ? Container()
-                          : Container(),
+                      Container(),
                       SizedBox(
                         height: 10.h,
                       ),
                       Lottie.asset(
-                          message.toString().contains("لا يوجد اتصال بالانترنت")
-                              ? "resources/noNetwork.json"
-                              : "resources/maintenance.json",
+                          message.toString().contains("خادم")
+                              ? "resources/maintenance.json"
+                              : "resources/noNetwork.json",
                           width: 300.w,
                           height: 300.h,
                           repeat: true),

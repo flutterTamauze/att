@@ -198,7 +198,6 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                   _onRefresh();
                                   Provider.of<SiteData>(context, listen: false)
                                       .setCurrentSiteName(value);
-                                  debugPrint("site name from monawbat $value");
 
                                   Provider.of<SiteShiftsData>(context,
                                           listen: false)
@@ -559,7 +558,9 @@ class _ShiftTileState extends State<ShiftTile> {
     int hours = (intTime ~/ 100);
     final int min = intTime - (hours * 100);
 
-    final ampm = hours >= 12 ? 'PM' : 'AM';
+    final ampm = hours >= 12
+        ? getTranslated(context, "PM")
+        : getTranslated(context, "AM");
     hours = hours % 12;
     hours = hours != 0 ? hours : 12; //
 
@@ -898,13 +899,13 @@ class FromToShiftDisplay extends StatelessWidget {
     return SlideInUp(
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.centerRight,
+          Container(
+            width: 500.w,
             child: AutoSizeText(
-              weekDay,
+              getTranslated(context, weekDay),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(
@@ -914,7 +915,7 @@ class FromToShiftDisplay extends StatelessWidget {
                 child: dateDataField(
                     controller: TextEditingController(text: start),
                     icon: Icons.alarm,
-                    labelText: "من"),
+                    labelText: getTranslated(context, "من")),
               ),
               SizedBox(
                 width: 5.0.w,
@@ -924,7 +925,7 @@ class FromToShiftDisplay extends StatelessWidget {
                 child: dateDataField(
                     controller: TextEditingController(text: end),
                     icon: Icons.alarm,
-                    labelText: "الى"),
+                    labelText: getTranslated(context, "إلى")),
               ),
             ],
           ),
