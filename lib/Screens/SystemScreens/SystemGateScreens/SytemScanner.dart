@@ -24,22 +24,9 @@ class SystemScanPage extends StatefulWidget {
 class _SystemScanPageState extends State<SystemScanPage> {
   var qrText = '';
   AudioCache player = AudioCache();
-  CameraDescription cameraDescription;
-  _startUp() async {
-    /// takes the front camera
-    cameraDescription = cameras.firstWhere(
-      (CameraDescription camera) =>
-          camera.lensDirection == CameraLensDirection.front,
-    );
-  }
 
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  @override
-  void initState() {
-    _startUp();
-    super.initState();
-  }
 
   flipCamera() async {
     await controller.flipCamera();
@@ -136,7 +123,6 @@ class _SystemScanPageState extends State<SystemScanPage> {
         isScanned = true;
         shiftQrCode =
             Provider.of<ShiftApi>(context, listen: false).qrShift.shiftQrCode;
-        debugPrint("qrcode : $shiftQrCode");
         secondPageRoute();
       }
     });

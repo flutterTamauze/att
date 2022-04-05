@@ -135,6 +135,24 @@ noInternetDialog(BuildContext context) {
       });
 }
 
+displayErrorToast(BuildContext context, String msg) {
+  Fluttertoast.showToast(
+      msg: getTranslated(context, msg),
+      gravity: ToastGravity.CENTER,
+      toastLength: Toast.LENGTH_LONG,
+      backgroundColor: Colors.red,
+      textColor: Colors.black);
+}
+
+displayToast(BuildContext context, String msg) {
+  Fluttertoast.showToast(
+      msg: getTranslated(context, msg),
+      gravity: ToastGravity.CENTER,
+      toastLength: Toast.LENGTH_LONG,
+      backgroundColor: Colors.black,
+      textColor: Colors.orange);
+}
+
 serverDownDialog(BuildContext context) {
   showDialog(
       context: context,
