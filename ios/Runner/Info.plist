@@ -60,7 +60,6 @@
 	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

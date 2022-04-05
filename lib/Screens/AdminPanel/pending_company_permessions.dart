@@ -177,7 +177,8 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                       onTapped: (e) {
                                                         comment = e;
                                                       },
-                                                      hint: "سبب الرفض",
+                                                      hint: getTranslated(
+                                                          context, "سبب الرفض"),
                                                       onPressed: () async {
                                                         Navigator.pop(ctx);
                                                         showDialog(
@@ -294,13 +295,9 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                             topicName: "",
                                                             userToken: pending
                                                                 .fcmToken,
-                                                            title:
-                                                                getTranslated(
-                                                                    context,
-                                                                    "طلب اذن"),
-                                                            message: getTranslated(
-                                                                context,
-                                                                "تم الموافقة على طلب الأذن"));
+                                                            title: "طلب اذن",
+                                                            message:
+                                                                "تم الموافقة على طلب الأذن");
                                                       }
 
                                                       Fluttertoast.showToast(
