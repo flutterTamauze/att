@@ -202,14 +202,9 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                             topicName: "",
                                                             userToken: pending
                                                                 .fcmToken,
-                                                            title:
-                                                                getTranslated(
-                                                              context,
-                                                              "طلب اجازة",
-                                                            ),
-                                                            message: getTranslated(
-                                                                context,
-                                                                "تم الموافقة على طلب الأجازة"));
+                                                            title: "طلب اجازة",
+                                                            message:
+                                                                "تم الموافقة على طلب الأجازة");
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
@@ -301,13 +296,10 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               topicName: "",
                                                               userToken: pending
                                                                   .fcmToken,
-                                                              title: getTranslated(
-                                                                  context,
-                                                                  "طلب اجازة"),
+                                                              title:
+                                                                  "طلب اجازة",
                                                               message:
-                                                                  getTranslated(
-                                                                      context,
-                                                                      "تم رفض طلب الأجازة"));
+                                                                  "تم رفض طلب الأجازة");
                                                         }
 
                                                         Fluttertoast.showToast(
