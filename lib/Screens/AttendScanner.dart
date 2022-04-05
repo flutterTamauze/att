@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -97,6 +99,7 @@ class _ScanPageState extends State<ScanPage> {
     final msg = await Provider.of<UserData>(context, listen: false).attend(
       qrCode: qrText,
     );
+    log(msg.toString());
     switch (msg) {
       case "Success : successfully registered":
         Fluttertoast.showToast(
