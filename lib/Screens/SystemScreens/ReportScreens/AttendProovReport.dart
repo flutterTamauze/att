@@ -58,6 +58,9 @@ class _AttendProofReportState extends State<AttendProofReport> {
     siteID = Provider.of<SiteShiftsData>(context, listen: false)
         .siteShiftList[0]
         .siteId;
+    currentSiteName = Provider.of<SiteShiftsData>(context, listen: false)
+        .siteShiftList[0]
+        .siteName;
     date = apiFormatter.format(DateTime.now());
     // getReportData(date);
     selectedDateString = DateTime.now().toString();
@@ -143,16 +146,19 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                   hintColor: Colors.black,
                                   height: 90,
                                   onChange: (value) async {
-                                    siteIndex =
-                                        getSiteIndexBySiteName(value, context);
-                                    setState(() {
-                                      showTable = false;
-                                      siteID = Provider.of<SiteShiftsData>(
-                                              context,
-                                              listen: false)
-                                          .siteShiftList[siteIndex]
-                                          .siteId;
-                                    });
+                                    if (currentSiteName != value) {
+                                      siteIndex = getSiteIndexBySiteName(
+                                          value, context);
+                                      setState(() {
+                                        showTable = false;
+                                        siteID = Provider.of<SiteShiftsData>(
+                                                context,
+                                                listen: false)
+                                            .siteShiftList[siteIndex]
+                                            .siteId;
+                                      });
+                                    }
+                                    currentSiteName = value;
                                   },
                                   selectedvalue:
                                       Provider.of<SiteShiftsData>(context)

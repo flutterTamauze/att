@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
-import 'package:device_info/device_info.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image/image.dart' as imglib;
-import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +22,9 @@ import 'package:qr_users/MLmodule/recognition_services/quant.dart';
 import 'package:qr_users/Screens/Notifications/Notifications.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
-import 'package:qr_users/widgets/Shared/LoadingIndicator.dart';
-import "package:qr_users/widgets/headers.dart";
+import 'package:qr_users/widgets/CameraPicker/loadingCamera.dart';
+import 'package:qr_users/widgets/CameraPicker/scanningFace.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 
@@ -93,7 +91,7 @@ class TakePictureScreenState extends State<CameraPicker> {
             });
           },
         ).whenComplete(() => Future.delayed(
-            Duration(
+            const Duration(
               milliseconds: 100,
             ),
             () => {_isDetecting = false}));
@@ -141,42 +139,54 @@ class TakePictureScreenState extends State<CameraPicker> {
   }
 
   Widget buildResult() {
-    const Text noResultsText = Text("لا يوجد نتائج");
-    if (scannResult == null ||
-        cameraController == null ||
-        !cameraController.value.isInitialized) {
-      return noResultsText;
+    try {
+      const Text noResultsText = Text("لا يوجد نتائج");
+      if (scannResult == null ||
+          cameraController == null ||
+          !cameraController.value.isInitialized) {
+        return noResultsText;
+      }
+
+      final Size imageSize = Size(cameraController.value.previewSize.height,
+          cameraController.value.previewSize.width);
+
+      final CustomPainter customPainter =
+          FaceDetectorPainter(imageSize, scannResult, cameraLensDirection);
+
+      return CustomPaint(
+        painter: customPainter,
+      );
+    } catch (e) {
+      print(e);
     }
-
-    final Size imageSize = Size(cameraController.value.previewSize.height,
-        cameraController.value.previewSize.width);
-
-    final CustomPainter customPainter =
-        FaceDetectorPainter(imageSize, scannResult, cameraLensDirection);
-
-    return CustomPaint(
-      painter: customPainter,
-    );
   }
 
   File image;
   Future<File> testCompressAndGetFile({File file, String targetPath}) async {
-    final result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      targetPath,
-      quality: 30,
-    );
+    try {
+      final result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 30,
+      );
 
-    return result;
+      return result;
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _predict() async {
-    final img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
-    final pred = _classifier.predict(imageInput);
-    debugPrint("pred $pred");
-    setState(() {
-      this.category = pred;
-    });
+    try {
+      final img.Image imageInput = img.decodeImage(imagePath.readAsBytesSync());
+      final pred = _classifier.predict(imageInput);
+      debugPrint("pred $pred");
+      setState(() {
+        this.category = pred;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   bool isFaceAvailable(List<Face> facesList) {
@@ -191,18 +201,22 @@ class TakePictureScreenState extends State<CameraPicker> {
   @override
   void dispose() {
     cameraController.dispose().then((_) => faceDetector.close());
-
+    log("dispose is triggered !");
     super.dispose();
   }
 
   Future<String> fillPath() async {
-    return join(
-      (await getTemporaryDirectory().catchError((e) {
-        debugPrint("directory error $e");
-      }))
-          .path,
-      '${DateTime.now()}.jpg',
-    );
+    try {
+      return join(
+        (await getTemporaryDirectory().catchError((e) {
+          debugPrint("directory error $e");
+        }))
+            .path,
+        '${DateTime.now()}.jpg',
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -215,26 +229,7 @@ class TakePictureScreenState extends State<CameraPicker> {
       child: Scaffold(
         endDrawer: NotificationItem(),
         body: cameraController == null
-            ? Center(
-                child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 90.w,
-                    height: 90.h,
-                    child: Lottie.asset(
-                      "resources/loadingCamera.json",
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AutoSizeText(
-                    getTranslated(context, "برجاء الأنتظار"),
-                    style: boldStyle,
-                  )
-                ],
-              ))
+            ? const LoadingCamera()
             : image == null
                 ? Stack(children: <Widget>[
                     Container(
@@ -379,14 +374,8 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                           fbVisionImage);
                                               if (category.label.substring(2) ==
                                                   "mobiles") {
-                                                Fluttertoast.showToast(
-                                                    msg: getTranslated(context,
-                                                        "خطأ : برجاء التقاط صورة حقيقية"),
-                                                    backgroundColor: Colors.red,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG);
+                                                displayErrorToast(context,
+                                                    "خطأ : برجاء التقاط صورة حقيقية");
                                                 Navigator.of(context)
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
@@ -398,14 +387,8 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                             false);
                                               } else if (!isFaceAvailable(
                                                   faceList)) {
-                                                Fluttertoast.showToast(
-                                                    msg: getTranslated(context,
-                                                        "برجاء تصوير وجهك بوضوح"),
-                                                    backgroundColor: Colors.red,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG);
+                                                displayErrorToast(context,
+                                                    "برجاء تصوير وجهك بوضوح");
                                                 Navigator.of(context)
                                                     .pushAndRemoveUntil(
                                                         MaterialPageRoute(
@@ -448,310 +431,102 @@ class TakePictureScreenState extends State<CameraPicker> {
 
                                                     switch (msg) {
                                                       case "Success : successfully registered":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "تم التسجيل بنجاح"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.black,
-                                                            textColor:
-                                                                Colors.orange);
+                                                        displayToast(context,
+                                                            "تم التسجيل بنجاح");
                                                         break;
                                                       case "Failed : You can't attend outside your company!":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لا يمكنك التسجيل لشخص خارج شركتك"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "لا يمكنك التسجيل لشخص خارج شركتك");
+
                                                         break;
                                                       case "Success : already registered attend":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لقد تم تسجيل الحضور من قبل"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.black,
-                                                            textColor:
-                                                                Colors.orange);
+                                                        displayToast(context,
+                                                            "لقد تم تسجيل الحضور من قبل");
                                                         break;
                                                       case "Success : already registered leave":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لقد تم تسجيل الأنصراف من قبل"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.black,
-                                                            textColor:
-                                                                Colors.orange);
+                                                        displayToast(context,
+                                                            "لقد تم تسجيل الأنصراف من قبل");
                                                         break;
                                                       case "you can't register now during shift!":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لا يمكن التسجيل بمناوبتك الأن"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.black,
-                                                            textColor:
-                                                                Colors.orange);
+                                                        displayToast(context,
+                                                            "لا يمكن التسجيل بمناوبتك الأن");
                                                         break;
                                                       case "Sorry : You have an external mission today!":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لم يتم التسجيل: لديك مأمورية خارجية"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.black,
-                                                            textColor:
-                                                                Colors.orange);
+                                                        displayToast(context,
+                                                            "لم يتم التسجيل: لديك مأمورية خارجية");
                                                         break;
 
                                                       case "Failed : Location not found":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                              context,
-                                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                                            ),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: برجاء التواجد بموقع العمل");
                                                         break;
                                                       case "Sorry : You have an holiday today!":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لم يتم التسجيل : اجازة شخصية"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "لم يتم التسجيل : اجازة شخصية");
                                                         break;
                                                       case "Fail : You can't register leave now":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                              context,
-                                                              "لا يمكنك تسجيل الإنصراف الأن",
-                                                            ),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "لا يمكنك تسجيل الإنصراف الأن");
                                                         break;
                                                       case "Failed : Mac address not match":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام");
                                                         break;
                                                       case "Failed : You are not allowed to sign by card! ":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "ليس مصرح لك التسجيل بالبطاقة"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "ليس مصرح لك التسجيل بالبطاقة");
                                                         break;
                                                       case "Fail : Using another attend method":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور");
                                                         break;
                                                       case "Failed : Qrcode not valid":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل: كود غير صحيح"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: كود غير صحيح");
                                                         break;
                                                       case "noInternet":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل: لا يوجد اتصال بالانترنت"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: لا يوجد اتصال بالانترنت");
                                                         break;
                                                       case "off":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف");
                                                         break;
                                                       case "mock":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                              context,
-                                                              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-                                                            ),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: برجاء التواجد بموقع العمل");
                                                         break;
                                                       case "Sorry : Today is an official vacation!":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "لم يتم التسجيل : عطلة رسمية"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "لم يتم التسجيل : عطلة رسمية");
                                                         break;
                                                       case "Success : User was not proof":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                              context,
-                                                              "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
-                                                            ),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم");
                                                         break;
                                                       case "Failed : Out of shift time":
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "التسجيل غير متاح الأن"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.orange,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "التسجيل غير متاح الأن");
                                                         break;
 
                                                       default:
-                                                        Fluttertoast.showToast(
-                                                            msg: getTranslated(
-                                                                context,
-                                                                "خطأ فى التسجيل"),
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            toastLength: Toast
-                                                                .LENGTH_LONG,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.black);
+                                                        displayErrorToast(
+                                                            context,
+                                                            "خطأ فى التسجيل");
                                                     }
                                                     Navigator.of(context)
                                                         .pushAndRemoveUntil(
@@ -809,63 +584,7 @@ class TakePictureScreenState extends State<CameraPicker> {
                                   )
                             : Container())
                   ])
-                : Stack(children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          HeaderBeforeLogin(),
-                          Center(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 300.w,
-                                  height: 300.h,
-                                  alignment: Alignment.center,
-                                  child: Center(
-                                    child: Lottie.asset(
-                                        "resources/PersonScanning.json"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                AutoSizeText(
-                                  getTranslated(context,
-                                      "... برجاء انتظار انتهاء عملية المسح"),
-                                  style: TextStyle(
-                                    fontSize: setResponsiveFontSize(18),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 4.0,
-                      top: 4.0,
-                      child: SafeArea(
-                        child: IconButton(
-                          icon: Icon(
-                            locator.locator<PermissionHan>().isEnglishLocale()
-                                ? Icons.chevron_left
-                                : Icons.chevron_right,
-                            color: const Color(0xffF89A41),
-                            size: 40,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                  ]),
+                : const ScanningFaceCamera(),
       ),
     );
   }
