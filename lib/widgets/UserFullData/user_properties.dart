@@ -543,6 +543,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.CENTER);
                                 break;
+
                               case "null":
                                 Fluttertoast.showToast(
                                     msg: getTranslated(
@@ -551,6 +552,12 @@ class _UserPropertiesState extends State<UserProperties> {
                                     ),
                                     backgroundColor: Colors.red,
                                     gravity: ToastGravity.CENTER);
+                                break;
+                              case "cant send":
+                                displayErrorToast(
+                                    context,
+                                    getTranslated(context,
+                                        "لا يمكنك ارسال إثبات حضور لهذا المستخدم"));
                                 break;
                               case "fail present":
                                 Fluttertoast.showToast(

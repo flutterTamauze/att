@@ -35,6 +35,9 @@ class AttendProof {
       } else if (decodedResponse["message"] ==
           "Failed : You have exceeded proofs limits!") {
         return "limit exceed";
+      } else if (decodedResponse["message"] ==
+          "Failed : You can't send an attend proof for this user!") {
+        return "cant send";
       }
     } else {
       return "fail";
