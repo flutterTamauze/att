@@ -626,5 +626,6 @@
 "ص"
 :"AM" ,
 "م"
-:"PM"    }
+:"PM" ,
+"لا يمكنك ارسال إثبات حضور لهذا المستخدم":"You can't send attend proof to this user !"   }
     
