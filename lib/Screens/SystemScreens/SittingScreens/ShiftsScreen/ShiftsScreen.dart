@@ -429,23 +429,28 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                           });
                                                     },
                                                     onTapEdit: () async {
+                                                      Shift currentShift;
                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
                                                             return RoundedLoadingIndicator();
                                                           });
-                                                      await Provider.of<
-                                                                  ShiftApi>(
-                                                              context,
-                                                              listen: false)
-                                                          .getShiftByShiftId(
+                                                      currentShift =
+                                                          await Provider.of<
+                                                                      ShiftApi>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getShiftByShiftId(
                                                         value
                                                             .dropDownShifts[
                                                                 index]
                                                             .shiftId,
-                                                      );
-
+                                                      )
+                                                            ..shiftId = value
+                                                                .dropDownShifts[
+                                                                    index]
+                                                                .shiftId;
                                                       Navigator.pop(context);
 
                                                       Navigator.of(context)
@@ -453,11 +458,7 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                         new MaterialPageRoute(
                                                           builder: (context) =>
                                                               AddShiftScreen(
-                                                                  Provider.of<ShiftApi>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .userShift,
+                                                                  currentShift,
                                                                   index,
                                                                   true,
                                                                   siteId,

@@ -139,7 +139,7 @@ class ShiftApi with ChangeNotifier {
     ///check if he pressed back twich in the 2 seconds duration
   }
 
-  getShiftByShiftId(int shiftID) async {
+  Future<Shift> getShiftByShiftId(int shiftID) async {
     final response = await UserPermessionRepoImp().getShiftByShiftId(shiftID);
 
     if (jsonDecode(response)["message"] == "Success") {
@@ -147,7 +147,9 @@ class ShiftApi with ChangeNotifier {
       userShift = Shift.fromJson(shiftObjJson);
 
       notifyListeners();
+      return userShift;
     }
+    return userShift;
   }
 
   Future<bool> getShiftData(String id, String userToken) async {

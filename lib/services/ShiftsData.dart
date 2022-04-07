@@ -445,6 +445,8 @@ class ShiftsData with ChangeNotifier {
   addShift(
       Shift shift, String userToken, BuildContext context, int index) async {
     try {
+      print(("site id ${shift.siteID}"));
+      print("shiftName ${shift.shiftName}");
       final response = await http.post(Uri.parse("$baseURL/api/Shifts"),
           body: json.encode(
             {
@@ -470,7 +472,7 @@ class ShiftsData with ChangeNotifier {
             'Content-type': 'application/json',
             'Authorization': "Bearer $userToken"
           });
-
+      print(response.body);
       final decodedRes = json.decode(response.body);
 
       if (decodedRes["message"] == "Success") {

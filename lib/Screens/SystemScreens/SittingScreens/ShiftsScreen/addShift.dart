@@ -34,6 +34,7 @@ class AddShiftScreen extends StatefulWidget {
   final isEdit;
   final siteId;
   final siteIndex;
+
   const AddShiftScreen(
       this.shift, this.id, this.isEdit, this.siteId, this.siteIndex);
 
@@ -968,6 +969,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           toastLength: Toast.LENGTH_LONG);
       Navigator.pop(context);
     } else {
+      print("site $siteId");
       final msg =
           await Provider.of<ShiftsData>(context, listen: false).editShift(
               Shift(
@@ -1118,7 +1120,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
           context,
           widget.siteIndex);
       // Navigator.pop(context);
-
+      log("MESSAGE IS $msg");
       if (msg == "Success") {
         Fluttertoast.showToast(
                 msg: getTranslated(context, "تمت إضافة المناوبة بنجاح"),
@@ -1133,43 +1135,20 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                     builder: (context) => ShiftsScreen(siteId, -1, siteId)),
                 (Route<dynamic> route) => false));
       } else if (msg == "exists") {
-        Fluttertoast.showToast(
-            msg: getTranslated(context,
-                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"),
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context,
+            getTranslated(context,
+                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"));
       } else if (msg == "failed") {
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "خطأ في اضافة المناوبة"),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context, getTranslated(context, "خطأ في اضافة المناوبة"));
       } else if (msg == "noInternet") {
-        Fluttertoast.showToast(
-            msg: getTranslated(
-                context, "خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت"),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context,
+            getTranslated(
+                context, "خطأ في اضافة المناوبة : لايوجد اتصال بالانترنت"));
       } else {
-        Fluttertoast.showToast(
-            msg: msg,
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(context, msg);
       }
     }
   }
@@ -1186,6 +1165,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   }
 
   int getSiteListIndex(int siteId) {
+    print("list index $siteId");
     final list =
         Provider.of<SiteShiftsData>(context, listen: false).siteShiftList;
     final int index = list.length;
@@ -1194,7 +1174,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         return i;
       }
     }
-    return -1;
+    return 0;
   }
 
   Future<bool> onWillPop() {
