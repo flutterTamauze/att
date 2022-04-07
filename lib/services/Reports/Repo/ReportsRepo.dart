@@ -48,7 +48,7 @@ class ReprotsRepo {
       siteId, String userToken, String date) async {
     List<AttendProofModel> attendProofList = [];
     final response = await NetworkApi().request(
-      "https://chilangobackvut.tamauzeds.com/api/attendproof/GetProofbySite?siteId=$siteId&Date=$date",
+      "$baseURL/api/attendproof/GetProofbySite?siteId=$siteId&Date=$date",
       RequestType.GET,
       {
         'Content-type': 'application/json',

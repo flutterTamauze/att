@@ -14,7 +14,7 @@ class UserHolidaysRepoImplementer implements UserHolidaysRepo {
     List<UserHolidays> pendingList = [];
     if (locator.locator<UserHolidaysData>().keepRetriving) {
       final response = await NetworkApi().request(
-        "$baseURL/api/Holiday/GetAllHolidaysPending/$companyId?pageindex=$pageIndex&pageSize=8",
+        "$baseURL/api/Holiday/GetAllHolidaysPending/$companyId?pageindex=$pageIndex&pageSize=10",
         RequestType.GET,
         {
           'Content-type': 'application/json',

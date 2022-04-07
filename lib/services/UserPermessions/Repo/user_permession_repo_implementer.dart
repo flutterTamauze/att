@@ -70,7 +70,7 @@ class UserPermessionRepoImp implements PermessionAbstract {
         final permessionsObj = jsonDecode(response)['data'] as List;
         if (locator.locator<UserPermessionsData>().keepRetriving) {
           pendingList.addAll(permessionsObj
-              .map((json) => UserPermessions.fromJsonWithCreatedOn(json))
+              .map((json) => UserPermessions.fromJson(json))
               .toList());
 
           pendingList = pendingList.reversed.toList();

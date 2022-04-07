@@ -68,8 +68,7 @@ class AttendProof {
   Future<String> acceptAttendProof(
       String userToken, String userId, Position latLng) async {
     final response = await http.put(
-      Uri.parse(
-          "https://ChilangoBackVUT.tamauzeds.com/api/AttendProof/Approve"),
+      Uri.parse("$baseURL/api/AttendProof/Approve"),
       headers: {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"

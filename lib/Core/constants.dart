@@ -17,7 +17,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 // const androidDownloadLink =
 //     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
 const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
-const baseURL = "https://Chilangoback.tamauzeds.com";
+const baseURL = "https://ChilangoBackVUT.tamauzeds.com";
 const imageUrl = "https://Chilangoback.tamauzeds.com/Resources/images/";
 const localURL = "http://10.0.0.65:8010";
 const appLogo = "resources/Chilangu.png";
