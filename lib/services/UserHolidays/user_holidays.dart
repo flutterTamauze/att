@@ -49,13 +49,13 @@ class UserHolidays {
         toDate: DateTime.tryParse(json["toDate"]),
         holidayType: json["typeId"],
         userName: json["userName"],
-        userId: json['userId'],
+        // userId: json['userId'] ?? 0,
         holidayStatus: json["status"],
         holidayNumber: json["id"],
         fcmToken: json["fcmToken"],
         holidayDescription: json["desc"],
         osType: json["mobileOS"],
-        createdOnDate: DateTime.tryParse(json["createdOn"]));
+        createdOnDate: DateTime.now());
   }
   factory UserHolidays.detailsFromJson(dynamic json) {
     return UserHolidays(
@@ -64,6 +64,7 @@ class UserHolidays {
       toDate: DateTime.tryParse(json["toDate"]),
       holidayType: json["typeId"],
       userName: json["userName"],
+      createdOnDate: DateTime.tryParse(json["createdOn"]),
       userId: json['userId'],
       holidayStatus: json["status"],
       holidayNumber: json["id"],
@@ -145,11 +146,12 @@ class UserHolidaysData with ChangeNotifier {
       paginatedIsLoading = true;
       notifyListeners();
     }
+    print("page index $pageIndex");
     pageIndex++;
     pendingCompanyHolidays.addAll(await UserHolidaysRepoImplementer()
         .getPendingCompanyHolidays(companyId, userToken, pageIndex));
     paginatedIsLoading = false;
-
+    print(pendingCompanyHolidays.length);
     notifyListeners();
   }
 
@@ -228,7 +230,8 @@ class UserHolidaysData with ChangeNotifier {
       notifyListeners();
       final decodedResponse = json.decode(response.body);
       if (decodedResponse["message"] == "Success") {
-        holidaysSingleDetail = UserHolidays.fromJson(decodedResponse['data']);
+        holidaysSingleDetail =
+            UserHolidays.detailsFromJson(decodedResponse['data']);
 
         pendingCompanyHolidays[holidayIndex].adminResponse =
             holidaysSingleDetail.adminResponse;
@@ -238,8 +241,8 @@ class UserHolidaysData with ChangeNotifier {
             holidaysSingleDetail.fcmToken;
         pendingCompanyHolidays[holidayIndex].adminResponse =
             pendingCompanyHolidays[holidayIndex].adminResponse;
-        // pendingCompanyHolidays[holidayIndex].createdOnDate =
-        //     pendingCompanyHolidays[holidayIndex].createdOnDate;
+        pendingCompanyHolidays[holidayIndex].createdOnDate =
+            holidaysSingleDetail.createdOnDate;
 
         notifyListeners();
       }

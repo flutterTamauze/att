@@ -44,15 +44,15 @@ class UserPermessions {
         date: DateTime.tryParse(json["date"]),
         duration: json["time"],
         permessionType: json["type"],
-        fcmToken: json["fcmToken"] ?? "null",
-        userID: json['userId'] ?? "",
+        // fcmToken: json["fcmToken"] ?? "null",
+        // userID: json['userId'] ?? "",
         permessionId: json["id"],
-        osType: json["mobileOS"] ?? 1,
-        permessionDescription: json["desc"],
-        permessionStatus: json["status"],
-        adminResponse: json["adminResponse"],
+        // osType: json["mobileOS"] ?? 1,
+        // permessionDescription: json["desc"],
+        // permessionStatus: json["status"],
+        // adminResponse: json["adminResponse"],
         // approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
-        createdOn: DateTime.tryParse(json["createdonDate"]),
+        createdOn: DateTime.now(),
         // approvedDate: DateTime.tryParse(
         //   json["approvedDate"] ?? "",
         // ),
@@ -74,6 +74,7 @@ class UserPermessions {
         date: DateTime.tryParse(json["date"]),
         permessionDescription: json["desc"],
         duration: json["time"],
+        createdOn: DateTime.tryParse(json["createdOn"]),
         permessionType: json["type"],
         adminResponse: json["adminResponse"],
         permessionId: json["id"],
@@ -191,6 +192,7 @@ class UserPermessionsData with ChangeNotifier {
 
           final int permIndex =
               pendingCompanyPermessions.indexOf(permessions[0]);
+
           pendingCompanyPermessions[permIndex].adminResponse =
               singlePermessionDetail.adminResponse;
           pendingCompanyPermessions[permIndex].permessionDescription =
@@ -199,6 +201,8 @@ class UserPermessionsData with ChangeNotifier {
               singlePermessionDetail.fcmToken;
           pendingCompanyPermessions[permIndex].adminResponse =
               singlePermessionDetail.adminResponse;
+          pendingCompanyPermessions[permIndex].createdOn =
+              singlePermessionDetail.createdOn;
         }
 
         notifyListeners();
@@ -303,7 +307,7 @@ class UserPermessionsData with ChangeNotifier {
           final permessionsObj =
               jsonDecode(response)['data']["Permissions"] as List;
           singleUserPermessions = permessionsObj
-              .map((json) => UserPermessions.detailsFromJson(json))
+              .map((json) => UserPermessions.fromJson(json))
               .toList();
 
           singleUserPermessions = singleUserPermessions.reversed.toList();

@@ -390,7 +390,7 @@ class ReportsData with ChangeNotifier {
 
     notifyListeners();
     final response = await ReprotsRepo().getDailyReport(
-        "$baseURL/api/Reports/GetDailyReport?siteId=$siteId&date=$date",
+        "$baseURL/api/Reports/GetDailyReportbySiteId_New?siteId=$siteId&date=$date",
         userToken);
     if (response is Faliure) {
       if (response.code == NO_INTERNET) {
@@ -553,7 +553,7 @@ class ReportsData with ChangeNotifier {
 
     try {
       final response = await ReprotsRepo().getLateAbsenceReport(
-          "$baseURL/api/Reports/GetLateAbsentReport?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo",
+          "$baseURL/api/Reports/GetLateAbsentReport_New?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo",
           userToken);
 //  "https://ChilangoBackVUT.tamauzeds.com/api/Reports/GetLateAbsentReport_New?siteId=$siteId&fromDate=$dateFrom&toDate=$dateTo"
 
