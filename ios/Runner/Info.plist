@@ -44,8 +44,10 @@
 	<string>This app needs to use the camera to sign up user to make his profile also to make logic operation on the image</string>
 	<key>NSContactsUsageDescription</key>
 	<string>This app needs to use the contacts to add users where we need their phone numbers for regestiration</string>
+	<key>NSLocationUsageDescription</key>
+	<string>This is an attendance app requires current user location in order to register his attendance</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app is an attendance app which needs location access for the employees in order to know if they are at work location or not</string>
+	<string>This is an attendance app requires current user location in order to register his attendance</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Thiss app needs microphone to enable QR scan library to work</string>
 	<key>NSMotionUsageDescription</key>

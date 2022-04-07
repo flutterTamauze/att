@@ -135,8 +135,9 @@ class AboutUsScreen extends StatelessWidget {
                                             //       fontSize: 18,
                                             //     )),
 
-                                            const MyListTile(
-                                              title: 'المقر الرئيسى',
+                                            MyListTile(
+                                              title: getTranslated(
+                                                  context, 'المقر الرئيسى'),
                                               icon: Icons.location_on,
                                               link:
                                                   'https://www.google.com/maps/place/Raven+%D8%B3%D9%8A%D8%AA%D9%8A+%D8%B3%D9%86%D8%AA%D8%B1+%D9%85%D9%83%D8%B1%D9%85+%D8%B9%D8%A8%D9%8A%D8%AF%E2%80%AD/@30.0683442,31.3425179,17z/data=!3m1!4b1!4m5!3m4!1s0x14583f50339ed26f:0x62296d6fcc1dc44!8m2!3d30.0683286!4d31.3445994',
@@ -144,8 +145,9 @@ class AboutUsScreen extends StatelessWidget {
                                             SizedBox(
                                               height: 10.0.h,
                                             ),
-                                            const MyListTile(
-                                              title: 'خدمة العملاء',
+                                            MyListTile(
+                                              title: getTranslated(
+                                                  context, 'خدمة العملاء'),
                                               icon: Icons
                                                   .quick_contacts_dialer_outlined,
 
@@ -155,16 +157,20 @@ class AboutUsScreen extends StatelessWidget {
                                               height: 10.0.h,
                                             ),
 
-                                            const MyListTile(
-                                              title: 'البريد الإلكترونى',
+                                            MyListTile(
+                                              title: getTranslated(
+                                                  context, 'البريد الإلكترونى'),
                                               icon: Icons.email,
                                               link: 'mailto:info@tamauzeds.com',
                                             ),
                                             SizedBox(
                                               height: 10.0.h,
                                             ),
-                                            const MyListTile(
-                                              title: "الموقع الإلكترونى",
+                                            MyListTile(
+                                              title: getTranslated(
+                                                context,
+                                                "الموقع الإلكترونى",
+                                              ),
                                               icon: FontAwesomeIcons.globe,
                                               link: 'https://tamauzeds.com/',
                                             ),
@@ -353,11 +359,15 @@ class MyListTile extends StatelessWidget {
                 child: Transform(
                   transform: Matrix4.rotationY(math.pi),
                   alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      icon,
-                      color: const Color(0xFF3b3c40),
+                  child: Transform.rotate(
+                    angle:
+                        icon == FontAwesomeIcons.googlePlay ? -math.pi / 1 : 0,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        icon,
+                        color: const Color(0xFF3b3c40),
+                      ),
                     ),
                   ),
                 )),

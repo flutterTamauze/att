@@ -20,7 +20,7 @@ const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
 const baseURL = "https://Chilangoback.tamauzeds.com";
 const imageUrl = "https://Chilangoback.tamauzeds.com/Resources/images/";
 const localURL = "http://10.0.0.65:8010";
-const appLogo = "resources/image.png";
+const appLogo = "resources/Chilangu.png";
 // const huaweiAppId = "104665933";
 // const huaweiSecret =
 //     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";
