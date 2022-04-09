@@ -450,9 +450,14 @@ class _ShiftsScreenState extends State<ShiftsScreen> {
                                                             ..shiftId = value
                                                                 .dropDownShifts[
                                                                     index]
-                                                                .shiftId;
-                                                      Navigator.pop(context);
+                                                                .shiftId
+                                                            ..siteID = value
+                                                                .siteShiftList[
+                                                                    siteId]
+                                                                .siteId;
 
+                                                      Navigator.pop(context);
+                                                      print(widget.siteIndex);
                                                       Navigator.of(context)
                                                           .push(
                                                         new MaterialPageRoute(
