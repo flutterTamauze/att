@@ -55,6 +55,7 @@ class SiteShiftsData with ChangeNotifier {
         }
 
         // notifyListeners();
+        print("shifts refreshed");
         return siteShiftList[i].shifts;
       }
     }

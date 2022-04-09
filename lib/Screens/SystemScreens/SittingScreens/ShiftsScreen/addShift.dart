@@ -251,7 +251,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          print(_timeInController.text);
+          print(widget.shift.siteID);
+          print(widget.shift.shiftId);
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
@@ -861,26 +862,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           builder: (context) {
                                             return RoundedAlert(
                                                 onPressed: () async {
-                                                  if (startInt > endInt) {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return RoundedAlert(
-                                                          onPressed: () async {
-                                                            await editShiftFun();
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          title: getTranslated(
-                                                              context,
-                                                              "تعديل مناوبة"),
-                                                          content:
-                                                              " ${getTranslated(context, "برجاء العلم ان مواعيد المناوبة من")} $startString \n ${getTranslated(context, "إلي")} $endString",
-                                                        );
-                                                      },
-                                                    );
-                                                  } else {
+                                                  {
                                                     editShiftFun();
                                                   }
                                                 },
@@ -919,11 +901,16 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                     height: 50.h,
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ShiftsScreen(widget.siteId, -1, siteId)),
-                            (Route<dynamic> route) => false);
+                        Navigator.of(context)
+                            .pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShiftsScreen(0, -1, siteId)),
+                                (Route<dynamic> route) => false)
+                            .then((value) => Provider.of<SiteShiftsData>(
+                                    context,
+                                    listen: false)
+                                .getShiftsList(siteName, false));
                       },
                     ),
                   ),
@@ -989,9 +976,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 shiftEndTime: int.parse(endString.replaceAll(":", "")),
                 shiftName: _title.text,
                 shiftId: widget.shift.shiftId,
-                siteID: Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[siteId]
-                    .siteId,
+                siteID: widget.shift.siteID,
               ),
               widget.id,
               user.userToken,
@@ -1020,7 +1005,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
             .then((value) => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) => ShiftsScreen(0, -1, siteId)),
+                    builder: (context) =>
+                        ShiftsScreen(widget.siteIndex, -1, siteId)),
                 (Route<dynamic> route) => false));
       } else if (msg == "exists") {
         Fluttertoast.showToast(
@@ -1174,7 +1160,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         return i;
       }
     }
-    return 0;
+    return -1;
   }
 
   Future<bool> onWillPop() {
