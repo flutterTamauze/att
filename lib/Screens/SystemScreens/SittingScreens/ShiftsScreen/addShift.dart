@@ -1140,8 +1140,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             getTranslated(context,
                 "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"));
       } else if (msg == "failed") {
-        displayErrorToast(
-            context, getTranslated(context, "خطأ في اضافة المناوبة"));
+        displayErrorToast(context, getTranslated(context, "حدث خطأ ما"));
       } else if (msg == "noInternet") {
         displayErrorToast(
             context,
