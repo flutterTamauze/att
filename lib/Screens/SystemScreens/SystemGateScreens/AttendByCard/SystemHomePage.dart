@@ -48,7 +48,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
         .notificationPermessions();
     super.initState();
     _startUp();
-    firstget();
+    getData();
+    // firstget();
   }
 
   getData() async {

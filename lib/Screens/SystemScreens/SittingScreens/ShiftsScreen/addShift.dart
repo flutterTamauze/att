@@ -251,7 +251,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       onWillPop: onWillPop,
       child: GestureDetector(
         onTap: () {
-          print(_timeInController.text);
+          FocusScope.of(context).unfocus();
         },
         child: Scaffold(
           endDrawer: NotificationItem(),
