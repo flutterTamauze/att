@@ -81,7 +81,7 @@ class _EditMemberState extends State<EditMember> {
 
           if (msg == "Success") {
             Fluttertoast.showToast(
-              msg: "تم التعديل بنجاح",
+              msg: getTranslated(context, "تم التعديل بنجاح"),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
@@ -106,53 +106,21 @@ class _EditMemberState extends State<EditMember> {
             //   edit = false;
             // });
           } else if (msg == "exists") {
-            Fluttertoast.showToast(
-                msg: getTranslated(
-                    context, "خطأ في تعديل المستخدم: رقم الهاتف مستخدم مسبقا"),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.black,
-                fontSize: setResponsiveFontSize(16));
+            displayErrorToast(
+                context,
+                getTranslated(
+                    context, "خطأ في تعديل المستخدم: رقم الهاتف مستخدم مسبقا"));
           } else if (msg == "not exist") {
-            Fluttertoast.showToast(
-                msg: getTranslated(
-                    context, "خطأ في تعديل المستخدم:المستخدم غير موجود"),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.black,
-                fontSize: setResponsiveFontSize(16));
-          } else if (msg == "failed") {
-            Fluttertoast.showToast(
-                msg: getTranslated(context, "خطأ في تعديل المستخدم"),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.black,
-                fontSize: setResponsiveFontSize(16));
+            displayErrorToast(
+                context, "خطأ في تعديل المستخدم:المستخدم غير موجود");
           } else if (msg == "noInternet") {
-            Fluttertoast.showToast(
-                msg: getTranslated(
-                    context, "خطأ في تعديل المستخدم:لايوجد اتصال بالانترنت"),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.black,
-                fontSize: setResponsiveFontSize(16));
+            displayErrorToast(
+                context,
+                getTranslated(
+                    context, "خطأ في تعديل المستخدم:لايوجد اتصال بالانترنت"));
           } else {
-            Fluttertoast.showToast(
-                msg: getTranslated(context, "خطأ في تعديل المستخدم"),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.black,
-                fontSize: setResponsiveFontSize(16));
+            displayErrorToast(
+                context, getTranslated(context, "خطأ في تعديل المستخدم"));
           }
           Navigator.pop(context);
           Navigator.pop(context);

@@ -861,26 +861,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                                           builder: (context) {
                                             return RoundedAlert(
                                                 onPressed: () async {
-                                                  if (startInt > endInt) {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return RoundedAlert(
-                                                          onPressed: () async {
-                                                            await editShiftFun();
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          title: getTranslated(
-                                                              context,
-                                                              "تعديل مناوبة"),
-                                                          content:
-                                                              " ${getTranslated(context, "برجاء العلم ان مواعيد المناوبة من")} $startString \n ${getTranslated(context, "إلي")} $endString",
-                                                        );
-                                                      },
-                                                    );
-                                                  } else {
+                                                  {
                                                     editShiftFun();
                                                   }
                                                 },
@@ -919,11 +900,16 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                     height: 50.h,
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ShiftsScreen(widget.siteId, -1, siteId)),
-                            (Route<dynamic> route) => false);
+                        Navigator.of(context)
+                            .pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShiftsScreen(0, -1, siteId)),
+                                (Route<dynamic> route) => false)
+                            .then((value) => Provider.of<SiteShiftsData>(
+                                    context,
+                                    listen: false)
+                                .getShiftsList(siteName, false));
                       },
                     ),
                   ),
@@ -989,9 +975,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 shiftEndTime: int.parse(endString.replaceAll(":", "")),
                 shiftName: _title.text,
                 shiftId: widget.shift.shiftId,
-                siteID: Provider.of<SiteShiftsData>(context, listen: false)
-                    .siteShiftList[siteId]
-                    .siteId,
+                siteID: widget.shift.siteID,
               ),
               widget.id,
               user.userToken,
@@ -1020,37 +1004,22 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
             .then((value) => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) => ShiftsScreen(0, -1, siteId)),
+                    builder: (context) =>
+                        ShiftsScreen(widget.siteIndex, -1, siteId)),
                 (Route<dynamic> route) => false));
+        Provider.of<SiteShiftsData>(context, listen: false)
+            .getShiftsList(siteName, false);
       } else if (msg == "exists") {
-        Fluttertoast.showToast(
-            msg: getTranslated(context,
-                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context,
+            getTranslated(context,
+                "خطأ في اضافة المناوبة: اسم المناوبة مستخدم مسبقا لنفس الموقع"));
       } else if (msg == "failed") {
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "خطأ في تعديل المناوبة"),
-            toastLength: Toast.LENGTH_SHORT,
-            timeInSecForIosWeb: 1,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context, getTranslated(context, "خطأ في تعديل المناوبة"));
       } else if (msg == "noInternet") {
-        Fluttertoast.showToast(
-            msg: getTranslated(
-                context, "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت"),
-            toastLength: Toast.LENGTH_SHORT,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER,
-            textColor: Colors.black,
-            fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true));
+        displayErrorToast(
+            context, "خطأ في تعديل المناوبة:لايوجد اتصال بالانترنت");
       } else {
         Fluttertoast.showToast(
             msg: msg,
@@ -1173,7 +1142,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         return i;
       }
     }
-    return 0;
+    return -1;
   }
 
   Future<bool> onWillPop() {
