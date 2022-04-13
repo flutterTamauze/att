@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
@@ -259,117 +260,60 @@ class IntroContent extends StatelessWidget {
                               child: Column(
                               children: [
                                 Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 400.w,
-                                        child: AutoSizeText(
-                                          getTranslated(context,
-                                              ". وداعا لمشاكل الصيانة و الأعطال"),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize:
-                                                  setResponsiveFontSize(13)),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.black,
-                                            shape: BoxShape.circle),
-                                        width: 5,
-                                        height: 5,
-                                      ),
-                                    ],
+                                  child: Container(
+                                    width: 400.w,
+                                    child: AutoSizeText(
+                                      getTranslated(context,
+                                          ". وداعا لمشاكل الصيانة و الأعطال"),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: setResponsiveFontSize(13)),
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 380.w,
-                                      child: AutoSizeText(
-                                        getTranslated(context,
-                                            ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية"),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize:
-                                                setResponsiveFontSize(13)),
-                                      ),
+                                Container(
+                                  child: Container(
+                                    width: 380.w,
+                                    child: AutoSizeText(
+                                      getTranslated(context,
+                                          ". وداعا لمشاكل الحضور و الأنصراف بالطرق التقليدية"),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: setResponsiveFontSize(13)),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle),
-                                      width: 5,
-                                      height: 5,
-                                    ),
-                                  ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 400.w,
-                                      child: AutoSizeText(
-                                        getTranslated(
-                                          context,
-                                          ". وداعا للروتين و التأخير",
-                                        ),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize:
-                                                setResponsiveFontSize(13)),
-                                      ),
+                                Container(
+                                  width: 400.w,
+                                  child: AutoSizeText(
+                                    getTranslated(
+                                      context,
+                                      ". وداعا للروتين و التأخير",
                                     ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle),
-                                      width: 5,
-                                      height: 5,
-                                    ),
-                                  ],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            setResponsiveFontSize(13)),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 380.w,
-                                      child: AutoSizeText(
-                                        getTranslated(context,
-                                            "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGU ."),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize:
-                                                setResponsiveFontSize(13)),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle),
-                                      width: 5,
-                                      height: 5,
-                                    ),
-                                  ],
+                                Container(
+                                  width: 380.w,
+                                  child: AutoSizeText(
+                                    getTranslated(context,
+                                        "الأن الحضور و الأنصراف اصبح اسهل مع CHILANGU ."),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: setResponsiveFontSize(13)),
+                                  ),
                                 ),
                               ],
                             ))

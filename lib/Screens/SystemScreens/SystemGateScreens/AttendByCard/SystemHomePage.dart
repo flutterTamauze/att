@@ -60,7 +60,8 @@ class _SystemHomePageState extends State<SystemHomePage> {
     requestLocationPerm();
     super.initState();
     _startUp();
-    firstget();
+    getData();
+    // firstget();
   }
 
   getData() async {

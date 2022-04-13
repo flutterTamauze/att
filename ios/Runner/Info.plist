@@ -48,8 +48,6 @@
 	<string>This is an attendance app requires current user location in order to register his attendance</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This is an attendance app requires current user location in order to register his attendance</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Thiss app needs microphone to enable QR scan library to work</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Motion usage description</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
