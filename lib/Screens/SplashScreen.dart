@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 import 'package:qr_users/MLmodule/recognition_services/facenet.service.dart';
 import 'package:qr_users/Screens/ChangePasswordScreen.dart';
@@ -22,18 +20,14 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/main.dart';
-import 'package:qr_users/services/DaysOff.dart';
 // import 'package:huawei_push/huawei_push_library.dart' as hawawi;
-import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path/path.dart' as p;
 import '../Screens/intro.dart';
-import 'package:http/http.dart' as http;
 import '../Core/constants.dart';
 import 'SuperAdmin/Screen/super_company_pie_chart.dart';
 
@@ -45,7 +39,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   bool isLoading = false;
-
+  bool _visible = false;
   DataBaseService _dataBaseService = DataBaseService();
   FaceNetService _faceNetService = FaceNetService();
   // MLKitService _mlKitService = MLKitService();
@@ -58,12 +52,7 @@ class _SplashScreenState extends State<SplashScreen>
       await reverse("", 1);
     } else {
       final value = await login(userName: userData[0], password: userData[1]);
-
       debugPrint("VALUE OF USER $value");
-      //  Provider.of<DaysOffData>(context, listen: false).getDaysOff(
-      //       Provider.of<CompanyData>(context, listen: false).com.id,
-      //       Provider.of<UserData>(context, listen: false).user.userToken,
-      //       context);
       if (value == 4 || value == 3 || userProv.isSuperAdmin) {
         //subscribe admin channel
         bool isError = false;
@@ -123,8 +112,7 @@ class _SplashScreenState extends State<SplashScreen>
     final UserData userData = Provider.of<UserData>(context, listen: false);
 
     setState(() {
-      animationController.reverse();
-      Timer(const Duration(milliseconds: 1), () async {
+      Timer(const Duration(milliseconds: 2000), () async {
         if (userName != "") {
           if (Provider.of<UserData>(context, listen: false).changedPassword ==
               false) {
@@ -227,33 +215,11 @@ class _SplashScreenState extends State<SplashScreen>
     // _mlKitService.initialize();
   }
 
-  // getInitialOpenedFcmMessage() async {
-  //   await firebaseMessaging.getInitialMessage().then((message) async {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     if (message.data["category"] != "reloadData") {
-  //       if (message.data["category"] == "attend") {
-  //         locator.locator<PermissionHan>().triggerAttendProof();
-  //       }
-  //       await prefs
-  //           .setString("notifCategory", message.data["category"])
-  //           .whenComplete(
-  //               () => print("category added !!! ${message.data["category"]}"));
-  //       await prefs.setStringList("bgNotifyList", [
-  //         message.data["category"],
-  //         DateTime.now().toString().substring(0, 11),
-  //         message.data["body"],
-  //         message.data["title"],
-  //         DateFormat('kk:mm:a').format(DateTime.now())
-  //       ]);
-  //     }
-  //   });
+  // String _token = "";
+  // void _onTokenEvent(String event) {
+  //   _token = event;
+  //   debugPrint("TokenEvent: " + _token);
   // }
-
-  String _token = "";
-  void _onTokenEvent(String event) {
-    _token = event;
-    debugPrint("TokenEvent: " + _token);
-  }
 
   // initPlatformState() async {
   //   final code = await hawawi.Push.getAAID();
@@ -271,7 +237,7 @@ class _SplashScreenState extends State<SplashScreen>
   //     await initPlatformState();
   //   }
   // }
-
+  double value;
   @override
   void initState() {
     super.initState();
@@ -281,15 +247,27 @@ class _SplashScreenState extends State<SplashScreen>
     //   fillHuaweiToken();
     // }
 
-    loadSecondModel();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-
-    //start Animation
-    animationController.forward();
+      duration: const Duration(milliseconds: 1000),
+    )..addListener(() {
+        if (mounted) setState(() {});
+        if (animationController.value == 1) {
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) {
+              setState(() {
+                _visible = true;
+              });
+            }
+          });
+        }
+      }); //..addListener(() => setState(() {}));
+    Future.delayed(const Duration(seconds: 2), () {
+      animationController.forward();
+    });
+    loadSecondModel();
     loadFromCache();
+    //start Animation
   }
 
   loadFromCache() async {
@@ -301,79 +279,83 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(color: Colors.black),
-      child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Stack(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Container(
-                  width: 300.w,
-                  height: 300.h,
-                  child: Image.asset(
-                    "resources/ChilanguSplash.gif",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-              // Center(
-              //     child: Container(
-              //   child: ClipRRect(
-              //     borderRadius: BorderRadius.circular(100),
-              //     child: Image.asset(
-              //       appLogo,
-              //     ),
-              //   ),
-              //   height: 150.h,
-              //   width: 150.w,
-              // )),
-              // Center(
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(right: 8),
-              //     child: Container(
-              //       width: 500.w,
-              //       child: Lottie.asset("resources/fire.json",
-              //           fit: BoxFit.fitWidth),
-              //     ),
-              //   ),
-              // ),
-              ,
-              Positioned(
-                bottom: 11.h,
-                left: 0,
-                right: 0,
-                child: Center(
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 4,
+          ),
+          Container(
+            width: 300.w,
+            height: 300.h,
+            child: Image.asset(
+              "resources/ChilanguGifSplash.gif",
+              fit: BoxFit.cover,
+            ),
+          )
+          // Center(
+          //     child: Container(
+          //   child: ClipRRect(
+          //     borderRadius: BorderRadius.circular(100),
+          //     child: Image.asset(
+          //       appLogo,
+          //     ),
+          //   ),
+          //   height: 150.h,
+          //   width: 150.w,
+          // )),
+          // Center(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(right: 8),
+          //     child: Container(
+          //       width: 500.w,
+          //       child: Lottie.asset("resources/fire.json",
+          //           fit: BoxFit.fitWidth),
+          //     ),
+          //   ),
+          // ),
+          ,
+          const Spacer(),
+          animationController.isCompleted
+              ? Visibility(
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  visible: _visible,
                   child: Container(
-                    width: 140.w,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            height: 130.h,
-                            child: Image.asset(
-                              'resources/TDSlogo.png',
-                              fit: BoxFit.fitHeight,
-                            )),
-                      ],
-                    ),
+                    width: 20,
+                    height: 20,
+                    child: const CircularProgressIndicator(
+                        backgroundColor: Color(0xffF86B01)),
                   ),
+                )
+              : Container(),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 900),
+            opacity: animationController.value,
+            child: Center(
+              child: Container(
+                width: 140.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        height: 130.h,
+                        child: Image.asset(
+                          'resources/TDSlogo.png',
+                          fit: BoxFit.fitHeight,
+                        )),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),

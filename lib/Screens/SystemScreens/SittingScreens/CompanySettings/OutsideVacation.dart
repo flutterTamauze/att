@@ -1230,7 +1230,6 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               "يوجد اذن فى هذا اليوم"));
                                                     }
                                                   } else {
-                                                 
                                                     Fluttertoast.showToast(
                                                         gravity:
                                                             ToastGravity.CENTER,

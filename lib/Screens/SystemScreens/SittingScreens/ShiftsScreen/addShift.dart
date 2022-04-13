@@ -1004,8 +1004,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
                 fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true))
             .then((value) => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ShiftsScreen(widget.siteIndex, -1, siteId)),
+                    builder: (context) => ShiftsScreen(siteId, -1, siteId)),
                 (Route<dynamic> route) => false));
         Provider.of<SiteShiftsData>(context, listen: false)
             .getShiftsList(siteName, false);
