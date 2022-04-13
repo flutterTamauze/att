@@ -690,9 +690,8 @@ class _ShiftTileState extends State<ShiftTile> {
                         onTap: () async {
                           // siteProv.setDropDownShift(
                           //     widget.index); //الموقع علي حسب ال اندكس اللي
-                          siteProv.setSiteValue(widget.siteName);
-
-                          siteProv.fillCurrentShiftID(widget.shifts.shiftId)
+                          siteProv
+                            ..setSiteValue(widget.siteName)
                             ..setDropDownIndex(widget.siteIndex)
                             ..fillCurrentShiftID(widget.shifts.shiftId);
 

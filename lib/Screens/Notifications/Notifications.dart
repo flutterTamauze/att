@@ -19,6 +19,8 @@ import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
 
 import 'package:qr_users/MLmodule/db/SqlfliteDB.dart';
 import 'package:qr_users/Screens/AdminPanel/adminPanel.dart';
+import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
+import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUsersOrders.dart';
 import 'package:qr_users/Screens/Notifications/NotificationOnTapDialog.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -110,17 +112,26 @@ class NotificationItem extends StatelessWidget {
                                 return;
 
                               case "vacationRequest":
-                              case "permessionRequest":
                                 {
                                   Navigator.pop(context);
 
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AdminPanel()));
+                                        builder: (context) =>
+                                            const PendingCompanyVacations(),
+                                      ));
                                 }
                                 return;
-
+                              case "permessionRequest":
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PendingCompanyPermessions(),
+                                    ));
+                                return;
                               case "permession":
                                 {
                                   Navigator.pop(context);
