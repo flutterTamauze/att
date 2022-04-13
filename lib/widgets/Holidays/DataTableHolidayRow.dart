@@ -23,6 +23,7 @@ class DataTableHolidayRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
+                  width: 70.w,
                   child: AutoSizeText(
                     getTranslated(
                         context, getVacationType(_holidays.holidayType)),
