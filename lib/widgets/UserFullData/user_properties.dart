@@ -508,6 +508,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                   widget.user.fcmToken,
                                   userDataProvider.id)
                               .then((value) {
+                            print(value);
                             switch (value) {
                               case "success":
                                 sendFcmMessage(

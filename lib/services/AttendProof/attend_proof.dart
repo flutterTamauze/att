@@ -19,6 +19,8 @@ class AttendProof {
       },
     );
     final decodedResponse = jsonDecode(response.body);
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       if (fcmToken == null) {
         return "null";
@@ -36,7 +38,7 @@ class AttendProof {
           "Failed : You have exceeded proofs limits!") {
         return "limit exceed";
       } else if (decodedResponse["message"] ==
-          "Failed : You can't send an attend proof for this user!") {
+          "Failed : You can't send attend proof for this user!") {
         return "cant send";
       }
     } else {

@@ -16,11 +16,12 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 //https://Chilangoback.tamauzeds.com
 // const androidDownloadLink =
 //     "https://chilangoback.tamauzeds.com/Resources/APK/ChilangoV3.apk";
-const iosDownloadLink = "https://testflight.apple.com/join/vHVBUS2Q";
+
 const baseURL = "https://ChilangoBackVUT.tamauzeds.com";
 const imageUrl = "https://ChilangoBackVUT.tamauzeds.com/Resources/images/";
 const localURL = "http://10.0.0.65:8010";
 const appLogo = "resources/image.png";
+const oldBaseUrl = "https://chilangoback.tamauzeds.com";
 // const huaweiAppId = "104665933";
 // const huaweiSecret =
 //     "88bd9c196a990ad91dc127047819d569e5ade79022e727d35ba98467d3a218bf";

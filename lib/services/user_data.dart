@@ -410,48 +410,47 @@ class UserData with ChangeNotifier {
 
   Future<String> attend({String qrCode}) async {
     String msg;
-    try {
-      if (await isConnectedToInternet("www.google.com")) {
-        final int locationService = await getCurrentLocation();
-        final HuaweiServices _huawei = HuaweiServices();
-        bool isHawawi = false;
-        if (Platform.isAndroid) {
-          isHawawi = await _huawei.isHuaweiDevice();
-        }
 
-        if (locationService == 0) {
-          final String imei = await getDeviceUUID();
-          final uri = '$baseURL/api/AttendLogin';
-
-          final headers = {
-            'Authorization': "Bearer ${user.userToken}",
-            "Accept": "application/json"
-          };
-
-          final http.Response response = await http.post(
-            Uri.parse(uri),
-            headers: headers,
-            body: {
-              'Userid': user.id,
-              'Qrcode': qrCode,
-              'Longitude': _currentPosition.longitude.toString(),
-              'Latitude': _currentPosition.latitude.toString(),
-              'userLogintype': "0",
-              'UserMac': imei,
-            },
-          );
-          final String responseBody = response.body;
-          msg = jsonDecode(responseBody)['message'];
-        } else if (locationService == 1) {
-          msg = 'mock';
-        } else {
-          msg = 'off';
-        }
-      } else {
-        msg = 'noInternet';
+    if (await isConnectedToInternet("www.google.com")) {
+      final int locationService = await getCurrentLocation();
+      final HuaweiServices _huawei = HuaweiServices();
+      bool isHawawi = false;
+      if (Platform.isAndroid) {
+        isHawawi = await _huawei.isHuaweiDevice();
       }
-    } catch (e) {
-      print(e);
+
+      if (locationService == 0) {
+        final String imei = await getDeviceUUID();
+        final uri = '$baseURL/api/AttendLogin';
+
+        final headers = {
+          'Authorization': "Bearer ${user.userToken}",
+          "Accept": "application/json"
+        };
+
+        final http.Response response = await http.post(
+          Uri.parse(uri),
+          headers: headers,
+          body: {
+            'Userid': user.id,
+            'Qrcode': qrCode,
+            'Longitude': _currentPosition.longitude.toString(),
+            'Latitude': _currentPosition.latitude.toString(),
+            'userLogintype': "0",
+            'UserMac': imei,
+          },
+        );
+        print(response.statusCode);
+
+        final String responseBody = response.body;
+        msg = jsonDecode(responseBody)['message'];
+      } else if (locationService == 1) {
+        msg = 'mock';
+      } else {
+        msg = 'off';
+      }
+    } else {
+      msg = 'noInternet';
     }
 
     return msg;

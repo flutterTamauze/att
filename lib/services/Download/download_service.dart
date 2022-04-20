@@ -20,51 +20,29 @@ class DownloadService {
   checkReleaseDate(bool showApk, BuildContext context) async {
     final newVersion = NewVersion();
     final status = await newVersion.getVersionStatus();
-    if (Platform.isAndroid) {
-      if (showApk) {
-        showApk = false;
 
-        if (status.canUpdate) {
-          debugPrint("there is an update found");
-          Future.delayed(Duration.zero, () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundAlertUpgrade(
-                      onPressed: () async {
-                        launch(status.appStoreLink);
-                      },
-                      title: getTranslated(context, "إصدار جديد"),
-                      content: getTranslated(context,
-                          'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام'));
-                });
-          });
-        } else {
-          debugPrint("There is no update available");
-          debugPrint(status.localVersion.toString());
-          debugPrint(status.storeVersion.toString());
-        }
-      }
-    } else {
-      if (showApk) {
-        showApk = false;
+    if (showApk) {
+      showApk = false;
 
-        if (status.canUpdate) {
-          Future.delayed(Duration.zero, () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RoundedAlert(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        launch(iosDownloadLink);
-                      },
-                      title:
-                          getTranslated(context, 'تحديث التطبيق لأخر اصدار ؟'),
-                      content: "");
-                });
-          });
-        }
+      if (status.canUpdate) {
+        debugPrint("there is an update found");
+        Future.delayed(Duration.zero, () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RoundAlertUpgrade(
+                    onPressed: () async {
+                      launch(status.appStoreLink);
+                    },
+                    title: getTranslated(context, "إصدار جديد"),
+                    content: getTranslated(context,
+                        'تم تحديث نسخة التطبيق برجاء تحميل اخر اصدار لمتابعة الإستخدام'));
+              });
+        });
+      } else {
+        debugPrint("There is no update available");
+        debugPrint(status.localVersion.toString());
+        debugPrint(status.storeVersion.toString());
       }
     }
   }
