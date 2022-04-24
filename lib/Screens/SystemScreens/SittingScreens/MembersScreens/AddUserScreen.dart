@@ -197,7 +197,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   @override
   Widget build(BuildContext context) {
     String userImage = "$imageUrl${widget.member.userImageURL}";
-    final siteData = Provider.of<SiteData>(context, listen: false);
+    final siteData = Provider.of<SiteData>(context, listen: true);
     final siteShiftData = Provider.of<SiteShiftsData>(context);
     // final userDataProvider = Provider.of<UserData>(context, listen: false);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
@@ -213,7 +213,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 debugPrint(Provider.of<SiteShiftsData>(context, listen: false)
                     .dropDownShifts[siteData.dropDownShiftIndex == 0
                         ? 0
-                        : siteData.dropDownShiftIndex - 1]
+                        : siteData.dropDownShiftIndex]
                     .shiftName);
               },
               behavior: HitTestBehavior.opaque,
@@ -537,7 +537,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                 onInputChanged:
                                                     (intlPhone.PhoneNumber
                                                         number2) {
-                                         
                                                   number = number2;
                                                 },
                                                 onInputValidated:
@@ -667,7 +666,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                       ),
                                       IgnorePointer(
                                         ignoring: !edit,
-                                        child: SiteDropdown(height: 40,
+                                        child: SiteDropdown(
+                                          height: 40,
                                           edit: edit,
                                           list: Provider.of<SiteShiftsData>(
                                                   context)
@@ -680,10 +680,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // debugPrint()
-                                            siteId = getSiteId(value);
+
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
-                                                .getShiftsList(value, true);
+                                                .getShiftsList(value, false);
 
                                             setState(() {
                                               shiftIndex = 0;
@@ -718,7 +718,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hint: "المناوبة",
                                           onChange: (value) {
                                             // debugPrint()
-                                            log(value);
+
                                             siteData
                                               ..setSiteValue("كل المواقع")
                                               ..setDropDownIndex(0)
@@ -1124,10 +1124,19 @@ class _AddUserScreenState extends State<AddUserScreen> {
 
   int getShiftid(String shiftName) {
     debugPrint("shiftName getShiftId $shiftName");
+    bool allShiftsFound = false;
     final list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
     final int index = list.length;
     for (int i = 0; i < index; i++) {
+      print(list[i].shiftName);
+      if (list[i].shiftName == "كل المناوبات") {
+        allShiftsFound = true;
+        log('D5LT FE ALL SHIFT');
+      }
       if (shiftName == list[i].shiftName) {
+        if (allShiftsFound) {
+          return i - 1;
+        }
         return i;
       }
     }
