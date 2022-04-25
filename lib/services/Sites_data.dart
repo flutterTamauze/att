@@ -84,7 +84,7 @@ class SiteData with ChangeNotifier {
   setDropDownIndex(int newIndex) {
     debugPrint("new index is $newIndex");
     dropDownSitesIndex = newIndex;
-    notifyListeners();
+    // notifyListeners();
   }
 
   int dropDownShiftIndex = 1;

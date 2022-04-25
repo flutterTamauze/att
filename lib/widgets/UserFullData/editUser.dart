@@ -64,7 +64,7 @@ class _EditMemberState extends State<EditMember> {
                           Provider.of<SiteShiftsData>(context, listen: false)
                               .dropDownShifts[widget.shiftIndex == 0
                                   ? 0
-                                  : widget.shiftIndex - 1]
+                                  : widget.shiftIndex]
                               .shiftId,
                       phoneNumber: widget.editNumber.dialCode +
                           widget.phoneController.text.replaceAll(
