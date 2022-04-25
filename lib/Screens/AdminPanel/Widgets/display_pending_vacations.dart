@@ -253,14 +253,14 @@ class _ExpandedPendingVacationState extends State<ExpandedPendingVacation> {
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 1,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userHolidays.userName))
+                                  memberId: widget.userHolidays.userId))
                           : Positioned(
                               bottom: 15.h,
                               right: 10.w,
                               child: FadeInVacPermFloatingButton(
                                   radioVal2: 1,
                                   comingFromAdminPanel: true,
-                                  memberId: widget.userHolidays.userName))
+                                  memberId: widget.userHolidays.userId))
                 ],
               )
             ],

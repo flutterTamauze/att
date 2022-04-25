@@ -85,6 +85,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   List<String> rolesList = [];
   @override
   void didChangeDependencies() {
+    print("did change dep called");
     rolesList = [
       getTranslated(context, "مستخدم"),
       getTranslated(context, "مسئول تسجيل"),
@@ -99,10 +100,17 @@ class _AddUserScreenState extends State<AddUserScreen> {
   void initState() {
     super.initState();
     debugPrint("selected role ${widget.selectedRole}");
+    print(Provider.of<SiteData>(context, listen: false).dropDownShiftIndex);
+    print(Provider.of<SiteShiftsData>(context, listen: false)
+        .dropDownShifts
+        .length);
+
     userRole = widget.selectedRole;
     if (widget.comingFromShifts) {
       debugPrint("shift incoming =${widget.shiftNameIncoming}");
       shiftIndex = getShiftid(widget.shiftNameIncoming);
+      Provider.of<SiteData>(context, listen: false)
+          .setDropDownShift(shiftIndex);
     } else {
       shiftIndex =
           Provider.of<SiteData>(context, listen: false).dropDownShiftIndex;
@@ -156,7 +164,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
       Provider.of<SiteShiftsData>(context, listen: false)
           .getShiftsList(widget.member.siteName, false);
 
-      shiftIndex = getShiftListIndex(widget.member.shiftId) + 1;
+      shiftIndex = getShiftListIndex(widget.member.shiftId);
 
       Provider.of<SiteData>(context, listen: false)
           .setDropDownShift(shiftIndex); //to match the -1 bec of all shifts
@@ -209,13 +217,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
         body: Center(
           child: Container(
             child: GestureDetector(
-              onTap: () {
-                debugPrint(Provider.of<SiteShiftsData>(context, listen: false)
-                    .dropDownShifts[siteData.dropDownShiftIndex == 0
-                        ? 0
-                        : siteData.dropDownShiftIndex]
-                    .shiftName);
-              },
+              onTap: () {},
               behavior: HitTestBehavior.opaque,
               onPanDown: (_) {
                 FocusScope.of(context).unfocus();
@@ -680,7 +682,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hintColor: Colors.black,
                                           onChange: (value) {
                                             // debugPrint()
-
+                                            siteId = getSiteId(value);
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
                                                 .getShiftsList(value, false);
@@ -718,6 +720,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           hint: "المناوبة",
                                           onChange: (value) {
                                             // debugPrint()
+                                            log(value);
 
                                             siteData
                                               ..setSiteValue("كل المواقع")
@@ -730,18 +733,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                             debugPrint(
                                                 "shiftid..... =    $shiftIndex");
                                           },
-                                          selectedvalue: siteData
-                                                      .dropDownShiftIndex ==
-                                                  0
-                                              ? siteShiftData
-                                                  .dropDownShifts[siteData
-                                                      .dropDownShiftIndex]
-                                                  .shiftName
-                                              : siteShiftData
-                                                  .dropDownShifts[siteData
-                                                          .dropDownShiftIndex -
-                                                      1] //-1 because كل المناوبات is counted in shift index
-                                                  .shiftName,
+                                          selectedvalue: siteShiftData
+                                              .dropDownShifts[siteData
+                                                  .dropDownShiftIndex] //-1 because كل المناوبات is counted in shift index
+                                              .shiftName,
                                           textColor: Colors.orange,
                                         ),
                                       ),
@@ -799,25 +794,24 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                 context,
                                                                 listen: false)
                                                             .dropDownShifts[
-                                                                shiftIndex == 0
-                                                                    ? 0
-                                                                    : shiftIndex -
-                                                                        1]
+                                                                shiftIndex]
                                                             .shiftId,
-                                                    jobTitle: _titleController
-                                                        .text
+                                                    jobTitle: _titleController.text
                                                         .trim(),
                                                     email: _emailController.text
                                                         .trim(),
                                                     salary: double.parse(
                                                         _salaryController.text),
-                                                    phoneNumber: number.dialCode +
-                                                        _phoneController.text.replaceAll(
-                                                          new RegExp(
-                                                              r"\s+\b|\b\s"),
-                                                          "",
-                                                        ),
-                                                    name: _nameController.text.trim()),
+                                                    phoneNumber:
+                                                        number.dialCode +
+                                                            _phoneController.text
+                                                                .replaceAll(
+                                                              new RegExp(
+                                                                  r"\s+\b|\b\s"),
+                                                              "",
+                                                            ),
+                                                    name: _nameController.text
+                                                        .trim()),
                                                 context,
                                                 getRoleName(userRole));
                                         Navigator.pop(context);
@@ -1127,16 +1121,19 @@ class _AddUserScreenState extends State<AddUserScreen> {
     bool allShiftsFound = false;
     final list = Provider.of<SiteShiftsData>(context, listen: false).shifts;
     final int index = list.length;
+    print("shifts");
     for (int i = 0; i < index; i++) {
-      print(list[i].shiftName);
       if (list[i].shiftName == "كل المناوبات") {
         allShiftsFound = true;
         log('D5LT FE ALL SHIFT');
       }
+      print(list[i].shiftName);
       if (shiftName == list[i].shiftName) {
         if (allShiftsFound) {
+          print("returned index is ${i - 1}");
           return i - 1;
         }
+        print("returned index is $i");
         return i;
       }
     }
