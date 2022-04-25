@@ -411,7 +411,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.5;
+				MARKETING_VERSION = 1.1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tds.chilangu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -561,7 +561,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.5;
+				MARKETING_VERSION = 1.1.6;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-fcxx-modules";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tds.chilangu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -603,7 +603,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.5;
+				MARKETING_VERSION = 1.1.6;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-fcxx-modules";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tds.chilangu;
 				PRODUCT_NAME = "$(TARGET_NAME)";

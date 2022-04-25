@@ -93,46 +93,46 @@ class _SystemHomePageState extends State<SystemHomePage> {
     }
   }
 
-  firstget() async {
-    if (await Permission.microphone.isGranted) {
-      getData();
-    } else {
-      showDialog(
-          barrierDismissible: false,
-          context: navigatorKey.currentState.overlay.context,
-          builder: (BuildContext context) {
-            return RoundedAlertEn(
-                title: getTranslated(context, "تصريح"),
-                content: getTranslated(context, "برجاء قبول التصريح"),
-                onPressed: () async {
-                  if (await Permission.microphone.isPermanentlyDenied) {
-                    openAppSettings();
-                  } else {
-                    await Permission.microphone.request();
-                    if (await Permission.microphone.isGranted) {
-                      Navigator.pop(context);
-                      Navigator.maybePop(context);
-                      getData();
-                    } else {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NavScreenTwo(0),
-                          ));
-                    }
-                  }
-                },
-                onCancel: () {
-                  // Navigator.pop(context);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NavScreenTwo(0),
-                      ));
-                });
-          });
-    }
-  }
+  // firstget() async {
+  //   if (await Permission.microphone.isGranted) {
+  //     getData();
+  //   } else {
+  //     showDialog(
+  //         barrierDismissible: false,
+  //         context: navigatorKey.currentState.overlay.context,
+  //         builder: (BuildContext context) {
+  //           return RoundedAlertEn(
+  //               title: getTranslated(context, "تصريح"),
+  //               content: getTranslated(context, "برجاء قبول التصريح"),
+  //               onPressed: () async {
+  //                 if (await Permission.microphone.isPermanentlyDenied) {
+  //                   openAppSettings();
+  //                 } else {
+  //                   await Permission.microphone.request();
+  //                   if (await Permission.microphone.isGranted) {
+  //                     Navigator.pop(context);
+  //                     Navigator.maybePop(context);
+  //                     getData();
+  //                   } else {
+  //                     Navigator.pushReplacement(
+  //                         context,
+  //                         MaterialPageRoute(
+  //                           builder: (context) => const NavScreenTwo(0),
+  //                         ));
+  //                   }
+  //                 }
+  //               },
+  //               onCancel: () {
+  //                 // Navigator.pop(context);
+  //                 Navigator.pushReplacement(
+  //                     context,
+  //                     MaterialPageRoute(
+  //                       builder: (context) => const NavScreenTwo(0),
+  //                     ));
+  //               });
+  //         });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

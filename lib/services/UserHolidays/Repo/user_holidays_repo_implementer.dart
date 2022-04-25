@@ -78,7 +78,7 @@ class UserHolidaysRepoImplementer implements UserHolidaysRepo {
     final String endingTime =
         DateTime(DateTime.now().year, 12, 30).toIso8601String();
     return NetworkApi().request(
-      "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime?isMobile=true",
+      "$baseURL/api/Holiday/GetHolidaybyPeriod/$userId/$startTime/$endingTime",
       RequestType.GET,
       {
         'Content-type': 'application/json',

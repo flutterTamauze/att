@@ -49,7 +49,7 @@ class UserPermessions {
         permessionId: json["id"],
         // osType: json["mobileOS"] ?? 1,
         // permessionDescription: json["desc"],
-        // permessionStatus: json["status"],
+        permessionStatus: json["status"],
         // adminResponse: json["adminResponse"],
         // approvedByUserId: json["ApprovedbyUser"] ?? "غير معروف",
         createdOn: DateTime.now(),
