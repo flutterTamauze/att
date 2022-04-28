@@ -493,7 +493,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             .user
                                                             .userToken,
                                                         widget.member.id)
-                                                    .then((value) {
+                                                    .then((value) async {
                                                   if (value ==
                                                       Holiday.Success) {
                                                     Fluttertoast.showToast(
@@ -509,7 +509,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             Navigator.pop(
                                                                 context));
 
-                                                    sendFcmMessage(
+                                                    await sendFcmMessage(
                                                       topicName: "",
                                                       title: "أجازة",
                                                       category: "vacation",

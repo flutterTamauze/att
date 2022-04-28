@@ -1171,72 +1171,269 @@ class NewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Stack(
-        children: [
-          ClipPath(
-            clipper: DiagonalPathClipperOne(),
-            child: Container(
-              height: getkDeviceHeightFactor(context, 135),
-              color: ColorManager.primary,
-              child: Stack(
-                children: [
-                  ClipPath(
-                    clipper: DiagonalPathClipperOne(),
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: locator.locator<PermissionHan>().isEnglishLocale()
+              ? DiagonalPathClipperOne()
+              : DiagonalPathClipperTwo(),
+          child: Container(
+            height: getkDeviceHeightFactor(context, 135),
+            color: ColorManager.primary,
+            child: Stack(
+              children: [
+                ClipPath(
+                  clipper: locator.locator<PermissionHan>().isEnglishLocale()
+                      ? DiagonalPathClipperOne()
+                      : DiagonalPathClipperTwo(),
+                  child: Container(
                     child: Container(
-                      child: Container(
-                        height: getkDeviceHeightFactor(context, 130),
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                        ),
+                      height: getkDeviceHeightFactor(context, 130),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          Positioned(
-              right: 10.w,
-              top: 10.h,
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              AutoSizeText(
-                                cachedUserData[0],
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.orange,
-                                    fontSize: setResponsiveFontSize(17)),
-                              ),
-                              AutoSizeText(
-                                cachedUserData[1],
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenUtil()
-                                        .setSp(15, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.w300),
-                              )
-                            ],
+        ),
+        !locator.locator<PermissionHan>().isEnglishLocale()
+            ? Positioned(
+                left: 10.w,
+                top: 10.h,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 10.w,
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: CircleAvatar(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: EdgeInsets.only(right: 5.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileScreen(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      height: 30.h,
+                                      child: AutoSizeText(
+                                        cachedUserData[0],
+                                        textAlign: TextAlign.left,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: ColorManager.primary,
+                                          fontSize: setResponsiveFontSize(17),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    child: AutoSizeText(
+                                      cachedUserData[1],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          height: 1.5,
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(13,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 30,
+                              child: Container(
+                                height: 75.h,
+                                width: 70.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: ColorManager.primary,
+                                  ),
+                                  // image: DecorationImage(
+                                  //   image: headerImage,
+                                  //   fit: BoxFit.fill,
+                                  // ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(75.0),
+                                  child: CachedNetworkImage(
+                                    httpHeaders: {
+                                      "Authorization": "Bearer " +
+                                          Provider.of<UserData>(context,
+                                                  listen: false)
+                                              .user
+                                              .userToken
+                                    },
+                                    imageUrl: cachedUserData[2],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Platform
+                                            .isIOS
+                                        ? const CupertinoActivityIndicator(
+                                            radius: 20,
+                                          )
+                                        : const CircularProgressIndicator(
+                                            backgroundColor: Colors.white,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.orange),
+                                          ),
+                                    errorWidget: (context, url, error) =>
+                                        Provider.of<UserData>(context,
+                                                listen: true)
+                                            .changedWidget,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                        left: 0,
+                        top: 8.w,
+                        child: GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: Consumer<NotificationDataService>(
+                            builder: (context, value, child) {
+                              return Stack(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(3),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: const Color(0xffFF7E00)
+                                                .withOpacity(0.9),
+                                          ),
+                                          child: const Icon(
+                                            Icons.notification_important,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  value.getUnSeenNotifications() == 0
+                                      ? Container()
+                                      : Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.red,
+                                              ),
+                                              child: AutoSizeText(
+                                                value
+                                                    .getUnSeenNotifications()
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            11)),
+                                              )),
+                                        )
+                                ],
+                              );
+                            },
+                          ),
+                        ))
+                  ],
+                ))
+            : Positioned(
+                right: 10.w,
+                top: 10.h,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: EdgeInsets.only(right: 5.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileScreen(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      height: 30.h,
+                                      child: AutoSizeText(
+                                        cachedUserData[0],
+                                        textAlign: TextAlign.right,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: ColorManager.primary,
+                                          fontSize: setResponsiveFontSize(17),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    child: AutoSizeText(
+                                      cachedUserData[1],
+                                      textAlign: TextAlign.right,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          height: 1.5,
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(13,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 30,
                             child: Container(
@@ -1283,97 +1480,207 @@ class NewHeader extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    Positioned(
+                        right: 0,
+                        top: 8.w,
+                        child: GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: Consumer<NotificationDataService>(
+                            builder: (context, value, child) {
+                              return Stack(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(3),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: const Color(0xffFF7E00)
+                                                .withOpacity(0.9),
+                                          ),
+                                          child: const Icon(
+                                            Icons.notification_important,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  value.getUnSeenNotifications() == 0
+                                      ? Container()
+                                      : Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.red,
+                                              ),
+                                              child: AutoSizeText(
+                                                value
+                                                    .getUnSeenNotifications()
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            11)),
+                                              )),
+                                        )
+                                ],
+                              );
+                            },
+                          ),
+                        ))
+                  ],
+                )),
+        if (!locator.locator<PermissionHan>().isEnglishLocale()) ...[
+          Positioned(
+            top: getkDeviceHeightFactor(context, 50),
+            right: 40.w,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 30,
+              child: Container(
+                height: 75.h,
+                width: 70.w,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: ColorManager.primary,
                   ),
-                ],
-              )),
-          Positioned(
-            top: 50.h,
-            left: 40.w,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: ColorManager.primary,
+                  // image: DecorationImage(
+                  //   image: headerImage,
+                  //   fit: BoxFit.fill,
+                  // ),
+                  shape: BoxShape.circle,
                 ),
-                // image: DecorationImage(
-                //   image: headerImage,
-                //   fit: BoxFit.fill,
-                // ),
-                shape: BoxShape.circle,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(75.0),
+                  child: CachedNetworkImage(
+                    httpHeaders: {
+                      "Authorization": "Bearer " +
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userToken
+                    },
+                    imageUrl: cachedUserData[4],
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Platform.isIOS
+                        ? const CupertinoActivityIndicator(
+                            radius: 20,
+                          )
+                        : const CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.orange),
+                          ),
+                    errorWidget: (context, url, error) =>
+                        Provider.of<UserData>(context, listen: true)
+                            .changedWidget,
+                  ),
+                ),
               ),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Container(
-                    decoration: BoxDecoration(color: ColorManager.accentColor),
-                    child: CachedNetworkImage(
-                      httpHeaders: {
-                        "Authorization": "Bearer " +
-                            Provider.of<UserData>(context, listen: false)
-                                .user
-                                .userToken
-                      },
-                      imageUrl: cachedUserData[4],
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Platform.isIOS
-                          ? const CupertinoActivityIndicator(
-                              radius: 20,
-                            )
-                          : const CircularProgressIndicator(
-                              backgroundColor: Colors.white,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.orange),
-                            ),
-                      errorWidget: (context, url, error) =>
-                          Provider.of<UserData>(context, listen: true)
-                              .changedWidget,
-                    ),
-                  )),
             ),
-            width: 60.w,
-            height: 60.h,
+            width: MediaQuery.of(context).size.height / 12,
+            height: MediaQuery.of(context).size.height / 12,
           ),
-          //        Positioned(
-          //          top: getkDeviceHeightFactor(context, 45),
-          //          left: getkDeviceWidthFactor(context, 30),
-          //          child: ClipRRect(
-          //              borderRadius: BorderRadius.circular(40),
-          //              child: Container(
-          //                decoration: BoxDecoration(color: Colors.black),
-          //                padding: EdgeInsets.all(5),
-          //                child: Image.file(
-          //                  File(cachedUserData[4]),
-          //                  fit: BoxFit.cover,
-          //                ),
-          //              )),
-          //          width: getkDeviceWidthFactor(context, 60),
-          //          height: getkDeviceWidthFactor(context, 60),
-          //        ),
           Positioned(
-            top: 5.h,
-            left: 5.w,
+            top: 5,
+            right: 5,
             child: Container(
               width: 50.w,
               height: 50.h,
               child: InkWell(
-                onTap: () {
-                  debugPrint("s");
-                  Scaffold.of(context).openDrawer();
-                },
-                child: const Icon(
-                  Icons.menu,
-                  size: 23,
-                  color: Colors.orange,
+                onTap: () {},
+                child: Padding(
+                  padding: Platform.isIOS
+                      ? const EdgeInsets.only(top: 20)
+                      : const EdgeInsets.only(top: 0),
                 ),
               ),
             ),
-            width: getkDeviceWidthFactor(context, 60),
-            height: getkDeviceHeightFactor(context, 60),
+            width: 60.w,
+            height: 60.h,
           ),
-        ],
-      ),
+        ] else ...[
+          Positioned(
+            top: getkDeviceHeightFactor(context, 50),
+            left: 40.w,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 30,
+              child: Container(
+                height: 75.h,
+                width: 70.w,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: ColorManager.primary,
+                  ),
+                  // image: DecorationImage(
+                  //   image: headerImage,
+                  //   fit: BoxFit.fill,
+                  // ),
+                  shape: BoxShape.circle,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(75.0),
+                  child: CachedNetworkImage(
+                    httpHeaders: {
+                      "Authorization": "Bearer " +
+                          Provider.of<UserData>(context, listen: false)
+                              .user
+                              .userToken
+                    },
+                    imageUrl: cachedUserData[4],
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Platform.isIOS
+                        ? const CupertinoActivityIndicator(
+                            radius: 20,
+                          )
+                        : const CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.orange),
+                          ),
+                    errorWidget: (context, url, error) =>
+                        Provider.of<UserData>(context, listen: true)
+                            .changedWidget,
+                  ),
+                ),
+              ),
+            ),
+            width: MediaQuery.of(context).size.height / 12,
+            height: MediaQuery.of(context).size.height / 12,
+          ),
+          Positioned(
+            top: 5,
+            left: 5,
+            child: Container(
+              width: 50.w,
+              height: 50.h,
+              child: InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: Platform.isIOS
+                      ? const EdgeInsets.only(top: 20)
+                      : const EdgeInsets.only(top: 0),
+                ),
+              ),
+            ),
+            width: 60.w,
+            height: 60.h,
+          ),
+        ]
+      ],
     );
   }
 }

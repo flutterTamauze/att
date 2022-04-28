@@ -340,12 +340,14 @@ class _SplashScreenState extends State<SplashScreen>
             opacity: animationController.value,
             child: Center(
               child: Container(
+                alignment: Alignment.center,
                 width: 140.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                        alignment: Alignment.center,
                         height: 130.h,
                         child: Image.asset(
                           'resources/TDSlogo.png',

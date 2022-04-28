@@ -52,11 +52,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
-  if (Platform.isAndroid)
-    // await hawawi.Push.registerBackgroundMessageHandler(
-    //     backgroundMessageCallback);
+  // await hawawi.Push.registerBackgroundMessageHandler(
+  //     backgroundMessageCallback);
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
