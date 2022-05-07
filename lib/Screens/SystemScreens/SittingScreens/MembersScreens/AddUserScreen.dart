@@ -681,6 +681,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                           onChange: (value) {
                                             // debugPrint()
                                             siteId = getSiteId(value);
+
                                             Provider.of<SiteShiftsData>(context,
                                                     listen: false)
                                                 .getShiftsList(value, false);

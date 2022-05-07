@@ -283,6 +283,7 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
         body: Container(
+      alignment: Alignment.center,
       decoration: const BoxDecoration(color: Colors.black),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -341,6 +342,7 @@ class _SplashScreenState extends State<SplashScreen>
             opacity: animationController.value,
             child: Center(
               child: Container(
+                alignment: Alignment.center,
                 width: 140.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -133,6 +133,7 @@ class UserData with ChangeNotifier {
 
       if (isError == false) {
         token = await firebaseMessaging.getToken();
+        log("fcm is $token");
       }
     }
     const rolesConstUrl =

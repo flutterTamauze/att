@@ -45,7 +45,6 @@ class UserPermessions {
         duration: json["time"],
         permessionType: json["type"],
         // fcmToken: json["fcmToken"] ?? "null",
-        // userID: json['userId'] ?? "",
         permessionId: json["id"],
         // osType: json["mobileOS"] ?? 1,
         // permessionDescription: json["desc"],
@@ -65,6 +64,7 @@ class UserPermessions {
         permessionType: json["type"],
         fcmToken: json["fcmToken"] ?? "null",
         permessionId: json["id"],
+        userID: json['userId'] ?? "",
         permessionStatus: json["status"],
         createdOn: DateTime.tryParse(json["createdOn"]),
         user: json["userName"]);
@@ -74,6 +74,7 @@ class UserPermessions {
         date: DateTime.tryParse(json["date"]),
         permessionDescription: json["desc"],
         duration: json["time"],
+        userID: json['userId'] ?? "",
         createdOn: DateTime.tryParse(json["createdOn"]),
         permessionType: json["type"],
         adminResponse: json["adminResponse"],
@@ -203,6 +204,8 @@ class UserPermessionsData with ChangeNotifier {
               singlePermessionDetail.adminResponse;
           pendingCompanyPermessions[permIndex].createdOn =
               singlePermessionDetail.createdOn;
+          pendingCompanyPermessions[permIndex].userID =
+              singlePermessionDetail.userID;
         }
 
         notifyListeners();

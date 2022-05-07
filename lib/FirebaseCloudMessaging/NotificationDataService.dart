@@ -214,6 +214,7 @@ class NotificationDataService with ChangeNotifier {
         debugPrint("revieved internalMission ");
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final List<String> userData = (prefs.getStringList('userData') ?? null);
+        addNotificationToListAndDB(event, context);
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context, true)
             .then((value) => debugPrint('login successs'));

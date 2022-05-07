@@ -550,7 +550,6 @@ class _UsersScreenState extends State<UsersScreen> {
                                                                                             value.userSearchMember[index].id,
                                                                                           );
                                                                                           final phone = await getPhoneInEdit(Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber[0] != "+" ? "+${Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber}" : Provider.of<MemberData>(context, listen: false).singleMember.phoneNumber);
-
                                                                                           Navigator.of(context).push(
                                                                                             new MaterialPageRoute(
                                                                                               builder: (context) => AddUserScreen(Provider.of<MemberData>(context, listen: false).singleMember, index, true, phone[0], phone[1], false, "", rolesList[Provider.of<MemberData>(context, listen: false).singleMember.userType]),

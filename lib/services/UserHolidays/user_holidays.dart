@@ -243,6 +243,8 @@ class UserHolidaysData with ChangeNotifier {
             pendingCompanyHolidays[holidayIndex].adminResponse;
         pendingCompanyHolidays[holidayIndex].createdOnDate =
             holidaysSingleDetail.createdOnDate;
+        pendingCompanyHolidays[holidayIndex].userId =
+            holidaysSingleDetail.userId;
 
         notifyListeners();
       }
