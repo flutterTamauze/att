@@ -627,5 +627,7 @@
 :"AM" ,
 "م"
 :"PM" ,
-"لا يمكنك ارسال إثبات حضور لهذا المستخدم":"You can't send attend proof to this user !"   }
+
+"لا يمكنك ارسال إثبات حضور لهذا المستخدم":"You can't send attend proof to this user !"  ,
+"مرحبا بعودتك":"Welcome Back" }
     
