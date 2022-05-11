@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'dart:developer';
 import 'dart:ui' as ui;
 import 'package:intl/intl.dart';

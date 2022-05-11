@@ -9,7 +9,7 @@ import 'package:qr_users/Network/Network.dart';
 import 'package:qr_users/Network/NetworkFaliure.dart';
 import 'package:qr_users/Network/networkInfo.dart';
 
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SuperAdmin/Screen/super_company_pie_chart.dart';
 import 'package:qr_users/Screens/SuperAdmin/widgets/SuperAdminTile.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';

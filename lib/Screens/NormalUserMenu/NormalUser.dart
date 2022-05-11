@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserShifts.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';

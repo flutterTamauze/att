@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_users/Core/colorManager.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/permissions_data.dart';

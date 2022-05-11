@@ -7,7 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
 import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/AttendProovReport.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';

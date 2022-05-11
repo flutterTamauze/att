@@ -12,7 +12,7 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/MLmodule/widgets/HolidaysDisplay/total_holidays_screen.dart';
 import 'package:qr_users/MLmodule/widgets/MissionsDisplay/CompanyMissionsDisplay.dart';
 import 'package:qr_users/MLmodule/widgets/PermessionsDisplay/permessions_screen_display.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/UserMissions/user_missions.dart';

@@ -32,7 +32,7 @@ import 'dart:async';
 
 import '../Core/constants.dart';
 import '../main.dart';
-import 'Notifications/Notifications.dart';
+import 'Notifications/Screen/Notifications.dart';
 import 'SystemScreens/SystemGateScreens/CameraPickerScreen.dart';
 
 class ChangePasswordScreen extends StatefulWidget {

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';

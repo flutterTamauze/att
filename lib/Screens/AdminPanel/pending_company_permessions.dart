@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/UserPermessions/user_permessions.dart';
@@ -67,6 +68,14 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
     });
   }
 
+  final _keyNotifier = ValueNotifier<int>(0);
+  void setKeyNotify() {
+    int newKey;
+    do {
+      _keyNotifier.value = new Random().nextInt(10000);
+    } while (newKey == _keyNotifier.value);
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -76,7 +85,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
   final ScrollController _scrollController = ScrollController();
   void _onRefresh() async {
     final userPerm = Provider.of<UserPermessionsData>(context, listen: false);
-    userPerm.pendingCompanyPermessions.clear();
+    userPerm.pendingCompanyPermessions = [];
     userPerm.pageIndex = 0;
     // ignore: cascade_invocations
     userPerm.keepRetriving = true;
@@ -165,6 +174,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                         userPermessions: pending,
                                         index: index,
                                         id: pending.permessionId,
+                                        valueNotifier: _keyNotifier,
                                         onRefused: () {
                                           return showDialog(
                                               context: context,
@@ -205,7 +215,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                                 comment,
                                                                 pending.date);
                                                         Navigator.pop(context);
-
+                                                        setKeyNotify();
                                                         if (msg ==
                                                             "Success : User Updated!") {
                                                           await sendFcmMessage(
@@ -286,6 +296,7 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                             comment,
                                                             pending.date);
                                                     Navigator.pop(context);
+                                                    setKeyNotify();
                                                     if (msg ==
                                                         "Success : User Updated!") {
                                                       {
