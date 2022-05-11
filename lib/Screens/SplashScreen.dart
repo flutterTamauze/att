@@ -349,6 +349,7 @@ class _SplashScreenState extends State<SplashScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                        alignment: Alignment.center,
                         height: 130.h,
                         child: Image.asset(
                           'resources/TDSlogo.png',

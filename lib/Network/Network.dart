@@ -58,8 +58,9 @@ class NetworkApi {
         }
 
         return Faliure(code: USER_INVALID_RESPONSE, errorResponse: "null");
+      } else if (res.statusCode == 401) {
+        return Faliure(code: UN_AUTHORIZED);
       }
-
       // locator.locator<PermissionHan>().setServerDown(true);
       // debugPrint(locator.locator<UserData>().user.userToken);
       // if (locator.locator<UserData>().user.userToken != null) {

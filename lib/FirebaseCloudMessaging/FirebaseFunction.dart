@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -54,7 +55,7 @@ Future<bool> sendFcmMessage(
     final client = new http.Client();
     final response = await client.post(Uri.parse(url),
         headers: header, body: json.encode(request));
-
+    log("fcm response ${response.body}");
     // Provider.of<UserData>(navigatorKey.currentState.overlay.context,
     //         listen: false)
     //     .addNotificationRequestID(DateTime.now().millisecond);

@@ -190,12 +190,15 @@ class TakePictureScreenState extends State<CameraPicker> {
   }
 
   bool isFaceAvailable(List<Face> facesList) {
-    if (facesList[0].headEulerAngleY > 10 ||
-        facesList[0].headEulerAngleY < -10) {
-      return false;
-    } else {
-      return true;
+    if (Platform.isAndroid) {
+      if (facesList[0].headEulerAngleY > 10 ||
+          facesList[0].headEulerAngleY < -10) {
+        return false;
+      } else {
+        return true;
+      }
     }
+    return true;
   }
 
   @override

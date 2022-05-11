@@ -335,13 +335,12 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
-    final HuaweiServices _huawei = HuaweiServices();
-    bool isHawawi = false;
-    if (Platform.isAndroid) {
-      isHawawi = await _huawei.isHuaweiDevice();
-    }
+    // bool isHawawi = false;
+    // if (Platform.isAndroid) {
+    //       final HuaweiServices _huawei = HuaweiServices();
+    //   isHawawi = await _huawei.isHuaweiDevice();
+    // }
 
-    print(image.lengthSync());
     // log("image ${image.path}");
     String msg;
     print("card code $cardCode");
