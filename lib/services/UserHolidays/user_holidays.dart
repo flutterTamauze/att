@@ -352,6 +352,9 @@ class UserHolidaysData with ChangeNotifier {
       UserHolidays holiday, String userToken, String userId) async {
     isLoading = true;
     notifyListeners();
+    log(DateTime.now().toIso8601String());
+    log(holiday.fromDate.toIso8601String());
+    log(holiday.toDate.toIso8601String());
     final response = await http.post(
         Uri.parse("$baseURL/api/Holiday/AddHoliday"),
         headers: {

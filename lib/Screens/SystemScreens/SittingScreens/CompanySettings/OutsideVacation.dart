@@ -481,7 +481,7 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                                 : selectedReason ==
                                                                         getTranslated(
                                                                             context,
-                                                                            "مرضية")
+                                                                            "مرضى")
                                                                     ? 2
                                                                     : 3,
                                                             // createdOnDate:
