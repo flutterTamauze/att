@@ -19,7 +19,7 @@ import 'package:image/image.dart' as img;
 import 'package:qr_users/MLmodule/recognition_services/UtilsScanner.dart';
 import 'package:qr_users/MLmodule/recognition_services/classifier.dart';
 import 'package:qr_users/MLmodule/recognition_services/quant.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/CameraPicker/loadingCamera.dart';

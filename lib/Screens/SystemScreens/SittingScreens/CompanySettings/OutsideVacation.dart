@@ -16,7 +16,7 @@ import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
 
 import 'package:qr_users/Screens/NormalUserMenu/NormalUserVacationRequest.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/RadioButtonWidget.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';

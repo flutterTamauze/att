@@ -39,6 +39,17 @@ class NotificationDataService with ChangeNotifier {
     notifyListeners();
   }
 
+  readNotificationByTime(notifiTitle) {
+    notification
+        .firstWhere((element) => element.title == notifiTitle)
+        .messageSeen = 1;
+    notifyListeners();
+    final int notificationID =
+        notification.firstWhere((element) => element.title == notifiTitle).id;
+
+    db.readMessage(1, notificationID);
+  }
+
   tokenRefresh() {
     firebaseMessaging.onTokenRefresh.listen((event) {
       if (locator.locator<UserData>().user.userType == 4 ||

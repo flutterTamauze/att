@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/RadioButtonWidget.dart';
 
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
@@ -856,14 +856,11 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                           await sendFcmMessage(
                                                             topicName:
                                                                 "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
-                                                            title:
-                                                                getTranslated(
-                                                                    context,
-                                                                    "طلب اذن"),
+                                                            title: "طلب اذن",
                                                             category:
                                                                 "permessionRequest",
                                                             message:
-                                                                "${getTranslated(context, "تم طلب اذن من قبل المستخدم")} ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                                "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
                                                           );
                                                           return showDialog(
                                                             context: context,

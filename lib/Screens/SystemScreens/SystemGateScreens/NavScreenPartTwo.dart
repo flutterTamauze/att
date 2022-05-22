@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationDataService.dart';
 import 'package:qr_users/FirebaseCloudMessaging/NotificationMessage.dart';
+import 'package:qr_users/Screens/AdminPanel/pending_company_permessions.dart';
+import 'package:qr_users/Screens/AdminPanel/pending_company_vacations.dart';
 import 'package:qr_users/Screens/HomePage.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/Screens/SystemScreens/ReportScreens/ReportScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/SettingsScreen.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/AttendByCard/SystemHomePage.dart';
@@ -91,7 +93,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
 
     //   notificationProv.getInitialNotification(context);
     // }
-
+    checkNotificationWhenAppIsTerminate();
     checkForegroundNotification();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -102,15 +104,16 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   // }
 
   saveNotificationToCache(RemoteMessage event) async {
-    await db.insertNotification(
-        NotificationMessage(
-          category: event.data["category"],
-          dateTime: DateTime.now().toString().substring(0, 10),
-          message: event.notification.body,
-          messageSeen: 0,
-          title: event.notification.title,
-        ),
-        context);
+    if (mounted)
+      await db.insertNotification(
+          NotificationMessage(
+            category: event.data["category"],
+            dateTime: DateTime.now().toString().substring(0, 10),
+            message: event.notification.body,
+            messageSeen: 0,
+            title: event.notification.title,
+          ),
+          context);
     // player.play("notification.mp3");
   }
 
@@ -142,16 +145,54 @@ class _NavScreenTwoState extends State<NavScreenTwo>
   }
 
   NotificationDataService _notifService = NotificationDataService();
+  checkNotificationWhenAppIsTerminate() {
+    FirebaseMessaging.instance.getInitialMessage().then((notification) {
+      if (notification != null) {
+        print("${notification.data['title']}");
+        Provider.of<NotificationDataService>(context, listen: false)
+            .readNotificationByTime(notification.data['title']);
+        final userType =
+            Provider.of<UserData>(context, listen: false).user.userType;
+        if (userType == 3 || userType == 4 || userType == 6) {
+          debugPrint(
+              "####Recveiving data ontapped terminated app  with category equal ${notification.data['category']}####");
+          handlePermessionVacOnRecieved(context, notification);
+        }
+      }
+    });
+  }
+
+  handlePermessionVacOnRecieved(
+      BuildContext context, RemoteMessage notification) {
+    if (notification.data['category'] == "permessionRequest") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PendingCompanyPermessions(),
+          ));
+    } else if (notification.data['category'] == "vacationRequest") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PendingCompanyVacations(),
+          ));
+    }
+  }
+
   checkForegroundNotification() {
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
-      debugPrint("####Recveiving data on message tapped ####");
+      debugPrint(
+          "####Recveiving data on message tapped with category equal ${event.data['category']}####");
+      if (mounted) {
+        saveNotificationToCache(event);
+        // player.play("notification.mp3");
+        if (event.data["category"] == "attend") {
+          log("Opened an attend proov notification !");
 
-      saveNotificationToCache(event);
-      // player.play("notification.mp3");
-      if (event.data["category"] == "attend") {
-        log("Opened an attend proov notification !");
-
-        _notifService.showAttendanceCheckDialog(context);
+          _notifService.showAttendanceCheckDialog(context);
+        }
+      } else {
+        handlePermessionVacOnRecieved(context, event);
       }
     });
   }

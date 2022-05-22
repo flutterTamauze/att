@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/main.dart';
 
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';

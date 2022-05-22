@@ -14,7 +14,7 @@ import 'package:qr_users/widgets/headers.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../Notifications/Notifications.dart';
+import '../Notifications/Screen/Notifications.dart';
 import '../SystemScreens/AppHelp.dart';
 
 class ContactUsScreen extends StatefulWidget {

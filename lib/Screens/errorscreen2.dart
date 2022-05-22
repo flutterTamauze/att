@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../services/user_data.dart';
 import '../widgets/drawer.dart';
 import '../widgets/headers.dart';
-import 'Notifications/Notifications.dart';
+import 'Notifications/Screen/Notifications.dart';
 
 class ErrorScreen2 extends StatelessWidget {
   final Widget child;

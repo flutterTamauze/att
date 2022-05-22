@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,7 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Screens/Notifications/Notifications.dart';
+import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
 import 'package:qr_users/main.dart';
 import 'package:qr_users/services/UserHolidays/user_holidays.dart';
 import 'package:qr_users/services/company.dart';
@@ -64,6 +65,14 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
         }
       }
     });
+  }
+
+  final _keyNotifier = ValueNotifier<int>(0);
+  void setKeyNotify() {
+    int newKey;
+    do {
+      _keyNotifier.value = new Random().nextInt(10000);
+    } while (newKey == _keyNotifier.value);
   }
 
   @override
@@ -153,6 +162,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                       child: Card(
                                         child: ExpandedPendingVacation(
                                           userHolidays: pending,
+                                          keyNotifier: _keyNotifier,
                                           isAdmin: true,
                                           vacationDaysCount: [
                                             pending.fromDate,
@@ -194,6 +204,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               pending.fromDate,
                                                               pending.toDate);
                                                       Navigator.pop(context);
+                                                      setKeyNotify();
                                                       if (msg ==
                                                           "Success : Updated!") {
                                                         await sendFcmMessage(
@@ -286,7 +297,7 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                               pending.fromDate,
                                                               pending.toDate);
                                                       Navigator.pop(context);
-
+                                                      setKeyNotify();
                                                       if (msg ==
                                                           "Success : Updated!") {
                                                         if (mounted) {

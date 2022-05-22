@@ -12,7 +12,7 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_users/widgets/headers.dart';
-import 'Notifications/Notifications.dart';
+import 'Notifications/Screen/Notifications.dart';
 
 const frontCamera = 'FRONT CAMERA';
 
