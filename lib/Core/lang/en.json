@@ -629,5 +629,8 @@
 :"PM" ,
 
 "لا يمكنك ارسال إثبات حضور لهذا المستخدم":"You can't send attend proof to this user !"  ,
+"جاري تحميل التحديث فى الخلفية":"Update is being downloaded in background",
+"تم التحديث بنجاح":"Update downloaded successfully",
+
 "مرحبا بعودتك":"Welcome Back" }
     

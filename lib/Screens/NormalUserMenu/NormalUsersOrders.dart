@@ -84,7 +84,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                       getTranslated(context, "انصراف مبكر")
                     ], [
                       getTranslated(context, "عارضة"),
-                      getTranslated(context, "مرضية"),
+                      getTranslated(context, "مرضى"),
                       getTranslated(context, "رصيد اجازات")
                     ]),
                   ));

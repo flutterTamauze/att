@@ -402,7 +402,7 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                                 : selectedReason ==
                                                                         getTranslated(
                                                                             context,
-                                                                            "مرضية")
+                                                                            "مرضى")
                                                                     ? 2
                                                                     : 3,
                                                             // createdOnDate:

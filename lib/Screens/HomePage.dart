@@ -36,6 +36,8 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
+    final DownloadService downloadService = DownloadService();
+    downloadService.checkForUpdate(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
       Provider.of<NotificationDataService>(context, listen: false)
         ..firebaseMessagingConfig(context)
@@ -48,8 +50,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // );
 
     //Check for updates
-    final DownloadService downloadService = DownloadService()
-      ..checkReleaseDate(showApk, context);
+
     // Provider.of<NotificationDataService>(context, listen: false)
     //     .huaweiMessagingConfig(context);
     Provider.of<NotificationDataService>(context, listen: false)

@@ -87,7 +87,7 @@ class _NormalUserMenuState extends State<NormalUserMenu> {
                   getTranslated(context, "انصراف مبكر")
                 ], [
                   getTranslated(context, "عارضة"),
-                  getTranslated(context, "مرضية"),
+                  getTranslated(context, "مرضى"),
                   getTranslated(context, "رصيد اجازات")
                 ]),
               ),

@@ -384,6 +384,7 @@ class ReportsData with ChangeNotifier {
 
   Future<String> getDailyReportUnitsApi(
       String userToken, int siteId, String date, BuildContext context) async {
+    print("getting report for site id $siteId");
     List<DailyReportUnit> newReportList;
 
     isLoading = true;
@@ -397,6 +398,7 @@ class ReportsData with ChangeNotifier {
         return "noInternet";
       }
     } else {
+      print(response);
       final decodedRes = json.decode(response);
 
       if (decodedRes["message"] == "Success" ||

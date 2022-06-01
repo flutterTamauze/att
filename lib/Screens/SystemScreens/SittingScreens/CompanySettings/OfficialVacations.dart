@@ -18,6 +18,7 @@ import 'package:qr_users/Core/colorManager.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 
 import 'package:qr_users/Screens/Notifications/Screen/Notifications.dart';
+import 'package:qr_users/main.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/widgets/OfficialVacations/DataTableVacationHeader.dart';
 
@@ -382,8 +383,8 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                   onTap: () {
                                                     return showDialog(
                                                         context: context,
-                                                        builder: (BuildContext
-                                                            context) {
+                                                        builder:
+                                                            (BuildContext ctx) {
                                                           return vactionProv
                                                                   .isLoading
                                                               ? const Center(
@@ -397,8 +398,9 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                               : RoundedAlert(
                                                                   onPressed:
                                                                       () async {
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                    Navigator
+                                                                        .pop(
+                                                                            ctx);
                                                                     final String msg = await vactionProv.deleteVacationById(
                                                                         Provider.of<UserData>(context, listen: false)
                                                                             .user
@@ -411,14 +413,16 @@ class _OfficialVacationState extends State<OfficialVacation> {
                                                                         "Success") {
                                                                       Fluttertoast.showToast(
                                                                           msg: getTranslated(
-                                                                              context,
+                                                                              navigatorKey
+                                                                                  .currentState.overlay.context,
                                                                               "تم الحذف بنجاح"),
                                                                           backgroundColor:
                                                                               Colors.green);
                                                                     } else {
                                                                       Fluttertoast.showToast(
                                                                           msg: getTranslated(
-                                                                              context,
+                                                                              navigatorKey
+                                                                                  .currentState.overlay.context,
                                                                               "خطأ في حذف العطلة"),
                                                                           backgroundColor:
                                                                               Colors.red);
