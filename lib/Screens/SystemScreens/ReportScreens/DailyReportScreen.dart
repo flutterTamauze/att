@@ -276,7 +276,7 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                       flex: 10,
                                       child: SiteDropdown(
                                           edit: true,
-                                          height: 40,
+                                          height: 40.h,
                                           list: Provider.of<SiteShiftsData>(
                                                   context)
                                               .siteShiftList,
@@ -311,7 +311,8 @@ class _DailyReportScreenState extends State<DailyReportScreen> {
                                       width: 5.w,
                                     ),
                                     Container(
-                                      padding: const EdgeInsets.all(6),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6.h, horizontal: 5.w),
                                       child: Theme(
                                           data: clockTheme,
                                           child: SingleDayDatePicker(

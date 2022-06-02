@@ -23,6 +23,7 @@ import 'package:qr_users/services/Reports/Widgets/attendProov.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/Reports/Services/report_data.dart';
 import 'package:qr_users/services/user_data.dart';
+import 'package:qr_users/widgets/AttendProofReport/attend_proof_date_time_picker.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
 import 'package:qr_users/widgets/DropDown.dart';
 import 'package:qr_users/widgets/Reports/DailyReport/dailyReportTableHeader.dart';
@@ -144,7 +145,7 @@ class _AttendProofReportState extends State<AttendProofReport> {
                                   borderColor: Colors.black,
                                   hint: getTranslated(context, "الموقع"),
                                   hintColor: Colors.black,
-                                  height: 90,
+                                  height: 90.h,
                                   onChange: (value) async {
                                     if (currentSiteName != value) {
                                       siteIndex = getSiteIndexBySiteName(
@@ -173,27 +174,28 @@ class _AttendProofReportState extends State<AttendProofReport> {
                           Expanded(
                             flex: 1,
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: Container(
-                                child: Theme(
-                                    data: clockTheme,
-                                    child: SingleDayDatePicker(
-                                      firstDate: comDate.com.createdOn,
-                                      lastDate: DateTime.now(),
-                                      selectedDateString: selectedDateString,
-                                      functionPicker: (value) {
-                                        if (value != date) {
-                                          date = value;
-                                          selectedDateString = date;
-                                          setState(() {
-                                            selectedDate = DateTime.parse(
-                                                selectedDateString);
-                                            showTable = false;
-                                          });
-                                        }
-                                      },
-                                    )),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 5.h,
                               ),
+                              child: Container(
+                                  child: Theme(
+                                      data: clockTheme,
+                                      child: AttendProofDatePicker(
+                                        firstDate: comDate.com.createdOn,
+                                        lastDate: DateTime.now(),
+                                        selectedDateString: selectedDateString,
+                                        functionPicker: (value) {
+                                          if (value != date) {
+                                            date = value;
+                                            selectedDateString = date;
+                                            setState(() {
+                                              selectedDate = DateTime.parse(
+                                                  selectedDateString);
+                                              showTable = false;
+                                            });
+                                          }
+                                        },
+                                      ))),
                             ),
                           ),
                         ],

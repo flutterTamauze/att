@@ -39,8 +39,6 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart'
 import 'package:qr_users/widgets/multiple_floating_buttons.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 
-import 'UserFullData.dart';
-
 class RoundedSearchBarSiteAdmin extends StatefulWidget {
   final Function searchFun;
   final Function dropdownFun;

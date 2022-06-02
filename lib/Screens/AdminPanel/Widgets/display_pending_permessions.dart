@@ -90,57 +90,52 @@ class _ExpandedPendingPermessionsState
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  width: 90,
-                                  child: AutoSizeText(
-                                    "  ${widget.userPermessions.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")}",
-                                    style: boldStyle.copyWith(
-                                        fontSize: setResponsiveFontSize(10)),
-                                    textAlign: locator
-                                            .locator<PermissionHan>()
-                                            .isEnglishLocale()
-                                        ? TextAlign.right
-                                        : TextAlign.left,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  child: AutoSizeText(
-                                    widget.userPermessions.date
-                                        .toString()
-                                        .substring(0, 11),
-                                    style: TextStyle(
-                                        fontSize: setResponsiveFontSize(11)),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                AutoSizeText(
-                                  "  ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}",
-                                  style: TextStyle(
-                                      fontSize: setResponsiveFontSize(11)),
-                                ),
-                              ],
+                          Container(
+                            width: 90.w,
+                            child: AutoSizeText(
+                              "  ${widget.userPermessions.permessionType == 1 ? getTranslated(context, "تأخير عن الحضور") : getTranslated(context, "انصراف مبكر")}",
+                              style: boldStyle.copyWith(
+                                  fontSize: setResponsiveFontSize(10)),
+                              textAlign: locator
+                                      .locator<PermissionHan>()
+                                      .isEnglishLocale()
+                                  ? TextAlign.right
+                                  : TextAlign.left,
                             ),
                           ),
-                          widget.isAdmin
-                              ? Container()
-                              : const FaIcon(
-                                  FontAwesomeIcons.hourglass,
-                                  color: Colors.orange,
-                                  size: 15,
-                                )
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Container(
+                            child: AutoSizeText(
+                              widget.userPermessions.date
+                                  .toString()
+                                  .substring(0, 11),
+                              style: TextStyle(
+                                fontSize: setResponsiveFontSize(11),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          AutoSizeText(
+                            "  ${amPmChanger(int.parse(widget.userPermessions.duration.replaceAll(":", "")))}",
+                            style:
+                                TextStyle(fontSize: setResponsiveFontSize(11)),
+                          ),
                         ],
                       ),
+                      widget.isAdmin
+                          ? Container()
+                          : const FaIcon(
+                              FontAwesomeIcons.hourglass,
+                              color: Colors.orange,
+                              size: 15,
+                            ),
                       Container(width: 3, color: Colors.orange),
                     ],
                   ),

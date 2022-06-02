@@ -8,11 +8,11 @@ import 'package:qr_users/services/user_data.dart';
 
 import '../../Core/constants.dart';
 
-class SingleDayDatePicker extends StatelessWidget {
+class AttendProofDatePicker extends StatelessWidget {
   final String selectedDateString;
   final Function functionPicker;
   final DateTime firstDate, lastDate;
-  const SingleDayDatePicker(
+  const AttendProofDatePicker(
       {this.functionPicker,
       this.selectedDateString,
       this.firstDate,
@@ -25,8 +25,8 @@ class SingleDayDatePicker extends StatelessWidget {
           : 200.w,
       child: DateTimePicker(
         style: TextStyle(
-            height: 2.5.h,
             color: Colors.black,
+            height: 2.97.h,
             fontWeight: FontWeight.w500,
             fontSize: setResponsiveFontSize(13)),
         initialValue: selectedDateString,
@@ -38,14 +38,18 @@ class SingleDayDatePicker extends StatelessWidget {
         lastDate: lastDate,
         decoration: kTextFieldDecorationTime.copyWith(
             hintStyle: TextStyle(
-              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-            ),
+                fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                height: 1),
+            contentPadding: EdgeInsets.only(top: 20.h),
             hintText: getTranslated(context, 'اليوم'),
-            suffixIcon: const Icon(
-              Icons.access_time,
-              color: Colors.orange,
+            suffixIcon: Padding(
+              padding: EdgeInsets.only(top: 30.h),
+              child: const Icon(
+                Icons.access_time,
+                color: Colors.orange,
+              ),
             )),
       ),
     );
