@@ -155,12 +155,16 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                                     .permessionDescription ==
                                                 ""
                                             ? Container()
-                                            : AutoSizeText(
-                                                "${getTranslated(context, "تفاصيل الطلب")}: ${widget.userPermessions.permessionDescription}",
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      setResponsiveFontSize(13),
-                                                  fontWeight: FontWeight.w500,
+                                            : Container(
+                                                width: 200.w,
+                                                child: AutoSizeText(
+                                                  "${getTranslated(context, "تفاصيل الطلب")}: ${widget.userPermessions.permessionDescription}",
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        setResponsiveFontSize(
+                                                            13),
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               ),
                                         widget.userPermessions

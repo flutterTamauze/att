@@ -748,7 +748,7 @@ class User {
   int userSiteId, osType;
   int userType;
   int userShiftId;
-
+  int companyID;
   DateTime createdOn, apkDate, iosBundleDate;
 
   User(
@@ -764,6 +764,7 @@ class User {
       this.name,
       this.createdOn,
       this.userJob,
+      this.companyID,
       this.email,
       this.userType,
       this.phoneNum,
@@ -784,6 +785,7 @@ class User {
       userType: json["userData"]["userType"],
       // fcmToken: json["userData"]["fcmToken"],
       // osType: json["userData"]["mobileOS"],
+      companyID: json['companyData']['id'],
       salary: json["userData"]["salary"],
       createdOn: DateTime.tryParse(json["userData"]["createdOn"]),
       // apkDate: DateTime.tryParse(json["apkDate"]["apkDate"]),

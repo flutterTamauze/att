@@ -713,7 +713,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                               if (value == Holiday.Success) {
                                                 await sendFcmMessage(
                                                   topicName:
-                                                      "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                      "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
                                                   title: "طلب أجازة",
                                                   category: "vacationRequest",
                                                   message:
@@ -855,7 +855,7 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                         if (msg == "success") {
                                                           await sendFcmMessage(
                                                             topicName:
-                                                                "attend${Provider.of<CompanyData>(context, listen: false).com.id}",
+                                                                "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
                                                             title: "طلب اذن",
                                                             category:
                                                                 "permessionRequest",
