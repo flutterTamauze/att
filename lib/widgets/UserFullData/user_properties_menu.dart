@@ -66,7 +66,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "انصراف مبكر")
                                         ], [
                                           getTranslated(context, "عارضة"),
-                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "مرضى"),
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                             )),
@@ -86,7 +86,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "انصراف مبكر")
                                         ], [
                                           getTranslated(context, "عارضة"),
-                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "مرضى"),
                                           getTranslated(context, "رصيد اجازات")
                                         ])
                                       : SiteAdminOutsideVacation(
@@ -96,7 +96,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "انصراف مبكر")
                                         ], [
                                           getTranslated(context, "عارضة"),
-                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "مرضى"),
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                             )),
@@ -115,7 +115,7 @@ class _UserPropertiesMenuState extends State<UserPropertiesMenu> {
                                           getTranslated(context, "انصراف مبكر"),
                                         ], [
                                           getTranslated(context, "عارضة"),
-                                          getTranslated(context, "مرضية"),
+                                          getTranslated(context, "مرضى"),
                                           getTranslated(context, "رصيد اجازات")
                                         ])),
                               )),
