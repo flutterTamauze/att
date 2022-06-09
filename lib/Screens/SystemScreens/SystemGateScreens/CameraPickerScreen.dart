@@ -434,6 +434,11 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                         displayToast(context,
                                                             "تم التسجيل بنجاح");
                                                         break;
+                                                      case "Success : successfully leave registered":
+                                                        displayToast(context,
+                                                            "تم تسجيل الإنصراف بنجاح");
+
+                                                        break;
                                                       case "Failed : You can't attend outside your company!":
                                                         displayErrorToast(
                                                             context,

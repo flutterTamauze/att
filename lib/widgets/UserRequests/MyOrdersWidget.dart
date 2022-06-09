@@ -100,7 +100,9 @@ class _ExpandedOrderTileState extends State<ExpandedOrderTile> {
                                 ? FontAwesomeIcons.hourglass
                                 : widget.status == 1
                                     ? FontAwesomeIcons.check
-                                    : FontAwesomeIcons.times,
+                                    : widget.status == 4
+                                        ? FontAwesomeIcons.hourglassEnd
+                                        : FontAwesomeIcons.times,
                             color: widget.status == 3
                                 ? Colors.orange
                                 : widget.status == 1

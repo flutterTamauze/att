@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_users/Core/constants.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
 import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
@@ -99,170 +100,87 @@ class _ScanPageState extends State<ScanPage> {
     );
     switch (msg) {
       case "Success : successfully registered":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "تم التسجيل بنجاح"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.black,
-            textColor: Colors.orange);
+        displayToast(context, "تم التسجيل بنجاح");
+        break;
+      case "Success : successfully leave registered":
+        displayToast(context, "تم تسجيل الإنصراف بنجاح");
+
         break;
       case "Failed : You can't attend outside your company!":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لا يمكنك التسجيل لشخص خارج شركتك"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "لا يمكنك التسجيل لشخص خارج شركتك");
+
         break;
       case "Success : already registered attend":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لقد تم تسجيل الحضور من قبل"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.black,
-            textColor: Colors.orange);
+        displayToast(context, "لقد تم تسجيل الحضور من قبل");
+
         break;
       case "Success : already registered leave":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لقد تم تسجيل الأنصراف من قبل"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.black,
-            textColor: Colors.orange);
+        displayToast(context, "لقد تم تسجيل الأنصراف من قبل");
+
         break;
       case "you can't register now during shift!":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لا يمكن التسجيل بمناوبتك الأن"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.black,
-            textColor: Colors.orange);
+        displayToast(context, "لا يمكن التسجيل بمناوبتك الأن");
+
         break;
       case "Sorry : You have an external mission today!":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لم يتم التسجيل: لديك مأمورية خارجية"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.black,
-            textColor: Colors.orange);
+        displayToast(context, "لم يتم التسجيل: لديك مأمورية خارجية");
+
         break;
 
       case "Failed : Location not found":
-        Fluttertoast.showToast(
-            msg: getTranslated(
-              context,
-              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-            ),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "خطأ فى التسجيل: برجاء التواجد بموقع العمل");
+
         break;
       case "Sorry : You have an holiday today!":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لم يتم التسجيل : اجازة شخصية"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "لم يتم التسجيل : اجازة شخصية");
+
         break;
       case "Fail : You can't register leave now":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لا يمكنك تسجيل الإنصراف الأن"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "لا يمكنك تسجيل الإنصراف الأن");
+
         break;
       case "Failed : Mac address not match":
-        Fluttertoast.showToast(
-            msg: getTranslated(context,
-                "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context,
+            "خطأ فى التسجيل: بيانات الهاتف غير صحيحة\nبرجاء التسجيل من هاتفك أو مراجعة مدير النظام");
+
         break;
       case "Fail : Using another attend method":
-        Fluttertoast.showToast(
-            msg: getTranslated(context,
-                "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(
+            context, "خطأ فى التسجيل: برجاء التسجيل بنفس طريقة تسجيل الحضور");
+
         break;
       case "Failed : Qrcode not valid":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "خطأ فى التسجيل: كود غير صحيح"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "خطأ فى التسجيل: كود غير صحيح");
+
         break;
       case "noInternet":
-        Fluttertoast.showToast(
-            msg: getTranslated(
-                context, "خطأ فى التسجيل: لا يوجد اتصال بالانترنت"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "خطأ فى التسجيل: لا يوجد اتصال بالانترنت");
+
         break;
       case "off":
-        Fluttertoast.showToast(
-            msg: getTranslated(
-                context, "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(
+            context, "خطأ فى التسجيل: عدم تفعيل الموقع الجغرافى للهاتف");
+
         break;
       case "mock":
-        Fluttertoast.showToast(
-            msg: getTranslated(
-              context,
-              "خطأ فى التسجيل: برجاء التواجد بموقع العمل",
-            ),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "خطأ فى التسجيل: برجاء التواجد بموقع العمل");
+
         break;
       case "Sorry : Today is an official vacation!":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "لم يتم التسجيل : عطلة رسمية"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "لم يتم التسجيل : عطلة رسمية");
+
         break;
       case "Success : User was not proof":
-        Fluttertoast.showToast(
-            msg: getTranslated(
-              context,
-              "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم",
-            ),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(
+            context, "خطأ فى التسجيل: لم يتم اثبات حضور المستخدم");
+
         break;
       case "Failed : Out of shift time":
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "التسجيل غير متاح الأن"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.orange,
-            textColor: Colors.black);
+        displayToast(context, "التسجيل غير متاح الأن");
+
         break;
       default:
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "خطأ فى التسجيل"),
-            gravity: ToastGravity.CENTER,
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.red,
-            textColor: Colors.black);
+        displayErrorToast(context, "خطأ فى التسجيل");
     }
     if (mounted) if (Provider.of<UserData>(context, listen: false)
             .user

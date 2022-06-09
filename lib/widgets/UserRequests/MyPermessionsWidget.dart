@@ -97,13 +97,16 @@ class _ExpandedOrderTileState extends State<ExpandedPermessionsTile> {
                                 ? FontAwesomeIcons.hourglass
                                 : widget.userPermessions.permessionStatus == 1
                                     ? FontAwesomeIcons.check
-                                    : FontAwesomeIcons.times,
+                                    : widget.userPermessions.permessionStatus ==
+                                            4
+                                        ? FontAwesomeIcons.hourglassEnd
+                                        : FontAwesomeIcons.times,
                             color: widget.userPermessions.permessionStatus == 3
                                 ? Colors.orange
                                 : widget.userPermessions.permessionStatus == 1
                                     ? Colors.green
                                     : Colors.red,
-                            size: 15,
+                            size: setResponsiveFontSize(15),
                           )
                         ],
                       ),
