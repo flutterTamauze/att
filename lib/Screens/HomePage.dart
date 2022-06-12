@@ -36,14 +36,13 @@ bool showApk = true;
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    final DownloadService downloadService = DownloadService();
-    downloadService.checkForUpdate(context);
     if (Provider.of<UserData>(context, listen: false).user.userType == 0) {
       Provider.of<NotificationDataService>(context, listen: false)
-        ..firebaseMessagingConfig(context)
-        ..tokenRefresh();
+        ..firebaseMessagingConfig();
+      // ..tokenRefresh();
     }
-
+    final DownloadService downloadService = DownloadService();
+    downloadService.checkForUpdate(context);
     // ignore: cascade_invocations
     // newVersion.showAlertIfNecessary(
     //   context: context,

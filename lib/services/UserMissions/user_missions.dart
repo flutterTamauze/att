@@ -219,7 +219,7 @@ class MissionsData with ChangeNotifier {
               " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
           userToken: fcmToken,
           topicName: "",
-          title: getTranslated(context, "تم تكليفك بمأمورية"),
+          title: "تم تكليفك بمأمورية",
         ).then((value) => Navigator.pop(context));
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {

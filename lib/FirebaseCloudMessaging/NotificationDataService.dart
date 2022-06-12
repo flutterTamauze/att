@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,17 +52,17 @@ class NotificationDataService with ChangeNotifier {
     db.readMessage(1, notificationID);
   }
 
-  tokenRefresh() {
-    firebaseMessaging.onTokenRefresh.listen((event) {
-      if (locator.locator<UserData>().user.userType == 4 ||
-          locator.locator<UserData>().user.userType == 3) {
-        firebaseMessaging
-            .subscribeToTopic("attend${locator.locator<CompanyData>().com.id}");
-        debugPrint("subscribed to topic");
-      }
-      debugPrint("token changed");
-    });
-  }
+  // tokenRefresh() {
+  //   firebaseMessaging.onTokenRefresh.listen((event) {
+  //     if (locator.locator<UserData>().user.userType == 4 ||
+  //         locator.locator<UserData>().user.userType == 3) {
+  //       firebaseMessaging
+  //           .subscribeToTopic("attend${locator.locator<CompanyData>().com.id}");
+  //       debugPrint("subscribed to topic");
+  //     }
+  //     debugPrint("token changed");
+  //   });
+  // }
 
   deleteNotification(int currentId) {
     notification.removeWhere((element) => element.id == currentId);
@@ -189,27 +191,33 @@ class NotificationDataService with ChangeNotifier {
 
   static int semaphore = 0;
   addNotificationToListAndDB(RemoteMessage event, BuildContext context) async {
-    await db
-        .insertNotification(
-            NotificationMessage(
-                category: event.data["category"],
-                dateTime: DateTime.now().toString().substring(0, 10),
-                message: event.notification.body,
-                messageSeen: 0,
-                title: event.notification.title,
-                timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
-            context)
-        // .then((value) => counter = 0)
-        .then((value) async => await addNotification(
-            event.notification.title,
-            event.notification.body,
-            DateTime.now().toString().substring(0, 10),
-            event.data["category"],
-            DateFormat('kk:mm:a').format(DateTime.now()),
-            value));
+    try {
+      log("adding notification to database");
+      await db
+          .insertNotification(
+              NotificationMessage(
+                  category: event.data["category"],
+                  dateTime: DateTime.now().toString().substring(0, 10),
+                  message: event.notification.body,
+                  messageSeen: 0,
+                  title: event.notification.title,
+                  timeOfMessage: DateFormat('kk:mm:a').format(DateTime.now())),
+              context)
+          // .then((value) => counter = 0)
+          .then((value) async => await addNotification(
+              event.notification.title,
+              event.notification.body,
+              DateTime.now().toString().substring(0, 10),
+              event.data["category"],
+              DateFormat('kk:mm:a').format(DateTime.now()),
+              value));
+    } catch (e) {
+      print(e);
+    }
   }
 
-  firebaseMessagingConfig(BuildContext context) async {
+  firebaseMessagingConfig() async {
+    final BuildContext context = navigatorKey.currentState.overlay.context;
     FirebaseMessaging.onMessage.listen((event) async {
       if (semaphore != 0) {
         return;
@@ -218,10 +226,13 @@ class NotificationDataService with ChangeNotifier {
       Future.delayed(const Duration(seconds: 1)).then((_) => semaphore = 0);
       // counter++;
       // debugPrint(counter);
+      log('revieved ${event.data['category']} notification');
       if (event.data["category"] == "internalMission") {
         debugPrint("revieved internalMission ");
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final List<String> userData = (prefs.getStringList('userData') ?? null);
+        addNotificationToListAndDB(event, context);
+        player.play("notification.mp3");
         await Provider.of<UserData>(context, listen: false)
             .loginPost(userData[0], userData[1], context, true)
             .then((value) => debugPrint('login successs'));

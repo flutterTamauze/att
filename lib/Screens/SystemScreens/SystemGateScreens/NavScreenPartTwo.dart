@@ -87,7 +87,7 @@ class _NavScreenTwoState extends State<NavScreenTwo>
     // initPlatformState();
     final notificationProv =
         Provider.of<NotificationDataService>(context, listen: false);
-    notificationProv.firebaseMessagingConfig(context);
+    notificationProv.firebaseMessagingConfig();
     // if (Provider.of<UserData>(context, listen: false).user.osType == 3) {
     //   // notificationProv.huaweiMessagingConfig(context);
 

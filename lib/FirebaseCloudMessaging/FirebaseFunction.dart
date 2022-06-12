@@ -21,6 +21,7 @@ Future<bool> sendFcmMessage(
   try {
     final String toParams = "/topics/" + topicName;
     debugPrint("user token $userToken");
+    debugPrint('title : $title');
     if (userToken == null) {
       debugPrint("sending to topic $toParams");
     }
