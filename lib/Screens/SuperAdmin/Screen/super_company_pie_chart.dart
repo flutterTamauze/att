@@ -119,8 +119,9 @@ class _SuperCompanyPieChartState extends State<SuperCompanyPieChart> {
                                         child: Center(
                                           child: AutoSizeText(
                                             userData.superCompaniesChartModel
-                                                .totalEmp
-                                                .toString(),
+                                                    .totalEmp
+                                                    .toString() ??
+                                                "",
                                             style: TextStyle(
                                                 fontSize:
                                                     setResponsiveFontSize(15),

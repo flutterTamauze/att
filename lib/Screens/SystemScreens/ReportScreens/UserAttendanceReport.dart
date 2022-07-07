@@ -44,13 +44,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../services/Reports/Services/report_data.dart';
 import 'package:intl/intl.dart';
 
+import 'LateCommersScreen.dart';
+
 class UserAttendanceReportScreen extends StatefulWidget {
   final String name, id;
+  final String reportName;
   final int siteId;
   final DateTime userFromDate, userToDate;
   // getUserReportUnits
-  UserAttendanceReportScreen(
-      {this.name, this.siteId, this.id, this.userFromDate, this.userToDate});
+  const UserAttendanceReportScreen(
+      {this.name,
+      this.siteId,
+      this.id,
+      this.userFromDate,
+      this.userToDate,
+      this.reportName});
 
   @override
   _UserAttendanceReportScreenState createState() =>
@@ -940,11 +948,17 @@ class _UserAttendanceReportScreenState
 
   Future<bool> onWillPop() {
     widget.name != ""
-        ? Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const DailyReportScreen(),
-            ))
+        ? widget.reportName == "daily report"
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DailyReportScreen(),
+                ))
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LateAbsenceScreen(),
+                ))
         : Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavScreenTwo(2)),
             (Route<dynamic> route) => false);

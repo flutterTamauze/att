@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,18 +26,20 @@ class XlsxExportButton extends StatefulWidget {
   _XlsxExportButtonState createState() => _XlsxExportButtonState();
 }
 
-var path;
+Directory path;
 
 void _getDownloadStorage() async {
   if (Platform.isIOS) {
     final Directory directory = await getApplicationDocumentsDirectory();
-    path = directory.path;
+    path = directory;
   } else if (Platform.isAndroid) {
-    path = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
+    path = Directory('/storage/emulated/0/Download');
+    // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+    // ignore: avoid_slow_async_io
+    if (!await path.exists()) path = await getExternalStorageDirectory();
   }
 
-  debugPrint(path); // /storage/emulated/0/Pictures
+  debugPrint(path.path); // /storage/emulated/0/Pictures
 }
 
 class _XlsxExportButtonState extends State<XlsxExportButton> {
@@ -87,17 +88,17 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
         case 0:
           final String freePath = await getUniqueFileName("DailyReport");
           await generateDailyReportExcel(freePath);
-          await open_file.OpenFile.open("$path/$freePath");
+          await open_file.OpenFile.open("${path.path}/$freePath");
           break;
         case 1:
           final String freePath = await getUniqueFileName("Late-AbsenceReport");
           await generateAbsenceReportExcel(freePath);
-          await open_file.OpenFile.open("$path/$freePath");
+          await open_file.OpenFile.open("${path.path}/$freePath");
           break;
         case 2:
           final String freePath = await getUniqueFileName("UserReport");
           await generateUserReportExcel(freePath);
-          await open_file.OpenFile.open("$path/$freePath");
+          await open_file.OpenFile.open("${path.path}/$freePath");
           break;
       }
     } catch (e) {
@@ -306,7 +307,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
     //Get the storage folder location using path_provider package.
 
     // final String path = directory.path;
-    final File file = File("$path/$freePath");
+    final File file = File("${path.path}/$freePath");
     await file.writeAsBytes(bytes);
 
     Fluttertoast.showToast(
@@ -515,7 +516,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       //Get the storage folder location using path_provider package.
 
       // final String path = directory.path;
-      final File file = File("$path/$freePath");
+      final File file = File("${path.path}/$freePath");
 
       debugPrint(await file.exists().toString());
       debugPrint("writing to it ");
@@ -758,7 +759,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       await file.writeAsBytes(bytes);
 
       Fluttertoast.showToast(
-          msg: "Download/$freePath",
+          msg: "Download/${path.path}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

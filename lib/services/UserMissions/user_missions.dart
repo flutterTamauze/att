@@ -168,7 +168,7 @@ class MissionsData with ChangeNotifier {
           "userId": userMissions.userId,
           "desc": userMissions.description,
         }));
-
+    print(response.body);
     isLoading = false;
     notifyListeners();
     return json.decode(response.body)["message"];
@@ -223,18 +223,12 @@ class MissionsData with ChangeNotifier {
         ).then((value) => Navigator.pop(context));
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
-        Fluttertoast.showToast(
-            msg: getTranslated(context, "تم وضع مأمورية لهذا المستخدم من قبل"),
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
+        displayErrorToast(context, "تم وضع مأمورية لهذا المستخدم من قبل");
+      } else if (msg ==
+          "Failed : There is an external mission for this user in this period!") {
+        displayErrorToast(context, 'يوجد مأمورية خارجية فى هذا اليوم');
       } else {
-        Fluttertoast.showToast(
-            msg: getTranslated(
-              context,
-              "خطأ فى اضافة المأمورية",
-            ),
-            backgroundColor: Colors.red,
-            gravity: ToastGravity.CENTER);
+        displayErrorToast(context, "خطأ فى اضافة المأمورية");
       }
     }
   }

@@ -132,7 +132,7 @@ class _ScanPageState extends State<ScanPage> {
 
         break;
       case "Sorry : You have an holiday today!":
-        displayErrorToast(context, "لم يتم التسجيل : اجازة شخصية");
+        displayToast(context, "لم يتم التسجيل : اجازة شخصية");
 
         break;
       case "Fail : You can't register leave now":

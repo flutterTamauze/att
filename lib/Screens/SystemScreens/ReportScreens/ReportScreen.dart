@@ -58,8 +58,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
           onTap: () {
             Navigator.of(context).push(
               new MaterialPageRoute(
-                builder: (context) => UserAttendanceReportScreen(
+                builder: (context) => const UserAttendanceReportScreen(
                   name: "",
+                  reportName: "attendance report",
                 ),
               ),
             );

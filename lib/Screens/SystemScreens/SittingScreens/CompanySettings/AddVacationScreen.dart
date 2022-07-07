@@ -123,7 +123,7 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                       widget.edit
                                           ? Container()
                                           : Expanded(
-                                              flex: 2,
+                                              flex: 1,
                                               child: Container(
                                                 child: TextFormField(
                                                   controller:
@@ -134,9 +134,9 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                       return getTranslated(
                                                           context, 'مطلوب');
                                                     } else {
-                                                      Pattern pattern =
+                                                      const Pattern pattern =
                                                           "\\b([1-9]|10)\\b";
-                                                      RegExp regex =
+                                                      final RegExp regex =
                                                           new RegExp(pattern);
                                                       if (!regex.hasMatch(text))
                                                         return 'يجب ان يكون العدد من 1 - 10';
@@ -149,11 +149,12 @@ class _AddVacationScreenState extends State<AddVacationScreen> {
                                                   decoration: kTextFieldDecorationTime
                                                       .copyWith(
                                                           hintStyle:
-                                                              TextStyle(),
+                                                              const TextStyle(),
                                                           hintText: getTranslated(
                                                               context,
                                                               'عدد ايام العطلة'),
-                                                          prefixIcon: Icon(
+                                                          prefixIcon:
+                                                              const Icon(
                                                             FontAwesomeIcons
                                                                 .calendar,
                                                             color:

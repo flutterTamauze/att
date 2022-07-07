@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
@@ -118,12 +119,17 @@ class _SystemScanPageState extends State<SystemScanPage> {
     bool isScanned = false;
     controller.flipCamera();
     controller.scannedDataStream.listen((scanData) async {
-      qrText = scanData;
-      if (!isScanned) {
-        isScanned = true;
-        shiftQrCode =
-            Provider.of<ShiftApi>(context, listen: false).qrShift.shiftQrCode;
-        secondPageRoute();
+      try {
+        log(scanData);
+        qrText = scanData;
+        if (!isScanned) {
+          isScanned = true;
+          shiftQrCode =
+              Provider.of<ShiftApi>(context, listen: false).qrShift.shiftQrCode;
+          secondPageRoute();
+        }
+      } catch (e) {
+        print(e);
       }
     });
   }

@@ -415,7 +415,7 @@
 "تم اضافة المستخدم بنجاح"
 :"User added Successfully",
 "تم الإضافة بنجاح"
-:"تم الإضافة بنجاح ",
+:"Added Successfully ",
 "تم تغيير الصورة بنجاح":
 "Image Uploaded Successfully",
 "تم الإرسال بنجاح"
@@ -633,5 +633,15 @@
 "جاري تحميل التحديث فى الخلفية":"Update is being downloaded in background",
 "تم التحديث بنجاح":"Update downloaded successfully",
 
-"مرحبا بعودتك":"Welcome Back" }
+"مرحبا بعودتك":"Welcome Back",
+"باستخدام chilango فإنك توافق على":"By using Chilango you agree to our" ,
+"سياسة الخصوصية":"Privacy Policy" ,
+"يجمع chilango بيانات الموقع الخاصة بك لتسجيل الحضور و الإنصراف يوميا":"Chilango collects your current location data when app is opened to record your attend / leave per day",
+"يصل Chilango إلى جهات الإتصال لديك فى حالة كنت أدمن او موارد بشرية من أجل إضافة موظف من جهة الإتصال":"Chilango access your phone contacts if you are an admin or hr in order to add an employee from your contacts",
+"يأخذ Chilango صورتك الشخصية ويستخدمها إذا كنت تسجل حضورك اليومي بطريقة البطاقة ليتم الرجوع إليها عند الحاجة في التقارير":"Chilango takes and uses your personal image if you are regestering your daily attend by card method to be referenced when needed in reports",
+"يتصل Chilango بالكاميرا لإلتقاط صورة لك عنذ إنشاء الحساب للمرة الأولى و عند مسح الكود":"Chilango access your camera to take a picture of you when account is created for first time and scan barcodes",
+"يرسل لك Chilango إشعارات عند الحاجة":"Chilango sends you notifications when needed",
+"موافق":"Agree",
+"يجب ان توافق على شروط Chilango حتى يمكنك الأستمرار":"You must agree on Chilango terms to continue using the app",
+"تمت الموافقة":"Agreed successfully"}
     

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,7 @@ class DatabaseHelper {
   Future<Database> get database async {
     if (_database == null) {
       _database = await initializedDatabase();
+      log("database intialized");
       return _database;
     }
     return _database;

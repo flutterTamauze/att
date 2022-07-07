@@ -20,6 +20,7 @@ import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTw
 import 'package:qr_users/Screens/errorscreen2.dart';
 import 'package:qr_users/Screens/loginScreen.dart';
 import 'package:qr_users/main.dart';
+import 'package:qr_users/services/Settings/settings.dart';
 // import 'package:huawei_push/huawei_push_library.dart' as hawawi;
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
@@ -61,14 +62,14 @@ class _SplashScreenState extends State<SplashScreen>
           print(e);
           isError = true;
         });
-        if (isError == false) {
-          debugPrint("topic name : ");
-          log("attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+        // if (isError == false) {
+        //   debugPrint("topic name : ");
+        //   log("attend${Provider.of<CompanyData>(context, listen: false).com.id}");
 
-          await firebaseMessaging.subscribeToTopic(
-              "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-          debugPrint("subscribed to topic");
-        }
+        //   await firebaseMessaging.subscribeToTopic(
+        //       "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+        //   debugPrint("subscribed to topic");
+        // }
       }
 
       reverse(userData[0], value);

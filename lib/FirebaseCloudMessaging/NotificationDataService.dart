@@ -193,6 +193,13 @@ class NotificationDataService with ChangeNotifier {
   addNotificationToListAndDB(RemoteMessage event, BuildContext context) async {
     try {
       log("adding notification to database");
+      print(event.data["category"]);
+      print(
+        event.notification.body,
+      );
+      print(
+        event.notification.title,
+      );
       await db
           .insertNotification(
               NotificationMessage(

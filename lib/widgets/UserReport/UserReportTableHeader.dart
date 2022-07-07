@@ -20,7 +20,7 @@ class UserReportTableHeader extends StatelessWidget {
               height: 50.h,
               child: Center(
                   child: Container(
-                height: 20,
+                height: 20.h,
                 child: AutoSizeText(
                   getTranslated(
                     context,
@@ -137,7 +137,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                       child: Container(
                           child: Center(
                               child: Container(
-                        height: 20,
+                        height: 20.h,
                         child: AutoSizeText(
                           getTranslated(context, "حضور"),
                           maxLines: 1,
@@ -155,7 +155,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                       child: Container(
                           child: Center(
                               child: Container(
-                        height: 20,
+                        height: 20.h,
                         child: AutoSizeText(
                           getTranslated(context, 'انصراف'),
                           maxLines: 1,
@@ -188,9 +188,9 @@ class SingleUserReportTableHeader extends StatelessWidget {
                       child: Container(
                           child: Center(
                               child: Container(
-                        height: 20,
+                        height: 20.h,
                         child: AutoSizeText(
-                          lateTime,
+                          lateTime ?? ' - ',
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -205,9 +205,9 @@ class SingleUserReportTableHeader extends StatelessWidget {
                       child: Container(
                           child: Center(
                               child: Container(
-                        height: 20,
+                        height: 20.h,
                         child: AutoSizeText(
-                          attendTime,
+                          attendTime ?? ' - ',
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -223,7 +223,7 @@ class SingleUserReportTableHeader extends StatelessWidget {
                       child: Container(
                           child: Center(
                               child: Container(
-                        height: 20,
+                        height: 20.h,
                         child: AutoSizeText(
                           leaveTime,
                           maxLines: 1,

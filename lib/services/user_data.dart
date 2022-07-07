@@ -135,6 +135,7 @@ class UserData with ChangeNotifier {
         token = await firebaseMessaging.getToken();
       }
     }
+    log(token);
     const rolesConstUrl =
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
     final response =
@@ -334,11 +335,11 @@ class UserData with ChangeNotifier {
 
   Future<String> attendByCard(
       {File image, String qrCode, String cardCode}) async {
-    final HuaweiServices _huawei = HuaweiServices();
-    bool isHawawi = false;
-    if (Platform.isAndroid) {
-      isHawawi = await _huawei.isHuaweiDevice();
-    }
+    // final HuaweiServices _huawei = HuaweiServices();
+    // bool isHawawi = false;
+    // if (Platform.isAndroid) {
+    //   isHawawi = await _huawei.isHuaweiDevice();
+    // }
 
     print(image.lengthSync());
     // log("image ${image.path}");
@@ -441,7 +442,7 @@ class UserData with ChangeNotifier {
           },
         );
         print(response.statusCode);
-
+        log(response.body);
         final String responseBody = response.body;
         msg = jsonDecode(responseBody)['message'];
       } else if (locationService == 1) {

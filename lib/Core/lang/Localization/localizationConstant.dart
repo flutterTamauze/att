@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_users/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'localization.dart';
@@ -17,7 +18,13 @@ Future<Locale> setLocale(String languageCode) async {
 
 Future<Locale> getLocale() async {
   final SharedPreferences _prefs = await SharedPreferences.getInstance();
-  final String languageCode = _prefs.getString(LAGUAGE_CODE) ?? "ar";
+  String languageCode = "";
+  if (_prefs.getBool('appPolicy') ?? false) {
+    languageCode = _prefs.getString(LAGUAGE_CODE) ?? "ar";
+  } else {
+    languageCode = "en";
+  }
+
   debugPrint("cached langugage is $languageCode");
   return _locale(languageCode);
 }
@@ -35,5 +42,6 @@ Locale _locale(String languageCode) {
 }
 
 String getTranslated(BuildContext context, String key) {
-  return DemoLocalization.of(context).translate(key.trim());
+  return DemoLocalization.of(navigatorKey.currentState.overlay.context)
+      .translate(key.trim());
 }

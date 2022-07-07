@@ -16,6 +16,7 @@ import 'package:qr_users/Screens/HomePage.dart';
 import 'package:qr_users/Screens/SystemScreens/SystemGateScreens/NavScreenPartTwo.dart';
 import 'package:qr_users/Screens/SystemScreens/forgetScreen.dart';
 import 'package:qr_users/Core/constants.dart';
+import 'package:qr_users/services/Settings/settings.dart';
 import 'package:qr_users/services/api.dart';
 import 'package:qr_users/services/company.dart';
 import 'package:qr_users/services/permissions_data.dart';
@@ -26,6 +27,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 import 'SuperAdmin/Screen/super_admin.dart';
@@ -48,8 +50,18 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<PermissionHan>(context, listen: false).isEnglishLocale()
             ? "En"
             : "Ar";
-
+    checkPrivacyPolicy();
     super.initState();
+  }
+
+  checkPrivacyPolicy() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    bool privacyBool = sharedPreferences.getBool('appPolicy') ?? false;
+    if (!privacyBool) {
+      Settings settings = Settings();
+      settings.displayAppPrivacyPolicy(context);
+    }
   }
 
   String languageCode;
@@ -302,6 +314,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20.h),
+                  child: Container(
+                    width: 450.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: AutoSizeText(getTranslated(
+                              context, 'باستخدام chilango فإنك توافق على')),
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            launch(
+                                'https://www.tamauzeds.com/privacypolicy.html');
+                          },
+                          child: AutoSizeText(
+                            getTranslated(context, 'سياسة الخصوصية'),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -364,21 +405,21 @@ class _LoginScreenState extends State<LoginScreen> {
         debugPrint(value.toString());
         if (value == 4 || value == 3 || userData.isSuperAdmin) {
           //subscribe admin channel
-          bool isError = false;
+          // bool isError = false;
 
-          await firebaseMessaging.getToken().catchError((e) {
-            print(e);
-            isError = true;
-          });
-          if (isError == false) {
-            try {
-              await firebaseMessaging.subscribeToTopic(
-                  "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
-              log("subscribed to topic ${Provider.of<CompanyData>(context, listen: false).com.id} ");
-            } catch (e) {
-              print(e);
-            }
-          }
+          // await firebaseMessaging.getToken().catchError((e) {
+          //   print(e);
+          //   isError = true;
+          // });
+          // if (isError == false) {
+          //   try {
+          //     await firebaseMessaging.subscribeToTopic(
+          //         "attend${Provider.of<CompanyData>(context, listen: false).com.id}");
+          //     log("subscribed to topic ${Provider.of<CompanyData>(context, listen: false).com.id} ");
+          //   } catch (e) {
+          //     print(e);
+          //   }
+          // }
         }
         if (value == NO_INTERNET) {
           return showDialog(

@@ -506,48 +506,45 @@ class MemberData with ChangeNotifier {
     BuildContext context,
     String roleName,
   ) async {
-    try {
-      final response = await http.put(
-        Uri.parse("$baseURL/api/Users/Update/${member.id}"),
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization':
-              "Bearer ${locator.locator<UserData>().user.userToken}",
+    final response = await http.put(
+      Uri.parse("$baseURL/api/Users/Update/${member.id}"),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': "Bearer ${locator.locator<UserData>().user.userToken}",
+      },
+      body: json.encode(
+        {
+          "Name": member.name,
+          "PhoneNo": member.phoneNumber,
+          "Salary": member.salary,
+          "Email": member.email,
+          "JobTitle": member.jobTitle,
+          "UserType": member.userType,
+          "ShiftId": member.shiftId,
+          "roleName": roleName == "" ? "User" : roleName
         },
-        body: json.encode(
-          {
-            "Name": member.name,
-            "PhoneNo": member.phoneNumber,
-            "Salary": member.salary,
-            "Email": member.email,
-            "JobTitle": member.jobTitle,
-            "UserType": member.userType,
-            "ShiftId": member.shiftId,
-            "roleName": roleName == "" ? "User" : roleName
-          },
-        ),
-      );
+      ),
+    );
 
-      final decodedRes = json.decode(response.body);
+    final decodedRes = json.decode(response.body);
 
-      if (decodedRes["message"] == "Success : User Updated Successfully ") {
-        membersList[id] = member;
+    if (decodedRes["message"] == "Success : User Updated Successfully ") {
+      print(membersList.length);
+      // membersList[id] = member;
 
-        final membersListId = findMemberInMembersList(member.id);
+      // final membersListId = findMemberInMembersList(member.id);
 
-        membersList[membersListId] = member;
-        membersListScreenDropDownSearch = [...membersList];
+      // membersList[membersListId] = member;
+      // membersListScreenDropDownSearch = [...membersList];
 
-        notifyListeners();
-        return "Success";
-      } else if (decodedRes["message"] == "Fail : Phone no already exist!") {
-        return "exists";
-      } else if (decodedRes["message"] == "Failed : User Not Exist") {
-        return "not exist";
-      }
-    } catch (e) {
-      print(e);
+      notifyListeners();
+      return "Success";
+    } else if (decodedRes["message"] == "Fail : Phone no already exist!") {
+      return "exists";
+    } else if (decodedRes["message"] == "Failed : User Not Exist") {
+      return "not exist";
     }
+
     return "failed";
   }
 }

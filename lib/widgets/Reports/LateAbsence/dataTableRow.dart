@@ -49,6 +49,7 @@ class DataTableRow extends StatelessWidget {
             new MaterialPageRoute(
               builder: (context) => UserAttendanceReportScreen(
                 name: userAttendanceReportUnit.userName,
+                reportName: "late report",
                 userFromDate: fromDate,
                 id: userAttendanceReportUnit.userId,
                 userToDate: toDate,

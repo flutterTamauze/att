@@ -72,7 +72,7 @@ class TakePictureScreenState extends State<CameraPicker> {
     try {
       description = await ScannerUtils.getCamera(cameraLensDirection);
       cameraController = CameraController(description,
-          Platform.isIOS ? ResolutionPreset.high : ResolutionPreset.low,
+          Platform.isIOS ? ResolutionPreset.high : ResolutionPreset.high,
           enableAudio: false);
       await cameraController.initialize();
       await cameraController.startImageStream((CameraImage image) {
@@ -98,6 +98,13 @@ class TakePictureScreenState extends State<CameraPicker> {
       });
     } catch (e) {
       log("ERROR");
+      errorToast(navigatorKey.currentState.overlay.context);
+      Navigator.pushReplacement(
+          navigatorKey.currentState.overlay.context,
+          MaterialPageRoute(
+            builder: (context) => const NavScreenTwo(1),
+          ));
+      Navigator.pop(navigatorKey.currentState.overlay.context);
       print(e);
     }
   }
@@ -134,6 +141,7 @@ class TakePictureScreenState extends State<CameraPicker> {
   @override
   void initState() {
     super.initState();
+    print('Starting camera ');
     _classifier = ClassifierQuant();
     initCamera();
   }
@@ -468,8 +476,7 @@ class TakePictureScreenState extends State<CameraPicker> {
                                                             "خطأ فى التسجيل: برجاء التواجد بموقع العمل");
                                                         break;
                                                       case "Sorry : You have an holiday today!":
-                                                        displayErrorToast(
-                                                            context,
+                                                        displayToast(context,
                                                             "لم يتم التسجيل : اجازة شخصية");
                                                         break;
                                                       case "Fail : You can't register leave now":

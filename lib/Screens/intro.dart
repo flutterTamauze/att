@@ -65,119 +65,116 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
     ];
 
     SystemChrome.setEnabledSystemUIOverlays([]);
-    return GestureDetector(
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              PageView.builder(
-                  itemCount: _pages.length,
-                  itemBuilder: (context, index) {
-                    return _pages[index];
-                  },
-                  scrollDirection: Axis.horizontal,
-                  controller: _controller,
-                  onPageChanged: _onPageChange),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _currentIndex < _pages.length - 1
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:
-                              List<Widget>.generate(_pages.length - 1, (index) {
-                            return AnimatedContainer(
-                              margin: EdgeInsets.only(bottom: 29.h),
-                              duration: const Duration(milliseconds: 100),
-                              height: 12.h,
-                              width: index == _currentIndex ? 30.w : 20.w,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: index == _currentIndex
-                                      ? Colors.black
-                                      : Colors.orange[700]),
-                            );
-                          }),
-                        )
-                      : InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Provider.of<UserData>(
-                                              context,
-                                              listen: false)
-                                          .loggedIn
-                                      ? Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userType ==
-                                              0
-                                          ? HomePage()
-                                          : const NavScreenTwo(0)
-                                      : LoginScreen(),
-                                ));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: AutoSizeText(
-                                getTranslated(
-                                  context,
-                                  "ابدأ",
-                                ),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            width: 150.w,
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            PageView.builder(
+                itemCount: _pages.length,
+                itemBuilder: (context, index) {
+                  return _pages[index];
+                },
+                scrollDirection: Axis.horizontal,
+                controller: _controller,
+                onPageChanged: _onPageChange),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _currentIndex < _pages.length - 1
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:
+                            List<Widget>.generate(_pages.length - 1, (index) {
+                          return AnimatedContainer(
+                            margin: EdgeInsets.only(bottom: 29.h),
+                            duration: const Duration(milliseconds: 100),
+                            height: 12.h,
+                            width: index == _currentIndex ? 30.w : 20.w,
                             decoration: BoxDecoration(
-                              color: Colors.orange[800],
-                              borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(5),
+                                color: index == _currentIndex
+                                    ? Colors.black
+                                    : Colors.orange[700]),
+                          );
+                        }),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Provider.of<UserData>(
+                                            context,
+                                            listen: false)
+                                        .loggedIn
+                                    ? Provider.of<UserData>(context,
+                                                    listen: false)
+                                                .user
+                                                .userType ==
+                                            0
+                                        ? HomePage()
+                                        : const NavScreenTwo(0)
+                                    : LoginScreen(),
+                              ));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: AutoSizeText(
+                              getTranslated(
+                                context,
+                                "ابدأ",
+                              ),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ),
-                  Container(
-                    height: 10,
-                  )
-                ],
-              ),
-              _currentIndex != _pages.length - 1
-                  ? Positioned(
-                      right: 20.w,
-                      top: 20.h,
-                      child: GestureDetector(
-                        onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Provider.of<UserData>(context, listen: true)
-                                          .loggedIn
-                                      ? Provider.of<UserData>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .userType ==
-                                              0
-                                          ? HomePage()
-                                          : const NavScreenTwo(0)
-                                      : LoginScreen(),
-                            )),
-                        child: Container(
-                          height: 20.h,
-                          child: AutoSizeText(
-                            getTranslated(context, "تخطى"),
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: ColorManager.primary),
+                          width: 150.w,
+                          decoration: BoxDecoration(
+                            color: Colors.orange[800],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
-                    )
-                  : Container(),
-            ],
-          ),
+                Container(
+                  height: 10,
+                )
+              ],
+            ),
+            _currentIndex != _pages.length - 1
+                ? Positioned(
+                    right: 20.w,
+                    top: 20.h,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Provider.of<UserData>(context,
+                                        listen: true)
+                                    .loggedIn
+                                ? Provider.of<UserData>(context, listen: false)
+                                            .user
+                                            .userType ==
+                                        0
+                                    ? HomePage()
+                                    : const NavScreenTwo(0)
+                                : LoginScreen(),
+                          )),
+                      child: Container(
+                        height: 20.h,
+                        child: AutoSizeText(
+                          getTranslated(context, "تخطى"),
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ColorManager.primary),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

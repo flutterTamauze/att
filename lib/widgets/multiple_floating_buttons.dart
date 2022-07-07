@@ -99,7 +99,7 @@ class MultipleFloatingButtons extends StatelessWidget {
 
                         break;
                       case "إضافة عطلة":
-                      case "Add Vacation":
+                      case "Add Holiday":
                         Navigator.push(
                             context,
                             MaterialPageRoute(

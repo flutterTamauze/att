@@ -7,8 +7,8 @@ import 'dart:convert';
 import '../../Core/constants.dart';
 
 class AttendProof {
-  String proofId;
-  String getProofId() => proofId;
+  // String proofId;
+  // String getProofId() => proofId;
   Future<String> sendAttendProof(
       String userToken, String userId, String fcmToken, String senderID) async {
     final response = await http.post(
@@ -25,7 +25,7 @@ class AttendProof {
       if (fcmToken == null) {
         return "null";
       }
-      proofId = decodedResponse["data"];
+      // proofId = decodedResponse["data"];
       if (decodedResponse["message"] ==
           "Failed : User was not present today!") {
         return "fail present";

@@ -47,7 +47,8 @@ class TodayUserReport extends StatelessWidget {
                                   : SingleUserReportTableHeader(
                                       lateTime: value.todayUserReport.lateTime
                                           .toString(),
-                                      leaveTime: value.todayUserReport.leave,
+                                      leaveTime: value.todayUserReport.leave
+                                          .toString(),
                                       attendTime: value.todayUserReport.attend,
                                     ),
                             ],

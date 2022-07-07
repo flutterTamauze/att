@@ -109,6 +109,7 @@ class _DataTableRowState extends State<DataTableRow> {
                       new MaterialPageRoute(
                         builder: (context) => UserAttendanceReportScreen(
                           name: widget.attendUnit.userName,
+                          reportName: "daily report",
                           userFromDate: fromDate,
                           userToDate: toDate,
                           id: widget.attendUnit.userId,
