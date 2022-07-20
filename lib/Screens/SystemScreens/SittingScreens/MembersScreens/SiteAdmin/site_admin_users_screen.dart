@@ -218,31 +218,31 @@ class _SiteAdminUserScreenState extends State<SiteAdminUserScreen> {
                                 case ConnectionState.waiting:
 
                                 case ConnectionState.done:
-                                  if (Provider.of<MemberData>(context)
-                                              .allPageIndex !=
-                                          1 &&
-                                      Provider.of<MemberData>(context)
-                                              .bySitePageIndex !=
-                                          1 &&
-                                      _nameController.text == "" &&
-                                      Provider.of<MemberData>(context)
-                                              .loadingShifts ==
-                                          false) {
-                                    if (Provider.of<UserData>(context)
-                                            .user
-                                            .userType !=
-                                        2) {
-                                      if (_scrollController.hasClients) {
-                                        Timer(
-                                          const Duration(milliseconds: 1),
-                                          () => _scrollController.jumpTo(
-                                              _scrollController.position
-                                                      .maxScrollExtent -
-                                                  10),
-                                        );
-                                      }
-                                    }
-                                  }
+                                  // if (Provider.of<MemberData>(context)
+                                  //             .allPageIndex !=
+                                  //         1 &&
+                                  //     Provider.of<MemberData>(context)
+                                  //             .bySitePageIndex !=
+                                  //         1 &&
+                                  //     _nameController.text == "" &&
+                                  //     Provider.of<MemberData>(context)
+                                  //             .loadingShifts ==
+                                  //         false) {
+                                  //   if (Provider.of<UserData>(context)
+                                  //           .user
+                                  //           .userType !=
+                                  //       2) {
+                                  //     if (_scrollController.hasClients) {
+                                  //       Timer(
+                                  //         const Duration(milliseconds: 1),
+                                  //         () => _scrollController.jumpTo(
+                                  //             _scrollController.position
+                                  //                     .maxScrollExtent -
+                                  //                 10),
+                                  //       );
+                                  //     }
+                                  //   }
+                                  // }
                                   return Column(
                                     children: [
                                       Container(

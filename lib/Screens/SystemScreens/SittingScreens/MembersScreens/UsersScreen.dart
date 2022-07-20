@@ -56,23 +56,6 @@ class _UsersScreenState extends State<UsersScreen> {
   AutoCompleteTextField searchTextField;
   final ScrollController _scrollController = ScrollController();
   String currentShiftName;
-  // void _onRefresh() async {
-  //   var userProvider = Provider.of<UserData>(context, listen: false);
-  //   var comProvier = Provider.of<CompanyData>(context, listen: false);
-
-  //   // monitor network fetch
-  //   debugPrint("refresh");
-  //   // if failed,use refreshFailed()
-  //   await Provider.of<MemberData>(context, listen: false).getAllCompanyMember(
-  //       Provider.of<SiteData>(context, listen: false)
-  //           .dropDownSitesList[siteIndex]
-  //           .id,
-  //       comProvier.com.id,
-  //       userProvider.user.userToken,
-  //       context,
-  //       -1);
-  //   refreshController.refreshCompleted();
-  // }
 
   @override
   void didChangeDependencies() {
@@ -313,25 +296,25 @@ class _UsersScreenState extends State<UsersScreen> {
                                           case ConnectionState.waiting:
 
                                           case ConnectionState.done:
-                                            if (memberData.allPageIndex != 1 &&
-                                                memberData.bySitePageIndex !=
-                                                    1 &&
-                                                _nameController.text == "" &&
-                                                memberData.loadingShifts ==
-                                                    false) {
-                                              if (_scrollController
-                                                  .hasClients) {
-                                                Timer(
-                                                  const Duration(
-                                                      milliseconds: 1),
-                                                  () => _scrollController
-                                                      .jumpTo(_scrollController
-                                                              .position
-                                                              .maxScrollExtent -
-                                                          10),
-                                                );
-                                              }
-                                            }
+                                            // if (memberData.allPageIndex != 1 &&
+                                            //     memberData.bySitePageIndex !=
+                                            //         1 &&
+                                            //     _nameController.text == "" &&
+                                            //     memberData.loadingShifts ==
+                                            //         false) {
+                                            //   // if (_scrollController
+                                            //   //     .hasClients) {
+                                            //   //   // Timer(
+                                            //   //   //   const Duration(
+                                            //   //   //       milliseconds: 1000),
+                                            //   //   //   () => _scrollController
+                                            //   //   //       .jumpTo(_scrollController
+                                            //   //   //               .position
+                                            //   //   //               .maxScrollExtent -
+                                            //   //   //           300),
+                                            //   //   // );
+                                            //   // }
+                                            // }
 
                                             return Column(
                                               children: [

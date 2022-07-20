@@ -40,6 +40,9 @@ class AttendProof {
       } else if (decodedResponse["message"] ==
           "Failed : You can't send attend proof for this user!") {
         return "cant send";
+      } else if (decodedResponse['message'] ==
+          'Failed : Notification was not sent') {
+        return "notification fail";
       }
     } else {
       return "fail";

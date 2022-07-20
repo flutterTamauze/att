@@ -430,15 +430,15 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                             Navigator.pop(
                                                                 context));
 
-                                                    sendFcmMessage(
-                                                      topicName: "",
-                                                      title: "أجازة",
-                                                      category: "vacation",
-                                                      userToken: widget
-                                                          .member.fcmToken,
-                                                      message:
-                                                          "تم وضع اجازة لك ",
-                                                    );
+                                                    // sendFcmMessage(
+                                                    //   topicName: "",
+                                                    //   title: "أجازة",
+                                                    //   category: "vacation",
+                                                    //   userToken: widget
+                                                    //       .member.fcmToken,
+                                                    //   message:
+                                                    //       "تم وضع اجازة لك ",
+                                                    // );
                                                   } else if (value ==
                                                       "Failed : There are external mission in this period!") {
                                                     Fluttertoast.showToast(
@@ -828,14 +828,14 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
                                                           Navigator.pop(
                                                               context));
 
-                                                  sendFcmMessage(
-                                                    topicName: "",
-                                                    userToken:
-                                                        widget.member.fcmToken,
-                                                    title: "اذن",
-                                                    category: "permession",
-                                                    message: "تم وضع اذن لك",
-                                                  );
+                                                  // sendFcmMessage(
+                                                  //   topicName: "",
+                                                  //   userToken:
+                                                  //       widget.member.fcmToken,
+                                                  //   title: "اذن",
+                                                  //   category: "permession",
+                                                  //   message: "تم وضع اذن لك",
+                                                  // );
                                                 } else if (msg ==
                                                     "external mission") {
                                                   debugPrint("external found");
@@ -893,217 +893,6 @@ class _SiteAdminOutsideVacationState extends State<SiteAdminOutsideVacation> {
             ),
           ),
         ));
-  }
-}
-
-class SitesAndMissionsWidg extends StatefulWidget {
-  final Function onchannge;
-  const SitesAndMissionsWidg({
-    this.onchannge,
-    Key key,
-    @required this.prov,
-    @required this.selectedVal,
-    @required this.list,
-  }) : super(key: key);
-
-  final SiteData prov;
-  final String selectedVal;
-  final List<Site> list;
-
-  @override
-  _SitesAndMissionsWidgState createState() => _SitesAndMissionsWidgState();
-}
-
-class _SitesAndMissionsWidgState extends State<SitesAndMissionsWidg> {
-  @override
-  Widget build(BuildContext context) {
-    int holder;
-    return Column(
-      children: [
-        VacationCardHeader(
-          header: getTranslated(
-            context,
-            "الموقع و المناوبة للمأمورية",
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Container(
-          height: 60.h,
-          child: Container(
-            child: Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Consumer<SiteShiftsData>(
-                            builder: (context, value, child) {
-                              return IgnorePointer(
-                                ignoring: widget.prov.siteValue == "كل المواقع"
-                                    ? true
-                                    : false,
-                                child: DropdownButton(
-                                    isExpanded: true,
-                                    underline: const SizedBox(),
-                                    elevation: 5,
-                                    items: value.shifts
-                                        .map(
-                                          (value) => DropdownMenuItem(
-                                              child: Container(
-                                                  height: 20.h,
-                                                  child: AutoSizeText(
-                                                    value.shiftName,
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  )),
-                                              value: value.shiftName),
-                                        )
-                                        .toList(),
-                                    onChanged: (v) async {
-                                      if (widget.selectedVal != "كل المواقع") {
-                                        final List<String> x = [];
-
-                                        value.shifts.forEach((element) {
-                                          x.add(element.shiftName);
-                                        });
-
-                                        debugPrint("on changed $v");
-                                        holder = x.indexOf(v);
-
-                                        widget.prov.setDropDownShift(holder);
-                                      }
-                                    },
-                                    hint: AutoSizeText(
-                                        getTranslated(context, "كل المناوبات")),
-                                    value: widget.prov.siteValue == "كل المواقع"
-                                        ? null
-                                        : value
-                                            .shifts[
-                                                widget.prov.dropDownShiftIndex]
-                                            .shiftName
-
-                                    // value
-                                    ),
-                              );
-                            },
-                          ),
-                          const Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.alarm,
-                  color: ColorManager.primary,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Consumer<ShiftsData>(
-                            builder: (context, value, child) {
-                              return DropdownButton(
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                elevation: 5,
-                                items: widget.list
-                                    .map((value) => DropdownMenuItem(
-                                          child: Container(
-                                            height: 20,
-                                            child: AutoSizeText(
-                                              value.name,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      12,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ),
-                                          value: value.name,
-                                        ))
-                                    .toList(),
-                                onChanged: (v) async {
-                                  widget.prov.setDropDownShift(0);
-                                  Provider.of<SiteShiftsData>(context,
-                                          listen: false)
-                                      .getShiftsList(v, false);
-                                  if (v != "كل المواقع") {
-                                    widget.prov.setDropDownIndex(widget
-                                            .prov.dropDownSitesStrings
-                                            .indexOf(v) -
-                                        1);
-                                  } else {
-                                    widget.prov.setDropDownIndex(0);
-                                  }
-                                  // await Provider.of<ShiftsData>(context,
-                                  //         listen: false)
-                                  //     .findMatchingShifts(
-                                  //         Provider.of<SiteData>(context,
-                                  //                 listen: false)
-                                  //             .sitesList[widget
-                                  //                 .prov.dropDownSitesIndex]
-                                  //             .id,
-                                  //         false);
-
-                                  widget.prov.fillCurrentShiftID(widget
-                                      .list[widget.prov.dropDownSitesIndex + 1]
-                                      .id);
-
-                                  widget.prov.setSiteValue(v);
-                                  widget.onchannge(v);
-                                },
-                                value: widget.selectedVal,
-                              );
-                            },
-                          ),
-                          const Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.location_on,
-                  color: ColorManager.primary,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
 

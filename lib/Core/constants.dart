@@ -19,7 +19,7 @@ import 'package:qr_users/widgets/roundedAlert.dart';
 
 const baseURL = "https://ChilangoBackVUT.tamauzeds.com";
 const imageUrl = "https://ChilangoBackVUT.tamauzeds.com/Resources/images/";
-const localURL = "http://10.0.0.65:8010";
+const localURL = "http://10.0.0.62:8010";
 const appLogo = "resources/image.png";
 const oldBaseUrl = "https://chilangoback.tamauzeds.com";
 // const huaweiAppId = "104665933";

@@ -234,6 +234,36 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      child: Container(
+                        width: 450.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: AutoSizeText(getTranslated(
+                                  context, 'باستخدام chilango فإنك توافق على')),
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                launch(
+                                    'https://chilangovut.tamauzeds.com/ChilangoPrivacyPolicy.html');
+                              },
+                              child: AutoSizeText(
+                                getTranslated(context, 'سياسة الخصوصية'),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 Positioned(

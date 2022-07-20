@@ -123,19 +123,22 @@ class _LateAbsenceScreenState extends State<LateAbsenceScreen> {
 
   loadProgressIndicator() {
     percent = 0;
-    timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
-      if (Provider.of<ReportsData>(context, listen: false).isLoading == false) {
-        setState(() {
-          percent = 300;
-        });
-      }
-      setState(() {
-        percent += 3;
-        if (percent >= 295) {
-          timer.cancel();
+    if (mounted) {
+      timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
+        if (Provider.of<ReportsData>(context, listen: false).isLoading ==
+            false) {
+          setState(() {
+            percent = 300;
+          });
         }
+        setState(() {
+          percent += 3;
+          if (percent >= 295) {
+            timer.cancel();
+          }
+        });
       });
-    });
+    }
   }
 
   getData(int siteIndex) async {

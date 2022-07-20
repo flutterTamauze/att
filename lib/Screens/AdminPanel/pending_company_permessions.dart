@@ -218,15 +218,15 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                         setKeyNotify();
                                                         if (msg ==
                                                             "Success : User Updated!") {
-                                                          await sendFcmMessage(
-                                                              category:
-                                                                  "permession",
-                                                              topicName: "",
-                                                              userToken: pending
-                                                                  .fcmToken,
-                                                              title: "طلب اذن",
-                                                              message:
-                                                                  "تم رفض طلب الأذن");
+                                                          // await sendFcmMessage(
+                                                          //     category:
+                                                          //         "permession",
+                                                          //     topicName: "",
+                                                          //     userToken: pending
+                                                          //         .fcmToken,
+                                                          //     title: "طلب اذن",
+                                                          //     message:
+                                                          //         "تم رفض طلب الأذن");
 
                                                           Fluttertoast.showToast(
                                                               msg: getTranslated(
@@ -299,17 +299,17 @@ class _PendingCompanyPermessionsState extends State<PendingCompanyPermessions> {
                                                     setKeyNotify();
                                                     if (msg ==
                                                         "Success : User Updated!") {
-                                                      {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "permession",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اذن",
-                                                            message:
-                                                                "تم الموافقة على طلب الأذن");
-                                                      }
+                                                      // {
+                                                      //   await sendFcmMessage(
+                                                      //       category:
+                                                      //           "permession",
+                                                      //       topicName: "",
+                                                      //       userToken: pending
+                                                      //           .fcmToken,
+                                                      //       title: "طلب اذن",
+                                                      //       message:
+                                                      //           "تم الموافقة على طلب الأذن");
+                                                      // }
 
                                                       Fluttertoast.showToast(
                                                           msg: getTranslated(

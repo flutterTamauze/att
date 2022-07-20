@@ -82,7 +82,8 @@ enum Holiday {
   Internal_Mission_InThis_Period,
   Permession_InThis_Period,
   Another_Holiday_NOT_APPROVED,
-  Failed
+  Failed,
+  USER_ALREADY_ATTENDED
 }
 
 class UserHolidaysData with ChangeNotifier {
@@ -353,7 +354,7 @@ class UserHolidaysData with ChangeNotifier {
       UserHolidays holiday, String userToken, String userId) async {
     isLoading = true;
     notifyListeners();
-    log(DateTime.now().toIso8601String());
+
     log(holiday.fromDate.toIso8601String());
     log(holiday.toDate.toIso8601String());
     final response = await http.post(
@@ -375,6 +376,7 @@ class UserHolidaysData with ChangeNotifier {
     notifyListeners();
     debugPrint("adding holiday");
     final decodedMessage = json.decode(response.body)["message"];
+    log(decodedMessage);
     switch (decodedMessage) {
       case "Success : Holiday Created!":
         return Holiday.Success;
@@ -393,6 +395,9 @@ class UserHolidaysData with ChangeNotifier {
         break;
       case "Failed : There are an permission in this period!":
         return Holiday.Permession_InThis_Period;
+        break;
+      case "Failed : User Already attended!":
+        return Holiday.USER_ALREADY_ATTENDED;
         break;
 
       default:
@@ -419,16 +424,7 @@ class UserHolidaysData with ChangeNotifier {
             msg: getTranslated(context, "تم الإضافة بنجاح"),
             backgroundColor: Colors.green,
             gravity: ToastGravity.CENTER);
-        await sendFcmMessage(
-            category: "externalMission",
-            message:
-                "${getTranslated(context, "تم تسجيل مأمورية خارجية لك")} \n ${getTranslated(context, "من")} ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)})",
-            userToken: fcmToken,
-            topicName: "",
-            title: getTranslated(
-              context,
-              "تم تكليفك بمأمورية",
-            )).then((value) => Navigator.pop(context));
+        Navigator.pop(context);
       } else if (msg == "Failed : There are external mission in this period!") {
         Fluttertoast.showToast(
             msg: getTranslated(

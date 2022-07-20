@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +27,7 @@ import 'package:qr_users/services/UserPermessions/user_permessions.dart';
 import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
+import 'package:qr_users/widgets/CompanyMissions/sites_missions.dart';
 import 'package:qr_users/widgets/UserFullData/user_floating_button_permVacations.dart';
 import 'package:qr_users/widgets/headers.dart';
 import 'package:qr_users/widgets/roundedButton.dart';
@@ -500,15 +503,21 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                             Navigator.pop(
                                                                 context));
 
-                                                    await sendFcmMessage(
-                                                      topicName: "",
-                                                      title: "أجازة",
-                                                      category: "vacation",
-                                                      userToken: widget
-                                                          .member.fcmToken,
-                                                      message:
-                                                          "تم وضع اجازة لك ",
-                                                    );
+                                                    // await sendFcmMessage(
+                                                    //   topicName: "",
+                                                    //   title: "أجازة",
+                                                    //   category: "vacation",
+                                                    //   userToken: widget
+                                                    //       .member.fcmToken,
+                                                    //   message:
+                                                    //       "تم وضع اجازة لك ",
+                                                    // );
+
+                                                  } else if (value ==
+                                                      Holiday
+                                                          .USER_ALREADY_ATTENDED) {
+                                                    displayErrorToast(context,
+                                                        "لا يمكن وضع الأجازة : تم الحضور");
                                                   } else if (value ==
                                                       Holiday
                                                           .External_Mission_InThis_Period) {
@@ -1128,62 +1137,40 @@ class _OutsideVacationState extends State<OutsideVacation> {
                                                               Navigator.pop(
                                                                   context));
                                                       {
-                                                        sendFcmMessage(
-                                                          topicName: "",
-                                                          userToken: widget
-                                                              .member.fcmToken,
-                                                          title: "اذن",
-                                                          category:
-                                                              "permession",
-                                                          message:
-                                                              "تم وضع اذن لك",
-                                                        );
+                                                        // sendFcmMessage(
+                                                        //   topicName: "",
+                                                        //   userToken: widget
+                                                        //       .member.fcmToken,
+                                                        //   title: "اذن",
+                                                        //   category:
+                                                        //       "permession",
+                                                        //   message:
+                                                        //       "تم وضع اذن لك",
+                                                        // );
                                                       }
                                                     } else if (msg ==
+                                                        "holiday") {
+                                                      displayErrorToast(context,
+                                                          'يوجد اجازة فى هذا اليوم');
+                                                    } else if (msg ==
                                                         "external mission") {
-                                                      debugPrint(
-                                                          "external found");
-                                                      Fluttertoast.showToast(
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "يوجد مأمورية خارجية فى هذا اليوم"));
+                                                      displayErrorToast(context,
+                                                          "يوجد مأمورية خارجية فى هذا اليوم");
                                                     } else if (msg ==
                                                         'already exist') {
-                                                      Fluttertoast.showToast(
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "لقد تم تقديم طلب من قبل"));
+                                                      displayErrorToast(context,
+                                                          "لقد تم تقديم طلب من قبل");
                                                     } else if (msg ==
                                                         "failed") {
                                                       errorToast(context);
                                                     } else if (msg ==
                                                         "dublicate permession") {
-                                                      Fluttertoast.showToast(
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          msg: getTranslated(
-                                                              context,
-                                                              "يوجد اذن فى هذا اليوم"));
+                                                      displayErrorToast(context,
+                                                          "يوجد اذن فى هذا اليوم");
                                                     }
                                                   } else {
-                                                    Fluttertoast.showToast(
-                                                        gravity:
-                                                            ToastGravity.CENTER,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        msg: getTranslated(
-                                                            context,
-                                                            "قم بأدخال البيانات المطلوبة"));
+                                                    displayErrorToast(context,
+                                                        "قم بأدخال البيانات المطلوبة");
                                                   }
                                                 },
                                                 title: getTranslated(

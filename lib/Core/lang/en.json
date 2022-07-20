@@ -643,5 +643,8 @@
 "يرسل لك Chilango إشعارات عند الحاجة":"Chilango sends you notifications when needed",
 "موافق":"Agree",
 "يجب ان توافق على شروط Chilango حتى يمكنك الأستمرار":"You must agree on Chilango terms to continue using the app",
-"تمت الموافقة":"Agreed successfully"}
+"خطأ : لم يتم إرسال اثبات الحضور":"Fail : Attend proof was not sent please try again later",
+"تمت الموافقة":"Agreed successfully",
+"لا يمكن وضع الأجازة : تم الحضور":"Fail : already attended"
+}
     

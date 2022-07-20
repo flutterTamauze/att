@@ -225,7 +225,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                     supportedLocales: [
                       const Locale('en', 'US'),
-                      const Locale('ar', 'SA')
+                      const Locale('ar', 'SA'),
                     ],
                     localeResolutionCallback: (locale, supportedLocales) {
                       for (var supportedLocale in supportedLocales) {

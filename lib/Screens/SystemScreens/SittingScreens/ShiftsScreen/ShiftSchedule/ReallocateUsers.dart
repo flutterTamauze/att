@@ -685,13 +685,13 @@ class _ReAllocateUsersState extends State<ReAllocateUsers> {
                                                   _toDate,
                                                   widget.member.siteId);
                                       if (msg == "Success") {
-                                        await sendFcmMessage(
-                                          topicName: "",
-                                          title: "جدولة مناوبة",
-                                          category: "schedule",
-                                          userToken: widget.member.fcmToken,
-                                          message: "تم وضع جدولة مناوبات لك ",
-                                        );
+                                        // await sendFcmMessage(
+                                        //   topicName: "",
+                                        //   title: "جدولة مناوبة",
+                                        //   category: "schedule",
+                                        //   userToken: widget.member.fcmToken,
+                                        //   message: "تم وضع جدولة مناوبات لك ",
+                                        // );
 
                                         Fluttertoast.showToast(
                                             msg: getTranslated(

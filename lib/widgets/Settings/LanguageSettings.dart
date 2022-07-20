@@ -45,8 +45,8 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
-            height: 100,
-            width: 10,
+            height: 100.h,
+            width: 10.w,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

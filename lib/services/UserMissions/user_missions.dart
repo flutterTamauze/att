@@ -213,20 +213,24 @@ class MissionsData with ChangeNotifier {
             gravity: ToastGravity.CENTER);
         // final HuaweiServices _huawei = HuaweiServices();
 
-        sendFcmMessage(
-          category: "internalMission",
-          message:
-              " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
-          userToken: fcmToken,
-          topicName: "",
-          title: "تم تكليفك بمأمورية",
-        ).then((value) => Navigator.pop(context));
+        // sendFcmMessage(
+        //   category: "internalMission",
+        //   message:
+        //       " تم تسجيل مأمورية داخلية لك \n الى ( $sitename - $shiftName )\n من ( ${fromDate.toString().substring(0, 11)} - ${toDate.toString().substring(0, 11)} )",
+        //   userToken: fcmToken,
+        //   topicName: "",
+        //   title: "تم تكليفك بمأمورية",
+        // )
+        Navigator.pop(context);
       } else if (msg ==
           "Failed : Another InternalMission not approved for this user!") {
         displayErrorToast(context, "تم وضع مأمورية لهذا المستخدم من قبل");
       } else if (msg ==
           "Failed : There is an external mission for this user in this period!") {
         displayErrorToast(context, 'يوجد مأمورية خارجية فى هذا اليوم');
+      } else if (msg ==
+          'Failed : There are an internal mission in this period!') {
+        displayErrorToast(context, 'يوجد مأمورية داخلية فى هذا التاريخ');
       } else {
         displayErrorToast(context, "خطأ فى اضافة المأمورية");
       }

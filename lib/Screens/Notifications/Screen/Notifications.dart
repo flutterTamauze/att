@@ -103,7 +103,8 @@ class NotificationItem extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => UserOrdersView(
-                                          selectedOrder: "الأجازات",
+                                          selectedOrder: getTranslated(
+                                              context, "الأجازات"),
                                           ordersList: [
                                             getTranslated(context, "الأجازات"),
                                             getTranslated(context, "الأذونات")
@@ -137,9 +138,9 @@ class NotificationItem extends StatelessWidget {
                               case "permession":
                                 {
                                   Navigator.pop(context);
-                                  final userProvider = Provider.of<UserData>(
-                                      context,
-                                      listen: false);
+                                  final userProvider =
+                                      await Provider.of<UserData>(context,
+                                          listen: false);
                                   Provider.of<UserPermessionsData>(context,
                                           listen: false)
                                       .getFutureSinglePermession(
@@ -149,7 +150,8 @@ class NotificationItem extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => UserOrdersView(
-                                          selectedOrder: "الأذونات",
+                                          selectedOrder: getTranslated(
+                                              context, "الأذونات"),
                                           ordersList: [
                                             getTranslated(context, "الأجازات"),
                                             getTranslated(context, "الأذونات")

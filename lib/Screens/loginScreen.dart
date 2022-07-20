@@ -266,45 +266,39 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(
                                     height: 15.h,
                                   ),
-                                  showLocalizationButton
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  showLocalizationButton =
-                                                      false;
-                                                });
-                                              },
-                                              child: AutoSizeText(
-                                                getTranslated(
-                                                    context, "تغير اللغة"),
-                                                style: boldStyle.copyWith(
-                                                    fontSize:
-                                                        setResponsiveFontSize(
-                                                            14)),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            const Icon(FontAwesomeIcons.globe),
-                                          ],
-                                        )
-                                      : ChangeLanguage(
-                                          callBackFun: () {
-                                            setState(() {
-                                              showLocalizationButton = true;
-                                            });
-                                          },
-                                          locale: Provider.of<PermissionHan>(
-                                                      context,
-                                                      listen: false)
-                                                  .isEnglishLocale()
-                                              ? "En"
-                                              : "Ar")
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return ChangeLanguage(
+                                                  callBackFun: () {},
+                                                  locale:
+                                                      Provider.of<PermissionHan>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isEnglishLocale()
+                                                          ? "En"
+                                                          : "Ar");
+                                            },
+                                          );
+                                        },
+                                        child: AutoSizeText(
+                                          getTranslated(context, "تغير اللغة"),
+                                          style: boldStyle.copyWith(
+                                              fontSize:
+                                                  setResponsiveFontSize(14)),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      const Icon(FontAwesomeIcons.globe),
+                                    ],
+                                  )
                                 ],
                               ),
                             ],
@@ -332,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         InkWell(
                           onTap: () {
                             launch(
-                                'https://www.tamauzeds.com/privacypolicy.html');
+                                'https://chilangovut.tamauzeds.com/ChilangoPrivacyPolicy.html');
                           },
                           child: AutoSizeText(
                             getTranslated(context, 'سياسة الخصوصية'),
@@ -354,8 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
   chechPermissions() async {
     debugPrint("CHECKING PERMESSION");
     if (_loginFormKey.currentState.validate()) {
-      if (await Permission.location.isGranted &&
-          await Permission.camera.isGranted) {
+      if (await Permission.location.isGranted) {
         loginFunction();
       } else {
         showModalBottomSheet(

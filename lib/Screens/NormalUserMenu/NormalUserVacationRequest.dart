@@ -711,14 +711,14 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                     userdata.id)
                                                 .then((value) async {
                                               if (value == Holiday.Success) {
-                                                await sendFcmMessage(
-                                                  topicName:
-                                                      "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
-                                                  title: "طلب أجازة",
-                                                  category: "vacationRequest",
-                                                  message:
-                                                      " تم طلب اجازة من قبل المستخدم  ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                );
+                                                // await sendFcmMessage(
+                                                //   topicName:
+                                                //       "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
+                                                //   title: "طلب أجازة",
+                                                //   category: "vacationRequest",
+                                                //   message:
+                                                //       " تم طلب اجازة من قبل المستخدم  ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                // );
                                                 return showDialog(
                                                   context: context,
                                                   builder: (context) {
@@ -746,65 +746,34 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                   Holiday
                                                       .Internal_Mission_InThis_Period) {
                                                 {
-                                                  Fluttertoast.showToast(
-                                                      toastLength:
-                                                          Toast.LENGTH_LONG,
-                                                      msg: getTranslated(
-                                                          context,
-                                                          "لا يمكن طلب الاجازة : يوجد مأمورية خارجية"),
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      backgroundColor:
-                                                          Colors.red);
+                                                  displayErrorToast(context,
+                                                      "لا يمكن طلب الاجازة : يوجد مأمورية خارجية");
                                                 }
                                               } else if (value ==
                                                   Holiday
+                                                      .USER_ALREADY_ATTENDED) {
+                                                displayErrorToast(context,
+                                                    "لا يمكن وضع الأجازة : تم الحضور");
+                                              } else if (value ==
+                                                  Holiday
                                                       .Another_Holiday_NOT_APPROVED) {
-                                                Fluttertoast.showToast(
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    msg: getTranslated(context,
-                                                        "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة"),
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                displayErrorToast(context,
+                                                    "يوجد اجازة لم يتم الموافقة عليها فى هذه الفترة");
                                               } else if (value ==
                                                   Holiday
                                                       .Holiday_Approved_InThis_Period) {
-                                                Fluttertoast.showToast(
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    msg: getTranslated(context,
-                                                        "يوجد اجازة تم الموافقة عليها فى هذه الفترة"),
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                displayErrorToast(context,
+                                                    "يوجد اجازة تم الموافقة عليها فى هذه الفترة");
                                               } else if (value ==
                                                   Holiday
                                                       .Internal_Mission_InThis_Period) {
-                                                Fluttertoast.showToast(
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    msg: getTranslated(context,
-                                                        "لا يمكن طلب الاجازة : يوجد مأمورية داخلية"),
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                displayErrorToast(context,
+                                                    "لا يمكن طلب الاجازة : يوجد مأمورية داخلية");
                                               } else if (value ==
                                                   Holiday
                                                       .Permession_InThis_Period) {
-                                                Fluttertoast.showToast(
-                                                    toastLength:
-                                                        Toast.LENGTH_LONG,
-                                                    msg: getTranslated(context,
-                                                        "لا يمكن طلب الاجازة : يوجد طلب اذن"),
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    backgroundColor:
-                                                        Colors.red);
+                                                displayErrorToast(context,
+                                                    "لا يمكن طلب الاجازة : يوجد طلب اذن");
                                               } else {
                                                 errorToast(context);
                                               }
@@ -853,15 +822,15 @@ class _UserVacationRequestState extends State<UserVacationRequest> {
                                                                 .userToken,
                                                             userdata.id);
                                                         if (msg == "success") {
-                                                          await sendFcmMessage(
-                                                            topicName:
-                                                                "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
-                                                            title: "طلب اذن",
-                                                            category:
-                                                                "permessionRequest",
-                                                            message:
-                                                                "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
-                                                          );
+                                                          // await sendFcmMessage(
+                                                          //   topicName:
+                                                          //       "attend${Provider.of<UserData>(context, listen: false).user.companyID}",
+                                                          //   title: "طلب اذن",
+                                                          //   category:
+                                                          //       "permessionRequest",
+                                                          //   message:
+                                                          //       "تم طلب اذن من قبل المستخدم ${Provider.of<UserData>(context, listen: false).user.name}",
+                                                          // );
                                                           return showDialog(
                                                             context: context,
                                                             builder: (context) {

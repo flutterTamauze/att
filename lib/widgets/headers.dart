@@ -1220,25 +1220,15 @@ class NewHeader extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfileScreen(),
-                                          ));
-                                    },
-                                    child: Container(
-                                      height: 30.h,
-                                      child: AutoSizeText(
-                                        cachedUserData[0],
-                                        textAlign: TextAlign.left,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: ColorManager.primary,
-                                          fontSize: setResponsiveFontSize(17),
-                                        ),
+                                  Container(
+                                    height: 30.h,
+                                    child: AutoSizeText(
+                                      cachedUserData[0],
+                                      textAlign: TextAlign.left,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: ColorManager.primary,
+                                        fontSize: setResponsiveFontSize(17),
                                       ),
                                     ),
                                   ),
@@ -1259,55 +1249,49 @@ class NewHeader extends StatelessWidget {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 30,
-                              child: Container(
-                                height: 75.h,
-                                width: 70.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1,
-                                    color: ColorManager.primary,
-                                  ),
-                                  // image: DecorationImage(
-                                  //   image: headerImage,
-                                  //   fit: BoxFit.fill,
-                                  // ),
-                                  shape: BoxShape.circle,
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 30.w,
+                            child: Container(
+                              height: 75.h,
+                              width: 70.w,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: ColorManager.primary,
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(75.0),
-                                  child: CachedNetworkImage(
-                                    httpHeaders: {
-                                      "Authorization": "Bearer " +
-                                          Provider.of<UserData>(context,
-                                                  listen: false)
-                                              .user
-                                              .userToken
-                                    },
-                                    imageUrl: cachedUserData[2],
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Platform
-                                            .isIOS
-                                        ? const CupertinoActivityIndicator(
-                                            radius: 20,
-                                          )
-                                        : const CircularProgressIndicator(
-                                            backgroundColor: Colors.white,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.orange),
-                                          ),
-                                    errorWidget: (context, url, error) =>
+                                // image: DecorationImage(
+                                //   image: headerImage,
+                                //   fit: BoxFit.fill,
+                                // ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(75.0),
+                                child: CachedNetworkImage(
+                                  httpHeaders: {
+                                    "Authorization": "Bearer " +
                                         Provider.of<UserData>(context,
-                                                listen: true)
-                                            .changedWidget,
-                                  ),
+                                                listen: false)
+                                            .user
+                                            .userToken
+                                  },
+                                  imageUrl: cachedUserData[2],
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Platform.isIOS
+                                      ? const CupertinoActivityIndicator(
+                                          radius: 20,
+                                        )
+                                      : const CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.orange),
+                                        ),
+                                  errorWidget: (context, url, error) =>
+                                      Provider.of<UserData>(context,
+                                              listen: true)
+                                          .changedWidget,
                                 ),
                               ),
                             ),
@@ -1315,62 +1299,6 @@ class NewHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Positioned(
-                        left: 0,
-                        top: 8.w,
-                        child: GestureDetector(
-                          onTap: () {
-                            Scaffold.of(context).openEndDrawer();
-                          },
-                          child: Consumer<NotificationDataService>(
-                            builder: (context, value, child) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(3),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: const Color(0xffFF7E00)
-                                                .withOpacity(0.9),
-                                          ),
-                                          child: const Icon(
-                                            Icons.notification_important,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  value.getUnSeenNotifications() == 0
-                                      ? Container()
-                                      : Positioned(
-                                          right: 0,
-                                          bottom: 0,
-                                          child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.red,
-                                              ),
-                                              child: AutoSizeText(
-                                                value
-                                                    .getUnSeenNotifications()
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize:
-                                                        setResponsiveFontSize(
-                                                            11)),
-                                              )),
-                                        )
-                                ],
-                              );
-                            },
-                          ),
-                        ))
                   ],
                 ))
             : Positioned(
@@ -1483,62 +1411,6 @@ class NewHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Positioned(
-                        right: 0,
-                        top: 8.w,
-                        child: GestureDetector(
-                          onTap: () {
-                            Scaffold.of(context).openEndDrawer();
-                          },
-                          child: Consumer<NotificationDataService>(
-                            builder: (context, value, child) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(3),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: const Color(0xffFF7E00)
-                                                .withOpacity(0.9),
-                                          ),
-                                          child: const Icon(
-                                            Icons.notification_important,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  value.getUnSeenNotifications() == 0
-                                      ? Container()
-                                      : Positioned(
-                                          right: 0,
-                                          bottom: 0,
-                                          child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.red,
-                                              ),
-                                              child: AutoSizeText(
-                                                value
-                                                    .getUnSeenNotifications()
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize:
-                                                        setResponsiveFontSize(
-                                                            11)),
-                                              )),
-                                        )
-                                ],
-                              );
-                            },
-                          ),
-                        ))
                   ],
                 )),
         if (!locator.locator<PermissionHan>().isEnglishLocale()) ...[

@@ -975,6 +975,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                 padding: const EdgeInsets.all(15),
                                 child: InkWell(
                                   onTap: () async {
+                                    if (!await FlutterContactPicker
+                                        .hasPermission()) {
+                                      await FlutterContactPicker
+                                          .requestPermission();
+                                    }
                                     final PhoneContact contact =
                                         await FlutterContactPicker
                                                 .pickPhoneContact()

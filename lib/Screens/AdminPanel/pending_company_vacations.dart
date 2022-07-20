@@ -207,15 +207,15 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       setKeyNotify();
                                                       if (msg ==
                                                           "Success : Updated!") {
-                                                        await sendFcmMessage(
-                                                            category:
-                                                                "vacation",
-                                                            topicName: "",
-                                                            userToken: pending
-                                                                .fcmToken,
-                                                            title: "طلب اجازة",
-                                                            message:
-                                                                "تم الموافقة على طلب الأجازة");
+                                                        // await sendFcmMessage(
+                                                        //     category:
+                                                        //         "vacation",
+                                                        //     topicName: "",
+                                                        //     userToken: pending
+                                                        //         .fcmToken,
+                                                        //     title: "طلب اجازة",
+                                                        //     message:
+                                                        //         "تم الموافقة على طلب الأجازة");
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(
@@ -300,18 +300,18 @@ class _PendingCompanyVacationsState extends State<PendingCompanyVacations> {
                                                       setKeyNotify();
                                                       if (msg ==
                                                           "Success : Updated!") {
-                                                        if (mounted) {
-                                                          await sendFcmMessage(
-                                                              category:
-                                                                  "vacation",
-                                                              topicName: "",
-                                                              userToken: pending
-                                                                  .fcmToken,
-                                                              title:
-                                                                  "طلب اجازة",
-                                                              message:
-                                                                  "تم رفض طلب الأجازة");
-                                                        }
+                                                        // if (mounted) {
+                                                        //   await sendFcmMessage(
+                                                        //       category:
+                                                        //           "vacation",
+                                                        //       topicName: "",
+                                                        //       userToken: pending
+                                                        //           .fcmToken,
+                                                        //       title:
+                                                        //           "طلب اجازة",
+                                                        //       message:
+                                                        //           "تم رفض طلب الأجازة");
+                                                        // }
 
                                                         Fluttertoast.showToast(
                                                             msg: getTranslated(

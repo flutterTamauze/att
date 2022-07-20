@@ -8,8 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_users/Core/lang/Localization/localizationConstant.dart';
-import 'package:qr_users/FirebaseCloudMessaging/FirebaseFunction.dart';
-import 'package:qr_users/Network/networkInfo.dart';
+
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/OutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/CompanySettings/SiteAdminOutsideVacation.dart';
 import 'package:qr_users/Screens/SystemScreens/SittingScreens/MembersScreens/UserFullData.dart';
@@ -19,7 +18,6 @@ import 'package:qr_users/services/AllSiteShiftsData/site_shifts_all.dart';
 import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dart';
 import 'package:qr_users/services/AttendProof/attend_proof.dart';
 import 'package:qr_users/services/DaysOff.dart';
-import 'package:qr_users/services/HuaweiServices/huaweiService.dart';
 import 'package:qr_users/services/MemberData/MemberData.dart';
 import 'package:qr_users/services/Shift.dart';
 import 'package:qr_users/services/ShiftsData.dart';
@@ -31,8 +29,6 @@ import 'package:qr_users/services/user_data.dart';
 import 'package:qr_users/widgets/RoundedAlert.dart';
 import 'package:qr_users/widgets/UserFullData/assignTaskToUser.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../main.dart';
 
 class UserProperties extends StatefulWidget {
   final Member user;
@@ -123,7 +119,7 @@ class _UserPropertiesState extends State<UserProperties> {
       child: Container(
         // decoration: BoxDecoration(
         //     border: Border.all(width: 2, color: Colors.orange[600])),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: StatefulBuilder(
           builder: (context, setState) {
             return Column(
@@ -161,7 +157,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                       getTranslated(context, "رصيد اجازات")
                                     ])),
                           )),
-                Divider(),
+                const Divider(),
                 userDataProvider.userType == 4
                     ? AssignTaskToUser(
                         function: () {
@@ -220,7 +216,7 @@ class _UserPropertiesState extends State<UserProperties> {
                             getTranslated(context, "اعادة ضبط هاتف المستخدم"),
                       )
                     : Container(),
-                userDataProvider.userType == 4 ? Divider() : Container(),
+                userDataProvider.userType == 4 ? const Divider() : Container(),
                 userDataProvider.userType == 4
                     ? Padding(
                         padding: const EdgeInsets.only(right: 3),
@@ -241,7 +237,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                 width: 20.w,
                                 height: 20.h,
                                 child: Pulse(
-                                  duration: Duration(milliseconds: 800),
+                                  duration: const Duration(milliseconds: 800),
                                   child: Checkbox(
                                     checkColor: Colors.white,
                                     activeColor: Colors.orange,
@@ -270,7 +266,7 @@ class _UserPropertiesState extends State<UserProperties> {
                         ),
                       )
                     : Container(),
-                userDataProvider.userType == 4 ? Divider() : Container(),
+                userDataProvider.userType == 4 ? const Divider() : Container(),
                 userDataProvider.userType == 4
                     ? Padding(
                         padding: const EdgeInsets.only(right: 3),
@@ -288,7 +284,7 @@ class _UserPropertiesState extends State<UserProperties> {
                                 width: 20.w,
                                 height: 20.h,
                                 child: Pulse(
-                                  duration: Duration(milliseconds: 800),
+                                  duration: const Duration(milliseconds: 800),
                                   child: Checkbox(
                                     checkColor: Colors.white,
                                     activeColor: Colors.orange,
@@ -317,7 +313,7 @@ class _UserPropertiesState extends State<UserProperties> {
                         ),
                       )
                     : Container(),
-                userDataProvider.userType == 4 ? Divider() : Container(),
+                userDataProvider.userType == 4 ? const Divider() : Container(),
                 userDataProvider.userType == 4 || userDataProvider.userType == 2
                     ? AssignTaskToUser(
                         taskName: getTranslated(context, "جدولة المناوبات"),
@@ -485,7 +481,7 @@ class _UserPropertiesState extends State<UserProperties> {
                           }
                         })
                     : Container(),
-                Divider(),
+                const Divider(),
                 userDataProvider.userType != 2
                     ? AssignTaskToUser(
                         taskName: getTranslated(
@@ -511,48 +507,49 @@ class _UserPropertiesState extends State<UserProperties> {
                             print(value);
                             switch (value) {
                               case "success":
-                                sendFcmMessage(
-                                        topicName: "",
-                                        userToken: widget.user.fcmToken,
-                                        title: "اثبات حضور",
-                                        category: "attend",
-                                        message: "برجاء اثبات حضورك الأن")
-                                    .then((value) {
-                                  debugPrint("send value $value".toString());
-                                  if (value) {
-                                    Fluttertoast.showToast(
-                                        msg: getTranslated(
-                                            context, "تم الإرسال بنجاح"),
-                                        backgroundColor: Colors.green,
-                                        gravity: ToastGravity.CENTER);
-                                  }
-                                });
+                                // sendFcmMessage(
+                                //         topicName: "",
+                                //         userToken: widget.user.fcmToken,
+                                //         title: "اثبات حضور",
+                                //         category: "attend",
+                                //         message: "برجاء اثبات حضورك الأن")
+                                //     .then((value) {
+                                Fluttertoast.showToast(
+                                    msg: getTranslated(
+                                        context, "تم الإرسال بنجاح"),
+                                    backgroundColor: Colors.green,
+                                    gravity: ToastGravity.CENTER);
+                                // });
+                                break;
+                              case 'notification fail':
+                                displayErrorToast(
+                                    context,
+                                    getTranslated(context,
+                                        'خطأ : لم يتم إرسال اثبات الحضور'));
                                 break;
                               case "fail shift":
-                                Fluttertoast.showToast(
-                                    msg: getTranslated(context,
-                                        "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة"),
-                                    backgroundColor: Colors.red,
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER);
+                                displayErrorToast(
+                                    context,
+                                    getTranslated(context,
+                                        "خطأ : لا يمكن طلب اثبات حضور خارج توقيت المناوبة"));
+
                                 break;
                               case "limit exceed":
-                                Fluttertoast.showToast(
-                                    msg: getTranslated(context,
-                                        "خطأ : لقد تجاوزت العدد المسموح بة لهذا المستخدم"),
-                                    backgroundColor: Colors.red,
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.CENTER);
+                                displayErrorToast(
+                                    context,
+                                    getTranslated(context,
+                                        "خطأ : لقد تجاوزت العدد المسموح بة لهذا المستخدم"));
+
                                 break;
 
                               case "null":
-                                Fluttertoast.showToast(
-                                    msg: getTranslated(
-                                      context,
-                                      "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل",
-                                    ),
-                                    backgroundColor: Colors.red,
-                                    gravity: ToastGravity.CENTER);
+                                displayErrorToast(
+                                  context,
+                                  getTranslated(
+                                    context,
+                                    "خطأ فى الأرسال \n لم يتم تسجيل الدخول بهذا المستخدم من قبل",
+                                  ),
+                                );
                                 break;
                               case "cant send":
                                 displayErrorToast(

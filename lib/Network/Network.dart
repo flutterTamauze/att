@@ -33,6 +33,7 @@ class NetworkApi {
       switch (requestType) {
         case RequestType.GET:
           res = await _get(endPoint, headers);
+
           break;
         case RequestType.PUT:
           res = await _put(endPoint, headers);
@@ -49,7 +50,7 @@ class NetworkApi {
       debugPrint(
           "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-      log(res.body);
+      log(endPoint + res.body);
       log(endPoint);
       if (res.statusCode == 500 || res.statusCode == 503) {
         locator.locator<PermissionHan>().setServerDown(true);
@@ -72,9 +73,10 @@ class NetworkApi {
       locator.locator<PermissionHan>().setServerDown(false);
       return res.body;
     } on SocketException catch (e) {
-      print(e);
+      print("socket exception $e");
       locator.locator<PermissionHan>().setInternetConnection(false);
       if (_displayExceptionDialog()) {
+        // Navigator.pop(navigatorKey.currentState.overlay.context);
         noInternetDialog(navigatorKey.currentState.overlay.context);
       }
 

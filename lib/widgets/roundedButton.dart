@@ -5,7 +5,7 @@ import 'package:qr_users/Core/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoundedButton extends StatelessWidget {
-  RoundedButton({
+  const RoundedButton({
     @required this.title,
     @required this.onPressed,
   });
@@ -24,10 +24,10 @@ class RoundedButton extends StatelessWidget {
           border: Border.all(width: 1, color: Colors.orange[600]),
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Center(
           child: Container(
-            height: 20,
+            height: 20.h,
             child: AutoSizeText(
               title,
               maxLines: 1,

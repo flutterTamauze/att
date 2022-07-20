@@ -138,7 +138,7 @@ class _PageIntroState extends State<PageIntro> with TickerProviderStateMixin {
                         ),
                       ),
                 Container(
-                  height: 10,
+                  height: 10.h,
                 )
               ],
             ),

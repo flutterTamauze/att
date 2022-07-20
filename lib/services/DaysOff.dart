@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 // import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,9 +46,10 @@ class DaysOffData with ChangeNotifier {
     notifyListeners();
   }
 
-  setSiteAndShift(
-      int index, String sitename, String shiftname, int shiftID, int siteID) {
+  setSiteAndShift(int index, String sitename, String shiftname, int shiftID,
+      int siteID) async {
     debugPrint("setting att $index $shiftID");
+
     if (shiftID != -100 && shiftID != 0) {
       reallocateUsers[index].sitename = sitename;
       reallocateUsers[index].shiftname = shiftname;
@@ -115,9 +117,6 @@ class DaysOffData with ChangeNotifier {
         'Content-type': 'application/json',
         'Authorization': "Bearer $userToken"
       });
-      http.get(
-        Uri.parse("$baseURL/api/DaysOff/GetCompanyDaysOff/$companyId"),
-      );
 
       final decodedRes = json.decode(response);
       if (decodedRes["message"] == "Success") {

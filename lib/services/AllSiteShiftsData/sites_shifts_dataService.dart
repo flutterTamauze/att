@@ -16,6 +16,7 @@ class SiteShiftsData with ChangeNotifier {
   List<Shifts> dropDownShifts = [];
 
   List<Shifts> getShiftsList(String siteName, bool addallshiftsBool) {
+    print("gettings shifts for $siteName");
     shifts = [];
     dropDownShifts = [];
     for (int i = 0; i < siteShiftList.length; i++) {

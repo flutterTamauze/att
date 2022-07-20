@@ -320,12 +320,12 @@ class TakePictureScreenState extends State<CameraPicker> {
                                               // await Future.delayed(const Duration(
                                               //     milliseconds: 200));
                                               File img;
-                                              await cameraController
-                                                  .takePicture()
-                                                  .then((value) async =>
-                                                      value.saveTo(await path));
+                                              XFile imgTaken =
+                                                  await cameraController
+                                                      .takePicture();
 
-                                              img = File(await path);
+                                              img = File(imgTaken.path);
+                                              log(img.path);
                                               // if (widget.fromScreen == "register") {
                                               //   // await signUp(context);
                                               // }
@@ -367,11 +367,11 @@ class TakePictureScreenState extends State<CameraPicker> {
                                               // _cameraService.cameraController.dispose();
                                               debugPrint(
                                                   "=====Compressed==========");
-                                              if (widget.fromScreen !=
-                                                  "register") {
-                                                // predictedUserName = _faceNetService.predict();
-                                                // debugPrint(predictedUserName);
-                                              }
+                                              // if (widget.fromScreen !=
+                                              //     "register") {
+                                              //   // predictedUserName = _faceNetService.predict();
+                                              //   // debugPrint(predictedUserName);
+                                              // }
                                               final GoogleVisionImage
                                                   fbVisionImage =
                                                   await GoogleVisionImage
