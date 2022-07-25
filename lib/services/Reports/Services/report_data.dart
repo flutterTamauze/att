@@ -398,7 +398,7 @@ class ReportsData with ChangeNotifier {
         return "noInternet";
       }
     } else {
-      print(response);
+      log(response);
       final decodedRes = json.decode(response);
 
       if (decodedRes["message"] == "Success" ||
@@ -601,7 +601,7 @@ class ReportsData with ChangeNotifier {
         }
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }

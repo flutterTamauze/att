@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -19,8 +21,8 @@ class AttendProof {
       },
     );
     final decodedResponse = jsonDecode(response.body);
-    print(response.statusCode);
-    print(response.body);
+
+    log(response.body);
     if (response.statusCode == 200) {
       if (fcmToken == null) {
         return "null";
@@ -65,7 +67,7 @@ class AttendProof {
         return -1;
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return -1;
   }
@@ -84,9 +86,9 @@ class AttendProof {
         "latitude": latLng.latitude
       }),
     );
-    print(userId);
+    log(userId);
 
-    print(response.body);
+    log(response.body);
     final decodedResponse = json.decode(response.body);
     if (decodedResponse["message"] == "Fail : Proof time out!") {
       return "timeout";

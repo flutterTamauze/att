@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
           break;
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -521,7 +522,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
       debugPrint(await file.exists().toString());
       debugPrint("writing to it ");
       await file.writeAsBytes(bytes).catchError(((e) {
-        print(e);
+        log(e);
       }));
       debugPrint(await file.exists().toString());
       Fluttertoast.showToast(
@@ -533,7 +534,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
           textColor: Colors.white,
           fontSize: setResponsiveFontSize(16));
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -767,7 +768,7 @@ class _XlsxExportButtonState extends State<XlsxExportButton> {
           textColor: Colors.white,
           fontSize: 16.0);
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 }

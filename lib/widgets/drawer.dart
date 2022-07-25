@@ -248,7 +248,7 @@ class DrawerI extends StatelessWidget {
                                       await _firebaseMessaging
                                           .getToken()
                                           .catchError((e) {
-                                        print(e);
+                                        log(e);
                                         isError = true;
                                       });
                                       if (isError == false) {

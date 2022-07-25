@@ -265,7 +265,7 @@ class UserPermessionsData with ChangeNotifier {
         debugPrint("not null");
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -323,7 +323,7 @@ class UserPermessionsData with ChangeNotifier {
         }
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "Fail";
   }
@@ -349,7 +349,7 @@ class UserPermessionsData with ChangeNotifier {
       }
       return decodedRsp["message"];
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -417,7 +417,7 @@ class UserPermessionsData with ChangeNotifier {
       notifyListeners();
       return "failed";
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }

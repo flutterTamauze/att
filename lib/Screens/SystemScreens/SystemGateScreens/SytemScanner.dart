@@ -93,7 +93,6 @@ class _SystemScanPageState extends State<SystemScanPage> {
     // we need to listen for Flutter SizeChanged notification and update controller
     return NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (notification) {
-        Future.microtask(() => controller?.updateDimensions(qrKey));
         return false;
       },
       child: SizeChangedLayoutNotifier(
@@ -120,8 +119,8 @@ class _SystemScanPageState extends State<SystemScanPage> {
     controller.flipCamera();
     controller.scannedDataStream.listen((scanData) async {
       try {
-        log(scanData);
-        qrText = scanData;
+        log(scanData.code);
+        qrText = scanData.code;
         if (!isScanned) {
           isScanned = true;
           shiftQrCode =

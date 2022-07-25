@@ -338,7 +338,7 @@ class MemberData with ChangeNotifier {
         }
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }
@@ -356,7 +356,7 @@ class MemberData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -373,7 +373,7 @@ class MemberData with ChangeNotifier {
             'Authorization': "Bearer $userToken"
           });
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -434,7 +434,7 @@ class MemberData with ChangeNotifier {
               .whenComplete(
                   () => debugPrint("keychain is reseted successfully!"))
               .catchError((e) {
-            print(e);
+            log(e);
           });
         }
 
@@ -444,7 +444,7 @@ class MemberData with ChangeNotifier {
         return "wrong";
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }
@@ -465,7 +465,7 @@ class MemberData with ChangeNotifier {
         return "wrong";
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }
@@ -487,7 +487,7 @@ class MemberData with ChangeNotifier {
         return "Limit Reached";
       }
     } catch (e) {
-      print(e);
+      log(e);
     }
     return "failed";
   }
@@ -529,7 +529,6 @@ class MemberData with ChangeNotifier {
     final decodedRes = json.decode(response.body);
 
     if (decodedRes["message"] == "Success : User Updated Successfully ") {
-      print(membersList.length);
       // membersList[id] = member;
 
       // final membersListId = findMemberInMembersList(member.id);

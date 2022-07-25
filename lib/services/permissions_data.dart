@@ -21,7 +21,7 @@ class PermissionHan with ChangeNotifier {
   bool isServerDown = false;
   bool isInternetConnected = true;
   bool currentDialogOnstream = true;
-
+  bool anyDialogOpened = false;
   List<PrData> permissionsList = [
     PrData(
         icon: Icons.location_on,

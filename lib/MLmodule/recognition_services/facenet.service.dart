@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:qr_users/MLmodule/db/database.dart';
 
@@ -48,7 +49,7 @@ class FaceNetService {
         this._interpreter = await tflite.Interpreter.fromAsset(
             'mobilefacenet.tflite',
             options: interpreterOptions);
-        print('model loaded successfully wlahi');
+        debugPrint('model loaded successfully wlahi');
       } else if (Platform.isIOS) {
         final gpuDelegate = GpuDelegate(
           options: GpuDelegateOptions(true, TFLGpuDelegateWaitType.active),
@@ -59,13 +60,12 @@ class FaceNetService {
                 'mobilefacenet.tflite',
                 options: interpreterOptions)
             .catchError((e) {
-          print(e);
+          debugPrint(e);
         });
-        print('model loaded successfully wlahi');
+        debugPrint('model loaded successfully wlahi');
       }
     } catch (e) {
-      print('Failed to load model.');
-      print(e);
+      debugPrint('Failed to load model.');
     }
   }
 

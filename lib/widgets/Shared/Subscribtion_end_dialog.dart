@@ -95,7 +95,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                                 await _firebaseMessaging
                                     .getToken()
                                     .catchError((e) {
-                                  print(e);
+                                  log(e);
                                   isError = true;
                                 });
                                 if (isError == false) {
@@ -105,7 +105,7 @@ class DisplaySubscrtibitionEndDialog extends StatelessWidget {
                                 }
                               }
                             } catch (e) {
-                              print(e);
+                              log(e);
                             }
 
                             Provider.of<UserData>(context, listen: false)

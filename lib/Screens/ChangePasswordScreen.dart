@@ -600,12 +600,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       .whenComplete(
                           () => log("item added to keychain successfully !"))
                       .catchError((e) {
-                    print(e);
+                    log(e);
                   });
                 }
               }
             } catch (e) {
-              print(e);
+              log(e);
             }
 
             prefs.setStringList(
@@ -620,7 +620,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PageIntro(
+                    builder: (context) => const PageIntro(
                       userType: 1,
                     ),
                   ));
@@ -652,7 +652,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             Navigator.pop(context);
           }
         } catch (e) {
-          print(e);
+          log(e);
         }
       }
     }

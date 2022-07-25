@@ -16,6 +16,7 @@ import 'package:qr_users/services/AllSiteShiftsData/sites_shifts_dataService.dar
 
 import 'package:qr_users/services/ShiftsData.dart';
 import 'package:qr_users/services/company.dart';
+import 'package:qr_users/services/permissions_data.dart';
 import 'package:qr_users/services/user_data.dart';
 
 import 'package:qr_users/widgets/DirectoriesHeader.dart';
@@ -88,6 +89,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                   title: userData
                                       .superCompaniesList[index].companyName,
                                   onTap: () async {
+                                    locator
+                                        .locator<PermissionHan>()
+                                        .anyDialogOpened = true;
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -109,6 +113,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                                                 comProvider.com.id)
                                             .then((value) {
                                           if (value == "Success") {
+                                            locator
+                                                .locator<PermissionHan>()
+                                                .anyDialogOpened = false;
                                             Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(

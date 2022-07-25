@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -45,7 +46,7 @@ class UserDataField extends StatelessWidget {
                       try {
                         await launch(phone.toString());
                       } catch (e) {
-                        print(e);
+                        log(e);
                       }
                     }
                   }

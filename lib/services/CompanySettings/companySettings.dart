@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -83,7 +85,7 @@ class CompanySettingsService {
       }
     } catch (e) {
       print("erropr");
-      print(e);
+      log(e);
       return false;
     }
 

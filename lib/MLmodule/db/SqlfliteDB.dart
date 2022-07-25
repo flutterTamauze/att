@@ -70,10 +70,10 @@ class DatabaseHelper {
           .then((value) async {
         debugPrint("Notification $value");
       }).catchError((e) {
-        print(e);
+        log(e);
       });
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -81,7 +81,7 @@ class DatabaseHelper {
     try {
       final List<Map<String, dynamic>> notifis =
           await _database.query(_notificationTableName).catchError((e) {
-        print(e);
+        log(e);
       });
       return List.generate(notifis.length, (index) {
         return NotificationMessage(
@@ -94,7 +94,7 @@ class DatabaseHelper {
             title: notifis[index]["title"]);
       });
     } catch (e) {
-      print(e);
+      log(e);
     }
     return null;
   }
@@ -122,7 +122,7 @@ class DatabaseHelper {
 
       return databaseDeleted;
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
@@ -135,10 +135,10 @@ class DatabaseHelper {
           [id]).then((value) {
         debugPrint("delete $value $id");
       }).catchError((e) {
-        print(e);
+        log(e);
       });
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 

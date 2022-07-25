@@ -194,10 +194,10 @@ class NotificationDataService with ChangeNotifier {
     try {
       log("adding notification to database");
       print(event.data["category"]);
-      print(
+      log(
         event.notification.body,
       );
-      print(
+      log(
         event.notification.title,
       );
       await db
@@ -219,7 +219,7 @@ class NotificationDataService with ChangeNotifier {
               DateFormat('kk:mm:a').format(DateTime.now()),
               value));
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 

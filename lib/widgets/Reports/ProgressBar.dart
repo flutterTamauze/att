@@ -40,9 +40,9 @@ class ProgressBar extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: FAProgressBar(
-                currentValue: percent,
+                currentValue: (percent),
                 backgroundColor: Colors.grey[200],
-                maxValue: maxValue,
+                maxValue: (maxValue),
                 progressColor: ColorManager.primary,
               ),
             ),

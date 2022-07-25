@@ -147,12 +147,12 @@ class UserHolidaysData with ChangeNotifier {
       paginatedIsLoading = true;
       notifyListeners();
     }
-    print("page index $pageIndex");
+
     pageIndex++;
     pendingCompanyHolidays.addAll(await UserHolidaysRepoImplementer()
         .getPendingCompanyHolidays(companyId, userToken, pageIndex));
     paginatedIsLoading = false;
-    print(pendingCompanyHolidays.length);
+
     notifyListeners();
   }
 
@@ -201,7 +201,7 @@ class UserHolidaysData with ChangeNotifier {
       }
       return decodedResp["message"];
     } catch (e) {
-      print(e);
+      log(e);
     }
 
     return "fail";

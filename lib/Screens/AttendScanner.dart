@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -56,7 +58,6 @@ class _ScanPageState extends State<ScanPage> {
     // we need to listen for Flutter SizeChanged notification and update controller
     return NotificationListener<SizeChangedLayoutNotification>(
         onNotification: (notification) {
-          Future.microtask(() => controller?.updateDimensions(qrKey));
           return false;
         },
         child: SizeChangedLayoutNotifier(
@@ -78,7 +79,8 @@ class _ScanPageState extends State<ScanPage> {
     this.controller = controller;
     bool scanned = false;
     controller.scannedDataStream.listen((scanData) async {
-      qrText = scanData;
+      log(scanData.code);
+      qrText = scanData.code;
       if (!scanned) {
         scanned = true;
         secondPageRoute();

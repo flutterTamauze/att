@@ -33,7 +33,6 @@ class NetworkApi {
       switch (requestType) {
         case RequestType.GET:
           res = await _get(endPoint, headers);
-
           break;
         case RequestType.PUT:
           res = await _put(endPoint, headers);
@@ -50,7 +49,7 @@ class NetworkApi {
       debugPrint(
           "Request Code : ${res.statusCode} time : ${postTime.difference(preTime).inMilliseconds} ms ");
 
-      log(endPoint + res.body);
+      log(res.body);
       log(endPoint);
       if (res.statusCode == 500 || res.statusCode == 503) {
         locator.locator<PermissionHan>().setServerDown(true);
@@ -75,28 +74,20 @@ class NetworkApi {
     } on SocketException catch (e) {
       print("socket exception $e");
       locator.locator<PermissionHan>().setInternetConnection(false);
-      if (_displayExceptionDialog()) {
-        // Navigator.pop(navigatorKey.currentState.overlay.context);
-        noInternetDialog(navigatorKey.currentState.overlay.context);
-      }
-
+      displayNetworkErrorDialog();
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     } on TimeoutException catch (e) {
       print("timeout occured $e");
       debugPrint(locator.locator<UserData>().user.userToken);
       locator.locator<PermissionHan>().setInternetConnection(false);
-      if ((_displayExceptionDialog())) {
-        noInternetDialog(navigatorKey.currentState.overlay.context);
-      }
+      displayNetworkErrorDialog();
 
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     } on HandshakeException catch (e) {
       print("timeout occured $e");
       debugPrint(locator.locator<UserData>().user.userToken);
       locator.locator<PermissionHan>().setInternetConnection(false);
-      if ((_displayExceptionDialog())) {
-        noInternetDialog(navigatorKey.currentState.overlay.context);
-      }
+      displayNetworkErrorDialog();
 
       return Faliure(code: NO_INTERNET, errorResponse: "NO INTERNET");
     }
@@ -106,6 +97,20 @@ class NetworkApi {
     return await http
         .get(Uri.parse(endPoint), headers: headers)
         .timeout(timeOutDuration);
+  }
+
+  void displayNetworkErrorDialog() {
+    if (_displayExceptionDialog()) {
+      if (locator.locator<PermissionHan>().anyDialogOpened) {
+        Navigator.pop(navigatorKey.currentState.overlay.context);
+        locator.locator<PermissionHan>().anyDialogOpened = false;
+        noInternetDialog(navigatorKey.currentState.overlay.context);
+        locator.locator<PermissionHan>().anyDialogOpened = true;
+      } else {
+        noInternetDialog(navigatorKey.currentState.overlay.context);
+        locator.locator<PermissionHan>().anyDialogOpened = true;
+      }
+    }
   }
 
   // ignore: unused_element

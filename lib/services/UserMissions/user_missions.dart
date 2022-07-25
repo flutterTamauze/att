@@ -123,7 +123,7 @@ class MissionsData with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e);
+      log(e);
     }
   }
 
